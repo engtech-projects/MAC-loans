@@ -35,7 +35,7 @@ class ProductController extends BaseController
         $input = $request->all();
         # add validator dri
         $product = Product::create($input);
-        return $this->sendResponse(new ProductResource($product), 'Product Created')
+        return $this->sendResponse(new ProductResource($product), 'Product Created');
     }
 
     /**

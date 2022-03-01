@@ -19,7 +19,7 @@ use App\Http\Controllers\API\ProductController;
 */
 
 
-Route::post('login', [AuthController::class, 'login']);
+Route::post('login', [AuthController::class, 'login'])->name('api.login');
 
 Route::middleware('auth:sanctum')->group( function () {
     Route::resource('products', ProductController::class);

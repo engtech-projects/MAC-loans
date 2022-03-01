@@ -1,6 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Controller;
+use App\Http\Controllers\ProductSetupController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -18,3 +21,6 @@ Route::get('/dashboard', function () {
 Route::get('/', function () {
     return view('auth.login');
 });
+
+Route::get('/maintenance/product_setup', [ProductSetupController::class, 'index'])->name('maintenance.product_setup');
+
