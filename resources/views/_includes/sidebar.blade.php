@@ -127,8 +127,7 @@
 				  </li>
 				</ul>
 			</li>
-
-			<li class="nav-item">
+			<li class="nav-item {{isset($nav) && isActive($nav[0], 'maintenance')? 'active menu-open' : ''}}">
 				<a href="#" class="nav-link main-link">
 				  <p>
 					Maintenance
@@ -146,13 +145,13 @@
 						<p>Cancel Payments</p>
 					  </a>
 					</li>
-					<li class="nav-item pick">
+					<li class="nav-item pick {{isset($nav) && isActive($nav[1], 'product setup')? 'active' : ''}}">
 						<div class="flex navicon">
 							  <div class="top-line"></div>
 							  <div class="mid-circle"></div>
 							  <div class="bottom-line"></div>
 						</div>
-					  <a href="product_setup.php" class="nav-link">
+					  <a href="{{route('maintenance.product_setup')}}" class="nav-link">
 						<p>Product Setup</p>
 					  </a>
 					</li>
