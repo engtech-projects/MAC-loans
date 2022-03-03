@@ -24,7 +24,7 @@ class ProductController extends BaseController
      * Show the form for creating a new resource.
      */
     public function create() {
-        // return view('product')
+        // return view();
     }
 
     /**
@@ -35,7 +35,7 @@ class ProductController extends BaseController
         $input = $request->all();
         # add validator dri
         $product = Product::create($input);
-        return $this->sendResponse(new ProductResource($product), 'Product Created')
+        return $this->sendResponse(new ProductResource($product), 'Product Created');
     }
 
     /**
@@ -48,12 +48,25 @@ class ProductController extends BaseController
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Product $product) {}
+    public function edit(Product $product) {
+        // return view()
+    }
 
      /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Product $product) {}
+    public function update(Request $request, Product $product) {
+        $input = $request->all();
+        # add validator na pd dri
+        $product->product_code = $input['product_code'];
+        $product->product_name = $input['product_name']; 
+        $product->interest_rate = $input['interest_rate'];
+        $product->status = $input['status'];
+        $product->deleted = $input['deleted'];
+        $product->save();
+
+        return $this->sendResponse(new ProductResource($product), 'Product Updated.');
+    }
 
     /**
      * Remove the specified resource from storage.

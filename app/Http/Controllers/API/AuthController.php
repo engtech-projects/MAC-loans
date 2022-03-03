@@ -12,6 +12,8 @@ use App\Models\User;
 class AuthController extends BaseController
 {
 
+    public function loginForm() {}
+
     public function login(Request $request) {
     	
     	$credentials = $request->only('username', 'password');
