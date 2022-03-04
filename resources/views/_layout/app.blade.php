@@ -18,7 +18,7 @@
   @include('_includes.sidebar')
 
   <!-- Content Wrapper. Contains page content -->
-  <div class="content-wrapper">
+  <div class="content-wrapper" id="app">
     @yield('content')
   </div>
   <!-- /.content-wrapper -->

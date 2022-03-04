@@ -7,6 +7,7 @@ use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\BorrowerController;
 use App\Http\Controllers\API\ProductController;
 use App\Http\Controllers\API\DashboardController;
+use App\Http\Controllers\API\CenterController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,8 +24,11 @@ use App\Http\Controllers\API\DashboardController;
 Route::post('login', [AuthController::class, 'login'])->name('api.login');
 
 Route::middleware('auth:sanctum')->group( function () {
-    Route::resource('products', ProductController::class);
+    
 });
+Route::resource('products', ProductController::class);
+Route::resource('centers', CenterController::class);
+
 
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //     return $request->user();
