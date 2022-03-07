@@ -5,14 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Center extends Model
+class Branch extends Model
 {
     use HasFactory;
 
-    protected $table = 'center';
-    protected $primaryKey = 'center_id';
+    protected $table = 'branch';
+    protected $primaryKey = 'branch_id';
 
     protected $fillable = [
-    	'center', 'day_sched', 'status', 'deleted'
+    	'branch_code', 'branch_name', 'branch_address'
     ];
 }
