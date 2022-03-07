@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Http\Resources\Branch as BranchResource;
 
 class AccountOfficer extends JsonResource
 {
@@ -14,10 +15,13 @@ class AccountOfficer extends JsonResource
      */
     public function toArray($request)
     {
+         // return parent::toArray($request);
         return [
             'ao_id' => $this->ao_id,
             'name' => $this->name,
             'status' => $this->status,
+            'branch_id' => $this->branch_id,
+            'branch' => $this->branch,
             'deleted' => $this->deleted,
             'created_at' => $this->created_at->format('m/d/Y'),
             'updated_at' => $this->updated_at->format('m/d/Y'),

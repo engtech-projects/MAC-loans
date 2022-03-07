@@ -16,6 +16,7 @@ class CreateAccountOfficerTable extends Migration
         Schema::create('account_officer', function (Blueprint $table) {
             $table->increments('ao_id');
             $table->string('name');
+            $table->unsignedInteger('branch_id');
             $table->string('status')->default('active');
             $table->tinyInteger('deleted')->default(0);
             $table->timestamps();

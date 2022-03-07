@@ -9,7 +9,6 @@ use App\Http\Controllers\API\ProductController;
 use App\Http\Controllers\API\CenterController;
 use App\Http\Controllers\API\BranchController;
 use App\Http\Controllers\API\DashboardController;
-use App\Http\Controllers\API\CenterController;
 use App\Http\Controllers\API\AccountOfficerController;
 
 /*
