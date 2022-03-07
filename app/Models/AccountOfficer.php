@@ -13,6 +13,10 @@ class AccountOfficer extends Model
     protected $primaryKey = 'ao_id';
 
     protected $fillable = [
-    	'name', 'status', 'deleted'
+    	'name', 'status', 'deleted', 'branch_id'
     ];
+
+    public function branch() {
+    	return $this->hasOne(Branch::class, 'branch_id');
+    }
 }
