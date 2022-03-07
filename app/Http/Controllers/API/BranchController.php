@@ -55,9 +55,11 @@ class BranchController extends BaseController
     public function update(Request $request, Branch $branch) {
         $input = $request->all();
         # add validator na pd dri
-        $branch->branch_code = $input['branch_code'];
-        $branch->branch_name = $input['branch_name'];
-        $branch->branch_address = $input['branch_address'];
+        $branch->branch_code = isset($input['branch_code']) ? $input['branch_code'] : $branch->branch_code;
+        $branch->branch_name = isset($input['branch_name']) ? $input['branch_name'] : $branch->branch_name;
+        $branch->branch_address = isset($input['branch_address']) ? $input['branch_address'] : $branch->branch_address;
+        $branch->status = isset($input['status']) ? $input['status'] : $branch->status;
+        $branch->deleted = isset($input['deleted']) ? $input['deleted'] : $branch->deleted;
         $branch->save(); 
 
         return $this->sendResponse(new BranchResource($branch), 'Branch Updated.');

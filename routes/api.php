@@ -9,6 +9,7 @@ use App\Http\Controllers\API\ProductController;
 use App\Http\Controllers\API\CenterController;
 use App\Http\Controllers\API\BranchController;
 use App\Http\Controllers\API\DashboardController;
+use App\Http\Controllers\API\AccountOfficerController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,7 +29,7 @@ Route::middleware('auth:sanctum')->group( function () {
     Route::resource('product', ProductController::class);
     Route::resource('center', CenterController::class);
     Route::resource('branch', BranchController::class);
-
+    Route::resource('accountofficer', AccountOfficerController::class);
 });
 
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
