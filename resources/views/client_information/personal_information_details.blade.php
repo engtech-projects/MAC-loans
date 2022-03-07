@@ -2,10 +2,11 @@
 
 @section('content')
     <!-- Main content -->
-    <section class="content mb-45 app">
-		<product-setup></product-setup>
+    <section class="content mb-45 app" id="app">
+		<personal-information></personal-information>
     </section>
     <!-- /.content -->
 	<!-- MODALS  -->
+
   </div>
 @endsection

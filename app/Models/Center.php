@@ -8,11 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class Center extends Model
 {
     use HasFactory;
-
     protected $table = 'center';
     protected $primaryKey = 'center_id';
 
     protected $fillable = [
     	'center', 'day_sched', 'status', 'deleted'
+
     ];
 }
