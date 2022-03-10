@@ -12,7 +12,7 @@
 					<div class="d-flex flex-column light-border">
 						<div class="d-flex justify-content-between bg-primary-dark text-white px-16 py-7">
 							<span class="text-bold font-md">Edit {{center.center}}</span>
-							<a href="" @click="resetCenter()" class="text-white"><i class="fa fa-times"></i></a>
+							<a href="" @click.prevent="resetCenter()" class="text-white"><i class="fa fa-times"></i></a>
 						</div>
 						<div class="p-16">
 							<div class="form-group mb-24" style="flex:1">
@@ -66,7 +66,7 @@
 									<td class="">{{center.center}}</td>
 									<td>{{upperFirst(center.day_sched)}}</td>
 									<td class="text-right"><a href="#" class="text-green text-sm">{{upperFirst(center.status)}}</a></td>
-									<td class="text-right"><a @click="setEdit(center)" href="#" class="fa fa-edit"></a></td>
+									<td class="text-right"><a @click="setEdit(center, 'center')" href="#" class="fa fa-edit"></a></td>
 								</tr>
 							</tbody>
 						</table>
@@ -80,56 +80,77 @@
 				<section class="mb-24" style="flex:21;">
 					<span class="section-title section-subtitle mb-12">Account Officer</span>
 
-					<div class="d-flex flex-column p-16 light-border">
+					<div class="d-flex flex-column light-border" v-if="officer.ao_id">
+						<div class="d-flex justify-content-between bg-primary-dark text-white px-16 py-7">
+							<span class="text-bold font-md">Edit {{officer.name}}</span>
+							<a href="" @click.prevent="resetOfficer()" class="text-white"><i class="fa fa-times"></i></a>
+						</div>
+						<div class="p-16">
+							<div class="form-group mb-24" style="flex:1">
+								<label for="centerName" class="form-label">Code</label>
+								<input v-model="branch_code" disabled type="text" class="form-control form-input " id="centerName">
+							</div>
+							<div class="form-group mb-24" style="flex:1">
+								<label for="centerName" class="form-label">Full Name</label>
+								<input v-model="officer.name" type="text" class="form-control form-input " id="centerName">
+							</div>
+							<div class="form-group mb-24" style="flex:1">
+								<label for="centerName" class="form-label">Branch</label>
+								<div class="d-flex">
+									<select @select="branchCode(officer.branch_id)" v-model="officer.branch_id" name="" id="" class="form-control form-input mr-1">
+										<option value="" disabled>Select Branch</option>
+										<option v-for="branch in branches" :key="branch.branch_id" :value="branch.branch_id">{{branch.branch_name}}</option>
+									</select>
+									<a data-toggle="modal" data-target="#branchModal" href="#" class="btn btn-primary-dark" style="line-height:2;"><i class="fa fa-plus"></i></a>
+								</div>
+							</div>
+							<div class="d-flex justify-content-between">
+								<a @click.prevent="officer.status='active'" v-if="officer.status!='active'" href="#" class="btn btn-lg btn-yellow-light min-w-150">Activate</a>
+								<a @click.prevent="officer.status='inactive'" v-if="officer.status=='active'" href="#" class="btn btn-lg btn-danger min-w-150">Deactivate</a>
+								<a href="#" @click.prevent="saveOfficer()" class="btn btn-lg btn-success min-w-150">Save</a>
+							</div>
+						</div>
+					</div>
+
+					<div class="d-flex flex-column p-16 light-border" v-if="!officer.ao_id">
 						<div class="form-group mb-24" style="flex:1">
 							<label for="centerName" class="form-label">Code</label>
-							<input type="text" class="form-control form-input " id="centerName">
+							<input v-model="branch_code" disabled type="text" class="form-control form-input " id="centerName">
 						</div>
 						<div class="form-group mb-24" style="flex:1">
 							<label for="centerName" class="form-label">Full Name</label>
-							<input type="text" class="form-control form-input " id="centerName">
+							<input v-model="officer.name" type="text" class="form-control form-input " id="centerName">
 						</div>
 						<div class="form-group mb-24" style="flex:1">
 							<label for="centerName" class="form-label">Branch</label>
 							<div class="d-flex">
-								<select name="" id="" class="form-control form-input mr-1">
-									<option value="Butuan">Butuan</option>
+								<select @select="branchCode(officer.branch_id)" v-model="officer.branch_id" name="" id="" class="form-control form-input mr-1">
+									<option value="" disabled>Select Branch</option>
+									<option v-for="branch in branches" :key="branch.branch_id" :value="branch.branch_id">{{branch.branch_name}}</option>
 								</select>
-								<a href="#" class="btn btn-primary-dark" style="line-height:2;"><i class="fa fa-plus"></i></a>
+								<a data-toggle="modal" data-target="#branchModal" href="#" class="btn btn-primary-dark" style="line-height:2;"><i class="fa fa-plus"></i></a>
 							</div>
 						</div>
-						<div class="d-flex justify-content-between">
-							<a href="#" class="btn btn-lg btn-yellow-light min-w-150">Activate / Deactivate</a>
-							<a href="#" class="btn btn-lg btn-success min-w-150">Save</a>
+						<div class="d-flex justify-content-end">
+							<!-- <a href="#" class="btn btn-lg btn-yellow-light min-w-150">Activate / Deactivate</a> -->
+							<a href="#" @click.prevent="saveOfficer()" class="btn btn-lg btn-success min-w-150">Save</a>
 						</div>
 					</div>
 				</section>
 			</div>
 			<div style="flex:20">
 				<section class="mb-24" style="flex:21;padding-left:16px;">
-					<span class="section-title section-subtitle mb-12">Group List</span>
+					<span class="section-title section-subtitle mb-12">Account Officer List</span>
 					<div class="p-10 light-border">
 						<table class="table table-stripped th-nb m-0">
 							<tbody>
-								<tr>
-									<td class="nbt">John Mark Barcenas</td>
-									<td class="text-right"><a href="#" class="text-green text-sm">ACTIVE</a></td>
+								<tr v-if="officers.length == 0">
+									<td>No Account officers found.</td>
 								</tr>
-								<tr>
-									<td>John Mark Barcenas</td>
-									<td class="text-right"><a href="#" class="text-green text-sm">ACTIVE</a></td>
-								</tr>
-								<tr>
-									<td>John Mark Barcenas</td>
-									<td class="text-right"><a href="#" class="text-green text-sm">ACTIVE</a></td>
-								</tr>
-								<tr>
-									<td>John Mark Barcenas</td>
-									<td class="text-right"><a href="#" class="text-green text-sm">ACTIVE</a></td>
-								</tr>
-								<tr>
-									<td>John Mark Barcenas</td>
-									<td class="text-right"><a href="#" class="text-green text-sm">ACTIVE</a></td>
+								<tr v-for="officer in officers" :key="officer.ao_id">
+									<td>{{officer.name}}</td>
+									<td class="text-right"><a href="#" class="text-green text-sm">{{upperFirst(officer.status)}}</a></td>
+									<td class="text-right"><a @click.prevent="setEdit(officer,'officer')" href="#" class="fa fa-edit"></a></td>
 								</tr>
 							</tbody>
 						</table>
@@ -137,15 +158,15 @@
 				</section>
 			</div>
 		</div>
+		<branch :token="token"></branch>
 	</div>
 </template>
 
 <script>
 export default {
-	props:['days'],
+	props:['days','token'],
 	data(){
 		return {
-			csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
 			ddays:[],
 			centers:[],
 			center:{
@@ -155,34 +176,131 @@ export default {
 				status:'active',
 				deleted:0
 			},
+			officers:[],
+			officer:{
+				ao_id:null,
+				name:'',
+				branch_id:'',
+				status:'active',
+				deleted:0,
+			},
+			branches:[],
+			branch_code: '',
 		}
 	},
 	methods:{
 		fetchCenters:function(){
-			$.get(window.location.origin + '/api/centers', function(data){
-				this.centers = data.data;
-				console.log(data.data);
+			axios.get(window.location.origin + '/api/center', {
+				headers: {
+					'Authorization': 'Bearer ' + this.token,
+					'Content-Type': 'application/json',
+					'Accept': 'application/json'
+				}
+			})
+			.then(function (response) {
+				this.centers = response.data.data;
+			}.bind(this))
+			.catch(function (error) {
+				console.log(error);
+			}.bind(this));
+		},
+		fetchOfficers:function(){
+			axios.get(window.location.origin + '/api/accountofficer', {
+				headers: {
+					'Authorization': 'Bearer ' + this.token,
+					'Content-Type': 'application/json',
+					'Accept': 'application/json'
+				}
+			})
+			.then(function (response) {
+				this.officers = response.data.data;
+			}.bind(this))
+			.catch(function (error) {
+				console.log(error);
 			}.bind(this));
 		},
 		upperFirst:function (string) {
 			return string.charAt(0).toUpperCase() + string.slice(1);
 		},
-		save: function(){
-			if(this.center.center_id){
-					axios.put(window.location.origin + '/api/centers/' + this.center.center_id, this.center)
+
+		fetchBranches:function(){
+			axios.get(window.location.origin + '/api/branch', {
+				headers: {
+					'Authorization': 'Bearer ' + this.token,
+					'Content-Type': 'application/json',
+					'Accept': 'application/json'
+				}
+			})
+			.then(function (response) {
+				this.branches = response.data.data;
+				console.log(response.data);
+			}.bind(this))
+			.catch(function (error) {
+				console.log(error);
+			}.bind(this));
+		},
+		
+		saveOfficer: function(){
+			if(this.officer.ao_id){
+					axios.put(window.location.origin + '/api/accountofficer/' + this.officer.ao_id, this.officer,{
+						headers: {
+							'Authorization': 'Bearer ' + this.token,
+							'Content-Type': 'application/json',
+							'Accept': 'application/json'
+						}
+					})
 					.then(function (response) {
 						this.notify('',response.data.message, 'success');
-						console.log(response.data);
+						this.fetchOfficers();
+					}.bind(this))
+					.catch(function (error) {
+						console.log(error);
+					}.bind(this));
+			}else {
+				axios.post(window.location.origin + '/api/accountofficer', this.officer,{
+					headers: {
+						'Authorization': 'Bearer ' + this.token,
+						'Content-Type': 'application/json',
+						'Accept': 'application/json'
+					}
+				})
+				.then(function (response) {
+					this.notify('',response.data.message, 'success');
+					this.fetchOfficers();
+				}.bind(this))
+				.catch(function (error) {
+					console.log(error);
+				}.bind(this));
+			}
+			
+		},
+
+		save: function(){
+			if(this.center.center_id){
+					axios.put(window.location.origin + '/api/center/' + this.center.center_id, this.center,{
+						headers: {
+							'Authorization': 'Bearer ' + this.token,
+							'Content-Type': 'application/json',
+							'Accept': 'application/json'
+						}
+					})
+					.then(function (response) {
+						this.notify('',response.data.message, 'success');
 						this.fetchCenters();
 					}.bind(this))
 					.catch(function (error) {
 						console.log(error);
 					}.bind(this));
 			}else {
-				axios.post(window.location.origin + '/api/centers', this.center)
+				axios.post(window.location.origin + '/api/center', this.center,{
+					headers: {
+						'Authorization': 'Bearer ' + this.token,
+						'Content-Type': 'application/json',
+						'Accept': 'application/json'
+					}
+				})
 				.then(function (response) {
 					this.notify('',response.data.message, 'success');
-					console.log(response.data);
 					this.fetchCenters();
 				}.bind(this))
 				.catch(function (error) {
@@ -191,13 +309,24 @@ export default {
 			}
 			
 		},
-		setEdit: function(data){
+
+		setEdit: function(data, type){
+			if(type=='center'){
 				this.center.center_id = data.center_id;
 				this.center.center = data.center;
 				this.center.day_sched = data.day_sched;
 				this.center.status = data.status;
 				this.center.deleted = data.deleted;
+			}else{
+				this.officer.ao_id= data.ao_id;
+				this.officer.name= data.name;
+				this.officer.branch_id= data.branch_id;
+				this.officer.status= data.status;
+				this.officer.deleted= data.deleted;
+			}
+				
 		},
+
 		notify:function(title, text, type){
 			this.$notify({
 				group: 'foo',
@@ -215,11 +344,33 @@ export default {
 				status:'active',
 				deleted:0
 			}
+		},
+
+		resetOfficer: function(){
+			this.officer = {
+				ao_id:null,
+				name:'',
+				branch_id:1,
+				status:'active',
+				deleted:0,
+			}
+		}
+	},
+	watch: {
+    // Note: only simple paths. Expressions are not supported.
+		'officer.branch_id'(newValue) {
+			for(let i in this.branches){
+				if(this.branches[i].branch_id == newValue){
+					this.branch_code = this.branches[i].branch_code;
+				}			
+			}
 		}
 	},
 	mounted(){
 		this.ddays = JSON.parse(this.days);
 		this.fetchCenters();
+		this.fetchOfficers();
+		this.fetchBranches();
 	}
 }
 </script>

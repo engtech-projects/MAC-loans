@@ -31,9 +31,6 @@ Route::middleware('auth:sanctum')->group( function () {
     Route::resource('branch', BranchController::class);
     Route::resource('accountofficer', AccountOfficerController::class);
 });
-Route::resource('products', ProductController::class);
-Route::resource('centers', CenterController::class);
-
 
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //     return $request->user();
