@@ -1,0 +1,84 @@
+<template>
+	<div class="card card-outline">
+		<div class="card-header text-center">
+		<span href="" class="h1"><b>δάνειο</b>s</span>
+		</div>
+		<div class="card-body">
+			<p class="login-box-msg">Sign in</p>
+
+			<form action="" method="post">
+				<div class="input-group mb-3">
+				<input v-model="data.credentials.username" name="username" type="text" class="form-control" placeholder="Username">
+				<div class="input-group-append">
+					<div class="input-group-text">
+					<span class="fas fa-user"></span>
+					</div>
+				</div>
+				</div>
+				<div class="input-group mb-3">
+				<input v-model="data.credentials.password" name="password" type="password" autocomplete="off" class="form-control" placeholder="Password">
+				<div class="input-group-append">
+					<div class="input-group-text">
+					<span class="fas fa-lock"></span>
+					</div>
+				</div>
+				</div>
+				<div class="row">
+				<div class="col-8">
+					<select v-model="branch" class="form-control">
+					<option value="">Select</option>
+					<option value="1">Main</option>
+					<option value="2">Branch 1</option>
+					</select>
+				</div>
+				<!-- /.col -->
+				<div class="col-4">
+					<button @click.prevent="login()" type="submit" class="btn btn-primary btn-block btn-flat">Sign In</button>
+				</div>
+				<!-- /.col -->
+				</div>
+			</form>
+
+		</div>
+    <!-- /.card-body -->
+  	</div>
+</template>
+
+<script>
+export default {
+	props:['csrf'],
+	data(){
+		return {
+			data:{
+				credentials: {
+					username:'',
+					password:'',
+				},
+				token:''
+			},
+			branch: ''
+		}
+	},
+	methods: {
+		login:function(){
+			axios.post(window.location.origin + '/api/login', this.data.credentials)
+			.then(function (response) {
+				this.data.token = response.data.data.token;
+				this.makeAuth();
+			}.bind(this))
+			.catch(function (error) {
+				console.log(error);
+			}.bind(this));
+		},
+		makeAuth:function(){
+			axios.post(window.location.origin + '/login', this.data)
+			.then(function (response) {
+				window.location.replace(window.location.origin + '/maintenance/product_setup');
+			}.bind(this))
+			.catch(function (error) {
+				console.log(error);
+			}.bind(this));
+		},
+	}
+}
+</script>

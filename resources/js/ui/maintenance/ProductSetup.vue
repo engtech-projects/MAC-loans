@@ -89,6 +89,7 @@
 
 <script>
     export default {
+		props:['token'],
 		data(){
 			return {
 				csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
@@ -106,8 +107,18 @@
 		},
 		methods: {
 			fetchProducts: function(){
-				$.get(window.location.origin + '/api/products', function(data){
-					this.products = data.data;
+				axios.get(window.location.origin + '/api/product/', {
+					headers: {
+						'Authorization': 'Bearer ' + this.token,
+						'Content-Type': 'application/json',
+						'Accept': 'application/json'
+					}
+				})
+				.then(function (response) {
+					this.products = response.data.data;
+				}.bind(this))
+				.catch(function (error) {
+					console.log(error);
 				}.bind(this));
 			},
 			setEdit: function(data){
@@ -120,27 +131,36 @@
 					this.product.deleted = data.deleted;
 			},
 			save: function(){
-				var url = window.location.origin + '/api/products'
 				if(this.product.product_id){
-						axios.put(window.location.origin + '/api/products/' + this.product.product_id, this.product)
+						axios.put(window.location.origin + '/api/product/' + this.product.product_id, this.product, {
+						headers: {
+								'Authorization': 'Bearer ' + this.token,
+								'Content-Type': 'application/json',
+								'Accept': 'application/json'
+							}
+						})
 						.then(function (response) {
 							this.notify('',response.data.message, 'success');
-							console.log(response.data);
 							this.fetchProducts();
 						}.bind(this))
 						.catch(function (error) {
 							console.log(error);
 						}.bind(this));
 				}else {
-					axios.post(window.location.origin + '/api/products', this.product)
-					.then(function (response) {
-						this.notify('',response.data.message, 'success');
-						console.log(response.data);
-						this.fetchProducts();
-					}.bind(this))
-					.catch(function (error) {
-						console.log(error);
-					}.bind(this));
+					axios.post(window.location.origin + '/api/product', this.product, {
+						headers: {
+								'Authorization': 'Bearer ' + this.token,
+								'Content-Type': 'application/json',
+								'Accept': 'application/json'
+							}
+						})
+						.then(function (response) {
+							this.notify('',response.data.message, 'success');
+							this.fetchProducts();
+						}.bind(this))
+						.catch(function (error) {
+							console.log(error);
+						}.bind(this));
 				}
 				
 			},
@@ -165,7 +185,7 @@
 			}
 		},
         mounted() {
-           this.fetchProducts();
+           	this.fetchProducts();
         }
     }
 </script>

@@ -4,15 +4,17 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
  
- require('./bootstrap');
+require('./bootstrap');
 import { template } from 'lodash';
  import Notifications from 'vue-notification'
 
  window.Vue = require('vue').default;
  Vue.use(Notifications)
  
+ Vue.component('login', require('./components/Login.vue').default);
  Vue.component('client-list', require('./ui/client_information/ClientList.vue').default);
  Vue.component('personal-information', require('./ui/client_information/PersonalInformation.vue').default);
+ Vue.component('branch', require('./components/Branch.vue').default);
  
  Vue.component('cancel-payments', require('./ui/maintenance/CancelPayments.vue').default);
  Vue.component('product-setup', require('./ui/maintenance/ProductSetup.vue').default);
