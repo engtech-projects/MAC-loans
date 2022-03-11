@@ -14,11 +14,33 @@ class CreateBorrowerInfoTable extends Migration
     public function up()
     {
         Schema::create('borrower_info', function (Blueprint $table) {
-            $table->id();
-            $table->string('borrower_id');
+            // basic info
+            $table->increments('borrower_id');
+            $table->string('borrower_num');
             $table->string('firstname');
             $table->string('middlename');
             $table->string('lastname');
+            $table->string('suffix');
+            $table->text('address');
+            $table->date('birthdate');
+            $table->string('gender');
+            $table->string('status');
+            $table->string('contact_number');
+            // ID details
+            $table->string('id_type');
+            $table->string('id_no');
+            $table->date('id_date_issued');
+            // spouse info
+            $table->string('spouse_firstname');
+            $table->string('spouse_middlename');
+            $table->string('spouse_lastname');
+            $table->text('spouse_address');
+            $table->date('spouse_birthdate');
+            $table->string('spouse_contact_number');
+             // spouse ID details
+            $table->string('spouse_id_type');
+            $table->string('spouse_id_no');
+            $table->date('spouse_id_date_issued');
             $table->timestamps();
         });
     }

@@ -11,18 +11,34 @@ use App\Http\Resources\Borrower as BorrowerResource;
 
 class BorrowerController extends BaseController
 {
+
+	/**
+     * Display a listing of the resource.
+     */
     public function index() {
 
     	$borrowers = Borrower::all();
     	return $this->sendResponse(BorrowerResource::collection($borrowers), 'Borrowers');
 
     }
+     /**
+     * Show the form for creating a new resource.
+     */
+    public function create() {
+        // return view();
+    }
 
-    public function store() {}
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request) {
 
-    public function show($id) {}
-
-    public function update(Request $request, Borrower $borrower) {}
-
-    public function destroy(Borrower $borrower) {}
+        $input = $request->all();
+        return json_encode( [ 
+            'data' => $input ] 
+        );
+        # add validator dri
+        // $borrower = Borrower::create($input);
+        // return $this->sendResponse(new BorrowerResource($borrower), 'Borrower Created');
+    }
 }
