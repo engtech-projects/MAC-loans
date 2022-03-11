@@ -5251,6 +5251,293 @@ module.exports = {
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Branch.vue?vue&type=script&lang=js&":
+/*!*************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Branch.vue?vue&type=script&lang=js& ***!
+  \*************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  props: ['token'],
+  data: function data() {
+    return {
+      branches: [],
+      branch: {
+        branch_id: null,
+        branch_code: '',
+        branch_name: '',
+        branch_address: '',
+        status: 'active',
+        deleted: 0
+      }
+    };
+  },
+  methods: {
+    fetchBranches: function fetchBranches() {
+      axios.get(window.location.origin + '/api/branch', {
+        headers: {
+          'Authorization': 'Bearer ' + this.token,
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        }
+      }).then(function (response) {
+        this.branches = response.data.data;
+        console.log(response.data);
+      }.bind(this))["catch"](function (error) {
+        console.log(error);
+      }.bind(this));
+    },
+    save: function save() {
+      if (this.branch.branch_id) {
+        axios.put(window.location.origin + '/api/branch/' + this.branch.branch_id, this.branch, {
+          headers: {
+            'Authorization': 'Bearer ' + this.token,
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          }
+        }).then(function (response) {
+          this.notify('', response.data.message, 'success');
+          this.fetchBranches();
+        }.bind(this))["catch"](function (error) {
+          console.log(error);
+        }.bind(this));
+      } else {
+        axios.post(window.location.origin + '/api/branch', this.branch, {
+          headers: {
+            'Authorization': 'Bearer ' + this.token,
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          }
+        }).then(function (response) {
+          this.notify('', response.data.message, 'success');
+          this.resetBranch();
+          this.fetchBranches();
+        }.bind(this))["catch"](function (error) {
+          console.log(error);
+        }.bind(this));
+      }
+    },
+    setEdit: function setEdit(data) {
+      this.branch.branch_id = data.branch_id;
+      this.branch.branch_code = data.branch_code;
+      this.branch.branch_name = data.branch_name;
+      this.branch.branch_address = data.branch_address;
+      this.branch.status = data.status;
+      this.branch.deleted = data.deleted;
+    },
+    notify: function notify(title, text, type) {
+      this.$notify({
+        group: 'foo',
+        title: title,
+        text: text,
+        type: type
+      });
+    },
+    resetBranch: function resetBranch() {
+      this.branch = {
+        branch_id: null,
+        branch_code: '',
+        branch_name: '',
+        branch_address: '',
+        status: 'active',
+        deleted: 0
+      };
+    },
+    upperFirst: function upperFirst(string) {
+      return string.charAt(0).toUpperCase() + string.slice(1);
+    }
+  },
+  mounted: function mounted() {
+    this.fetchBranches();
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Login.vue?vue&type=script&lang=js&":
+/*!************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Login.vue?vue&type=script&lang=js& ***!
+  \************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  props: ['csrf'],
+  data: function data() {
+    return {
+      data: {
+        credentials: {
+          username: '',
+          password: ''
+        },
+        token: ''
+      },
+      branch: ''
+    };
+  },
+  methods: {
+    login: function login() {
+      axios.post(window.location.origin + '/api/login', this.data.credentials).then(function (response) {
+        this.data.token = response.data.data.token;
+        this.makeAuth();
+      }.bind(this))["catch"](function (error) {
+        console.log(error);
+      }.bind(this));
+    },
+    makeAuth: function makeAuth() {
+      axios.post(window.location.origin + '/login', this.data).then(function (response) {
+        window.location.replace(window.location.origin + '/maintenance/product_setup');
+      }.bind(this))["catch"](function (error) {
+        console.log(error);
+      }.bind(this));
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/ui/client_information/ClientList.vue?vue&type=script&lang=js&":
 /*!****************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/ui/client_information/ClientList.vue?vue&type=script&lang=js& ***!
@@ -6337,11 +6624,32 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  props: ['days'],
+  props: ['days', 'token'],
   data: function data() {
     return {
-      csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
       ddays: [],
       centers: [],
       center: {
@@ -6350,44 +6658,135 @@ __webpack_require__.r(__webpack_exports__);
         day_sched: '',
         status: 'active',
         deleted: 0
-      }
+      },
+      officers: [],
+      officer: {
+        ao_id: null,
+        name: '',
+        branch_id: '',
+        status: 'active',
+        deleted: 0
+      },
+      branches: [],
+      branch_code: ''
     };
   },
   methods: {
     fetchCenters: function fetchCenters() {
-      $.get(window.location.origin + '/api/centers', function (data) {
-        this.centers = data.data;
-        console.log(data.data);
+      axios.get(window.location.origin + '/api/center', {
+        headers: {
+          'Authorization': 'Bearer ' + this.token,
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        }
+      }).then(function (response) {
+        this.centers = response.data.data;
+      }.bind(this))["catch"](function (error) {
+        console.log(error);
+      }.bind(this));
+    },
+    fetchOfficers: function fetchOfficers() {
+      axios.get(window.location.origin + '/api/accountofficer', {
+        headers: {
+          'Authorization': 'Bearer ' + this.token,
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        }
+      }).then(function (response) {
+        this.officers = response.data.data;
+      }.bind(this))["catch"](function (error) {
+        console.log(error);
       }.bind(this));
     },
     upperFirst: function upperFirst(string) {
       return string.charAt(0).toUpperCase() + string.slice(1);
     },
+    fetchBranches: function fetchBranches() {
+      axios.get(window.location.origin + '/api/branch', {
+        headers: {
+          'Authorization': 'Bearer ' + this.token,
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        }
+      }).then(function (response) {
+        this.branches = response.data.data;
+        console.log(response.data);
+      }.bind(this))["catch"](function (error) {
+        console.log(error);
+      }.bind(this));
+    },
+    saveOfficer: function saveOfficer() {
+      if (this.officer.ao_id) {
+        axios.put(window.location.origin + '/api/accountofficer/' + this.officer.ao_id, this.officer, {
+          headers: {
+            'Authorization': 'Bearer ' + this.token,
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          }
+        }).then(function (response) {
+          this.notify('', response.data.message, 'success');
+          this.fetchOfficers();
+        }.bind(this))["catch"](function (error) {
+          console.log(error);
+        }.bind(this));
+      } else {
+        axios.post(window.location.origin + '/api/accountofficer', this.officer, {
+          headers: {
+            'Authorization': 'Bearer ' + this.token,
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          }
+        }).then(function (response) {
+          this.notify('', response.data.message, 'success');
+          this.fetchOfficers();
+        }.bind(this))["catch"](function (error) {
+          console.log(error);
+        }.bind(this));
+      }
+    },
     save: function save() {
       if (this.center.center_id) {
-        axios.put(window.location.origin + '/api/centers/' + this.center.center_id, this.center).then(function (response) {
+        axios.put(window.location.origin + '/api/center/' + this.center.center_id, this.center, {
+          headers: {
+            'Authorization': 'Bearer ' + this.token,
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          }
+        }).then(function (response) {
           this.notify('', response.data.message, 'success');
-          console.log(response.data);
           this.fetchCenters();
         }.bind(this))["catch"](function (error) {
           console.log(error);
         }.bind(this));
       } else {
-        axios.post(window.location.origin + '/api/centers', this.center).then(function (response) {
+        axios.post(window.location.origin + '/api/center', this.center, {
+          headers: {
+            'Authorization': 'Bearer ' + this.token,
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          }
+        }).then(function (response) {
           this.notify('', response.data.message, 'success');
-          console.log(response.data);
           this.fetchCenters();
         }.bind(this))["catch"](function (error) {
           console.log(error);
         }.bind(this));
       }
     },
-    setEdit: function setEdit(data) {
-      this.center.center_id = data.center_id;
-      this.center.center = data.center;
-      this.center.day_sched = data.day_sched;
-      this.center.status = data.status;
-      this.center.deleted = data.deleted;
+    setEdit: function setEdit(data, type) {
+      if (type == 'center') {
+        this.center.center_id = data.center_id;
+        this.center.center = data.center;
+        this.center.day_sched = data.day_sched;
+        this.center.status = data.status;
+        this.center.deleted = data.deleted;
+      } else {
+        this.officer.ao_id = data.ao_id;
+        this.officer.name = data.name;
+        this.officer.branch_id = data.branch_id;
+        this.officer.status = data.status;
+        this.officer.deleted = data.deleted;
+      }
     },
     notify: function notify(title, text, type) {
       this.$notify({
@@ -6405,11 +6804,32 @@ __webpack_require__.r(__webpack_exports__);
         status: 'active',
         deleted: 0
       };
+    },
+    resetOfficer: function resetOfficer() {
+      this.officer = {
+        ao_id: null,
+        name: '',
+        branch_id: 1,
+        status: 'active',
+        deleted: 0
+      };
+    }
+  },
+  watch: {
+    // Note: only simple paths. Expressions are not supported.
+    'officer.branch_id': function officerBranch_id(newValue) {
+      for (var i in this.branches) {
+        if (this.branches[i].branch_id == newValue) {
+          this.branch_code = this.branches[i].branch_code;
+        }
+      }
     }
   },
   mounted: function mounted() {
     this.ddays = JSON.parse(this.days);
     this.fetchCenters();
+    this.fetchOfficers();
+    this.fetchBranches();
   }
 });
 
@@ -6516,6 +6936,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  props: ['token'],
   data: function data() {
     return {
       csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
@@ -6533,8 +6954,16 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     fetchProducts: function fetchProducts() {
-      $.get(window.location.origin + '/api/products', function (data) {
-        this.products = data.data;
+      axios.get(window.location.origin + '/api/product/', {
+        headers: {
+          'Authorization': 'Bearer ' + this.token,
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        }
+      }).then(function (response) {
+        this.products = response.data.data;
+      }.bind(this))["catch"](function (error) {
+        console.log(error);
       }.bind(this));
     },
     setEdit: function setEdit(data) {
@@ -6547,20 +6976,28 @@ __webpack_require__.r(__webpack_exports__);
       this.product.deleted = data.deleted;
     },
     save: function save() {
-      var url = window.location.origin + '/api/products';
-
       if (this.product.product_id) {
-        axios.put(window.location.origin + '/api/products/' + this.product.product_id, this.product).then(function (response) {
+        axios.put(window.location.origin + '/api/product/' + this.product.product_id, this.product, {
+          headers: {
+            'Authorization': 'Bearer ' + this.token,
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          }
+        }).then(function (response) {
           this.notify('', response.data.message, 'success');
-          console.log(response.data);
           this.fetchProducts();
         }.bind(this))["catch"](function (error) {
           console.log(error);
         }.bind(this));
       } else {
-        axios.post(window.location.origin + '/api/products', this.product).then(function (response) {
+        axios.post(window.location.origin + '/api/product', this.product, {
+          headers: {
+            'Authorization': 'Bearer ' + this.token,
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          }
+        }).then(function (response) {
           this.notify('', response.data.message, 'success');
-          console.log(response.data);
           this.fetchProducts();
         }.bind(this))["catch"](function (error) {
           console.log(error);
@@ -6617,8 +7054,10 @@ __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 window.Vue = (__webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js")["default"]);
 Vue.use((vue_notification__WEBPACK_IMPORTED_MODULE_1___default()));
+Vue.component('login', (__webpack_require__(/*! ./components/Login.vue */ "./resources/js/components/Login.vue")["default"]));
 Vue.component('client-list', (__webpack_require__(/*! ./ui/client_information/ClientList.vue */ "./resources/js/ui/client_information/ClientList.vue")["default"]));
 Vue.component('personal-information', (__webpack_require__(/*! ./ui/client_information/PersonalInformation.vue */ "./resources/js/ui/client_information/PersonalInformation.vue")["default"]));
+Vue.component('branch', (__webpack_require__(/*! ./components/Branch.vue */ "./resources/js/components/Branch.vue")["default"]));
 Vue.component('cancel-payments', (__webpack_require__(/*! ./ui/maintenance/CancelPayments.vue */ "./resources/js/ui/maintenance/CancelPayments.vue")["default"]));
 Vue.component('product-setup', (__webpack_require__(/*! ./ui/maintenance/ProductSetup.vue */ "./resources/js/ui/maintenance/ProductSetup.vue")["default"]));
 Vue.component('center-ao', (__webpack_require__(/*! ./ui/maintenance/CenterAccount.vue */ "./resources/js/ui/maintenance/CenterAccount.vue")["default"]));
@@ -6650,7 +7089,11 @@ try {
 
 
 window.axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest'; // window.axios.defaults.headers.common = {
+//     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+//     'X-Requested-With': 'XMLHttpRequest'
+// };
+
 /**
  * Echo exposes an expressive API for subscribing to channels and listening
  * for events that are broadcast by Laravel. Echo and event broadcasting
@@ -29522,6 +29965,84 @@ module.exports = function (list, options) {
 
 /***/ }),
 
+/***/ "./resources/js/components/Branch.vue":
+/*!********************************************!*\
+  !*** ./resources/js/components/Branch.vue ***!
+  \********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _Branch_vue_vue_type_template_id_69b19a66___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Branch.vue?vue&type=template&id=69b19a66& */ "./resources/js/components/Branch.vue?vue&type=template&id=69b19a66&");
+/* harmony import */ var _Branch_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Branch.vue?vue&type=script&lang=js& */ "./resources/js/components/Branch.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _Branch_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _Branch_vue_vue_type_template_id_69b19a66___WEBPACK_IMPORTED_MODULE_0__.render,
+  _Branch_vue_vue_type_template_id_69b19a66___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/Branch.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/Login.vue":
+/*!*******************************************!*\
+  !*** ./resources/js/components/Login.vue ***!
+  \*******************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _Login_vue_vue_type_template_id_6bdc8b8e___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Login.vue?vue&type=template&id=6bdc8b8e& */ "./resources/js/components/Login.vue?vue&type=template&id=6bdc8b8e&");
+/* harmony import */ var _Login_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Login.vue?vue&type=script&lang=js& */ "./resources/js/components/Login.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _Login_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _Login_vue_vue_type_template_id_6bdc8b8e___WEBPACK_IMPORTED_MODULE_0__.render,
+  _Login_vue_vue_type_template_id_6bdc8b8e___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/Login.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
 /***/ "./resources/js/ui/client_information/ClientList.vue":
 /*!***********************************************************!*\
   !*** ./resources/js/ui/client_information/ClientList.vue ***!
@@ -29832,6 +30353,38 @@ component.options.__file = "resources/js/ui/maintenance/UserSettings.vue"
 
 /***/ }),
 
+/***/ "./resources/js/components/Branch.vue?vue&type=script&lang=js&":
+/*!*********************************************************************!*\
+  !*** ./resources/js/components/Branch.vue?vue&type=script&lang=js& ***!
+  \*********************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Branch_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Branch.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Branch.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Branch_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/Login.vue?vue&type=script&lang=js&":
+/*!********************************************************************!*\
+  !*** ./resources/js/components/Login.vue?vue&type=script&lang=js& ***!
+  \********************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Login_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Login.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Login.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Login_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
 /***/ "./resources/js/ui/client_information/ClientList.vue?vue&type=script&lang=js&":
 /*!************************************************************************************!*\
   !*** ./resources/js/ui/client_information/ClientList.vue?vue&type=script&lang=js& ***!
@@ -29937,6 +30490,40 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_style_loader_dist_cjs_js_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_ProductSetup_vue_vue_type_style_index_0_id_5b4a21f7_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/style-loader/dist/cjs.js!../../../../node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./ProductSetup.vue?vue&type=style&index=0&id=5b4a21f7&scoped=true&lang=css& */ "./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/ui/maintenance/ProductSetup.vue?vue&type=style&index=0&id=5b4a21f7&scoped=true&lang=css&");
+
+
+/***/ }),
+
+/***/ "./resources/js/components/Branch.vue?vue&type=template&id=69b19a66&":
+/*!***************************************************************************!*\
+  !*** ./resources/js/components/Branch.vue?vue&type=template&id=69b19a66& ***!
+  \***************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Branch_vue_vue_type_template_id_69b19a66___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Branch_vue_vue_type_template_id_69b19a66___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Branch_vue_vue_type_template_id_69b19a66___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Branch.vue?vue&type=template&id=69b19a66& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Branch.vue?vue&type=template&id=69b19a66&");
+
+
+/***/ }),
+
+/***/ "./resources/js/components/Login.vue?vue&type=template&id=6bdc8b8e&":
+/*!**************************************************************************!*\
+  !*** ./resources/js/components/Login.vue?vue&type=template&id=6bdc8b8e& ***!
+  \**************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Login_vue_vue_type_template_id_6bdc8b8e___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Login_vue_vue_type_template_id_6bdc8b8e___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Login_vue_vue_type_template_id_6bdc8b8e___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Login.vue?vue&type=template&id=6bdc8b8e& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Login.vue?vue&type=template&id=6bdc8b8e&");
 
 
 /***/ }),
@@ -30073,6 +30660,735 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_UserSettings_vue_vue_type_template_id_3e2e4f92___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
 /* harmony export */ });
 /* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_UserSettings_vue_vue_type_template_id_3e2e4f92___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./UserSettings.vue?vue&type=template&id=3e2e4f92& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/ui/maintenance/UserSettings.vue?vue&type=template&id=3e2e4f92&");
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Branch.vue?vue&type=template&id=69b19a66&":
+/*!******************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Branch.vue?vue&type=template&id=69b19a66& ***!
+  \******************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function () {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    {
+      staticClass: "modal",
+      attrs: { id: "branchModal", tabindex: "-1", role: "dialog" },
+    },
+    [
+      _c(
+        "div",
+        {
+          staticClass: "modal-dialog modal-lg minw-70",
+          attrs: { role: "document" },
+        },
+        [
+          _c("div", { staticClass: "modal-content" }, [
+            _c(
+              "div",
+              { staticClass: "modal-body font-md pxy-25" },
+              [
+                _c("notifications", { attrs: { group: "foo" } }),
+                _vm._v(" "),
+                _vm._m(0),
+                _vm._v(" "),
+                _c("div", { staticClass: "d-flex mb-24" }, [
+                  _c("div", { staticClass: "flex-1 mr-16" }, [
+                    _vm.branch.branch_id
+                      ? _c(
+                          "div",
+                          { staticClass: "d-flex flex-column light-border" },
+                          [
+                            _c(
+                              "div",
+                              {
+                                staticClass:
+                                  "d-flex justify-content-between bg-primary-dark text-white px-16 py-7",
+                              },
+                              [
+                                _c(
+                                  "span",
+                                  { staticClass: "text-bold font-md" },
+                                  [
+                                    _vm._v(
+                                      "Edit " + _vm._s(_vm.branch.branch_name)
+                                    ),
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "a",
+                                  {
+                                    staticClass: "text-white",
+                                    attrs: { href: "" },
+                                    on: {
+                                      click: function ($event) {
+                                        $event.preventDefault()
+                                        return _vm.resetBranch()
+                                      },
+                                    },
+                                  },
+                                  [_c("i", { staticClass: "fa fa-times" })]
+                                ),
+                              ]
+                            ),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "p-16" }, [
+                              _c(
+                                "div",
+                                {
+                                  staticClass: "form-group mb-24",
+                                  staticStyle: { flex: "1" },
+                                },
+                                [
+                                  _c(
+                                    "label",
+                                    {
+                                      staticClass: "form-label",
+                                      attrs: { for: "branchCode" },
+                                    },
+                                    [_vm._v("Branch Code")]
+                                  ),
+                                  _vm._v(" "),
+                                  _c("input", {
+                                    directives: [
+                                      {
+                                        name: "model",
+                                        rawName: "v-model",
+                                        value: _vm.branch.branch_code,
+                                        expression: "branch.branch_code",
+                                      },
+                                    ],
+                                    staticClass: "form-control form-input ",
+                                    attrs: { type: "text", id: "branchCode" },
+                                    domProps: { value: _vm.branch.branch_code },
+                                    on: {
+                                      input: function ($event) {
+                                        if ($event.target.composing) {
+                                          return
+                                        }
+                                        _vm.$set(
+                                          _vm.branch,
+                                          "branch_code",
+                                          $event.target.value
+                                        )
+                                      },
+                                    },
+                                  }),
+                                ]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "div",
+                                {
+                                  staticClass: "form-group mb-24",
+                                  staticStyle: { flex: "1" },
+                                },
+                                [
+                                  _c(
+                                    "label",
+                                    {
+                                      staticClass: "form-label",
+                                      attrs: { for: "branchName" },
+                                    },
+                                    [_vm._v("Branch Name")]
+                                  ),
+                                  _vm._v(" "),
+                                  _c("input", {
+                                    directives: [
+                                      {
+                                        name: "model",
+                                        rawName: "v-model",
+                                        value: _vm.branch.branch_name,
+                                        expression: "branch.branch_name",
+                                      },
+                                    ],
+                                    staticClass: "form-control form-input ",
+                                    attrs: { type: "text", id: "branchName" },
+                                    domProps: { value: _vm.branch.branch_name },
+                                    on: {
+                                      input: function ($event) {
+                                        if ($event.target.composing) {
+                                          return
+                                        }
+                                        _vm.$set(
+                                          _vm.branch,
+                                          "branch_name",
+                                          $event.target.value
+                                        )
+                                      },
+                                    },
+                                  }),
+                                ]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "div",
+                                {
+                                  staticClass: "form-group mb-24",
+                                  staticStyle: { flex: "1" },
+                                },
+                                [
+                                  _c(
+                                    "label",
+                                    {
+                                      staticClass: "form-label",
+                                      attrs: { for: "branchAddress" },
+                                    },
+                                    [_vm._v("Branch Address")]
+                                  ),
+                                  _vm._v(" "),
+                                  _c("input", {
+                                    directives: [
+                                      {
+                                        name: "model",
+                                        rawName: "v-model",
+                                        value: _vm.branch.branch_address,
+                                        expression: "branch.branch_address",
+                                      },
+                                    ],
+                                    staticClass: "form-control form-input ",
+                                    attrs: {
+                                      type: "text",
+                                      id: "branchAddress",
+                                    },
+                                    domProps: {
+                                      value: _vm.branch.branch_address,
+                                    },
+                                    on: {
+                                      input: function ($event) {
+                                        if ($event.target.composing) {
+                                          return
+                                        }
+                                        _vm.$set(
+                                          _vm.branch,
+                                          "branch_address",
+                                          $event.target.value
+                                        )
+                                      },
+                                    },
+                                  }),
+                                ]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "div",
+                                {
+                                  staticClass: "d-flex justify-content-between",
+                                },
+                                [
+                                  _vm.branch.status != "active"
+                                    ? _c(
+                                        "a",
+                                        {
+                                          staticClass:
+                                            "btn btn-lg btn-yellow-light min-w-150",
+                                          attrs: { href: "#" },
+                                          on: {
+                                            click: function ($event) {
+                                              _vm.branch.status = "active"
+                                            },
+                                          },
+                                        },
+                                        [_vm._v("Activate")]
+                                      )
+                                    : _vm._e(),
+                                  _vm._v(" "),
+                                  _vm.branch.status == "active"
+                                    ? _c(
+                                        "a",
+                                        {
+                                          staticClass:
+                                            "btn btn-lg btn-danger min-w-150",
+                                          attrs: { href: "#" },
+                                          on: {
+                                            click: function ($event) {
+                                              _vm.branch.status = "inactive"
+                                            },
+                                          },
+                                        },
+                                        [_vm._v("Deactivate")]
+                                      )
+                                    : _vm._e(),
+                                  _vm._v(" "),
+                                  _c(
+                                    "a",
+                                    {
+                                      staticClass:
+                                        "btn btn-lg btn-success min-w-150",
+                                      attrs: { href: "#" },
+                                      on: {
+                                        click: function ($event) {
+                                          $event.preventDefault()
+                                          return _vm.save()
+                                        },
+                                      },
+                                    },
+                                    [_vm._v("Save")]
+                                  ),
+                                ]
+                              ),
+                            ]),
+                          ]
+                        )
+                      : _vm._e(),
+                    _vm._v(" "),
+                    !_vm.branch.branch_id
+                      ? _c(
+                          "div",
+                          { staticClass: "d-flex flex-column light-border" },
+                          [
+                            _c("div", { staticClass: "p-16" }, [
+                              _c(
+                                "div",
+                                {
+                                  staticClass: "form-group mb-24",
+                                  staticStyle: { flex: "1" },
+                                },
+                                [
+                                  _c(
+                                    "label",
+                                    {
+                                      staticClass: "form-label",
+                                      attrs: { for: "branchCode" },
+                                    },
+                                    [_vm._v("Branch Code")]
+                                  ),
+                                  _vm._v(" "),
+                                  _c("input", {
+                                    directives: [
+                                      {
+                                        name: "model",
+                                        rawName: "v-model",
+                                        value: _vm.branch.branch_code,
+                                        expression: "branch.branch_code",
+                                      },
+                                    ],
+                                    staticClass: "form-control form-input ",
+                                    attrs: { type: "text", id: "branchCode" },
+                                    domProps: { value: _vm.branch.branch_code },
+                                    on: {
+                                      input: function ($event) {
+                                        if ($event.target.composing) {
+                                          return
+                                        }
+                                        _vm.$set(
+                                          _vm.branch,
+                                          "branch_code",
+                                          $event.target.value
+                                        )
+                                      },
+                                    },
+                                  }),
+                                ]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "div",
+                                {
+                                  staticClass: "form-group mb-24",
+                                  staticStyle: { flex: "1" },
+                                },
+                                [
+                                  _c(
+                                    "label",
+                                    {
+                                      staticClass: "form-label",
+                                      attrs: { for: "branchName" },
+                                    },
+                                    [_vm._v("Branch Name")]
+                                  ),
+                                  _vm._v(" "),
+                                  _c("input", {
+                                    directives: [
+                                      {
+                                        name: "model",
+                                        rawName: "v-model",
+                                        value: _vm.branch.branch_name,
+                                        expression: "branch.branch_name",
+                                      },
+                                    ],
+                                    staticClass: "form-control form-input ",
+                                    attrs: { type: "text", id: "branchName" },
+                                    domProps: { value: _vm.branch.branch_name },
+                                    on: {
+                                      input: function ($event) {
+                                        if ($event.target.composing) {
+                                          return
+                                        }
+                                        _vm.$set(
+                                          _vm.branch,
+                                          "branch_name",
+                                          $event.target.value
+                                        )
+                                      },
+                                    },
+                                  }),
+                                ]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "div",
+                                {
+                                  staticClass: "form-group mb-24",
+                                  staticStyle: { flex: "1" },
+                                },
+                                [
+                                  _c(
+                                    "label",
+                                    {
+                                      staticClass: "form-label",
+                                      attrs: { for: "branchAddress" },
+                                    },
+                                    [_vm._v("Branch Address")]
+                                  ),
+                                  _vm._v(" "),
+                                  _c("input", {
+                                    directives: [
+                                      {
+                                        name: "model",
+                                        rawName: "v-model",
+                                        value: _vm.branch.branch_address,
+                                        expression: "branch.branch_address",
+                                      },
+                                    ],
+                                    staticClass: "form-control form-input ",
+                                    attrs: {
+                                      type: "text",
+                                      id: "branchAddress",
+                                    },
+                                    domProps: {
+                                      value: _vm.branch.branch_address,
+                                    },
+                                    on: {
+                                      input: function ($event) {
+                                        if ($event.target.composing) {
+                                          return
+                                        }
+                                        _vm.$set(
+                                          _vm.branch,
+                                          "branch_address",
+                                          $event.target.value
+                                        )
+                                      },
+                                    },
+                                  }),
+                                ]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "div",
+                                { staticClass: "d-flex justify-content-end" },
+                                [
+                                  _c(
+                                    "a",
+                                    {
+                                      staticClass:
+                                        "btn btn-lg btn-success min-w-150",
+                                      attrs: { href: "#" },
+                                      on: {
+                                        click: function ($event) {
+                                          $event.preventDefault()
+                                          return _vm.save()
+                                        },
+                                      },
+                                    },
+                                    [_vm._v("Save")]
+                                  ),
+                                ]
+                              ),
+                            ]),
+                          ]
+                        )
+                      : _vm._e(),
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "flex-2 light-border px-16" }, [
+                    _c("table", { staticClass: "table table-stripped" }, [
+                      _vm._m(1),
+                      _vm._v(" "),
+                      _c(
+                        "tbody",
+                        [
+                          _vm.branches.length == 0
+                            ? _c("tr", [
+                                _c("td", [_vm._v("No Branches found.")]),
+                              ])
+                            : _vm._e(),
+                          _vm._v(" "),
+                          _vm._l(_vm.branches, function (branch) {
+                            return _c("tr", { key: branch.branch_id }, [
+                              _c("td", [_vm._v(_vm._s(branch.branch_code))]),
+                              _vm._v(" "),
+                              _c("td", [_vm._v(_vm._s(branch.branch_name))]),
+                              _vm._v(" "),
+                              _c("td", [_vm._v(_vm._s(branch.branch_address))]),
+                              _vm._v(" "),
+                              _c("td", { staticClass: "text-green" }, [
+                                _vm._v(_vm._s(_vm.upperFirst(branch.status))),
+                              ]),
+                              _vm._v(" "),
+                              _c("td", [
+                                _c(
+                                  "a",
+                                  {
+                                    attrs: { href: "#" },
+                                    on: {
+                                      click: function ($event) {
+                                        $event.preventDefault()
+                                        return _vm.setEdit(branch)
+                                      },
+                                    },
+                                  },
+                                  [_c("i", { staticClass: "fa fa-edit" })]
+                                ),
+                              ]),
+                            ])
+                          }),
+                        ],
+                        2
+                      ),
+                    ]),
+                  ]),
+                ]),
+              ],
+              1
+            ),
+          ]),
+        ]
+      ),
+    ]
+  )
+}
+var staticRenderFns = [
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      { staticClass: " mb-24 dark-bb d-flex justify-content-between" },
+      [
+        _c("span", { staticClass: "text-block text-bold pb-7" }, [
+          _vm._v("Branch"),
+        ]),
+        _vm._v(" "),
+        _c("a", { attrs: { "data-dismiss": "modal", href: "" } }, [
+          _c("i", { staticClass: "fa fa-times" }),
+        ]),
+      ]
+    )
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("th", [_vm._v("Code")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Branch Name")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Address")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Status")]),
+      _vm._v(" "),
+      _c("th"),
+    ])
+  },
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Login.vue?vue&type=template&id=6bdc8b8e&":
+/*!*****************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Login.vue?vue&type=template&id=6bdc8b8e& ***!
+  \*****************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function () {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "card card-outline" }, [
+    _vm._m(0),
+    _vm._v(" "),
+    _c("div", { staticClass: "card-body" }, [
+      _c("p", { staticClass: "login-box-msg" }, [_vm._v("Sign in")]),
+      _vm._v(" "),
+      _c("form", { attrs: { action: "", method: "post" } }, [
+        _c("div", { staticClass: "input-group mb-3" }, [
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.data.credentials.username,
+                expression: "data.credentials.username",
+              },
+            ],
+            staticClass: "form-control",
+            attrs: { name: "username", type: "text", placeholder: "Username" },
+            domProps: { value: _vm.data.credentials.username },
+            on: {
+              input: function ($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(_vm.data.credentials, "username", $event.target.value)
+              },
+            },
+          }),
+          _vm._v(" "),
+          _vm._m(1),
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "input-group mb-3" }, [
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.data.credentials.password,
+                expression: "data.credentials.password",
+              },
+            ],
+            staticClass: "form-control",
+            attrs: {
+              name: "password",
+              type: "password",
+              autocomplete: "off",
+              placeholder: "Password",
+            },
+            domProps: { value: _vm.data.credentials.password },
+            on: {
+              input: function ($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(_vm.data.credentials, "password", $event.target.value)
+              },
+            },
+          }),
+          _vm._v(" "),
+          _vm._m(2),
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "row" }, [
+          _c("div", { staticClass: "col-8" }, [
+            _c(
+              "select",
+              {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.branch,
+                    expression: "branch",
+                  },
+                ],
+                staticClass: "form-control",
+                on: {
+                  change: function ($event) {
+                    var $$selectedVal = Array.prototype.filter
+                      .call($event.target.options, function (o) {
+                        return o.selected
+                      })
+                      .map(function (o) {
+                        var val = "_value" in o ? o._value : o.value
+                        return val
+                      })
+                    _vm.branch = $event.target.multiple
+                      ? $$selectedVal
+                      : $$selectedVal[0]
+                  },
+                },
+              },
+              [
+                _c("option", { attrs: { value: "" } }, [_vm._v("Select")]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "1" } }, [_vm._v("Main")]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "2" } }, [_vm._v("Branch 1")]),
+              ]
+            ),
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-4" }, [
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-primary btn-block btn-flat",
+                attrs: { type: "submit" },
+                on: {
+                  click: function ($event) {
+                    $event.preventDefault()
+                    return _vm.login()
+                  },
+                },
+              },
+              [_vm._v("Sign In")]
+            ),
+          ]),
+        ]),
+      ]),
+    ]),
+  ])
+}
+var staticRenderFns = [
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "card-header text-center" }, [
+      _c("span", { staticClass: "h1", attrs: { href: "" } }, [
+        _c("b", [_vm._v("δάνειο")]),
+        _vm._v("s"),
+      ]),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "input-group-append" }, [
+      _c("div", { staticClass: "input-group-text" }, [
+        _c("span", { staticClass: "fas fa-user" }),
+      ]),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "input-group-append" }, [
+      _c("div", { staticClass: "input-group-text" }, [
+        _c("span", { staticClass: "fas fa-lock" }),
+      ]),
+    ])
+  },
+]
+render._withStripped = true
+
 
 
 /***/ }),
@@ -32346,6 +33662,7 @@ var render = function () {
                               attrs: { href: "" },
                               on: {
                                 click: function ($event) {
+                                  $event.preventDefault()
                                   return _vm.resetCenter()
                                 },
                               },
@@ -32716,7 +34033,7 @@ var render = function () {
                               attrs: { href: "#" },
                               on: {
                                 click: function ($event) {
-                                  return _vm.setEdit(center)
+                                  return _vm.setEdit(center, "center")
                                 },
                               },
                             }),
@@ -32733,7 +34050,525 @@ var render = function () {
         ]),
       ]),
       _vm._v(" "),
-      _vm._m(1),
+      _c("div", { staticClass: "d-flex flex-column flex-xl-row mb-24" }, [
+        _c("div", { staticStyle: { flex: "9" } }, [
+          _c("section", { staticClass: "mb-24", staticStyle: { flex: "21" } }, [
+            _c(
+              "span",
+              { staticClass: "section-title section-subtitle mb-12" },
+              [_vm._v("Account Officer")]
+            ),
+            _vm._v(" "),
+            _vm.officer.ao_id
+              ? _c("div", { staticClass: "d-flex flex-column light-border" }, [
+                  _c(
+                    "div",
+                    {
+                      staticClass:
+                        "d-flex justify-content-between bg-primary-dark text-white px-16 py-7",
+                    },
+                    [
+                      _c("span", { staticClass: "text-bold font-md" }, [
+                        _vm._v("Edit " + _vm._s(_vm.officer.name)),
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "a",
+                        {
+                          staticClass: "text-white",
+                          attrs: { href: "" },
+                          on: {
+                            click: function ($event) {
+                              $event.preventDefault()
+                              return _vm.resetOfficer()
+                            },
+                          },
+                        },
+                        [_c("i", { staticClass: "fa fa-times" })]
+                      ),
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "p-16" }, [
+                    _c(
+                      "div",
+                      {
+                        staticClass: "form-group mb-24",
+                        staticStyle: { flex: "1" },
+                      },
+                      [
+                        _c(
+                          "label",
+                          {
+                            staticClass: "form-label",
+                            attrs: { for: "centerName" },
+                          },
+                          [_vm._v("Code")]
+                        ),
+                        _vm._v(" "),
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.branch_code,
+                              expression: "branch_code",
+                            },
+                          ],
+                          staticClass: "form-control form-input ",
+                          attrs: {
+                            disabled: "",
+                            type: "text",
+                            id: "centerName",
+                          },
+                          domProps: { value: _vm.branch_code },
+                          on: {
+                            input: function ($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.branch_code = $event.target.value
+                            },
+                          },
+                        }),
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      {
+                        staticClass: "form-group mb-24",
+                        staticStyle: { flex: "1" },
+                      },
+                      [
+                        _c(
+                          "label",
+                          {
+                            staticClass: "form-label",
+                            attrs: { for: "centerName" },
+                          },
+                          [_vm._v("Full Name")]
+                        ),
+                        _vm._v(" "),
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.officer.name,
+                              expression: "officer.name",
+                            },
+                          ],
+                          staticClass: "form-control form-input ",
+                          attrs: { type: "text", id: "centerName" },
+                          domProps: { value: _vm.officer.name },
+                          on: {
+                            input: function ($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(_vm.officer, "name", $event.target.value)
+                            },
+                          },
+                        }),
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      {
+                        staticClass: "form-group mb-24",
+                        staticStyle: { flex: "1" },
+                      },
+                      [
+                        _c(
+                          "label",
+                          {
+                            staticClass: "form-label",
+                            attrs: { for: "centerName" },
+                          },
+                          [_vm._v("Branch")]
+                        ),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "d-flex" }, [
+                          _c(
+                            "select",
+                            {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.officer.branch_id,
+                                  expression: "officer.branch_id",
+                                },
+                              ],
+                              staticClass: "form-control form-input mr-1",
+                              attrs: { name: "", id: "" },
+                              on: {
+                                select: function ($event) {
+                                  return _vm.branchCode(_vm.officer.branch_id)
+                                },
+                                change: function ($event) {
+                                  var $$selectedVal = Array.prototype.filter
+                                    .call($event.target.options, function (o) {
+                                      return o.selected
+                                    })
+                                    .map(function (o) {
+                                      var val =
+                                        "_value" in o ? o._value : o.value
+                                      return val
+                                    })
+                                  _vm.$set(
+                                    _vm.officer,
+                                    "branch_id",
+                                    $event.target.multiple
+                                      ? $$selectedVal
+                                      : $$selectedVal[0]
+                                  )
+                                },
+                              },
+                            },
+                            [
+                              _c(
+                                "option",
+                                { attrs: { value: "", disabled: "" } },
+                                [_vm._v("Select Branch")]
+                              ),
+                              _vm._v(" "),
+                              _vm._l(_vm.branches, function (branch) {
+                                return _c(
+                                  "option",
+                                  {
+                                    key: branch.branch_id,
+                                    domProps: { value: branch.branch_id },
+                                  },
+                                  [_vm._v(_vm._s(branch.branch_name))]
+                                )
+                              }),
+                            ],
+                            2
+                          ),
+                          _vm._v(" "),
+                          _vm._m(1),
+                        ]),
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      { staticClass: "d-flex justify-content-between" },
+                      [
+                        _vm.officer.status != "active"
+                          ? _c(
+                              "a",
+                              {
+                                staticClass:
+                                  "btn btn-lg btn-yellow-light min-w-150",
+                                attrs: { href: "#" },
+                                on: {
+                                  click: function ($event) {
+                                    $event.preventDefault()
+                                    _vm.officer.status = "active"
+                                  },
+                                },
+                              },
+                              [_vm._v("Activate")]
+                            )
+                          : _vm._e(),
+                        _vm._v(" "),
+                        _vm.officer.status == "active"
+                          ? _c(
+                              "a",
+                              {
+                                staticClass: "btn btn-lg btn-danger min-w-150",
+                                attrs: { href: "#" },
+                                on: {
+                                  click: function ($event) {
+                                    $event.preventDefault()
+                                    _vm.officer.status = "inactive"
+                                  },
+                                },
+                              },
+                              [_vm._v("Deactivate")]
+                            )
+                          : _vm._e(),
+                        _vm._v(" "),
+                        _c(
+                          "a",
+                          {
+                            staticClass: "btn btn-lg btn-success min-w-150",
+                            attrs: { href: "#" },
+                            on: {
+                              click: function ($event) {
+                                $event.preventDefault()
+                                return _vm.saveOfficer()
+                              },
+                            },
+                          },
+                          [_vm._v("Save")]
+                        ),
+                      ]
+                    ),
+                  ]),
+                ])
+              : _vm._e(),
+            _vm._v(" "),
+            !_vm.officer.ao_id
+              ? _c(
+                  "div",
+                  { staticClass: "d-flex flex-column p-16 light-border" },
+                  [
+                    _c(
+                      "div",
+                      {
+                        staticClass: "form-group mb-24",
+                        staticStyle: { flex: "1" },
+                      },
+                      [
+                        _c(
+                          "label",
+                          {
+                            staticClass: "form-label",
+                            attrs: { for: "centerName" },
+                          },
+                          [_vm._v("Code")]
+                        ),
+                        _vm._v(" "),
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.branch_code,
+                              expression: "branch_code",
+                            },
+                          ],
+                          staticClass: "form-control form-input ",
+                          attrs: {
+                            disabled: "",
+                            type: "text",
+                            id: "centerName",
+                          },
+                          domProps: { value: _vm.branch_code },
+                          on: {
+                            input: function ($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.branch_code = $event.target.value
+                            },
+                          },
+                        }),
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      {
+                        staticClass: "form-group mb-24",
+                        staticStyle: { flex: "1" },
+                      },
+                      [
+                        _c(
+                          "label",
+                          {
+                            staticClass: "form-label",
+                            attrs: { for: "centerName" },
+                          },
+                          [_vm._v("Full Name")]
+                        ),
+                        _vm._v(" "),
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.officer.name,
+                              expression: "officer.name",
+                            },
+                          ],
+                          staticClass: "form-control form-input ",
+                          attrs: { type: "text", id: "centerName" },
+                          domProps: { value: _vm.officer.name },
+                          on: {
+                            input: function ($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(_vm.officer, "name", $event.target.value)
+                            },
+                          },
+                        }),
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      {
+                        staticClass: "form-group mb-24",
+                        staticStyle: { flex: "1" },
+                      },
+                      [
+                        _c(
+                          "label",
+                          {
+                            staticClass: "form-label",
+                            attrs: { for: "centerName" },
+                          },
+                          [_vm._v("Branch")]
+                        ),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "d-flex" }, [
+                          _c(
+                            "select",
+                            {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.officer.branch_id,
+                                  expression: "officer.branch_id",
+                                },
+                              ],
+                              staticClass: "form-control form-input mr-1",
+                              attrs: { name: "", id: "" },
+                              on: {
+                                select: function ($event) {
+                                  return _vm.branchCode(_vm.officer.branch_id)
+                                },
+                                change: function ($event) {
+                                  var $$selectedVal = Array.prototype.filter
+                                    .call($event.target.options, function (o) {
+                                      return o.selected
+                                    })
+                                    .map(function (o) {
+                                      var val =
+                                        "_value" in o ? o._value : o.value
+                                      return val
+                                    })
+                                  _vm.$set(
+                                    _vm.officer,
+                                    "branch_id",
+                                    $event.target.multiple
+                                      ? $$selectedVal
+                                      : $$selectedVal[0]
+                                  )
+                                },
+                              },
+                            },
+                            [
+                              _c(
+                                "option",
+                                { attrs: { value: "", disabled: "" } },
+                                [_vm._v("Select Branch")]
+                              ),
+                              _vm._v(" "),
+                              _vm._l(_vm.branches, function (branch) {
+                                return _c(
+                                  "option",
+                                  {
+                                    key: branch.branch_id,
+                                    domProps: { value: branch.branch_id },
+                                  },
+                                  [_vm._v(_vm._s(branch.branch_name))]
+                                )
+                              }),
+                            ],
+                            2
+                          ),
+                          _vm._v(" "),
+                          _vm._m(2),
+                        ]),
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "d-flex justify-content-end" }, [
+                      _c(
+                        "a",
+                        {
+                          staticClass: "btn btn-lg btn-success min-w-150",
+                          attrs: { href: "#" },
+                          on: {
+                            click: function ($event) {
+                              $event.preventDefault()
+                              return _vm.saveOfficer()
+                            },
+                          },
+                        },
+                        [_vm._v("Save")]
+                      ),
+                    ]),
+                  ]
+                )
+              : _vm._e(),
+          ]),
+        ]),
+        _vm._v(" "),
+        _c("div", { staticStyle: { flex: "20" } }, [
+          _c(
+            "section",
+            {
+              staticClass: "mb-24",
+              staticStyle: { flex: "21", "padding-left": "16px" },
+            },
+            [
+              _c(
+                "span",
+                { staticClass: "section-title section-subtitle mb-12" },
+                [_vm._v("Account Officer List")]
+              ),
+              _vm._v(" "),
+              _c("div", { staticClass: "p-10 light-border" }, [
+                _c("table", { staticClass: "table table-stripped th-nb m-0" }, [
+                  _c(
+                    "tbody",
+                    [
+                      _vm.officers.length == 0
+                        ? _c("tr", [
+                            _c("td", [_vm._v("No Account officers found.")]),
+                          ])
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _vm._l(_vm.officers, function (officer) {
+                        return _c("tr", { key: officer.ao_id }, [
+                          _c("td", [_vm._v(_vm._s(officer.name))]),
+                          _vm._v(" "),
+                          _c("td", { staticClass: "text-right" }, [
+                            _c(
+                              "a",
+                              {
+                                staticClass: "text-green text-sm",
+                                attrs: { href: "#" },
+                              },
+                              [_vm._v(_vm._s(_vm.upperFirst(officer.status)))]
+                            ),
+                          ]),
+                          _vm._v(" "),
+                          _c("td", { staticClass: "text-right" }, [
+                            _c("a", {
+                              staticClass: "fa fa-edit",
+                              attrs: { href: "#" },
+                              on: {
+                                click: function ($event) {
+                                  $event.preventDefault()
+                                  return _vm.setEdit(officer, "officer")
+                                },
+                              },
+                            }),
+                          ]),
+                        ])
+                      }),
+                    ],
+                    2
+                  ),
+                ]),
+              ]),
+            ]
+          ),
+        ]),
+      ]),
+      _vm._v(" "),
+      _c("branch", { attrs: { token: _vm.token } }),
     ],
     1
   )
@@ -32753,208 +34588,37 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "d-flex flex-column flex-xl-row mb-24" }, [
-      _c("div", { staticStyle: { flex: "9" } }, [
-        _c("section", { staticClass: "mb-24", staticStyle: { flex: "21" } }, [
-          _c("span", { staticClass: "section-title section-subtitle mb-12" }, [
-            _vm._v("Account Officer"),
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "d-flex flex-column p-16 light-border" }, [
-            _c(
-              "div",
-              { staticClass: "form-group mb-24", staticStyle: { flex: "1" } },
-              [
-                _c(
-                  "label",
-                  { staticClass: "form-label", attrs: { for: "centerName" } },
-                  [_vm._v("Code")]
-                ),
-                _vm._v(" "),
-                _c("input", {
-                  staticClass: "form-control form-input ",
-                  attrs: { type: "text", id: "centerName" },
-                }),
-              ]
-            ),
-            _vm._v(" "),
-            _c(
-              "div",
-              { staticClass: "form-group mb-24", staticStyle: { flex: "1" } },
-              [
-                _c(
-                  "label",
-                  { staticClass: "form-label", attrs: { for: "centerName" } },
-                  [_vm._v("Full Name")]
-                ),
-                _vm._v(" "),
-                _c("input", {
-                  staticClass: "form-control form-input ",
-                  attrs: { type: "text", id: "centerName" },
-                }),
-              ]
-            ),
-            _vm._v(" "),
-            _c(
-              "div",
-              { staticClass: "form-group mb-24", staticStyle: { flex: "1" } },
-              [
-                _c(
-                  "label",
-                  { staticClass: "form-label", attrs: { for: "centerName" } },
-                  [_vm._v("Branch")]
-                ),
-                _vm._v(" "),
-                _c("div", { staticClass: "d-flex" }, [
-                  _c(
-                    "select",
-                    {
-                      staticClass: "form-control form-input mr-1",
-                      attrs: { name: "", id: "" },
-                    },
-                    [
-                      _c("option", { attrs: { value: "Butuan" } }, [
-                        _vm._v("Butuan"),
-                      ]),
-                    ]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "a",
-                    {
-                      staticClass: "btn btn-primary-dark",
-                      staticStyle: { "line-height": "2" },
-                      attrs: { href: "#" },
-                    },
-                    [_c("i", { staticClass: "fa fa-plus" })]
-                  ),
-                ]),
-              ]
-            ),
-            _vm._v(" "),
-            _c("div", { staticClass: "d-flex justify-content-between" }, [
-              _c(
-                "a",
-                {
-                  staticClass: "btn btn-lg btn-yellow-light min-w-150",
-                  attrs: { href: "#" },
-                },
-                [_vm._v("Activate / Deactivate")]
-              ),
-              _vm._v(" "),
-              _c(
-                "a",
-                {
-                  staticClass: "btn btn-lg btn-success min-w-150",
-                  attrs: { href: "#" },
-                },
-                [_vm._v("Save")]
-              ),
-            ]),
-          ]),
-        ]),
-      ]),
-      _vm._v(" "),
-      _c("div", { staticStyle: { flex: "20" } }, [
-        _c(
-          "section",
-          {
-            staticClass: "mb-24",
-            staticStyle: { flex: "21", "padding-left": "16px" },
-          },
-          [
-            _c(
-              "span",
-              { staticClass: "section-title section-subtitle mb-12" },
-              [_vm._v("Group List")]
-            ),
-            _vm._v(" "),
-            _c("div", { staticClass: "p-10 light-border" }, [
-              _c("table", { staticClass: "table table-stripped th-nb m-0" }, [
-                _c("tbody", [
-                  _c("tr", [
-                    _c("td", { staticClass: "nbt" }, [
-                      _vm._v("John Mark Barcenas"),
-                    ]),
-                    _vm._v(" "),
-                    _c("td", { staticClass: "text-right" }, [
-                      _c(
-                        "a",
-                        {
-                          staticClass: "text-green text-sm",
-                          attrs: { href: "#" },
-                        },
-                        [_vm._v("ACTIVE")]
-                      ),
-                    ]),
-                  ]),
-                  _vm._v(" "),
-                  _c("tr", [
-                    _c("td", [_vm._v("John Mark Barcenas")]),
-                    _vm._v(" "),
-                    _c("td", { staticClass: "text-right" }, [
-                      _c(
-                        "a",
-                        {
-                          staticClass: "text-green text-sm",
-                          attrs: { href: "#" },
-                        },
-                        [_vm._v("ACTIVE")]
-                      ),
-                    ]),
-                  ]),
-                  _vm._v(" "),
-                  _c("tr", [
-                    _c("td", [_vm._v("John Mark Barcenas")]),
-                    _vm._v(" "),
-                    _c("td", { staticClass: "text-right" }, [
-                      _c(
-                        "a",
-                        {
-                          staticClass: "text-green text-sm",
-                          attrs: { href: "#" },
-                        },
-                        [_vm._v("ACTIVE")]
-                      ),
-                    ]),
-                  ]),
-                  _vm._v(" "),
-                  _c("tr", [
-                    _c("td", [_vm._v("John Mark Barcenas")]),
-                    _vm._v(" "),
-                    _c("td", { staticClass: "text-right" }, [
-                      _c(
-                        "a",
-                        {
-                          staticClass: "text-green text-sm",
-                          attrs: { href: "#" },
-                        },
-                        [_vm._v("ACTIVE")]
-                      ),
-                    ]),
-                  ]),
-                  _vm._v(" "),
-                  _c("tr", [
-                    _c("td", [_vm._v("John Mark Barcenas")]),
-                    _vm._v(" "),
-                    _c("td", { staticClass: "text-right" }, [
-                      _c(
-                        "a",
-                        {
-                          staticClass: "text-green text-sm",
-                          attrs: { href: "#" },
-                        },
-                        [_vm._v("ACTIVE")]
-                      ),
-                    ]),
-                  ]),
-                ]),
-              ]),
-            ]),
-          ]
-        ),
-      ]),
-    ])
+    return _c(
+      "a",
+      {
+        staticClass: "btn btn-primary-dark",
+        staticStyle: { "line-height": "2" },
+        attrs: {
+          "data-toggle": "modal",
+          "data-target": "#branchModal",
+          href: "#",
+        },
+      },
+      [_c("i", { staticClass: "fa fa-plus" })]
+    )
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "a",
+      {
+        staticClass: "btn btn-primary-dark",
+        staticStyle: { "line-height": "2" },
+        attrs: {
+          "data-toggle": "modal",
+          "data-target": "#branchModal",
+          href: "#",
+        },
+      },
+      [_c("i", { staticClass: "fa fa-plus" })]
+    )
   },
 ]
 render._withStripped = true
