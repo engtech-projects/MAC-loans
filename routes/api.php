@@ -11,6 +11,7 @@ use App\Http\Controllers\API\BranchController;
 use App\Http\Controllers\API\DashboardController;
 use App\Http\Controllers\API\AccountOfficerController;
 
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -29,9 +30,12 @@ Route::middleware('auth:sanctum')->group( function () {
     Route::resource('product', ProductController::class);
     Route::resource('center', CenterController::class);
     Route::resource('branch', BranchController::class);
+    Route::resource('borrower', BorrowerController::class);
     Route::resource('accountofficer', AccountOfficerController::class);
 });
 
+// Route::resource('products', ProductController::class);
+// Route::resource('centers', CenterController::class);
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //     return $request->user();
 // });
