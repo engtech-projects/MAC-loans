@@ -17,11 +17,11 @@ class CreateHouseholdMembersInfoTable extends Migration
             $table->id();
             $table->unsignedInteger('borrower_id');
             $table->string('dependent');
-            $table->string('age');
-            $table->string('relationship');
-            $table->string('occupation');
-            $table->string('contact_no');
-            $table->string('sbe_address');
+            $table->string('age')->nullable();
+            $table->string('relationship')->nullable();
+            $table->string('occupation')->nullable();
+            $table->string('contact_no')->nullable();
+            $table->string('sbe_address')->nullable();
             $table->timestamps();
         });
     }

@@ -17,11 +17,11 @@ class CreateBusinessInfoTable extends Migration
             $table->id();
             $table->unsignedInteger('borrower_id');
             $table->string('business_name');
-            $table->string('business_type');
-            $table->string('business_address');
-            $table->string('contact_no');
-            $table->string('years_in_business');
-            $table->string('income');
+            $table->string('business_type')->nullable();
+            $table->string('business_address')->nullable();
+            $table->string('contact_no')->nullable();
+            $table->string('years_in_business')->nullable();
+            $table->string('income')->nullable();
             $table->timestamps();
         });
     }
