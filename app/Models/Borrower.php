@@ -38,19 +38,21 @@ class Borrower extends Model
 		'spouse_id_date_issued',
     ];
 
-    public function generateBorrowerNum() {}
+    public function generateBorrowerNum() {
+    	return '123456';
+    }
 
     public function businessInfo() {
-    	$this->hasMany(BusinessInfo::class, 'borrower_id');
+    	return $this->hasMany(BusinessInfo::class, 'borrower_id');
     }
     public function employmentInfo() {
-    	$this->hasMany(EmploymentInfo::class, 'borrower_id');
+    	return $this->hasMany(EmploymentInfo::class, 'borrower_id');
     }
     public function householdMembers() {
-    	$this->hasMany(HouseholdMembers::class, 'borrower_id');
+    	return $this->hasMany(HouseholdMembers::class, 'borrower_id');
     }
     public function outstandingObligations() {
-    	$this->hasMany(OutstandingObligations::class, 'borrower_id');
+    	return $this->hasMany(OutstandingObligations::class, 'borrower_id');
     }
 
     

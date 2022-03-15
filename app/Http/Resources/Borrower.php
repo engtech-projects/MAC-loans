@@ -15,9 +15,8 @@ class Borrower extends JsonResource
     public function toArray($request)
     {
         return [
-            'id' => $this->id,
             'borrower_id' => $this->borrower_id,
-            'borrower_num' => $this->borrower_id,
+            'borrower_num' => $this->borrower_num,
             'firstname' => $this->firstname,
             'middlename' => $this->middlename,
             'lastname' => $this->lastname,
@@ -39,7 +38,7 @@ class Borrower extends JsonResource
             'spouse_id_type' => $this->spouse_id_type,
             'spouse_id_no' => $this->spouse_id_no,
             'spouse_id_date_issued' => $this->spouse_id_date_issued,
-            'employmentInfo' => $this-> $this->employmentInfo,
+            'employmentInfo' => $this->employmentInfo,
             'householdMembers' => $this->householdMembers,
             'businessInfo' => $this->businessInfo,
             'outstandingObligations' => $this->outstandingObligations,

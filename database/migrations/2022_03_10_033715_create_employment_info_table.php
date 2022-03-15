@@ -17,11 +17,11 @@ class CreateEmploymentInfoTable extends Migration
             $table->id();
             $table->unsignedInteger('borrower_id');
             $table->string('company_name');
-            $table->string('company_address');
-            $table->string('contact_no');
-            $table->string('years_employed');
-            $table->string('position');
-            $table->string('salary');
+            $table->string('company_address')->nullable();
+            $table->string('contact_no')->nullable();
+            $table->string('years_employed')->nullable();
+            $table->string('position')->nullable();
+            $table->string('salary')->nullable();
             $table->timestamps();
         });
     }

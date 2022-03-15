@@ -17,11 +17,11 @@ class CreateOutstandingObligationsTable extends Migration
             $table->id();
             $table->unsignedInteger('borrower_id');
             $table->string('creditor');
-            $table->string('amount');
-            $table->string('balance');
-            $table->string('term');
-            $table->date('due_date');
-            $table->string('amortization');
+            $table->string('amount')->nullable();
+            $table->string('balance')->nullable();
+            $table->string('term')->nullable();
+            $table->date('due_date')->nullable();
+            $table->string('amortization')->nullable();
             $table->timestamps();
         });
     }
