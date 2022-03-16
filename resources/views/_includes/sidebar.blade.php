@@ -67,7 +67,7 @@
 				</ul>
 			</li>
 
-			<li class="nav-item">
+			<li class="nav-item {{isset($nav) && isActive($nav[0], 'transaction')? 'active menu-open' : ''}}">
 				<a href="#" class="nav-link main-link">
 				  <p>
 					Transaction
@@ -75,13 +75,13 @@
 				  </p>
 				</a>
 				<ul class="nav nav-treeview">
-				  <li class="nav-item pick">
+				  <li class="nav-item pick {{isset($nav) && isActive($nav[1], 'release entry')? 'active menu-open' : ''}}">
 					  <div class="flex navicon">
 							<div class="top-line invis"></div>
 							<div class="mid-circle"></div>
 							<div class="bottom-line"></div>
 						</div>
-					<a href="release_entry_borrower_info.php" class="nav-link">
+					<a href="{{route('transaction.release_entry')}}" class="nav-link">
 					  <p>Release Entry</p>
 					</a>
 				  </li>

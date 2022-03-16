@@ -38,9 +38,9 @@ class CreateBorrowerInfoTable extends Migration
             $table->date('spouse_birthdate')->nullable();
             $table->string('spouse_contact_number')->nullable();
              // spouse ID details
-            $table->string('spouse_id_type');
-            $table->string('spouse_id_no');
-            $table->date('spouse_id_date_issued');
+            $table->string('spouse_id_type')->nullable();
+            $table->string('spouse_id_no')->nullable();
+            $table->date('spouse_id_date_issued')->nullable();
             $table->timestamps();
         });
     }
