@@ -17,6 +17,7 @@ class CreateBorrowerInfoTable extends Migration
             // basic info
             $table->increments('borrower_id');
             $table->string('borrower_num');
+            $table->date('date_registered');
             $table->string('firstname');
             $table->string('middlename');
             $table->string('lastname');

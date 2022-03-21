@@ -12,6 +12,7 @@ use App\Models\EmploymentInfo;
 use App\Models\BusinessInfo;
 use App\Models\HouseholdMembers;
 use App\Models\OutstandingObligations;
+use App\Models\LoanAccount;
 use App\Http\Resources\Borrower as BorrowerResource;
 
 class BorrowerController extends BaseController
@@ -88,7 +89,7 @@ class BorrowerController extends BaseController
         return $this->sendResponse(new BorrowerResource($borrower), 'Borrower fetched.');
     }
 
-      /**
+    /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, Borrower $borrower) {
@@ -133,6 +134,8 @@ class BorrowerController extends BaseController
             );
         }
 
-        return $this->sendResponse(new BorrowerResource($borrower), 'Branch Updated.');
+        return $this->sendResponse(new BorrowerResource($borrower), 'Borrower Updated.');
     }
+
+
 }
