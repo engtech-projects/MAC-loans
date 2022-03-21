@@ -71,6 +71,13 @@
 								<th></th>
 							</thead>
 							<tbody>
+								<tr v-if="products.length==0">
+									<td>No products found.</td>
+									<td></td>
+									<td></td>
+									<td></td>
+									<td></td>
+								</tr>
 								<tr v-for="product in products" :key="product.product_id">
 									<td>{{product.product_name}}</td>
 									<td>{{product.product_code}}</td>

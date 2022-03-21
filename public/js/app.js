@@ -6935,6 +6935,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: ['token'],
   data: function data() {
@@ -7031,6 +7038,1392 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/ui/transaction/release_entry/BorrowersInfo.vue?vue&type=script&lang=js&":
+/*!**************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/ui/transaction/release_entry/BorrowersInfo.vue?vue&type=script&lang=js& ***!
+  \**************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  props: ['token', 'pborrower', 'psave'],
+  data: function data() {
+    return {
+      baseUrl: window.location.origin,
+      borrower: {
+        borrower_id: null,
+        borrower_num: '',
+        firstname: '',
+        lastname: '',
+        middlename: '',
+        suffix: '',
+        address: '',
+        birthdate: '',
+        gender: '',
+        status: '',
+        contact_number: '',
+        id_type: '',
+        id_no: '',
+        id_date_issued: '',
+        spouse_firstname: '',
+        spouse_lastname: '',
+        spouse_middlename: '',
+        spouse_address: '',
+        spouse_birthdate: '',
+        spouse_id_type: '',
+        spouse_id_no: '',
+        spouse_id_date_issued: '',
+        employmentInfo: [],
+        businessInfo: [],
+        householdMembers: [],
+        outstandingObligations: []
+      },
+      data: {
+        outstandingObligations: {
+          id: null,
+          creditor: '',
+          amount: 0,
+          balance: 0,
+          term: '',
+          due_date: '',
+          amortization: 0
+        },
+        householdMembers: {
+          id: null,
+          dependent: '',
+          age: 0,
+          relationship: '',
+          occupation: '',
+          contact_no: '',
+          sbe_address: ''
+        },
+        employmentInfo: {
+          id: null,
+          company_name: '',
+          company_address: '',
+          contact_no: '',
+          years_employed: '',
+          position: '',
+          salary: ''
+        },
+        businessInfo: {
+          id: null,
+          business_name: '',
+          business_type: '',
+          business_address: '',
+          contact_no: '',
+          years_in_business: '',
+          income: 0
+        }
+      }
+    };
+  },
+  methods: {
+    save: function save() {
+      if (this.borrower.borrower_id) {
+        axios.put(window.location.origin + '/api/borrower/' + this.borrower.borrower_id, this.borrower, {
+          headers: {
+            'Authorization': 'Bearer ' + this.token,
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          }
+        }).then(function (response) {
+          this.notify('', response.data.message, 'success');
+          this.$emit('savedInfo');
+        }.bind(this))["catch"](function (error) {
+          console.log(error);
+        }.bind(this));
+      } else {
+        axios.post(window.location.origin + '/api/borrower', this.borrower, {
+          headers: {
+            'Authorization': 'Bearer ' + this.token,
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          }
+        }).then(function (response) {
+          this.notify('', response.data.message, 'success');
+          this.$emit('savedInfo');
+        }.bind(this))["catch"](function (error) {
+          console.log(error);
+        }.bind(this));
+      }
+    },
+    submitForm: function submitForm() {
+      document.getElementById('borrowerBtn').click();
+    },
+    navigate: function navigate() {
+      document.getElementById('custom-content-below-coborrowerinfo-tab').click();
+    },
+    addData: function addData(data) {
+      if (this.borrower.borrower_id) {
+        this.data[data].borrower_id = this.borrower.borrower_id;
+      }
+
+      this.borrower[data].unshift(this.data[data]);
+      this.resetData(data);
+    },
+    resetData: function resetData(data) {
+      if (data == 'outstandingObligations') {
+        this.data[data] = {
+          creditor: '',
+          amount: 0,
+          balance: 0,
+          term: '',
+          due_date: '',
+          amortization: 0
+        };
+      } else if (data == 'householdMembers') {
+        this.data[data] = {
+          dependent: '',
+          age: 0,
+          relationship: '',
+          occupation: '',
+          contact_no: 0,
+          sbe_address: ''
+        };
+      } else if (data == 'employmentInfo') {
+        this.data[data] = {
+          id: null,
+          company_name: '',
+          company_address: '',
+          contact_no: '',
+          years_employed: '',
+          position: '',
+          salary: ''
+        };
+      } else if (data == 'businessInfo') {
+        this.data[data] = {
+          business_name: '',
+          business_type: '',
+          business_address: '',
+          contact_no: '',
+          years_in_business: '',
+          income: 0
+        };
+      }
+    },
+    removeData: function removeData(data, index) {
+      var arr = [];
+
+      for (var i in this.borrower[data]) {
+        if (i != index) {
+          arr.push(this.borrower[data][i]);
+        }
+      }
+
+      this.borrower[data] = arr;
+    },
+    clearInfo: function clearInfo() {
+      this.$emit('clearBorrowerInfo');
+      this.borrower = {
+        borrower_id: null,
+        borrower_num: '',
+        firstname: '',
+        lastname: '',
+        middlename: '',
+        suffix: '',
+        address: '',
+        birthdate: '',
+        gender: '',
+        status: '',
+        contact_number: '',
+        id_type: '',
+        id_no: '',
+        id_date_issued: '',
+        spouse_firstname: '',
+        spouse_lastname: '',
+        spouse_middlename: '',
+        spouse_address: '',
+        spouse_birthdate: '',
+        spouse_id_type: '',
+        spouse_id_no: '',
+        spouse_id_date_issued: '',
+        employmentInfo: [],
+        businessInfo: [],
+        householdMembers: [],
+        outstandingObligations: []
+      };
+    },
+    notify: function notify(title, text, type) {
+      this.$notify({
+        group: 'foo',
+        title: title,
+        text: text,
+        type: type
+      });
+    }
+  },
+  watch: {
+    'pborrower': function pborrower(newValue) {
+      if (newValue != '') {
+        this.borrower = JSON.parse(newValue);
+      }
+    },
+    'psave': function psave(newValue) {
+      if (newValue != '') {
+        this.save();
+        this.$emit('saveBorrower');
+      }
+    }
+  },
+  mounted: function mounted() {}
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/ui/transaction/release_entry/ReleaseEntry.vue?vue&type=script&lang=js&":
+/*!*************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/ui/transaction/release_entry/ReleaseEntry.vue?vue&type=script&lang=js& ***!
+  \*************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  props: ['token'],
+  data: function data() {
+    return {
+      saveInfo: '',
+      borrower: '',
+      baseUrl: window.location.origin,
+      borrowers: []
+    };
+  },
+  methods: {
+    fetchBorrowers: function fetchBorrowers() {
+      axios.get(window.location.origin + '/api/borrower', {
+        headers: {
+          'Authorization': 'Bearer ' + this.token,
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        }
+      }).then(function (response) {
+        // console.log(response.data);
+        this.borrowers = response.data.data;
+      }.bind(this))["catch"](function (error) {
+        console.log(error);
+      }.bind(this));
+    },
+    selectBorrower: function selectBorrower(data) {
+      this.borrower = '';
+      this.borrower = JSON.stringify(data); // console.log(this.borrower);
+    },
+    navigate: function navigate(tab) {
+      document.getElementById(tab).click();
+    },
+    dateToYMD: function dateToYMD(date) {
+      var d = date.getDate();
+      var m = date.getMonth() + 1;
+      var y = date.getFullYear();
+      return '' + y + '-' + (m <= 9 ? '0' + m : m) + '-' + (d <= 9 ? '0' + d : d);
+    }
+  },
+  mounted: function mounted() {
+    console.log(this.dateToYMD(new Date("2015-03-25T12:00:00Z")));
+    this.fetchBorrowers();
+  }
+});
+
+/***/ }),
+
 /***/ "./resources/js/app.js":
 /*!*****************************!*\
   !*** ./resources/js/app.js ***!
@@ -7064,6 +8457,8 @@ Vue.component('center-ao', (__webpack_require__(/*! ./ui/maintenance/CenterAccou
 Vue.component('user-settings', (__webpack_require__(/*! ./ui/maintenance/UserSettings.vue */ "./resources/js/ui/maintenance/UserSettings.vue")["default"]));
 Vue.component('gl-setup', (__webpack_require__(/*! ./ui/maintenance/GlSetup.vue */ "./resources/js/ui/maintenance/GlSetup.vue")["default"]));
 Vue.component('account-retagging', (__webpack_require__(/*! ./ui/maintenance/AccountRetagging.vue */ "./resources/js/ui/maintenance/AccountRetagging.vue")["default"]));
+Vue.component('release-entry', (__webpack_require__(/*! ./ui/transaction/release_entry/ReleaseEntry.vue */ "./resources/js/ui/transaction/release_entry/ReleaseEntry.vue")["default"]));
+Vue.component('borrowers-info', (__webpack_require__(/*! ./ui/transaction/release_entry/BorrowersInfo.vue */ "./resources/js/ui/transaction/release_entry/BorrowersInfo.vue")["default"]));
 var app = new Vue({
   el: '#app'
 });
@@ -7089,11 +8484,7 @@ try {
 
 
 window.axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest'; // window.axios.defaults.headers.common = {
-//     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-//     'X-Requested-With': 'XMLHttpRequest'
-// };
-
+window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 /**
  * Echo exposes an expressive API for subscribing to channels and listening
  * for events that are broadcast by Laravel. Echo and event broadcasting
@@ -30353,6 +31744,84 @@ component.options.__file = "resources/js/ui/maintenance/UserSettings.vue"
 
 /***/ }),
 
+/***/ "./resources/js/ui/transaction/release_entry/BorrowersInfo.vue":
+/*!*********************************************************************!*\
+  !*** ./resources/js/ui/transaction/release_entry/BorrowersInfo.vue ***!
+  \*********************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _BorrowersInfo_vue_vue_type_template_id_86be6b88___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./BorrowersInfo.vue?vue&type=template&id=86be6b88& */ "./resources/js/ui/transaction/release_entry/BorrowersInfo.vue?vue&type=template&id=86be6b88&");
+/* harmony import */ var _BorrowersInfo_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./BorrowersInfo.vue?vue&type=script&lang=js& */ "./resources/js/ui/transaction/release_entry/BorrowersInfo.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _BorrowersInfo_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _BorrowersInfo_vue_vue_type_template_id_86be6b88___WEBPACK_IMPORTED_MODULE_0__.render,
+  _BorrowersInfo_vue_vue_type_template_id_86be6b88___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/ui/transaction/release_entry/BorrowersInfo.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/ui/transaction/release_entry/ReleaseEntry.vue":
+/*!********************************************************************!*\
+  !*** ./resources/js/ui/transaction/release_entry/ReleaseEntry.vue ***!
+  \********************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _ReleaseEntry_vue_vue_type_template_id_03a7b4c4___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ReleaseEntry.vue?vue&type=template&id=03a7b4c4& */ "./resources/js/ui/transaction/release_entry/ReleaseEntry.vue?vue&type=template&id=03a7b4c4&");
+/* harmony import */ var _ReleaseEntry_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ReleaseEntry.vue?vue&type=script&lang=js& */ "./resources/js/ui/transaction/release_entry/ReleaseEntry.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _ReleaseEntry_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _ReleaseEntry_vue_vue_type_template_id_03a7b4c4___WEBPACK_IMPORTED_MODULE_0__.render,
+  _ReleaseEntry_vue_vue_type_template_id_03a7b4c4___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/ui/transaction/release_entry/ReleaseEntry.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
 /***/ "./resources/js/components/Branch.vue?vue&type=script&lang=js&":
 /*!*********************************************************************!*\
   !*** ./resources/js/components/Branch.vue?vue&type=script&lang=js& ***!
@@ -30478,6 +31947,38 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ProductSetup_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./ProductSetup.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/ui/maintenance/ProductSetup.vue?vue&type=script&lang=js&");
  /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ProductSetup_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/ui/transaction/release_entry/BorrowersInfo.vue?vue&type=script&lang=js&":
+/*!**********************************************************************************************!*\
+  !*** ./resources/js/ui/transaction/release_entry/BorrowersInfo.vue?vue&type=script&lang=js& ***!
+  \**********************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_BorrowersInfo_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./BorrowersInfo.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/ui/transaction/release_entry/BorrowersInfo.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_BorrowersInfo_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/ui/transaction/release_entry/ReleaseEntry.vue?vue&type=script&lang=js&":
+/*!*********************************************************************************************!*\
+  !*** ./resources/js/ui/transaction/release_entry/ReleaseEntry.vue?vue&type=script&lang=js& ***!
+  \*********************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ReleaseEntry_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./ReleaseEntry.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/ui/transaction/release_entry/ReleaseEntry.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ReleaseEntry_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
 
 /***/ }),
 
@@ -30660,6 +32161,40 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_UserSettings_vue_vue_type_template_id_3e2e4f92___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
 /* harmony export */ });
 /* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_UserSettings_vue_vue_type_template_id_3e2e4f92___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./UserSettings.vue?vue&type=template&id=3e2e4f92& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/ui/maintenance/UserSettings.vue?vue&type=template&id=3e2e4f92&");
+
+
+/***/ }),
+
+/***/ "./resources/js/ui/transaction/release_entry/BorrowersInfo.vue?vue&type=template&id=86be6b88&":
+/*!****************************************************************************************************!*\
+  !*** ./resources/js/ui/transaction/release_entry/BorrowersInfo.vue?vue&type=template&id=86be6b88& ***!
+  \****************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_BorrowersInfo_vue_vue_type_template_id_86be6b88___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_BorrowersInfo_vue_vue_type_template_id_86be6b88___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_BorrowersInfo_vue_vue_type_template_id_86be6b88___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./BorrowersInfo.vue?vue&type=template&id=86be6b88& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/ui/transaction/release_entry/BorrowersInfo.vue?vue&type=template&id=86be6b88&");
+
+
+/***/ }),
+
+/***/ "./resources/js/ui/transaction/release_entry/ReleaseEntry.vue?vue&type=template&id=03a7b4c4&":
+/*!***************************************************************************************************!*\
+  !*** ./resources/js/ui/transaction/release_entry/ReleaseEntry.vue?vue&type=template&id=03a7b4c4& ***!
+  \***************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ReleaseEntry_vue_vue_type_template_id_03a7b4c4___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ReleaseEntry_vue_vue_type_template_id_03a7b4c4___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ReleaseEntry_vue_vue_type_template_id_03a7b4c4___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./ReleaseEntry.vue?vue&type=template&id=03a7b4c4& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/ui/transaction/release_entry/ReleaseEntry.vue?vue&type=template&id=03a7b4c4&");
 
 
 /***/ }),
@@ -35305,45 +36840,61 @@ var render = function () {
                     _vm._v(" "),
                     _c(
                       "tbody",
-                      _vm._l(_vm.products, function (product) {
-                        return _c("tr", { key: product.product_id }, [
-                          _c("td", [_vm._v(_vm._s(product.product_name))]),
-                          _vm._v(" "),
-                          _c("td", [_vm._v(_vm._s(product.product_code))]),
-                          _vm._v(" "),
-                          _c("td", [
-                            _vm._v(_vm._s(product.interest_rate) + "%"),
-                          ]),
-                          _vm._v(" "),
-                          _c("td", { staticClass: "text-green text-sm" }, [
-                            _c(
-                              "a",
-                              {
-                                staticClass: "text-green",
-                                attrs: { href: "#" },
-                              },
-                              [_vm._v(_vm._s(product.status))]
-                            ),
-                          ]),
-                          _vm._v(" "),
-                          _c("td", [
-                            _c(
-                              "a",
-                              {
-                                attrs: { href: "#" },
-                                on: {
-                                  click: function ($event) {
-                                    $event.preventDefault()
-                                    return _vm.setEdit(product)
+                      [
+                        _vm.products.length == 0
+                          ? _c("tr", [
+                              _c("td", [_vm._v("No products found.")]),
+                              _vm._v(" "),
+                              _c("td"),
+                              _vm._v(" "),
+                              _c("td"),
+                              _vm._v(" "),
+                              _c("td"),
+                              _vm._v(" "),
+                              _c("td"),
+                            ])
+                          : _vm._e(),
+                        _vm._v(" "),
+                        _vm._l(_vm.products, function (product) {
+                          return _c("tr", { key: product.product_id }, [
+                            _c("td", [_vm._v(_vm._s(product.product_name))]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v(_vm._s(product.product_code))]),
+                            _vm._v(" "),
+                            _c("td", [
+                              _vm._v(_vm._s(product.interest_rate) + "%"),
+                            ]),
+                            _vm._v(" "),
+                            _c("td", { staticClass: "text-green text-sm" }, [
+                              _c(
+                                "a",
+                                {
+                                  staticClass: "text-green",
+                                  attrs: { href: "#" },
+                                },
+                                [_vm._v(_vm._s(product.status))]
+                              ),
+                            ]),
+                            _vm._v(" "),
+                            _c("td", [
+                              _c(
+                                "a",
+                                {
+                                  attrs: { href: "#" },
+                                  on: {
+                                    click: function ($event) {
+                                      $event.preventDefault()
+                                      return _vm.setEdit(product)
+                                    },
                                   },
                                 },
-                              },
-                              [_c("i", { staticClass: "fa fa-edit" })]
-                            ),
-                          ]),
-                        ])
-                      }),
-                      0
+                                [_c("i", { staticClass: "fa fa-edit" })]
+                              ),
+                            ]),
+                          ])
+                        }),
+                      ],
+                      2
                     ),
                   ]
                 ),
@@ -35965,6 +37516,5082 @@ var staticRenderFns = [
         ]),
       ]),
     ])
+  },
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/ui/transaction/release_entry/BorrowersInfo.vue?vue&type=template&id=86be6b88&":
+/*!*******************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/ui/transaction/release_entry/BorrowersInfo.vue?vue&type=template&id=86be6b88& ***!
+  \*******************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function () {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "d-flex flex-column" },
+    [
+      _c("notifications", { attrs: { group: "foo" } }),
+      _vm._v(" "),
+      _c(
+        "form",
+        {
+          attrs: { action: "", id: "borrowerForm" },
+          on: {
+            submit: function ($event) {
+              $event.preventDefault()
+              return _vm.navigate()
+            },
+          },
+        },
+        [
+          _c(
+            "section",
+            {
+              staticClass: "mb-24",
+              staticStyle: { flex: "21", "padding-left": "16px" },
+            },
+            [
+              _c("span", { staticClass: "section-title mb-24" }, [
+                _vm._v("Borrower's Basic Information"),
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "d-flex" }, [
+                _c(
+                  "div",
+                  {
+                    staticClass: "d-flex flex-column mr-16",
+                    staticStyle: { flex: "20" },
+                  },
+                  [
+                    _c("div", { staticClass: "d-flex flex-row" }, [
+                      _c(
+                        "div",
+                        {
+                          staticClass: "borrower-number d-flex flex-column",
+                          staticStyle: { flex: "5" },
+                        },
+                        [
+                          _c("span", [_vm._v("Borrower's Number")]),
+                          _vm._v(" "),
+                          _vm.borrower.borrower_num == ""
+                            ? _c("span", { staticClass: "text-center" }, [
+                                _vm._v("##############"),
+                              ])
+                            : _vm._e(),
+                          _vm._v(" "),
+                          _vm.borrower.borrower_num != ""
+                            ? _c("span", { staticClass: "text-center" }, [
+                                _vm._v(_vm._s(_vm.borrower.borrower_num)),
+                              ])
+                            : _vm._e(),
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c("div", { staticStyle: { flex: "4" } }),
+                      _vm._v(" "),
+                      _vm._m(0),
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      {
+                        staticClass: "form-group mb-10",
+                        staticStyle: { flex: "5" },
+                      },
+                      [
+                        _c(
+                          "label",
+                          {
+                            staticClass: "form-label",
+                            attrs: { for: "firstName" },
+                          },
+                          [_vm._v("First Name")]
+                        ),
+                        _vm._v(" "),
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.borrower.firstname,
+                              expression: "borrower.firstname",
+                            },
+                          ],
+                          staticClass: "form-control form-input ",
+                          attrs: {
+                            required: "",
+                            type: "text",
+                            id: "firstName",
+                          },
+                          domProps: { value: _vm.borrower.firstname },
+                          on: {
+                            input: function ($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.borrower,
+                                "firstname",
+                                $event.target.value
+                              )
+                            },
+                          },
+                        }),
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      {
+                        staticClass: "form-group mb-10",
+                        staticStyle: { flex: "5" },
+                      },
+                      [
+                        _c(
+                          "label",
+                          {
+                            staticClass: "form-label",
+                            attrs: { for: "middleName" },
+                          },
+                          [_vm._v("Middle Name")]
+                        ),
+                        _vm._v(" "),
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.borrower.middlename,
+                              expression: "borrower.middlename",
+                            },
+                          ],
+                          staticClass: "form-control form-input ",
+                          attrs: {
+                            required: "",
+                            type: "text",
+                            id: "middleName",
+                          },
+                          domProps: { value: _vm.borrower.middlename },
+                          on: {
+                            input: function ($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.borrower,
+                                "middlename",
+                                $event.target.value
+                              )
+                            },
+                          },
+                        }),
+                      ]
+                    ),
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    staticClass: "upload-photo d-flex flex-column",
+                    staticStyle: { flex: "4" },
+                  },
+                  [
+                    _c("img", {
+                      attrs: { src: _vm.baseUrl + "/img/user.png", alt: "" },
+                    }),
+                    _vm._v(" "),
+                    _c(
+                      "a",
+                      {
+                        staticClass: "btn btn-primary",
+                        staticStyle: { padding: "10px!important" },
+                        attrs: { href: "#" },
+                      },
+                      [_vm._v("Upload or Take a Photo")]
+                    ),
+                  ]
+                ),
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "d-flex flex-row" }, [
+                _c(
+                  "div",
+                  {
+                    staticClass: "form-group mb-10 mr-16",
+                    staticStyle: { flex: "25" },
+                  },
+                  [
+                    _c(
+                      "label",
+                      { staticClass: "form-label", attrs: { for: "lastName" } },
+                      [_vm._v("Last Name")]
+                    ),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.borrower.lastname,
+                          expression: "borrower.lastname",
+                        },
+                      ],
+                      staticClass: "form-control form-input ",
+                      attrs: { required: "", type: "text", id: "lastName" },
+                      domProps: { value: _vm.borrower.lastname },
+                      on: {
+                        input: function ($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.borrower,
+                            "lastname",
+                            $event.target.value
+                          )
+                        },
+                      },
+                    }),
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    staticClass: "form-group mb-10",
+                    staticStyle: { flex: "6" },
+                  },
+                  [
+                    _c(
+                      "label",
+                      { staticClass: "form-label", attrs: { for: "suffix" } },
+                      [_vm._v("Suffix")]
+                    ),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.borrower.suffix,
+                          expression: "borrower.suffix",
+                        },
+                      ],
+                      staticClass: "form-control form-input ",
+                      attrs: { required: "", type: "text", id: "suffix" },
+                      domProps: { value: _vm.borrower.suffix },
+                      on: {
+                        input: function ($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(_vm.borrower, "suffix", $event.target.value)
+                        },
+                      },
+                    }),
+                  ]
+                ),
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "form-group mb-10" }, [
+                _c(
+                  "label",
+                  { staticClass: "form-label", attrs: { for: "address" } },
+                  [_vm._v("Address")]
+                ),
+                _vm._v(" "),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.borrower.address,
+                      expression: "borrower.address",
+                    },
+                  ],
+                  staticClass: "form-control form-input ",
+                  attrs: { required: "", type: "text", id: "address" },
+                  domProps: { value: _vm.borrower.address },
+                  on: {
+                    input: function ($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.borrower, "address", $event.target.value)
+                    },
+                  },
+                }),
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "d-flex flex-row" }, [
+                _c(
+                  "div",
+                  {
+                    staticClass: "form-group mb-10 mr-16",
+                    staticStyle: { flex: "3" },
+                  },
+                  [
+                    _c(
+                      "label",
+                      {
+                        staticClass: "form-label",
+                        attrs: { for: "birthdate" },
+                      },
+                      [_vm._v("Birth Date")]
+                    ),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.borrower.birthdate,
+                          expression: "borrower.birthdate",
+                        },
+                      ],
+                      staticClass: "form-control form-input ",
+                      attrs: { required: "", type: "date", id: "birthdate" },
+                      domProps: { value: _vm.borrower.birthdate },
+                      on: {
+                        input: function ($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.borrower,
+                            "birthdate",
+                            $event.target.value
+                          )
+                        },
+                      },
+                    }),
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    staticClass: "form-group mb-10 mr-16",
+                    staticStyle: { flex: "3" },
+                  },
+                  [
+                    _c(
+                      "label",
+                      { staticClass: "form-label", attrs: { for: "sex" } },
+                      [_vm._v("Sex")]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "select",
+                      {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.borrower.gender,
+                            expression: "borrower.gender",
+                          },
+                        ],
+                        staticClass: "form-control form-input",
+                        attrs: { required: "", name: "", id: "" },
+                        on: {
+                          change: function ($event) {
+                            var $$selectedVal = Array.prototype.filter
+                              .call($event.target.options, function (o) {
+                                return o.selected
+                              })
+                              .map(function (o) {
+                                var val = "_value" in o ? o._value : o.value
+                                return val
+                              })
+                            _vm.$set(
+                              _vm.borrower,
+                              "gender",
+                              $event.target.multiple
+                                ? $$selectedVal
+                                : $$selectedVal[0]
+                            )
+                          },
+                        },
+                      },
+                      [
+                        _c("option", { attrs: { value: "male" } }, [
+                          _vm._v("Male"),
+                        ]),
+                        _vm._v(" "),
+                        _c("option", { attrs: { value: "female" } }, [
+                          _vm._v("Female"),
+                        ]),
+                      ]
+                    ),
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    staticClass: "form-group mb-10 mr-16",
+                    staticStyle: { flex: "3" },
+                  },
+                  [
+                    _c(
+                      "label",
+                      { staticClass: "form-label", attrs: { for: "status" } },
+                      [_vm._v("Status")]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "select",
+                      {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.borrower.status,
+                            expression: "borrower.status",
+                          },
+                        ],
+                        staticClass: "form-control form-input",
+                        attrs: { required: "", name: "", id: "" },
+                        on: {
+                          change: function ($event) {
+                            var $$selectedVal = Array.prototype.filter
+                              .call($event.target.options, function (o) {
+                                return o.selected
+                              })
+                              .map(function (o) {
+                                var val = "_value" in o ? o._value : o.value
+                                return val
+                              })
+                            _vm.$set(
+                              _vm.borrower,
+                              "status",
+                              $event.target.multiple
+                                ? $$selectedVal
+                                : $$selectedVal[0]
+                            )
+                          },
+                        },
+                      },
+                      [
+                        _c("option", { attrs: { value: "single" } }, [
+                          _vm._v("Single"),
+                        ]),
+                        _vm._v(" "),
+                        _c("option", { attrs: { value: "married" } }, [
+                          _vm._v("Married"),
+                        ]),
+                        _vm._v(" "),
+                        _c("option", { attrs: { value: "widowed" } }, [
+                          _vm._v("Widowed"),
+                        ]),
+                        _vm._v(" "),
+                        _c("option", { attrs: { value: "separated" } }, [
+                          _vm._v("Separated"),
+                        ]),
+                      ]
+                    ),
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    staticClass: "form-group mb-10",
+                    staticStyle: { flex: "6" },
+                  },
+                  [
+                    _c(
+                      "label",
+                      {
+                        staticClass: "form-label",
+                        attrs: { for: "contactNumber" },
+                      },
+                      [_vm._v("Contact Number")]
+                    ),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.borrower.contact_number,
+                          expression: "borrower.contact_number",
+                        },
+                      ],
+                      staticClass: "form-control form-input ",
+                      attrs: {
+                        required: "",
+                        type: "number",
+                        id: "contactNumber",
+                      },
+                      domProps: { value: _vm.borrower.contact_number },
+                      on: {
+                        input: function ($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.borrower,
+                            "contact_number",
+                            $event.target.value
+                          )
+                        },
+                      },
+                    }),
+                  ]
+                ),
+              ]),
+            ]
+          ),
+          _vm._v(" "),
+          _c(
+            "section",
+            {
+              staticClass: "mb-24",
+              staticStyle: { flex: "21", "padding-left": "16px" },
+            },
+            [
+              _c("span", { staticClass: "section-title mb-24" }, [
+                _vm._v("Borrower's Identification Details"),
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "d-flex flex-row" }, [
+                _c(
+                  "div",
+                  {
+                    staticClass: "form-group mb-10 mr-16",
+                    staticStyle: { flex: "3" },
+                  },
+                  [
+                    _c(
+                      "label",
+                      { staticClass: "form-label", attrs: { for: "idType" } },
+                      [_vm._v("ID Type")]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "select",
+                      {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.borrower.id_type,
+                            expression: "borrower.id_type",
+                          },
+                        ],
+                        staticClass: "form-control form-input",
+                        attrs: { required: "", name: "", id: "" },
+                        on: {
+                          change: function ($event) {
+                            var $$selectedVal = Array.prototype.filter
+                              .call($event.target.options, function (o) {
+                                return o.selected
+                              })
+                              .map(function (o) {
+                                var val = "_value" in o ? o._value : o.value
+                                return val
+                              })
+                            _vm.$set(
+                              _vm.borrower,
+                              "id_type",
+                              $event.target.multiple
+                                ? $$selectedVal
+                                : $$selectedVal[0]
+                            )
+                          },
+                        },
+                      },
+                      [
+                        _c("option", { attrs: { value: "SSS" } }, [
+                          _vm._v("SSS"),
+                        ]),
+                        _vm._v(" "),
+                        _c("option", { attrs: { value: "UMID" } }, [
+                          _vm._v("GSIS/UMID"),
+                        ]),
+                        _vm._v(" "),
+                        _c("option", { attrs: { value: "Driver's License" } }, [
+                          _vm._v("Driver's License"),
+                        ]),
+                        _vm._v(" "),
+                        _c("option", { attrs: { value: "Passport" } }, [
+                          _vm._v("Passport"),
+                        ]),
+                        _vm._v(" "),
+                        _c("option", { attrs: { value: "Senior ID" } }, [
+                          _vm._v("Senior ID"),
+                        ]),
+                      ]
+                    ),
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    staticClass: "form-group mb-10 mr-16",
+                    staticStyle: { flex: "3" },
+                  },
+                  [
+                    _c(
+                      "label",
+                      { staticClass: "form-label", attrs: { for: "idNumber" } },
+                      [_vm._v("ID Number")]
+                    ),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.borrower.id_no,
+                          expression: "borrower.id_no",
+                        },
+                      ],
+                      staticClass: "form-control form-input ",
+                      attrs: { required: "", type: "text", id: "idNumber" },
+                      domProps: { value: _vm.borrower.id_no },
+                      on: {
+                        input: function ($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(_vm.borrower, "id_no", $event.target.value)
+                        },
+                      },
+                    }),
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    staticClass: "form-group mb-10 mr-16",
+                    staticStyle: { flex: "3" },
+                  },
+                  [
+                    _c(
+                      "label",
+                      { staticClass: "form-label", attrs: { for: "idDate" } },
+                      [_vm._v("ID Date Issued")]
+                    ),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.borrower.id_date_issued,
+                          expression: "borrower.id_date_issued",
+                        },
+                      ],
+                      staticClass: "form-control form-input ",
+                      attrs: { required: "", type: "date", id: "idDate" },
+                      domProps: { value: _vm.borrower.id_date_issued },
+                      on: {
+                        input: function ($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.borrower,
+                            "id_date_issued",
+                            $event.target.value
+                          )
+                        },
+                      },
+                    }),
+                  ]
+                ),
+                _vm._v(" "),
+                _c("div", { staticStyle: { flex: "3" } }),
+              ]),
+            ]
+          ),
+          _vm._v(" "),
+          _c(
+            "section",
+            {
+              staticClass: "mb-24",
+              staticStyle: { flex: "21", "padding-left": "16px" },
+            },
+            [
+              _c("span", { staticClass: "section-title mb-24" }, [
+                _vm._v("Borrower's Spouse Information"),
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "d-flex flex-row" }, [
+                _c(
+                  "div",
+                  {
+                    staticClass: "form-group mb-10 mr-16",
+                    staticStyle: { flex: "3" },
+                  },
+                  [
+                    _c(
+                      "label",
+                      {
+                        staticClass: "form-label",
+                        attrs: { for: "spouseFirstName" },
+                      },
+                      [_vm._v("First Name")]
+                    ),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.borrower.spouse_firstname,
+                          expression: "borrower.spouse_firstname",
+                        },
+                      ],
+                      staticClass: "form-control form-input ",
+                      attrs: { type: "text", id: "spouseFirstName" },
+                      domProps: { value: _vm.borrower.spouse_firstname },
+                      on: {
+                        input: function ($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.borrower,
+                            "spouse_firstname",
+                            $event.target.value
+                          )
+                        },
+                      },
+                    }),
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    staticClass: "form-group mb-10 mr-16",
+                    staticStyle: { flex: "3" },
+                  },
+                  [
+                    _c(
+                      "label",
+                      {
+                        staticClass: "form-label",
+                        attrs: { for: "spouseMiddleName" },
+                      },
+                      [_vm._v("Middle Name")]
+                    ),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.borrower.spouse_middlename,
+                          expression: "borrower.spouse_middlename",
+                        },
+                      ],
+                      staticClass: "form-control form-input ",
+                      attrs: { type: "text", id: "spouseMiddleName" },
+                      domProps: { value: _vm.borrower.spouse_middlename },
+                      on: {
+                        input: function ($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.borrower,
+                            "spouse_middlename",
+                            $event.target.value
+                          )
+                        },
+                      },
+                    }),
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    staticClass: "form-group mb-10 mr-16",
+                    staticStyle: { flex: "3" },
+                  },
+                  [
+                    _c(
+                      "label",
+                      {
+                        staticClass: "form-label",
+                        attrs: { for: "spouseLastName" },
+                      },
+                      [_vm._v("Last Name")]
+                    ),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.borrower.spouse_lastname,
+                          expression: "borrower.spouse_lastname",
+                        },
+                      ],
+                      staticClass: "form-control form-input ",
+                      attrs: { type: "text", id: "spouseLastName" },
+                      domProps: { value: _vm.borrower.spouse_lastname },
+                      on: {
+                        input: function ($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.borrower,
+                            "spouse_lastname",
+                            $event.target.value
+                          )
+                        },
+                      },
+                    }),
+                  ]
+                ),
+              ]),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "form-group mb-10", staticStyle: { flex: "3" } },
+                [
+                  _c(
+                    "label",
+                    {
+                      staticClass: "form-label",
+                      attrs: { for: "spouseAddress  " },
+                    },
+                    [_vm._v("Address")]
+                  ),
+                  _vm._v(" "),
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.borrower.spouse_address,
+                        expression: "borrower.spouse_address",
+                      },
+                    ],
+                    staticClass: "form-control form-input ",
+                    attrs: { type: "text", id: "spouseAddress  " },
+                    domProps: { value: _vm.borrower.spouse_address },
+                    on: {
+                      input: function ($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(
+                          _vm.borrower,
+                          "spouse_address",
+                          $event.target.value
+                        )
+                      },
+                    },
+                  }),
+                ]
+              ),
+              _vm._v(" "),
+              _c("div", { staticClass: "d-flex flex-row" }, [
+                _c(
+                  "div",
+                  {
+                    staticClass: "form-group mb-10 mr-16",
+                    staticStyle: { flex: "2" },
+                  },
+                  [
+                    _c(
+                      "label",
+                      {
+                        staticClass: "form-label",
+                        attrs: { for: "spouseBirthdate" },
+                      },
+                      [_vm._v("Birth Date")]
+                    ),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.borrower.spouse_birthdate,
+                          expression: "borrower.spouse_birthdate",
+                        },
+                      ],
+                      staticClass: "form-control form-input ",
+                      attrs: { type: "date", id: "spouseBirthdate" },
+                      domProps: { value: _vm.borrower.spouse_birthdate },
+                      on: {
+                        input: function ($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.borrower,
+                            "spouse_birthdate",
+                            $event.target.value
+                          )
+                        },
+                      },
+                    }),
+                  ]
+                ),
+                _vm._v(" "),
+                _vm._m(1),
+              ]),
+            ]
+          ),
+          _vm._v(" "),
+          _c(
+            "section",
+            {
+              staticClass: "mb-24",
+              staticStyle: { flex: "21", "padding-left": "16px" },
+            },
+            [
+              _c("span", { staticClass: "section-title mb-24" }, [
+                _vm._v("Borrower's Spouse Identification Details"),
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "d-flex flex-row" }, [
+                _c(
+                  "div",
+                  {
+                    staticClass: "form-group mb-10 mr-16",
+                    staticStyle: { flex: "3" },
+                  },
+                  [
+                    _c(
+                      "label",
+                      {
+                        staticClass: "form-label",
+                        attrs: { for: "spouseIdType" },
+                      },
+                      [_vm._v("ID Type")]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "select",
+                      {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.borrower.spouse_id_type,
+                            expression: "borrower.spouse_id_type",
+                          },
+                        ],
+                        staticClass: "form-control form-input",
+                        attrs: { name: "", id: "" },
+                        on: {
+                          change: function ($event) {
+                            var $$selectedVal = Array.prototype.filter
+                              .call($event.target.options, function (o) {
+                                return o.selected
+                              })
+                              .map(function (o) {
+                                var val = "_value" in o ? o._value : o.value
+                                return val
+                              })
+                            _vm.$set(
+                              _vm.borrower,
+                              "spouse_id_type",
+                              $event.target.multiple
+                                ? $$selectedVal
+                                : $$selectedVal[0]
+                            )
+                          },
+                        },
+                      },
+                      [
+                        _c("option", { attrs: { value: "SSS" } }, [
+                          _vm._v("SSS"),
+                        ]),
+                        _vm._v(" "),
+                        _c("option", { attrs: { value: "UMID" } }, [
+                          _vm._v("GSIS/UMID"),
+                        ]),
+                        _vm._v(" "),
+                        _c("option", { attrs: { value: "Driver's License" } }, [
+                          _vm._v("Driver's License"),
+                        ]),
+                        _vm._v(" "),
+                        _c("option", { attrs: { value: "Passport" } }, [
+                          _vm._v("Passport"),
+                        ]),
+                        _vm._v(" "),
+                        _c("option", { attrs: { value: "Senior ID" } }, [
+                          _vm._v("Senior ID"),
+                        ]),
+                      ]
+                    ),
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    staticClass: "form-group mb-10 mr-16",
+                    staticStyle: { flex: "3" },
+                  },
+                  [
+                    _c(
+                      "label",
+                      {
+                        staticClass: "form-label",
+                        attrs: { for: "spouseIdNumber" },
+                      },
+                      [_vm._v("ID Number")]
+                    ),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.borrower.spouse_id_no,
+                          expression: "borrower.spouse_id_no",
+                        },
+                      ],
+                      staticClass: "form-control form-input ",
+                      attrs: { type: "text", id: "spouseIdNumber" },
+                      domProps: { value: _vm.borrower.spouse_id_no },
+                      on: {
+                        input: function ($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.borrower,
+                            "spouse_id_no",
+                            $event.target.value
+                          )
+                        },
+                      },
+                    }),
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    staticClass: "form-group mb-10 mr-16",
+                    staticStyle: { flex: "3" },
+                  },
+                  [
+                    _c(
+                      "label",
+                      {
+                        staticClass: "form-label",
+                        attrs: { for: "spouseIdDate" },
+                      },
+                      [_vm._v("ID Date Issued")]
+                    ),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.borrower.spouse_id_date_issued,
+                          expression: "borrower.spouse_id_date_issued",
+                        },
+                      ],
+                      staticClass: "form-control form-input ",
+                      attrs: { type: "date", id: "spouseIdDate" },
+                      domProps: { value: _vm.borrower.spouse_id_date_issued },
+                      on: {
+                        input: function ($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.borrower,
+                            "spouse_id_date_issued",
+                            $event.target.value
+                          )
+                        },
+                      },
+                    }),
+                  ]
+                ),
+                _vm._v(" "),
+                _c("div", { staticStyle: { flex: "3" } }),
+              ]),
+            ]
+          ),
+          _vm._v(" "),
+          _c("input", {
+            staticClass: "btn btn-default hide",
+            attrs: { type: "submit", id: "borrowerBtn" },
+          }),
+        ]
+      ),
+      _vm._v(" "),
+      _c(
+        "section",
+        {
+          staticClass: "mb-24",
+          staticStyle: { flex: "21", "padding-left": "16px" },
+        },
+        [
+          _c("span", { staticClass: "section-title mb-24" }, [
+            _vm._v("Household Members Information"),
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "d-flex flex-column mb-16" }, [
+            _c(
+              "form",
+              {
+                attrs: { action: "" },
+                on: {
+                  submit: function ($event) {
+                    $event.preventDefault()
+                    return _vm.addData("householdMembers")
+                  },
+                },
+              },
+              [
+                _c("div", { staticClass: "d-flex" }, [
+                  _c(
+                    "div",
+                    {
+                      staticClass: "form-group mb-10 mr-16",
+                      staticStyle: { flex: "2" },
+                    },
+                    [
+                      _c(
+                        "label",
+                        {
+                          staticClass: "form-label",
+                          attrs: { for: "nameOfDependent" },
+                        },
+                        [_vm._v("Name of Dependent")]
+                      ),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.data.householdMembers.dependent,
+                            expression: "data.householdMembers.dependent",
+                          },
+                        ],
+                        staticClass: "form-control form-input ",
+                        attrs: {
+                          required: "",
+                          type: "text",
+                          id: "nameOfDependent",
+                        },
+                        domProps: {
+                          value: _vm.data.householdMembers.dependent,
+                        },
+                        on: {
+                          input: function ($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.data.householdMembers,
+                              "dependent",
+                              $event.target.value
+                            )
+                          },
+                        },
+                      }),
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    {
+                      staticClass: "form-group mb-10 mr-16",
+                      staticStyle: { flex: "1" },
+                    },
+                    [
+                      _c(
+                        "label",
+                        {
+                          staticClass: "form-label",
+                          attrs: { for: "ageofDependent" },
+                        },
+                        [_vm._v("Age")]
+                      ),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.data.householdMembers.age,
+                            expression: "data.householdMembers.age",
+                          },
+                        ],
+                        staticClass: "form-control form-input ",
+                        attrs: {
+                          required: "",
+                          type: "text",
+                          id: "ageofDependent",
+                        },
+                        domProps: { value: _vm.data.householdMembers.age },
+                        on: {
+                          input: function ($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.data.householdMembers,
+                              "age",
+                              $event.target.value
+                            )
+                          },
+                        },
+                      }),
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    {
+                      staticClass: "form-group mb-10 mr-16",
+                      staticStyle: { flex: "1" },
+                    },
+                    [
+                      _c(
+                        "label",
+                        {
+                          staticClass: "form-label",
+                          attrs: { for: "relationshipOfDependent" },
+                        },
+                        [_vm._v("Relationship")]
+                      ),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.data.householdMembers.relationship,
+                            expression: "data.householdMembers.relationship",
+                          },
+                        ],
+                        staticClass: "form-control form-input ",
+                        attrs: {
+                          required: "",
+                          type: "text",
+                          id: "relationshipOfDependent",
+                        },
+                        domProps: {
+                          value: _vm.data.householdMembers.relationship,
+                        },
+                        on: {
+                          input: function ($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.data.householdMembers,
+                              "relationship",
+                              $event.target.value
+                            )
+                          },
+                        },
+                      }),
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    {
+                      staticClass: "form-group mb-10",
+                      staticStyle: { flex: "1" },
+                    },
+                    [
+                      _c(
+                        "label",
+                        {
+                          staticClass: "form-label",
+                          attrs: { for: "OccupationOfDependent" },
+                        },
+                        [_vm._v("Occupation")]
+                      ),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.data.householdMembers.occupation,
+                            expression: "data.householdMembers.occupation",
+                          },
+                        ],
+                        staticClass: "form-control form-input ",
+                        attrs: {
+                          required: "",
+                          type: "text",
+                          id: "OccupationOfDependent",
+                        },
+                        domProps: {
+                          value: _vm.data.householdMembers.occupation,
+                        },
+                        on: {
+                          input: function ($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.data.householdMembers,
+                              "occupation",
+                              $event.target.value
+                            )
+                          },
+                        },
+                      }),
+                    ]
+                  ),
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "d-flex" }, [
+                  _c(
+                    "div",
+                    {
+                      staticClass: "form-group mb-10 mr-16",
+                      staticStyle: { flex: "1" },
+                    },
+                    [
+                      _c(
+                        "label",
+                        {
+                          staticClass: "form-label",
+                          attrs: { for: "contactOfDepenent" },
+                        },
+                        [_vm._v("Contact #")]
+                      ),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.data.householdMembers.contact_no,
+                            expression: "data.householdMembers.contact_no",
+                          },
+                        ],
+                        staticClass: "form-control form-input ",
+                        attrs: {
+                          required: "",
+                          type: "text",
+                          id: "contactOfDepenent",
+                        },
+                        domProps: {
+                          value: _vm.data.householdMembers.contact_no,
+                        },
+                        on: {
+                          input: function ($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.data.householdMembers,
+                              "contact_no",
+                              $event.target.value
+                            )
+                          },
+                        },
+                      }),
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    {
+                      staticClass: "form-group mb-10 mr-16",
+                      staticStyle: { flex: "3" },
+                    },
+                    [
+                      _c(
+                        "label",
+                        {
+                          staticClass: "form-label",
+                          attrs: { for: "addressDependent" },
+                        },
+                        [_vm._v("School/Business/Employment Address")]
+                      ),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.data.householdMembers.sbe_address,
+                            expression: "data.householdMembers.sbe_address",
+                          },
+                        ],
+                        staticClass: "form-control form-input ",
+                        attrs: {
+                          required: "",
+                          type: "text",
+                          id: "addressDependent",
+                        },
+                        domProps: {
+                          value: _vm.data.householdMembers.sbe_address,
+                        },
+                        on: {
+                          input: function ($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.data.householdMembers,
+                              "sbe_address",
+                              $event.target.value
+                            )
+                          },
+                        },
+                      }),
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _vm._m(2),
+                ]),
+              ]
+            ),
+          ]),
+        ]
+      ),
+      _vm._v(" "),
+      _vm.borrower.householdMembers.length > 0
+        ? _c(
+            "section",
+            { staticClass: "mb-24", staticStyle: { "padding-left": "16px" } },
+            [
+              _c("table", { staticClass: "table table-stripped base-table" }, [
+                _vm._m(3),
+                _vm._v(" "),
+                _c(
+                  "tbody",
+                  _vm._l(_vm.borrower.householdMembers, function (hm, i) {
+                    return _c("tr", { key: i }, [
+                      _c("td", [_vm._v(_vm._s(hm.dependent))]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v(_vm._s(hm.age))]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v(_vm._s(hm.relationship))]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v(_vm._s(hm.occupation))]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v(_vm._s(hm.contact_no))]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v(_vm._s(hm.sbe_address))]),
+                      _vm._v(" "),
+                      _c("td", [
+                        _c(
+                          "a",
+                          {
+                            staticClass: "text-red font-small",
+                            attrs: { href: "#" },
+                            on: {
+                              click: function ($event) {
+                                $event.preventDefault()
+                                return _vm.removeData("householdMembers", i)
+                              },
+                            },
+                          },
+                          [_vm._v("Delete")]
+                        ),
+                      ]),
+                    ])
+                  }),
+                  0
+                ),
+              ]),
+            ]
+          )
+        : _vm._e(),
+      _vm._v(" "),
+      _c(
+        "section",
+        {
+          staticClass: "mb-24",
+          staticStyle: { flex: "21", "padding-left": "16px" },
+        },
+        [
+          _c("span", { staticClass: "section-title mb-24" }, [
+            _vm._v("Outstanding Obligation from Other Creditors"),
+          ]),
+          _vm._v(" "),
+          _c(
+            "form",
+            {
+              attrs: { action: "" },
+              on: {
+                submit: function ($event) {
+                  $event.preventDefault()
+                  return _vm.addData("outstandingObligations")
+                },
+              },
+            },
+            [
+              _c("div", { staticClass: "d-flex" }, [
+                _c(
+                  "div",
+                  {
+                    staticClass: "form-group mb-10 mr-16",
+                    staticStyle: { flex: "1" },
+                  },
+                  [
+                    _c(
+                      "label",
+                      {
+                        staticClass: "form-label",
+                        attrs: { for: "nameOfCompany" },
+                      },
+                      [_vm._v("Name of Creditor")]
+                    ),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.data.outstandingObligations.creditor,
+                          expression: "data.outstandingObligations.creditor",
+                        },
+                      ],
+                      staticClass: "form-control form-input ",
+                      attrs: {
+                        required: "",
+                        type: "text",
+                        id: "nameOfCompany",
+                      },
+                      domProps: {
+                        value: _vm.data.outstandingObligations.creditor,
+                      },
+                      on: {
+                        input: function ($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.data.outstandingObligations,
+                            "creditor",
+                            $event.target.value
+                          )
+                        },
+                      },
+                    }),
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    staticClass: "form-group mb-10 mr-16",
+                    staticStyle: { flex: "1" },
+                  },
+                  [
+                    _c(
+                      "label",
+                      {
+                        staticClass: "form-label",
+                        attrs: { for: "companyContact" },
+                      },
+                      [_vm._v("Loan Amount")]
+                    ),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.data.outstandingObligations.amount,
+                          expression: "data.outstandingObligations.amount",
+                        },
+                      ],
+                      staticClass: "form-control form-input ",
+                      attrs: {
+                        required: "",
+                        type: "number",
+                        id: "companyContact",
+                      },
+                      domProps: {
+                        value: _vm.data.outstandingObligations.amount,
+                      },
+                      on: {
+                        input: function ($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.data.outstandingObligations,
+                            "amount",
+                            $event.target.value
+                          )
+                        },
+                      },
+                    }),
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    staticClass: "form-group mb-10",
+                    staticStyle: { flex: "1" },
+                  },
+                  [
+                    _c(
+                      "label",
+                      {
+                        staticClass: "form-label",
+                        attrs: { for: "companyYears" },
+                      },
+                      [_vm._v("Outstanding Balance")]
+                    ),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.data.outstandingObligations.balance,
+                          expression: "data.outstandingObligations.balance",
+                        },
+                      ],
+                      staticClass: "form-control form-input ",
+                      attrs: {
+                        required: "",
+                        type: "number",
+                        id: "companyYears",
+                      },
+                      domProps: {
+                        value: _vm.data.outstandingObligations.balance,
+                      },
+                      on: {
+                        input: function ($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.data.outstandingObligations,
+                            "balance",
+                            $event.target.value
+                          )
+                        },
+                      },
+                    }),
+                  ]
+                ),
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "d-flex" }, [
+                _c(
+                  "div",
+                  {
+                    staticClass: "form-group mb-10 mr-16",
+                    staticStyle: { flex: "1" },
+                  },
+                  [
+                    _c(
+                      "label",
+                      {
+                        staticClass: "form-label",
+                        attrs: { for: "companyAddress" },
+                      },
+                      [_vm._v("Term")]
+                    ),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.data.outstandingObligations.term,
+                          expression: "data.outstandingObligations.term",
+                        },
+                      ],
+                      staticClass: "form-control form-input ",
+                      attrs: {
+                        required: "",
+                        type: "text",
+                        id: "companyAddress",
+                      },
+                      domProps: { value: _vm.data.outstandingObligations.term },
+                      on: {
+                        input: function ($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.data.outstandingObligations,
+                            "term",
+                            $event.target.value
+                          )
+                        },
+                      },
+                    }),
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    staticClass: "form-group mb-10 mr-16",
+                    staticStyle: { flex: "1" },
+                  },
+                  [
+                    _c(
+                      "label",
+                      {
+                        staticClass: "form-label",
+                        attrs: { for: "companyPosition" },
+                      },
+                      [_vm._v("Due Date")]
+                    ),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.data.outstandingObligations.due_date,
+                          expression: "data.outstandingObligations.due_date",
+                        },
+                      ],
+                      staticClass: "form-control form-input ",
+                      attrs: {
+                        required: "",
+                        type: "date",
+                        id: "companyPosition",
+                      },
+                      domProps: {
+                        value: _vm.data.outstandingObligations.due_date,
+                      },
+                      on: {
+                        input: function ($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.data.outstandingObligations,
+                            "due_date",
+                            $event.target.value
+                          )
+                        },
+                      },
+                    }),
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    staticClass: "form-group mb-10 mr-16",
+                    staticStyle: { flex: "1" },
+                  },
+                  [
+                    _c(
+                      "label",
+                      {
+                        staticClass: "form-label",
+                        attrs: { for: "companySalary" },
+                      },
+                      [_vm._v("Amortization / Frequency")]
+                    ),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.data.outstandingObligations.amortization,
+                          expression:
+                            "data.outstandingObligations.amortization",
+                        },
+                      ],
+                      staticClass: "form-control form-input ",
+                      attrs: {
+                        required: "",
+                        type: "number",
+                        id: "companySalary",
+                      },
+                      domProps: {
+                        value: _vm.data.outstandingObligations.amortization,
+                      },
+                      on: {
+                        input: function ($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.data.outstandingObligations,
+                            "amortization",
+                            $event.target.value
+                          )
+                        },
+                      },
+                    }),
+                  ]
+                ),
+                _vm._v(" "),
+                _vm._m(4),
+              ]),
+            ]
+          ),
+        ]
+      ),
+      _vm._v(" "),
+      _vm.borrower.outstandingObligations.length > 0
+        ? _c(
+            "section",
+            { staticClass: "mb-24", staticStyle: { "padding-left": "16px" } },
+            [
+              _c("table", { staticClass: "table table-stripped base-table" }, [
+                _vm._m(5),
+                _vm._v(" "),
+                _c(
+                  "tbody",
+                  _vm._l(_vm.borrower.outstandingObligations, function (bo, i) {
+                    return _c("tr", { key: i }, [
+                      _c("td", [_vm._v(_vm._s(bo.creditor))]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v(_vm._s(bo.term))]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v(_vm._s(bo.due_date))]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v(_vm._s(bo.amount))]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v(_vm._s(bo.balance))]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v(_vm._s(bo.amortization))]),
+                      _vm._v(" "),
+                      _c("td", [
+                        _c(
+                          "a",
+                          {
+                            staticClass: "text-red font-small",
+                            attrs: { href: "#" },
+                            on: {
+                              click: function ($event) {
+                                $event.preventDefault()
+                                return _vm.removeData(
+                                  "outstandingObligations",
+                                  i
+                                )
+                              },
+                            },
+                          },
+                          [_vm._v("Delete")]
+                        ),
+                      ]),
+                    ])
+                  }),
+                  0
+                ),
+              ]),
+            ]
+          )
+        : _vm._e(),
+      _vm._v(" "),
+      _c(
+        "section",
+        {
+          staticClass: "mb-24",
+          staticStyle: { flex: "21", "padding-left": "16px" },
+        },
+        [
+          _c("span", { staticClass: "section-title mb-24" }, [
+            _vm._v("Employment Information"),
+          ]),
+          _vm._v(" "),
+          _c(
+            "form",
+            {
+              attrs: { action: "" },
+              on: {
+                submit: function ($event) {
+                  $event.preventDefault()
+                  return _vm.addData("employmentInfo")
+                },
+              },
+            },
+            [
+              _c("div", { staticClass: "d-flex" }, [
+                _c(
+                  "div",
+                  {
+                    staticClass: "form-group mb-10 mr-16",
+                    staticStyle: { flex: "2" },
+                  },
+                  [
+                    _c(
+                      "label",
+                      {
+                        staticClass: "form-label",
+                        attrs: { for: "nameOfCompany" },
+                      },
+                      [_vm._v("Name of Company")]
+                    ),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.data.employmentInfo.company_name,
+                          expression: "data.employmentInfo.company_name",
+                        },
+                      ],
+                      staticClass: "form-control form-input ",
+                      attrs: {
+                        required: "",
+                        type: "text",
+                        id: "nameOfCompany",
+                      },
+                      domProps: { value: _vm.data.employmentInfo.company_name },
+                      on: {
+                        input: function ($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.data.employmentInfo,
+                            "company_name",
+                            $event.target.value
+                          )
+                        },
+                      },
+                    }),
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    staticClass: "form-group mb-10 mr-16",
+                    staticStyle: { flex: "2" },
+                  },
+                  [
+                    _c(
+                      "label",
+                      {
+                        staticClass: "form-label",
+                        attrs: { for: "companyContact" },
+                      },
+                      [_vm._v("Contact No.")]
+                    ),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.data.employmentInfo.contact_no,
+                          expression: "data.employmentInfo.contact_no",
+                        },
+                      ],
+                      staticClass: "form-control form-input ",
+                      attrs: {
+                        required: "",
+                        type: "text",
+                        id: "companyContact",
+                      },
+                      domProps: { value: _vm.data.employmentInfo.contact_no },
+                      on: {
+                        input: function ($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.data.employmentInfo,
+                            "contact_no",
+                            $event.target.value
+                          )
+                        },
+                      },
+                    }),
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    staticClass: "form-group mb-10",
+                    staticStyle: { flex: "1" },
+                  },
+                  [
+                    _c(
+                      "label",
+                      {
+                        staticClass: "form-label",
+                        attrs: { for: "companyYears" },
+                      },
+                      [_vm._v("Years")]
+                    ),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.data.employmentInfo.years_employed,
+                          expression: "data.employmentInfo.years_employed",
+                        },
+                      ],
+                      staticClass: "form-control form-input ",
+                      attrs: {
+                        required: "",
+                        type: "number",
+                        id: "companyYears",
+                      },
+                      domProps: {
+                        value: _vm.data.employmentInfo.years_employed,
+                      },
+                      on: {
+                        input: function ($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.data.employmentInfo,
+                            "years_employed",
+                            $event.target.value
+                          )
+                        },
+                      },
+                    }),
+                  ]
+                ),
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "d-flex" }, [
+                _c(
+                  "div",
+                  {
+                    staticClass: "form-group mb-10 mr-16",
+                    staticStyle: { flex: "2" },
+                  },
+                  [
+                    _c(
+                      "label",
+                      {
+                        staticClass: "form-label",
+                        attrs: { for: "companyAddress" },
+                      },
+                      [_vm._v("Address")]
+                    ),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.data.employmentInfo.company_address,
+                          expression: "data.employmentInfo.company_address",
+                        },
+                      ],
+                      staticClass: "form-control form-input ",
+                      attrs: {
+                        required: "",
+                        type: "text",
+                        id: "companyAddress",
+                      },
+                      domProps: {
+                        value: _vm.data.employmentInfo.company_address,
+                      },
+                      on: {
+                        input: function ($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.data.employmentInfo,
+                            "company_address",
+                            $event.target.value
+                          )
+                        },
+                      },
+                    }),
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    staticClass: "form-group mb-10 mr-16",
+                    staticStyle: { flex: "2" },
+                  },
+                  [
+                    _c(
+                      "label",
+                      {
+                        staticClass: "form-label",
+                        attrs: { for: "companyPosition" },
+                      },
+                      [_vm._v("Position")]
+                    ),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.data.employmentInfo.position,
+                          expression: "data.employmentInfo.position",
+                        },
+                      ],
+                      staticClass: "form-control form-input ",
+                      attrs: {
+                        required: "",
+                        type: "text",
+                        id: "companyPosition",
+                      },
+                      domProps: { value: _vm.data.employmentInfo.position },
+                      on: {
+                        input: function ($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.data.employmentInfo,
+                            "position",
+                            $event.target.value
+                          )
+                        },
+                      },
+                    }),
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    staticClass: "form-group mb-10 mr-16",
+                    staticStyle: { flex: "1" },
+                  },
+                  [
+                    _c(
+                      "label",
+                      {
+                        staticClass: "form-label",
+                        attrs: { for: "companySalary" },
+                      },
+                      [_vm._v("Monthly Salary")]
+                    ),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.data.employmentInfo.salary,
+                          expression: "data.employmentInfo.salary",
+                        },
+                      ],
+                      staticClass: "form-control form-input ",
+                      attrs: {
+                        required: "",
+                        type: "number",
+                        id: "companySalary",
+                      },
+                      domProps: { value: _vm.data.employmentInfo.salary },
+                      on: {
+                        input: function ($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.data.employmentInfo,
+                            "salary",
+                            $event.target.value
+                          )
+                        },
+                      },
+                    }),
+                  ]
+                ),
+                _vm._v(" "),
+                _vm._m(6),
+              ]),
+            ]
+          ),
+        ]
+      ),
+      _vm._v(" "),
+      _vm.borrower.employmentInfo.length > 0
+        ? _c(
+            "section",
+            { staticClass: "mb-24", staticStyle: { "padding-left": "16px" } },
+            [
+              _c("table", { staticClass: "table table-stripped base-table" }, [
+                _vm._m(7),
+                _vm._v(" "),
+                _c(
+                  "tbody",
+                  _vm._l(_vm.borrower.employmentInfo, function (emp, i) {
+                    return _c("tr", { key: i }, [
+                      _c("td", [_vm._v(_vm._s(emp.company_name))]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v(_vm._s(emp.company_address))]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v(_vm._s(emp.contact_no))]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v(_vm._s(emp.years_employed))]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v(_vm._s(emp.position))]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v("P " + _vm._s(emp.salary))]),
+                      _vm._v(" "),
+                      _c("td", [
+                        _c(
+                          "a",
+                          {
+                            staticClass: "text-red font-small",
+                            attrs: { href: "#" },
+                            on: {
+                              click: function ($event) {
+                                $event.preventDefault()
+                                return _vm.removeData("employmentInfo", i)
+                              },
+                            },
+                          },
+                          [_vm._v("Delete")]
+                        ),
+                      ]),
+                    ])
+                  }),
+                  0
+                ),
+              ]),
+            ]
+          )
+        : _vm._e(),
+      _vm._v(" "),
+      _c(
+        "section",
+        {
+          staticClass: "mb-24",
+          staticStyle: { flex: "21", "padding-left": "16px" },
+        },
+        [
+          _c("span", { staticClass: "section-title mb-24" }, [
+            _vm._v("Borrower's Business"),
+          ]),
+          _vm._v(" "),
+          _c(
+            "form",
+            {
+              attrs: { action: "" },
+              on: {
+                submit: function ($event) {
+                  $event.preventDefault()
+                  return _vm.addData("businessInfo")
+                },
+              },
+            },
+            [
+              _c("div", { staticClass: "d-flex" }, [
+                _c(
+                  "div",
+                  {
+                    staticClass: "form-group mb-10 mr-16",
+                    staticStyle: { flex: "2" },
+                  },
+                  [
+                    _c(
+                      "label",
+                      {
+                        staticClass: "form-label",
+                        attrs: { for: "businessName" },
+                      },
+                      [_vm._v("Name of Business / Agency")]
+                    ),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.data.businessInfo.business_name,
+                          expression: "data.businessInfo.business_name",
+                        },
+                      ],
+                      staticClass: "form-control form-input ",
+                      attrs: { required: "", type: "text", id: "businessName" },
+                      domProps: { value: _vm.data.businessInfo.business_name },
+                      on: {
+                        input: function ($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.data.businessInfo,
+                            "business_name",
+                            $event.target.value
+                          )
+                        },
+                      },
+                    }),
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    staticClass: "form-group mb-10 mr-16",
+                    staticStyle: { flex: "2" },
+                  },
+                  [
+                    _c(
+                      "label",
+                      {
+                        staticClass: "form-label",
+                        attrs: { for: "companyContact" },
+                      },
+                      [_vm._v("Contact No.")]
+                    ),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.data.businessInfo.contact_no,
+                          expression: "data.businessInfo.contact_no",
+                        },
+                      ],
+                      staticClass: "form-control form-input ",
+                      attrs: {
+                        required: "",
+                        type: "number",
+                        id: "companyContact",
+                      },
+                      domProps: { value: _vm.data.businessInfo.contact_no },
+                      on: {
+                        input: function ($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.data.businessInfo,
+                            "contact_no",
+                            $event.target.value
+                          )
+                        },
+                      },
+                    }),
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    staticClass: "form-group mb-10",
+                    staticStyle: { flex: "1" },
+                  },
+                  [
+                    _c(
+                      "label",
+                      {
+                        staticClass: "form-label",
+                        attrs: { for: "companyYears" },
+                      },
+                      [_vm._v("Years")]
+                    ),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.data.businessInfo.years_in_business,
+                          expression: "data.businessInfo.years_in_business",
+                        },
+                      ],
+                      staticClass: "form-control form-input ",
+                      attrs: {
+                        required: "",
+                        type: "number",
+                        id: "companyYears",
+                      },
+                      domProps: {
+                        value: _vm.data.businessInfo.years_in_business,
+                      },
+                      on: {
+                        input: function ($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.data.businessInfo,
+                            "years_in_business",
+                            $event.target.value
+                          )
+                        },
+                      },
+                    }),
+                  ]
+                ),
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "d-flex" }, [
+                _c(
+                  "div",
+                  {
+                    staticClass: "form-group mb-10 mr-16",
+                    staticStyle: { flex: "2" },
+                  },
+                  [
+                    _c(
+                      "label",
+                      {
+                        staticClass: "form-label",
+                        attrs: { for: "businessAddress" },
+                      },
+                      [_vm._v("Address")]
+                    ),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.data.businessInfo.business_address,
+                          expression: "data.businessInfo.business_address",
+                        },
+                      ],
+                      staticClass: "form-control form-input ",
+                      attrs: {
+                        required: "",
+                        type: "text",
+                        id: "businessAddress",
+                      },
+                      domProps: {
+                        value: _vm.data.businessInfo.business_address,
+                      },
+                      on: {
+                        input: function ($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.data.businessInfo,
+                            "business_address",
+                            $event.target.value
+                          )
+                        },
+                      },
+                    }),
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    staticClass: "form-group mb-10 mr-16",
+                    staticStyle: { flex: "1" },
+                  },
+                  [
+                    _c(
+                      "label",
+                      {
+                        staticClass: "form-label",
+                        attrs: { for: "businessIncome" },
+                      },
+                      [_vm._v("Income / Frequency")]
+                    ),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.data.businessInfo.income,
+                          expression: "data.businessInfo.income",
+                        },
+                      ],
+                      staticClass: "form-control form-input ",
+                      attrs: {
+                        required: "",
+                        type: "number",
+                        id: "businessIncome",
+                      },
+                      domProps: { value: _vm.data.businessInfo.income },
+                      on: {
+                        input: function ($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.data.businessInfo,
+                            "income",
+                            $event.target.value
+                          )
+                        },
+                      },
+                    }),
+                  ]
+                ),
+                _vm._v(" "),
+                _vm._m(8),
+              ]),
+            ]
+          ),
+        ]
+      ),
+      _vm._v(" "),
+      _vm.borrower.businessInfo.length > 0
+        ? _c(
+            "section",
+            { staticClass: "mb-24", staticStyle: { "padding-left": "16px" } },
+            [
+              _c("table", { staticClass: "table table-stripped base-table" }, [
+                _vm._m(9),
+                _vm._v(" "),
+                _c(
+                  "tbody",
+                  _vm._l(_vm.borrower.businessInfo, function (biz, i) {
+                    return _c("tr", { key: i }, [
+                      _c("td", [_vm._v(_vm._s(biz.business_name))]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v(_vm._s(biz.business_address))]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v(_vm._s(biz.contact_no))]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v(_vm._s(biz.years_in_business))]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v("P " + _vm._s(biz.income))]),
+                      _vm._v(" "),
+                      _c("td", [
+                        _c(
+                          "a",
+                          {
+                            staticClass: "text-red font-small",
+                            attrs: { href: "#" },
+                            on: {
+                              click: function ($event) {
+                                $event.preventDefault()
+                                return _vm.removeData("businessInfo", i)
+                              },
+                            },
+                          },
+                          [_vm._v("Delete")]
+                        ),
+                      ]),
+                    ])
+                  }),
+                  0
+                ),
+              ]),
+            ]
+          )
+        : _vm._e(),
+      _vm._v(" "),
+      _c("div", { staticClass: "d-flex flex-row-reverse" }, [
+        _c(
+          "a",
+          {
+            staticClass: "btn btn-success tab-navigate",
+            staticStyle: { flex: "2" },
+            attrs: {
+              href: "#custom-content-below-coborrowerinfo",
+              "data-tab": "custom-content-below-coborrowerinfo-tab",
+            },
+            on: {
+              click: function ($event) {
+                $event.preventDefault()
+                return _vm.submitForm()
+              },
+            },
+          },
+          [_vm._v("Next")]
+        ),
+        _vm._v(" "),
+        _c(
+          "a",
+          {
+            staticClass: "btn btn-yellow-light min-w-150 mr-16",
+            attrs: { href: "#" },
+            on: {
+              click: function ($event) {
+                $event.preventDefault()
+                return _vm.clearInfo()
+              },
+            },
+          },
+          [_vm._v("Clear Info")]
+        ),
+        _vm._v(" "),
+        _c("div", { staticStyle: { flex: "22" } }),
+      ]),
+    ],
+    1
+  )
+}
+var staticRenderFns = [
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      { staticClass: "form-group mb-10", staticStyle: { flex: "5" } },
+      [
+        _c("label", { staticClass: "form-label", attrs: { for: "regDate" } }, [
+          _vm._v("Date Registration"),
+        ]),
+        _vm._v(" "),
+        _c("input", {
+          staticClass: "form-control form-input text-right",
+          attrs: { type: "date", id: "regDate" },
+        }),
+      ]
+    )
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      { staticClass: "form-group mb-10", staticStyle: { flex: "2" } },
+      [
+        _c(
+          "label",
+          { staticClass: "form-label", attrs: { for: "spouseContactNumber" } },
+          [_vm._v("Contact Number")]
+        ),
+        _vm._v(" "),
+        _c("input", {
+          staticClass: "form-control form-input ",
+          attrs: { type: "text", id: "spouseContactNumber" },
+        }),
+      ]
+    )
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      {
+        staticClass: "form-group mb-10 d-flex flex-column justify-content-end",
+      },
+      [
+        _c(
+          "button",
+          {
+            staticClass: "btn btn-success d-flex align-items-center",
+            staticStyle: { height: "48px" },
+          },
+          [_c("i", { staticClass: "fa fa-plus" })]
+        ),
+      ]
+    )
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("th", [_vm._v("Name of Dependent")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Age")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Relationship")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Occupation")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Contact No.")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("School/Business/Employment Address")]),
+      _vm._v(" "),
+      _c("th"),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      {
+        staticClass: "form-group mb-10 d-flex flex-column justify-content-end",
+      },
+      [
+        _c(
+          "button",
+          {
+            staticClass: "btn btn-success d-flex align-items-center",
+            staticStyle: { height: "48px" },
+          },
+          [_c("i", { staticClass: "fa fa-plus" })]
+        ),
+      ]
+    )
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("th", [_vm._v("Name of Creditor")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Term")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Due Date")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Loan Amount")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Outstanding Bal.")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Amort./Freq.")]),
+      _vm._v(" "),
+      _c("th"),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      {
+        staticClass: "form-group mb-10 d-flex flex-column justify-content-end",
+      },
+      [
+        _c(
+          "button",
+          {
+            staticClass: "btn btn-success d-flex align-items-center",
+            staticStyle: { height: "48px" },
+          },
+          [_c("i", { staticClass: "fa fa-plus" })]
+        ),
+      ]
+    )
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("th", [_vm._v("Name of Business/Agency")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Address")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Contact No.")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Years")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Position")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Monthly Sal.")]),
+      _vm._v(" "),
+      _c("th"),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      {
+        staticClass: "form-group mb-10 d-flex flex-column justify-content-end",
+      },
+      [
+        _c(
+          "button",
+          {
+            staticClass: "btn btn-success d-flex align-items-center",
+            staticStyle: { height: "48px" },
+          },
+          [_c("i", { staticClass: "fa fa-plus" })]
+        ),
+      ]
+    )
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("th", [_vm._v("Name of Business/Agency")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Address")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Contact No.")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Years")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Income Frequency")]),
+    ])
+  },
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/ui/transaction/release_entry/ReleaseEntry.vue?vue&type=template&id=03a7b4c4&":
+/*!******************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/ui/transaction/release_entry/ReleaseEntry.vue?vue&type=template&id=03a7b4c4& ***!
+  \******************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function () {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "container-fluid", staticStyle: { padding: "0!important" } },
+    [
+      _c("notifications", { attrs: { group: "foo" } }),
+      _vm._v(" "),
+      _c("div", { staticClass: "mb-16" }),
+      _vm._v(" "),
+      _vm._m(0),
+      _vm._v(" "),
+      _c("div", { staticClass: "d-flex flex-column flex-xl-row p-16" }, [
+        _c("div", { staticStyle: { flex: "9" } }, [
+          _vm._m(1),
+          _vm._v(" "),
+          _c(
+            "table",
+            {
+              staticClass: "table table-stripped",
+              attrs: { id: "clientsList" },
+            },
+            [
+              _vm._m(2),
+              _vm._v(" "),
+              _c(
+                "tbody",
+                [
+                  _vm.borrowers.length == 0
+                    ? _c("tr", [
+                        _c("td", [_vm._v("No borrowers yet.")]),
+                        _vm._v(" "),
+                        _c("td"),
+                        _vm._v(" "),
+                        _c("td"),
+                      ])
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _vm._l(_vm.borrowers, function (b) {
+                    return _c("tr", { key: b.borrower_id }, [
+                      _c("td", [_vm._v(_vm._s(b.borrower_num))]),
+                      _vm._v(" "),
+                      _c("td", [
+                        _c("a", { attrs: { href: "#" } }, [
+                          _vm._v(_vm._s(b.firstname + " " + b.lastname)),
+                        ]),
+                      ]),
+                      _vm._v(" "),
+                      _c("td", [
+                        _c(
+                          "span",
+                          {
+                            staticClass: "text-green c-pointer",
+                            on: {
+                              click: function ($event) {
+                                return _vm.selectBorrower(b)
+                              },
+                            },
+                          },
+                          [_vm._v("select")]
+                        ),
+                      ]),
+                    ])
+                  }),
+                ],
+                2
+              ),
+            ]
+          ),
+          _vm._v(" "),
+          _vm._m(3),
+        ]),
+        _vm._v(" "),
+        _c("div", { staticStyle: { flex: "20" } }, [
+          _vm._m(4),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              staticClass: "tab-content",
+              attrs: { id: "custom-content-below-tabContent" },
+            },
+            [
+              _c(
+                "div",
+                {
+                  staticClass: "tab-pane fade show active",
+                  attrs: {
+                    id: "custom-content-below-borrowerinfo",
+                    role: "tabpanel",
+                    "aria-labelledby": "custom-content-below-home-tab",
+                  },
+                },
+                [
+                  _c("borrowers-info", {
+                    attrs: {
+                      token: _vm.token,
+                      pborrower: _vm.borrower,
+                      psave: _vm.saveInfo,
+                    },
+                    on: {
+                      savedInfo: function ($event) {
+                        return _vm.fetchBorrowers()
+                      },
+                      saveBorrower: function ($event) {
+                        _vm.saveInfo = ""
+                      },
+                      clearBorrowerInfo: function ($event) {
+                        _vm.borrower = ""
+                      },
+                    },
+                  }),
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                {
+                  staticClass: "tab-pane fade",
+                  attrs: {
+                    id: "custom-content-below-coborrowerinfo",
+                    role: "tabpanel",
+                    "aria-labelledby": "custom-content-below-profile-tab",
+                  },
+                },
+                [
+                  _c("div", { staticClass: "d-flex flex-column" }, [
+                    _vm._m(5),
+                    _vm._v(" "),
+                    _vm._m(6),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      { staticClass: "d-flex flex-row-reverse mb-45" },
+                      [
+                        _c(
+                          "a",
+                          {
+                            staticClass: "btn btn-success tab-navigate",
+                            staticStyle: { flex: "2" },
+                            attrs: {
+                              href: "#",
+                              "data-tab":
+                                "custom-content-below-loandetails-tab",
+                            },
+                            on: {
+                              click: function ($event) {
+                                $event.preventDefault()
+                                return _vm.navigate(
+                                  "custom-content-below-loandetails-tab"
+                                )
+                              },
+                            },
+                          },
+                          [_vm._v("Next")]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "a",
+                          {
+                            staticClass:
+                              "btn btn-primary-dark mr-24 tab-navigate",
+                            staticStyle: { flex: "2" },
+                            attrs: {
+                              href: "#",
+                              "data-tab":
+                                "custom-content-below-borrowerinfo-tab",
+                            },
+                            on: {
+                              click: function ($event) {
+                                $event.preventDefault()
+                                return _vm.navigate(
+                                  "custom-content-below-borrowerinfo-tab"
+                                )
+                              },
+                            },
+                          },
+                          [_vm._v("Back")]
+                        ),
+                        _vm._v(" "),
+                        _c("div", { staticStyle: { flex: "22" } }),
+                      ]
+                    ),
+                  ]),
+                ]
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                {
+                  staticClass: "tab-pane fade",
+                  attrs: {
+                    id: "custom-content-below-loaddetails",
+                    role: "tabpanel",
+                    "aria-labelledby": "custom-content-below-messages-tab",
+                  },
+                },
+                [
+                  _c("div", { staticClass: "d-flex flex-column" }, [
+                    _vm._m(7),
+                    _vm._v(" "),
+                    _vm._m(8),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      {
+                        staticClass:
+                          "d-flex flex-row-reverse mb-45 justify-content-between",
+                      },
+                      [
+                        _c("div", { staticClass: "d-flex" }, [
+                          _c(
+                            "a",
+                            {
+                              staticClass:
+                                "btn btn-primary-dark mr-24 tab-navigate min-w-150",
+                              attrs: {
+                                href: "#",
+                                "data-tab":
+                                  "custom-content-below-coborrowerinfo-tab",
+                              },
+                              on: {
+                                click: function ($event) {
+                                  $event.preventDefault()
+                                  return _vm.navigate(
+                                    "custom-content-below-coborrowerinfo-tab"
+                                  )
+                                },
+                              },
+                            },
+                            [_vm._v("Back")]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "a",
+                            {
+                              staticClass:
+                                "btn btn-success tab-navigate min-w-150",
+                              attrs: {
+                                href: "#",
+                                "data-toggle": "modal",
+                                "data-target": "#warningModal",
+                              },
+                            },
+                            [_vm._v("Next")]
+                          ),
+                        ]),
+                        _vm._v(" "),
+                        _c(
+                          "a",
+                          {
+                            staticClass: "btn btn-yellow-light",
+                            attrs: {
+                              href: "#",
+                              "data-toggle": "modal",
+                              "data-target": "#lettersModal",
+                            },
+                          },
+                          [_vm._v("Print Document")]
+                        ),
+                      ]
+                    ),
+                  ]),
+                ]
+              ),
+              _vm._v(" "),
+              _vm._m(9),
+            ]
+          ),
+        ]),
+      ]),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          staticClass: "modal",
+          attrs: { id: "lettersModal", tabindex: "-1", role: "dialog" },
+        },
+        [
+          _c(
+            "div",
+            {
+              staticClass: "modal-dialog modal-lg minw-70",
+              attrs: { role: "document" },
+            },
+            [
+              _c("div", { staticClass: "modal-content" }, [
+                _c("div", { staticClass: "modal-body p-24" }, [
+                  _c(
+                    "span",
+                    {
+                      staticClass:
+                        "light-bb text-bold text-primary-dark text-lg pb-16 mb-24 text-block",
+                    },
+                    [_vm._v("Letters")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    {
+                      staticClass:
+                        "d-flex flex-column flex-md-row align-items-start",
+                    },
+                    [
+                      _vm._m(10),
+                      _vm._v(" "),
+                      _c("div", { staticStyle: { flex: "6" } }, [
+                        _vm._m(11),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          {
+                            staticClass: "tab-content",
+                            attrs: { id: "custom-content-below-tabContent" },
+                          },
+                          [
+                            _c(
+                              "div",
+                              {
+                                staticClass: "tab-pane fade show active",
+                                attrs: {
+                                  id: "dacion-en-pago",
+                                  role: "tabpanel",
+                                  "aria-labelledby":
+                                    "custom-content-below-home-tab",
+                                },
+                              },
+                              [
+                                _c("img", {
+                                  staticClass: "mb-16",
+                                  staticStyle: { width: "100%" },
+                                  attrs: {
+                                    src:
+                                      _vm.baseUrl + "/img/company_header.png",
+                                    alt: "Company Header",
+                                  },
+                                }),
+                                _vm._v(" "),
+                                _vm._m(12),
+                              ]
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "div",
+                              {
+                                staticClass: "tab-pane fade",
+                                attrs: {
+                                  id: "promissory-note",
+                                  role: "tabpanel",
+                                  "aria-labelledby":
+                                    "custom-content-below-home-tab",
+                                },
+                              },
+                              [
+                                _c("img", {
+                                  staticClass: "mb-45",
+                                  staticStyle: { width: "100%" },
+                                  attrs: {
+                                    src:
+                                      _vm.baseUrl + "/img/company_header.png",
+                                    alt: "Company Header",
+                                  },
+                                }),
+                                _vm._v(" "),
+                                _vm._m(13),
+                              ]
+                            ),
+                          ]
+                        ),
+                      ]),
+                    ]
+                  ),
+                ]),
+              ]),
+            ]
+          ),
+        ]
+      ),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          staticClass: "modal",
+          attrs: { id: "warningModal", tabindex: "-1", role: "dialog" },
+        },
+        [
+          _c(
+            "div",
+            {
+              staticClass: "modal-dialog modal-md",
+              attrs: { role: "document" },
+            },
+            [
+              _c("div", { staticClass: "modal-content" }, [
+                _c("div", { staticClass: "modal-body p-24" }, [
+                  _c("div", { staticClass: "d-flex align-items-center" }, [
+                    _c("img", {
+                      staticClass: "mr-24",
+                      staticStyle: { width: "120px", height: "auto" },
+                      attrs: {
+                        src: _vm.baseUrl + "/img/warning.png",
+                        alt: "warning icon",
+                      },
+                    }),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "d-flex flex-column" }, [
+                      _c(
+                        "span",
+                        { staticClass: "text-primary-dark text-bold mb-24" },
+                        [
+                          _vm._v(
+                            "\n\t\t\t\t\t\t\t\tPlease re check all the data if correct and genuine. If checking is done and verified, kindly press proceed.\n\t\t\t\t\t\t\t"
+                          ),
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        {
+                          staticClass: "d-flex mt-auto justify-content-between",
+                        },
+                        [
+                          _c(
+                            "a",
+                            {
+                              staticClass: "btn btn-danger min-w-120",
+                              attrs: { href: "#", "data-dismiss": "modal" },
+                            },
+                            [_vm._v("Re Check")]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "a",
+                            {
+                              staticClass: "btn btn-primary-dark min-w-120",
+                              attrs: { href: "#", "data-dismiss": "modal" },
+                              on: {
+                                click: function ($event) {
+                                  $event.preventDefault()
+                                  _vm.saveInfo = 1
+                                },
+                              },
+                            },
+                            [_vm._v("Proceed")]
+                          ),
+                        ]
+                      ),
+                    ]),
+                  ]),
+                ]),
+              ]),
+            ]
+          ),
+        ]
+      ),
+    ],
+    1
+  )
+}
+var staticRenderFns = [
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      { staticClass: "ml-16 mb-24 bb-primary-dark pb-7 text-block" },
+      [_c("h1", { staticClass: "m-0 font-35" }, [_vm._v("Release Entry")])]
+    )
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "search-bar mb-12" }, [
+      _c("input", {
+        staticClass: "form-control",
+        attrs: { type: "text", id: "searchBar", placeholder: "Search" },
+      }),
+      _vm._v(" "),
+      _c("div", [_c("i", { staticClass: "fa fa-search" })]),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("th", [_vm._v("Account #")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Client Name")]),
+      _vm._v(" "),
+      _c("th"),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { attrs: { "d-flex": "", "flex-column": "" } }, [
+      _c("span", { staticClass: "text-red font-md" }, [
+        _vm._v("Existing Current Loan Accounts"),
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "mb-10" }),
+      _vm._v(" "),
+      _c("table", { staticClass: "table table-stripped light-border" }, [
+        _c("thead", [
+          _c("th", [_vm._v("Account #")]),
+          _vm._v(" "),
+          _c("th", [_vm._v("Amount")]),
+          _vm._v(" "),
+          _c("th", [_vm._v("Rem. Bal.")]),
+          _vm._v(" "),
+          _c("th", [_vm._v("Date Rel.")]),
+        ]),
+        _vm._v(" "),
+        _c("tbody", [
+          _c("tr", [
+            _c("td", [_vm._v("0121421")]),
+            _vm._v(" "),
+            _c("td", [_vm._v("22,202.00")]),
+            _vm._v(" "),
+            _c("td", [_vm._v("5,000.00")]),
+            _vm._v(" "),
+            _c("td", [_vm._v("12/12/2021")]),
+          ]),
+          _vm._v(" "),
+          _c("tr", [
+            _c("td", [_vm._v("0121421")]),
+            _vm._v(" "),
+            _c("td", [_vm._v("22,202.00")]),
+            _vm._v(" "),
+            _c("td", [_vm._v("5,000.00")]),
+            _vm._v(" "),
+            _c("td", [_vm._v("12/12/2021")]),
+          ]),
+          _vm._v(" "),
+          _c("tr", [
+            _c("td", [_vm._v("0121421")]),
+            _vm._v(" "),
+            _c("td", [_vm._v("22,202.00")]),
+            _vm._v(" "),
+            _c("td", [_vm._v("5,000.00")]),
+            _vm._v(" "),
+            _c("td", [_vm._v("12/12/2021")]),
+          ]),
+        ]),
+      ]),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "ul",
+      {
+        staticClass: "nav nav-tabs",
+        staticStyle: { display: "none" },
+        attrs: { id: "custom-content-below-tab", role: "tablist" },
+      },
+      [
+        _c("li", { staticClass: "nav-item" }, [
+          _c(
+            "a",
+            {
+              staticClass: "nav-link active",
+              attrs: {
+                id: "custom-content-below-borrowerinfo-tab",
+                "data-toggle": "pill",
+                href: "#custom-content-below-borrowerinfo",
+                role: "tab",
+                "aria-controls": "custom-content-below-home",
+                "aria-selected": "true",
+              },
+            },
+            [_vm._v("Borrower Info")]
+          ),
+        ]),
+        _vm._v(" "),
+        _c("li", { staticClass: "nav-item" }, [
+          _c(
+            "a",
+            {
+              staticClass: "nav-link",
+              attrs: {
+                id: "custom-content-below-coborrowerinfo-tab",
+                "data-toggle": "pill",
+                href: "#custom-content-below-coborrowerinfo",
+                role: "tab",
+                "aria-controls": "custom-content-below-profile",
+                "aria-selected": "false",
+              },
+            },
+            [_vm._v("Co Borrower Info")]
+          ),
+        ]),
+        _vm._v(" "),
+        _c("li", { staticClass: "nav-item" }, [
+          _c(
+            "a",
+            {
+              staticClass: "nav-link",
+              attrs: {
+                id: "custom-content-below-loandetails-tab",
+                "data-toggle": "pill",
+                href: "#custom-content-below-loaddetails",
+                role: "tab",
+                "aria-controls": "custom-content-below-messages",
+                "aria-selected": "false",
+              },
+            },
+            [_vm._v("Loan Details")]
+          ),
+        ]),
+        _vm._v(" "),
+        _c("li", { staticClass: "nav-item" }, [
+          _c(
+            "a",
+            {
+              staticClass: "nav-link",
+              attrs: {
+                id: "custom-content-below-promisory-tab",
+                "data-toggle": "pill",
+                href: "#custom-content-below-promisory",
+                role: "tab",
+                "aria-controls": "custom-content-below-settings",
+                "aria-selected": "false",
+              },
+            },
+            [_vm._v("Settings")]
+          ),
+        ]),
+      ]
+    )
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "section",
+      {
+        staticClass: "mb-24",
+        staticStyle: { flex: "21", "padding-left": "16px" },
+      },
+      [
+        _c("span", { staticClass: "section-title mb-24" }, [
+          _vm._v("Co-Borrower's Information"),
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "d-flex flex-row" }, [
+          _c(
+            "div",
+            { staticClass: "form-group mb-10", staticStyle: { flex: "1" } },
+            [
+              _c(
+                "label",
+                { staticClass: "form-label", attrs: { for: "coFullname" } },
+                [_vm._v("Full Name")]
+              ),
+              _vm._v(" "),
+              _c("input", {
+                staticClass: "form-control form-input ",
+                attrs: { type: "text", id: "coFullname" },
+              }),
+            ]
+          ),
+        ]),
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "form-group mb-10", staticStyle: { flex: "3" } },
+          [
+            _c(
+              "label",
+              { staticClass: "form-label", attrs: { for: "spouseAddress  " } },
+              [_vm._v("Address")]
+            ),
+            _vm._v(" "),
+            _c("input", {
+              staticClass: "form-control form-input ",
+              attrs: { type: "text", id: "spouseAddress  " },
+            }),
+          ]
+        ),
+        _vm._v(" "),
+        _c("div", { staticClass: "d-flex flex-row" }, [
+          _c(
+            "div",
+            {
+              staticClass: "form-group mb-10 mr-16",
+              staticStyle: { flex: "3" },
+            },
+            [
+              _c(
+                "label",
+                { staticClass: "form-label", attrs: { for: "coIdType" } },
+                [_vm._v("ID Type")]
+              ),
+              _vm._v(" "),
+              _c("input", {
+                staticClass: "form-control form-input ",
+                attrs: { type: "text", id: "coIdType" },
+              }),
+            ]
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              staticClass: "form-group mb-10 mr-16",
+              staticStyle: { flex: "3" },
+            },
+            [
+              _c(
+                "label",
+                { staticClass: "form-label", attrs: { for: "coIdNumber" } },
+                [_vm._v("ID Number")]
+              ),
+              _vm._v(" "),
+              _c("input", {
+                staticClass: "form-control form-input ",
+                attrs: { type: "text", id: "coIdNumber" },
+              }),
+            ]
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              staticClass: "form-group mb-10 mr-16",
+              staticStyle: { flex: "3" },
+            },
+            [
+              _c(
+                "label",
+                { staticClass: "form-label", attrs: { for: "coIdDate" } },
+                [_vm._v("ID Date Issued")]
+              ),
+              _vm._v(" "),
+              _c("input", {
+                staticClass: "form-control form-input ",
+                attrs: { type: "date", id: "coIdDate" },
+              }),
+            ]
+          ),
+          _vm._v(" "),
+          _c("div", { staticStyle: { flex: "3" } }),
+        ]),
+      ]
+    )
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "section",
+      {
+        staticClass: "mb-24",
+        staticStyle: { flex: "21", "padding-left": "16px" },
+      },
+      [
+        _c("span", { staticClass: "section-title mb-24" }, [
+          _vm._v("Co-Maker's Information"),
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "d-flex flex-row" }, [
+          _c(
+            "div",
+            { staticClass: "form-group mb-10", staticStyle: { flex: "1" } },
+            [
+              _c(
+                "label",
+                { staticClass: "form-label", attrs: { for: "coFullname" } },
+                [_vm._v("Full Name")]
+              ),
+              _vm._v(" "),
+              _c("input", {
+                staticClass: "form-control form-input ",
+                attrs: { type: "text", id: "coFullname" },
+              }),
+            ]
+          ),
+        ]),
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "form-group mb-10", staticStyle: { flex: "3" } },
+          [
+            _c(
+              "label",
+              { staticClass: "form-label", attrs: { for: "spouseAddress  " } },
+              [_vm._v("Address")]
+            ),
+            _vm._v(" "),
+            _c("input", {
+              staticClass: "form-control form-input ",
+              attrs: { type: "text", id: "spouseAddress  " },
+            }),
+          ]
+        ),
+        _vm._v(" "),
+        _c("div", { staticClass: "d-flex flex-row" }, [
+          _c(
+            "div",
+            {
+              staticClass: "form-group mb-10 mr-16",
+              staticStyle: { flex: "3" },
+            },
+            [
+              _c(
+                "label",
+                { staticClass: "form-label", attrs: { for: "coIdType" } },
+                [_vm._v("ID Type")]
+              ),
+              _vm._v(" "),
+              _c("input", {
+                staticClass: "form-control form-input ",
+                attrs: { type: "text", id: "coIdType" },
+              }),
+            ]
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              staticClass: "form-group mb-10 mr-16",
+              staticStyle: { flex: "3" },
+            },
+            [
+              _c(
+                "label",
+                { staticClass: "form-label", attrs: { for: "coIdNumber" } },
+                [_vm._v("ID Number")]
+              ),
+              _vm._v(" "),
+              _c("input", {
+                staticClass: "form-control form-input ",
+                attrs: { type: "text", id: "coIdNumber" },
+              }),
+            ]
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              staticClass: "form-group mb-10 mr-16",
+              staticStyle: { flex: "3" },
+            },
+            [
+              _c(
+                "label",
+                { staticClass: "form-label", attrs: { for: "coIdDate" } },
+                [_vm._v("ID Date Issued")]
+              ),
+              _vm._v(" "),
+              _c("input", {
+                staticClass: "form-control form-input ",
+                attrs: { type: "date", id: "coIdDate" },
+              }),
+            ]
+          ),
+          _vm._v(" "),
+          _c("div", { staticStyle: { flex: "3" } }),
+        ]),
+      ]
+    )
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "section",
+      {
+        staticClass: "mb-24",
+        staticStyle: { flex: "21", "padding-left": "16px" },
+      },
+      [
+        _c("span", { staticClass: "section-title mb-24" }, [
+          _vm._v("Loan Details"),
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "d-flex flex-row" }, [
+          _c("div", { staticClass: "mr-16", staticStyle: { flex: "18" } }),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "form-group mb-10", staticStyle: { flex: "7" } },
+            [
+              _c(
+                "label",
+                { staticClass: "form-label", attrs: { for: "dateRelease" } },
+                [_vm._v("Date Release")]
+              ),
+              _vm._v(" "),
+              _c("input", {
+                staticClass: "form-control form-input ",
+                attrs: { type: "date", id: "dateRelease" },
+              }),
+            ]
+          ),
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "d-flex flex-row" }, [
+          _c(
+            "div",
+            {
+              staticClass: "form-group mb-10 mr-16",
+              staticStyle: { flex: "3" },
+            },
+            [
+              _c(
+                "label",
+                { staticClass: "form-label", attrs: { for: "cycleNumber" } },
+                [_vm._v("Cycle Number")]
+              ),
+              _vm._v(" "),
+              _c("input", {
+                staticClass: "form-control form-input ",
+                attrs: { type: "text", id: "cycleNumber" },
+              }),
+            ]
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              staticClass: "form-group mb-10 mr-16",
+              staticStyle: { flex: "7" },
+            },
+            [
+              _c(
+                "label",
+                { staticClass: "form-label", attrs: { for: "accountOfficer" } },
+                [_vm._v("Account Officer")]
+              ),
+              _vm._v(" "),
+              _c("input", {
+                staticClass: "form-control form-input ",
+                attrs: { type: "text", id: "accountOfficer" },
+              }),
+            ]
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              staticClass: "form-group mb-10 mr-16",
+              staticStyle: { flex: "7" },
+            },
+            [
+              _c(
+                "label",
+                { staticClass: "form-label", attrs: { for: "product" } },
+                [_vm._v("Product")]
+              ),
+              _vm._v(" "),
+              _c("input", {
+                staticClass: "form-control form-input ",
+                attrs: { type: "text", id: "product" },
+              }),
+            ]
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "form-group mb-10", staticStyle: { flex: "7" } },
+            [
+              _c(
+                "label",
+                { staticClass: "form-label", attrs: { for: "accountNumber" } },
+                [_vm._v("Account Number")]
+              ),
+              _vm._v(" "),
+              _c("input", {
+                staticClass: "form-control form-input ",
+                attrs: { type: "text", id: "accountNumber" },
+              }),
+            ]
+          ),
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "d-flex flex-row" }, [
+          _c(
+            "div",
+            {
+              staticClass: "form-group mb-10 mr-16",
+              staticStyle: { flex: "7" },
+            },
+            [
+              _c(
+                "label",
+                { staticClass: "form-label", attrs: { for: "center" } },
+                [_vm._v("Center")]
+              ),
+              _vm._v(" "),
+              _c("input", {
+                staticClass: "form-control form-input ",
+                attrs: { type: "text", id: "center" },
+              }),
+            ]
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              staticClass: "form-group mb-10 mr-16",
+              staticStyle: { flex: "7" },
+            },
+            [
+              _c(
+                "label",
+                { staticClass: "form-label", attrs: { for: "type" } },
+                [_vm._v("Type")]
+              ),
+              _vm._v(" "),
+              _c("input", {
+                staticClass: "form-control form-input ",
+                attrs: { type: "text", id: "type" },
+              }),
+            ]
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "form-group mb-10", staticStyle: { flex: "7" } },
+            [
+              _c(
+                "label",
+                { staticClass: "form-label", attrs: { for: "mode" } },
+                [_vm._v("Mode")]
+              ),
+              _vm._v(" "),
+              _c("input", {
+                staticClass: "form-control form-input ",
+                attrs: { type: "text", id: "mode" },
+              }),
+            ]
+          ),
+        ]),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass: "d-flex flex-row pb-45 mb-24",
+            staticStyle: { "border-bottom": "1px solid #dfdfd0" },
+          },
+          [
+            _c(
+              "div",
+              {
+                staticClass: "form-group mb-10 mr-16",
+                staticStyle: { flex: "7" },
+              },
+              [
+                _c(
+                  "label",
+                  { staticClass: "form-label", attrs: { for: "center" } },
+                  [_vm._v("Loan Amount")]
+                ),
+                _vm._v(" "),
+                _c("input", {
+                  staticClass: "form-control form-input ",
+                  attrs: { type: "text", id: "center" },
+                }),
+              ]
+            ),
+            _vm._v(" "),
+            _c(
+              "div",
+              {
+                staticClass: "form-group mb-10 mr-16",
+                staticStyle: { flex: "4" },
+              },
+              [
+                _c(
+                  "label",
+                  { staticClass: "form-label", attrs: { for: "group" } },
+                  [_vm._v("Terms")]
+                ),
+                _vm._v(" "),
+                _c("input", {
+                  staticClass: "form-control form-input ",
+                  attrs: { type: "text", id: "group" },
+                }),
+              ]
+            ),
+            _vm._v(" "),
+            _c(
+              "div",
+              {
+                staticClass: "form-group mb-10 mr-16",
+                staticStyle: { flex: "5" },
+              },
+              [
+                _c(
+                  "label",
+                  { staticClass: "form-label", attrs: { for: "type" } },
+                  [_vm._v("Day Schedule")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "select",
+                  {
+                    staticClass: "form-control form-input ",
+                    attrs: { id: "type" },
+                  },
+                  [
+                    _c("option", { attrs: { value: "monday" } }, [
+                      _vm._v("Monday"),
+                    ]),
+                    _vm._v(" "),
+                    _c("option", { attrs: { value: "tuesday" } }, [
+                      _vm._v("Tuesday"),
+                    ]),
+                    _vm._v(" "),
+                    _c("option", { attrs: { value: "wednesday" } }, [
+                      _vm._v("Wednesday"),
+                    ]),
+                    _vm._v(" "),
+                    _c("option", { attrs: { value: "thursday" } }, [
+                      _vm._v("Thursday"),
+                    ]),
+                    _vm._v(" "),
+                    _c("option", { attrs: { value: "friday" } }, [
+                      _vm._v("Friday"),
+                    ]),
+                    _vm._v(" "),
+                    _c("option", { attrs: { value: "saturday" } }, [
+                      _vm._v("Saturday"),
+                    ]),
+                    _vm._v(" "),
+                    _c("option", { attrs: { value: "sunday" } }, [
+                      _vm._v("Sunday"),
+                    ]),
+                  ]
+                ),
+              ]
+            ),
+            _vm._v(" "),
+            _c("div", { staticStyle: { flex: "9" } }),
+          ]
+        ),
+        _vm._v(" "),
+        _c("div", { staticClass: "d-flex flex-row" }, [
+          _c(
+            "div",
+            {
+              staticClass: "form-group mb-10 mr-16",
+              staticStyle: { flex: "6" },
+            },
+            [
+              _c(
+                "label",
+                { staticClass: "form-label", attrs: { for: "interestRate" } },
+                [_vm._v("Interest Rate")]
+              ),
+              _vm._v(" "),
+              _c("input", {
+                staticClass: "form-control form-input ",
+                attrs: { type: "text", id: "interestRate" },
+              }),
+            ]
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              staticClass: "form-group mb-10 mr-16",
+              staticStyle: { flex: "6" },
+            },
+            [
+              _c(
+                "label",
+                { staticClass: "form-label", attrs: { for: "interestAmount" } },
+                [_vm._v("Interest Amount")]
+              ),
+              _vm._v(" "),
+              _c("input", {
+                staticClass: "form-control form-input ",
+                attrs: { type: "text", id: "group" },
+              }),
+            ]
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              staticClass: "form-group mb-10 mr-16",
+              staticStyle: { flex: "6" },
+            },
+            [
+              _c(
+                "label",
+                {
+                  staticClass: "form-label",
+                  attrs: { for: "numberOfInstallment" },
+                },
+                [_vm._v("Number of Installment")]
+              ),
+              _vm._v(" "),
+              _c("input", {
+                staticClass: "form-control form-input ",
+                attrs: { type: "text", id: "numberOfInstallment" },
+              }),
+            ]
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "form-group mb-10", staticStyle: { flex: "6" } },
+            [
+              _c(
+                "label",
+                { staticClass: "form-label", attrs: { for: "dueDate" } },
+                [_vm._v("Due Date")]
+              ),
+              _vm._v(" "),
+              _c("input", {
+                staticClass: "form-control form-input ",
+                attrs: { type: "date", id: "dueDate" },
+              }),
+            ]
+          ),
+        ]),
+      ]
+    )
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "section",
+      {
+        staticClass: "mb-24 pb-45",
+        staticStyle: {
+          flex: "21",
+          "padding-left": "16px",
+          "border-bottom": "1px solid #AAA",
+        },
+      },
+      [
+        _c("span", { staticClass: "section-title mb-24" }, [
+          _vm._v("Deduction Fees"),
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "d-flex flex-row" }, [
+          _c(
+            "div",
+            {
+              staticClass: "d-flex flex-column mr-45",
+              staticStyle: { flex: "3" },
+            },
+            [
+              _c("div", { staticClass: "d-flex flex-row mb-16" }, [
+                _c(
+                  "label",
+                  {
+                    staticClass: "form-label",
+                    staticStyle: { flex: "2" },
+                    attrs: { for: "dueDate" },
+                  },
+                  [_vm._v("Filling Fee")]
+                ),
+                _vm._v(" "),
+                _c("input", {
+                  staticClass: "form-control form-input text-right",
+                  staticStyle: { flex: "3" },
+                  attrs: { type: "text", value: "P 25,000.00", id: "dueDate" },
+                }),
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "d-flex flex-row mb-16" }, [
+                _c(
+                  "label",
+                  {
+                    staticClass: "form-label",
+                    staticStyle: { flex: "2" },
+                    attrs: { for: "dueDate" },
+                  },
+                  [_vm._v("Doc. Stamp")]
+                ),
+                _vm._v(" "),
+                _c("input", {
+                  staticClass: "form-control form-input text-right",
+                  staticStyle: { flex: "3" },
+                  attrs: { type: "text", value: "P 25,000.00", id: "dueDate" },
+                }),
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "d-flex flex-row mb-16" }, [
+                _c(
+                  "label",
+                  {
+                    staticClass: "form-label",
+                    staticStyle: { flex: "2" },
+                    attrs: { for: "dueDate" },
+                  },
+                  [_vm._v("Insurance")]
+                ),
+                _vm._v(" "),
+                _c("input", {
+                  staticClass: "form-control form-input text-right",
+                  staticStyle: { flex: "3" },
+                  attrs: { type: "text", value: "P 25,000.00", id: "dueDate" },
+                }),
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "d-flex flex-row mb-16" }, [
+                _c(
+                  "label",
+                  {
+                    staticClass: "form-label",
+                    staticStyle: { flex: "2" },
+                    attrs: { for: "dueDate" },
+                  },
+                  [_vm._v("Notarial Fee")]
+                ),
+                _vm._v(" "),
+                _c("input", {
+                  staticClass: "form-control form-input text-right",
+                  staticStyle: { flex: "3" },
+                  attrs: { type: "text", value: "P 25,000.00", id: "dueDate" },
+                }),
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "d-flex flex-row mb-16" }, [
+                _c(
+                  "label",
+                  {
+                    staticClass: "form-label",
+                    staticStyle: { flex: "2" },
+                    attrs: { for: "dueDate" },
+                  },
+                  [_vm._v("Prepaid Interest")]
+                ),
+                _vm._v(" "),
+                _c("input", {
+                  staticClass: "form-control form-input text-right",
+                  staticStyle: { flex: "3" },
+                  attrs: { type: "text", value: "P 25,000.00", id: "dueDate" },
+                }),
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "d-flex flex-row mb-16" }, [
+                _c(
+                  "label",
+                  {
+                    staticClass: "form-label",
+                    staticStyle: { flex: "2" },
+                    attrs: { for: "dueDate" },
+                  },
+                  [_vm._v("Affidavit")]
+                ),
+                _vm._v(" "),
+                _c("input", {
+                  staticClass: "form-control form-input text-right",
+                  staticStyle: { flex: "3" },
+                  attrs: { type: "text", value: "P 25,000.00", id: "dueDate" },
+                }),
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "d-flex flex-row mb-16" }, [
+                _c(
+                  "label",
+                  {
+                    staticClass: "form-label",
+                    staticStyle: { flex: "2" },
+                    attrs: { for: "dueDate" },
+                  },
+                  [_vm._v("Memo")]
+                ),
+                _vm._v(" "),
+                _c("input", {
+                  staticClass: "form-control form-input text-right",
+                  staticStyle: { flex: "3" },
+                  attrs: { type: "text", value: "P 25,000.00", id: "dueDate" },
+                }),
+              ]),
+            ]
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "d-flex flex-column", staticStyle: { flex: "2" } },
+            [
+              _c("div", { staticClass: "form-group mb-16" }, [
+                _c(
+                  "label",
+                  { staticClass: "form-label", attrs: { for: "dueDate" } },
+                  [_vm._v("Total Deductions")]
+                ),
+                _vm._v(" "),
+                _c("input", {
+                  staticClass: "form-control form-input text-right text-green ",
+                  attrs: { type: "date", id: "dueDate" },
+                }),
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "form-group mb-45" }, [
+                _c(
+                  "label",
+                  { staticClass: "form-label", attrs: { for: "dueDate" } },
+                  [_vm._v("Net Proceeds")]
+                ),
+                _vm._v(" "),
+                _c("input", {
+                  staticClass: "form-control form-input text-right text-green ",
+                  attrs: { type: "date", id: "dueDate" },
+                }),
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "form-group" }, [
+                _c(
+                  "label",
+                  { staticClass: "form-label", attrs: { for: "dueDate" } },
+                  [_vm._v("Release Type")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "select",
+                  {
+                    staticClass:
+                      "form-control form-input pr-12 text-right text-green",
+                    attrs: { name: "", id: "" },
+                  },
+                  [
+                    _c("option", { attrs: { value: "" } }, [
+                      _vm._v("Cash Release"),
+                    ]),
+                  ]
+                ),
+              ]),
+            ]
+          ),
+          _vm._v(" "),
+          _c("div", { staticClass: "flex-1" }),
+        ]),
+      ]
+    )
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      {
+        staticClass: "tab-pane fade",
+        attrs: {
+          id: "custom-content-below-promisory",
+          role: "tabpanel",
+          "aria-labelledby": "custom-content-below-settings-tab",
+        },
+      },
+      [
+        _c("div", { staticClass: "d-flex flex-column" }, [
+          _c(
+            "section",
+            {
+              staticClass: "mb-24",
+              staticStyle: { flex: "21", "padding-left": "16px" },
+            },
+            [
+              _c("span", { staticClass: "section-title mb-24" }, [
+                _vm._v("Promisory Details"),
+              ]),
+            ]
+          ),
+          _vm._v(" "),
+          _c("div", { staticClass: "d-flex flex-row-reverse mb-45" }, [
+            _c(
+              "a",
+              {
+                staticClass: "btn btn-success tab-navigate",
+                staticStyle: { flex: "2" },
+                attrs: {
+                  href: "#",
+                  "data-tab": "custom-content-below-promisory-tab",
+                },
+              },
+              [_vm._v("Next")]
+            ),
+            _vm._v(" "),
+            _c(
+              "a",
+              {
+                staticClass: "btn btn-primary-dark mr-24 tab-navigate",
+                staticStyle: { flex: "2" },
+                attrs: {
+                  href: "#",
+                  "data-tab": "custom-content-below-loandetails-tab",
+                },
+              },
+              [_vm._v("Back")]
+            ),
+            _vm._v(" "),
+            _c("div", { staticStyle: { flex: "22" } }),
+          ]),
+        ]),
+      ]
+    )
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      {
+        staticClass:
+          "flex-2 light-border d-flex flex-column letter-nav xs-mb-32 xs-flex-1",
+      },
+      [
+        _c(
+          "div",
+          {
+            staticClass: "pxy-25 light-bb hover-light",
+            attrs: { "data-tab": "" },
+          },
+          [_c("span", { staticClass: "text-20" }, [_vm._v("Reminder Letter")])]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass: "pxy-25 light-bb hover-light active",
+            attrs: { "data-tab": "dacion-en-pago-tab" },
+          },
+          [_c("span", { staticClass: "text-20" }, [_vm._v("DACION EN PAGO")])]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass: "pxy-25 light-bb hover-light",
+            attrs: { "data-tab": "" },
+          },
+          [_c("span", { staticClass: "text-20" }, [_vm._v("DOA For ATM")])]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass: "pxy-25 light-bb hover-light",
+            attrs: { "data-tab": "" },
+          },
+          [_c("span", { staticClass: "text-20" }, [_vm._v("MOA For SME")])]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass: "pxy-25 light-bb hover-light",
+            attrs: { "data-tab": "" },
+          },
+          [_c("span", { staticClass: "text-20" }, [_vm._v("SME Schedule")])]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass: "pxy-25 hover-light",
+            attrs: { "data-tab": "promissory-note-tab" },
+          },
+          [_c("span", { staticClass: "text-20" }, [_vm._v("Promissory Note")])]
+        ),
+      ]
+    )
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "ul",
+      {
+        staticClass: "nav nav-tabs hide",
+        attrs: { id: "custom-content-below-tab", role: "tablist" },
+      },
+      [
+        _c("li", { staticClass: "nav-item" }, [
+          _c(
+            "a",
+            {
+              staticClass: "nav-link active",
+              attrs: {
+                id: "dacion-en-pago-tab",
+                "data-toggle": "pill",
+                href: "#dacion-en-pago",
+                role: "tab",
+                "aria-controls": "custom-content-below-home",
+                "aria-selected": "true",
+              },
+            },
+            [_vm._v("DACION EN PAGO")]
+          ),
+        ]),
+        _vm._v(" "),
+        _c("li", { staticClass: "nav-item" }, [
+          _c(
+            "a",
+            {
+              staticClass: "nav-link",
+              attrs: {
+                id: "promissory-note-tab",
+                "data-toggle": "pill",
+                href: "#promissory-note",
+                role: "tab",
+                "aria-controls": "custom-content-below-profile",
+                "aria-selected": "false",
+              },
+            },
+            [_vm._v("Promissory Note")]
+          ),
+        ]),
+      ]
+    )
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      {
+        staticClass: "d-flex flex-column font-md",
+        staticStyle: { padding: "0 35px" },
+      },
+      [
+        _c(
+          "div",
+          { staticClass: "d-flex flex-column title align-items-center mb-24" },
+          [
+            _c(
+              "span",
+              { staticClass: "font-26 text-bold text-primary-dark lh-1" },
+              [_vm._v("DACION EN PAGO")]
+            ),
+          ]
+        ),
+        _vm._v(" "),
+        _c("section", { staticClass: "font-md" }, [
+          _c("span", { staticClass: "text-block mb-24" }, [
+            _vm._v("KNOW ALL MEN BY THESE PRESENTS:"),
+          ]),
+          _vm._v(" "),
+          _c("p", [
+            _vm._v(
+              "\n\t\t\t\t\t\t\t\t\t\tThis INSTURMENT made and executed this 14TH day of DECEMBER 2021 at Button City, Philippines, by and between: "
+            ),
+            _c("span", { staticClass: "text-underlined" }, [
+              _vm._v("LOLITO T. AMODIA"),
+            ]),
+            _vm._v(
+              " single/married to_________________________________________  of legal age, Filipino citizen, and resident of "
+            ),
+            _c("span", { staticClass: "text-underlined" }, [
+              _vm._v("P-9 MJ SANTOS TUNGAO, BUTUAN CITY AGUSAN DEL NORTE"),
+            ]),
+            _vm._v(
+              "  herein after called the FIRST PARTY;\n\t\t\t\t\t\t\t\t\t"
+            ),
+          ]),
+          _vm._v(" "),
+          _c("p", [
+            _vm._v(
+              "\n\t\t\t\t\t\t\t\t\t\tMAC LENDING a lending institution, duly registered under the laws of the Republic of the Philippines and with postal address at T. Cabo Extension, Butuan City represented by its Branch Manager JANINE L DESCALLAR herein after called as the SECOND PARTY;\n\t\t\t\t\t\t\t\t\t"
+            ),
+          ]),
+          _vm._v(" "),
+          _c("p", [_vm._v("WITNESSETH:")]),
+          _vm._v(" "),
+          _c("p", [
+            _vm._v(
+              "\n\t\t\t\t\t\t\t\t\t\tThat the FIRST PARTY hereby acknowledges to have been indebted to the SECOND PARTY in the sum of THIRTEEN THOUSAND PESOS (P13,000.00). Philippines currency, as of this date, since, he/she could no longer paid it in full by way of cash, hence, by presents the FIRST PARTY, voluntarily assign, transfer convey and set over unto the SECOND PARTY that certain PERSONAL property particularly describe as follows: \n\t\t\t\t\t\t\t\t\t"
+            ),
+          ]),
+          _vm._v(" "),
+          _c("p", [
+            _c("span", { staticClass: "text-block" }, [_vm._v("Description:")]),
+            _vm._v(
+              " CR No.:283729891; Plate No.:1501-00000126137; Engine No.: KPY00E276322; Chassis No.: KPY00276400; Make: HONDA MOTOR WORLD, INC.; Series: CETI 25MSE; Body Type: MOTORCYCLE RED; XRM 125 DS \n\t\t\t\t\t\t\t\t\t"
+            ),
+          ]),
+          _vm._v(" "),
+          _c("p", [
+            _c("span", { staticClass: "text-block" }, [
+              _vm._v(
+                "of which the FIRST PARTY is registered owner, his/her property thereto being evidence by"
+              ),
+            ]),
+            _vm._v(
+              "\n\t\t\t\t\t\t\t\t\t\t____________________________________________.\n\t\t\t\t\t\t\t\t\t"
+            ),
+          ]),
+          _vm._v(" "),
+          _c("p", [
+            _vm._v(
+              "\n\t\t\t\t\t\t\t\t\t\tThat the SECOND PARTY does hereby accept this assignment in payment of the total/partial obligation owing to him/her by the FIRST PARTY as above stated, (giving to the Second Party, however, the option to repurchase the above-describe property from the First Party for the sum of and after the date hereof, which right shall automatically be deemed cancelled, it not exercised within 15 days from the date hereof).\n\t\t\t\t\t\t\t\t\t"
+            ),
+          ]),
+          _vm._v(" "),
+          _c("p", [
+            _vm._v(
+              "\n\t\t\t\t\t\t\t\t\t\tThat by virtue of this presents, the indebtedness of FIRST PARTY as cited above is hereby paid and extinguished. \n\t\t\t\t\t\t\t\t\t"
+            ),
+          ]),
+          _vm._v(" "),
+          _c("p", [
+            _vm._v(
+              "\n\t\t\t\t\t\t\t\t\t\tIN WITNESS WHEREOF, the parties hereto have hereunto set their hands this_____________________________ at Butuan City, Philippines.\n\t\t\t\t\t\t\t\t\t"
+            ),
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "d-flex flex-row mb-24" }, [
+            _c("div", { staticClass: "flex-1" }, [
+              _c("span", { staticClass: "text-block" }, [
+                _vm._v("LOLITO AMODIA "),
+              ]),
+              _vm._v(" "),
+              _c("span", { staticClass: "text-block" }, [
+                _vm._v("FIRST PARTY"),
+              ]),
+              _vm._v(" "),
+              _c("span", { staticClass: "text-block" }, [
+                _vm._v("Type of ID: BRGY ID"),
+              ]),
+              _vm._v(" "),
+              _c("span", { staticClass: "text-block" }, [
+                _vm._v("I.D Number: 2021-13"),
+              ]),
+              _vm._v(" "),
+              _c("span", { staticClass: "text-block" }, [
+                _vm._v("Date:______________________________"),
+              ]),
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "flex-2" }, [
+              _c("span", { staticClass: "text-block" }, [
+                _vm._v("MARK ANTHONY M. CHAVEZ"),
+              ]),
+              _vm._v(" "),
+              _c("span", { staticClass: "text-block" }, [
+                _vm._v("(SECOND PARTY)"),
+              ]),
+              _vm._v(" "),
+              _c("span", { staticClass: "text-block" }, [
+                _vm._v("TIN:920-403-726-000"),
+              ]),
+            ]),
+          ]),
+          _vm._v(" "),
+          _c("p", { staticClass: "mb-64" }, [
+            _vm._v(
+              "\n\t\t\t\t\t\t\t\t\t\tWITH MY MARITAL CONSENT: \n\t\t\t\t\t\t\t\t\t"
+            ),
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "d-flex flex-row align-items-end mb-36" }, [
+            _c("div", { staticClass: "flex-1 mr-64" }, [
+              _c("span", { staticClass: "text-block" }, [
+                _vm._v("SIGNED IN THE PRESENCE OF:"),
+              ]),
+              _vm._v(" "),
+              _c("span", [_vm._v("______________________________________")]),
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "flex-2" }, [
+              _c("span", [_vm._v("______________________________________")]),
+            ]),
+          ]),
+          _vm._v(" "),
+          _c("span", { staticClass: "text-block" }, [
+            _vm._v("ACKNOWLEDGEMENT"),
+          ]),
+          _vm._v(" "),
+          _c("span", { staticClass: "text-block" }, [
+            _vm._v("REPUBLIC OF THE PHILIPPINES)"),
+          ]),
+          _vm._v(" "),
+          _c("span", { staticClass: "text-block" }, [
+            _vm._v("CITY OF ____________________)S.S."),
+          ]),
+          _vm._v(" "),
+          _c("span", { staticClass: "text-block mb-36" }, [
+            _vm._v("X---------------------------------/"),
+          ]),
+          _vm._v(" "),
+          _c("p", [
+            _vm._v(
+              "\n\t\t\t\t\t\t\t\t\t\tBEFORE ME, a notary public for and in the City of Butuan, Philippines this________________ day of_______________,  personally appeared the above named person, known to me and to me known to be the same person of the foregoing instrument, consisting of one (1) page including this page where the acknowledgement is written, signed by the parties and their two (2) instrumental witness, and they acknowledgement to me that the same are their own free will and voluntary act and deed.The Valid ID's of the parties were exhibited to me the same being that which appears below their respective names and signatures above.\n\t\t\t\t\t\t\t\t\t"
+            ),
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "d-flex flex-column" }, [
+            _c("span", [_vm._v("Doc. No.___________")]),
+            _vm._v(" "),
+            _c("span", [_vm._v("Page No.___________")]),
+            _vm._v(" "),
+            _c("span", [_vm._v("Book No.___________")]),
+            _vm._v(" "),
+            _c("span", [_vm._v("Series of___________")]),
+          ]),
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "mb-72" }),
+        _vm._v(" "),
+        _c("div", { staticClass: "d-flex flex-row-reverse mb-45" }, [
+          _c(
+            "a",
+            { staticClass: "btn btn-default min-w-150", attrs: { href: "#" } },
+            [_vm._v("Print")]
+          ),
+          _vm._v(" "),
+          _c(
+            "a",
+            {
+              staticClass: "btn btn-success min-w-150 mr-24",
+              attrs: { href: "#" },
+            },
+            [_vm._v("Download Excel")]
+          ),
+        ]),
+      ]
+    )
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      { staticClass: "d-flex flex-column", staticStyle: { padding: "0 50px" } },
+      [
+        _c("div", { staticClass: "d-flex flex-row align-items-center mb-36" }, [
+          _c("div", { staticClass: "flex-1" }, [
+            _c("span", { staticClass: "text-primary-dark font-26" }, [
+              _vm._v("Butuan Branch (001)"),
+            ]),
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "d-flex flex-column" }, [
+            _c(
+              "span",
+              { staticClass: "font-26 text-bold text-primary-dark lh-1" },
+              [_vm._v("PROMISSORY NOTE")]
+            ),
+            _vm._v(" "),
+            _c(
+              "span",
+              { staticClass: "text-center text-primary-dark font-20" },
+              [_vm._v("001-003-002371")]
+            ),
+          ]),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "flex-1 d-flex justify-content-end pr-10" },
+            [
+              _c("span", { staticClass: " mr-10" }, [
+                _vm._v("Tuesday 12/21/2021"),
+              ]),
+              _vm._v(" "),
+              _c("span", {}, [_vm._v("Time: 11:36 AM")]),
+            ]
+          ),
+        ]),
+        _vm._v(" "),
+        _c("section", [
+          _c("p", { staticClass: "font-md" }, [
+            _vm._v(
+              "\n\t\t\t\t\t\t\t\t\t\tI/We Lagahit, Virginia C. borrowed and received the amount of Five Thousand Pesos (P 5,000.00) and promise to pay jointly and severally (solidarily) to the MICRO ACCESS LOANS CORPORATION until full payment of the said amount including interest rate of ( 3.00% ) per month. And with the following terms and conditions stated below:\n\t\t\t\t\t\t\t\t\t"
+            ),
+          ]),
+        ]),
+        _vm._v(" "),
+        _c(
+          "span",
+          { staticClass: "bbt-8 py-7 text-center text-20 text-bold mb-16" },
+          [_vm._v("TERMS AND CONDITIONS")]
+        ),
+        _vm._v(" "),
+        _c("section", { staticClass: "mb-24" }, [
+          _c("div", { staticClass: "d-flex flex-row" }, [
+            _c("div", { staticClass: "d-flex flex-column flex-1 font-md" }, [
+              _c("div", { staticClass: "d-flex flex-row" }, [
+                _c(
+                  "div",
+                  {
+                    staticClass:
+                      "d-flex flex-row flex-1 justify-content-between pr-24",
+                  },
+                  [
+                    _c("span", {}, [_vm._v("Interest Rate")]),
+                    _vm._v(" "),
+                    _c("span", [_vm._v(":")]),
+                  ]
+                ),
+                _vm._v(" "),
+                _c("span", { staticClass: "flex-2" }, [_vm._v("3.00%")]),
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "d-flex flex-row" }, [
+                _c(
+                  "div",
+                  {
+                    staticClass:
+                      "d-flex flex-row flex-1 justify-content-between pr-24",
+                  },
+                  [
+                    _c("span", {}, [_vm._v("Term (No. of days)")]),
+                    _vm._v(" "),
+                    _c("span", [_vm._v(":")]),
+                  ]
+                ),
+                _vm._v(" "),
+                _c("span", { staticClass: "flex-2" }, [_vm._v("150 day(s)")]),
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "d-flex flex-row" }, [
+                _c(
+                  "div",
+                  {
+                    staticClass:
+                      "d-flex flex-row flex-1 justify-content-between pr-24",
+                  },
+                  [
+                    _c("span", {}, [_vm._v("Mode of Payment")]),
+                    _vm._v(" "),
+                    _c("span", [_vm._v(":")]),
+                  ]
+                ),
+                _vm._v(" "),
+                _c("span", { staticClass: "flex-2" }, [_vm._v("Monthly")]),
+              ]),
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "d-flex flex-column flex-1 font-md" }, [
+              _c("div", { staticClass: "d-flex flex-row" }, [
+                _c(
+                  "div",
+                  {
+                    staticClass:
+                      "d-flex flex-row flex-1 justify-content-between pr-24",
+                  },
+                  [
+                    _c("span", {}, [_vm._v("Due Date")]),
+                    _vm._v(" "),
+                    _c("span", [_vm._v(":")]),
+                  ]
+                ),
+                _vm._v(" "),
+                _c("span", { staticClass: "flex-2 darker-bb" }),
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "d-flex flex-row" }, [
+                _c(
+                  "div",
+                  {
+                    staticClass:
+                      "d-flex flex-row flex-1 justify-content-between pr-24",
+                  },
+                  [
+                    _c("span", {}, [_vm._v("Product")]),
+                    _vm._v(" "),
+                    _c("span", [_vm._v(":")]),
+                  ]
+                ),
+                _vm._v(" "),
+                _c("span", { staticClass: "flex-2" }, [_vm._v("Pension Loan")]),
+              ]),
+            ]),
+          ]),
+        ]),
+        _vm._v(" "),
+        _c(
+          "span",
+          { staticClass: "bbt-8 py-7 text-center text-20 text-bold mb-16" },
+          [_vm._v("OTHER CONDITIONS")]
+        ),
+        _vm._v(" "),
+        _c("section", { staticClass: "font-md mb-45" }, [
+          _c(
+            "p",
+            { staticClass: "mb-64", staticStyle: { "line-height": "1.8" } },
+            [
+              _vm._v(
+                "\n\t\t\t\t\t\t\t\t\t\tIn case of default, this note will be due and demandable without further demand, and an additional fee of (2%) per missed payment of the scheduled amortization as penalty, And in case this note be given to hands of an attorney an additional charged of (10%) of the total amount due will be charged as attorney's fee, further, the borrower is liable to litigation expenses, damages, etc. should the failure on the part of the borrower reach the courts. In cases that the borrower/s changes address/ transfer of residence without notice to MICRO ACCESS LOANS CORPORATION in writing, the address indicated in this note shall be the address for purposes of delivery of notices and other matters pertaining to the loan. Shall any issue/case that may arise as a result of this promissory note on any document in relation hereto, venue shall be at the civil courts of Butuan City, Agusan del Norte, to the exclusion of other court or at the option of MICRO ACCESS LOANS CORPORATION The Borrower/s hereby authorized the MICRO ACCESS LOANS CORPORATION to assign, sell or otherwise negotiate this note with any financial institution on its face value. Done this _____________ day of _________________________.\n\t\t\t\t\t\t\t\t\t"
+              ),
+            ]
+          ),
+          _vm._v(" "),
+          _c("div", { staticClass: "d-flex flex-row" }, [
+            _c("div", { staticClass: "flex-1" }),
+            _vm._v(" "),
+            _c("div", { staticClass: "d-flex flex-column flex-3" }, [
+              _c("div", { staticClass: "d-flex" }, [
+                _c("span", { staticClass: "mr-5" }, [
+                  _vm._v("Lagahit, Virginia C. "),
+                ]),
+                _vm._v(" "),
+                _c("span"),
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "d-flex" }, [
+                _c("span", { staticClass: "mr-5" }, [
+                  _vm._v("Borrower Signature"),
+                ]),
+                _vm._v(" "),
+                _c("span"),
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "d-flex" }, [
+                _c("span", { staticClass: "mr-5" }, [_vm._v("Type of ID : ")]),
+                _vm._v(" "),
+                _c("span", [_vm._v("SENIOR ID")]),
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "d-flex" }, [
+                _c("span", { staticClass: "mr-5" }, [_vm._v("ID Number : ")]),
+                _vm._v(" "),
+                _c("span", [_vm._v("7124-A")]),
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "d-flex" }, [
+                _c("span", { staticClass: "mr-5" }, [_vm._v("Date Issue : ")]),
+                _vm._v(" "),
+                _c("span", [_vm._v("01/01/00")]),
+              ]),
+            ]),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "d-flex flex-column flex-3 align-items-end" },
+              [
+                _c("div", [
+                  _c("div", { staticClass: "d-flex" }, [
+                    _c("span", { staticClass: "mr-5" }, [
+                      _vm._v("Lagahit, Virginia C. "),
+                    ]),
+                    _vm._v(" "),
+                    _c("span"),
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "d-flex" }, [
+                    _c("span", { staticClass: "mr-5" }, [
+                      _vm._v("Borrower Signature"),
+                    ]),
+                    _vm._v(" "),
+                    _c("span"),
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "d-flex" }, [
+                    _c("span", { staticClass: "mr-5" }, [
+                      _vm._v("Type of ID : "),
+                    ]),
+                    _vm._v(" "),
+                    _c("span", [_vm._v("SENIOR ID")]),
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "d-flex" }, [
+                    _c("span", { staticClass: "mr-5" }, [
+                      _vm._v("ID Number : "),
+                    ]),
+                    _vm._v(" "),
+                    _c("span", [_vm._v("7124-A")]),
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "d-flex" }, [
+                    _c("span", { staticClass: "mr-5" }, [
+                      _vm._v("Date Issue : "),
+                    ]),
+                    _vm._v(" "),
+                    _c("span", [_vm._v("01/01/00")]),
+                  ]),
+                ]),
+              ]
+            ),
+            _vm._v(" "),
+            _c("div", { staticClass: "flex-1" }),
+          ]),
+        ]),
+        _vm._v(" "),
+        _c(
+          "span",
+          { staticClass: "bbt-8 py-7 text-center text-20 text-bold mb-16" },
+          [_vm._v("COMAKER STATEMENT")]
+        ),
+        _vm._v(" "),
+        _c("section", { staticClass: "font-md mb-24" }, [
+          _c("p", { staticClass: "mb-45" }, [
+            _vm._v(
+              "\n\t\t\t\t\t\t\t\t\t\tI agree to become a co-maker to this Promissory Note, I aware of the joint and severally (solidarilly) accountability in this note that in case the principal borrower missed their due amortization, I will assume all the obligation including all other penalties until full payment as stated in the condition of this note.\n\t\t\t\t\t\t\t\t\t"
+            ),
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "d-flex flex-row align-items-center" }, [
+            _c("div", { staticClass: "flex-1" }),
+            _vm._v(" "),
+            _c("div", { staticClass: "d-flex flex-column flex-2 font-md" }, [
+              _c(
+                "div",
+                {
+                  staticClass:
+                    "d-flex flex-row flex-1 justify-content-between pr-24",
+                },
+                [_c("span", {}, [_vm._v("Co-Borrower Signature")])]
+              ),
+            ]),
+            _vm._v(" "),
+            _c(
+              "div",
+              {
+                staticClass:
+                  "d-flex flex-row flex-2 font-md justify-content-end",
+              },
+              [
+                _c("div", { staticClass: "d-flex flex-column" }, [
+                  _c(
+                    "div",
+                    {
+                      staticClass:
+                        "d-flex flex-row flex-1 justify-content-between pr-24",
+                    },
+                    [_c("span", {}, [_vm._v("Type of ID :")])]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    {
+                      staticClass:
+                        "d-flex flex-row flex-1 justify-content-between pr-24",
+                    },
+                    [_c("span", {}, [_vm._v("ID Number  :")])]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    {
+                      staticClass:
+                        "d-flex flex-row flex-1 justify-content-between pr-24",
+                    },
+                    [_c("span", {}, [_vm._v("Date Issue :")])]
+                  ),
+                ]),
+              ]
+            ),
+            _vm._v(" "),
+            _c("div", { staticClass: "flex-1" }),
+          ]),
+        ]),
+        _vm._v(" "),
+        _c(
+          "span",
+          { staticClass: "bbt-8 py-7 text-center text-20 text-bold mb-16" },
+          [_vm._v("ACKNOWLEDGEMENT")]
+        ),
+        _vm._v(" "),
+        _c("section", { staticClass: "font-md" }, [
+          _c("div", { staticClass: "mb-24" }, [
+            _c("span", { staticClass: "text-block" }, [
+              _vm._v("Republic of the Philippines"),
+            ]),
+            _vm._v(" "),
+            _c("span", [_vm._v("Butuan City")]),
+          ]),
+          _vm._v(" "),
+          _c("p", [
+            _vm._v(
+              "\n\t\t\t\t\t\t\t\t\t\tSUBSCRIBE AND SWORN before me this___ day of ___________, 20___, and tax identetification number written above,\n\t\t\t\t\t\t\t\t\t\tKnown to me and to me known to be the same person who executed the foregoing Promissory Note and they Acknowledged to me that the same is their own free and voluntary act and as well as the free and voluntary act and deed of the entitles herein represented with full power so to do and for the uses and purposes thereon set forth.\n\t\t\t\t\t\t\t\t\t"
+            ),
+          ]),
+          _vm._v(" "),
+          _c("p", [
+            _vm._v(
+              "\n\t\t\t\t\t\t\t\t\t\tIN WITNESS WHEREOF, I have set my hand and affixed my Notarial Seal on date place above written.\n\t\t\t\t\t\t\t\t\t"
+            ),
+          ]),
+          _vm._v(" "),
+          _c("p", { staticClass: "text-block text-right" }, [
+            _vm._v("\n\t\t\t\t\t\t\t\t\t\tNOTARY PUBLIC\n\t\t\t\t\t\t\t\t\t"),
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "d-flex flex-column" }, [
+            _c("span", [_vm._v("Doc. No.___________")]),
+            _vm._v(" "),
+            _c("span", [_vm._v("Page No.___________")]),
+            _vm._v(" "),
+            _c("span", [_vm._v("Book No.___________")]),
+            _vm._v(" "),
+            _c("span", [_vm._v("Series of___________")]),
+          ]),
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "mb-72" }),
+        _vm._v(" "),
+        _c("div", { staticClass: "d-flex flex-row-reverse mb-45" }, [
+          _c(
+            "a",
+            { staticClass: "btn btn-default min-w-150", attrs: { href: "#" } },
+            [_vm._v("Print")]
+          ),
+          _vm._v(" "),
+          _c(
+            "a",
+            {
+              staticClass: "btn btn-success min-w-150 mr-24",
+              attrs: { href: "#" },
+            },
+            [_vm._v("Download Excel")]
+          ),
+        ]),
+      ]
+    )
   },
 ]
 render._withStripped = true

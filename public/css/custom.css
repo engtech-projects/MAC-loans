@@ -1,5 +1,9 @@
 
 /* UTILITIES */
+.c-pointer {
+	cursor: pointer;
+}
+
 .hover-primary-dark:hover {
 	background-color: #293f54;
 	color: #FFF;

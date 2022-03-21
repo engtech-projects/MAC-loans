@@ -7,6 +7,7 @@ use App\Http\Controllers\API\DashboardController;
 use App\Http\Controllers\MaintenanceController;
 use App\Http\Controllers\ClientInformationController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\TransactionController;
 use Illuminate\Routing\RouteGroup;
 
 /*
@@ -21,13 +22,13 @@ use Illuminate\Routing\RouteGroup;
 */
 Route::get('/login', [LoginController::class, 'index'])->name('login');
 Route::post('/login', [LoginController::class, 'login']);
-Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
 Route::get('/', function () {
-    
+    return redirect('/dashboard');
 });
 Route::group(['middleware' => 'auth'], function (){
 	Route::get('logout', [LoginController::class, 'logout']);
+	Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 	Route::get('/client_information/personal_information_list', [ClientInformationController::class, 'personalInformationList'])->name('client_information.personal_information_list');
 	Route::get('/client_information/personal_information_details', [ClientInformationController::class, 'personalInformationDetails'])->name('client_information.personal_information_details');
 	Route::get('/client_information/statement_of_accounts_list', [ClientInformationController::class, 'statementOfAccountsList'])->name('client_information.statement_of_accounts_list');
@@ -38,6 +39,8 @@ Route::group(['middleware' => 'auth'], function (){
 	Route::get('/maintenance/user_settings', [MaintenanceController::class, 'userSettings'])->name('maintenance.user_settings');
 	Route::get('/maintenance/gl_setup', [MaintenanceController::class, 'glSetup'])->name('maintenance.gl_setup');
 	Route::get('/maintenance/account_retagging', [MaintenanceController::class, 'accountRetagging'])->name('maintenance.account_retagging');
+
+	Route::get('/maintenance/release_entry', [TransactionController::class, 'releaseEntry'])->name('transaction.release_entry');
 });
 
 
