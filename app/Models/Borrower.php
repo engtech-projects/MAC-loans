@@ -15,6 +15,7 @@ class Borrower extends Model
     protected $fillable = [
     	'borrower_id',
 		'borrower_num',
+		'date_registered',
 		'firstname',
 		'middlename',
 		'lastname',
@@ -42,6 +43,10 @@ class Borrower extends Model
     	return '123456';
     }
 
+    public function fullname() {
+    	return ucfirst($this->lastname) . ', ' . ucfirst($this->firstname) . ' '. ucfirst($this->middlename) . ' '. ucfirst($this->suffix);
+    }
+
     public function businessInfo() {
     	return $this->hasMany(BusinessInfo::class, 'borrower_id');
     }
@@ -55,5 +60,7 @@ class Borrower extends Model
     	return $this->hasMany(OutstandingObligations::class, 'borrower_id');
     }
 
-    
+    public function loanAccounts() {
+        return $this->hasMany(LoanAccount::class, 'borrower_id');
+    }
 }
