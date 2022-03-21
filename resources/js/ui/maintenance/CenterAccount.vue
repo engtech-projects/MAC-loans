@@ -158,7 +158,7 @@
 				</section>
 			</div>
 		</div>
-		<branch :token="token"></branch>
+		<branch @branchUpdated="fetchBranches" :token="token"></branch>
 	</div>
 </template>
 

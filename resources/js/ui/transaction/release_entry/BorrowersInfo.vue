@@ -15,7 +15,7 @@
 						<div style="flex:4"></div>
 						<div class="form-group mb-10" style="flex: 5">
 							<label for="regDate" class="form-label">Date Registration</label>
-							<input type="date" class="form-control form-input text-right" id="regDate">
+							<input type="date" v-model="borrower.created_at" class="form-control form-input text-right" id="regDate">
 						</div>
 					</div>
 					<div class="form-group mb-10" style="flex: 5">
@@ -410,7 +410,7 @@
 
 		<div class="d-flex flex-row-reverse">
 			<a @click.prevent="submitForm()" href="#custom-content-below-coborrowerinfo" data-tab="custom-content-below-coborrowerinfo-tab" class="btn btn-success tab-navigate" style="flex:2">Next</a>
-			<a href="#" @click.prevent="clearInfo()" class="btn btn-yellow-light min-w-150 mr-16">Clear Info</a>
+			<!-- <a href="#" @click.prevent="clearInfo()" class="btn btn-yellow-light min-w-150 mr-16">Clear Info</a> -->
 			<div style="flex:22"></div>
 		</div>
 	</div>
@@ -418,7 +418,7 @@
 
 <script>
     export default {
-		props:['token','pborrower', 'psave'],
+		props:['token','pborrower', 'psave','clear'],
 		data(){
 			return {
 				baseUrl: window.location.origin,
@@ -448,7 +448,8 @@
 					employmentInfo : [],
 					businessInfo : [],
 					householdMembers : [],
-					outstandingObligations : []
+					outstandingObligations : [],
+					created_at: '',
 				},
 				data: {
 					outstandingObligations: { 
@@ -589,17 +590,24 @@
 					employmentInfo : [],
 					businessInfo : [],
 					householdMembers : [],
-					outstandingObligations : []
+					outstandingObligations : [],
+					created_at: this.dateToYMD(new Date()),
 				};				
 			},
 			notify:function(title, text, type){
-			this.$notify({
-				group: 'foo',
-				title: title,
-				text: text,
-				type: type,
-			});
-		},
+				this.$notify({
+					group: 'foo',
+					title: title,
+					text: text,
+					type: type,
+				});
+			},
+			dateToYMD:function(date) {
+				var d = date.getDate();
+				var m = date.getMonth() + 1;
+				var y = date.getFullYear();
+				return '' + y + '-' + (m<=9 ? '0' + m : m) + '-' + (d <= 9 ? '0' + d : d);
+			}
 		},
 		watch: {
 			'pborrower'(newValue) {
@@ -613,9 +621,18 @@
 					this.$emit('saveBorrower')
 				}
 			},
+			'borrower.created_at'(newValue){
+				this.borrower.created_at = this.dateToYMD(new Date(newValue));
+			},
+			'clear'(newValue){
+				if(newValue == 1){
+					this.clearInfo();
+					this.$emit('borrowerCleared');
+				}
+			}
 		},
         mounted() {							
-			
+			this.borrower.created_at = this.dateToYMD(new Date());
         }
     }
 </script>

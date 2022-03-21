@@ -30,7 +30,7 @@ Route::group(['middleware' => 'auth'], function (){
 	Route::get('logout', [LoginController::class, 'logout']);
 	Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 	Route::get('/client_information/personal_information_list', [ClientInformationController::class, 'personalInformationList'])->name('client_information.personal_information_list');
-	Route::get('/client_information/personal_information_details', [ClientInformationController::class, 'personalInformationDetails'])->name('client_information.personal_information_details');
+	Route::get('/client_information/personal_information_details/{id}', [ClientInformationController::class, 'personalInformationDetails'])->name('client_information.personal_information_details');
 	Route::get('/client_information/statement_of_accounts_list', [ClientInformationController::class, 'statementOfAccountsList'])->name('client_information.statement_of_accounts_list');
 	
 	Route::get('/maintenance/cancel_payments', [MaintenanceController::class, 'cancelPayments'])->name('maintenance.cancel_payments');

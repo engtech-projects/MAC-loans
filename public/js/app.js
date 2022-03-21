@@ -5390,6 +5390,7 @@ __webpack_require__.r(__webpack_exports__);
         }).then(function (response) {
           this.notify('', response.data.message, 'success');
           this.fetchBranches();
+          this.$emit('branchUpdated');
         }.bind(this))["catch"](function (error) {
           console.log(error);
         }.bind(this));
@@ -5404,6 +5405,7 @@ __webpack_require__.r(__webpack_exports__);
           this.notify('', response.data.message, 'success');
           this.resetBranch();
           this.fetchBranches();
+          this.$emit('branchUpdated');
         }.bind(this))["catch"](function (error) {
           console.log(error);
         }.bind(this));
@@ -5578,50 +5580,32 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  props: ['title', 'url']
+  props: ['title', 'url', 'token'],
+  data: function data() {
+    return {
+      borrowers: []
+    };
+  },
+  methods: {
+    fetchBorrowers: function fetchBorrowers() {
+      axios.get(window.location.origin + '/api/borrower', {
+        headers: {
+          'Authorization': 'Bearer ' + this.token,
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        }
+      }).then(function (response) {
+        // console.log(response.data);
+        this.borrowers = response.data.data;
+      }.bind(this))["catch"](function (error) {
+        console.log(error);
+      }.bind(this));
+    }
+  },
+  mounted: function mounted() {
+    this.fetchBorrowers();
+  }
 });
 
 /***/ }),
@@ -5786,11 +5770,173 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  props: ['borrower_id', 'token'],
   data: function data() {
     return {
-      baseUrl: window.location.origin
+      baseUrl: window.location.origin,
+      borrower: {
+        borrower_id: null,
+        borrower_num: '',
+        firstname: '',
+        lastname: '',
+        middlename: '',
+        suffix: '',
+        address: '',
+        birthdate: '',
+        gender: '',
+        status: '',
+        contact_number: '',
+        id_type: '',
+        id_no: '',
+        id_date_issued: '',
+        spouse_firstname: '',
+        spouse_lastname: '',
+        spouse_middlename: '',
+        spouse_address: '',
+        spouse_birthdate: '',
+        spouse_id_type: '',
+        spouse_id_no: '',
+        spouse_id_date_issued: '',
+        employmentInfo: [],
+        businessInfo: [],
+        householdMembers: [],
+        outstandingObligations: []
+      }
     };
+  },
+  methods: {
+    fetchBorrower: function fetchBorrower() {
+      axios.get(window.location.origin + '/api/borrower/' + this.borrower_id, {
+        headers: {
+          'Authorization': 'Bearer ' + this.token,
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        }
+      }).then(function (response) {
+        this.borrower = response.data.data;
+      }.bind(this))["catch"](function (error) {
+        console.log(error);
+      }.bind(this));
+    }
+  },
+  mounted: function mounted() {
+    alert(this.Mixin.toUpperFirst('hello'));
+    this.fetchBorrower();
   }
 });
 
@@ -7468,7 +7614,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  props: ['token', 'pborrower', 'psave'],
+  props: ['token', 'pborrower', 'psave', 'clear'],
   data: function data() {
     return {
       baseUrl: window.location.origin,
@@ -7498,7 +7644,8 @@ __webpack_require__.r(__webpack_exports__);
         employmentInfo: [],
         businessInfo: [],
         householdMembers: [],
-        outstandingObligations: []
+        outstandingObligations: [],
+        created_at: ''
       },
       data: {
         outstandingObligations: {
@@ -7663,7 +7810,8 @@ __webpack_require__.r(__webpack_exports__);
         employmentInfo: [],
         businessInfo: [],
         householdMembers: [],
-        outstandingObligations: []
+        outstandingObligations: [],
+        created_at: this.dateToYMD(new Date())
       };
     },
     notify: function notify(title, text, type) {
@@ -7673,6 +7821,12 @@ __webpack_require__.r(__webpack_exports__);
         text: text,
         type: type
       });
+    },
+    dateToYMD: function dateToYMD(date) {
+      var d = date.getDate();
+      var m = date.getMonth() + 1;
+      var y = date.getFullYear();
+      return '' + y + '-' + (m <= 9 ? '0' + m : m) + '-' + (d <= 9 ? '0' + d : d);
     }
   },
   watch: {
@@ -7686,9 +7840,20 @@ __webpack_require__.r(__webpack_exports__);
         this.save();
         this.$emit('saveBorrower');
       }
+    },
+    'borrower.created_at': function borrowerCreated_at(newValue) {
+      this.borrower.created_at = this.dateToYMD(new Date(newValue));
+    },
+    'clear': function clear(newValue) {
+      if (newValue == 1) {
+        this.clearInfo();
+        this.$emit('borrowerCleared');
+      }
     }
   },
-  mounted: function mounted() {}
+  mounted: function mounted() {
+    this.borrower.created_at = this.dateToYMD(new Date());
+  }
 });
 
 /***/ }),
@@ -8377,10 +8542,40 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: ['token'],
   data: function data() {
     return {
+      clearData: {
+        borrower: 0
+      },
       saveInfo: '',
       borrower: '',
       baseUrl: window.location.origin,
@@ -8417,7 +8612,6 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   mounted: function mounted() {
-    console.log(this.dateToYMD(new Date("2015-03-25T12:00:00Z")));
     this.fetchBorrowers();
   }
 });
@@ -8436,6 +8630,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var vue_notification__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue-notification */ "./node_modules/vue-notification/dist/index.js");
 /* harmony import */ var vue_notification__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(vue_notification__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js");
+/* harmony import */ var _mixins_helper__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./mixins/helper */ "./resources/js/mixins/helper.js");
+/* harmony import */ var _mixins_helper__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_mixins_helper__WEBPACK_IMPORTED_MODULE_2__);
 /**
  * First we will load all of this project's JavaScript dependencies which
  * includes Vue and other libraries. It is a great starting point when
@@ -8445,21 +8642,24 @@ __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 
 
+
+
 window.Vue = (__webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js")["default"]);
-Vue.use((vue_notification__WEBPACK_IMPORTED_MODULE_1___default()));
-Vue.component('login', (__webpack_require__(/*! ./components/Login.vue */ "./resources/js/components/Login.vue")["default"]));
-Vue.component('client-list', (__webpack_require__(/*! ./ui/client_information/ClientList.vue */ "./resources/js/ui/client_information/ClientList.vue")["default"]));
-Vue.component('personal-information', (__webpack_require__(/*! ./ui/client_information/PersonalInformation.vue */ "./resources/js/ui/client_information/PersonalInformation.vue")["default"]));
-Vue.component('branch', (__webpack_require__(/*! ./components/Branch.vue */ "./resources/js/components/Branch.vue")["default"]));
-Vue.component('cancel-payments', (__webpack_require__(/*! ./ui/maintenance/CancelPayments.vue */ "./resources/js/ui/maintenance/CancelPayments.vue")["default"]));
-Vue.component('product-setup', (__webpack_require__(/*! ./ui/maintenance/ProductSetup.vue */ "./resources/js/ui/maintenance/ProductSetup.vue")["default"]));
-Vue.component('center-ao', (__webpack_require__(/*! ./ui/maintenance/CenterAccount.vue */ "./resources/js/ui/maintenance/CenterAccount.vue")["default"]));
-Vue.component('user-settings', (__webpack_require__(/*! ./ui/maintenance/UserSettings.vue */ "./resources/js/ui/maintenance/UserSettings.vue")["default"]));
-Vue.component('gl-setup', (__webpack_require__(/*! ./ui/maintenance/GlSetup.vue */ "./resources/js/ui/maintenance/GlSetup.vue")["default"]));
-Vue.component('account-retagging', (__webpack_require__(/*! ./ui/maintenance/AccountRetagging.vue */ "./resources/js/ui/maintenance/AccountRetagging.vue")["default"]));
-Vue.component('release-entry', (__webpack_require__(/*! ./ui/transaction/release_entry/ReleaseEntry.vue */ "./resources/js/ui/transaction/release_entry/ReleaseEntry.vue")["default"]));
-Vue.component('borrowers-info', (__webpack_require__(/*! ./ui/transaction/release_entry/BorrowersInfo.vue */ "./resources/js/ui/transaction/release_entry/BorrowersInfo.vue")["default"]));
-var app = new Vue({
+vue__WEBPACK_IMPORTED_MODULE_3__["default"].use((vue_notification__WEBPACK_IMPORTED_MODULE_1___default()));
+vue__WEBPACK_IMPORTED_MODULE_3__["default"].use((_mixins_helper__WEBPACK_IMPORTED_MODULE_2___default()));
+vue__WEBPACK_IMPORTED_MODULE_3__["default"].component('login', (__webpack_require__(/*! ./components/Login.vue */ "./resources/js/components/Login.vue")["default"]));
+vue__WEBPACK_IMPORTED_MODULE_3__["default"].component('client-list', (__webpack_require__(/*! ./ui/client_information/ClientList.vue */ "./resources/js/ui/client_information/ClientList.vue")["default"]));
+vue__WEBPACK_IMPORTED_MODULE_3__["default"].component('personal-information', (__webpack_require__(/*! ./ui/client_information/PersonalInformation.vue */ "./resources/js/ui/client_information/PersonalInformation.vue")["default"]));
+vue__WEBPACK_IMPORTED_MODULE_3__["default"].component('branch', (__webpack_require__(/*! ./components/Branch.vue */ "./resources/js/components/Branch.vue")["default"]));
+vue__WEBPACK_IMPORTED_MODULE_3__["default"].component('cancel-payments', (__webpack_require__(/*! ./ui/maintenance/CancelPayments.vue */ "./resources/js/ui/maintenance/CancelPayments.vue")["default"]));
+vue__WEBPACK_IMPORTED_MODULE_3__["default"].component('product-setup', (__webpack_require__(/*! ./ui/maintenance/ProductSetup.vue */ "./resources/js/ui/maintenance/ProductSetup.vue")["default"]));
+vue__WEBPACK_IMPORTED_MODULE_3__["default"].component('center-ao', (__webpack_require__(/*! ./ui/maintenance/CenterAccount.vue */ "./resources/js/ui/maintenance/CenterAccount.vue")["default"]));
+vue__WEBPACK_IMPORTED_MODULE_3__["default"].component('user-settings', (__webpack_require__(/*! ./ui/maintenance/UserSettings.vue */ "./resources/js/ui/maintenance/UserSettings.vue")["default"]));
+vue__WEBPACK_IMPORTED_MODULE_3__["default"].component('gl-setup', (__webpack_require__(/*! ./ui/maintenance/GlSetup.vue */ "./resources/js/ui/maintenance/GlSetup.vue")["default"]));
+vue__WEBPACK_IMPORTED_MODULE_3__["default"].component('account-retagging', (__webpack_require__(/*! ./ui/maintenance/AccountRetagging.vue */ "./resources/js/ui/maintenance/AccountRetagging.vue")["default"]));
+vue__WEBPACK_IMPORTED_MODULE_3__["default"].component('release-entry', (__webpack_require__(/*! ./ui/transaction/release_entry/ReleaseEntry.vue */ "./resources/js/ui/transaction/release_entry/ReleaseEntry.vue")["default"]));
+vue__WEBPACK_IMPORTED_MODULE_3__["default"].component('borrowers-info', (__webpack_require__(/*! ./ui/transaction/release_entry/BorrowersInfo.vue */ "./resources/js/ui/transaction/release_entry/BorrowersInfo.vue")["default"]));
+var app = new vue__WEBPACK_IMPORTED_MODULE_3__["default"]({
   el: '#app'
 });
 
@@ -8498,6 +8698,22 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 //     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
 //     forceTLS: true
 // });
+
+/***/ }),
+
+/***/ "./resources/js/mixins/helper.js":
+/*!***************************************!*\
+  !*** ./resources/js/mixins/helper.js ***!
+  \***************************************/
+/***/ (() => {
+
+Vue.mixin({
+  methods: {
+    toUpperFirst: function toUpperFirst(str) {
+      return str.charAt(0).toUpperCase() + str.slice(1);
+    }
+  }
+});
 
 /***/ }),
 
@@ -32959,135 +33175,31 @@ var render = function () {
       [
         _vm._m(1),
         _vm._v(" "),
-        _c("tbody", [
-          _c("tr", [
-            _c("td", [_vm._v("183")]),
-            _vm._v(" "),
-            _c("td", [
-              _c("a", { attrs: { href: _vm.url } }, [_vm._v("John Doe")]),
-            ]),
-            _vm._v(" "),
-            _c("td", [_vm._v("09854212121")]),
-            _vm._v(" "),
-            _c("td", [
-              _vm._v(
-                "154 JP Laurel Sr Street Corner 6th Avenue 1400, Caloocan City, Philippines"
-              ),
-            ]),
-          ]),
-          _vm._v(" "),
-          _c("tr", [
-            _c("td", [_vm._v("183")]),
-            _vm._v(" "),
-            _c("td", [
-              _c("a", { attrs: { href: _vm.url } }, [_vm._v("John Doe")]),
-            ]),
-            _vm._v(" "),
-            _c("td", [_vm._v("09854212121")]),
-            _vm._v(" "),
-            _c("td", [
-              _vm._v(
-                "154 JP Laurel Sr Street Corner 6th Avenue 1400, Caloocan City, Philippines"
-              ),
-            ]),
-          ]),
-          _vm._v(" "),
-          _c("tr", [
-            _c("td", [_vm._v("183")]),
-            _vm._v(" "),
-            _c("td", [
-              _c("a", { attrs: { href: _vm.url } }, [_vm._v("John Doe")]),
-            ]),
-            _vm._v(" "),
-            _c("td", [_vm._v("09854212121")]),
-            _vm._v(" "),
-            _c("td", [
-              _vm._v(
-                "154 JP Laurel Sr Street Corner 6th Avenue 1400, Caloocan City, Philippines"
-              ),
-            ]),
-          ]),
-          _vm._v(" "),
-          _c("tr", [
-            _c("td", [_vm._v("183")]),
-            _vm._v(" "),
-            _c("td", [
-              _c("a", { attrs: { href: _vm.url } }, [_vm._v("John Doe")]),
-            ]),
-            _vm._v(" "),
-            _c("td", [_vm._v("09854212121")]),
-            _vm._v(" "),
-            _c("td", [
-              _vm._v(
-                "154 JP Laurel Sr Street Corner 6th Avenue 1400, Caloocan City, Philippines"
-              ),
-            ]),
-          ]),
-          _vm._v(" "),
-          _c("tr", [
-            _c("td", [_vm._v("183")]),
-            _vm._v(" "),
-            _c("td", [
-              _c("a", { attrs: { href: _vm.url } }, [_vm._v("John Doe")]),
-            ]),
-            _vm._v(" "),
-            _c("td", [_vm._v("09854212121")]),
-            _vm._v(" "),
-            _c("td", [
-              _vm._v(
-                "154 JP Laurel Sr Street Corner 6th Avenue 1400, Caloocan City, Philippines"
-              ),
-            ]),
-          ]),
-          _vm._v(" "),
-          _c("tr", [
-            _c("td", [_vm._v("183")]),
-            _vm._v(" "),
-            _c("td", [
-              _c("a", { attrs: { href: _vm.url } }, [_vm._v("John Doe")]),
-            ]),
-            _vm._v(" "),
-            _c("td", [_vm._v("09854212121")]),
-            _vm._v(" "),
-            _c("td", [
-              _vm._v(
-                "154 JP Laurel Sr Street Corner 6th Avenue 1400, Caloocan City, Philippines"
-              ),
-            ]),
-          ]),
-          _vm._v(" "),
-          _c("tr", [
-            _c("td", [_vm._v("183")]),
-            _vm._v(" "),
-            _c("td", [
-              _c("a", { attrs: { href: _vm.url } }, [_vm._v("John Doe")]),
-            ]),
-            _vm._v(" "),
-            _c("td", [_vm._v("09854212121")]),
-            _vm._v(" "),
-            _c("td", [
-              _vm._v(
-                "154 JP Laurel Sr Street Corner 6th Avenue 1400, Caloocan City, Philippines"
-              ),
-            ]),
-          ]),
-          _vm._v(" "),
-          _c("tr", [
-            _c("td", [_vm._v("183")]),
-            _vm._v(" "),
-            _c("td", [
-              _c("a", { attrs: { href: _vm.url } }, [_vm._v("John Doe")]),
-            ]),
-            _vm._v(" "),
-            _c("td", [_vm._v("09854212121")]),
-            _vm._v(" "),
-            _c("td", [
-              _vm._v(
-                "154 JP Laurel Sr Street Corner 6th Avenue 1400, Caloocan City, Philippines"
-              ),
-            ]),
-          ]),
-        ]),
+        _c(
+          "tbody",
+          _vm._l(_vm.borrowers, function (borrower) {
+            return _c("tr", { key: borrower.borrower_id }, [
+              _c("td", [_vm._v(_vm._s(borrower.borrower_num))]),
+              _vm._v(" "),
+              _c("td", [
+                _c(
+                  "a",
+                  {
+                    attrs: {
+                      href: _vm.url.replace(":id", borrower.borrower_id),
+                    },
+                  },
+                  [_vm._v(_vm._s(borrower.firstname + " " + borrower.lastname))]
+                ),
+              ]),
+              _vm._v(" "),
+              _c("td", [_vm._v(_vm._s(borrower.contact_number))]),
+              _vm._v(" "),
+              _c("td", [_vm._v(_vm._s(borrower.address))]),
+            ])
+          }),
+          0
+        ),
       ]
     ),
   ])
@@ -33143,39 +33255,352 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "container-fluid px-16" }, [
-    _c("div", { staticClass: "mb-16" }),
-    _vm._v(" "),
-    _vm._m(0),
+  return _c("div", { staticClass: "px-16" }, [
+    _c("div", { staticClass: "container-fluid" }, [
+      _c("div", { staticClass: "mb-16" }),
+      _vm._v(" "),
+      _vm._m(0),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          staticClass: "d-flex flex-column flex-sm-row personal-info",
+          staticStyle: { "margin-bottom": "24px" },
+        },
+        [
+          _c("div", { staticClass: "upload-photo mb-24" }, [
+            _c("img", {
+              attrs: { src: _vm.baseUrl + "/img/user.png", alt: "" },
+            }),
+            _vm._v(" "),
+            _c(
+              "a",
+              {
+                staticClass: "btn btn-primary",
+                staticStyle: { padding: "10px!important" },
+                attrs: { href: "#" },
+              },
+              [_vm._v("Upload or Take a Photo")]
+            ),
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "flex-gap-24" }),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              staticClass: "info-main-container",
+              staticStyle: { width: "100%" },
+            },
+            [
+              _c("div", { staticClass: "row info-container" }, [
+                _c("div", { staticClass: "col-xl-2 col-lg-6" }, [
+                  _c("div", { staticClass: "customer-number" }, [
+                    _c("span", [_vm._v("Customer Number")]),
+                    _vm._v(" "),
+                    _c("span", [_vm._v(_vm._s(_vm.borrower.borrower_num))]),
+                  ]),
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "col-xl-2 col-lg-6" }, [
+                  _c("div", { staticClass: "info-display" }, [
+                    _c("span", [_vm._v("First Name")]),
+                    _vm._v(" "),
+                    _c("span", { staticClass: "xs-font-24" }, [
+                      _vm._v(_vm._s(_vm.borrower.firstname)),
+                    ]),
+                  ]),
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "col-xl-2 col-lg-6" }, [
+                  _c("div", { staticClass: "info-display" }, [
+                    _c("span", [_vm._v("Middle Name")]),
+                    _vm._v(" "),
+                    _c("span", [_vm._v(_vm._s(_vm.borrower.middlename))]),
+                  ]),
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "col-xl-2 col-lg-6" }, [
+                  _c("div", { staticClass: "info-display" }, [
+                    _c("span", [_vm._v("Last Name")]),
+                    _vm._v(" "),
+                    _c("span", [_vm._v(_vm._s(_vm.borrower.lastname))]),
+                  ]),
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "col-xl-4" }, [
+                  _c("div", { staticClass: "info-display" }, [
+                    _c("span", [_vm._v("Suffix")]),
+                    _vm._v(" "),
+                    _c("span", [_vm._v(_vm._s(_vm.borrower.suffix))]),
+                  ]),
+                ]),
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "row info-container" }, [
+                _vm._m(1),
+                _vm._v(" "),
+                _c("div", { staticClass: "col-xl-1 col-lg-6" }, [
+                  _c("div", { staticClass: "info-display" }, [
+                    _c("span", [_vm._v("Gender")]),
+                    _vm._v(" "),
+                    _c("span", [_vm._v(_vm._s(_vm.borrower.gender))]),
+                  ]),
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "col-xl-2 col-lg-6" }, [
+                  _c("div", { staticClass: "info-display" }, [
+                    _c("span", [_vm._v("Status")]),
+                    _vm._v(" "),
+                    _c("span", [_vm._v(_vm._s(_vm.borrower.status))]),
+                  ]),
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "col-xl-2 col-lg-6" }, [
+                  _c("div", { staticClass: "info-display" }, [
+                    _c("span", [_vm._v("Contact Number")]),
+                    _vm._v(" "),
+                    _c("span", [_vm._v(_vm._s(_vm.borrower.contact_number))]),
+                  ]),
+                ]),
+                _vm._v(" "),
+                _vm._m(2),
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "row info-container" }, [
+                _c("div", { staticClass: "col-xl-2 col-lg-6" }, [
+                  _c("div", { staticClass: "info-display" }, [
+                    _c("span", [_vm._v("ID. Type")]),
+                    _vm._v(" "),
+                    _c("span", [_vm._v(_vm._s(_vm.borrower.id_type))]),
+                  ]),
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "col-xl-3 col-lg-6" }, [
+                  _c("div", { staticClass: "info-display" }, [
+                    _c("span", [_vm._v("ID. Number")]),
+                    _vm._v(" "),
+                    _c("span", [_vm._v(_vm._s(_vm.borrower.id_no))]),
+                  ]),
+                ]),
+                _vm._v(" "),
+                _vm._m(3),
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "row info-container xs-mb-32" }, [
+                _c("div", { staticClass: "col-md-12" }, [
+                  _c("div", { staticClass: "info-display" }, [
+                    _c("span", { staticClass: "text-block" }, [
+                      _vm._v("Address"),
+                    ]),
+                    _vm._v(" "),
+                    _c("span", [_vm._v(_vm._s(_vm.borrower.address))]),
+                  ]),
+                ]),
+              ]),
+            ]
+          ),
+        ]
+      ),
+      _vm._v(" "),
+      _vm._m(4),
+    ]),
     _vm._v(" "),
     _c(
       "div",
       {
-        staticClass: "d-flex flex-column flex-sm-row personal-info",
-        staticStyle: { "margin-bottom": "24px" },
+        staticClass: "row info-container mb-36",
+        staticStyle: { width: "100%" },
       },
       [
-        _c("div", { staticClass: "upload-photo mb-24" }, [
-          _c("img", { attrs: { src: _vm.baseUrl + "/img/user.png", alt: "" } }),
-          _vm._v(" "),
-          _c(
-            "a",
-            {
-              staticClass: "btn btn-primary",
-              staticStyle: { padding: "10px!important" },
-              attrs: { href: "#" },
-            },
-            [_vm._v("Upload or Take a Photo")]
-          ),
-        ]),
+        _vm._m(5),
         _vm._v(" "),
-        _c("div", { staticClass: "flex-gap-24" }),
-        _vm._v(" "),
-        _vm._m(1),
+        _c(
+          "table",
+          {
+            staticClass: "table table-stripped text-primary-dark light-border",
+          },
+          [
+            _vm._m(6),
+            _vm._v(" "),
+            _c(
+              "tbody",
+              [
+                _vm.borrower.employmentInfo.length == 0
+                  ? _c("tr", [
+                      _c("td", [_vm._v("No employment information found.")]),
+                    ])
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm._l(_vm.borrower.employmentInfo, function (emp) {
+                  return _c("tr", { key: emp.id }, [
+                    _c("td", [_vm._v(_vm._s(emp.company_name))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(emp.company_address))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(emp.years_employed))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(emp.position))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(emp.salary))]),
+                  ])
+                }),
+              ],
+              2
+            ),
+          ]
+        ),
       ]
     ),
     _vm._v(" "),
-    _vm._m(2),
+    _c(
+      "div",
+      {
+        staticClass: "row info-container mb-36",
+        staticStyle: { width: "100%" },
+      },
+      [
+        _vm._m(7),
+        _vm._v(" "),
+        _c(
+          "table",
+          {
+            staticClass: "table table-stripped text-primary-dark light-border",
+          },
+          [
+            _vm._m(8),
+            _vm._v(" "),
+            _c(
+              "tbody",
+              [
+                _vm.borrower.householdMembers.length == 0
+                  ? _c("tr", [
+                      _c("td", [
+                        _vm._v("No household member information found."),
+                      ]),
+                    ])
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm._l(_vm.borrower.householdMembers, function (hh) {
+                  return _c("tr", { key: hh.id }, [
+                    _c("td", [_vm._v(_vm._s(hh.dependent))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(hh.age))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(hh.relationship))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(hh.occupation))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(hh.contact_no))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(hh.sbe_address))]),
+                  ])
+                }),
+              ],
+              2
+            ),
+          ]
+        ),
+      ]
+    ),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        staticClass: "row info-container mb-36",
+        staticStyle: { width: "100%" },
+      },
+      [
+        _vm._m(9),
+        _vm._v(" "),
+        _c(
+          "table",
+          {
+            staticClass: "table table-stripped text-primary-dark light-border",
+          },
+          [
+            _vm._m(10),
+            _vm._v(" "),
+            _c(
+              "tbody",
+              [
+                _vm.borrower.outstandingObligations.length == 0
+                  ? _c("tr", [
+                      _c("td", [
+                        _vm._v("No outstanding obligation information found."),
+                      ]),
+                    ])
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm._l(_vm.borrower.outstandingObligations, function (ob) {
+                  return _c("tr", { key: ob.id }, [
+                    _c("td", [_vm._v("Maria Lagahit")]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v("32,000.00")]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v("21,201.00")]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v("12 Months")]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v("12/12/2021")]),
+                    _vm._v(" "),
+                    _c("td"),
+                  ])
+                }),
+              ],
+              2
+            ),
+          ]
+        ),
+      ]
+    ),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        staticClass: "row info-container mb-72",
+        staticStyle: { width: "100%" },
+      },
+      [
+        _vm._m(11),
+        _vm._v(" "),
+        _c(
+          "table",
+          {
+            staticClass: "table table-stripped text-primary-dark light-border",
+          },
+          [
+            _vm._m(12),
+            _vm._v(" "),
+            _c(
+              "tbody",
+              [
+                _vm.borrower.businessInfo.length == 0
+                  ? _c("tr", [
+                      _c("td", [_vm._v("No business information found.")]),
+                    ])
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm._l(_vm.borrower.businessInfo, function (biz) {
+                  return _c("tr", { key: biz.id }, [
+                    _c("td", [_vm._v("Car Rental Service")]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v("Butuan City")]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v("09458545474")]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v("5")]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v("2,000.00")]),
+                  ])
+                }),
+              ],
+              2
+            ),
+          ]
+        ),
+      ]
+    ),
   ])
 }
 var staticRenderFns = [
@@ -33206,135 +33631,37 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      { staticClass: "info-main-container", staticStyle: { width: "100%" } },
-      [
-        _c("div", { staticClass: "row info-container" }, [
-          _c("div", { staticClass: "col-xl-2 col-lg-6" }, [
-            _c("div", { staticClass: "customer-number" }, [
-              _c("span", [_vm._v("Customer Number")]),
-              _vm._v(" "),
-              _c("span", [_vm._v("1003429")]),
-            ]),
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "col-xl-2 col-lg-6" }, [
-            _c("div", { staticClass: "info-display" }, [
-              _c("span", [_vm._v("First Name")]),
-              _vm._v(" "),
-              _c("span", { staticClass: "xs-font-24" }, [_vm._v("Juan")]),
-            ]),
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "col-xl-2 col-lg-6" }, [
-            _c("div", { staticClass: "info-display" }, [
-              _c("span", [_vm._v("Middle Name")]),
-              _vm._v(" "),
-              _c("span", [_vm._v("Cardo")]),
-            ]),
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "col-xl-2 col-lg-6" }, [
-            _c("div", { staticClass: "info-display" }, [
-              _c("span", [_vm._v("Last Name")]),
-              _vm._v(" "),
-              _c("span", [_vm._v("Lagahit")]),
-            ]),
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "col-xl-4" }, [
-            _c("div", { staticClass: "info-display" }, [
-              _c("span", [_vm._v("Suffix")]),
-              _vm._v(" "),
-              _c("span", [_vm._v("Jr.")]),
-            ]),
-          ]),
-        ]),
+    return _c("div", { staticClass: "col-xl-3 col-lg-6" }, [
+      _c("div", { staticClass: "info-display" }, [
+        _c("span", [_vm._v("Birth Date")]),
         _vm._v(" "),
-        _c("div", { staticClass: "row info-container" }, [
-          _c("div", { staticClass: "col-xl-3 col-lg-6" }, [
-            _c("div", { staticClass: "info-display" }, [
-              _c("span", [_vm._v("Birth Date")]),
-              _vm._v(" "),
-              _c("span", [_vm._v("January 12, 1985")]),
-            ]),
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "col-xl-1 col-lg-6" }, [
-            _c("div", { staticClass: "info-display" }, [
-              _c("span", [_vm._v("Gender")]),
-              _vm._v(" "),
-              _c("span", [_vm._v("Male")]),
-            ]),
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "col-xl-2 col-lg-6" }, [
-            _c("div", { staticClass: "info-display" }, [
-              _c("span", [_vm._v("Status")]),
-              _vm._v(" "),
-              _c("span", [_vm._v("Married")]),
-            ]),
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "col-xl-2 col-lg-6" }, [
-            _c("div", { staticClass: "info-display" }, [
-              _c("span", [_vm._v("Contact Number")]),
-              _vm._v(" "),
-              _c("span", [_vm._v("09285541258")]),
-            ]),
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "col-xl-4 col-lg-6" }, [
-            _c("div", { staticClass: "info-display" }, [
-              _c("span", [_vm._v("Registration Date")]),
-              _vm._v(" "),
-              _c("span", [_vm._v("December 12, 2021")]),
-            ]),
-          ]),
-        ]),
+        _c("span", [_vm._v("January 12, 1985")]),
+      ]),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-xl-4 col-lg-6" }, [
+      _c("div", { staticClass: "info-display" }, [
+        _c("span", [_vm._v("Registration Date")]),
         _vm._v(" "),
-        _c("div", { staticClass: "row info-container" }, [
-          _c("div", { staticClass: "col-xl-2 col-lg-6" }, [
-            _c("div", { staticClass: "info-display" }, [
-              _c("span", [_vm._v("ID. Type")]),
-              _vm._v(" "),
-              _c("span", [_vm._v("UMID")]),
-            ]),
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "col-xl-3 col-lg-6" }, [
-            _c("div", { staticClass: "info-display" }, [
-              _c("span", [_vm._v("ID. Number")]),
-              _vm._v(" "),
-              _c("span", [_vm._v("136524548847")]),
-            ]),
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "col-xl-2 col-lg-6" }, [
-            _c("div", { staticClass: "info-display" }, [
-              _c("span", [_vm._v("ID. Date")]),
-              _vm._v(" "),
-              _c("span", [_vm._v("12/12/2019")]),
-            ]),
-          ]),
-        ]),
+        _c("span", [_vm._v("December 12, 2021")]),
+      ]),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-xl-2 col-lg-6" }, [
+      _c("div", { staticClass: "info-display" }, [
+        _c("span", [_vm._v("ID. Date")]),
         _vm._v(" "),
-        _c("div", { staticClass: "row info-container xs-mb-32" }, [
-          _c("div", { staticClass: "col-xs-12" }, [
-            _c("div", { staticClass: "info-display" }, [
-              _c("span", [_vm._v("Address")]),
-              _vm._v(" "),
-              _c("span", [
-                _vm._v(
-                  "154 JP Laurel Sr Street Corner 6th Avenue 1400, Caloocan City, Philippines"
-                ),
-              ]),
-            ]),
-          ]),
-        ]),
-      ]
-    )
+        _c("span", [_vm._v("12/12/2019")]),
+      ]),
+    ])
   },
   function () {
     var _vm = this
@@ -33342,7 +33669,10 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c(
       "div",
-      { staticClass: "row info-container", staticStyle: { width: "100%" } },
+      {
+        staticClass: "row info-container mb-24",
+        staticStyle: { width: "100%" },
+      },
       [
         _c(
           "div",
@@ -33398,6 +33728,134 @@ var staticRenderFns = [
         ]),
       ]
     )
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      { staticClass: "col-md-12", staticStyle: { height: "60px!important" } },
+      [
+        _c("div", { staticClass: "info-display title" }, [
+          _c("span", [_vm._v("Employment Information")]),
+        ]),
+      ]
+    )
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("th", [_vm._v("Name of Company")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Address/Contact No.")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("No. of Years Employed")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Position")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Monthly Salary")]),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      { staticClass: "col-md-12", staticStyle: { height: "60px!important" } },
+      [
+        _c("div", { staticClass: "info-display title" }, [
+          _c("span", [_vm._v("Household Member's Information")]),
+        ]),
+      ]
+    )
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("th", [_vm._v("Name of Dependents")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Age")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Relationship")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Occupation")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Contact No.")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("School/Business/Employment Address")]),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      { staticClass: "col-md-12", staticStyle: { height: "60px!important" } },
+      [
+        _c("div", { staticClass: "info-display title" }, [
+          _c("span", [
+            _vm._v(
+              "Outstanding Obligations for Other Creditors (Please include credit card)"
+            ),
+          ]),
+        ]),
+      ]
+    )
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("th", [_vm._v("Name of Creditors")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Loan Amount")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Outstanding Balance")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Term")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Due Date")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Amortization Frequency")]),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      { staticClass: "col-md-12", staticStyle: { height: "60px!important" } },
+      [
+        _c("div", { staticClass: "info-display title" }, [
+          _c("span", [_vm._v("Business Information")]),
+        ]),
+      ]
+    )
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("th", [_vm._v("Type of Business")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Business Address")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Contact No.")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Years in Business")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Income Frequency")]),
+    ])
   },
 ]
 render._withStripped = true
@@ -36103,7 +36561,10 @@ var render = function () {
         ]),
       ]),
       _vm._v(" "),
-      _c("branch", { attrs: { token: _vm.token } }),
+      _c("branch", {
+        attrs: { token: _vm.token },
+        on: { branchUpdated: _vm.fetchBranches },
+      }),
     ],
     1
   )
@@ -37603,7 +38064,49 @@ var render = function () {
                       _vm._v(" "),
                       _c("div", { staticStyle: { flex: "4" } }),
                       _vm._v(" "),
-                      _vm._m(0),
+                      _c(
+                        "div",
+                        {
+                          staticClass: "form-group mb-10",
+                          staticStyle: { flex: "5" },
+                        },
+                        [
+                          _c(
+                            "label",
+                            {
+                              staticClass: "form-label",
+                              attrs: { for: "regDate" },
+                            },
+                            [_vm._v("Date Registration")]
+                          ),
+                          _vm._v(" "),
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.borrower.created_at,
+                                expression: "borrower.created_at",
+                              },
+                            ],
+                            staticClass: "form-control form-input text-right",
+                            attrs: { type: "date", id: "regDate" },
+                            domProps: { value: _vm.borrower.created_at },
+                            on: {
+                              input: function ($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  _vm.borrower,
+                                  "created_at",
+                                  $event.target.value
+                                )
+                              },
+                            },
+                          }),
+                        ]
+                      ),
                     ]),
                     _vm._v(" "),
                     _c(
@@ -38457,7 +38960,7 @@ var render = function () {
                   ]
                 ),
                 _vm._v(" "),
-                _vm._m(1),
+                _vm._m(0),
               ]),
             ]
           ),
@@ -38973,7 +39476,7 @@ var render = function () {
                     ]
                   ),
                   _vm._v(" "),
-                  _vm._m(2),
+                  _vm._m(1),
                 ]),
               ]
             ),
@@ -38987,7 +39490,7 @@ var render = function () {
             { staticClass: "mb-24", staticStyle: { "padding-left": "16px" } },
             [
               _c("table", { staticClass: "table table-stripped base-table" }, [
-                _vm._m(3),
+                _vm._m(2),
                 _vm._v(" "),
                 _c(
                   "tbody",
@@ -39355,7 +39858,7 @@ var render = function () {
                   ]
                 ),
                 _vm._v(" "),
-                _vm._m(4),
+                _vm._m(3),
               ]),
             ]
           ),
@@ -39368,7 +39871,7 @@ var render = function () {
             { staticClass: "mb-24", staticStyle: { "padding-left": "16px" } },
             [
               _c("table", { staticClass: "table table-stripped base-table" }, [
-                _vm._m(5),
+                _vm._m(4),
                 _vm._v(" "),
                 _c(
                   "tbody",
@@ -39732,7 +40235,7 @@ var render = function () {
                   ]
                 ),
                 _vm._v(" "),
-                _vm._m(6),
+                _vm._m(5),
               ]),
             ]
           ),
@@ -39745,7 +40248,7 @@ var render = function () {
             { staticClass: "mb-24", staticStyle: { "padding-left": "16px" } },
             [
               _c("table", { staticClass: "table table-stripped base-table" }, [
-                _vm._m(7),
+                _vm._m(6),
                 _vm._v(" "),
                 _c(
                   "tbody",
@@ -40054,7 +40557,7 @@ var render = function () {
                   ]
                 ),
                 _vm._v(" "),
-                _vm._m(8),
+                _vm._m(7),
               ]),
             ]
           ),
@@ -40067,7 +40570,7 @@ var render = function () {
             { staticClass: "mb-24", staticStyle: { "padding-left": "16px" } },
             [
               _c("table", { staticClass: "table table-stripped base-table" }, [
-                _vm._m(9),
+                _vm._m(8),
                 _vm._v(" "),
                 _c(
                   "tbody",
@@ -40128,21 +40631,6 @@ var render = function () {
           [_vm._v("Next")]
         ),
         _vm._v(" "),
-        _c(
-          "a",
-          {
-            staticClass: "btn btn-yellow-light min-w-150 mr-16",
-            attrs: { href: "#" },
-            on: {
-              click: function ($event) {
-                $event.preventDefault()
-                return _vm.clearInfo()
-              },
-            },
-          },
-          [_vm._v("Clear Info")]
-        ),
-        _vm._v(" "),
         _c("div", { staticStyle: { flex: "22" } }),
       ]),
     ],
@@ -40150,25 +40638,6 @@ var render = function () {
   )
 }
 var staticRenderFns = [
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      { staticClass: "form-group mb-10", staticStyle: { flex: "5" } },
-      [
-        _c("label", { staticClass: "form-label", attrs: { for: "regDate" } }, [
-          _vm._v("Date Registration"),
-        ]),
-        _vm._v(" "),
-        _c("input", {
-          staticClass: "form-control form-input text-right",
-          attrs: { type: "date", id: "regDate" },
-        }),
-      ]
-    )
-  },
   function () {
     var _vm = this
     var _h = _vm.$createElement
@@ -40381,11 +40850,35 @@ var render = function () {
       _vm._v(" "),
       _c("div", { staticClass: "mb-16" }),
       _vm._v(" "),
-      _vm._m(0),
+      _c(
+        "div",
+        {
+          staticClass:
+            "ml-16 mb-24 bb-primary-dark pb-7 text-block d-flex justify-content-between",
+        },
+        [
+          _c("h1", { staticClass: "m-0 font-35" }, [_vm._v("Release Entry")]),
+          _vm._v(" "),
+          _c(
+            "a",
+            {
+              staticClass: "btn btn-primary-dark min-w-150",
+              attrs: { href: "#" },
+              on: {
+                click: function ($event) {
+                  $event.preventDefault()
+                  _vm.clearData.borrower = 1
+                },
+              },
+            },
+            [_vm._v("New Client")]
+          ),
+        ]
+      ),
       _vm._v(" "),
       _c("div", { staticClass: "d-flex flex-column flex-xl-row p-16" }, [
         _c("div", { staticStyle: { flex: "9" } }, [
-          _vm._m(1),
+          _vm._m(0),
           _vm._v(" "),
           _c(
             "table",
@@ -40394,7 +40887,7 @@ var render = function () {
               attrs: { id: "clientsList" },
             },
             [
-              _vm._m(2),
+              _vm._m(1),
               _vm._v(" "),
               _c(
                 "tbody",
@@ -40441,11 +40934,11 @@ var render = function () {
             ]
           ),
           _vm._v(" "),
-          _vm._m(3),
+          _vm._m(2),
         ]),
         _vm._v(" "),
         _c("div", { staticStyle: { flex: "20" } }, [
-          _vm._m(4),
+          _vm._m(3),
           _vm._v(" "),
           _c(
             "div",
@@ -40467,11 +40960,15 @@ var render = function () {
                 [
                   _c("borrowers-info", {
                     attrs: {
+                      clear: _vm.clearData.borrower,
                       token: _vm.token,
                       pborrower: _vm.borrower,
                       psave: _vm.saveInfo,
                     },
                     on: {
+                      borrowerCleared: function ($event) {
+                        _vm.clearData.borrower = 0
+                      },
                       savedInfo: function ($event) {
                         return _vm.fetchBorrowers()
                       },
@@ -40499,9 +40996,9 @@ var render = function () {
                 },
                 [
                   _c("div", { staticClass: "d-flex flex-column" }, [
-                    _vm._m(5),
+                    _vm._m(4),
                     _vm._v(" "),
-                    _vm._m(6),
+                    _vm._m(5),
                     _vm._v(" "),
                     _c(
                       "div",
@@ -40571,9 +41068,9 @@ var render = function () {
                 },
                 [
                   _c("div", { staticClass: "d-flex flex-column" }, [
-                    _vm._m(7),
+                    _vm._m(6),
                     _vm._v(" "),
-                    _vm._m(8),
+                    _vm._m(7),
                     _vm._v(" "),
                     _c(
                       "div",
@@ -40638,7 +41135,7 @@ var render = function () {
                 ]
               ),
               _vm._v(" "),
-              _vm._m(9),
+              _vm._m(8),
             ]
           ),
         ]),
@@ -40676,10 +41173,10 @@ var render = function () {
                         "d-flex flex-column flex-md-row align-items-start",
                     },
                     [
-                      _vm._m(10),
+                      _vm._m(9),
                       _vm._v(" "),
                       _c("div", { staticStyle: { flex: "6" } }, [
-                        _vm._m(11),
+                        _vm._m(10),
                         _vm._v(" "),
                         _c(
                           "div",
@@ -40710,7 +41207,7 @@ var render = function () {
                                   },
                                 }),
                                 _vm._v(" "),
-                                _vm._m(12),
+                                _vm._m(11),
                               ]
                             ),
                             _vm._v(" "),
@@ -40736,7 +41233,7 @@ var render = function () {
                                   },
                                 }),
                                 _vm._v(" "),
-                                _vm._m(13),
+                                _vm._m(12),
                               ]
                             ),
                           ]
@@ -40832,16 +41329,6 @@ var render = function () {
   )
 }
 var staticRenderFns = [
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      { staticClass: "ml-16 mb-24 bb-primary-dark pb-7 text-block" },
-      [_c("h1", { staticClass: "m-0 font-35" }, [_vm._v("Release Entry")])]
-    )
-  },
   function () {
     var _vm = this
     var _h = _vm.$createElement
@@ -41636,17 +42123,27 @@ var staticRenderFns = [
                   "label",
                   {
                     staticClass: "form-label",
-                    staticStyle: { flex: "2" },
+                    staticStyle: { flex: "3" },
                     attrs: { for: "dueDate" },
                   },
                   [_vm._v("Filling Fee")]
                 ),
                 _vm._v(" "),
                 _c("input", {
-                  staticClass: "form-control form-input text-right",
-                  staticStyle: { flex: "3" },
+                  staticClass: "form-control form-input text-right mr-16",
+                  staticStyle: { flex: "4" },
                   attrs: { type: "text", value: "P 25,000.00", id: "dueDate" },
                 }),
+                _vm._v(" "),
+                _c(
+                  "a",
+                  {
+                    staticClass: "btn btn-success flex-1",
+                    staticStyle: { "line-height": "2" },
+                    attrs: { href: "" },
+                  },
+                  [_vm._v("Edit")]
+                ),
               ]),
               _vm._v(" "),
               _c("div", { staticClass: "d-flex flex-row mb-16" }, [
@@ -41654,16 +42151,21 @@ var staticRenderFns = [
                   "label",
                   {
                     staticClass: "form-label",
-                    staticStyle: { flex: "2" },
+                    staticStyle: { flex: "3" },
                     attrs: { for: "dueDate" },
                   },
                   [_vm._v("Doc. Stamp")]
                 ),
                 _vm._v(" "),
                 _c("input", {
-                  staticClass: "form-control form-input text-right",
-                  staticStyle: { flex: "3" },
+                  staticClass: "form-control form-input text-right mr-16",
+                  staticStyle: { flex: "4" },
                   attrs: { type: "text", value: "P 25,000.00", id: "dueDate" },
+                }),
+                _vm._v(" "),
+                _c("span", {
+                  staticClass: "flex-1",
+                  staticStyle: { padding: "7px 15px" },
                 }),
               ]),
               _vm._v(" "),
@@ -41672,16 +42174,21 @@ var staticRenderFns = [
                   "label",
                   {
                     staticClass: "form-label",
-                    staticStyle: { flex: "2" },
+                    staticStyle: { flex: "3" },
                     attrs: { for: "dueDate" },
                   },
                   [_vm._v("Insurance")]
                 ),
                 _vm._v(" "),
                 _c("input", {
-                  staticClass: "form-control form-input text-right",
-                  staticStyle: { flex: "3" },
+                  staticClass: "form-control form-input text-right mr-16",
+                  staticStyle: { flex: "4" },
                   attrs: { type: "text", value: "P 25,000.00", id: "dueDate" },
+                }),
+                _vm._v(" "),
+                _c("span", {
+                  staticClass: "flex-1",
+                  staticStyle: { padding: "7px 15px" },
                 }),
               ]),
               _vm._v(" "),
@@ -41690,16 +42197,21 @@ var staticRenderFns = [
                   "label",
                   {
                     staticClass: "form-label",
-                    staticStyle: { flex: "2" },
+                    staticStyle: { flex: "3" },
                     attrs: { for: "dueDate" },
                   },
                   [_vm._v("Notarial Fee")]
                 ),
                 _vm._v(" "),
                 _c("input", {
-                  staticClass: "form-control form-input text-right",
-                  staticStyle: { flex: "3" },
+                  staticClass: "form-control form-input text-right mr-16",
+                  staticStyle: { flex: "4" },
                   attrs: { type: "text", value: "P 25,000.00", id: "dueDate" },
+                }),
+                _vm._v(" "),
+                _c("span", {
+                  staticClass: "flex-1",
+                  staticStyle: { padding: "7px 15px" },
                 }),
               ]),
               _vm._v(" "),
@@ -41708,16 +42220,21 @@ var staticRenderFns = [
                   "label",
                   {
                     staticClass: "form-label",
-                    staticStyle: { flex: "2" },
+                    staticStyle: { flex: "3" },
                     attrs: { for: "dueDate" },
                   },
                   [_vm._v("Prepaid Interest")]
                 ),
                 _vm._v(" "),
                 _c("input", {
-                  staticClass: "form-control form-input text-right",
-                  staticStyle: { flex: "3" },
+                  staticClass: "form-control form-input text-right mr-16",
+                  staticStyle: { flex: "4" },
                   attrs: { type: "text", value: "P 25,000.00", id: "dueDate" },
+                }),
+                _vm._v(" "),
+                _c("span", {
+                  staticClass: "flex-1",
+                  staticStyle: { padding: "7px 15px" },
                 }),
               ]),
               _vm._v(" "),
@@ -41726,16 +42243,21 @@ var staticRenderFns = [
                   "label",
                   {
                     staticClass: "form-label",
-                    staticStyle: { flex: "2" },
+                    staticStyle: { flex: "3" },
                     attrs: { for: "dueDate" },
                   },
                   [_vm._v("Affidavit")]
                 ),
                 _vm._v(" "),
                 _c("input", {
-                  staticClass: "form-control form-input text-right",
-                  staticStyle: { flex: "3" },
+                  staticClass: "form-control form-input text-right mr-16",
+                  staticStyle: { flex: "4" },
                   attrs: { type: "text", value: "P 25,000.00", id: "dueDate" },
+                }),
+                _vm._v(" "),
+                _c("span", {
+                  staticClass: "flex-1",
+                  staticStyle: { padding: "7px 15px" },
                 }),
               ]),
               _vm._v(" "),
@@ -41744,16 +42266,21 @@ var staticRenderFns = [
                   "label",
                   {
                     staticClass: "form-label",
-                    staticStyle: { flex: "2" },
+                    staticStyle: { flex: "3" },
                     attrs: { for: "dueDate" },
                   },
                   [_vm._v("Memo")]
                 ),
                 _vm._v(" "),
                 _c("input", {
-                  staticClass: "form-control form-input text-right",
-                  staticStyle: { flex: "3" },
+                  staticClass: "form-control form-input text-right mr-16",
+                  staticStyle: { flex: "4" },
                   attrs: { type: "text", value: "P 25,000.00", id: "dueDate" },
+                }),
+                _vm._v(" "),
+                _c("span", {
+                  staticClass: "flex-1",
+                  staticStyle: { padding: "7px 15px" },
                 }),
               ]),
             ]
@@ -41771,8 +42298,14 @@ var staticRenderFns = [
                 ),
                 _vm._v(" "),
                 _c("input", {
-                  staticClass: "form-control form-input text-right text-green ",
-                  attrs: { type: "date", id: "dueDate" },
+                  staticClass:
+                    "form-control form-input text-right mr-16 text-green ",
+                  attrs: { type: "number", id: "dueDate" },
+                }),
+                _vm._v(" "),
+                _c("span", {
+                  staticClass: "flex-1",
+                  staticStyle: { padding: "7px 15px" },
                 }),
               ]),
               _vm._v(" "),
@@ -41784,8 +42317,14 @@ var staticRenderFns = [
                 ),
                 _vm._v(" "),
                 _c("input", {
-                  staticClass: "form-control form-input text-right text-green ",
-                  attrs: { type: "date", id: "dueDate" },
+                  staticClass:
+                    "form-control form-input text-right mr-16 text-green ",
+                  attrs: { type: "number", id: "dueDate" },
+                }),
+                _vm._v(" "),
+                _c("span", {
+                  staticClass: "flex-1",
+                  staticStyle: { padding: "7px 15px" },
                 }),
               ]),
               _vm._v(" "),
@@ -41800,7 +42339,7 @@ var staticRenderFns = [
                   "select",
                   {
                     staticClass:
-                      "form-control form-input pr-12 text-right text-green",
+                      "form-control form-input pr-12 text-right mr-16 text-green",
                     attrs: { name: "", id: "" },
                   },
                   [
@@ -41814,6 +42353,53 @@ var staticRenderFns = [
           ),
           _vm._v(" "),
           _c("div", { staticClass: "flex-1" }),
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "d-flex align-items-center" }, [
+          _c(
+            "span",
+            {
+              staticClass: "mr-16 font-20",
+              staticStyle: { "margin-top": "10px" },
+            },
+            [_vm._v("Memo - Deduct to Balance")]
+          ),
+          _vm._v(" "),
+          _c("div", { staticClass: "d-flex align-items-end flex-1" }, [
+            _c("div", { staticClass: "form-group mr-16 flex-1" }, [
+              _c(
+                "select",
+                {
+                  staticClass: "form-control form-input pr-12 mr-16 text-green",
+                  attrs: { name: "", id: "" },
+                },
+                [_c("option", { attrs: { value: "" } }, [_vm._v("5000")])]
+              ),
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "form-group flex-2" }, [
+              _c(
+                "label",
+                { staticClass: "form-label", attrs: { for: "dueDate" } },
+                [_vm._v("Account # and Balance")]
+              ),
+              _vm._v(" "),
+              _c(
+                "select",
+                {
+                  staticClass: "form-control form-input pr-12 mr-16 text-green",
+                  attrs: { name: "", id: "" },
+                },
+                [
+                  _c("option", { attrs: { value: "" } }, [
+                    _vm._v("1232542154 - P 5000.00"),
+                  ]),
+                ]
+              ),
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "flex-1" }),
+          ]),
         ]),
       ]
     )

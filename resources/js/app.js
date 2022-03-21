@@ -7,9 +7,12 @@
 require('./bootstrap');
 import { template } from 'lodash';
 import Notifications from 'vue-notification'
+import Vue from 'vue';
+import Mixin from './mixins/helper';
 
 window.Vue = require('vue').default;
-Vue.use(Notifications)
+Vue.use(Notifications);
+Vue.use(Mixin);
 
 Vue.component('login', require('./components/Login.vue').default);
 Vue.component('client-list', require('./ui/client_information/ClientList.vue').default);

@@ -2,8 +2,9 @@
 	<div class="container-fluid" style="padding:0!important">
 		<notifications group="foo" />
 		<div class="mb-16"></div>
-		<div class="ml-16 mb-24 bb-primary-dark pb-7 text-block">
+		<div class="ml-16 mb-24 bb-primary-dark pb-7 text-block d-flex justify-content-between">
 			<h1 class="m-0 font-35">Release Entry</h1>
+			<a href="#" @click.prevent="clearData.borrower=1" class="btn btn-primary-dark min-w-150">New Client</a>
 		</div><!-- /.col -->
 		<div class="d-flex flex-column flex-xl-row p-16">
 				<div style="flex:9;">
@@ -80,7 +81,7 @@
 					</ul>
 					<div class="tab-content" id="custom-content-below-tabContent">
 						<div class="tab-pane fade show active" id="custom-content-below-borrowerinfo" role="tabpanel" aria-labelledby="custom-content-below-home-tab">
-							<borrowers-info @savedInfo="fetchBorrowers()" @saveBorrower="saveInfo=''" @clearBorrowerInfo="borrower=''" :token="token" :pborrower="borrower" :psave="saveInfo"></borrowers-info>
+							<borrowers-info @borrowerCleared="clearData.borrower=0" @savedInfo="fetchBorrowers()" @saveBorrower="saveInfo=''" @clearBorrowerInfo="borrower=''" :clear="clearData.borrower" :token="token" :pborrower="borrower" :psave="saveInfo"></borrowers-info>
 						</div>
 
 
@@ -250,51 +251,77 @@
 									<div class="d-flex flex-row">
 										<div class="d-flex flex-column mr-45" style="flex:3;">
 											<div class="d-flex flex-row mb-16">
-												<label for="dueDate" class="form-label" style="flex:2">Filling Fee</label>
-												<input type="text" class="form-control form-input text-right" value="P 25,000.00" style="flex:3" id="dueDate">
+												<label for="dueDate" class="form-label" style="flex:3">Filling Fee</label>
+												<input type="text" class="form-control form-input text-right mr-16" value="P 25,000.00" style="flex:4" id="dueDate">
+												<a href="" class="btn btn-success flex-1" style="line-height:2">Edit</a>
 											</div>
 											<div class="d-flex flex-row mb-16">
-												<label for="dueDate" class="form-label" style="flex:2">Doc. Stamp</label>
-												<input type="text" class="form-control form-input text-right" value="P 25,000.00" style="flex:3" id="dueDate">
+												<label for="dueDate" class="form-label" style="flex:3">Doc. Stamp</label>
+												<input type="text" class="form-control form-input text-right mr-16" value="P 25,000.00" style="flex:4" id="dueDate">
+												<span class="flex-1" style="padding:7px 15px"></span>
 											</div>
 											<div class="d-flex flex-row mb-16">
-												<label for="dueDate" class="form-label" style="flex:2">Insurance</label>
-												<input type="text" class="form-control form-input text-right" value="P 25,000.00" style="flex:3" id="dueDate">
+												<label for="dueDate" class="form-label" style="flex:3">Insurance</label>
+												<input type="text" class="form-control form-input text-right mr-16" value="P 25,000.00" style="flex:4" id="dueDate">
+												<span class="flex-1" style="padding:7px 15px"></span>
 											</div>
 											<div class="d-flex flex-row mb-16">
-												<label for="dueDate" class="form-label" style="flex:2">Notarial Fee</label>
-												<input type="text" class="form-control form-input text-right" value="P 25,000.00" style="flex:3" id="dueDate">
+												<label for="dueDate" class="form-label" style="flex:3">Notarial Fee</label>
+												<input type="text" class="form-control form-input text-right mr-16" value="P 25,000.00" style="flex:4" id="dueDate">
+												<span class="flex-1" style="padding:7px 15px"></span>
 											</div>
 											<div class="d-flex flex-row mb-16">
-												<label for="dueDate" class="form-label" style="flex:2">Prepaid Interest</label>
-												<input type="text" class="form-control form-input text-right" value="P 25,000.00" style="flex:3" id="dueDate">
+												<label for="dueDate" class="form-label" style="flex:3">Prepaid Interest</label>
+												<input type="text" class="form-control form-input text-right mr-16" value="P 25,000.00" style="flex:4" id="dueDate">
+												<span class="flex-1" style="padding:7px 15px"></span>
 											</div>
 											<div class="d-flex flex-row mb-16">
-												<label for="dueDate" class="form-label" style="flex:2">Affidavit</label>
-												<input type="text" class="form-control form-input text-right" value="P 25,000.00" style="flex:3" id="dueDate">
+												<label for="dueDate" class="form-label" style="flex:3">Affidavit</label>
+												<input type="text" class="form-control form-input text-right mr-16" value="P 25,000.00" style="flex:4" id="dueDate">
+												<span class="flex-1" style="padding:7px 15px"></span>
 											</div>
 											<div class="d-flex flex-row mb-16">
-												<label for="dueDate" class="form-label" style="flex:2">Memo</label>
-												<input type="text" class="form-control form-input text-right" value="P 25,000.00" style="flex:3" id="dueDate">
+												<label for="dueDate" class="form-label" style="flex:3">Memo</label>
+												<input type="text" class="form-control form-input text-right mr-16" value="P 25,000.00" style="flex:4" id="dueDate">
+												<span class="flex-1" style="padding:7px 15px"></span>
 											</div>
 										</div>
 										<div class="d-flex flex-column" style="flex:2;">
 											<div class="form-group mb-16">
 												<label for="dueDate" class="form-label">Total Deductions</label>
-												<input type="date" class="form-control form-input text-right text-green " id="dueDate">
+												<input type="number" class="form-control form-input text-right mr-16 text-green " id="dueDate">
+												<span class="flex-1" style="padding:7px 15px"></span>
 											</div>
 											<div class="form-group mb-45">
 												<label for="dueDate" class="form-label">Net Proceeds</label>
-												<input type="date" class="form-control form-input text-right text-green " id="dueDate">
+												<input type="number" class="form-control form-input text-right mr-16 text-green " id="dueDate">
+												<span class="flex-1" style="padding:7px 15px"></span>
 											</div>
 											<div class="form-group">
 												<label for="dueDate" class="form-label">Release Type</label>
-												<select name="" id="" class="form-control form-input pr-12 text-right text-green">
+												<select name="" id="" class="form-control form-input pr-12 text-right mr-16 text-green">
 													<option value="">Cash Release</option>
 												</select>
 											</div>
 										</div>
 										<div class="flex-1"></div>
+									</div>
+									<div class="d-flex align-items-center">
+										<span class="mr-16 font-20" style="margin-top:10px">Memo - Deduct to Balance</span>
+										<div class="d-flex align-items-end flex-1">
+											<div class="form-group mr-16 flex-1">
+												<select name="" id="" class="form-control form-input pr-12 mr-16 text-green">
+													<option value="">5000</option>
+												</select>
+											</div>
+											<div class="form-group flex-2">
+												<label for="dueDate" class="form-label">Account # and Balance</label>
+												<select name="" id="" class="form-control form-input pr-12 mr-16 text-green">
+													<option value="">1232542154 - P 5000.00</option>
+												</select>
+											</div>
+											<div class="flex-1"></div>
+										</div>
 									</div>
 								</section>
 
@@ -676,6 +703,9 @@
 		props:['token'],
 		data(){
 			return {
+				clearData:{
+					borrower:0
+				},
 				saveInfo:'',
 				borrower:'',
 				baseUrl: window.location.origin,
@@ -716,7 +746,6 @@
 		},
 
         mounted() {	
-			console.log(this.dateToYMD(new Date("2015-03-25T12:00:00Z")));						
 			this.fetchBorrowers();
         }
     }
