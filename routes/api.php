@@ -10,6 +10,7 @@ use App\Http\Controllers\API\CenterController;
 use App\Http\Controllers\API\BranchController;
 use App\Http\Controllers\API\DashboardController;
 use App\Http\Controllers\API\AccountOfficerController;
+use App\Http\Controllers\API\LoanAccountController;
 
 
 /*
@@ -32,7 +33,16 @@ Route::middleware('auth:sanctum')->group( function () {
     Route::resource('branch', BranchController::class);
     Route::resource('borrower', BorrowerController::class);
     Route::resource('accountofficer', AccountOfficerController::class);
+
+    Route::get('account/show/{account}', [LoanAccountController::class, 'showLoanAccount']);
+    Route::post('account/create/{borrower}', [LoanAccountController::class, 'createLoanAccount']);
+    Route::put('account/update/{account}', [LoanAccountController::class, 'updateLoanAccount']);
+
+
 });
+
+// Route::resource('products', ProductController::class);
+// Route::resource('centers', CenterController::class);
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //     return $request->user();
 // });
