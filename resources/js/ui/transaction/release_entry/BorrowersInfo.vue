@@ -449,6 +449,7 @@
 					businessInfo : [],
 					householdMembers : [],
 					outstandingObligations : [],
+					loanAccounts:[],
 					created_at: '',
 				},
 				data: {
@@ -503,7 +504,8 @@
 						})
 						.then(function (response) {
 							this.notify('',response.data.message, 'success');
-							this.$emit('savedInfo')
+							this.$emit('savedInfo', response.data.data)
+							console.log(response.data);
 						}.bind(this))
 						.catch(function (error) {
 							console.log(error);
@@ -518,7 +520,8 @@
 					})
 					.then(function (response) {
 						this.notify('',response.data.message, 'success');
-						this.$emit('savedInfo')
+						this.$emit('savedInfo', response.data.data)
+						console.log(response.data);
 					}.bind(this))
 					.catch(function (error) {
 						console.log(error);
@@ -528,6 +531,7 @@
 			},
 
 			submitForm:function(){
+				this.$emit('nextBorrower', this.borrower.birthdate)
 				document.getElementById('borrowerBtn').click();
 			},
 			
@@ -611,9 +615,7 @@
 		},
 		watch: {
 			'pborrower'(newValue) {
-				if(newValue != ''){
-					this.borrower = JSON.parse(newValue);
-				}
+				this.borrower = newValue;
 			},
 			'psave'(newValue) {
 				if(newValue != ''){

@@ -8,11 +8,10 @@ require('./bootstrap');
 import { template } from 'lodash';
 import Notifications from 'vue-notification'
 import Vue from 'vue';
-import Mixin from './mixins/helper';
+import {Mixin} from './mixins/helper';
 
 window.Vue = require('vue').default;
 Vue.use(Notifications);
-Vue.use(Mixin);
 
 Vue.component('login', require('./components/Login.vue').default);
 Vue.component('client-list', require('./ui/client_information/ClientList.vue').default);
@@ -27,6 +26,8 @@ Vue.component('gl-setup', require('./ui/maintenance/GlSetup.vue').default);
 Vue.component('account-retagging', require('./ui/maintenance/AccountRetagging.vue').default);
 Vue.component('release-entry', require('./ui/transaction/release_entry/ReleaseEntry.vue').default);
 Vue.component('borrowers-info', require('./ui/transaction/release_entry/BorrowersInfo.vue').default);
+Vue.component('co-borrower', require('./ui/transaction/release_entry/BorrowerCo.vue').default);
+Vue.component('loan-details', require('./ui/transaction/release_entry/LoanDetails.vue').default);
 
 const app = new Vue({
 	el: '#app',

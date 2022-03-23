@@ -27,6 +27,7 @@ class LoanAccount extends Model
 		'due_date',
 		'day_schedule',
 		'borrower_num',
+		'borrower_id',
 		'co_borrower_name',
 		'co_borrower_address',
 		'co_borrower_id_type',

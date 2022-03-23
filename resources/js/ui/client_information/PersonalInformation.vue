@@ -315,7 +315,6 @@ export default {
 		},
 	},
 	mounted(){
-		alert(this.Mixin.toUpperFirst('hello'));
 		this.fetchBorrower();
 	}
 }

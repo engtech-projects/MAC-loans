@@ -23,14 +23,13 @@ class LoanAccountController extends BaseController
      * Store a newly created resource in storage.
      */
     public function createLoanAccount(Request $request, Borrower $borrower) {
-
+		
         $request->merge([
             'status' => 'pending', 
             'account_num' => 'br1-00-001', 
             'borrower_num' =>  $borrower->borrower_num,
             'borrower_id' =>  $borrower->borrower_id,
         ]);
-
         $account = LoanAccount::create($request->input());
 
     	return new LoanAccountResource($account);
@@ -40,9 +39,9 @@ class LoanAccountController extends BaseController
     public function updateLoanAccount(Request $request, LoanAccount $account) {
 
         $account->fill($request->input());
-        $loanAccount->save();
+        $account->save();
 
-        return $this->sendResponse(new LoanAccountResource($loanAccount), 'Account Updated.');
+        return $this->sendResponse(new LoanAccountResource($account), 'Account Updated.');
     }
 
 }

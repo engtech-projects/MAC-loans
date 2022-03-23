@@ -5935,7 +5935,6 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   mounted: function mounted() {
-    alert(this.Mixin.toUpperFirst('hello'));
     this.fetchBorrower();
   }
 });
@@ -7184,6 +7183,188 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/ui/transaction/release_entry/BorrowerCo.vue?vue&type=script&lang=js&":
+/*!***********************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/ui/transaction/release_entry/BorrowerCo.vue?vue&type=script&lang=js& ***!
+  \***********************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  props: ['loandetails', 'borrowers'],
+  data: function data() {
+    return {
+      searchMode: true,
+      loanDetails: {
+        cycle_no: 1,
+        ao_id: '',
+        product_id: '',
+        center_id: '',
+        type: '',
+        payment_mode: '',
+        terms: '',
+        loan_amount: '',
+        no_of_installment: '',
+        day_schedule: '',
+        borrower_num: '',
+        co_borrower_name: '',
+        co_borrower_address: '',
+        co_borrower_id_type: '',
+        co_borrower_id_number: '',
+        co_borrower_id_date_issued: '',
+        co_maker_name: '',
+        co_maker_address: '',
+        co_maker_id_type: '',
+        co_maker_id_number: '',
+        co_maker_id_date_issued: '',
+        document_stamp: '',
+        filing_fee: '',
+        insurance: '',
+        notarial_fee: '100.00',
+        prepaid_interest: '',
+        affidavit_fee: '',
+        memo: '',
+        total_deduction: '',
+        net_proceeds: '',
+        release_type: ''
+      }
+    };
+  },
+  methods: {
+    navigate: function navigate(tab) {
+      this.$emit('update-loan-details', this.loanDetails);
+      document.getElementById(tab).click();
+    },
+    search: function search(fullname) {
+      if (this.loanDetails.co_borrower_name.length > 1) {
+        if (fullname.toLowerCase().includes(this.loanDetails.co_borrower_name.toLowerCase())) {
+          return true;
+        }
+      }
+
+      return false;
+    },
+    setCoborrower: function setCoborrower(borrower) {
+      this.loanDetails.co_borrower_name = borrower.firstname + ' ' + borrower.lastname;
+      this.loanDetails.co_borrower_address = borrower.address;
+      this.loanDetails.co_borrower_id_type = borrower.id_type;
+      this.loanDetails.co_borrower_id_number = borrower.id_no;
+      this.loanDetails.co_borrower_id_date_issued = borrower.id_date_issued;
+      this.searchMode = false;
+    }
+  },
+  watch: {
+    'loandetails': function loandetails(newValue) {
+      this.loanDetails = newValue;
+    }
+  },
+  computed: {
+    searchBorrower: function searchBorrower() {
+      var _this = this;
+
+      return this.borrowers.filter(function (i) {
+        return i.firstname.toLowerCase().includes(_this.loanDetails.co_borrower_name.toLowerCase()) || i.lastname.toLowerCase().includes(_this.loanDetails.co_borrower_name.toLowerCase());
+      });
+    }
+  },
+  mounted: function mounted() {
+    this.loanDetails = this.loandetails;
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/ui/transaction/release_entry/BorrowersInfo.vue?vue&type=script&lang=js&":
 /*!**************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/ui/transaction/release_entry/BorrowersInfo.vue?vue&type=script&lang=js& ***!
@@ -7645,6 +7826,7 @@ __webpack_require__.r(__webpack_exports__);
         businessInfo: [],
         householdMembers: [],
         outstandingObligations: [],
+        loanAccounts: [],
         created_at: ''
       },
       data: {
@@ -7698,7 +7880,8 @@ __webpack_require__.r(__webpack_exports__);
           }
         }).then(function (response) {
           this.notify('', response.data.message, 'success');
-          this.$emit('savedInfo');
+          this.$emit('savedInfo', response.data.data);
+          console.log(response.data);
         }.bind(this))["catch"](function (error) {
           console.log(error);
         }.bind(this));
@@ -7711,13 +7894,15 @@ __webpack_require__.r(__webpack_exports__);
           }
         }).then(function (response) {
           this.notify('', response.data.message, 'success');
-          this.$emit('savedInfo');
+          this.$emit('savedInfo', response.data.data);
+          console.log(response.data);
         }.bind(this))["catch"](function (error) {
           console.log(error);
         }.bind(this));
       }
     },
     submitForm: function submitForm() {
+      this.$emit('nextBorrower', this.borrower.birthdate);
       document.getElementById('borrowerBtn').click();
     },
     navigate: function navigate() {
@@ -7831,9 +8016,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   watch: {
     'pborrower': function pborrower(newValue) {
-      if (newValue != '') {
-        this.borrower = JSON.parse(newValue);
-      }
+      this.borrower = newValue;
     },
     'psave': function psave(newValue) {
       if (newValue != '') {
@@ -7853,6 +8036,448 @@ __webpack_require__.r(__webpack_exports__);
   },
   mounted: function mounted() {
     this.borrower.created_at = this.dateToYMD(new Date());
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/ui/transaction/release_entry/LoanDetails.vue?vue&type=script&lang=js&":
+/*!************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/ui/transaction/release_entry/LoanDetails.vue?vue&type=script&lang=js& ***!
+  \************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  props: ['token', 'loandetails', 'borrower', 'borrowerbday', 'saveloandetails'],
+  data: function data() {
+    return {
+      age: null,
+      products: [],
+      accountOfficers: [],
+      centers: [],
+      loanDetails: {
+        cycle_no: 1,
+        ao_id: '',
+        product_id: '',
+        center_id: '',
+        type: '',
+        payment_mode: '',
+        terms: '',
+        loan_amount: '',
+        no_of_installment: '',
+        day_schedule: '',
+        borrower_num: '',
+        co_borrower_name: '',
+        co_borrower_address: '',
+        co_borrower_id_type: '',
+        co_borrower_id_number: '',
+        co_borrower_id_date_issued: '',
+        co_maker_name: '',
+        co_maker_address: '',
+        co_maker_id_type: '',
+        co_maker_id_number: '',
+        co_maker_id_date_issued: '',
+        document_stamp: '',
+        filing_fee: '',
+        insurance: '',
+        notarial_fee: '100.00',
+        prepaid_interest: '',
+        affidavit_fee: '',
+        memo: '',
+        total_deduction: '',
+        net_proceeds: '',
+        release_type: ''
+      }
+    };
+  },
+  methods: {
+    fetchProducts: function fetchProducts() {
+      axios.get(window.location.origin + '/api/product/', {
+        headers: {
+          'Authorization': 'Bearer ' + this.token,
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        }
+      }).then(function (response) {
+        this.products = response.data.data;
+      }.bind(this))["catch"](function (error) {
+        console.log(error);
+      }.bind(this));
+    },
+    fetchAo: function fetchAo() {
+      axios.get(window.location.origin + '/api/accountofficer/', {
+        headers: {
+          'Authorization': 'Bearer ' + this.token,
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        }
+      }).then(function (response) {
+        this.accountOfficers = response.data.data;
+      }.bind(this))["catch"](function (error) {
+        console.log(error);
+      }.bind(this));
+    },
+    fetchCenters: function fetchCenters() {
+      axios.get(window.location.origin + '/api/center/', {
+        headers: {
+          'Authorization': 'Bearer ' + this.token,
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        }
+      }).then(function (response) {
+        this.centers = response.data.data;
+      }.bind(this))["catch"](function (error) {
+        console.log(error);
+      }.bind(this));
+    },
+    dateToYMD: function dateToYMD(date) {
+      var d = date.getDate();
+      var m = date.getMonth() + 1;
+      var y = date.getFullYear();
+      return '' + y + '-' + (m <= 9 ? '0' + m : m) + '-' + (d <= 9 ? '0' + d : d);
+    },
+    navigate: function navigate(tab) {
+      document.getElementById(tab).click();
+    },
+    calculateAge: function calculateAge(dateString) {
+      var today = new Date();
+      var birthDate = new Date(dateString);
+      var age = today.getFullYear() - birthDate.getFullYear();
+      var m = today.getMonth() - birthDate.getMonth();
+
+      if (m < 0 || m === 0 && today.getDate() < birthDate.getDate()) {
+        age--;
+      }
+
+      return age;
+    },
+    formatToCurrency: function formatToCurrency(amount) {
+      return parseFloat(amount).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,");
+    },
+    submit: function submit() {
+      document.getElementById('warningBtn').click();
+    },
+    save: function save() {
+      if (this.loanDetails.loan_account_id) {
+        axios.put(window.location.origin + '/api/account/update/' + this.loanDetails.loan_account_id, this.loanDetails, {
+          headers: {
+            'Authorization': 'Bearer ' + this.token,
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          }
+        }).then(function (response) {
+          this.notify('', response.data.message, 'success');
+          this.$emit('savedInfo', response.data.data);
+          console.log(response.data);
+        }.bind(this))["catch"](function (error) {
+          console.log(error);
+        }.bind(this));
+      } else {
+        axios.post(window.location.origin + '/api/account/create/' + this.loanDetails.borrower_id, this.loanDetails, {
+          headers: {
+            'Authorization': 'Bearer ' + this.token,
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          }
+        }).then(function (response) {
+          this.notify('', response.data.message, 'success');
+          this.$emit('savedInfo', response.data.data);
+          console.log(response.data);
+        }.bind(this))["catch"](function (error) {
+          console.log(error);
+        }.bind(this));
+      }
+    },
+    notify: function notify(title, text, type) {
+      this.$notify({
+        group: 'foo',
+        title: title,
+        text: text,
+        type: type
+      });
+    }
+  },
+  watch: {
+    'loandetails': function loandetails(newValue) {
+      this.loanDetails = newValue;
+    },
+    'borrower': function borrower(newValue) {
+      this.loanDetails.borrower_id = newValue.borrower_id;
+      this.loanDetails.borrower_num = newValue.borrower_num;
+      this.save();
+    },
+    'borrowerbday': function borrowerbday(newValue) {
+      this.age = this.calculateAge(newValue);
+    } // 'saveloandetails'(newValue) {
+    // 	if(newValue){
+    // 		this.save();
+    // 	}
+    // },
+
+  },
+  computed: {
+    interestRate: function interestRate() {
+      if (this.loanDetails.product_id != '') {
+        for (var i in this.products) {
+          if (this.products[i].product_id === this.loanDetails.product_id) {
+            return this.products[i].interest_rate;
+          }
+        }
+      }
+
+      return '';
+    },
+    interestAmount: function interestAmount() {
+      return (this.loanDetails.loan_amount * (this.interestRate * 0.01) * (this.loanDetails.terms / 30)).toFixed(2);
+    },
+    numberOfInstallment: function numberOfInstallment() {
+      var mode = 0;
+
+      if (this.loanDetails.payment_mode == 'Monthly') {
+        mode = 30;
+      } else if (this.loanDetails.payment_mode == 'Bi-Monthly') {
+        mode = 15;
+      } else if (this.loanDetails.payment_mode == 'Weekly') {
+        mode = 7;
+      } else {
+        mode = this.loanDetails.terms;
+      }
+
+      this.loanDetails.no_of_installment = Math.ceil(this.loanDetails.terms / mode);
+      return Math.ceil(this.loanDetails.terms / mode);
+    },
+    docStamp: function docStamp() {
+      this.loanDetails.document_stamp = (this.loanDetails.loan_amount / 200 * 1.5 * this.loanDetails.terms / 365).toFixed(2);
+
+      if (this.loanDetails.terms / 30 > 12) {
+        this.loanDetails.document_stamp = (this.loanDetails.loan_amount / 200 * 1.5).toFixed(2);
+      }
+
+      return this.loanDetails.document_stamp;
+    },
+    calculateInsurance: function calculateInsurance() {
+      var rate = 1;
+
+      if (this.age > 65) {
+        rate = 2.8;
+      }
+
+      this.loanDetails.insurance = (this.loanDetails.loan_amount / 1000 * rate * Math.ceil(this.loanDetails.terms / 30)).toFixed(2);
+      return this.loanDetails.insurance;
+    },
+    totalDeductions: function totalDeductions() {
+      this.loanDetails.total_deduction = (parseFloat(this.loanDetails.memo) + parseFloat(this.loanDetails.filing_fee) + parseFloat(this.loanDetails.affidavit_fee) + parseFloat(this.loanDetails.notarial_fee) + parseFloat(this.loanDetails.document_stamp) + parseFloat(this.loanDetails.insurance)).toFixed(2);
+      return this.loanDetails.total_deduction;
+    },
+    netProceeds: function netProceeds() {
+      this.loanDetails.net_proceeds = parseFloat(this.loanDetails.loan_amount) - parseFloat(this.loanDetails.total_deduction);
+      return this.loanDetails.net_proceeds;
+    }
+  },
+  mounted: function mounted() {
+    this.fetchProducts();
+    this.fetchAo();
+    this.fetchCenters();
+    this.loanDetails = this.loandetails;
   }
 });
 
@@ -8312,263 +8937,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: ['token'],
   data: function data() {
@@ -8576,10 +8944,50 @@ __webpack_require__.r(__webpack_exports__);
       clearData: {
         borrower: 0
       },
+      borrowerBirthdate: '',
       saveInfo: '',
+      saveLoanDetails: false,
+      bborrower: {
+        borrower_id: '',
+        borrower_num: ''
+      },
       borrower: '',
       baseUrl: window.location.origin,
-      borrowers: []
+      borrowers: [],
+      loanDetails: {
+        loan_account_id: null,
+        cycle_no: 1,
+        ao_id: '',
+        product_id: '',
+        center_id: '',
+        type: '',
+        payment_mode: '',
+        terms: 0,
+        loan_amount: '',
+        no_of_installment: '',
+        day_schedule: '',
+        borrower_num: '',
+        co_borrower_name: '',
+        co_borrower_address: '',
+        co_borrower_id_type: '',
+        co_borrower_id_number: '',
+        co_borrower_id_date_issued: '',
+        co_maker_name: '',
+        co_maker_address: '',
+        co_maker_id_type: '',
+        co_maker_id_number: '',
+        co_maker_id_date_issued: '',
+        document_stamp: 0.00,
+        filing_fee: 0.00,
+        insurance: 0.00,
+        notarial_fee: 100.00,
+        prepaid_interest: 0.00,
+        affidavit_fee: 0.00,
+        memo: 0.00,
+        total_deduction: 0.00,
+        net_proceeds: 0.00,
+        release_type: ''
+      }
     };
   },
   methods: {
@@ -8597,10 +9005,43 @@ __webpack_require__.r(__webpack_exports__);
         console.log(error);
       }.bind(this));
     },
-    selectBorrower: function selectBorrower(data) {
-      this.borrower = '';
-      this.borrower = JSON.stringify(data); // console.log(this.borrower);
+    resetBorrower: function resetBorrower() {
+      this.borrower = {
+        borrower_id: null,
+        borrower_num: '',
+        firstname: '',
+        lastname: '',
+        middlename: '',
+        suffix: '',
+        address: '',
+        birthdate: '',
+        gender: '',
+        status: '',
+        contact_number: '',
+        id_type: '',
+        id_no: '',
+        id_date_issued: '',
+        spouse_firstname: '',
+        spouse_lastname: '',
+        spouse_middlename: '',
+        spouse_address: '',
+        spouse_birthdate: '',
+        spouse_id_type: '',
+        spouse_id_no: '',
+        spouse_id_date_issued: '',
+        employmentInfo: [],
+        businessInfo: [],
+        householdMembers: [],
+        outstandingObligations: [],
+        loanAccounts: [],
+        created_at: this.dateToYMD(new Date())
+      };
     },
+    // selectBorrower:function(data){
+    // 	this.borrower = '';
+    // 	this.borrower = data;
+    // 	// console.log(this.borrower);
+    // },
     navigate: function navigate(tab) {
       document.getElementById(tab).click();
     },
@@ -8609,10 +9050,70 @@ __webpack_require__.r(__webpack_exports__);
       var m = date.getMonth() + 1;
       var y = date.getFullYear();
       return '' + y + '-' + (m <= 9 ? '0' + m : m) + '-' + (d <= 9 ? '0' + d : d);
+    },
+    updateLoanDetails: function updateLoanDetails(data) {
+      this.loanDetails = data;
+    },
+    savedInfo: function savedInfo(data) {
+      this.fetchBorrowers();
+      this.bborrower = data;
+      this.saveLoanDetails = true;
+    },
+    nextBorrower: function nextBorrower(data) {
+      this.borrowerBirthdate = data;
+    },
+    selected: function selected(id) {
+      if (id == this.loanDetails.loan_account_id) {
+        return 'active';
+      }
+
+      return '';
+    },
+    resetLoanDetails: function resetLoanDetails() {
+      this.loanDetails = {
+        loan_account_id: null,
+        cycle_no: 1,
+        ao_id: '',
+        product_id: '',
+        center_id: '',
+        type: '',
+        payment_mode: '',
+        terms: 0,
+        loan_amount: '',
+        no_of_installment: '',
+        day_schedule: '',
+        borrower_num: '',
+        co_borrower_name: '',
+        co_borrower_address: '',
+        co_borrower_id_type: '',
+        co_borrower_id_number: '',
+        co_borrower_id_date_issued: '',
+        co_maker_name: '',
+        co_maker_address: '',
+        co_maker_id_type: '',
+        co_maker_id_number: '',
+        co_maker_id_date_issued: '',
+        document_stamp: 0.00,
+        filing_fee: 0.00,
+        insurance: 0.00,
+        notarial_fee: 100.00,
+        prepaid_interest: 0.00,
+        affidavit_fee: 0.00,
+        memo: 0.00,
+        total_deduction: 0.00,
+        net_proceeds: 0.00,
+        release_type: ''
+      };
+    },
+    setCycle: function setCycle() {
+      this.loanDetails.cycle_no = parseInt(this.borrower.loanAccounts.length + 1);
     }
   },
   mounted: function mounted() {
     this.fetchBorrowers();
+    this.resetBorrower();
+    this.resetLoanDetails(); // this.navigate('custom-content-below-loandetails-tab');
+    // this.navigate('custom-content-below-coborrowerinfo-tab');
   }
 });
 
@@ -8632,7 +9133,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue_notification__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(vue_notification__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js");
 /* harmony import */ var _mixins_helper__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./mixins/helper */ "./resources/js/mixins/helper.js");
-/* harmony import */ var _mixins_helper__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_mixins_helper__WEBPACK_IMPORTED_MODULE_2__);
 /**
  * First we will load all of this project's JavaScript dependencies which
  * includes Vue and other libraries. It is a great starting point when
@@ -8646,7 +9146,6 @@ __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 window.Vue = (__webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js")["default"]);
 vue__WEBPACK_IMPORTED_MODULE_3__["default"].use((vue_notification__WEBPACK_IMPORTED_MODULE_1___default()));
-vue__WEBPACK_IMPORTED_MODULE_3__["default"].use((_mixins_helper__WEBPACK_IMPORTED_MODULE_2___default()));
 vue__WEBPACK_IMPORTED_MODULE_3__["default"].component('login', (__webpack_require__(/*! ./components/Login.vue */ "./resources/js/components/Login.vue")["default"]));
 vue__WEBPACK_IMPORTED_MODULE_3__["default"].component('client-list', (__webpack_require__(/*! ./ui/client_information/ClientList.vue */ "./resources/js/ui/client_information/ClientList.vue")["default"]));
 vue__WEBPACK_IMPORTED_MODULE_3__["default"].component('personal-information', (__webpack_require__(/*! ./ui/client_information/PersonalInformation.vue */ "./resources/js/ui/client_information/PersonalInformation.vue")["default"]));
@@ -8659,6 +9158,8 @@ vue__WEBPACK_IMPORTED_MODULE_3__["default"].component('gl-setup', (__webpack_req
 vue__WEBPACK_IMPORTED_MODULE_3__["default"].component('account-retagging', (__webpack_require__(/*! ./ui/maintenance/AccountRetagging.vue */ "./resources/js/ui/maintenance/AccountRetagging.vue")["default"]));
 vue__WEBPACK_IMPORTED_MODULE_3__["default"].component('release-entry', (__webpack_require__(/*! ./ui/transaction/release_entry/ReleaseEntry.vue */ "./resources/js/ui/transaction/release_entry/ReleaseEntry.vue")["default"]));
 vue__WEBPACK_IMPORTED_MODULE_3__["default"].component('borrowers-info', (__webpack_require__(/*! ./ui/transaction/release_entry/BorrowersInfo.vue */ "./resources/js/ui/transaction/release_entry/BorrowersInfo.vue")["default"]));
+vue__WEBPACK_IMPORTED_MODULE_3__["default"].component('co-borrower', (__webpack_require__(/*! ./ui/transaction/release_entry/BorrowerCo.vue */ "./resources/js/ui/transaction/release_entry/BorrowerCo.vue")["default"]));
+vue__WEBPACK_IMPORTED_MODULE_3__["default"].component('loan-details', (__webpack_require__(/*! ./ui/transaction/release_entry/LoanDetails.vue */ "./resources/js/ui/transaction/release_entry/LoanDetails.vue")["default"]));
 var app = new vue__WEBPACK_IMPORTED_MODULE_3__["default"]({
   el: '#app'
 });
@@ -8705,9 +9206,13 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 /*!***************************************!*\
   !*** ./resources/js/mixins/helper.js ***!
   \***************************************/
-/***/ (() => {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-Vue.mixin({
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js");
+
+vue__WEBPACK_IMPORTED_MODULE_0__["default"].mixin({
   methods: {
     toUpperFirst: function toUpperFirst(str) {
       return str.charAt(0).toUpperCase() + str.slice(1);
@@ -13740,6 +14245,54 @@ defineJQueryPlugin(Toast);
 
 
 //# sourceMappingURL=bootstrap.esm.js.map
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[3]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/ui/transaction/release_entry/BorrowerCo.vue?vue&type=style&index=0&id=74d8a0be&lang=scss&scoped=true&":
+/*!**************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[3]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/ui/transaction/release_entry/BorrowerCo.vue?vue&type=style&index=0&id=74d8a0be&lang=scss&scoped=true& ***!
+  \**************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js");
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__);
+// Imports
+
+var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
+// Module
+___CSS_LOADER_EXPORT___.push([module.id, ".b-item[data-v-74d8a0be]:hover {\n  color: #3498db;\n  cursor: pointer;\n  background-color: #fafafa;\n}", ""]);
+// Exports
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[3]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/ui/transaction/release_entry/ReleaseEntry.vue?vue&type=style&index=0&id=03a7b4c4&lang=scss&scoped=true&":
+/*!****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[3]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/ui/transaction/release_entry/ReleaseEntry.vue?vue&type=style&index=0&id=03a7b4c4&lang=scss&scoped=true& ***!
+  \****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js");
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__);
+// Imports
+
+var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
+// Module
+___CSS_LOADER_EXPORT___.push([module.id, ".existing-loans.active[data-v-03a7b4c4] {\n  background-color: #78e08f;\n}", ""]);
+// Exports
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
 
 /***/ }),
@@ -31263,6 +31816,66 @@ process.umask = function() { return 0; };
 
 /***/ }),
 
+/***/ "./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[3]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/ui/transaction/release_entry/BorrowerCo.vue?vue&type=style&index=0&id=74d8a0be&lang=scss&scoped=true&":
+/*!******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[3]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/ui/transaction/release_entry/BorrowerCo.vue?vue&type=style&index=0&id=74d8a0be&lang=scss&scoped=true& ***!
+  \******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! !../../../../../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js */ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_2_node_modules_sass_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_3_node_modules_vue_loader_lib_index_js_vue_loader_options_BorrowerCo_vue_vue_type_style_index_0_id_74d8a0be_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !!../../../../../node_modules/css-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[1]!../../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[2]!../../../../../node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[3]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./BorrowerCo.vue?vue&type=style&index=0&id=74d8a0be&lang=scss&scoped=true& */ "./node_modules/css-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[3]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/ui/transaction/release_entry/BorrowerCo.vue?vue&type=style&index=0&id=74d8a0be&lang=scss&scoped=true&");
+
+            
+
+var options = {};
+
+options.insert = "head";
+options.singleton = false;
+
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_2_node_modules_sass_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_3_node_modules_vue_loader_lib_index_js_vue_loader_options_BorrowerCo_vue_vue_type_style_index_0_id_74d8a0be_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_1__["default"], options);
+
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_2_node_modules_sass_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_3_node_modules_vue_loader_lib_index_js_vue_loader_options_BorrowerCo_vue_vue_type_style_index_0_id_74d8a0be_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_1__["default"].locals || {});
+
+/***/ }),
+
+/***/ "./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[3]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/ui/transaction/release_entry/ReleaseEntry.vue?vue&type=style&index=0&id=03a7b4c4&lang=scss&scoped=true&":
+/*!********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[3]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/ui/transaction/release_entry/ReleaseEntry.vue?vue&type=style&index=0&id=03a7b4c4&lang=scss&scoped=true& ***!
+  \********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! !../../../../../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js */ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_2_node_modules_sass_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_3_node_modules_vue_loader_lib_index_js_vue_loader_options_ReleaseEntry_vue_vue_type_style_index_0_id_03a7b4c4_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !!../../../../../node_modules/css-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[1]!../../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[2]!../../../../../node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[3]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./ReleaseEntry.vue?vue&type=style&index=0&id=03a7b4c4&lang=scss&scoped=true& */ "./node_modules/css-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[3]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/ui/transaction/release_entry/ReleaseEntry.vue?vue&type=style&index=0&id=03a7b4c4&lang=scss&scoped=true&");
+
+            
+
+var options = {};
+
+options.insert = "head";
+options.singleton = false;
+
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_2_node_modules_sass_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_3_node_modules_vue_loader_lib_index_js_vue_loader_options_ReleaseEntry_vue_vue_type_style_index_0_id_03a7b4c4_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_1__["default"], options);
+
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_2_node_modules_sass_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_3_node_modules_vue_loader_lib_index_js_vue_loader_options_ReleaseEntry_vue_vue_type_style_index_0_id_03a7b4c4_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_1__["default"].locals || {});
+
+/***/ }),
+
 /***/ "./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/ui/maintenance/ProductSetup.vue?vue&type=style&index=0&id=5b4a21f7&scoped=true&lang=css&":
 /*!***********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/ui/maintenance/ProductSetup.vue?vue&type=style&index=0&id=5b4a21f7&scoped=true&lang=css& ***!
@@ -31960,6 +32573,47 @@ component.options.__file = "resources/js/ui/maintenance/UserSettings.vue"
 
 /***/ }),
 
+/***/ "./resources/js/ui/transaction/release_entry/BorrowerCo.vue":
+/*!******************************************************************!*\
+  !*** ./resources/js/ui/transaction/release_entry/BorrowerCo.vue ***!
+  \******************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _BorrowerCo_vue_vue_type_template_id_74d8a0be_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./BorrowerCo.vue?vue&type=template&id=74d8a0be&scoped=true& */ "./resources/js/ui/transaction/release_entry/BorrowerCo.vue?vue&type=template&id=74d8a0be&scoped=true&");
+/* harmony import */ var _BorrowerCo_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./BorrowerCo.vue?vue&type=script&lang=js& */ "./resources/js/ui/transaction/release_entry/BorrowerCo.vue?vue&type=script&lang=js&");
+/* harmony import */ var _BorrowerCo_vue_vue_type_style_index_0_id_74d8a0be_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./BorrowerCo.vue?vue&type=style&index=0&id=74d8a0be&lang=scss&scoped=true& */ "./resources/js/ui/transaction/release_entry/BorrowerCo.vue?vue&type=style&index=0&id=74d8a0be&lang=scss&scoped=true&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! !../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+;
+
+
+/* normalize component */
+
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
+  _BorrowerCo_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _BorrowerCo_vue_vue_type_template_id_74d8a0be_scoped_true___WEBPACK_IMPORTED_MODULE_0__.render,
+  _BorrowerCo_vue_vue_type_template_id_74d8a0be_scoped_true___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  "74d8a0be",
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/ui/transaction/release_entry/BorrowerCo.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
 /***/ "./resources/js/ui/transaction/release_entry/BorrowersInfo.vue":
 /*!*********************************************************************!*\
   !*** ./resources/js/ui/transaction/release_entry/BorrowersInfo.vue ***!
@@ -31999,6 +32653,45 @@ component.options.__file = "resources/js/ui/transaction/release_entry/BorrowersI
 
 /***/ }),
 
+/***/ "./resources/js/ui/transaction/release_entry/LoanDetails.vue":
+/*!*******************************************************************!*\
+  !*** ./resources/js/ui/transaction/release_entry/LoanDetails.vue ***!
+  \*******************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _LoanDetails_vue_vue_type_template_id_25a254e2___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./LoanDetails.vue?vue&type=template&id=25a254e2& */ "./resources/js/ui/transaction/release_entry/LoanDetails.vue?vue&type=template&id=25a254e2&");
+/* harmony import */ var _LoanDetails_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./LoanDetails.vue?vue&type=script&lang=js& */ "./resources/js/ui/transaction/release_entry/LoanDetails.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _LoanDetails_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _LoanDetails_vue_vue_type_template_id_25a254e2___WEBPACK_IMPORTED_MODULE_0__.render,
+  _LoanDetails_vue_vue_type_template_id_25a254e2___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/ui/transaction/release_entry/LoanDetails.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
 /***/ "./resources/js/ui/transaction/release_entry/ReleaseEntry.vue":
 /*!********************************************************************!*\
   !*** ./resources/js/ui/transaction/release_entry/ReleaseEntry.vue ***!
@@ -32010,23 +32703,25 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _ReleaseEntry_vue_vue_type_template_id_03a7b4c4___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ReleaseEntry.vue?vue&type=template&id=03a7b4c4& */ "./resources/js/ui/transaction/release_entry/ReleaseEntry.vue?vue&type=template&id=03a7b4c4&");
+/* harmony import */ var _ReleaseEntry_vue_vue_type_template_id_03a7b4c4_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ReleaseEntry.vue?vue&type=template&id=03a7b4c4&scoped=true& */ "./resources/js/ui/transaction/release_entry/ReleaseEntry.vue?vue&type=template&id=03a7b4c4&scoped=true&");
 /* harmony import */ var _ReleaseEntry_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ReleaseEntry.vue?vue&type=script&lang=js& */ "./resources/js/ui/transaction/release_entry/ReleaseEntry.vue?vue&type=script&lang=js&");
-/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* harmony import */ var _ReleaseEntry_vue_vue_type_style_index_0_id_03a7b4c4_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./ReleaseEntry.vue?vue&type=style&index=0&id=03a7b4c4&lang=scss&scoped=true& */ "./resources/js/ui/transaction/release_entry/ReleaseEntry.vue?vue&type=style&index=0&id=03a7b4c4&lang=scss&scoped=true&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! !../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
 
+;
 
 
 /* normalize component */
-;
-var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
   _ReleaseEntry_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _ReleaseEntry_vue_vue_type_template_id_03a7b4c4___WEBPACK_IMPORTED_MODULE_0__.render,
-  _ReleaseEntry_vue_vue_type_template_id_03a7b4c4___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  _ReleaseEntry_vue_vue_type_template_id_03a7b4c4_scoped_true___WEBPACK_IMPORTED_MODULE_0__.render,
+  _ReleaseEntry_vue_vue_type_template_id_03a7b4c4_scoped_true___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
   false,
   null,
-  null,
+  "03a7b4c4",
   null
   
 )
@@ -32166,6 +32861,22 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/ui/transaction/release_entry/BorrowerCo.vue?vue&type=script&lang=js&":
+/*!*******************************************************************************************!*\
+  !*** ./resources/js/ui/transaction/release_entry/BorrowerCo.vue?vue&type=script&lang=js& ***!
+  \*******************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_BorrowerCo_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./BorrowerCo.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/ui/transaction/release_entry/BorrowerCo.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_BorrowerCo_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
 /***/ "./resources/js/ui/transaction/release_entry/BorrowersInfo.vue?vue&type=script&lang=js&":
 /*!**********************************************************************************************!*\
   !*** ./resources/js/ui/transaction/release_entry/BorrowersInfo.vue?vue&type=script&lang=js& ***!
@@ -32182,6 +32893,22 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/ui/transaction/release_entry/LoanDetails.vue?vue&type=script&lang=js&":
+/*!********************************************************************************************!*\
+  !*** ./resources/js/ui/transaction/release_entry/LoanDetails.vue?vue&type=script&lang=js& ***!
+  \********************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_LoanDetails_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./LoanDetails.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/ui/transaction/release_entry/LoanDetails.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_LoanDetails_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
 /***/ "./resources/js/ui/transaction/release_entry/ReleaseEntry.vue?vue&type=script&lang=js&":
 /*!*********************************************************************************************!*\
   !*** ./resources/js/ui/transaction/release_entry/ReleaseEntry.vue?vue&type=script&lang=js& ***!
@@ -32195,6 +32922,32 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ReleaseEntry_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./ReleaseEntry.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/ui/transaction/release_entry/ReleaseEntry.vue?vue&type=script&lang=js&");
  /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ReleaseEntry_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/ui/transaction/release_entry/BorrowerCo.vue?vue&type=style&index=0&id=74d8a0be&lang=scss&scoped=true&":
+/*!****************************************************************************************************************************!*\
+  !*** ./resources/js/ui/transaction/release_entry/BorrowerCo.vue?vue&type=style&index=0&id=74d8a0be&lang=scss&scoped=true& ***!
+  \****************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_style_loader_dist_cjs_js_node_modules_css_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_2_node_modules_sass_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_3_node_modules_vue_loader_lib_index_js_vue_loader_options_BorrowerCo_vue_vue_type_style_index_0_id_74d8a0be_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/style-loader/dist/cjs.js!../../../../../node_modules/css-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[1]!../../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[2]!../../../../../node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[3]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./BorrowerCo.vue?vue&type=style&index=0&id=74d8a0be&lang=scss&scoped=true& */ "./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[3]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/ui/transaction/release_entry/BorrowerCo.vue?vue&type=style&index=0&id=74d8a0be&lang=scss&scoped=true&");
+
+
+/***/ }),
+
+/***/ "./resources/js/ui/transaction/release_entry/ReleaseEntry.vue?vue&type=style&index=0&id=03a7b4c4&lang=scss&scoped=true&":
+/*!******************************************************************************************************************************!*\
+  !*** ./resources/js/ui/transaction/release_entry/ReleaseEntry.vue?vue&type=style&index=0&id=03a7b4c4&lang=scss&scoped=true& ***!
+  \******************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_style_loader_dist_cjs_js_node_modules_css_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_2_node_modules_sass_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_3_node_modules_vue_loader_lib_index_js_vue_loader_options_ReleaseEntry_vue_vue_type_style_index_0_id_03a7b4c4_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/style-loader/dist/cjs.js!../../../../../node_modules/css-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[1]!../../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[2]!../../../../../node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[3]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./ReleaseEntry.vue?vue&type=style&index=0&id=03a7b4c4&lang=scss&scoped=true& */ "./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[3]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/ui/transaction/release_entry/ReleaseEntry.vue?vue&type=style&index=0&id=03a7b4c4&lang=scss&scoped=true&");
+
 
 /***/ }),
 
@@ -32381,6 +33134,23 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/ui/transaction/release_entry/BorrowerCo.vue?vue&type=template&id=74d8a0be&scoped=true&":
+/*!*************************************************************************************************************!*\
+  !*** ./resources/js/ui/transaction/release_entry/BorrowerCo.vue?vue&type=template&id=74d8a0be&scoped=true& ***!
+  \*************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_BorrowerCo_vue_vue_type_template_id_74d8a0be_scoped_true___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_BorrowerCo_vue_vue_type_template_id_74d8a0be_scoped_true___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_BorrowerCo_vue_vue_type_template_id_74d8a0be_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./BorrowerCo.vue?vue&type=template&id=74d8a0be&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/ui/transaction/release_entry/BorrowerCo.vue?vue&type=template&id=74d8a0be&scoped=true&");
+
+
+/***/ }),
+
 /***/ "./resources/js/ui/transaction/release_entry/BorrowersInfo.vue?vue&type=template&id=86be6b88&":
 /*!****************************************************************************************************!*\
   !*** ./resources/js/ui/transaction/release_entry/BorrowersInfo.vue?vue&type=template&id=86be6b88& ***!
@@ -32398,19 +33168,36 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/ui/transaction/release_entry/ReleaseEntry.vue?vue&type=template&id=03a7b4c4&":
-/*!***************************************************************************************************!*\
-  !*** ./resources/js/ui/transaction/release_entry/ReleaseEntry.vue?vue&type=template&id=03a7b4c4& ***!
-  \***************************************************************************************************/
+/***/ "./resources/js/ui/transaction/release_entry/LoanDetails.vue?vue&type=template&id=25a254e2&":
+/*!**************************************************************************************************!*\
+  !*** ./resources/js/ui/transaction/release_entry/LoanDetails.vue?vue&type=template&id=25a254e2& ***!
+  \**************************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ReleaseEntry_vue_vue_type_template_id_03a7b4c4___WEBPACK_IMPORTED_MODULE_0__.render),
-/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ReleaseEntry_vue_vue_type_template_id_03a7b4c4___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_LoanDetails_vue_vue_type_template_id_25a254e2___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_LoanDetails_vue_vue_type_template_id_25a254e2___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
 /* harmony export */ });
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ReleaseEntry_vue_vue_type_template_id_03a7b4c4___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./ReleaseEntry.vue?vue&type=template&id=03a7b4c4& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/ui/transaction/release_entry/ReleaseEntry.vue?vue&type=template&id=03a7b4c4&");
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_LoanDetails_vue_vue_type_template_id_25a254e2___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./LoanDetails.vue?vue&type=template&id=25a254e2& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/ui/transaction/release_entry/LoanDetails.vue?vue&type=template&id=25a254e2&");
+
+
+/***/ }),
+
+/***/ "./resources/js/ui/transaction/release_entry/ReleaseEntry.vue?vue&type=template&id=03a7b4c4&scoped=true&":
+/*!***************************************************************************************************************!*\
+  !*** ./resources/js/ui/transaction/release_entry/ReleaseEntry.vue?vue&type=template&id=03a7b4c4&scoped=true& ***!
+  \***************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ReleaseEntry_vue_vue_type_template_id_03a7b4c4_scoped_true___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ReleaseEntry_vue_vue_type_template_id_03a7b4c4_scoped_true___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ReleaseEntry_vue_vue_type_template_id_03a7b4c4_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./ReleaseEntry.vue?vue&type=template&id=03a7b4c4&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/ui/transaction/release_entry/ReleaseEntry.vue?vue&type=template&id=03a7b4c4&scoped=true&");
 
 
 /***/ }),
@@ -37985,6 +38772,676 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/ui/transaction/release_entry/BorrowerCo.vue?vue&type=template&id=74d8a0be&scoped=true&":
+/*!****************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/ui/transaction/release_entry/BorrowerCo.vue?vue&type=template&id=74d8a0be&scoped=true& ***!
+  \****************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function () {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    {
+      staticClass: "tab-pane fade",
+      attrs: {
+        id: "custom-content-below-coborrowerinfo",
+        role: "tabpanel",
+        "aria-labelledby": "custom-content-below-profile-tab",
+      },
+    },
+    [
+      _c(
+        "form",
+        {
+          attrs: { action: "" },
+          on: {
+            submit: function ($event) {
+              $event.preventDefault()
+              return _vm.navigate("custom-content-below-loandetails-tab")
+            },
+          },
+        },
+        [
+          _c("div", { staticClass: "d-flex flex-column" }, [
+            _c(
+              "section",
+              {
+                staticClass: "mb-24",
+                staticStyle: { flex: "21", "padding-left": "16px" },
+              },
+              [
+                _c("span", { staticClass: "section-title mb-24" }, [
+                  _vm._v("Co-Borrower's Information"),
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "d-flex flex-row" }, [
+                  _c(
+                    "div",
+                    {
+                      staticClass: "form-group mb-10 relative",
+                      staticStyle: { flex: "1" },
+                    },
+                    [
+                      _c(
+                        "label",
+                        {
+                          staticClass: "form-label",
+                          attrs: { for: "coFullname" },
+                        },
+                        [_vm._v("Full Name")]
+                      ),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.loanDetails.co_borrower_name,
+                            expression: "loanDetails.co_borrower_name",
+                          },
+                        ],
+                        staticClass: "form-control form-input ",
+                        attrs: { required: "", type: "text", id: "coFullname" },
+                        domProps: { value: _vm.loanDetails.co_borrower_name },
+                        on: {
+                          keyup: function ($event) {
+                            _vm.searchMode = true
+                          },
+                          input: function ($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.loanDetails,
+                              "co_borrower_name",
+                              $event.target.value
+                            )
+                          },
+                        },
+                      }),
+                      _vm._v(" "),
+                      _vm.loanDetails.co_borrower_name.length > 2 &&
+                      _vm.searchMode
+                        ? _c(
+                            "div",
+                            {
+                              staticClass: "d-flex flex-column light-border",
+                              staticStyle: {
+                                "box-shadow": "2px 2px 7px rgba(0,0,0, .1)",
+                              },
+                            },
+                            _vm._l(_vm.searchBorrower, function (b) {
+                              return _c(
+                                "span",
+                                {
+                                  key: b.borrower_id,
+                                  staticClass: "p-10 light-bb b-item",
+                                  on: {
+                                    click: function ($event) {
+                                      return _vm.setCoborrower(b)
+                                    },
+                                  },
+                                },
+                                [_vm._v(_vm._s(b.firstname + " " + b.lastname))]
+                              )
+                            }),
+                            0
+                          )
+                        : _vm._e(),
+                    ]
+                  ),
+                ]),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    staticClass: "form-group mb-10",
+                    staticStyle: { flex: "3" },
+                  },
+                  [
+                    _c(
+                      "label",
+                      {
+                        staticClass: "form-label",
+                        attrs: { for: "spouseAddress  " },
+                      },
+                      [_vm._v("Address")]
+                    ),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.loanDetails.co_borrower_address,
+                          expression: "loanDetails.co_borrower_address",
+                        },
+                      ],
+                      staticClass: "form-control form-input ",
+                      attrs: {
+                        required: "",
+                        type: "text",
+                        id: "spouseAddress  ",
+                      },
+                      domProps: { value: _vm.loanDetails.co_borrower_address },
+                      on: {
+                        input: function ($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.loanDetails,
+                            "co_borrower_address",
+                            $event.target.value
+                          )
+                        },
+                      },
+                    }),
+                  ]
+                ),
+                _vm._v(" "),
+                _c("div", { staticClass: "d-flex flex-row" }, [
+                  _c(
+                    "div",
+                    {
+                      staticClass: "form-group mb-10 mr-16",
+                      staticStyle: { flex: "3" },
+                    },
+                    [
+                      _c(
+                        "label",
+                        {
+                          staticClass: "form-label",
+                          attrs: { for: "coIdType" },
+                        },
+                        [_vm._v("ID Type")]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "select",
+                        {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.loanDetails.co_borrower_id_type,
+                              expression: "loanDetails.co_borrower_id_type",
+                            },
+                          ],
+                          staticClass: "form-control form-input",
+                          attrs: { required: "", name: "", id: "" },
+                          on: {
+                            change: function ($event) {
+                              var $$selectedVal = Array.prototype.filter
+                                .call($event.target.options, function (o) {
+                                  return o.selected
+                                })
+                                .map(function (o) {
+                                  var val = "_value" in o ? o._value : o.value
+                                  return val
+                                })
+                              _vm.$set(
+                                _vm.loanDetails,
+                                "co_borrower_id_type",
+                                $event.target.multiple
+                                  ? $$selectedVal
+                                  : $$selectedVal[0]
+                              )
+                            },
+                          },
+                        },
+                        [
+                          _c("option", { attrs: { value: "SSS" } }, [
+                            _vm._v("SSS"),
+                          ]),
+                          _vm._v(" "),
+                          _c("option", { attrs: { value: "UMID" } }, [
+                            _vm._v("GSIS/UMID"),
+                          ]),
+                          _vm._v(" "),
+                          _c(
+                            "option",
+                            { attrs: { value: "Driver's License" } },
+                            [_vm._v("Driver's License")]
+                          ),
+                          _vm._v(" "),
+                          _c("option", { attrs: { value: "Passport" } }, [
+                            _vm._v("Passport"),
+                          ]),
+                          _vm._v(" "),
+                          _c("option", { attrs: { value: "Senior ID" } }, [
+                            _vm._v("Senior ID"),
+                          ]),
+                        ]
+                      ),
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    {
+                      staticClass: "form-group mb-10 mr-16",
+                      staticStyle: { flex: "3" },
+                    },
+                    [
+                      _c(
+                        "label",
+                        {
+                          staticClass: "form-label",
+                          attrs: { for: "coIdNumber" },
+                        },
+                        [_vm._v("ID Number")]
+                      ),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.loanDetails.co_borrower_id_number,
+                            expression: "loanDetails.co_borrower_id_number",
+                          },
+                        ],
+                        staticClass: "form-control form-input ",
+                        attrs: { required: "", type: "text", id: "coIdNumber" },
+                        domProps: {
+                          value: _vm.loanDetails.co_borrower_id_number,
+                        },
+                        on: {
+                          input: function ($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.loanDetails,
+                              "co_borrower_id_number",
+                              $event.target.value
+                            )
+                          },
+                        },
+                      }),
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    {
+                      staticClass: "form-group mb-10 mr-16",
+                      staticStyle: { flex: "3" },
+                    },
+                    [
+                      _c(
+                        "label",
+                        {
+                          staticClass: "form-label",
+                          attrs: { for: "coIdDate" },
+                        },
+                        [_vm._v("ID Date Issued")]
+                      ),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.loanDetails.co_borrower_id_date_issued,
+                            expression:
+                              "loanDetails.co_borrower_id_date_issued",
+                          },
+                        ],
+                        staticClass: "form-control form-input ",
+                        attrs: { required: "", type: "date", id: "coIdDate" },
+                        domProps: {
+                          value: _vm.loanDetails.co_borrower_id_date_issued,
+                        },
+                        on: {
+                          input: function ($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.loanDetails,
+                              "co_borrower_id_date_issued",
+                              $event.target.value
+                            )
+                          },
+                        },
+                      }),
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c("div", { staticStyle: { flex: "3" } }),
+                ]),
+              ]
+            ),
+            _vm._v(" "),
+            _c(
+              "section",
+              {
+                staticClass: "mb-24",
+                staticStyle: { flex: "21", "padding-left": "16px" },
+              },
+              [
+                _c("span", { staticClass: "section-title mb-24" }, [
+                  _vm._v("Co-Maker's Information"),
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "d-flex flex-row" }, [
+                  _c(
+                    "div",
+                    {
+                      staticClass: "form-group mb-10",
+                      staticStyle: { flex: "1" },
+                    },
+                    [
+                      _c(
+                        "label",
+                        {
+                          staticClass: "form-label",
+                          attrs: { for: "coFullname" },
+                        },
+                        [_vm._v("Full Name")]
+                      ),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.loanDetails.co_maker_name,
+                            expression: "loanDetails.co_maker_name",
+                          },
+                        ],
+                        staticClass: "form-control form-input ",
+                        attrs: { required: "", type: "text", id: "coFullname" },
+                        domProps: { value: _vm.loanDetails.co_maker_name },
+                        on: {
+                          input: function ($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.loanDetails,
+                              "co_maker_name",
+                              $event.target.value
+                            )
+                          },
+                        },
+                      }),
+                    ]
+                  ),
+                ]),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    staticClass: "form-group mb-10",
+                    staticStyle: { flex: "3" },
+                  },
+                  [
+                    _c(
+                      "label",
+                      {
+                        staticClass: "form-label",
+                        attrs: { for: "spouseAddress  " },
+                      },
+                      [_vm._v("Address")]
+                    ),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.loanDetails.co_maker_address,
+                          expression: "loanDetails.co_maker_address",
+                        },
+                      ],
+                      staticClass: "form-control form-input ",
+                      attrs: {
+                        required: "",
+                        type: "text",
+                        id: "spouseAddress  ",
+                      },
+                      domProps: { value: _vm.loanDetails.co_maker_address },
+                      on: {
+                        input: function ($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.loanDetails,
+                            "co_maker_address",
+                            $event.target.value
+                          )
+                        },
+                      },
+                    }),
+                  ]
+                ),
+                _vm._v(" "),
+                _c("div", { staticClass: "d-flex flex-row" }, [
+                  _c(
+                    "div",
+                    {
+                      staticClass: "form-group mb-10 mr-16",
+                      staticStyle: { flex: "3" },
+                    },
+                    [
+                      _c(
+                        "label",
+                        {
+                          staticClass: "form-label",
+                          attrs: { for: "coIdType" },
+                        },
+                        [_vm._v("ID Type")]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "select",
+                        {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.loanDetails.co_maker_id_type,
+                              expression: "loanDetails.co_maker_id_type",
+                            },
+                          ],
+                          staticClass: "form-control form-input",
+                          attrs: { required: "", name: "", id: "" },
+                          on: {
+                            change: function ($event) {
+                              var $$selectedVal = Array.prototype.filter
+                                .call($event.target.options, function (o) {
+                                  return o.selected
+                                })
+                                .map(function (o) {
+                                  var val = "_value" in o ? o._value : o.value
+                                  return val
+                                })
+                              _vm.$set(
+                                _vm.loanDetails,
+                                "co_maker_id_type",
+                                $event.target.multiple
+                                  ? $$selectedVal
+                                  : $$selectedVal[0]
+                              )
+                            },
+                          },
+                        },
+                        [
+                          _c("option", { attrs: { value: "SSS" } }, [
+                            _vm._v("SSS"),
+                          ]),
+                          _vm._v(" "),
+                          _c("option", { attrs: { value: "UMID" } }, [
+                            _vm._v("GSIS/UMID"),
+                          ]),
+                          _vm._v(" "),
+                          _c(
+                            "option",
+                            { attrs: { value: "Driver's License" } },
+                            [_vm._v("Driver's License")]
+                          ),
+                          _vm._v(" "),
+                          _c("option", { attrs: { value: "Passport" } }, [
+                            _vm._v("Passport"),
+                          ]),
+                          _vm._v(" "),
+                          _c("option", { attrs: { value: "Senior ID" } }, [
+                            _vm._v("Senior ID"),
+                          ]),
+                        ]
+                      ),
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    {
+                      staticClass: "form-group mb-10 mr-16",
+                      staticStyle: { flex: "3" },
+                    },
+                    [
+                      _c(
+                        "label",
+                        {
+                          staticClass: "form-label",
+                          attrs: { for: "coIdNumber" },
+                        },
+                        [_vm._v("ID Number")]
+                      ),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.loanDetails.co_maker_id_number,
+                            expression: "loanDetails.co_maker_id_number",
+                          },
+                        ],
+                        staticClass: "form-control form-input ",
+                        attrs: { required: "", type: "text", id: "coIdNumber" },
+                        domProps: { value: _vm.loanDetails.co_maker_id_number },
+                        on: {
+                          input: function ($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.loanDetails,
+                              "co_maker_id_number",
+                              $event.target.value
+                            )
+                          },
+                        },
+                      }),
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    {
+                      staticClass: "form-group mb-10 mr-16",
+                      staticStyle: { flex: "3" },
+                    },
+                    [
+                      _c(
+                        "label",
+                        {
+                          staticClass: "form-label",
+                          attrs: { for: "coIdDate" },
+                        },
+                        [_vm._v("ID Date Issued")]
+                      ),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.loanDetails.co_maker_id_date_issued,
+                            expression: "loanDetails.co_maker_id_date_issued",
+                          },
+                        ],
+                        staticClass: "form-control form-input ",
+                        attrs: { required: "", type: "date", id: "coIdDate" },
+                        domProps: {
+                          value: _vm.loanDetails.co_maker_id_date_issued,
+                        },
+                        on: {
+                          input: function ($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.loanDetails,
+                              "co_maker_id_date_issued",
+                              $event.target.value
+                            )
+                          },
+                        },
+                      }),
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c("div", { staticStyle: { flex: "3" } }),
+                ]),
+              ]
+            ),
+            _vm._v(" "),
+            _c("div", { staticClass: "d-flex flex-row-reverse mb-45" }, [
+              _c("button", { staticClass: "btn btn-success flex-2" }, [
+                _vm._v("Next"),
+              ]),
+              _vm._v(" "),
+              _c(
+                "a",
+                {
+                  staticClass: "btn btn-primary-dark mr-24 tab-navigate",
+                  staticStyle: { flex: "2" },
+                  attrs: {
+                    href: "#",
+                    "data-tab": "custom-content-below-borrowerinfo-tab",
+                  },
+                  on: {
+                    click: function ($event) {
+                      $event.preventDefault()
+                      return _vm.navigate(
+                        "custom-content-below-borrowerinfo-tab"
+                      )
+                    },
+                  },
+                },
+                [_vm._v("Back")]
+              ),
+              _vm._v(" "),
+              _c("div", { staticStyle: { flex: "22" } }),
+            ]),
+          ]),
+        ]
+      ),
+    ]
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/ui/transaction/release_entry/BorrowersInfo.vue?vue&type=template&id=86be6b88&":
 /*!*******************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/ui/transaction/release_entry/BorrowersInfo.vue?vue&type=template&id=86be6b88& ***!
@@ -40826,10 +42283,1279 @@ render._withStripped = true
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/ui/transaction/release_entry/ReleaseEntry.vue?vue&type=template&id=03a7b4c4&":
-/*!******************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/ui/transaction/release_entry/ReleaseEntry.vue?vue&type=template&id=03a7b4c4& ***!
-  \******************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/ui/transaction/release_entry/LoanDetails.vue?vue&type=template&id=25a254e2&":
+/*!*****************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/ui/transaction/release_entry/LoanDetails.vue?vue&type=template&id=25a254e2& ***!
+  \*****************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function () {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "form",
+    {
+      attrs: { action: "" },
+      on: {
+        submit: function ($event) {
+          $event.preventDefault()
+          return _vm.submit.apply(null, arguments)
+        },
+      },
+    },
+    [
+      _c(
+        "div",
+        { staticClass: "d-flex flex-column" },
+        [
+          _c("notifications", { attrs: { group: "foo" } }),
+          _vm._v(" "),
+          _c(
+            "section",
+            {
+              staticClass: "mb-24",
+              staticStyle: { flex: "21", "padding-left": "16px" },
+            },
+            [
+              _c("span", { staticClass: "section-title mb-24" }, [
+                _vm._v("Loan Details"),
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "d-flex flex-row" }, [
+                _c("div", {
+                  staticClass: "mr-16",
+                  staticStyle: { flex: "18" },
+                }),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    staticClass: "form-group mb-10",
+                    staticStyle: { flex: "7" },
+                  },
+                  [
+                    _c(
+                      "label",
+                      {
+                        staticClass: "form-label",
+                        attrs: { for: "dateRelease" },
+                      },
+                      [_vm._v("Date Release")]
+                    ),
+                    _vm._v(" "),
+                    _c("input", {
+                      staticClass: "form-control form-input ",
+                      attrs: { disabled: "", type: "date", id: "dateRelease" },
+                      domProps: { value: _vm.dateToYMD(new Date()) },
+                    }),
+                  ]
+                ),
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "d-flex flex-row" }, [
+                _c(
+                  "div",
+                  {
+                    staticClass: "form-group mb-10 mr-16",
+                    staticStyle: { flex: "3" },
+                  },
+                  [
+                    _c(
+                      "label",
+                      {
+                        staticClass: "form-label",
+                        attrs: { for: "cycleNumber" },
+                      },
+                      [_vm._v("Cycle Number")]
+                    ),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.loanDetails.cycle_no,
+                          expression: "loanDetails.cycle_no",
+                        },
+                      ],
+                      staticClass: "form-control form-input ",
+                      attrs: { disabled: "", type: "text", id: "cycleNumber" },
+                      domProps: { value: _vm.loanDetails.cycle_no },
+                      on: {
+                        input: function ($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.loanDetails,
+                            "cycle_no",
+                            $event.target.value
+                          )
+                        },
+                      },
+                    }),
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    staticClass: "form-group mb-10 mr-16",
+                    staticStyle: { flex: "7" },
+                  },
+                  [
+                    _c(
+                      "label",
+                      {
+                        staticClass: "form-label",
+                        attrs: { for: "accountOfficer" },
+                      },
+                      [_vm._v("Account Officer")]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "select",
+                      {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.loanDetails.ao_id,
+                            expression: "loanDetails.ao_id",
+                          },
+                        ],
+                        staticClass: "form-control form-input ",
+                        attrs: { required: "", name: "", id: "" },
+                        on: {
+                          change: function ($event) {
+                            var $$selectedVal = Array.prototype.filter
+                              .call($event.target.options, function (o) {
+                                return o.selected
+                              })
+                              .map(function (o) {
+                                var val = "_value" in o ? o._value : o.value
+                                return val
+                              })
+                            _vm.$set(
+                              _vm.loanDetails,
+                              "ao_id",
+                              $event.target.multiple
+                                ? $$selectedVal
+                                : $$selectedVal[0]
+                            )
+                          },
+                        },
+                      },
+                      _vm._l(_vm.accountOfficers, function (ao) {
+                        return _c(
+                          "option",
+                          { key: ao.ao_id, domProps: { value: ao.ao_id } },
+                          [_vm._v(_vm._s(ao.name))]
+                        )
+                      }),
+                      0
+                    ),
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    staticClass: "form-group mb-10 mr-16",
+                    staticStyle: { flex: "7" },
+                  },
+                  [
+                    _c(
+                      "label",
+                      { staticClass: "form-label", attrs: { for: "product" } },
+                      [_vm._v("Product")]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "select",
+                      {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.loanDetails.product_id,
+                            expression: "loanDetails.product_id",
+                          },
+                        ],
+                        staticClass: "form-control form-input ",
+                        attrs: { required: "", name: "", id: "" },
+                        on: {
+                          change: function ($event) {
+                            var $$selectedVal = Array.prototype.filter
+                              .call($event.target.options, function (o) {
+                                return o.selected
+                              })
+                              .map(function (o) {
+                                var val = "_value" in o ? o._value : o.value
+                                return val
+                              })
+                            _vm.$set(
+                              _vm.loanDetails,
+                              "product_id",
+                              $event.target.multiple
+                                ? $$selectedVal
+                                : $$selectedVal[0]
+                            )
+                          },
+                        },
+                      },
+                      _vm._l(_vm.products, function (prod) {
+                        return _c(
+                          "option",
+                          {
+                            key: prod.product_id,
+                            domProps: { value: prod.product_id },
+                          },
+                          [_vm._v(_vm._s(prod.product_name))]
+                        )
+                      }),
+                      0
+                    ),
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    staticClass: "form-group mb-10",
+                    staticStyle: { flex: "7" },
+                  },
+                  [
+                    _c(
+                      "label",
+                      {
+                        staticClass: "form-label",
+                        attrs: { for: "accountNumber" },
+                      },
+                      [_vm._v("Account Number")]
+                    ),
+                    _vm._v(" "),
+                    _c("input", {
+                      staticClass: "form-control form-input",
+                      attrs: {
+                        disabled: "",
+                        type: "text",
+                        id: "accountNumber",
+                      },
+                      domProps: { value: _vm.loanDetails.borrower_num },
+                    }),
+                  ]
+                ),
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "d-flex flex-row" }, [
+                _c(
+                  "div",
+                  {
+                    staticClass: "form-group mb-10 mr-16",
+                    staticStyle: { flex: "7" },
+                  },
+                  [
+                    _c(
+                      "label",
+                      { staticClass: "form-label", attrs: { for: "center" } },
+                      [_vm._v("Center")]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "select",
+                      {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.loanDetails.center_id,
+                            expression: "loanDetails.center_id",
+                          },
+                        ],
+                        staticClass: "form-control form-input ",
+                        attrs: { required: "", name: "", id: "" },
+                        on: {
+                          change: function ($event) {
+                            var $$selectedVal = Array.prototype.filter
+                              .call($event.target.options, function (o) {
+                                return o.selected
+                              })
+                              .map(function (o) {
+                                var val = "_value" in o ? o._value : o.value
+                                return val
+                              })
+                            _vm.$set(
+                              _vm.loanDetails,
+                              "center_id",
+                              $event.target.multiple
+                                ? $$selectedVal
+                                : $$selectedVal[0]
+                            )
+                          },
+                        },
+                      },
+                      _vm._l(_vm.centers, function (center) {
+                        return _c(
+                          "option",
+                          {
+                            key: center.center_id,
+                            domProps: { value: center.center_id },
+                          },
+                          [_vm._v(_vm._s(center.center))]
+                        )
+                      }),
+                      0
+                    ),
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    staticClass: "form-group mb-10 mr-16",
+                    staticStyle: { flex: "7" },
+                  },
+                  [
+                    _c(
+                      "label",
+                      { staticClass: "form-label", attrs: { for: "type" } },
+                      [_vm._v("Type")]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "select",
+                      {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.loanDetails.type,
+                            expression: "loanDetails.type",
+                          },
+                        ],
+                        staticClass: "form-control form-input ",
+                        attrs: { required: "", name: "", id: "" },
+                        on: {
+                          change: function ($event) {
+                            var $$selectedVal = Array.prototype.filter
+                              .call($event.target.options, function (o) {
+                                return o.selected
+                              })
+                              .map(function (o) {
+                                var val = "_value" in o ? o._value : o.value
+                                return val
+                              })
+                            _vm.$set(
+                              _vm.loanDetails,
+                              "type",
+                              $event.target.multiple
+                                ? $$selectedVal
+                                : $$selectedVal[0]
+                            )
+                          },
+                        },
+                      },
+                      [
+                        _c("option", { attrs: { value: "Add-On" } }, [
+                          _vm._v("Add-On"),
+                        ]),
+                        _vm._v(" "),
+                        _c("option", { attrs: { value: "Prepaid" } }, [
+                          _vm._v("Prepaid"),
+                        ]),
+                      ]
+                    ),
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    staticClass: "form-group mb-10",
+                    staticStyle: { flex: "7" },
+                  },
+                  [
+                    _c(
+                      "label",
+                      { staticClass: "form-label", attrs: { for: "mode" } },
+                      [_vm._v("Mode")]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "select",
+                      {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.loanDetails.payment_mode,
+                            expression: "loanDetails.payment_mode",
+                          },
+                        ],
+                        staticClass: "form-control form-input ",
+                        attrs: { required: "", name: "", id: "" },
+                        on: {
+                          change: function ($event) {
+                            var $$selectedVal = Array.prototype.filter
+                              .call($event.target.options, function (o) {
+                                return o.selected
+                              })
+                              .map(function (o) {
+                                var val = "_value" in o ? o._value : o.value
+                                return val
+                              })
+                            _vm.$set(
+                              _vm.loanDetails,
+                              "payment_mode",
+                              $event.target.multiple
+                                ? $$selectedVal
+                                : $$selectedVal[0]
+                            )
+                          },
+                        },
+                      },
+                      [
+                        _c("option", { attrs: { value: "Monthly" } }, [
+                          _vm._v("Monthly"),
+                        ]),
+                        _vm._v(" "),
+                        _c("option", { attrs: { value: "Bi-Monthly" } }, [
+                          _vm._v("Bi-Monthly"),
+                        ]),
+                        _vm._v(" "),
+                        _c("option", { attrs: { value: "Weekly" } }, [
+                          _vm._v("Weekly"),
+                        ]),
+                        _vm._v(" "),
+                        _c("option", { attrs: { value: "Lumpsum" } }, [
+                          _vm._v("Lumpsum"),
+                        ]),
+                      ]
+                    ),
+                  ]
+                ),
+              ]),
+              _vm._v(" "),
+              _c(
+                "div",
+                {
+                  staticClass: "d-flex flex-row pb-45 mb-24",
+                  staticStyle: { "border-bottom": "1px solid #dfdfd0" },
+                },
+                [
+                  _c(
+                    "div",
+                    {
+                      staticClass: "form-group mb-10 mr-16",
+                      staticStyle: { flex: "7" },
+                    },
+                    [
+                      _c(
+                        "label",
+                        { staticClass: "form-label", attrs: { for: "center" } },
+                        [_vm._v("Loan Amount")]
+                      ),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.loanDetails.loan_amount,
+                            expression: "loanDetails.loan_amount",
+                          },
+                        ],
+                        staticClass: "form-control form-input ",
+                        attrs: { required: "", type: "number", id: "center" },
+                        domProps: { value: _vm.loanDetails.loan_amount },
+                        on: {
+                          input: function ($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.loanDetails,
+                              "loan_amount",
+                              $event.target.value
+                            )
+                          },
+                        },
+                      }),
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    {
+                      staticClass: "form-group mb-10 mr-16",
+                      staticStyle: { flex: "4" },
+                    },
+                    [
+                      _c(
+                        "label",
+                        { staticClass: "form-label", attrs: { for: "group" } },
+                        [_vm._v("Terms")]
+                      ),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.loanDetails.terms,
+                            expression: "loanDetails.terms",
+                          },
+                        ],
+                        staticClass: "form-control form-input ",
+                        attrs: { required: "", type: "number", id: "group" },
+                        domProps: { value: _vm.loanDetails.terms },
+                        on: {
+                          input: function ($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.loanDetails,
+                              "terms",
+                              $event.target.value
+                            )
+                          },
+                        },
+                      }),
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    {
+                      staticClass: "form-group mb-10 mr-16",
+                      staticStyle: { flex: "5" },
+                    },
+                    [
+                      _c(
+                        "label",
+                        { staticClass: "form-label", attrs: { for: "type" } },
+                        [_vm._v("Day Schedule")]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "select",
+                        {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.loanDetails.day_schedule,
+                              expression: "loanDetails.day_schedule",
+                            },
+                          ],
+                          staticClass: "form-control form-input ",
+                          attrs: { required: "", id: "type" },
+                          on: {
+                            change: function ($event) {
+                              var $$selectedVal = Array.prototype.filter
+                                .call($event.target.options, function (o) {
+                                  return o.selected
+                                })
+                                .map(function (o) {
+                                  var val = "_value" in o ? o._value : o.value
+                                  return val
+                                })
+                              _vm.$set(
+                                _vm.loanDetails,
+                                "day_schedule",
+                                $event.target.multiple
+                                  ? $$selectedVal
+                                  : $$selectedVal[0]
+                              )
+                            },
+                          },
+                        },
+                        [
+                          _c("option", { attrs: { value: "daily" } }, [
+                            _vm._v("Daily"),
+                          ]),
+                          _vm._v(" "),
+                          _c("option", { attrs: { value: "monday" } }, [
+                            _vm._v("Monday"),
+                          ]),
+                          _vm._v(" "),
+                          _c("option", { attrs: { value: "tuesday" } }, [
+                            _vm._v("Tuesday"),
+                          ]),
+                          _vm._v(" "),
+                          _c("option", { attrs: { value: "wednesday" } }, [
+                            _vm._v("Wednesday"),
+                          ]),
+                          _vm._v(" "),
+                          _c("option", { attrs: { value: "thursday" } }, [
+                            _vm._v("Thursday"),
+                          ]),
+                          _vm._v(" "),
+                          _c("option", { attrs: { value: "friday" } }, [
+                            _vm._v("Friday"),
+                          ]),
+                        ]
+                      ),
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c("div", { staticStyle: { flex: "9" } }),
+                ]
+              ),
+              _vm._v(" "),
+              _c("div", { staticClass: "d-flex flex-row" }, [
+                _c(
+                  "div",
+                  {
+                    staticClass: "form-group mb-10 mr-16",
+                    staticStyle: { flex: "6" },
+                  },
+                  [
+                    _c(
+                      "label",
+                      {
+                        staticClass: "form-label",
+                        attrs: { for: "interestRate" },
+                      },
+                      [_vm._v("Interest Rate")]
+                    ),
+                    _vm._v(" "),
+                    _c("input", {
+                      staticClass: "form-control form-input ",
+                      attrs: {
+                        required: "",
+                        disabled: "",
+                        type: "text",
+                        id: "interestRate",
+                      },
+                      domProps: { value: _vm.interestRate + "%" },
+                    }),
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    staticClass: "form-group mb-10 mr-16",
+                    staticStyle: { flex: "6" },
+                  },
+                  [
+                    _c(
+                      "label",
+                      {
+                        staticClass: "form-label",
+                        attrs: { for: "interestAmount" },
+                      },
+                      [_vm._v("Interest Amount")]
+                    ),
+                    _vm._v(" "),
+                    _c("input", {
+                      staticClass: "form-control form-input ",
+                      attrs: {
+                        required: "",
+                        disabled: "",
+                        type: "text",
+                        id: "group",
+                      },
+                      domProps: { value: _vm.interestAmount },
+                    }),
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    staticClass: "form-group mb-10 mr-16",
+                    staticStyle: { flex: "6" },
+                  },
+                  [
+                    _c(
+                      "label",
+                      {
+                        staticClass: "form-label",
+                        attrs: { for: "numberOfInstallment" },
+                      },
+                      [_vm._v("Number of Installment")]
+                    ),
+                    _vm._v(" "),
+                    _c("input", {
+                      staticClass: "form-control form-input ",
+                      attrs: {
+                        required: "",
+                        disabled: "",
+                        type: "number",
+                        id: "numberOfInstallment",
+                      },
+                      domProps: { value: _vm.numberOfInstallment },
+                    }),
+                  ]
+                ),
+              ]),
+            ]
+          ),
+          _vm._v(" "),
+          _c(
+            "section",
+            {
+              staticClass: "mb-24 pb-45",
+              staticStyle: {
+                flex: "21",
+                "padding-left": "16px",
+                "border-bottom": "1px solid #AAA",
+              },
+            },
+            [
+              _c("span", { staticClass: "section-title mb-24" }, [
+                _vm._v("Deduction Fees"),
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "d-flex flex-row" }, [
+                _c(
+                  "div",
+                  {
+                    staticClass: "d-flex flex-column mr-45",
+                    staticStyle: { flex: "3" },
+                  },
+                  [
+                    _c("div", { staticClass: "d-flex flex-row mb-16" }, [
+                      _c(
+                        "label",
+                        {
+                          staticClass: "form-label",
+                          staticStyle: { flex: "3" },
+                          attrs: { for: "dueDate" },
+                        },
+                        [_vm._v("Filling Fee")]
+                      ),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.loanDetails.filing_fee,
+                            expression: "loanDetails.filing_fee",
+                          },
+                        ],
+                        staticClass: "form-control form-input text-right mr-16",
+                        staticStyle: { flex: "4" },
+                        attrs: { required: "", type: "text", id: "dueDate" },
+                        domProps: { value: _vm.loanDetails.filing_fee },
+                        on: {
+                          input: function ($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.loanDetails,
+                              "filing_fee",
+                              $event.target.value
+                            )
+                          },
+                        },
+                      }),
+                      _vm._v(" "),
+                      _c(
+                        "a",
+                        {
+                          staticClass: "btn btn-success flex-1",
+                          staticStyle: { "line-height": "2" },
+                          attrs: { href: "" },
+                        },
+                        [_vm._v("Edit")]
+                      ),
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "d-flex flex-row mb-16" }, [
+                      _c(
+                        "label",
+                        {
+                          staticClass: "form-label",
+                          staticStyle: { flex: "3" },
+                          attrs: { for: "dueDate" },
+                        },
+                        [_vm._v("Doc. Stamp")]
+                      ),
+                      _vm._v(" "),
+                      _c("input", {
+                        staticClass: "form-control form-input text-right mr-16",
+                        staticStyle: { flex: "4" },
+                        attrs: {
+                          requried: "",
+                          disabled: "",
+                          type: "text",
+                          id: "dueDate",
+                        },
+                        domProps: { value: _vm.formatToCurrency(_vm.docStamp) },
+                      }),
+                      _vm._v(" "),
+                      _c("span", {
+                        staticClass: "flex-1",
+                        staticStyle: { padding: "7px 15px" },
+                      }),
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "d-flex flex-row mb-16" }, [
+                      _c(
+                        "label",
+                        {
+                          staticClass: "form-label",
+                          staticStyle: { flex: "3" },
+                          attrs: { for: "dueDate" },
+                        },
+                        [_vm._v("Insurance")]
+                      ),
+                      _vm._v(" "),
+                      _c("input", {
+                        staticClass: "form-control form-input text-right mr-16",
+                        staticStyle: { flex: "4" },
+                        attrs: {
+                          required: "",
+                          disabled: "",
+                          type: "text",
+                          id: "dueDate",
+                        },
+                        domProps: {
+                          value: _vm.formatToCurrency(_vm.calculateInsurance),
+                        },
+                      }),
+                      _vm._v(" "),
+                      _c("span", {
+                        staticClass: "flex-1",
+                        staticStyle: { padding: "7px 15px" },
+                      }),
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "d-flex flex-row mb-16" }, [
+                      _c(
+                        "label",
+                        {
+                          staticClass: "form-label",
+                          staticStyle: { flex: "3" },
+                          attrs: { for: "dueDate" },
+                        },
+                        [_vm._v("Notarial Fee")]
+                      ),
+                      _vm._v(" "),
+                      _c("input", {
+                        staticClass: "form-control form-input text-right mr-16",
+                        staticStyle: { flex: "4" },
+                        attrs: {
+                          required: "",
+                          disabled: "",
+                          type: "text",
+                          id: "dueDate",
+                        },
+                        domProps: {
+                          value: _vm.formatToCurrency(
+                            _vm.loanDetails.notarial_fee
+                          ),
+                        },
+                      }),
+                      _vm._v(" "),
+                      _c("span", {
+                        staticClass: "flex-1",
+                        staticStyle: { padding: "7px 15px" },
+                      }),
+                    ]),
+                    _vm._v(" "),
+                    _vm.loanDetails.type == "Prepaid"
+                      ? _c("div", { staticClass: "d-flex flex-row mb-16" }, [
+                          _c(
+                            "label",
+                            {
+                              staticClass: "form-label",
+                              staticStyle: { flex: "3" },
+                              attrs: { for: "dueDate" },
+                            },
+                            [_vm._v("Prepaid Interest")]
+                          ),
+                          _vm._v(" "),
+                          _c("input", {
+                            staticClass:
+                              "form-control form-input text-right mr-16",
+                            staticStyle: { flex: "4" },
+                            attrs: {
+                              disabled: "",
+                              required: "",
+                              type: "text",
+                              id: "dueDate",
+                            },
+                            domProps: {
+                              value: _vm.loanDetails.prepaid_interest,
+                            },
+                          }),
+                          _vm._v(" "),
+                          _c("span", {
+                            staticClass: "flex-1",
+                            staticStyle: { padding: "7px 15px" },
+                          }),
+                        ])
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "d-flex flex-row mb-16" }, [
+                      _c(
+                        "label",
+                        {
+                          staticClass: "form-label",
+                          staticStyle: { flex: "3" },
+                          attrs: { for: "dueDate" },
+                        },
+                        [_vm._v("Affidavit")]
+                      ),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.loanDetails.affidavit_fee,
+                            expression: "loanDetails.affidavit_fee",
+                          },
+                        ],
+                        staticClass: "form-control form-input text-right mr-16",
+                        staticStyle: { flex: "4" },
+                        attrs: { type: "text", id: "dueDate" },
+                        domProps: { value: _vm.loanDetails.affidavit_fee },
+                        on: {
+                          input: function ($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.loanDetails,
+                              "affidavit_fee",
+                              $event.target.value
+                            )
+                          },
+                        },
+                      }),
+                      _vm._v(" "),
+                      _c("span", {
+                        staticClass: "flex-1",
+                        staticStyle: { padding: "7px 15px" },
+                      }),
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "d-flex flex-row mb-16" }, [
+                      _c(
+                        "label",
+                        {
+                          staticClass: "form-label",
+                          staticStyle: { flex: "3" },
+                          attrs: { for: "dueDate" },
+                        },
+                        [_vm._v("Memo")]
+                      ),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.loanDetails.memo,
+                            expression: "loanDetails.memo",
+                          },
+                        ],
+                        staticClass: "form-control form-input text-right mr-16",
+                        staticStyle: { flex: "4" },
+                        attrs: { type: "text", id: "dueDate" },
+                        domProps: { value: _vm.loanDetails.memo },
+                        on: {
+                          input: function ($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.loanDetails,
+                              "memo",
+                              $event.target.value
+                            )
+                          },
+                        },
+                      }),
+                      _vm._v(" "),
+                      _c("span", {
+                        staticClass: "flex-1",
+                        staticStyle: { padding: "7px 15px" },
+                      }),
+                    ]),
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    staticClass: "d-flex flex-column",
+                    staticStyle: { flex: "2" },
+                  },
+                  [
+                    _c("div", { staticClass: "form-group mb-16" }, [
+                      _c(
+                        "label",
+                        {
+                          staticClass: "form-label",
+                          attrs: { for: "dueDate" },
+                        },
+                        [_vm._v("Total Deductions")]
+                      ),
+                      _vm._v(" "),
+                      _c("input", {
+                        staticClass:
+                          "form-control form-input text-right mr-16 text-green ",
+                        attrs: {
+                          required: "",
+                          disabled: "",
+                          type: "text",
+                          id: "dueDate",
+                        },
+                        domProps: {
+                          value: _vm.formatToCurrency(_vm.totalDeductions),
+                        },
+                      }),
+                      _vm._v(" "),
+                      _c("span", {
+                        staticClass: "flex-1",
+                        staticStyle: { padding: "7px 15px" },
+                      }),
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "form-group mb-45" }, [
+                      _c(
+                        "label",
+                        {
+                          staticClass: "form-label",
+                          attrs: { for: "dueDate" },
+                        },
+                        [_vm._v("Net Proceeds")]
+                      ),
+                      _vm._v(" "),
+                      _c("input", {
+                        staticClass:
+                          "form-control form-input text-right mr-16 text-green ",
+                        attrs: {
+                          required: "",
+                          disabled: "",
+                          type: "text",
+                          id: "dueDate",
+                        },
+                        domProps: {
+                          value: _vm.formatToCurrency(_vm.netProceeds),
+                        },
+                      }),
+                      _vm._v(" "),
+                      _c("span", {
+                        staticClass: "flex-1",
+                        staticStyle: { padding: "7px 15px" },
+                      }),
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "form-group" }, [
+                      _c(
+                        "label",
+                        {
+                          staticClass: "form-label",
+                          attrs: { for: "dueDate" },
+                        },
+                        [_vm._v("Release Type")]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "select",
+                        {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.loanDetails.release_type,
+                              expression: "loanDetails.release_type",
+                            },
+                          ],
+                          staticClass:
+                            "form-control form-input pr-12 text-right mr-16 text-green",
+                          attrs: { required: "", name: "", id: "" },
+                          on: {
+                            change: function ($event) {
+                              var $$selectedVal = Array.prototype.filter
+                                .call($event.target.options, function (o) {
+                                  return o.selected
+                                })
+                                .map(function (o) {
+                                  var val = "_value" in o ? o._value : o.value
+                                  return val
+                                })
+                              _vm.$set(
+                                _vm.loanDetails,
+                                "release_type",
+                                $event.target.multiple
+                                  ? $$selectedVal
+                                  : $$selectedVal[0]
+                              )
+                            },
+                          },
+                        },
+                        [
+                          _c("option", { attrs: { value: "Cash Release" } }, [
+                            _vm._v("Cash Release"),
+                          ]),
+                          _vm._v(" "),
+                          _c("option", { attrs: { value: "Cheque Release" } }, [
+                            _vm._v("Cheque Release"),
+                          ]),
+                          _vm._v(" "),
+                          _c(
+                            "option",
+                            { attrs: { value: "Restructure Release" } },
+                            [_vm._v("Restructure Release")]
+                          ),
+                        ]
+                      ),
+                    ]),
+                  ]
+                ),
+                _vm._v(" "),
+                _c("div", { staticClass: "flex-1" }),
+              ]),
+              _vm._v(" "),
+              _vm._m(0),
+            ]
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              staticClass:
+                "d-flex flex-row-reverse mb-45 justify-content-between",
+            },
+            [
+              _c("div", { staticClass: "d-flex" }, [
+                _c(
+                  "a",
+                  {
+                    staticClass:
+                      "btn btn-primary-dark mr-24 tab-navigate min-w-150",
+                    attrs: {
+                      href: "#",
+                      "data-tab": "custom-content-below-coborrowerinfo-tab",
+                    },
+                    on: {
+                      click: function ($event) {
+                        $event.preventDefault()
+                        return _vm.navigate(
+                          "custom-content-below-coborrowerinfo-tab"
+                        )
+                      },
+                    },
+                  },
+                  [_vm._v("Back")]
+                ),
+                _vm._v(" "),
+                _c("a", {
+                  staticClass: "btn btn-success tab-navigate min-w-150 hide",
+                  attrs: {
+                    href: "#",
+                    "data-toggle": "modal",
+                    "data-target": "#warningModal",
+                    id: "warningBtn",
+                  },
+                }),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  { staticClass: "btn btn-success tab-navigate min-w-150" },
+                  [_vm._v("Next")]
+                ),
+              ]),
+              _vm._v(" "),
+              _c(
+                "a",
+                {
+                  staticClass: "btn btn-yellow-light",
+                  attrs: {
+                    href: "#",
+                    "data-toggle": "modal",
+                    "data-target": "#lettersModal",
+                  },
+                },
+                [_vm._v("Print Document")]
+              ),
+            ]
+          ),
+        ],
+        1
+      ),
+    ]
+  )
+}
+var staticRenderFns = [
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "d-flex align-items-center" }, [
+      _c(
+        "span",
+        { staticClass: "mr-16 font-20", staticStyle: { "margin-top": "10px" } },
+        [_vm._v("Memo - Deduct to Balance")]
+      ),
+      _vm._v(" "),
+      _c("div", { staticClass: "d-flex align-items-end flex-1" }, [
+        _c("div", { staticClass: "form-group mr-16 flex-1" }, [
+          _c(
+            "select",
+            {
+              staticClass: "form-control form-input pr-12 mr-16 text-green",
+              attrs: { name: "", id: "" },
+            },
+            [_c("option", { attrs: { value: "" } }, [_vm._v("5000")])]
+          ),
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "form-group flex-2" }, [
+          _c(
+            "label",
+            { staticClass: "form-label", attrs: { for: "dueDate" } },
+            [_vm._v("Account # and Balance")]
+          ),
+          _vm._v(" "),
+          _c(
+            "select",
+            {
+              staticClass: "form-control form-input pr-12 mr-16 text-green",
+              attrs: { name: "", id: "" },
+            },
+            [
+              _c("option", { attrs: { value: "" } }, [
+                _vm._v("1232542154 - P 5000.00"),
+              ]),
+            ]
+          ),
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "flex-1" }),
+      ]),
+    ])
+  },
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/ui/transaction/release_entry/ReleaseEntry.vue?vue&type=template&id=03a7b4c4&scoped=true&":
+/*!******************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/ui/transaction/release_entry/ReleaseEntry.vue?vue&type=template&id=03a7b4c4&scoped=true& ***!
+  \******************************************************************************************************************************************************************************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -40868,6 +43594,7 @@ var render = function () {
                 click: function ($event) {
                   $event.preventDefault()
                   _vm.clearData.borrower = 1
+                  _vm.resetLoanDetails()
                 },
               },
             },
@@ -40919,7 +43646,8 @@ var render = function () {
                             staticClass: "text-green c-pointer",
                             on: {
                               click: function ($event) {
-                                return _vm.selectBorrower(b)
+                                _vm.borrower = b
+                                _vm.setCycle()
                               },
                             },
                           },
@@ -40934,7 +43662,56 @@ var render = function () {
             ]
           ),
           _vm._v(" "),
-          _vm._m(2),
+          _vm.borrower.borrower_id
+            ? _c("div", { attrs: { "d-flex": "", "flex-column": "" } }, [
+                _c("span", { staticClass: "text-red font-md" }, [
+                  _vm._v("Existing Current Loan Accounts"),
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "mb-10" }),
+                _vm._v(" "),
+                _c(
+                  "table",
+                  {
+                    staticClass:
+                      "table table-stripped light-border table-hover",
+                  },
+                  [
+                    _vm._m(2),
+                    _vm._v(" "),
+                    _c(
+                      "tbody",
+                      _vm._l(_vm.borrower.loanAccounts, function (bl) {
+                        return _c(
+                          "tr",
+                          {
+                            key: bl.loan_account_id,
+                            staticClass: "existing-loans",
+                            class: _vm.selected(bl.loan_account_id),
+                            on: {
+                              click: function ($event) {
+                                _vm.loanDetails = bl
+                                _vm.setCycle()
+                              },
+                            },
+                          },
+                          [
+                            _c("td", [_vm._v(_vm._s(bl.borrower_num))]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v(_vm._s(bl.loan_amount))]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v("5,000.00")]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v("12/12/2021")]),
+                          ]
+                        )
+                      }),
+                      0
+                    ),
+                  ]
+                ),
+              ])
+            : _vm._e(),
         ]),
         _vm._v(" "),
         _c("div", { staticStyle: { flex: "20" } }, [
@@ -40966,95 +43743,28 @@ var render = function () {
                       psave: _vm.saveInfo,
                     },
                     on: {
+                      nextBorrower: _vm.nextBorrower,
                       borrowerCleared: function ($event) {
                         _vm.clearData.borrower = 0
                       },
-                      savedInfo: function ($event) {
-                        return _vm.fetchBorrowers()
-                      },
+                      savedInfo: _vm.savedInfo,
                       saveBorrower: function ($event) {
                         _vm.saveInfo = ""
                       },
-                      clearBorrowerInfo: function ($event) {
-                        _vm.borrower = ""
-                      },
+                      clearBorrowerInfo: _vm.resetBorrower,
                     },
                   }),
                 ],
                 1
               ),
               _vm._v(" "),
-              _c(
-                "div",
-                {
-                  staticClass: "tab-pane fade",
-                  attrs: {
-                    id: "custom-content-below-coborrowerinfo",
-                    role: "tabpanel",
-                    "aria-labelledby": "custom-content-below-profile-tab",
-                  },
+              _c("co-borrower", {
+                attrs: {
+                  borrowers: _vm.borrowers,
+                  loandetails: _vm.loanDetails,
                 },
-                [
-                  _c("div", { staticClass: "d-flex flex-column" }, [
-                    _vm._m(4),
-                    _vm._v(" "),
-                    _vm._m(5),
-                    _vm._v(" "),
-                    _c(
-                      "div",
-                      { staticClass: "d-flex flex-row-reverse mb-45" },
-                      [
-                        _c(
-                          "a",
-                          {
-                            staticClass: "btn btn-success tab-navigate",
-                            staticStyle: { flex: "2" },
-                            attrs: {
-                              href: "#",
-                              "data-tab":
-                                "custom-content-below-loandetails-tab",
-                            },
-                            on: {
-                              click: function ($event) {
-                                $event.preventDefault()
-                                return _vm.navigate(
-                                  "custom-content-below-loandetails-tab"
-                                )
-                              },
-                            },
-                          },
-                          [_vm._v("Next")]
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "a",
-                          {
-                            staticClass:
-                              "btn btn-primary-dark mr-24 tab-navigate",
-                            staticStyle: { flex: "2" },
-                            attrs: {
-                              href: "#",
-                              "data-tab":
-                                "custom-content-below-borrowerinfo-tab",
-                            },
-                            on: {
-                              click: function ($event) {
-                                $event.preventDefault()
-                                return _vm.navigate(
-                                  "custom-content-below-borrowerinfo-tab"
-                                )
-                              },
-                            },
-                          },
-                          [_vm._v("Back")]
-                        ),
-                        _vm._v(" "),
-                        _c("div", { staticStyle: { flex: "22" } }),
-                      ]
-                    ),
-                  ]),
-                ]
-              ),
+                on: { "update-loan-details": _vm.updateLoanDetails },
+              }),
               _vm._v(" "),
               _c(
                 "div",
@@ -41067,76 +43777,22 @@ var render = function () {
                   },
                 },
                 [
-                  _c("div", { staticClass: "d-flex flex-column" }, [
-                    _vm._m(6),
-                    _vm._v(" "),
-                    _vm._m(7),
-                    _vm._v(" "),
-                    _c(
-                      "div",
-                      {
-                        staticClass:
-                          "d-flex flex-row-reverse mb-45 justify-content-between",
-                      },
-                      [
-                        _c("div", { staticClass: "d-flex" }, [
-                          _c(
-                            "a",
-                            {
-                              staticClass:
-                                "btn btn-primary-dark mr-24 tab-navigate min-w-150",
-                              attrs: {
-                                href: "#",
-                                "data-tab":
-                                  "custom-content-below-coborrowerinfo-tab",
-                              },
-                              on: {
-                                click: function ($event) {
-                                  $event.preventDefault()
-                                  return _vm.navigate(
-                                    "custom-content-below-coborrowerinfo-tab"
-                                  )
-                                },
-                              },
-                            },
-                            [_vm._v("Back")]
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "a",
-                            {
-                              staticClass:
-                                "btn btn-success tab-navigate min-w-150",
-                              attrs: {
-                                href: "#",
-                                "data-toggle": "modal",
-                                "data-target": "#warningModal",
-                              },
-                            },
-                            [_vm._v("Next")]
-                          ),
-                        ]),
-                        _vm._v(" "),
-                        _c(
-                          "a",
-                          {
-                            staticClass: "btn btn-yellow-light",
-                            attrs: {
-                              href: "#",
-                              "data-toggle": "modal",
-                              "data-target": "#lettersModal",
-                            },
-                          },
-                          [_vm._v("Print Document")]
-                        ),
-                      ]
-                    ),
-                  ]),
-                ]
+                  _c("loan-details", {
+                    attrs: {
+                      saveloandetails: _vm.saveLoanDetails,
+                      borrowerbday: _vm.borrowerBirthdate,
+                      borrower: _vm.bborrower,
+                      token: _vm.token,
+                      loandetails: _vm.loanDetails,
+                    },
+                  }),
+                ],
+                1
               ),
               _vm._v(" "),
-              _vm._m(8),
-            ]
+              _vm._m(4),
+            ],
+            1
           ),
         ]),
       ]),
@@ -41173,10 +43829,10 @@ var render = function () {
                         "d-flex flex-column flex-md-row align-items-start",
                     },
                     [
-                      _vm._m(9),
+                      _vm._m(5),
                       _vm._v(" "),
                       _c("div", { staticStyle: { flex: "6" } }, [
-                        _vm._m(10),
+                        _vm._m(6),
                         _vm._v(" "),
                         _c(
                           "div",
@@ -41207,7 +43863,7 @@ var render = function () {
                                   },
                                 }),
                                 _vm._v(" "),
-                                _vm._m(11),
+                                _vm._m(7),
                               ]
                             ),
                             _vm._v(" "),
@@ -41233,7 +43889,7 @@ var render = function () {
                                   },
                                 }),
                                 _vm._v(" "),
-                                _vm._m(12),
+                                _vm._m(8),
                               ]
                             ),
                           ]
@@ -41358,56 +44014,14 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { attrs: { "d-flex": "", "flex-column": "" } }, [
-      _c("span", { staticClass: "text-red font-md" }, [
-        _vm._v("Existing Current Loan Accounts"),
-      ]),
+    return _c("thead", [
+      _c("th", [_vm._v("Account #")]),
       _vm._v(" "),
-      _c("div", { staticClass: "mb-10" }),
+      _c("th", [_vm._v("Amount")]),
       _vm._v(" "),
-      _c("table", { staticClass: "table table-stripped light-border" }, [
-        _c("thead", [
-          _c("th", [_vm._v("Account #")]),
-          _vm._v(" "),
-          _c("th", [_vm._v("Amount")]),
-          _vm._v(" "),
-          _c("th", [_vm._v("Rem. Bal.")]),
-          _vm._v(" "),
-          _c("th", [_vm._v("Date Rel.")]),
-        ]),
-        _vm._v(" "),
-        _c("tbody", [
-          _c("tr", [
-            _c("td", [_vm._v("0121421")]),
-            _vm._v(" "),
-            _c("td", [_vm._v("22,202.00")]),
-            _vm._v(" "),
-            _c("td", [_vm._v("5,000.00")]),
-            _vm._v(" "),
-            _c("td", [_vm._v("12/12/2021")]),
-          ]),
-          _vm._v(" "),
-          _c("tr", [
-            _c("td", [_vm._v("0121421")]),
-            _vm._v(" "),
-            _c("td", [_vm._v("22,202.00")]),
-            _vm._v(" "),
-            _c("td", [_vm._v("5,000.00")]),
-            _vm._v(" "),
-            _c("td", [_vm._v("12/12/2021")]),
-          ]),
-          _vm._v(" "),
-          _c("tr", [
-            _c("td", [_vm._v("0121421")]),
-            _vm._v(" "),
-            _c("td", [_vm._v("22,202.00")]),
-            _vm._v(" "),
-            _c("td", [_vm._v("5,000.00")]),
-            _vm._v(" "),
-            _c("td", [_vm._v("12/12/2021")]),
-          ]),
-        ]),
-      ]),
+      _c("th", [_vm._v("Rem. Bal.")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Date Rel.")]),
     ])
   },
   function () {
@@ -41492,914 +44106,6 @@ var staticRenderFns = [
             },
             [_vm._v("Settings")]
           ),
-        ]),
-      ]
-    )
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "section",
-      {
-        staticClass: "mb-24",
-        staticStyle: { flex: "21", "padding-left": "16px" },
-      },
-      [
-        _c("span", { staticClass: "section-title mb-24" }, [
-          _vm._v("Co-Borrower's Information"),
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "d-flex flex-row" }, [
-          _c(
-            "div",
-            { staticClass: "form-group mb-10", staticStyle: { flex: "1" } },
-            [
-              _c(
-                "label",
-                { staticClass: "form-label", attrs: { for: "coFullname" } },
-                [_vm._v("Full Name")]
-              ),
-              _vm._v(" "),
-              _c("input", {
-                staticClass: "form-control form-input ",
-                attrs: { type: "text", id: "coFullname" },
-              }),
-            ]
-          ),
-        ]),
-        _vm._v(" "),
-        _c(
-          "div",
-          { staticClass: "form-group mb-10", staticStyle: { flex: "3" } },
-          [
-            _c(
-              "label",
-              { staticClass: "form-label", attrs: { for: "spouseAddress  " } },
-              [_vm._v("Address")]
-            ),
-            _vm._v(" "),
-            _c("input", {
-              staticClass: "form-control form-input ",
-              attrs: { type: "text", id: "spouseAddress  " },
-            }),
-          ]
-        ),
-        _vm._v(" "),
-        _c("div", { staticClass: "d-flex flex-row" }, [
-          _c(
-            "div",
-            {
-              staticClass: "form-group mb-10 mr-16",
-              staticStyle: { flex: "3" },
-            },
-            [
-              _c(
-                "label",
-                { staticClass: "form-label", attrs: { for: "coIdType" } },
-                [_vm._v("ID Type")]
-              ),
-              _vm._v(" "),
-              _c("input", {
-                staticClass: "form-control form-input ",
-                attrs: { type: "text", id: "coIdType" },
-              }),
-            ]
-          ),
-          _vm._v(" "),
-          _c(
-            "div",
-            {
-              staticClass: "form-group mb-10 mr-16",
-              staticStyle: { flex: "3" },
-            },
-            [
-              _c(
-                "label",
-                { staticClass: "form-label", attrs: { for: "coIdNumber" } },
-                [_vm._v("ID Number")]
-              ),
-              _vm._v(" "),
-              _c("input", {
-                staticClass: "form-control form-input ",
-                attrs: { type: "text", id: "coIdNumber" },
-              }),
-            ]
-          ),
-          _vm._v(" "),
-          _c(
-            "div",
-            {
-              staticClass: "form-group mb-10 mr-16",
-              staticStyle: { flex: "3" },
-            },
-            [
-              _c(
-                "label",
-                { staticClass: "form-label", attrs: { for: "coIdDate" } },
-                [_vm._v("ID Date Issued")]
-              ),
-              _vm._v(" "),
-              _c("input", {
-                staticClass: "form-control form-input ",
-                attrs: { type: "date", id: "coIdDate" },
-              }),
-            ]
-          ),
-          _vm._v(" "),
-          _c("div", { staticStyle: { flex: "3" } }),
-        ]),
-      ]
-    )
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "section",
-      {
-        staticClass: "mb-24",
-        staticStyle: { flex: "21", "padding-left": "16px" },
-      },
-      [
-        _c("span", { staticClass: "section-title mb-24" }, [
-          _vm._v("Co-Maker's Information"),
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "d-flex flex-row" }, [
-          _c(
-            "div",
-            { staticClass: "form-group mb-10", staticStyle: { flex: "1" } },
-            [
-              _c(
-                "label",
-                { staticClass: "form-label", attrs: { for: "coFullname" } },
-                [_vm._v("Full Name")]
-              ),
-              _vm._v(" "),
-              _c("input", {
-                staticClass: "form-control form-input ",
-                attrs: { type: "text", id: "coFullname" },
-              }),
-            ]
-          ),
-        ]),
-        _vm._v(" "),
-        _c(
-          "div",
-          { staticClass: "form-group mb-10", staticStyle: { flex: "3" } },
-          [
-            _c(
-              "label",
-              { staticClass: "form-label", attrs: { for: "spouseAddress  " } },
-              [_vm._v("Address")]
-            ),
-            _vm._v(" "),
-            _c("input", {
-              staticClass: "form-control form-input ",
-              attrs: { type: "text", id: "spouseAddress  " },
-            }),
-          ]
-        ),
-        _vm._v(" "),
-        _c("div", { staticClass: "d-flex flex-row" }, [
-          _c(
-            "div",
-            {
-              staticClass: "form-group mb-10 mr-16",
-              staticStyle: { flex: "3" },
-            },
-            [
-              _c(
-                "label",
-                { staticClass: "form-label", attrs: { for: "coIdType" } },
-                [_vm._v("ID Type")]
-              ),
-              _vm._v(" "),
-              _c("input", {
-                staticClass: "form-control form-input ",
-                attrs: { type: "text", id: "coIdType" },
-              }),
-            ]
-          ),
-          _vm._v(" "),
-          _c(
-            "div",
-            {
-              staticClass: "form-group mb-10 mr-16",
-              staticStyle: { flex: "3" },
-            },
-            [
-              _c(
-                "label",
-                { staticClass: "form-label", attrs: { for: "coIdNumber" } },
-                [_vm._v("ID Number")]
-              ),
-              _vm._v(" "),
-              _c("input", {
-                staticClass: "form-control form-input ",
-                attrs: { type: "text", id: "coIdNumber" },
-              }),
-            ]
-          ),
-          _vm._v(" "),
-          _c(
-            "div",
-            {
-              staticClass: "form-group mb-10 mr-16",
-              staticStyle: { flex: "3" },
-            },
-            [
-              _c(
-                "label",
-                { staticClass: "form-label", attrs: { for: "coIdDate" } },
-                [_vm._v("ID Date Issued")]
-              ),
-              _vm._v(" "),
-              _c("input", {
-                staticClass: "form-control form-input ",
-                attrs: { type: "date", id: "coIdDate" },
-              }),
-            ]
-          ),
-          _vm._v(" "),
-          _c("div", { staticStyle: { flex: "3" } }),
-        ]),
-      ]
-    )
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "section",
-      {
-        staticClass: "mb-24",
-        staticStyle: { flex: "21", "padding-left": "16px" },
-      },
-      [
-        _c("span", { staticClass: "section-title mb-24" }, [
-          _vm._v("Loan Details"),
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "d-flex flex-row" }, [
-          _c("div", { staticClass: "mr-16", staticStyle: { flex: "18" } }),
-          _vm._v(" "),
-          _c(
-            "div",
-            { staticClass: "form-group mb-10", staticStyle: { flex: "7" } },
-            [
-              _c(
-                "label",
-                { staticClass: "form-label", attrs: { for: "dateRelease" } },
-                [_vm._v("Date Release")]
-              ),
-              _vm._v(" "),
-              _c("input", {
-                staticClass: "form-control form-input ",
-                attrs: { type: "date", id: "dateRelease" },
-              }),
-            ]
-          ),
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "d-flex flex-row" }, [
-          _c(
-            "div",
-            {
-              staticClass: "form-group mb-10 mr-16",
-              staticStyle: { flex: "3" },
-            },
-            [
-              _c(
-                "label",
-                { staticClass: "form-label", attrs: { for: "cycleNumber" } },
-                [_vm._v("Cycle Number")]
-              ),
-              _vm._v(" "),
-              _c("input", {
-                staticClass: "form-control form-input ",
-                attrs: { type: "text", id: "cycleNumber" },
-              }),
-            ]
-          ),
-          _vm._v(" "),
-          _c(
-            "div",
-            {
-              staticClass: "form-group mb-10 mr-16",
-              staticStyle: { flex: "7" },
-            },
-            [
-              _c(
-                "label",
-                { staticClass: "form-label", attrs: { for: "accountOfficer" } },
-                [_vm._v("Account Officer")]
-              ),
-              _vm._v(" "),
-              _c("input", {
-                staticClass: "form-control form-input ",
-                attrs: { type: "text", id: "accountOfficer" },
-              }),
-            ]
-          ),
-          _vm._v(" "),
-          _c(
-            "div",
-            {
-              staticClass: "form-group mb-10 mr-16",
-              staticStyle: { flex: "7" },
-            },
-            [
-              _c(
-                "label",
-                { staticClass: "form-label", attrs: { for: "product" } },
-                [_vm._v("Product")]
-              ),
-              _vm._v(" "),
-              _c("input", {
-                staticClass: "form-control form-input ",
-                attrs: { type: "text", id: "product" },
-              }),
-            ]
-          ),
-          _vm._v(" "),
-          _c(
-            "div",
-            { staticClass: "form-group mb-10", staticStyle: { flex: "7" } },
-            [
-              _c(
-                "label",
-                { staticClass: "form-label", attrs: { for: "accountNumber" } },
-                [_vm._v("Account Number")]
-              ),
-              _vm._v(" "),
-              _c("input", {
-                staticClass: "form-control form-input ",
-                attrs: { type: "text", id: "accountNumber" },
-              }),
-            ]
-          ),
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "d-flex flex-row" }, [
-          _c(
-            "div",
-            {
-              staticClass: "form-group mb-10 mr-16",
-              staticStyle: { flex: "7" },
-            },
-            [
-              _c(
-                "label",
-                { staticClass: "form-label", attrs: { for: "center" } },
-                [_vm._v("Center")]
-              ),
-              _vm._v(" "),
-              _c("input", {
-                staticClass: "form-control form-input ",
-                attrs: { type: "text", id: "center" },
-              }),
-            ]
-          ),
-          _vm._v(" "),
-          _c(
-            "div",
-            {
-              staticClass: "form-group mb-10 mr-16",
-              staticStyle: { flex: "7" },
-            },
-            [
-              _c(
-                "label",
-                { staticClass: "form-label", attrs: { for: "type" } },
-                [_vm._v("Type")]
-              ),
-              _vm._v(" "),
-              _c("input", {
-                staticClass: "form-control form-input ",
-                attrs: { type: "text", id: "type" },
-              }),
-            ]
-          ),
-          _vm._v(" "),
-          _c(
-            "div",
-            { staticClass: "form-group mb-10", staticStyle: { flex: "7" } },
-            [
-              _c(
-                "label",
-                { staticClass: "form-label", attrs: { for: "mode" } },
-                [_vm._v("Mode")]
-              ),
-              _vm._v(" "),
-              _c("input", {
-                staticClass: "form-control form-input ",
-                attrs: { type: "text", id: "mode" },
-              }),
-            ]
-          ),
-        ]),
-        _vm._v(" "),
-        _c(
-          "div",
-          {
-            staticClass: "d-flex flex-row pb-45 mb-24",
-            staticStyle: { "border-bottom": "1px solid #dfdfd0" },
-          },
-          [
-            _c(
-              "div",
-              {
-                staticClass: "form-group mb-10 mr-16",
-                staticStyle: { flex: "7" },
-              },
-              [
-                _c(
-                  "label",
-                  { staticClass: "form-label", attrs: { for: "center" } },
-                  [_vm._v("Loan Amount")]
-                ),
-                _vm._v(" "),
-                _c("input", {
-                  staticClass: "form-control form-input ",
-                  attrs: { type: "text", id: "center" },
-                }),
-              ]
-            ),
-            _vm._v(" "),
-            _c(
-              "div",
-              {
-                staticClass: "form-group mb-10 mr-16",
-                staticStyle: { flex: "4" },
-              },
-              [
-                _c(
-                  "label",
-                  { staticClass: "form-label", attrs: { for: "group" } },
-                  [_vm._v("Terms")]
-                ),
-                _vm._v(" "),
-                _c("input", {
-                  staticClass: "form-control form-input ",
-                  attrs: { type: "text", id: "group" },
-                }),
-              ]
-            ),
-            _vm._v(" "),
-            _c(
-              "div",
-              {
-                staticClass: "form-group mb-10 mr-16",
-                staticStyle: { flex: "5" },
-              },
-              [
-                _c(
-                  "label",
-                  { staticClass: "form-label", attrs: { for: "type" } },
-                  [_vm._v("Day Schedule")]
-                ),
-                _vm._v(" "),
-                _c(
-                  "select",
-                  {
-                    staticClass: "form-control form-input ",
-                    attrs: { id: "type" },
-                  },
-                  [
-                    _c("option", { attrs: { value: "monday" } }, [
-                      _vm._v("Monday"),
-                    ]),
-                    _vm._v(" "),
-                    _c("option", { attrs: { value: "tuesday" } }, [
-                      _vm._v("Tuesday"),
-                    ]),
-                    _vm._v(" "),
-                    _c("option", { attrs: { value: "wednesday" } }, [
-                      _vm._v("Wednesday"),
-                    ]),
-                    _vm._v(" "),
-                    _c("option", { attrs: { value: "thursday" } }, [
-                      _vm._v("Thursday"),
-                    ]),
-                    _vm._v(" "),
-                    _c("option", { attrs: { value: "friday" } }, [
-                      _vm._v("Friday"),
-                    ]),
-                    _vm._v(" "),
-                    _c("option", { attrs: { value: "saturday" } }, [
-                      _vm._v("Saturday"),
-                    ]),
-                    _vm._v(" "),
-                    _c("option", { attrs: { value: "sunday" } }, [
-                      _vm._v("Sunday"),
-                    ]),
-                  ]
-                ),
-              ]
-            ),
-            _vm._v(" "),
-            _c("div", { staticStyle: { flex: "9" } }),
-          ]
-        ),
-        _vm._v(" "),
-        _c("div", { staticClass: "d-flex flex-row" }, [
-          _c(
-            "div",
-            {
-              staticClass: "form-group mb-10 mr-16",
-              staticStyle: { flex: "6" },
-            },
-            [
-              _c(
-                "label",
-                { staticClass: "form-label", attrs: { for: "interestRate" } },
-                [_vm._v("Interest Rate")]
-              ),
-              _vm._v(" "),
-              _c("input", {
-                staticClass: "form-control form-input ",
-                attrs: { type: "text", id: "interestRate" },
-              }),
-            ]
-          ),
-          _vm._v(" "),
-          _c(
-            "div",
-            {
-              staticClass: "form-group mb-10 mr-16",
-              staticStyle: { flex: "6" },
-            },
-            [
-              _c(
-                "label",
-                { staticClass: "form-label", attrs: { for: "interestAmount" } },
-                [_vm._v("Interest Amount")]
-              ),
-              _vm._v(" "),
-              _c("input", {
-                staticClass: "form-control form-input ",
-                attrs: { type: "text", id: "group" },
-              }),
-            ]
-          ),
-          _vm._v(" "),
-          _c(
-            "div",
-            {
-              staticClass: "form-group mb-10 mr-16",
-              staticStyle: { flex: "6" },
-            },
-            [
-              _c(
-                "label",
-                {
-                  staticClass: "form-label",
-                  attrs: { for: "numberOfInstallment" },
-                },
-                [_vm._v("Number of Installment")]
-              ),
-              _vm._v(" "),
-              _c("input", {
-                staticClass: "form-control form-input ",
-                attrs: { type: "text", id: "numberOfInstallment" },
-              }),
-            ]
-          ),
-          _vm._v(" "),
-          _c(
-            "div",
-            { staticClass: "form-group mb-10", staticStyle: { flex: "6" } },
-            [
-              _c(
-                "label",
-                { staticClass: "form-label", attrs: { for: "dueDate" } },
-                [_vm._v("Due Date")]
-              ),
-              _vm._v(" "),
-              _c("input", {
-                staticClass: "form-control form-input ",
-                attrs: { type: "date", id: "dueDate" },
-              }),
-            ]
-          ),
-        ]),
-      ]
-    )
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "section",
-      {
-        staticClass: "mb-24 pb-45",
-        staticStyle: {
-          flex: "21",
-          "padding-left": "16px",
-          "border-bottom": "1px solid #AAA",
-        },
-      },
-      [
-        _c("span", { staticClass: "section-title mb-24" }, [
-          _vm._v("Deduction Fees"),
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "d-flex flex-row" }, [
-          _c(
-            "div",
-            {
-              staticClass: "d-flex flex-column mr-45",
-              staticStyle: { flex: "3" },
-            },
-            [
-              _c("div", { staticClass: "d-flex flex-row mb-16" }, [
-                _c(
-                  "label",
-                  {
-                    staticClass: "form-label",
-                    staticStyle: { flex: "3" },
-                    attrs: { for: "dueDate" },
-                  },
-                  [_vm._v("Filling Fee")]
-                ),
-                _vm._v(" "),
-                _c("input", {
-                  staticClass: "form-control form-input text-right mr-16",
-                  staticStyle: { flex: "4" },
-                  attrs: { type: "text", value: "P 25,000.00", id: "dueDate" },
-                }),
-                _vm._v(" "),
-                _c(
-                  "a",
-                  {
-                    staticClass: "btn btn-success flex-1",
-                    staticStyle: { "line-height": "2" },
-                    attrs: { href: "" },
-                  },
-                  [_vm._v("Edit")]
-                ),
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "d-flex flex-row mb-16" }, [
-                _c(
-                  "label",
-                  {
-                    staticClass: "form-label",
-                    staticStyle: { flex: "3" },
-                    attrs: { for: "dueDate" },
-                  },
-                  [_vm._v("Doc. Stamp")]
-                ),
-                _vm._v(" "),
-                _c("input", {
-                  staticClass: "form-control form-input text-right mr-16",
-                  staticStyle: { flex: "4" },
-                  attrs: { type: "text", value: "P 25,000.00", id: "dueDate" },
-                }),
-                _vm._v(" "),
-                _c("span", {
-                  staticClass: "flex-1",
-                  staticStyle: { padding: "7px 15px" },
-                }),
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "d-flex flex-row mb-16" }, [
-                _c(
-                  "label",
-                  {
-                    staticClass: "form-label",
-                    staticStyle: { flex: "3" },
-                    attrs: { for: "dueDate" },
-                  },
-                  [_vm._v("Insurance")]
-                ),
-                _vm._v(" "),
-                _c("input", {
-                  staticClass: "form-control form-input text-right mr-16",
-                  staticStyle: { flex: "4" },
-                  attrs: { type: "text", value: "P 25,000.00", id: "dueDate" },
-                }),
-                _vm._v(" "),
-                _c("span", {
-                  staticClass: "flex-1",
-                  staticStyle: { padding: "7px 15px" },
-                }),
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "d-flex flex-row mb-16" }, [
-                _c(
-                  "label",
-                  {
-                    staticClass: "form-label",
-                    staticStyle: { flex: "3" },
-                    attrs: { for: "dueDate" },
-                  },
-                  [_vm._v("Notarial Fee")]
-                ),
-                _vm._v(" "),
-                _c("input", {
-                  staticClass: "form-control form-input text-right mr-16",
-                  staticStyle: { flex: "4" },
-                  attrs: { type: "text", value: "P 25,000.00", id: "dueDate" },
-                }),
-                _vm._v(" "),
-                _c("span", {
-                  staticClass: "flex-1",
-                  staticStyle: { padding: "7px 15px" },
-                }),
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "d-flex flex-row mb-16" }, [
-                _c(
-                  "label",
-                  {
-                    staticClass: "form-label",
-                    staticStyle: { flex: "3" },
-                    attrs: { for: "dueDate" },
-                  },
-                  [_vm._v("Prepaid Interest")]
-                ),
-                _vm._v(" "),
-                _c("input", {
-                  staticClass: "form-control form-input text-right mr-16",
-                  staticStyle: { flex: "4" },
-                  attrs: { type: "text", value: "P 25,000.00", id: "dueDate" },
-                }),
-                _vm._v(" "),
-                _c("span", {
-                  staticClass: "flex-1",
-                  staticStyle: { padding: "7px 15px" },
-                }),
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "d-flex flex-row mb-16" }, [
-                _c(
-                  "label",
-                  {
-                    staticClass: "form-label",
-                    staticStyle: { flex: "3" },
-                    attrs: { for: "dueDate" },
-                  },
-                  [_vm._v("Affidavit")]
-                ),
-                _vm._v(" "),
-                _c("input", {
-                  staticClass: "form-control form-input text-right mr-16",
-                  staticStyle: { flex: "4" },
-                  attrs: { type: "text", value: "P 25,000.00", id: "dueDate" },
-                }),
-                _vm._v(" "),
-                _c("span", {
-                  staticClass: "flex-1",
-                  staticStyle: { padding: "7px 15px" },
-                }),
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "d-flex flex-row mb-16" }, [
-                _c(
-                  "label",
-                  {
-                    staticClass: "form-label",
-                    staticStyle: { flex: "3" },
-                    attrs: { for: "dueDate" },
-                  },
-                  [_vm._v("Memo")]
-                ),
-                _vm._v(" "),
-                _c("input", {
-                  staticClass: "form-control form-input text-right mr-16",
-                  staticStyle: { flex: "4" },
-                  attrs: { type: "text", value: "P 25,000.00", id: "dueDate" },
-                }),
-                _vm._v(" "),
-                _c("span", {
-                  staticClass: "flex-1",
-                  staticStyle: { padding: "7px 15px" },
-                }),
-              ]),
-            ]
-          ),
-          _vm._v(" "),
-          _c(
-            "div",
-            { staticClass: "d-flex flex-column", staticStyle: { flex: "2" } },
-            [
-              _c("div", { staticClass: "form-group mb-16" }, [
-                _c(
-                  "label",
-                  { staticClass: "form-label", attrs: { for: "dueDate" } },
-                  [_vm._v("Total Deductions")]
-                ),
-                _vm._v(" "),
-                _c("input", {
-                  staticClass:
-                    "form-control form-input text-right mr-16 text-green ",
-                  attrs: { type: "number", id: "dueDate" },
-                }),
-                _vm._v(" "),
-                _c("span", {
-                  staticClass: "flex-1",
-                  staticStyle: { padding: "7px 15px" },
-                }),
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "form-group mb-45" }, [
-                _c(
-                  "label",
-                  { staticClass: "form-label", attrs: { for: "dueDate" } },
-                  [_vm._v("Net Proceeds")]
-                ),
-                _vm._v(" "),
-                _c("input", {
-                  staticClass:
-                    "form-control form-input text-right mr-16 text-green ",
-                  attrs: { type: "number", id: "dueDate" },
-                }),
-                _vm._v(" "),
-                _c("span", {
-                  staticClass: "flex-1",
-                  staticStyle: { padding: "7px 15px" },
-                }),
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "form-group" }, [
-                _c(
-                  "label",
-                  { staticClass: "form-label", attrs: { for: "dueDate" } },
-                  [_vm._v("Release Type")]
-                ),
-                _vm._v(" "),
-                _c(
-                  "select",
-                  {
-                    staticClass:
-                      "form-control form-input pr-12 text-right mr-16 text-green",
-                    attrs: { name: "", id: "" },
-                  },
-                  [
-                    _c("option", { attrs: { value: "" } }, [
-                      _vm._v("Cash Release"),
-                    ]),
-                  ]
-                ),
-              ]),
-            ]
-          ),
-          _vm._v(" "),
-          _c("div", { staticClass: "flex-1" }),
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "d-flex align-items-center" }, [
-          _c(
-            "span",
-            {
-              staticClass: "mr-16 font-20",
-              staticStyle: { "margin-top": "10px" },
-            },
-            [_vm._v("Memo - Deduct to Balance")]
-          ),
-          _vm._v(" "),
-          _c("div", { staticClass: "d-flex align-items-end flex-1" }, [
-            _c("div", { staticClass: "form-group mr-16 flex-1" }, [
-              _c(
-                "select",
-                {
-                  staticClass: "form-control form-input pr-12 mr-16 text-green",
-                  attrs: { name: "", id: "" },
-                },
-                [_c("option", { attrs: { value: "" } }, [_vm._v("5000")])]
-              ),
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "form-group flex-2" }, [
-              _c(
-                "label",
-                { staticClass: "form-label", attrs: { for: "dueDate" } },
-                [_vm._v("Account # and Balance")]
-              ),
-              _vm._v(" "),
-              _c(
-                "select",
-                {
-                  staticClass: "form-control form-input pr-12 mr-16 text-green",
-                  attrs: { name: "", id: "" },
-                },
-                [
-                  _c("option", { attrs: { value: "" } }, [
-                    _vm._v("1232542154 - P 5000.00"),
-                  ]),
-                ]
-              ),
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "flex-1" }),
-          ]),
         ]),
       ]
     )
