@@ -9010,6 +9010,7 @@ __webpack_require__.r(__webpack_exports__);
     resetBorrower: function resetBorrower() {
       this.borrower = {
         borrower_id: null,
+        date_registered: '',
         borrower_num: '',
         firstname: '',
         lastname: '',
