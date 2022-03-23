@@ -15,7 +15,7 @@
 						<div style="flex:4"></div>
 						<div class="form-group mb-10" style="flex: 5">
 							<label for="regDate" class="form-label">Date Registration</label>
-							<input type="date" v-model="borrower.created_at" class="form-control form-input text-right" id="regDate">
+							<input type="date" v-model="borrower.date_registered" class="form-control form-input text-right" id="regDate">
 						</div>
 					</div>
 					<div class="form-group mb-10" style="flex: 5">
@@ -424,6 +424,7 @@
 				baseUrl: window.location.origin,
 				borrower: {
 					borrower_id: null,
+					date_registered:'',
 					borrower_num:'',
 					firstname:'',
 					lastname:'',
@@ -570,6 +571,7 @@
 				this.$emit('clearBorrowerInfo')
 				this.borrower = {
 					borrower_id: null,
+					date_registered,
 					borrower_num:'',
 					firstname:'',
 					lastname:'',

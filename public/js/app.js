@@ -7801,6 +7801,7 @@ __webpack_require__.r(__webpack_exports__);
       baseUrl: window.location.origin,
       borrower: {
         borrower_id: null,
+        date_registered: '',
         borrower_num: '',
         firstname: '',
         lastname: '',
@@ -7971,6 +7972,7 @@ __webpack_require__.r(__webpack_exports__);
       this.$emit('clearBorrowerInfo');
       this.borrower = {
         borrower_id: null,
+        date_registered: date_registered,
         borrower_num: '',
         firstname: '',
         lastname: '',
@@ -39542,13 +39544,13 @@ var render = function () {
                               {
                                 name: "model",
                                 rawName: "v-model",
-                                value: _vm.borrower.created_at,
-                                expression: "borrower.created_at",
+                                value: _vm.borrower.date_registered,
+                                expression: "borrower.date_registered",
                               },
                             ],
                             staticClass: "form-control form-input text-right",
                             attrs: { type: "date", id: "regDate" },
-                            domProps: { value: _vm.borrower.created_at },
+                            domProps: { value: _vm.borrower.date_registered },
                             on: {
                               input: function ($event) {
                                 if ($event.target.composing) {
@@ -39556,7 +39558,7 @@ var render = function () {
                                 }
                                 _vm.$set(
                                   _vm.borrower,
-                                  "created_at",
+                                  "date_registered",
                                   $event.target.value
                                 )
                               },
