@@ -571,7 +571,7 @@
 				this.$emit('clearBorrowerInfo')
 				this.borrower = {
 					borrower_id: null,
-					date_registered,
+					date_registered:'',
 					borrower_num:'',
 					firstname:'',
 					lastname:'',
