@@ -41,6 +41,7 @@ Route::group(['middleware' => 'auth'], function (){
 	Route::get('/maintenance/account_retagging', [MaintenanceController::class, 'accountRetagging'])->name('maintenance.account_retagging');
 
 	Route::get('/maintenance/release_entry', [TransactionController::class, 'releaseEntry'])->name('transaction.release_entry');
+	Route::get('/maintenance/override_release', [TransactionController::class, 'overrideRelease'])->name('transaction.override_release');
 });
 
 

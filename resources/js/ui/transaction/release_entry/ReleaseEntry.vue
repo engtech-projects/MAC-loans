@@ -8,29 +8,7 @@
 		</div><!-- /.col -->
 		<div class="d-flex flex-column flex-xl-row p-16">
 				<div style="flex:9;">
-					<div class="search-bar mb-12">
-						<input type="text" class="form-control" id="searchBar" placeholder="Search">
-						<div><i class="fa fa-search"></i></div>
-					</div>
-					<table class="table table-stripped" id="clientsList">
-						<thead>
-							<th>Account #</th>
-							<th>Client Name</th>
-							<th></th>
-						</thead>
-						<tbody>
-							<tr v-if="borrowers.length == 0">
-								<td>No borrowers yet.</td>
-								<td></td>
-								<td></td>
-							</tr>
-							<tr v-for="b in borrowers" :key="b.borrower_id">
-								<td>{{b.borrower_num}}</td>
-								<td><a href="#">{{b.firstname + ' ' + b.lastname}}</a></td>
-								<td><span @click="borrower=b;setCycle()" class="text-green c-pointer">select</span></td>
-							</tr>
-						</tbody>
-					</table>
+					<client-list-side @selectBorrower="selectBorrower" :pborrowers="borrowers"></client-list-side>
 					<div d-flex flex-column v-if="borrower.borrower_id">
 						<span class="text-red font-md">Existing Current Loan Accounts</span>
 						<div class="mb-10"></div>
@@ -542,20 +520,11 @@
 					created_at: this.dateToYMD(new Date()),
 				};				
 			},
-			// selectBorrower:function(data){
-			// 	this.borrower = '';
-			// 	this.borrower = data;
-			// 	// console.log(this.borrower);
-			// },
+		
 			navigate:function(tab){
 				document.getElementById(tab).click();
 			},
-			dateToYMD:function(date) {
-				var d = date.getDate();
-				var m = date.getMonth() + 1;
-				var y = date.getFullYear();
-				return '' + y + '-' + (m<=9 ? '0' + m : m) + '-' + (d <= 9 ? '0' + d : d);
-			},
+			
 			updateLoanDetails:function(data){
 				this.loanDetails = data;
 			},
@@ -611,9 +580,12 @@
 			},
 			setCycle:function(){
 				this.loanDetails.cycle_no = parseInt(this.borrower.loanAccounts.length + 1);
+			},
+			selectBorrower:function(borrower){
+				this.borrower = borrower;
+				this.setCycle();
 			}
 		},
-
         mounted() {	
 			this.fetchBorrowers();
 			this.resetBorrower();

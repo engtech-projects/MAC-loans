@@ -282,27 +282,8 @@ export default {
 				console.log(error);
 			}.bind(this));
 		},
-		dateToYMD:function(date) {
-			var d = date.getDate();
-			var m = date.getMonth() + 1;
-			var y = date.getFullYear();
-			return '' + y + '-' + (m<=9 ? '0' + m : m) + '-' + (d <= 9 ? '0' + d : d);
-		},
 		navigate:function(tab){
 			document.getElementById(tab).click();
-		},
-		calculateAge:function(dateString) {
-			var today = new Date();
-			var birthDate = new Date(dateString);
-			var age = today.getFullYear() - birthDate.getFullYear();
-			var m = today.getMonth() - birthDate.getMonth();
-			if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
-				age--;
-			}
-			return age;
-		},
-		formatToCurrency:function(amount) {
-			return parseFloat(amount).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,");
 		},
 		submit:function(){
 			document.getElementById('warningBtn').click();
@@ -387,16 +368,16 @@ export default {
 		numberOfInstallment:function(){
 			let mode = 0;
 			if(this.loanDetails.payment_mode == 'Monthly'){
-				mode = 30;
+				mode = 1;
 			}else if(this.loanDetails.payment_mode == 'Bi-Monthly'){
-				mode = 15;
+				mode = 2;
 			}else if(this.loanDetails.payment_mode == 'Weekly'){
-				mode = 7;
+				mode = 4;
 			}else{
 				mode = this.loanDetails.terms
 			}
 			this.loanDetails.no_of_installment = Math.ceil(this.loanDetails.terms / mode);
-			return Math.ceil(this.loanDetails.terms / mode);
+			return Math.ceil((this.loanDetails.terms / 30) * mode);
 		},
 		docStamp:function(){
 			this.loanDetails.document_stamp =  (this.loanDetails.loan_amount / 200 * 1.5 * this.loanDetails.terms / 365).toFixed(2);
