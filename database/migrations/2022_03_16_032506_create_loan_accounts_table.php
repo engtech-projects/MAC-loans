@@ -18,6 +18,7 @@ class CreateLoanAccountsTable extends Migration
             $table->increments('loan_account_id');
             $table->string('account_num');
             $table->date('date_release')->nullable();
+            $table->date('transaction_date')->nullable();
             $table->integer('cycle_no');
             $table->unsignedInteger('ao_id'); // reference account_officer
             $table->unsignedInteger('product_id'); // reference product
@@ -26,6 +27,8 @@ class CreateLoanAccountsTable extends Migration
             $table->string('payment_mode');
             $table->integer('terms');
             $table->double('loan_amount', 10, 2);
+            $table->double('interest_rate', 10, 2);
+            $table->double('interest_amount', 10, 2);
             $table->integer('no_of_installment')->nullable();
             $table->date('due_date')->nullable();
             $table->string('day_schedule');
@@ -57,6 +60,9 @@ class CreateLoanAccountsTable extends Migration
             // 
             $table->string('release_type');
             $table->string('status');
+            // branch
+            $table->string('branch_code');
+
             $table->timestamps();
         });
     }
