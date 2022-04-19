@@ -68,12 +68,17 @@ class LoanAccountController extends BaseController
     public function overrideAccountList(Request $request) {
     
         $filters = [
-            'created_at' => $request->input('date'),
+            'created_at' => ($request->has('date')) ? $request->input('date') : false,
+            'ao_id' => ($request->has('ao_id')) ? $request->input('ao_id') : false,
+            'center_id' => ($request->has('center_id')) ? $request->input('center_id') : false,
+            'product_id' => ($request->has('product_id')) ? $request->input('product_id') : false,
         ];
 
         $accounts = new LoanAccount();
         $accounts = $accounts->overrideReleaseAccounts($filters);
         return $this->sendResponse(LoanAccountResource::collection($accounts), 'List.');
+        
+
     }
 
     // yyyy-mm-dd format
@@ -179,21 +184,8 @@ class LoanAccountController extends BaseController
             $amortizationDateStart = $amortizationDate;
             // deducting total(principal+interest) from total amount (loan amount+interest)
             $totalAmount -= $total;
-
         }
-
-        # start date
-        // $account->date_release;
-        # number of installments
-        // $account->no_of_installment
-        # monday
-        // $account->day_schedule
-        #interest amount
-        // $account->no_of_installment;
         return $amortization;
-        // return $now->addDays(7);
-        // return $this->sendResponse(new LoanAccountResource($account), 'Loan Account');
-
     }
 
 }
