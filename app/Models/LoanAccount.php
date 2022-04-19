@@ -23,6 +23,8 @@ class LoanAccount extends Model
 		'payment_mode',
 		'terms',
 		'loan_amount',
+		'interest_rate',
+		'interest_amount',
 		'no_of_installment',
 		'due_date',
 		'day_schedule',
@@ -49,11 +51,12 @@ class LoanAccount extends Model
 		'net_proceeds',
 		'release_type',
 		'status',
+		'branch_code',
+		'transaction_date',
     ];
 
 
    	public static function generateAccountNum(Branch $branch, Product $product) {
-
    		return '1001-1001-001';
 
    	}
@@ -61,5 +64,23 @@ class LoanAccount extends Model
    	public function getCycleNo() {
    		return 1;
    	}
+
+   	public function overrideReleaseAccounts($filters = array()) {
+   		$account = new LoanAccount();
+
+   		return $account->whereDate('loan_accounts.created_at', '=', $filters['created_at'] )
+   				->where('loan_accounts.status', '=', 'pending')
+   				->get();
+   	}
+
+   	public function center() {
+   		return Center::find($this->center_id)->first();
+   	}
+
+   	public function product(){
+   		return Product::find($this->product_id)->first();
+   	}
+
+   	// public function generateAmortizationSched($installments, $dueDate) {}
 
 }

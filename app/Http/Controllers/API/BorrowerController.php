@@ -44,6 +44,7 @@ class BorrowerController extends BaseController
         $request->merge(['borrower_num' => $borrower->generateBorrowerNum() ]);
         // create borrower
         $borrower = Borrower::create($request->input());
+        // upload image goes here.. .
         // add other details
         $borrower->employmentInfo = $request->input('employmentInfo');
         $borrower->businessInfo = $request->input('businessInfo');
@@ -135,7 +136,6 @@ class BorrowerController extends BaseController
         }
 
         return $this->sendResponse(new BorrowerResource($borrower), 'Borrower Updated.');
-    }
-
+    }    
 
 }

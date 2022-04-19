@@ -8,6 +8,9 @@ use App\Http\Controllers\API\BaseController as BaseController;
 use Illuminate\Support\Facades\Auth;
 use Validator;
 use App\Models\User;
+use App\Models\Branch;
+use App\Http\Resources\Users as UserResource;
+
 
 class AuthController extends BaseController
 {
@@ -16,7 +19,7 @@ class AuthController extends BaseController
 
     public function login(Request $request) {
     	
-    	$credentials = $request->only('username', 'password', 'branch_id');
+    	$credentials = $request->only('username', 'password');
 
     	if(Auth::attempt($credentials)){ 
 
@@ -26,10 +29,10 @@ class AuthController extends BaseController
             
             return $this->sendResponse($success, 'User signed in');
             
-        } 
-        else{ 
+        }
+        else{
             return $this->sendError('Error.', ['error'=>'Unauthorised']);
-        } 
+        }
     }
 
     public function logout() {

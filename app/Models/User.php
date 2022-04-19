@@ -48,4 +48,24 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+
+    public function getBranches() {
+      
+        $branches = User::rightJoin('user_branch', 'user_branch.user_id', '=', 'users.id')
+                        ->rightJoin('branch', 'branch.branch_id', '=', 'user_branch.branch_id')
+                        ->where('users.id', $this->id)
+                        ->get(['branch.*']);
+
+        return $branches;
+    }
+
+
+
+// $users = User::join('posts', 'posts.user_id', '=', 'users.id')
+//               ->join('comments', 'comments.post_id', '=', 'posts.id')
+//               ->get(['users.*', 'posts.descrption']);
+
+    // public static function checkBranch(User $user) {
+    //     return $user;
+    // }
 }
