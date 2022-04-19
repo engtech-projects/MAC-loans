@@ -66,19 +66,35 @@ class LoanAccount extends Model
    	}
 
    	public function overrideReleaseAccounts($filters = array()) {
-   		$account = new LoanAccount();
+   		$accounts = new LoanAccount();
 
-   		return $account->whereDate('loan_accounts.created_at', '=', $filters['created_at'] )
-   				->where('loan_accounts.status', '=', 'pending')
-   				->get();
+   		$accounts = LoanAccount::where('status', '=', 'pending');
+
+   		if( isset($filters['created_at']) && $filters['created_at'] ){
+   			$accounts->whereDate('loan_accounts.created_at', '=', $filters['created_at'] );
+   		}
+
+   		if( isset($filters['ao_id']) && $filters['ao_id'] ){
+   			$accounts->where('loan_accounts.ao_id', '=', $filters['ao_id']);
+   		}
+
+   		if( isset($filters['center_id']) && $filters['center_id'] ){
+   			$accounts->where('loan_accounts.center_id', '=', $filters['center_id']);
+   		}
+
+		if( isset($filters['product_id']) && $filters['product_id'] ){
+   			$accounts->where('loan_accounts.product_id', '=', $filters['product_id']);
+   		}
+
+   		return $accounts->get();
    	}
 
    	public function center() {
-   		return Center::find($this->center_id)->first();
+   		return Center::find($this->center_id);
    	}
 
    	public function product(){
-   		return Product::find($this->product_id)->first();
+   		return Product::find($this->product_id);
    	}
 
    	// public function generateAmortizationSched($installments, $dueDate) {}
