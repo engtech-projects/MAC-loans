@@ -49,9 +49,9 @@ return [
 	],
 
 	'release_type' => [
-		'Cash Release',
-		'Check Release',
-		'Restructure Release',
+		'Cash',
+		'Check',
+		'Restructure',
 	],
 
 	

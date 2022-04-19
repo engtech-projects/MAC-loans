@@ -19,12 +19,16 @@ class LoanAccount extends JsonResource
             'date_release' => $this->date_release,
             'cycle_no' => $this->cycle_no,
             'ao_id' => $this->ao_id,
-            'product_id' => $this->product_id,
-            'center_id' => $this->center_id,
+            // 'product_id' => $this->product_id,
+            // 'center_id' => $this->center_id,
+            'center' => $this->center(),
+            'product' => $this->product(),
             'type' => $this->type,
             'payment_mode' => $this->payment_mode,
             'terms' => $this->terms,
             'loan_amount' => $this->loan_amount,
+            'interest_rate' => $this->interest_rate,
+            'interest_amount' => $this->interest_amount,
             'no_of_installment' => $this->no_of_installment,
             'due_date' => $this->due_date,
             'day_schedule' => $this->day_schedule,
@@ -50,6 +54,8 @@ class LoanAccount extends JsonResource
             'net_proceeds' => $this->net_proceeds,
             'release_type' => $this->release_type,
             'status' => $this->status,
+            'branch_code' => $this->branch_code,
+            'transaction_date' => $this->transaction_date,
         ];
     }
 }

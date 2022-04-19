@@ -22,6 +22,7 @@ class Users extends JsonResource
             'firstname' => $this->firstname,
             'middlename' => $this->middlename,
             'lastname' => $this->lastname,
+            'branches' => $this->getBranches(),
         ];
     }
 }
