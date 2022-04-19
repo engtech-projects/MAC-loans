@@ -27,7 +27,6 @@ class LoanAccountController extends BaseController
      * Store a newly created resource in storage.
      */
     public function createLoanAccount(Request $request, Borrower $borrower) {
-
         // $branchCode = Branch::find(session()->get('branch_id'))->branch_code;
         # to be replaced when branch is fetched through session.
         $branchCode = 'test_code';
@@ -38,7 +37,6 @@ class LoanAccountController extends BaseController
             'borrower_id' =>  $borrower->borrower_id,
             'branch_code' => $branchCode,
         ]);
-
         $account = LoanAccount::create($request->input());
         
         if( $account->loan_account_id ) {
@@ -179,7 +177,6 @@ class LoanAccountController extends BaseController
             $amortizationDateStart = $amortizationDate;
             // deducting total(principal+interest) from total amount (loan amount+interest)
             $totalAmount -= $total;
-
         }
 
         # start date

@@ -16,53 +16,11 @@
 				<th>Address</th>
 			</thead>
 			<tbody>
-				<tr>
-					<td>183</td>
-					<td><a :href="url">John Doe</a></td>
-					<td>09854212121</td>
-					<td>154 JP Laurel Sr Street Corner 6th Avenue 1400, Caloocan City, Philippines</td>
-				</tr>
-				<tr>
-					<td>183</td>
-					<td><a :href="url">John Doe</a></td>
-					<td>09854212121</td>
-					<td>154 JP Laurel Sr Street Corner 6th Avenue 1400, Caloocan City, Philippines</td>
-				</tr>
-				<tr>
-					<td>183</td>
-					<td><a :href="url">John Doe</a></td>
-					<td>09854212121</td>
-					<td>154 JP Laurel Sr Street Corner 6th Avenue 1400, Caloocan City, Philippines</td>
-				</tr>
-				<tr>
-					<td>183</td>
-					<td><a :href="url">John Doe</a></td>
-					<td>09854212121</td>
-					<td>154 JP Laurel Sr Street Corner 6th Avenue 1400, Caloocan City, Philippines</td>
-				</tr>
-				<tr>
-					<td>183</td>
-					<td><a :href="url">John Doe</a></td>
-					<td>09854212121</td>
-					<td>154 JP Laurel Sr Street Corner 6th Avenue 1400, Caloocan City, Philippines</td>
-				</tr>
-				<tr>
-					<td>183</td>
-					<td><a :href="url">John Doe</a></td>
-					<td>09854212121</td>
-					<td>154 JP Laurel Sr Street Corner 6th Avenue 1400, Caloocan City, Philippines</td>
-				</tr>
-				<tr>
-					<td>183</td>
-					<td><a :href="url">John Doe</a></td>
-					<td>09854212121</td>
-					<td>154 JP Laurel Sr Street Corner 6th Avenue 1400, Caloocan City, Philippines</td>
-				</tr>
-				<tr>
-					<td>183</td>
-					<td><a :href="url">John Doe</a></td>
-					<td>09854212121</td>
-					<td>154 JP Laurel Sr Street Corner 6th Avenue 1400, Caloocan City, Philippines</td>
+				<tr v-for="borrower in borrowers" :key="borrower.borrower_id">
+					<td>{{borrower.borrower_num}}</td>
+					<td><a :href="url.replace(':id', borrower.borrower_id)">{{borrower.firstname + ' ' + borrower.lastname}}</a></td>
+					<td>{{borrower.contact_number}}</td>
+					<td>{{borrower.address}}</td>
 				</tr>
 			</tbody>
 		</table>
@@ -71,6 +29,32 @@
 
 <script>
 export default {
-	props:['title', 'url']
+	props:['title', 'url', 'token'],
+	data(){
+		return {
+			borrowers:[],
+		}
+	},
+	methods:{
+		fetchBorrowers:function(){
+			axios.get(window.location.origin + '/api/borrower', {
+			headers: {
+				'Authorization': 'Bearer ' + this.token,
+					'Content-Type': 'application/json',
+					'Accept': 'application/json'
+				}
+			})
+			.then(function (response) {
+				// console.log(response.data);
+				this.borrowers = response.data.data;
+			}.bind(this))
+			.catch(function (error) {
+				console.log(error);
+			}.bind(this));
+		},
+	},
+	mounted(){
+		this.fetchBorrowers();
+	}
 }
 </script>

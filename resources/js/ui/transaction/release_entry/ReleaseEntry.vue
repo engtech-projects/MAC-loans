@@ -2,38 +2,17 @@
 	<div class="container-fluid" style="padding:0!important">
 		<notifications group="foo" />
 		<div class="mb-16"></div>
-		<div class="ml-16 mb-24 bb-primary-dark pb-7 text-block">
+		<div class="ml-16 mb-24 bb-primary-dark pb-7 text-block d-flex justify-content-between">
 			<h1 class="m-0 font-35">Release Entry</h1>
+			<a href="#" @click.prevent="clearData.borrower=1;resetLoanDetails()" class="btn btn-primary-dark min-w-150">New Client</a>
 		</div><!-- /.col -->
 		<div class="d-flex flex-column flex-xl-row p-16">
 				<div style="flex:9;">
-					<div class="search-bar mb-12">
-						<input type="text" class="form-control" id="searchBar" placeholder="Search">
-						<div><i class="fa fa-search"></i></div>
-					</div>
-					<table class="table table-stripped" id="clientsList">
-						<thead>
-							<th>Account #</th>
-							<th>Client Name</th>
-							<th></th>
-						</thead>
-						<tbody>
-							<tr v-if="borrowers.length == 0">
-								<td>No borrowers yet.</td>
-								<td></td>
-								<td></td>
-							</tr>
-							<tr v-for="b in borrowers" :key="b.borrower_id">
-								<td>{{b.borrower_num}}</td>
-								<td><a href="#">{{b.firstname + ' ' + b.lastname}}</a></td>
-								<td><span @click="selectBorrower(b)" class="text-green c-pointer">select</span></td>
-							</tr>
-						</tbody>
-					</table>
-					<div d-flex flex-column>
+					<client-list-side @selectBorrower="selectBorrower" :pborrowers="borrowers"></client-list-side>
+					<div d-flex flex-column v-if="borrower.borrower_id">
 						<span class="text-red font-md">Existing Current Loan Accounts</span>
 						<div class="mb-10"></div>
-						<table class="table table-stripped light-border">
+						<table class="table table-stripped light-border table-hover">
 							<thead>
 								<th>Account #</th>
 								<th>Amount</th>
@@ -41,21 +20,9 @@
 								<th>Date Rel.</th>
 							</thead>
 							<tbody>
-								<tr>
-									<td>0121421</td>
-									<td>22,202.00</td>
-									<td>5,000.00</td>
-									<td>12/12/2021</td>
-								</tr>
-								<tr>
-									<td>0121421</td>
-									<td>22,202.00</td>
-									<td>5,000.00</td>
-									<td>12/12/2021</td>
-								</tr>
-								<tr>
-									<td>0121421</td>
-									<td>22,202.00</td>
+								<tr @click="loanDetails=bl;setCycle()" class="existing-loans" :class="selected(bl.loan_account_id)" v-for="bl in borrower.loanAccounts" :key="bl.loan_account_id">
+									<td>{{bl.borrower_num}}</td>
+									<td>{{bl.loan_amount}}</td>
 									<td>5,000.00</td>
 									<td>12/12/2021</td>
 								</tr>
@@ -80,235 +47,16 @@
 					</ul>
 					<div class="tab-content" id="custom-content-below-tabContent">
 						<div class="tab-pane fade show active" id="custom-content-below-borrowerinfo" role="tabpanel" aria-labelledby="custom-content-below-home-tab">
-							<borrowers-info @savedInfo="fetchBorrowers()" @saveBorrower="saveInfo=''" @clearBorrowerInfo="borrower=''" :token="token" :pborrower="borrower" :psave="saveInfo"></borrowers-info>
+							<borrowers-info @nextBorrower="nextBorrower" @borrowerCleared="clearData.borrower=0" @savedInfo="savedInfo" @saveBorrower="saveInfo=''" @clearBorrowerInfo="resetBorrower" :clear="clearData.borrower" :token="token" :pborrower="borrower" :psave="saveInfo"></borrowers-info>
 						</div>
 
 
-						<div class="tab-pane fade" id="custom-content-below-coborrowerinfo" role="tabpanel" aria-labelledby="custom-content-below-profile-tab">
-							<div class="d-flex flex-column">
-								<section class="mb-24" style="flex:21;padding-left:16px;">
-									<span class="section-title mb-24">Co-Borrower's Information</span>
-									<div class="d-flex flex-row">
-										<div class="form-group mb-10" style="flex:1">
-											<label for="coFullname" class="form-label">Full Name</label>
-											<input type="text" class="form-control form-input " id="coFullname">
-										</div>
-									</div>
-									<div class="form-group mb-10" style="flex: 3">
-										<label for="spouseAddress  " class="form-label">Address</label>
-										<input type="text" class="form-control form-input " id="spouseAddress  ">
-									</div>
-									<div class="d-flex flex-row">
-										<div class="form-group mb-10 mr-16" style="flex: 3">
-											<label for="coIdType" class="form-label">ID Type</label>
-											<input type="text" class="form-control form-input " id="coIdType">
-										</div>
-										<div class="form-group mb-10 mr-16" style="flex: 3">
-											<label for="coIdNumber" class="form-label">ID Number</label>
-											<input type="text" class="form-control form-input " id="coIdNumber">
-										</div>
-										<div class="form-group mb-10 mr-16" style="flex: 3">
-											<label for="coIdDate" class="form-label">ID Date Issued</label>
-											<input type="date" class="form-control form-input " id="coIdDate">
-										</div>
-										<div style="flex: 3"></div>
-									</div>
-								</section>
-
-								<section class="mb-24" style="flex:21;padding-left:16px;">
-									<span class="section-title mb-24">Co-Maker's Information</span>
-									<div class="d-flex flex-row">
-										<div class="form-group mb-10" style="flex:1">
-											<label for="coFullname" class="form-label">Full Name</label>
-											<input type="text" class="form-control form-input " id="coFullname">
-										</div>
-									</div>
-									<div class="form-group mb-10" style="flex: 3">
-										<label for="spouseAddress  " class="form-label">Address</label>
-										<input type="text" class="form-control form-input " id="spouseAddress  ">
-									</div>
-									<div class="d-flex flex-row">
-										<div class="form-group mb-10 mr-16" style="flex: 3">
-											<label for="coIdType" class="form-label">ID Type</label>
-											<input type="text" class="form-control form-input " id="coIdType">
-										</div>
-										<div class="form-group mb-10 mr-16" style="flex: 3">
-											<label for="coIdNumber" class="form-label">ID Number</label>
-											<input type="text" class="form-control form-input " id="coIdNumber">
-										</div>
-										<div class="form-group mb-10 mr-16" style="flex: 3">
-											<label for="coIdDate" class="form-label">ID Date Issued</label>
-											<input type="date" class="form-control form-input " id="coIdDate">
-										</div>
-										<div style="flex: 3"></div>
-									</div>
-								</section>
-
-								<div class="d-flex flex-row-reverse mb-45">
-									<a @click.prevent="navigate('custom-content-below-loandetails-tab')" href="#" data-tab="custom-content-below-loandetails-tab" class="btn btn-success tab-navigate" style="flex:2">Next</a>
-									<a @click.prevent="navigate('custom-content-below-borrowerinfo-tab')" href="#" data-tab="custom-content-below-borrowerinfo-tab" class="btn btn-primary-dark mr-24 tab-navigate" style="flex:2">Back</a>
-									<div style="flex:22"></div>
-								</div>
-							</div>
-						</div>
+						<co-borrower :borrowers="borrowers" :loandetails="loanDetails" @update-loan-details="updateLoanDetails"></co-borrower>
 
 
 
 						<div class="tab-pane fade" id="custom-content-below-loaddetails" role="tabpanel" aria-labelledby="custom-content-below-messages-tab">
-							<div class="d-flex flex-column">
-								<section class="mb-24" style="flex:21;padding-left:16px;">
-									<span class="section-title mb-24">Loan Details</span>
-									<div class="d-flex flex-row">
-										<div style="flex:18" class="mr-16"></div>
-										<div class="form-group mb-10" style="flex:7">
-											<label for="dateRelease" class="form-label">Date Release</label>
-											<input type="date" class="form-control form-input " id="dateRelease">
-										</div>
-									</div>
-									<div class="d-flex flex-row">
-										<div class="form-group mb-10 mr-16" style="flex:3">
-											<label for="cycleNumber" class="form-label">Cycle Number</label>
-											<input type="text" class="form-control form-input " id="cycleNumber">
-										</div>
-										<div class="form-group mb-10 mr-16" style="flex:7">
-											<label for="accountOfficer" class="form-label">Account Officer</label>
-											<input type="text" class="form-control form-input " id="accountOfficer">
-										</div>
-										<div class="form-group mb-10 mr-16" style="flex:7">
-											<label for="product" class="form-label">Product</label>
-											<input type="text" class="form-control form-input " id="product">
-										</div>
-										<div class="form-group mb-10" style="flex:7">
-											<label for="accountNumber" class="form-label">Account Number</label>
-											<input type="text" class="form-control form-input " id="accountNumber">
-										</div>
-									</div>
-									<div class="d-flex flex-row">
-										<div class="form-group mb-10 mr-16" style="flex:7">
-											<label for="center" class="form-label">Center</label>
-											<input type="text" class="form-control form-input " id="center">
-										</div>
-										<!-- <div class="form-group mb-10 mr-16" style="flex:7">
-											<label for="group" class="form-label">Group</label>
-											<input type="text" class="form-control form-input " id="group">
-										</div> -->
-										<div class="form-group mb-10 mr-16" style="flex:7">
-											<label for="type" class="form-label">Type</label>
-											<input type="text" class="form-control form-input " id="type">
-										</div>
-										<div class="form-group mb-10" style="flex:7">
-											<label for="mode" class="form-label">Mode</label>
-											<input type="text" class="form-control form-input " id="mode">
-										</div>
-									</div>
-									<div class="d-flex flex-row pb-45 mb-24" style="border-bottom:1px solid #dfdfd0">
-										<div class="form-group mb-10 mr-16" style="flex:7">
-											<label for="center" class="form-label">Loan Amount</label>
-											<input type="text" class="form-control form-input " id="center">
-										</div>
-										<div class="form-group mb-10 mr-16" style="flex:4">
-											<label for="group" class="form-label">Terms</label>
-											<input type="text" class="form-control form-input " id="group">
-										</div>
-										<div class="form-group mb-10 mr-16" style="flex:5">
-											<label for="type" class="form-label">Day Schedule</label>
-											<select class="form-control form-input " id="type">
-												<option value="monday">Monday</option>
-												<option value="tuesday">Tuesday</option>
-												<option value="wednesday">Wednesday</option>
-												<option value="thursday">Thursday</option>
-												<option value="friday">Friday</option>
-												<option value="saturday">Saturday</option>
-												<option value="sunday">Sunday</option>
-											</select>
-										</div>
-										<div style="flex:9"></div>
-									</div>
-
-									<div class="d-flex flex-row">
-										<div class="form-group mb-10 mr-16" style="flex:6">
-											<label for="interestRate" class="form-label">Interest Rate</label>
-											<input type="text" class="form-control form-input " id="interestRate">
-										</div>
-										<div class="form-group mb-10 mr-16" style="flex:6">
-											<label for="interestAmount" class="form-label">Interest Amount</label>
-											<input type="text" class="form-control form-input " id="group">
-										</div>
-										<div class="form-group mb-10 mr-16" style="flex:6">
-											<label for="numberOfInstallment" class="form-label">Number of Installment</label>
-											<input type="text" class="form-control form-input " id="numberOfInstallment">
-										</div>
-										<div class="form-group mb-10" style="flex:6">
-											<label for="dueDate" class="form-label">Due Date</label>
-											<input type="date" class="form-control form-input " id="dueDate">
-										</div>
-									</div>
-								</section>
-
-								<section class="mb-24 pb-45" style="flex:21;padding-left:16px;border-bottom:1px solid #AAA">
-									<span class="section-title mb-24">Deduction Fees</span>
-									<div class="d-flex flex-row">
-										<div class="d-flex flex-column mr-45" style="flex:3;">
-											<div class="d-flex flex-row mb-16">
-												<label for="dueDate" class="form-label" style="flex:2">Filling Fee</label>
-												<input type="text" class="form-control form-input text-right" value="P 25,000.00" style="flex:3" id="dueDate">
-											</div>
-											<div class="d-flex flex-row mb-16">
-												<label for="dueDate" class="form-label" style="flex:2">Doc. Stamp</label>
-												<input type="text" class="form-control form-input text-right" value="P 25,000.00" style="flex:3" id="dueDate">
-											</div>
-											<div class="d-flex flex-row mb-16">
-												<label for="dueDate" class="form-label" style="flex:2">Insurance</label>
-												<input type="text" class="form-control form-input text-right" value="P 25,000.00" style="flex:3" id="dueDate">
-											</div>
-											<div class="d-flex flex-row mb-16">
-												<label for="dueDate" class="form-label" style="flex:2">Notarial Fee</label>
-												<input type="text" class="form-control form-input text-right" value="P 25,000.00" style="flex:3" id="dueDate">
-											</div>
-											<div class="d-flex flex-row mb-16">
-												<label for="dueDate" class="form-label" style="flex:2">Prepaid Interest</label>
-												<input type="text" class="form-control form-input text-right" value="P 25,000.00" style="flex:3" id="dueDate">
-											</div>
-											<div class="d-flex flex-row mb-16">
-												<label for="dueDate" class="form-label" style="flex:2">Affidavit</label>
-												<input type="text" class="form-control form-input text-right" value="P 25,000.00" style="flex:3" id="dueDate">
-											</div>
-											<div class="d-flex flex-row mb-16">
-												<label for="dueDate" class="form-label" style="flex:2">Memo</label>
-												<input type="text" class="form-control form-input text-right" value="P 25,000.00" style="flex:3" id="dueDate">
-											</div>
-										</div>
-										<div class="d-flex flex-column" style="flex:2;">
-											<div class="form-group mb-16">
-												<label for="dueDate" class="form-label">Total Deductions</label>
-												<input type="date" class="form-control form-input text-right text-green " id="dueDate">
-											</div>
-											<div class="form-group mb-45">
-												<label for="dueDate" class="form-label">Net Proceeds</label>
-												<input type="date" class="form-control form-input text-right text-green " id="dueDate">
-											</div>
-											<div class="form-group">
-												<label for="dueDate" class="form-label">Release Type</label>
-												<select name="" id="" class="form-control form-input pr-12 text-right text-green">
-													<option value="">Cash Release</option>
-												</select>
-											</div>
-										</div>
-										<div class="flex-1"></div>
-									</div>
-								</section>
-
-
-
-								<div class="d-flex flex-row-reverse mb-45 justify-content-between">
-									<div class="d-flex">
-										<a @click.prevent="navigate('custom-content-below-coborrowerinfo-tab')" href="#" data-tab="custom-content-below-coborrowerinfo-tab" class="btn btn-primary-dark mr-24 tab-navigate min-w-150">Back</a>
-										<a href="#" data-toggle="modal" data-target="#warningModal" class="btn btn-success tab-navigate min-w-150">Next</a>
-									</div>
-									<a href="#" data-toggle="modal" data-target="#lettersModal" class="btn btn-yellow-light">Print Document</a>
-									<!-- <div style="flex:22"></div> -->
-								</div>
-							</div>
+							<loan-details :saveloandetails="saveLoanDetails" :borrowerbday="borrowerBirthdate" :borrower="bborrower" :token="token" :loandetails="loanDetails"></loan-details>
 						</div>
 
 
@@ -676,10 +424,50 @@
 		props:['token'],
 		data(){
 			return {
+				clearData:{
+					borrower:0
+				},
+				borrowerBirthdate:'',
 				saveInfo:'',
+				saveLoanDetails:false,
+				bborrower:{borrower_id:'', borrower_num:''},
 				borrower:'',
 				baseUrl: window.location.origin,
 				borrowers:[],
+				loanDetails: {
+					loan_account_id:null,
+					cycle_no : 1,
+					ao_id : '',
+					product_id : '',
+					center_id : '',
+					type : '',
+					payment_mode : '',
+					terms : 0,
+					loan_amount : '',
+					no_of_installment : '',
+					day_schedule : '',
+					borrower_num : '',
+					co_borrower_name : '',
+					co_borrower_address : '',
+					co_borrower_id_type : '',
+					co_borrower_id_number : '',
+					co_borrower_id_date_issued : '',
+					co_maker_name : '',  
+					co_maker_address : '',
+					co_maker_id_type : '',
+					co_maker_id_number : '',
+					co_maker_id_date_issued : '',
+					document_stamp : 0.00,
+					filing_fee : 0.00,
+					insurance : 0.00,
+					notarial_fee : 100.00,
+					prepaid_interest : 0.00,
+					affidavit_fee : 0.00,
+					memo : 0.00,
+					total_deduction : 0.00,
+					net_proceeds : 0.00,
+					release_type : ''
+				}
 			}
 		},
 		methods: {
@@ -699,25 +487,116 @@
 					console.log(error);
 				}.bind(this));
 			},
-			selectBorrower:function(data){
-				this.borrower = '';
-				this.borrower = JSON.stringify(data);
-				// console.log(this.borrower);
+			resetBorrower:function(){
+				this.borrower = {
+					borrower_id: null,
+					date_registered:'',
+					borrower_num:'',
+					firstname:'',
+					lastname:'',
+					middlename:'',
+					suffix :'' ,
+					address :'' ,
+					birthdate :'',
+					gender :'' ,
+					status :'' ,
+					contact_number :'',
+					id_type :'',
+					id_no :'',
+					id_date_issued :'',
+					spouse_firstname:'',
+					spouse_lastname:'',
+					spouse_middlename:'',
+					spouse_address :'',
+					spouse_birthdate :'',
+					spouse_id_type :'',
+					spouse_id_no :'',
+					spouse_id_date_issued :'',
+					employmentInfo : [],
+					businessInfo : [],
+					householdMembers : [],
+					outstandingObligations : [],
+					loanAccounts:[],
+					created_at: this.dateToYMD(new Date()),
+				};				
 			},
+		
 			navigate:function(tab){
 				document.getElementById(tab).click();
 			},
-			dateToYMD:function(date) {
-				var d = date.getDate();
-				var m = date.getMonth() + 1;
-				var y = date.getFullYear();
-				return '' + y + '-' + (m<=9 ? '0' + m : m) + '-' + (d <= 9 ? '0' + d : d);
+			
+			updateLoanDetails:function(data){
+				this.loanDetails = data;
+			},
+			savedInfo:function(data){
+				this.fetchBorrowers();
+				this.bborrower = data;
+				this.saveLoanDetails = true;
+			},
+			nextBorrower:function(data){
+				this.borrowerBirthdate = data;
+			},
+			selected:function(id){
+				if(id==this.loanDetails.loan_account_id){
+					return 'active';
+				}
+				return '';
+			},
+			resetLoanDetails:function(){
+				this.loanDetails = {
+					loan_account_id:null,
+					cycle_no : 1,
+					ao_id : '',
+					product_id : '',
+					center_id : '',
+					type : '',
+					payment_mode : '',
+					terms : 0,
+					loan_amount : '',
+					no_of_installment : '',
+					day_schedule : '',
+					borrower_num : '',
+					co_borrower_name : '',
+					co_borrower_address : '',
+					co_borrower_id_type : '',
+					co_borrower_id_number : '',
+					co_borrower_id_date_issued : '',
+					co_maker_name : '',  
+					co_maker_address : '',
+					co_maker_id_type : '',
+					co_maker_id_number : '',
+					co_maker_id_date_issued : '',
+					document_stamp : 0.00,
+					filing_fee : 0.00,
+					insurance : 0.00,
+					notarial_fee : 100.00,
+					prepaid_interest : 0.00,
+					affidavit_fee : 0.00,
+					memo : 0.00,
+					total_deduction : 0.00,
+					net_proceeds : 0.00,
+					release_type : ''
+				}
+			},
+			setCycle:function(){
+				this.loanDetails.cycle_no = parseInt(this.borrower.loanAccounts.length + 1);
+			},
+			selectBorrower:function(borrower){
+				this.borrower = borrower;
+				this.setCycle();
 			}
 		},
-
         mounted() {	
-			console.log(this.dateToYMD(new Date("2015-03-25T12:00:00Z")));						
 			this.fetchBorrowers();
+			this.resetBorrower();
+			this.resetLoanDetails();
+			// this.navigate('custom-content-below-loandetails-tab');
+			// this.navigate('custom-content-below-coborrowerinfo-tab');
         }
     }
 </script>
+<style lang="scss" scoped>
+	.existing-loans.active {
+		background-color: #78e08f;
+	}
+</style>
