@@ -97,6 +97,10 @@ class LoanAccount extends Model
    		return Product::find($this->product_id);
    	}
 
+   	public function borrower() {
+   		return Borrower::find($this->borrower_id);
+   	}
+
    	// public function generateAmortizationSched($installments, $dueDate) {}
 
 }
