@@ -15,6 +15,7 @@ class LoanAccount extends JsonResource
     public function toArray($request)
     {
         return [
+            'loan_account_id' => $this->loan_account_id,
             'account_num' => $this->account_num,
             'date_release' => $this->date_release,
             'cycle_no' => $this->cycle_no,
