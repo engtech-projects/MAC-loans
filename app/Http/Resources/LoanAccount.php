@@ -32,7 +32,8 @@ class LoanAccount extends JsonResource
             'no_of_installment' => $this->no_of_installment,
             'due_date' => $this->due_date,
             'day_schedule' => $this->day_schedule,
-            'borrower_num' => $this->borrower_num,
+            // 'borrower_num' => $this->borrower_num,
+            'borrower' => $this->borrower(),
             'co_borrower_name' => $this->co_borrower_name,
             'co_borrower_address' => $this->co_borrower_address,
             'co_borrower_id_type' => $this->co_borrower_id_type,
@@ -56,6 +57,8 @@ class LoanAccount extends JsonResource
             'status' => $this->status,
             'branch_code' => $this->branch_code,
             'transaction_date' => $this->transaction_date,
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
         ];
     }
 }
