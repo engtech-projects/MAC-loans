@@ -9,10 +9,12 @@ use App\Models\Borrower;
 use App\Models\LoanAccount;
 use App\Models\Document;
 use App\Models\Product;
+use App\Models\Amortization;
 use Session;
 use Carbon\Carbon;
 use App\Http\Resources\Borrower as BorrowerResource;
 use App\Http\Resources\LoanAccount as LoanAccountResource;
+use App\Http\Resources\Amortization as AmortizationResource;
 
 class LoanAccountController extends BaseController
 {
@@ -120,70 +122,19 @@ class LoanAccountController extends BaseController
         return $this->sendResponse(['status' => 'Account deleted'], 'Deleted');
     }
 
-    public function generateAmortizationSched(LoanAccount $account) {
+    public function generateAmortizationSched(Request $request) {
 
-        $product = Product::find($account->product_id);
+        $amortization = new Amortization();
+        $dateRelease = $request->input('date_release');
+        $account = LoanAccount::find($request->input('loan_account_id'));
+        return $this->sendResponse(($amortization->createAmortizationSched($account, $dateRelease)), 'Amortization Schedule Drafted');
 
-        $terms = $account->terms / 30;
-        $interestAmount = $account->loan_amount * ($product->interest_rate / 100) * $terms;
-        $installments = $account->no_of_installment;
-        $amortizationDateStart = Carbon::createFromFormat('Y-m-d', $account->date_release);
-       
-        $principal = round($account->loan_amount / $installments);
-        $interest = round($interestAmount / $installments);
+    }
 
-        $principalBalance = $account->loan_amount;
-        $interestBalance = $interestAmount;
-        $totalAmount = $account->loan_amount + $interestAmount;
+    public function createAmortizationSched(LoanAccount $account) {
 
-        $amortizaton = array();
-
-        $days = null;
-
-        if( $account->payment_mode == "Weekly" ){
-            $days = 7;
-        }else if( $account->payment_mode == "Weekly" ) {
-            $days = 15;
-        }else if( $account->payment_mode == "Weekly" ) {
-            $days = 30;
-        }
-
-
-        for ($i=0; $i < $installments; $i++) { 
-
-            $amortizationDate = $amortizationDateStart->addDays(7);
-
-            $total = $principal + $interest;
-            
-            // principal balance
-            $principalBalance = $principalBalance - $principal;
-
-            if( max($principalBalance, 0) == 0 ) {
-                $principalBalance = 0;
-            }
-
-            $interestBalance = $interestBalance - $interest;
-
-            if( max($interestBalance, 0) == 0 ) {
-                $interestBalance = 0;
-            }
-
-            $amortization[] = [
-                'loan_account_id' => $account->loan_account_id,
-                'amortization_date' => $amortizationDate->toDateString(),
-                'principal' => number_format($principal, 2),
-                'interest' => number_format($interest, 2),
-                'total' => number_format($total, 2),
-                'principal_balance' => number_format($principalBalance, 2),
-                'interest_balance' => number_format($interestBalance, 2),
-                'status' => '',
-            ];
-
-            $amortizationDateStart = $amortizationDate;
-            // deducting total(principal+interest) from total amount (loan amount+interest)
-            $totalAmount -= $total;
-        }
-        return $amortization;
+        $amortization = new Amortization();
+        return $this->sendResponse(($amortization->storeAmortizationSched($account)), 'Amortization Schedule Created');
     }
 
 }
