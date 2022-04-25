@@ -15,14 +15,14 @@ class CreateAmortizationTable extends Migration
     {
         Schema::create('amortization', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('loan_acount_id');
+            $table->unsignedInteger('loan_account_id');
             $table->date('amortization_date');
             $table->double('principal', 10, 2);
             $table->double('interest', 10, 2);
             $table->double('total', 10, 2);
             $table->double('principal_balance', 10, 2);
             $table->double('interest_balance', 10, 2);
-            $table->string('status');
+            $table->string('status')->default('open');
             $table->timestamps();
         });
     }

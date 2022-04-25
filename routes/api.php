@@ -50,7 +50,8 @@ Route::middleware('auth:sanctum')->group( function () {
     Route::delete('account/delete/{id}', [LoanAccountController::class, 'destroy']);
     // rejected release
     Route::get('account/rejected/', [LoanAccountController::class, 'rejectedAccountList']);
-    Route::get('account/generate-amortization/{account}', [LoanAccountController::class, 'generateAmortizationSched']);
+    Route::get('account/create-amortization/{account}', [LoanAccountController::class, 'createAmortizationSched']);
+    Route::post('account/generate-amortization/', [LoanAccountController::class, 'generateAmortizationSched']);
 
 });
 
