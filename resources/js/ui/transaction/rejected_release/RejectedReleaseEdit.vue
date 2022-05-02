@@ -3,32 +3,12 @@
 		<notifications group="foo" />
 		<div class="mb-16"></div>
 		<div class="ml-16 mb-24 bb-primary-dark pb-7 text-block d-flex justify-content-between">
-			<h1 class="m-0 font-35">Release Entry</h1>
+			<h1 class="m-0 font-35">{{title}}</h1>
 			<a href="#" @click.prevent="clearData.borrower=1;resetLoanDetails()" class="btn btn-primary-dark min-w-150">New Client</a>
 		</div><!-- /.col -->
 		<div class="d-flex flex-column flex-xl-row p-16">
 				<div style="flex:9;">
-					<client-list-side @selectBorrower="selectBorrower" :pborrowers="borrowers" :id="{}"></client-list-side>
-					<div d-flex flex-column v-if="borrower.borrower_id">
-						<span class="text-red font-md">Existing Current Loan Accounts</span>
-						<div class="mb-10"></div>
-						<table class="table table-stripped light-border table-hover">
-							<thead>
-								<th>Account #</th>
-								<th>Amount</th>
-								<th>Rem. Bal.</th>
-								<th>Date Rel.</th>
-							</thead>
-							<tbody>
-								<tr @click="loanDetails=bl;setCycle()" class="existing-loans" :class="selected(bl.loan_account_id)" v-for="bl in borrower.loanAccounts" :key="bl.loan_account_id">
-									<td>{{bl.borrower_num}}</td>
-									<td>{{bl.loan_amount}}</td>
-									<td>5,000.00</td>
-									<td>12/12/2021</td>
-								</tr>
-							</tbody>
-						</table>
-					</div>
+					<client-list-side @selectAccount="selectAccount" :pborrowers="rejectedAccounts" :account="rejectedAccount.loan_account_id"></client-list-side>
 				</div>
 				<div style="flex:20">
 					<ul class="nav nav-tabs" id="custom-content-below-tab" role="tablist" style="display:none;">
@@ -47,16 +27,16 @@
 					</ul>
 					<div class="tab-content" id="custom-content-below-tabContent">
 						<div class="tab-pane fade show active" id="custom-content-below-borrowerinfo" role="tabpanel" aria-labelledby="custom-content-below-home-tab">
-							<borrowers-info @nextBorrower="nextBorrower" @borrowerCleared="clearData.borrower=0" @savedInfo="savedInfo" @saveBorrower="saveInfo=''" @clearBorrowerInfo="resetBorrower" :clear="clearData.borrower" :token="token" :pborrower="borrower" :psave="saveInfo"></borrowers-info>
+							<rejected-borrowers-info @nextBorrower="nextBorrower" :pborrower="rejectedAccount.borrower"></rejected-borrowers-info>
 						</div>
 
 
-						<co-borrower :borrowers="borrowers" :loandetails="loanDetails" @update-loan-details="updateLoanDetails"></co-borrower>
+						<co-borrower :borrowers="borrowers" :loandetails="rejectedAccount" @nextCoborrower="nextCoborrower"></co-borrower>
 
 
 
 						<div class="tab-pane fade" id="custom-content-below-loaddetails" role="tabpanel" aria-labelledby="custom-content-below-messages-tab">
-							<loan-details :saveloandetails="saveLoanDetails" :borrowerbday="borrowerBirthdate" :borrower="bborrower" :token="token" :loandetails="loanDetails"></loan-details>
+							<rejected-loan-details @save="save" :token="token" :loandetails="rejectedAccount"></rejected-loan-details>
 						</div>
 
 
@@ -396,91 +376,32 @@
 		  </div>
 		</div>
 	</div>
-			<div class="modal" id="warningModal" tabindex="-1" role="dialog">
-				<div class="modal-dialog modal-md" role="document">
-				<div class="modal-content">
-					<div class="modal-body p-24">
-						<div class="d-flex align-items-center">
-							<img :src="baseUrl+'/img/warning.png'" style="width:120px;height:auto;" class="mr-24" alt="warning icon">
-							<div class="d-flex flex-column">
-								<span class="text-primary-dark text-bold mb-24">
-									Please re check all the data if correct and genuine. If checking is done and verified, kindly press proceed.
-								</span>
-								<div class="d-flex mt-auto justify-content-between">
-									<a href="#" data-dismiss="modal" class="btn btn-danger min-w-120">Re Check</a>
-									<a @click.prevent="saveInfo=1" href="#" data-dismiss="modal" class="btn btn-primary-dark min-w-120">Proceed</a>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				</div>
-			</div>
+			
 	</div>
 </template>
 
 <script>
     export default {
-		props:['token'],
+		props:['token', 'title', 'id'],
 		data(){
 			return {
-				clearData:{
-					borrower:0
-				},
-				borrowerBirthdate:'',
-				saveInfo:'',
-				saveLoanDetails:false,
-				bborrower:{borrower_id:'', borrower_num:''},
-				borrower:'',
+				rejectedAccounts:[],
 				baseUrl: window.location.origin,
-				borrowers:[],
-				loanDetails: {
-					loan_account_id:null,
-					cycle_no : 1,
-					ao_id : '',
-					product_id : '',
-					center_id : '',
-					type : '',
-					payment_mode : '',
-					terms : 0,
-					loan_amount : '',
-					no_of_installment : '',
-					day_schedule : '',
-					borrower_num : '',
-					co_borrower_name : '',
-					co_borrower_address : '',
-					co_borrower_id_type : '',
-					co_borrower_id_number : '',
-					co_borrower_id_date_issued : '',
-					co_maker_name : '',  
-					co_maker_address : '',
-					co_maker_id_type : '',
-					co_maker_id_number : '',
-					co_maker_id_date_issued : '',
-					document_stamp : 0.00,
-					filing_fee : 0.00,
-					insurance : 0.00,
-					notarial_fee : 100.00,
-					prepaid_interest : 0.00,
-					affidavit_fee : 0.00,
-					memo : 0.00,
-					total_deduction : 0.00,
-					net_proceeds : 0.00,
-					release_type : '',
-					documents: {
-						date_release: this.dateToYMD(new Date),
-						description: '',
-						bank: '',
-						account_no: '',
-						card_no:'',
-						promissory_number: '',
+				rejectedAccount:{
+					borrower:{
+						borrower_id:null,
+						employmentInfo : [],
+						businessInfo : [],
+						householdMembers : [],
+						outstandingObligations : [],
+						loanAccounts:[],
 					}
 				}
 			}
 		},
 		methods: {
-			fetchBorrowers:function(){
-				axios.get(window.location.origin + '/api/borrower', {
+			fetchRejectedAccounts:function(){
+				axios.get(window.location.origin + '/transaction/rejected_accounts', {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
 						'Content-Type': 'application/json',
@@ -488,61 +409,23 @@
 					}
 				})
 				.then(function (response) {
-					// console.log(response.data);
-					this.borrowers = response.data.data;
+					this.rejectedAccounts = response.data;
+					this.setAccount;
 				}.bind(this))
 				.catch(function (error) {
 					console.log(error);
 				}.bind(this));
 			},
-			resetBorrower:function(){
-				this.borrower = {
-					borrower_id: null,
-					date_registered:'',
-					borrower_num:'',
-					firstname:'',
-					lastname:'',
-					middlename:'',
-					suffix :'' ,
-					address :'' ,
-					birthdate :'',
-					gender :'' ,
-					status :'' ,
-					contact_number :'',
-					id_type :'',
-					id_no :'',
-					id_date_issued :'',
-					spouse_firstname:'',
-					spouse_lastname:'',
-					spouse_middlename:'',
-					spouse_address :'',
-					spouse_birthdate :'',
-					spouse_id_type :'',
-					spouse_id_no :'',
-					spouse_id_date_issued :'',
-					employmentInfo : [],
-					businessInfo : [],
-					householdMembers : [],
-					outstandingObligations : [],
-					loanAccounts:[],
-					created_at: this.dateToYMD(new Date()),
-				};				
-			},
-		
+			
 			navigate:function(tab){
 				document.getElementById(tab).click();
 			},
 			
-			updateLoanDetails:function(data){
-				this.loanDetails = data;
-			},
-			savedInfo:function(data){
-				this.fetchBorrowers();
-				this.bborrower = data;
-				this.saveLoanDetails = true;
+			nextCoborrower:function(data){
+				this.rejectedAccount = data;
 			},
 			nextBorrower:function(data){
-				this.borrowerBirthdate = data;
+				this.rejectedAccount.borrower = data;
 			},
 			selected:function(id){
 				if(id==this.loanDetails.loan_account_id){
@@ -550,8 +433,11 @@
 				}
 				return '';
 			},
+			selectAccount:function(data){
+				this.rejectedAccount = data;
+			},
 			resetLoanDetails:function(){
-				this.loanDetails = {
+				this.rejectedAccount = {
 					loan_account_id:null,
 					cycle_no : 1,
 					ao_id : '',
@@ -584,36 +470,73 @@
 					total_deduction : 0.00,
 					net_proceeds : 0.00,
 					release_type : '',
-					interest_rate:'',
-					interest_amount:'',
-					documents: {
-						date_release: this.dateToYMD(new Date),
-						description: '',
-						bank: '',
-						account_no: '',
-						card_no:'',
-						promissory_number: '',
+					borrower:{
+						borrower_id:null,
+						employmentInfo : [],
+						businessInfo : [],
+						householdMembers : [],
+						outstandingObligations : [],
+						loanAccounts:[],
 					}
 				}
 			},
-			setCycle:function(){
-				this.loanDetails.cycle_no = parseInt(this.borrower.loanAccounts.length + 1);
+			saveLoanDetails: function(){
+				axios.put(window.location.origin + '/api/account/update/' + this.rejectedAccount.loan_account_id, this.rejectedAccount, {
+					headers: {
+						'Authorization': 'Bearer ' + this.token,
+						'Content-Type': 'application/json',
+						'Accept': 'application/json'
+					}
+				})
+				.then(function (response) {
+					this.notify('',response.data.message, 'success');
+					window.location.replace('/transaction/rejected_release');
+				}.bind(this))
+				.catch(function (error) {
+					console.log(error);
+				}.bind(this));
 			},
-			selectBorrower:function(borrower){
-				this.borrowers.map(function(data){
-					if(borrower == data.borrower_id){
-						this.borrower = data;
-						this.setCycle();
+			saveBorrower: function(){
+				axios.put(window.location.origin + '/api/borrower/' + this.rejectedAccount.borrower.borrower_id, this.rejectedAccount.borrower, {
+					headers: {
+						'Authorization': 'Bearer ' + this.token,
+						'Content-Type': 'application/json',
+						'Accept': 'application/json'
+					}
+				})
+				.then(function (response) {
+					this.notify('',response.data.message, 'success');
+					this.rejectedAccount.status = 'pending';
+					this.saveLoanDetails();
+				}.bind(this))
+				.catch(function (error) {
+					console.log(error);
+				}.bind(this));
+			},
+			save:function(data){
+				this.rejectedAccount = data;
+				this.saveBorrower();
+			}
+		},
+		computed:{
+			borrowers:function(){
+				var list = [];
+				this.rejectedAccounts.map(function(data){
+					list.push(data.borrower);
+				}.bind(this));
+				return list;
+			},
+			setAccount:function(){
+				this.rejectedAccounts.map(function(data){
+					if(this.id == data.loan_account_id){
+						this.rejectedAccount = data;
 					}
 				}.bind(this));
 			}
 		},
         mounted() {	
-			this.fetchBorrowers();
-			this.resetBorrower();
+			this.fetchRejectedAccounts();
 			this.resetLoanDetails();
-			// this.navigate('custom-content-below-loandetails-tab');
-			// this.navigate('custom-content-below-coborrowerinfo-tab');
         }
     }
 </script>

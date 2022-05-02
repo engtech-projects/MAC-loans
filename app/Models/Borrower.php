@@ -11,7 +11,7 @@ class Borrower extends Model
 
     protected $table = 'borrower_info';
     protected $primaryKey = 'borrower_id';
-
+	
     protected $fillable = [
     	'borrower_id',
 		'borrower_num',
