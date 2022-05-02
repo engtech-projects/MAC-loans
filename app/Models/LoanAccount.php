@@ -10,6 +10,7 @@ class LoanAccount extends Model
     use HasFactory;
     protected $table = 'loan_accounts';
    	protected $primaryKey = 'loan_account_id';
+	protected $with = ['documents'];
 
 
    	protected $fillable = [
@@ -100,6 +101,10 @@ class LoanAccount extends Model
    	public function borrower() {
    		return Borrower::find($this->borrower_id);
    	}
+
+	public function documents(){
+		return $this->hasOne(Document::class, 'loan_account_id');
+	}
 
    	// public function generateAmortizationSched($installments, $dueDate) {}
 
