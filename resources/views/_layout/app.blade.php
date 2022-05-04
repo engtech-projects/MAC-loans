@@ -5,20 +5,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="csrf-token" content="{{ csrf_token() }}">
   <title> {{isset($title)? $title : 'Title'}} </title>
-
+  
   @include('_includes.styles')
  
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
+<div class="to-print"></div>
 <!-- Site wrapper -->
-<div class="wrapper">
+<div class="wrapper no-print">
 
   @include('_includes.topbar')
 
   @include('_includes.sidebar')
 
   <!-- Content Wrapper. Contains page content -->
-  <div class="content-wrapper">
+  <div class="content-wrapper" id="app">
     @yield('content')
   </div>
   <!-- /.content-wrapper -->

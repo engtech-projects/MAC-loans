@@ -24,7 +24,7 @@
 	<!-- Sidebar Menu -->
 	<nav class="mt-2">
 	  	<ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-			<li class="nav-item">
+			<li class="nav-item {{isset($nav) && isActive($nav[0], 'client information')? 'active menu-open' : ''}}">
 				<a href="#" class="nav-link main-link">
 				  <p>
 					Client Information
@@ -32,23 +32,23 @@
 				  </p>
 				</a>
 				<ul class="nav nav-treeview">
-					<li class="nav-item pick">
+					<li class="nav-item pick {{isset($nav) && isActive($nav[1], 'personal information list')? 'active menu-open' : ''}}">
 						<div class="flex navicon">
 							<div class="top-line invis"></div>
 							<div class="mid-circle"></div>
 							<div class="bottom-line"></div>
 						</div>
-						<a href="client_list.php" class="nav-link flex">
+						<a href="{{route('client_information.personal_information_list')}}" class="nav-link flex">
 						  <p>Personal Information</p>
 						</a>
 					  </li>
-					  <li class="nav-item pick">
+					  <li class="nav-item pick {{isset($nav) && isActive($nav[1], 'statement of accounts list')? 'active menu-open' : ''}}">
 						  <div class="flex navicon">
 							<div class="top-line"></div>
 							<div class="mid-circle"></div>
 							<div class="bottom-line"></div>
 						</div>
-						<a href="statement_of_accounts_list.php" class="nav-link">
+						<a href="{{route('client_information.statement_of_accounts_list')}}" class="nav-link">
 
 						  <p>Statement of Accounts</p>
 						</a>
@@ -67,7 +67,7 @@
 				</ul>
 			</li>
 
-			<li class="nav-item">
+			<li class="nav-item {{isset($nav) && isActive($nav[0], 'transaction')? 'active menu-open' : ''}}">
 				<a href="#" class="nav-link main-link">
 				  <p>
 					Transaction
@@ -75,23 +75,23 @@
 				  </p>
 				</a>
 				<ul class="nav nav-treeview">
-				  <li class="nav-item pick">
+				  <li class="nav-item pick {{isset($nav) && isActive($nav[1], 'release entry')? 'active menu-open' : ''}}">
 					  <div class="flex navicon">
 							<div class="top-line invis"></div>
 							<div class="mid-circle"></div>
 							<div class="bottom-line"></div>
 						</div>
-					<a href="release_entry_borrower_info.php" class="nav-link">
+					<a href="{{route('transaction.release_entry')}}" class="nav-link">
 					  <p>Release Entry</p>
 					</a>
 				  </li>
-				  <li class="nav-item pick">
+				  <li class="nav-item pick {{isset($nav) && isActive($nav[1], 'override release')? 'active menu-open' : ''}}">
 					  <div class="flex navicon">
 							<div class="top-line"></div>
 							<div class="mid-circle"></div>
 							<div class="bottom-line"></div>
 						</div>
-					<a href="override_release.php" class="nav-link">
+					<a href="{{route('transaction.override_release')}}" class="nav-link">
 					  <p>Override Release</p>
 					</a>
 				  </li>
@@ -135,13 +135,13 @@
 				  </p>
 				</a>
 				<ul class="nav nav-treeview">
-					<li class="nav-item pick">
+					<li class="nav-item pick {{isset($nav) && isActive($nav[1], 'cancel payments')? 'active' : ''}}">
 						<div class="flex navicon">
 							  <div class="top-line invis"></div>
 							  <div class="mid-circle"></div>
 							  <div class="bottom-line"></div>
 						  </div>
-					  <a href="cancel_payment.php" class="nav-link">
+					  <a href="{{route('maintenance.cancel_payments')}}" class="nav-link">
 						<p>Cancel Payments</p>
 					  </a>
 					</li>
@@ -155,43 +155,43 @@
 						<p>Product Setup</p>
 					  </a>
 					</li>
-					<li class="nav-item pick">
+					<li class="nav-item pick {{isset($nav) && isActive($nav[1], 'center ao')? 'active' : ''}}">
 						<div class="flex navicon">
 							  <div class="top-line"></div>
 							  <div class="mid-circle"></div>
 							  <div class="bottom-line"></div>
 						  </div>
-					  <a href="center_group_setup.php" class="nav-link">
-						<p>Center - Group Setup</p>
+					  <a href="{{route('maintenance.center_ao')}}" class="nav-link">
+						<p>Center - AO Setup</p>
 					  </a>
 					</li>
-					<li class="nav-item pick">
+					<li class="nav-item pick {{isset($nav) && isActive($nav[1], 'user settings')? 'active' : ''}}">
 						<div class="flex navicon">
 							  <div class="top-line"></div>
 							  <div class="mid-circle"></div>
 							  <div class="bottom-line"></div>
 						  </div>
-					  <a href="user_settings.php" class="nav-link">
+					  <a href="{{route('maintenance.user_settings')}}" class="nav-link">
 						<p>User Settings</p>
 					  </a>
 					</li>
-					<li class="nav-item pick">
+					<li class="nav-item pick {{isset($nav) && isActive($nav[1], 'gl setup')? 'active' : ''}}">
 						<div class="flex navicon">
 							  <div class="top-line"></div>
 							  <div class="mid-circle"></div>
 							  <div class="bottom-line"></div>
 						  </div>
-					  <a href="gl_setup.php" class="nav-link">
+					  <a href="{{route('maintenance.gl_setup')}}" class="nav-link">
 						<p>GL Setup</p>
 					  </a>
 					</li>
-					<li class="nav-item pick">
+					<li class="nav-item pick {{isset($nav) && isActive($nav[1], 'account retagging')? 'active' : ''}}">
 						<div class="flex navicon">
 							  <div class="top-line"></div>
 							  <div class="mid-circle"></div>
 							  <div class="bottom-line invis"></div>
 						  </div>
-					  <a href="account_retagging.php" class="nav-link">
+					  <a href="{{route('maintenance.account_retagging')}}" class="nav-link">
 						<p>Account Re-Tagging</p>
 					  </a>
 					</li>

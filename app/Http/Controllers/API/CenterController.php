@@ -57,7 +57,6 @@ class CenterController extends BaseController
         # add validator na pd dri
         $center->center = $input['center'];
         $center->day_sched = $input['day_sched'];
-        $center->interest_rate = $input['interest_rate'];
         $center->status = $input['status'];
         $center->save(); 
 

@@ -19,3 +19,7 @@
   <!-- summernote -->
   <link rel="stylesheet" href="{{ asset('plugins/summernote/summernote-bs4.min.css')}}">
   <link rel="stylesheet" href="{{ asset('css/custom.css')}}">
+  <script>
+	// rename myToken as you like
+	window.token = "{{ csrf_token() }}";
+  </script>

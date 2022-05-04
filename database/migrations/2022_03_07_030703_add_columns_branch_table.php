@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddNameColumnsToUsersTable extends Migration
+class AddColumnsBranchTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,10 @@ class AddNameColumnsToUsersTable extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->string('firstname')->nullable();
-            $table->string('middlename')->nullable();
-            $table->string('lastname')->nullable();
+        Schema::table('branch', function (Blueprint $table) {
+            $table->string('status')->default('active');
+            $table->tinyInteger('deleted')->default(0);
+            
         });
     }
 
@@ -27,7 +27,7 @@ class AddNameColumnsToUsersTable extends Migration
      */
     public function down()
     {
-        Schema::table('users', function (Blueprint $table) {
+        Schema::table('branch', function (Blueprint $table) {
             //
         });
     }

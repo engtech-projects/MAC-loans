@@ -8,7 +8,14 @@
   </ul>
 
   <!-- Right navbar links -->
-  <ul class="navbar-nav ml-auto">      
+  <ul class="navbar-nav ml-auto" style="padding-top:7px">
+	<li class="nav-item">
+		<div class="d-flex align-items-center mr-45" style="height:100%">
+			<div class="text-20 text-primary-dark" style="margin-right:90px;" id="MyDateDisplay"></div>
+			<span class="text-20 text-primary-dark mr-5">Time:</span>
+			<div class="text-20 text-primary-dark" id="MyClockDisplay"></div>
+		</div>
+	</li>      
     <!-- Notifications Dropdown Menu -->
     <li class="nav-item dropdown">
       <a class="nav-link" data-toggle="dropdown" href="#">

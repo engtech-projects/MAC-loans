@@ -8,6 +8,9 @@ use App\Http\Controllers\API\BaseController as BaseController;
 use Illuminate\Support\Facades\Auth;
 use Validator;
 use App\Models\User;
+use App\Models\Branch;
+use App\Http\Resources\Users as UserResource;
+
 
 class AuthController extends BaseController
 {
@@ -19,14 +22,17 @@ class AuthController extends BaseController
     	$credentials = $request->only('username', 'password');
 
     	if(Auth::attempt($credentials)){ 
+
             $authUser = Auth::user(); 
-            $success['token'] =  $authUser->createToken('MyAuthApp')->plainTextToken;
-            $success['name'] =  $authUser->name;
+            $success['token'] =  $authUser->createToken('auth_token')->plainTextToken;
+            $success['name'] =  $authUser->username;
+            
             return $this->sendResponse($success, 'User signed in');
-        } 
-        else{ 
+            
+        }
+        else{
             return $this->sendError('Error.', ['error'=>'Unauthorised']);
-        } 
+        }
     }
 
     public function logout() {
