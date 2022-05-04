@@ -99,7 +99,7 @@ class LoanAccount extends Model
    	}
 
    	public function borrower() {
-   		return Borrower::find($this->borrower_id);
+   		return Borrower::with(['businessInfo','employmentInfo','householdMembers','outstandingObligations'])->find($this->borrower_id);
    	}
 
 	public function documents(){
