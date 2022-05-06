@@ -93,29 +93,27 @@ class Amortization extends Model
         }
 
         return $amortization;
-
     }
 
     public function storeAmortizationSched(LoanAccount $account) {
 
         $amortizationSched = $this->createAmortizationSched($account);
 
-        // foreach ($amortizationSched as $key => $value) {
+        foreach ($amortizationSched as $key => $value) {
 
-        //     $data = array(
-        //         'loan_account_id' => $value['loan_account_id'],
-        //         'amortization_date' => $value['amortization_date'],
-        //         'principal' =>  floatval(preg_replace('/[^\d.]/', '', $value['principal'])),
-        //         'interest' =>  floatval(preg_replace('/[^\d.]/', '', $value['interest'])),
-        //         'total' =>  floatval(preg_replace('/[^\d.]/', '', $value['total'])),
-        //         'principal_balance' =>  floatval(preg_replace('/[^\d.]/', '', $value['principal_balance'])),
-        //         'interest_balance' =>  floatval(preg_replace('/[^\d.]/', '', $value['interest_balance'])),
-        //         'status' => 'open',
-        //     );
-        //     // Amortization::create($data);
-        // }
+            $data = array(
+                'loan_account_id' => $value['loan_account_id'],
+                'amortization_date' => $value['amortization_date'],
+                'principal' =>  floatval(preg_replace('/[^\d.]/', '', $value['principal'])),
+                'interest' =>  floatval(preg_replace('/[^\d.]/', '', $value['interest'])),
+                'total' =>  floatval(preg_replace('/[^\d.]/', '', $value['total'])),
+                'principal_balance' =>  floatval(preg_replace('/[^\d.]/', '', $value['principal_balance'])),
+                'interest_balance' =>  floatval(preg_replace('/[^\d.]/', '', $value['interest_balance'])),
+                'status' => 'open',
+            );
+            Amortization::create($data);
+        }
     
         return $amortizationSched;
-
     }
 }

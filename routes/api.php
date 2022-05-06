@@ -12,6 +12,7 @@ use App\Http\Controllers\API\DashboardController;
 use App\Http\Controllers\API\AccountOfficerController;
 use App\Http\Controllers\API\LoanAccountController;
 use App\Http\Controllers\API\UserController;
+use App\Http\Controllers\API\PaymentController;
 
 
 /*
@@ -35,7 +36,7 @@ Route::middleware('auth:sanctum')->group( function () {
     Route::resource('branch', BranchController::class);
     Route::resource('borrower', BorrowerController::class);
     Route::resource('accountofficer', AccountOfficerController::class);
-
+    Route::resource('payment', PaymentController::class);
     // loan account
     Route::get('account/show/{account}', [LoanAccountController::class, 'showLoanAccount']);
     Route::post('account/create/{borrower}', [LoanAccountController::class, 'createLoanAccount']);

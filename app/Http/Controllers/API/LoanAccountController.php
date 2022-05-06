@@ -10,6 +10,7 @@ use App\Models\LoanAccount;
 use App\Models\Document;
 use App\Models\Product;
 use App\Models\Amortization;
+use App\Models\Branch;
 use Session;
 use Carbon\Carbon;
 use App\Http\Resources\Borrower as BorrowerResource;
@@ -32,13 +33,16 @@ class LoanAccountController extends BaseController
 
         // $branchCode = Branch::find(session()->get('branch_id'))->branch_code;
         # to be replaced when branch is fetched through session.
-        $branchCode = 'test_code';
+        $branch = Branch::find(1);
+        $product = Product::find($request->input('product_id'));
+
         $request->merge([
+            'cycle_no' => LoanAccount::getCycleNo(),
             'status' => 'pending',
-            'account_num' => 'br1-00-001',
+            'account_num' => LoanAccount::generateAccountNum($branch->branch_code, $product->product_code),
             'borrower_num' =>  $borrower->borrower_num,
             'borrower_id' =>  $borrower->borrower_id,
-            'branch_code' => $branchCode,
+            'branch_code' => $branch->branch_code,
         ]);
 
         $account = LoanAccount::create($request->input());
@@ -51,10 +55,10 @@ class LoanAccountController extends BaseController
                     ['loan_account_id' => $account->loan_account_id ],
                 )
             );
-
         }
 
     	return $this->sendResponse(new LoanAccountResource($account), 'Account fetched.');
+        
     }
 
     public function updateLoanAccount(Request $request, LoanAccount $account) {
@@ -79,8 +83,6 @@ class LoanAccountController extends BaseController
         $accounts = new LoanAccount();
         $accounts = $accounts->overrideReleaseAccounts($filters);
         return $this->sendResponse(LoanAccountResource::collection($accounts), 'List.');
-        
-
     }
 
     // yyyy-mm-dd format
@@ -130,7 +132,6 @@ class LoanAccountController extends BaseController
         $dateRelease = $request->input('date_release');
         $account = LoanAccount::find($request->input('loan_account_id'));
         return $this->sendResponse(($amortization->createAmortizationSched($account, $dateRelease)), 'Amortization Schedule Drafted');
-
     }
 
     public function createAmortizationSched(LoanAccount $account) {
@@ -138,5 +139,13 @@ class LoanAccountController extends BaseController
         $amortization = new Amortization();
         return $this->sendResponse(($amortization->storeAmortizationSched($account)), 'Amortization Schedule Created');
     }
+
+    // // end of day transaction
+    // public function setDelinquent(){
+
+    //     $loanAccount = new LoanAccount();
+    //     $loanAccount->setDelinquent();
+
+    // }
 
 }
