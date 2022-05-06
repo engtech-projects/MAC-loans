@@ -14,7 +14,7 @@ class AccountOfficerController extends BaseController
      * Display a listing of the resource.
      */
     public function index() {
-        $accountOfficer = AccountOfficer::all();
+        $accountOfficer = AccountOfficer::where(['status' => 'active'])->get();
         return $this->sendResponse(AccountOfficerResource::collection($accountOfficer), 'AO fetched.');
     }
     /**
