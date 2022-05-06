@@ -12,4 +12,10 @@ class TransactionController extends Controller
 			'title' => 'Release Entry',
 		]);
 	}
+	public function overrideRelease(){
+		return view('transaction.override_release')->with([
+			'nav' => ['transaction', 'override release'],
+			'title' => 'Override Release',
+		]);
+	}
 }

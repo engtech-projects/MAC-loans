@@ -130,6 +130,7 @@ export default {
 					.then(function (response) {
 						this.notify('',response.data.message, 'success');
 						this.fetchBranches();
+						this.$emit('branchUpdated');
 					}.bind(this))
 					.catch(function (error) {
 						console.log(error);
@@ -146,6 +147,7 @@ export default {
 					this.notify('',response.data.message, 'success');
 					this.resetBranch();
 					this.fetchBranches();
+					this.$emit('branchUpdated');
 				}.bind(this))
 				.catch(function (error) {
 					console.log(error);

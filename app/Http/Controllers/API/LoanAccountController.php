@@ -30,7 +30,6 @@ class LoanAccountController extends BaseController
      * Store a newly created resource in storage.
      */
     public function createLoanAccount(Request $request, Borrower $borrower) {
-
         // $branchCode = Branch::find(session()->get('branch_id'))->branch_code;
         # to be replaced when branch is fetched through session.
         $branch = Branch::find(1);
@@ -44,11 +43,9 @@ class LoanAccountController extends BaseController
             'borrower_id' =>  $borrower->borrower_id,
             'branch_code' => $branch->branch_code,
         ]);
-
         $account = LoanAccount::create($request->input());
         
         if( $account->loan_account_id ) {
-
             Document::create(
                 array_merge(
                     $request->input('documents'), 
@@ -62,9 +59,15 @@ class LoanAccountController extends BaseController
     }
 
     public function updateLoanAccount(Request $request, LoanAccount $account) {
-
         $account->fill($request->input());
         $account->save();
+		$document = Document::find($request->input('documents')['id']);
+		$document->description = ($request->input('documents')['description']);
+		$document->bank = ($request->input('documents')['bank']);
+		$document->account_no = ($request->input('documents')['account_no']);
+		$document->card_no = ($request->input('documents')['card_no']);
+		$document->promissory_number = ($request->input('documents')['promissory_number']);
+		$document->save();
 
         return $this->sendResponse(new LoanAccountResource($account), 'Account Updated.');
     }
@@ -127,9 +130,8 @@ class LoanAccountController extends BaseController
     }
 
     public function generateAmortizationSched(Request $request) {
-
         $amortization = new Amortization();
-        $dateRelease = $request->input('date_release');
+        $dateRelease = ($request->input('date_release')? $request->input('date_release') : date('Y-m-d'));
         $account = LoanAccount::find($request->input('loan_account_id'));
         return $this->sendResponse(($amortization->createAmortizationSched($account, $dateRelease)), 'Amortization Schedule Drafted');
     }

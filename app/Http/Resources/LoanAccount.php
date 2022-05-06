@@ -60,6 +60,7 @@ class LoanAccount extends JsonResource
             'transaction_date' => $this->transaction_date,
             'current_amortization' => $this->getCurrentAmortization(),
             'last_transaction' => null,
+			      'document' => $this->documents,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

@@ -13,9 +13,10 @@ class ClientInformationController extends Controller
 		]);
 	}
 
-	public function personalInformationDetails(){
+	public function personalInformationDetails($id){
 		return view('client_information.personal_information_details')->with([
 			'nav' => ['client information', 'personal information list'],
+			'id' => $id,
 			'title' => 'Personal Information',
 		]);
 	}

@@ -233,6 +233,10 @@
 	margin-right: 5px!important;
 }
 
+.mr-7 {
+	margin-right: 7px!important;
+}
+
 .mr-10 {
 	margin-right: 10px;
 }
@@ -1245,9 +1249,21 @@
 	flex-direction: column;
 }
 
+.to-print {
+	display: none!important;
+}
 
 
 /* MEDIA QUERIES  */
+@media print {
+	.to-print {
+		display: block!important;
+		opacity: 1;
+	}
+	.no-print {
+		display: none!important;
+	}
+}
 
 @media (max-width: 576px) {  
 	.xs-font-24 {

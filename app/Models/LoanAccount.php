@@ -12,6 +12,7 @@ class LoanAccount extends Model
     use HasFactory;
     protected $table = 'loan_accounts';
    	protected $primaryKey = 'loan_account_id';
+	protected $with = ['documents'];
 
 
    	protected $fillable = [
@@ -280,5 +281,11 @@ class LoanAccount extends Model
 
          return $amortization;
       }
+
+	  public function documents(){
+		  return $this->hasOne(Document::class, 'loan_account_id');
+	  }
+
+
 
 }

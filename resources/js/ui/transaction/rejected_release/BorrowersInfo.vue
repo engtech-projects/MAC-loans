@@ -532,11 +532,11 @@
 			},
 
 			submitForm:function(){
-				this.$emit('nextBorrower', this.borrower.birthdate)
 				document.getElementById('borrowerBtn').click();
 			},
 			
 			navigate:function(){
+				this.$emit('nextBorrower', this.borrower)
 				document.getElementById('custom-content-below-coborrowerinfo-tab').click();
 			},
 
@@ -568,7 +568,6 @@
 				this.borrower[data] = arr;
 			},
 			clearInfo:function(){
-				this.$emit('clearBorrowerInfo')
 				this.borrower = {
 					borrower_id: null,
 					date_registered:'',
@@ -600,14 +599,7 @@
 					created_at: this.dateToYMD(new Date()),
 				};				
 			},
-			notify:function(title, text, type){
-				this.$notify({
-					group: 'foo',
-					title: title,
-					text: text,
-					type: type,
-				});
-			},
+			
 			dateToYMD:function(date) {
 				var d = date.getDate();
 				var m = date.getMonth() + 1;
@@ -619,21 +611,10 @@
 			'pborrower'(newValue) {
 				this.borrower = newValue;
 			},
-			'psave'(newValue) {
-				if(newValue != ''){
-					this.save();
-					this.$emit('saveBorrower')
-				}
-			},
+			
 			'borrower.created_at'(newValue){
 				this.borrower.created_at = this.dateToYMD(new Date(newValue));
 			},
-			'clear'(newValue){
-				if(newValue == 1){
-					this.clearInfo();
-					this.$emit('borrowerCleared');
-				}
-			}
 		},
         mounted() {							
 			this.borrower.created_at = this.dateToYMD(new Date());
