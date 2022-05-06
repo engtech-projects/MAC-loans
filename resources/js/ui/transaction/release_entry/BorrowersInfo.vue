@@ -28,8 +28,7 @@
 					</div>
 				</div>
 				<div class="upload-photo d-flex flex-column" style="flex:4">
-					<img :src="baseUrl + '/img/user.png'" alt="">
-					<a href="#" class="btn btn-primary" style="padding:10px!important">Upload or Take a Photo</a>
+					<webcam-plugin></webcam-plugin>
 				</div>
 			</div>
 			<div class="d-flex flex-row">

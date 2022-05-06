@@ -38,6 +38,8 @@
  Vue.component('rejected-release-edit', require('./ui/transaction/rejected_release/RejectedReleaseEdit.vue').default);
  Vue.component('repayment-entry', require('./ui/transaction/repayment_entry/RepaymentEntry.vue').default);
  
+ Vue.component('webcam-plugin', require('./ui/plugins/Webcam.vue').default);
+
  // Vue.config.devtools = false;
  const app = new Vue({
 	 el: '#app',
