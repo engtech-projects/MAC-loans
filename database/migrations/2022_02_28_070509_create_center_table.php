@@ -13,7 +13,7 @@ class CreateCenterTable extends Migration
      */
     public function up()
     {
-        Schema::create('centers', function (Blueprint $table) {
+        Schema::create('center', function (Blueprint $table) {
             $table->increments('center_id');
             $table->string('center');
             $table->string('day_sched');

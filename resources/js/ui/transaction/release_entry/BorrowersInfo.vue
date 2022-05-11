@@ -409,7 +409,8 @@
 		</section>
 
 		<div class="d-flex flex-row-reverse">
-			<a @click.prevent="submitForm()" href="#custom-content-below-coborrowerinfo" data-tab="custom-content-below-coborrowerinfo-tab" class="btn btn-success tab-navigate" style="flex:2">Next</a>
+			<a v-if="!pclient" @click.prevent="submitForm()" href="#custom-content-below-coborrowerinfo" data-tab="custom-content-below-coborrowerinfo-tab" class="btn btn-success tab-navigate" style="flex:2">Next</a>
+			<a v-if="pclient" @click.prevent="submitForm()" href="#custom-content-below-coborrowerinfo" data-tab="custom-content-below-coborrowerinfo-tab" class="btn btn-success tab-navigate" style="flex:2">Save</a>
 			<!-- <a href="#" @click.prevent="clearInfo()" class="btn btn-yellow-light min-w-150 mr-16">Clear Info</a> -->
 			<div style="flex:22"></div>
 		</div>
@@ -418,7 +419,7 @@
 
 <script>
     export default {
-		props:['token','pborrower', 'psave','clear'],
+		props:['token','pborrower', 'psave','clear','pclient','borrower_id'],
 		data(){
 			return {
 				baseUrl: window.location.origin,
@@ -494,6 +495,21 @@
 			}
 		},
 		methods: {
+			fetchBorrower:function(){
+				axios.get(window.location.origin + '/api/borrower/' + this.borrower_id, {
+					headers: {
+						'Authorization': 'Bearer ' + this.token,
+						'Content-Type': 'application/json',
+						'Accept': 'application/json'
+					}
+				})
+				.then(function (response) {
+					this.borrower = response.data.data;
+				}.bind(this))
+				.catch(function (error) {
+					console.log(error);
+				}.bind(this));
+			},
 			save: function(){
 				if(this.borrower.borrower_id){
 						axios.put(window.location.origin + '/api/borrower/' + this.borrower.borrower_id, this.borrower, {
@@ -532,8 +548,12 @@
 			},
 
 			submitForm:function(){
-				this.$emit('nextBorrower', this.borrower.birthdate)
-				document.getElementById('borrowerBtn').click();
+				if(!this.pclient){
+					this.$emit('nextBorrower', this.borrower.birthdate)
+					document.getElementById('borrowerBtn').click();
+				}else{
+					this.save();
+				}
 			},
 			
 			navigate:function(){
@@ -617,7 +637,9 @@
 		},
 		watch: {
 			'pborrower'(newValue) {
-				this.borrower = newValue;
+				if(!this.pclient){
+					this.borrower = newValue;
+				}
 			},
 			'psave'(newValue) {
 				if(newValue != ''){
@@ -637,6 +659,9 @@
 		},
         mounted() {							
 			this.borrower.created_at = this.dateToYMD(new Date());
+			if(this.pclient){
+				this.fetchBorrower();
+			}
         }
     }
 </script>

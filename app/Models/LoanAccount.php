@@ -164,34 +164,35 @@ class LoanAccount extends Model
       public function getCurrentAmortization(){
 
          $amortization = $this->currentAmortization();
-         
-         $amortization->delinquent = $this->getDelinquent();
-         $amortization->short_principal = 0;
-         $amortization->advance_principal = 0;
-         $amortization->short_interest = 0;
-         $amortization->advance_interest = 0;
-         $amortization->penalty = $this->getPenalty();
-         $amortization->pdi = $this->getPDI($amortization->loan_account_id);
-         $amortization->outstandingBalance = $this->outstandingBalance($amortization->loan_account_id);;
-         $amortization->missedPayments = count($amortization->delinquent);
-         $amortization->lastPayment = $this->lastPayment($amortization->loan_account_id);
-
-         if( count($amortization->delinquent) ){
-
-            foreach ($amortization->delinquent as $key => $value) {
-               $value->payment = Payment::where([ 'loan_account_id' =>$value->loan_account_id, 'amortization_id' => $value->id ])->first();
-
-               if( $value->payment ){
-                  $amortization->short_principal += $value->payment->short_principal;
-                  $amortization->short_interest += $value->payment->short_interest;
-               }else{
-                  $amortization->short_principal += $value->principal;
-                  $amortization->short_interest += $value->interest;
-               }
-
-            }
-
-         }
+         if($amortization){
+			$amortization->delinquent = $this->getDelinquent();
+			$amortization->short_principal = 0;
+			$amortization->advance_principal = 0;
+			$amortization->short_interest = 0;
+			$amortization->advance_interest = 0;
+			$amortization->penalty = $this->getPenalty();
+			$amortization->pdi = $this->getPDI($amortization->loan_account_id);
+			$amortization->outstandingBalance = $this->outstandingBalance($amortization->loan_account_id);;
+			$amortization->missedPayments = count($amortization->delinquent);
+			$amortization->lastPayment = $this->lastPayment($amortization->loan_account_id);
+   
+			if( count($amortization->delinquent) ){
+   
+			   foreach ($amortization->delinquent as $key => $value) {
+				  $value->payment = Payment::where([ 'loan_account_id' =>$value->loan_account_id, 'amortization_id' => $value->id ])->first();
+   
+				  if( $value->payment ){
+					 $amortization->short_principal += $value->payment->short_principal;
+					 $amortization->short_interest += $value->payment->short_interest;
+				  }else{
+					 $amortization->short_principal += $value->principal;
+					 $amortization->short_interest += $value->interest;
+				  }
+   
+			   }
+   
+			}
+		 }
          
          return $amortization;
       }

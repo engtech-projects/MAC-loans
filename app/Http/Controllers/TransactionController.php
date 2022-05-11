@@ -18,4 +18,25 @@ class TransactionController extends Controller
 			'title' => 'Override Release',
 		]);
 	}
+	
+	public function rejectedRelease(){
+		return view('transaction.rejected_release')->with([
+			'nav' => ['transaction', 'rejected release'],
+			'title' => 'Rejected Release',
+		]);
+	}
+
+	public function rejectedReleaseEdit($id, Request $request){
+		return view('transaction.rejected_release_edit')->with([
+			'nav' => ['transaction', 'rejected release'],
+			'title' => 'Rejected Release Edit',
+		]);
+	}
+
+	public function repaymentEntry(){
+		return view('transaction.repayment_entry')->with([
+			'nav' => ['transaction', 'repayment entry'],
+			'title' => 'Repayment Entry',
+		]);
+	}
 }
