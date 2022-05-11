@@ -40,6 +40,8 @@ class Payment extends JsonResource
             'total_payable' => $this->total_payable,
             'amount_applied' => $this->amount_applied,
             'status' => $this->status,
+            // loan account
+            'account_num' => $this->account_num,
         
         ];
     }

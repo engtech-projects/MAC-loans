@@ -100,5 +100,19 @@ class Payment extends Model
 
     }
 
+    public function overridePaymentAccounts($filters = array()) {
+
+        // $payments = Payment::whereDate('payment.created_at', '=', $filters['created_at'])->get();
+        // $payments = Payment::whereDate('payment.created_at', '=', '2022-05-05')->get();
+        // return $payments;
+
+        return Payment::join('loan_accounts', 'loan_accounts.loan_account_id', '=', 'payment.loan_account_id')
+                            ->whereDate('payment.created_at', '=', $filters['created_at'])->get(['payment.*', 'loan_accounts.account_num']);
+    }
+
+    public function overridePayment() {}
+    public function deletePayment() {}
+    public function cancelPayment() {}
+
 
 }

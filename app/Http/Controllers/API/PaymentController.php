@@ -10,6 +10,7 @@ use App\Models\LoanAccount;
 use App\Models\Amortization;
 use App\Http\Resources\Payment as PaymentResource;
 
+
 class PaymentController extends BaseController
 {
     
@@ -18,8 +19,8 @@ class PaymentController extends BaseController
      */
     public function index() {
 
-    	$payments = Payment::all();
-    	return $this->sendResponse(PaymentResource::collection($borrowers), 'Borrowers');
+    	// $payments = Payment::all();
+    	// return $this->sendResponse(PaymentResource::collection($payments), 'Payments');
 
     }
 
@@ -37,6 +38,37 @@ class PaymentController extends BaseController
     	// return $this->sendResponse(new PaymentResource($payment->addPayment($request)), 'Payment');
     }
 
-    
+
+
+
+    // Override Payment
+    public function overridePaymentList(Request $request) {
+
+        $filters = [
+            'created_at' => ($request->has('created_at')) ? $request->input('created_at') : false,
+            'ao_id' => ($request->has('ao_id')) ? $request->input('ao_id') : false,
+            'center_id' => ($request->has('center_id')) ? $request->input('center_id') : false,
+            'product_id' => ($request->has('product_id')) ? $request->input('product_id') : false,
+            'branch_id' => 1
+        ];
+
+        $payment = new Payment();
+        // [ 'created_at' => '2022-05-05']
+        // return $this->sendResponse(PaymentResource::collection($payment->overridePaymentAccounts()), 'Payments');
+         return $this->sendResponse($payment->overridePaymentAccounts($filters), 'Payments');
+         // return $filters;
+    }
+
+
+    public function overridePayment() {
+
+
+
+    }
+
+    public function deletePayment() {
+
+
+    }
 
 }

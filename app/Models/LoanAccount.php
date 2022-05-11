@@ -70,8 +70,7 @@ class LoanAccount extends Model
    		return 1;
    	}
 
-   	public function overrideReleaseAccounts($filters = array()) {
-   		$accounts = new LoanAccount();
+   	public function overrideReleaseAccounts($filters = array()) {   		
 
    		$accounts = LoanAccount::where('status', '=', 'pending');
 
@@ -285,6 +284,8 @@ class LoanAccount extends Model
 	  public function documents(){
 		  return $this->hasOne(Document::class, 'loan_account_id');
 	  }
+
+
 
 
 

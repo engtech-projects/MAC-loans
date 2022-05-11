@@ -37,6 +37,10 @@ Route::middleware('auth:sanctum')->group( function () {
     Route::resource('borrower', BorrowerController::class);
     Route::resource('accountofficer', AccountOfficerController::class);
     Route::resource('payment', PaymentController::class);
+
+    // override payment list
+    Route::post('payment/list/', [PaymentController::class, 'overridePaymentList']);
+
     // loan account
     Route::get('account/show/{account}', [LoanAccountController::class, 'showLoanAccount']);
     Route::post('account/create/{borrower}', [LoanAccountController::class, 'createLoanAccount']);
