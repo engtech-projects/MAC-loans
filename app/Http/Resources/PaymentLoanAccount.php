@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class Payment extends JsonResource
+class PaymentLoanAccount extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -40,6 +40,29 @@ class Payment extends JsonResource
             'total_payable' => $this->total_payable,
             'amount_applied' => $this->amount_applied,
             'status' => $this->status,
+            // loan account
+            'loan_account_id' => $this->loan_account_id,
+            'account_num' => $this->account_num,
+            'date_release' => $this->date_release,
+            'cycle_no' => $this->cycle_no,
+            'type' => $this->type,
+            'payment_mode' => $this->payment_mode,
+            'terms' => $this->terms,
+            'loan_amount' => $this->loan_amount,
+            'interest_rate' => $this->interest_rate,
+            'interest_amount' => $this->interest_amount,
+            'no_of_installment' => $this->no_of_installment,
+            'due_date' => $this->due_date,
+            'day_schedule' => $this->day_schedule,
+            // borrower
+            'borrower_id' => $this->borrower_id,
+            'borrower_num' => $this->borrower_num,
+            'firstname' => $this->firstname,
+            'middlename' => $this->middlename,
+            'lastname' => $this->lastname,
+            'suffix' => $this->suffix,
+            'address' => $this->address,
+
         ];
     }
 }
