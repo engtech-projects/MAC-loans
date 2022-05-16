@@ -40,6 +40,7 @@ Route::middleware('auth:sanctum')->group( function () {
 
     // override payment list
     Route::post('payment/list/', [PaymentController::class, 'overridePaymentList']);
+    Route::post('payment/override/', [PaymentController::class, 'overridePayment']);
 
     // loan account
     Route::get('account/show/{account}', [LoanAccountController::class, 'showLoanAccount']);

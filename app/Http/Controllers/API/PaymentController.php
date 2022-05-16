@@ -9,6 +9,7 @@ use App\Models\Payment;
 use App\Models\LoanAccount;
 use App\Models\Amortization;
 use App\Http\Resources\Payment as PaymentResource;
+use App\Http\Resources\PaymentLoanAccount as PaymentLoanAccountResource;
 
 
 class PaymentController extends BaseController
@@ -53,22 +54,45 @@ class PaymentController extends BaseController
         ];
 
         $payment = new Payment();
-        // [ 'created_at' => '2022-05-05']
-        // return $this->sendResponse(PaymentResource::collection($payment->overridePaymentAccounts()), 'Payments');
-         return $this->sendResponse($payment->overridePaymentAccounts($filters), 'Payments');
-         // return $filters;
-    }
-
-
-    public function overridePayment() {
-
-
+     
+        return $this->sendResponse( 
+            PaymentLoanAccountResource::collection($payment->overridePaymentAccounts($filters)), 
+            'Payments'
+        );
 
     }
 
-    public function deletePayment() {
+
+    public function overridePayment(Request $request) {
 
 
+        $payment = null;
+
+        foreach ($request->input() as $key => $value) {
+            
+            $payment = Payment::find($value['payment_id']);
+            $payment->status = 'paid';
+            $payment->save();
+
+            # update amortization
+            if( $payment->total_payable > $payment->amount_applied ){
+                $amortization = Amortization::find($payment->amortization_id)->update([ 'status' => 'delinquent' ]);
+            }else{
+                $amortization = Amortization::find($payment->amortization_id)->update([ 'status' => 'completed' ]);
+            }
+        }
+
+        return $this->sendResponse($request->input(), 'Override');
+
+    }
+
+    public function destroy($id) {
+
+        $payment = Payment::find($id);
+        $payment->status = 'deleted';
+        $payment->save();
+
+        return $this->sendResponse($payment, 'Deleted');
     }
 
 }
