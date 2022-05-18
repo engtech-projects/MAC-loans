@@ -18457,7 +18457,7 @@ __webpack_require__.r(__webpack_exports__);
       }.bind(this));
     },
     distribute: function distribute() {
-      var amount = this.payment.amount_applied + this.loanAccount.current_amortization.lastPayment.advance_principal;
+      var amount = parseFloat(this.payment.amount_applied) + parseFloat(this.loanAccount.current_amortization.lastPayment.advance_principal);
       this.payment.pdi = 0;
       this.payment.principal = 0;
       this.payment.interest = 0;
@@ -18540,11 +18540,11 @@ __webpack_require__.r(__webpack_exports__);
       return this.loanAccount.current_amortization.interest + this.loanAccount.current_amortization.principal + this.loanAccount.current_amortization.lastPayment.short_principal + this.loanAccount.current_amortization.lastPayment.short_interest;
     }
   },
-  // watch:{
-  // 	'payment.amount_applied':function(newValue){
-  // 		this.distribute();
-  // 	}
-  // },
+  watch: {
+    'payment.amount_applied': function paymentAmount_applied(newValue) {
+      this.distribute();
+    }
+  },
   mounted: function mounted() {}
 });
 
@@ -76804,7 +76804,6 @@ var render = function () {
                                           value: _vm.payment.amount_applied,
                                         },
                                         on: {
-                                          change: _vm.distribute,
                                           input: function ($event) {
                                             if ($event.target.composing) {
                                               return

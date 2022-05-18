@@ -294,7 +294,7 @@
 									<div class="d-flex flex-column flex-lg-row align-items-center justify-content-between">
 										<div class="d-flex align-items-center">
 											<span class="text-bold mr-10" style="font-size:60px;color:#263f52;line-height:1;">P</span>
-											<input required @change="distribute" v-model="payment.amount_applied" type="number" class="form-control form-input mw-250" id="transactionDate">
+											<input required v-model="payment.amount_applied" type="number" class="form-control form-input mw-250" id="transactionDate">
 										</div>
 									</div>
 								</div>
@@ -685,7 +685,7 @@ export default {
 			}.bind(this));
 		},
 		distribute:function(){
-			var amount = this.payment.amount_applied + this.loanAccount.current_amortization.lastPayment.advance_principal;
+			var amount = parseFloat(this.payment.amount_applied) + parseFloat(this.loanAccount.current_amortization.lastPayment.advance_principal);
 			this.payment.pdi = 0;
 			this.payment.principal = 0;
 			this.payment.interest = 0;
@@ -766,11 +766,11 @@ export default {
 			return this.loanAccount.current_amortization.interest + this.loanAccount.current_amortization.principal + this.loanAccount.current_amortization.lastPayment.short_principal + this.loanAccount.current_amortization.lastPayment.short_interest;
 		}
 	},
-	// watch:{
-	// 	'payment.amount_applied':function(newValue){
-	// 		this.distribute();
-	// 	}
-	// },
+	watch:{
+		'payment.amount_applied':function(newValue){
+			this.distribute();
+		}
+	},
 	mounted(){
 
 	}
