@@ -9644,6 +9644,46 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: ['token', 'loandetails', 'borrower', 'borrowerbday', 'saveloandetails'],
   data: function data() {
@@ -9684,7 +9724,15 @@ __webpack_require__.r(__webpack_exports__);
         memo: '',
         total_deduction: '',
         net_proceeds: '',
-        release_type: ''
+        release_type: '',
+        documents: {
+          date_release: '',
+          description: '',
+          bank: '',
+          account_no: '',
+          card_no: '',
+          promissory_number: ''
+        }
       }
     };
   },
@@ -9787,13 +9835,13 @@ __webpack_require__.r(__webpack_exports__);
       return Math.ceil(this.loanDetails.terms / 30 * mode);
     },
     docStamp: function docStamp() {
-      this.loanDetails.document_stamp = (this.loanDetails.loan_amount / 200 * 1.5 * this.loanDetails.terms / 365).toFixed(2);
+      this.loanDetails.documents_stamp = (this.loanDetails.loan_amount / 200 * 1.5 * this.loanDetails.terms / 365).toFixed(2);
 
       if (this.loanDetails.terms / 30 > 12) {
-        this.loanDetails.document_stamp = (this.loanDetails.loan_amount / 200 * 1.5).toFixed(2);
+        this.loanDetails.documents_stamp = (this.loanDetails.loan_amount / 200 * 1.5).toFixed(2);
       }
 
-      return this.loanDetails.document_stamp;
+      return this.loanDetails.documents_stamp;
     },
     calculateInsurance: function calculateInsurance() {
       var rate = 1;
@@ -9806,7 +9854,7 @@ __webpack_require__.r(__webpack_exports__);
       return this.loanDetails.insurance;
     },
     totalDeductions: function totalDeductions() {
-      this.loanDetails.total_deduction = (parseFloat(this.loanDetails.memo) + parseFloat(this.loanDetails.filing_fee) + parseFloat(this.loanDetails.affidavit_fee) + parseFloat(this.loanDetails.notarial_fee) + parseFloat(this.loanDetails.document_stamp) + parseFloat(this.loanDetails.insurance)).toFixed(2);
+      this.loanDetails.total_deduction = (parseFloat(this.loanDetails.memo) + parseFloat(this.loanDetails.filing_fee) + parseFloat(this.loanDetails.affidavit_fee) + parseFloat(this.loanDetails.notarial_fee) + parseFloat(this.loanDetails.documents_stamp) + parseFloat(this.loanDetails.insurance)).toFixed(2);
       return this.loanDetails.total_deduction;
     },
     netProceeds: function netProceeds() {
@@ -10217,14 +10265,14 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     fetchRejectedAccounts: function fetchRejectedAccounts() {
-      axios.get(window.location.origin + '/transaction/rejected_accounts', {
+      axios.get(window.location.origin + '/api/account/rejected/', {
         headers: {
           'Authorization': 'Bearer ' + this.token,
           'Content-Type': 'application/json',
           'Accept': 'application/json'
         }
       }).then(function (response) {
-        this.loanAccounts = response.data;
+        this.loanAccounts = response.data.data;
       }.bind(this))["catch"](function (error) {
         console.log(error);
       }.bind(this));
@@ -10668,15 +10716,27 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     fetchRejectedAccounts: function fetchRejectedAccounts() {
-      axios.get(window.location.origin + '/transaction/rejected_accounts', {
+      axios.get(window.location.origin + '/api/account/rejected', {
         headers: {
           'Authorization': 'Bearer ' + this.token,
           'Content-Type': 'application/json',
           'Accept': 'application/json'
         }
       }).then(function (response) {
-        this.rejectedAccounts = response.data;
-        this.setAccount;
+        this.rejectedAccounts = response.data.data; // this.setAccount;
+      }.bind(this))["catch"](function (error) {
+        console.log(error);
+      }.bind(this));
+    },
+    fetchRejectedAccount: function fetchRejectedAccount() {
+      axios.get(window.location.origin + '/api/account/show/' + this.id, {
+        headers: {
+          'Authorization': 'Bearer ' + this.token,
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        }
+      }).then(function (response) {
+        this.rejectedAccount = response.data.data;
       }.bind(this))["catch"](function (error) {
         console.log(error);
       }.bind(this));
@@ -10741,6 +10801,14 @@ __webpack_require__.r(__webpack_exports__);
           householdMembers: [],
           outstandingObligations: [],
           loanAccounts: []
+        },
+        documents: {
+          date_release: '',
+          description: '',
+          bank: '',
+          account_no: '',
+          card_no: '',
+          promissory_number: ''
         }
       };
     },
@@ -10776,6 +10844,14 @@ __webpack_require__.r(__webpack_exports__);
     save: function save(data) {
       this.rejectedAccount = data;
       this.saveBorrower();
+    },
+    notify: function notify(title, text, type) {
+      this.$notify({
+        group: 'foo',
+        title: title,
+        text: text,
+        type: type
+      });
     }
   },
   computed: {
@@ -10795,6 +10871,7 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   mounted: function mounted() {
+    this.fetchRejectedAccount();
     this.fetchRejectedAccounts();
     this.resetLoanDetails();
   }
@@ -51575,6 +51652,246 @@ var render = function () {
           ),
           _vm._v(" "),
           _c(
+            "section",
+            {
+              staticClass: "mb-24 pb-45",
+              staticStyle: { flex: "21", "border-bottom": "1px solid #AAA" },
+            },
+            [
+              _c("span", { staticClass: "section-title mb-24" }, [
+                _vm._v("Documents"),
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "d-flex flex-column mb-24" }, [
+                _c(
+                  "span",
+                  {
+                    staticClass: "text-bold bg-yellow-light mb-10",
+                    staticStyle: { padding: "2px 5px" },
+                  },
+                  [_vm._v("Dacion en Pago")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "d-flex justify-content-between mb-10" },
+                  [
+                    _c("span", { staticClass: "align-self-end text-bold" }, [
+                      _vm._v("Description"),
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "d-flex align-items-center" }, [
+                      _c("span", { staticClass: "flex-1 mr-10 text-bold" }, [
+                        _vm._v("Date Release"),
+                      ]),
+                      _vm._v(" "),
+                      _c("input", {
+                        staticClass: "form-control form-input flex-1",
+                        attrs: { type: "date" },
+                        domProps: { value: _vm.dateToYMD(new Date()) },
+                      }),
+                    ]),
+                  ]
+                ),
+                _vm._v(" "),
+                _c("textarea", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.loanDetails.documents.description,
+                      expression: "loanDetails.documents.description",
+                    },
+                  ],
+                  staticClass: "form-control form-input no-resize",
+                  staticStyle: { height: "120px!important" },
+                  domProps: { value: _vm.loanDetails.documents.description },
+                  on: {
+                    input: function ($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(
+                        _vm.loanDetails.documents,
+                        "description",
+                        $event.target.value
+                      )
+                    },
+                  },
+                }),
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "d-flex flex-column mb-16" }, [
+                _c(
+                  "span",
+                  {
+                    staticClass: "text-bold bg-yellow-light mb-10",
+                    staticStyle: { padding: "2px 5px" },
+                  },
+                  [_vm._v("DOA ATM / PASSBOOK")]
+                ),
+                _vm._v(" "),
+                _c("div", { staticClass: "form-group mb-10" }, [
+                  _c("label", { attrs: { for: "" } }, [_vm._v("Name of Bank")]),
+                  _vm._v(" "),
+                  _c(
+                    "select",
+                    {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.loanDetails.documents.bank,
+                          expression: "loanDetails.documents.bank",
+                        },
+                      ],
+                      staticClass: "form-control form-input",
+                      attrs: { name: "", id: "" },
+                      on: {
+                        change: function ($event) {
+                          var $$selectedVal = Array.prototype.filter
+                            .call($event.target.options, function (o) {
+                              return o.selected
+                            })
+                            .map(function (o) {
+                              var val = "_value" in o ? o._value : o.value
+                              return val
+                            })
+                          _vm.$set(
+                            _vm.loanDetails.documents,
+                            "bank",
+                            $event.target.multiple
+                              ? $$selectedVal
+                              : $$selectedVal[0]
+                          )
+                        },
+                      },
+                    },
+                    [
+                      _c("option", { attrs: { value: "Land Bank" } }, [
+                        _vm._v("Land Bank"),
+                      ]),
+                      _vm._v(" "),
+                      _c("option", { attrs: { value: "BDO" } }, [
+                        _vm._v("BDO"),
+                      ]),
+                      _vm._v(" "),
+                      _c("option", { attrs: { value: "BPI" } }, [
+                        _vm._v("BPI"),
+                      ]),
+                    ]
+                  ),
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "form-group mb-10" }, [
+                  _c("label", { attrs: { for: "" } }, [_vm._v("Account No.")]),
+                  _vm._v(" "),
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.loanDetails.documents.account_no,
+                        expression: "loanDetails.documents.account_no",
+                      },
+                    ],
+                    staticClass: "form-control form-input",
+                    attrs: { type: "text" },
+                    domProps: { value: _vm.loanDetails.documents.account_no },
+                    on: {
+                      input: function ($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(
+                          _vm.loanDetails.documents,
+                          "account_no",
+                          $event.target.value
+                        )
+                      },
+                    },
+                  }),
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "form-group mb-10" }, [
+                  _c("label", { attrs: { for: "" } }, [_vm._v("Card No.")]),
+                  _vm._v(" "),
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.loanDetails.documents.card_no,
+                        expression: "loanDetails.documents.card_no",
+                      },
+                    ],
+                    staticClass: "form-control form-input",
+                    attrs: { type: "text" },
+                    domProps: { value: _vm.loanDetails.documents.card_no },
+                    on: {
+                      input: function ($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(
+                          _vm.loanDetails.documents,
+                          "card_no",
+                          $event.target.value
+                        )
+                      },
+                    },
+                  }),
+                ]),
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "d-flex flex-column" }, [
+                _c(
+                  "span",
+                  {
+                    staticClass: "text-bold bg-yellow-light mb-10",
+                    staticStyle: { padding: "2px 5px" },
+                  },
+                  [_vm._v("MOA / SME")]
+                ),
+                _vm._v(" "),
+                _c("div", { staticClass: "form-group mb-10" }, [
+                  _c("label", { attrs: { for: "" } }, [
+                    _vm._v("Promissory Number"),
+                  ]),
+                  _vm._v(" "),
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.loanDetails.documents.promissory_number,
+                        expression: "loanDetails.documents.promissory_number",
+                      },
+                    ],
+                    staticClass: "form-control form-input",
+                    attrs: { type: "text" },
+                    domProps: {
+                      value: _vm.loanDetails.documents.promissory_number,
+                    },
+                    on: {
+                      input: function ($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(
+                          _vm.loanDetails.documents,
+                          "promissory_number",
+                          $event.target.value
+                        )
+                      },
+                    },
+                  }),
+                ]),
+              ]),
+            ]
+          ),
+          _vm._v(" "),
+          _c(
             "div",
             {
               staticClass:
@@ -52209,14 +52526,6 @@ var render = function () {
               staticStyle: { flex: "21", "padding-left": "16px" },
             },
             [
-              _c(
-                "span",
-                { staticClass: "section-title section-subtitle mb-24" },
-                [_vm._v("Amortization Schedules")]
-              ),
-              _vm._v(" "),
-              _vm._m(18),
-              _vm._v(" "),
               _c("div", { staticClass: "d-flex flex-row" }, [
                 _c("div", { staticStyle: { flex: "2" } }),
                 _vm._v(" "),
@@ -52279,7 +52588,7 @@ var render = function () {
                       staticStyle: { "min-height": "200px", padding: "16px" },
                     },
                     [
-                      _vm._m(19),
+                      _vm._m(18),
                       _vm._v(" "),
                       _c("div", { staticClass: "d-flex flex-row" }, [
                         _c("div", { staticStyle: { flex: "2" } }),
@@ -52577,210 +52886,6 @@ var staticRenderFns = [
         _c("span", [_vm._v(":")]),
       ]
     )
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "loan-details mb-24" }, [
-      _c("table", { staticClass: "table table-stripped th-nbt" }, [
-        _c("thead", [
-          _c("th", { staticClass: "text-primary-dark" }, [_vm._v("No.")]),
-          _vm._v(" "),
-          _c("th", { staticClass: "text-primary-dark" }, [_vm._v("Date")]),
-          _vm._v(" "),
-          _c("th", { staticClass: "text-primary-dark" }, [_vm._v("Principal")]),
-          _vm._v(" "),
-          _c("th", { staticClass: "text-primary-dark" }, [_vm._v("Interest")]),
-          _vm._v(" "),
-          _c("th", { staticClass: "text-primary-dark" }, [_vm._v("Total")]),
-          _vm._v(" "),
-          _c("th", { staticClass: "text-primary-dark" }, [
-            _vm._v("Prin. Bal."),
-          ]),
-          _vm._v(" "),
-          _c("th", { staticClass: "text-primary-dark" }, [_vm._v("Int. Bal.")]),
-        ]),
-        _vm._v(" "),
-        _c("tbody", [
-          _c("tr", [
-            _c("td", [_vm._v("1")]),
-            _vm._v(" "),
-            _c("td", [_vm._v("08/22/21")]),
-            _vm._v(" "),
-            _c("td", [_vm._v("1,542.00")]),
-            _vm._v(" "),
-            _c("td", [_vm._v("740")]),
-            _vm._v(" "),
-            _c("td", [_vm._v("2,282.00")]),
-            _vm._v(" "),
-            _c("td", [_vm._v("35,475.00")]),
-            _vm._v(" "),
-            _c("td", [_vm._v("17,200.00")]),
-          ]),
-          _vm._v(" "),
-          _c("tr", [
-            _c("td", [_vm._v("1")]),
-            _vm._v(" "),
-            _c("td", [_vm._v("08/22/21")]),
-            _vm._v(" "),
-            _c("td", [_vm._v("1,542.00")]),
-            _vm._v(" "),
-            _c("td", [_vm._v("740")]),
-            _vm._v(" "),
-            _c("td", [_vm._v("2,282.00")]),
-            _vm._v(" "),
-            _c("td", [_vm._v("35,475.00")]),
-            _vm._v(" "),
-            _c("td", [_vm._v("17,200.00")]),
-          ]),
-          _vm._v(" "),
-          _c("tr", [
-            _c("td", [_vm._v("1")]),
-            _vm._v(" "),
-            _c("td", [_vm._v("08/22/21")]),
-            _vm._v(" "),
-            _c("td", [_vm._v("1,542.00")]),
-            _vm._v(" "),
-            _c("td", [_vm._v("740")]),
-            _vm._v(" "),
-            _c("td", [_vm._v("2,282.00")]),
-            _vm._v(" "),
-            _c("td", [_vm._v("35,475.00")]),
-            _vm._v(" "),
-            _c("td", [_vm._v("17,200.00")]),
-          ]),
-          _vm._v(" "),
-          _c("tr", [
-            _c("td", [_vm._v("1")]),
-            _vm._v(" "),
-            _c("td", [_vm._v("08/22/21")]),
-            _vm._v(" "),
-            _c("td", [_vm._v("1,542.00")]),
-            _vm._v(" "),
-            _c("td", [_vm._v("740")]),
-            _vm._v(" "),
-            _c("td", [_vm._v("2,282.00")]),
-            _vm._v(" "),
-            _c("td", [_vm._v("35,475.00")]),
-            _vm._v(" "),
-            _c("td", [_vm._v("17,200.00")]),
-          ]),
-          _vm._v(" "),
-          _c("tr", [
-            _c("td", [_vm._v("1")]),
-            _vm._v(" "),
-            _c("td", [_vm._v("08/22/21")]),
-            _vm._v(" "),
-            _c("td", [_vm._v("1,542.00")]),
-            _vm._v(" "),
-            _c("td", [_vm._v("740")]),
-            _vm._v(" "),
-            _c("td", [_vm._v("2,282.00")]),
-            _vm._v(" "),
-            _c("td", [_vm._v("35,475.00")]),
-            _vm._v(" "),
-            _c("td", [_vm._v("17,200.00")]),
-          ]),
-          _vm._v(" "),
-          _c("tr", [
-            _c("td", [_vm._v("1")]),
-            _vm._v(" "),
-            _c("td", [_vm._v("08/22/21")]),
-            _vm._v(" "),
-            _c("td", [_vm._v("1,542.00")]),
-            _vm._v(" "),
-            _c("td", [_vm._v("740")]),
-            _vm._v(" "),
-            _c("td", [_vm._v("2,282.00")]),
-            _vm._v(" "),
-            _c("td", [_vm._v("35,475.00")]),
-            _vm._v(" "),
-            _c("td", [_vm._v("17,200.00")]),
-          ]),
-          _vm._v(" "),
-          _c("tr", [
-            _c("td", [_vm._v("1")]),
-            _vm._v(" "),
-            _c("td", [_vm._v("08/22/21")]),
-            _vm._v(" "),
-            _c("td", [_vm._v("1,542.00")]),
-            _vm._v(" "),
-            _c("td", [_vm._v("740")]),
-            _vm._v(" "),
-            _c("td", [_vm._v("2,282.00")]),
-            _vm._v(" "),
-            _c("td", [_vm._v("35,475.00")]),
-            _vm._v(" "),
-            _c("td", [_vm._v("17,200.00")]),
-          ]),
-          _vm._v(" "),
-          _c("tr", [
-            _c("td", [_vm._v("1")]),
-            _vm._v(" "),
-            _c("td", [_vm._v("08/22/21")]),
-            _vm._v(" "),
-            _c("td", [_vm._v("1,542.00")]),
-            _vm._v(" "),
-            _c("td", [_vm._v("740")]),
-            _vm._v(" "),
-            _c("td", [_vm._v("2,282.00")]),
-            _vm._v(" "),
-            _c("td", [_vm._v("35,475.00")]),
-            _vm._v(" "),
-            _c("td", [_vm._v("17,200.00")]),
-          ]),
-          _vm._v(" "),
-          _c("tr", [
-            _c("td", [_vm._v("1")]),
-            _vm._v(" "),
-            _c("td", [_vm._v("08/22/21")]),
-            _vm._v(" "),
-            _c("td", [_vm._v("1,542.00")]),
-            _vm._v(" "),
-            _c("td", [_vm._v("740")]),
-            _vm._v(" "),
-            _c("td", [_vm._v("2,282.00")]),
-            _vm._v(" "),
-            _c("td", [_vm._v("35,475.00")]),
-            _vm._v(" "),
-            _c("td", [_vm._v("17,200.00")]),
-          ]),
-          _vm._v(" "),
-          _c("tr", [
-            _c("td", [_vm._v("1")]),
-            _vm._v(" "),
-            _c("td", [_vm._v("08/22/21")]),
-            _vm._v(" "),
-            _c("td", [_vm._v("1,542.00")]),
-            _vm._v(" "),
-            _c("td", [_vm._v("740")]),
-            _vm._v(" "),
-            _c("td", [_vm._v("2,282.00")]),
-            _vm._v(" "),
-            _c("td", [_vm._v("35,475.00")]),
-            _vm._v(" "),
-            _c("td", [_vm._v("17,200.00")]),
-          ]),
-          _vm._v(" "),
-          _c("tr", [
-            _c("td", [_vm._v("1")]),
-            _vm._v(" "),
-            _c("td", [_vm._v("08/22/21")]),
-            _vm._v(" "),
-            _c("td", [_vm._v("1,542.00")]),
-            _vm._v(" "),
-            _c("td", [_vm._v("740")]),
-            _vm._v(" "),
-            _c("td", [_vm._v("2,282.00")]),
-            _vm._v(" "),
-            _c("td", [_vm._v("35,475.00")]),
-            _vm._v(" "),
-            _c("td", [_vm._v("17,200.00")]),
-          ]),
-        ]),
-      ]),
-    ])
   },
   function () {
     var _vm = this

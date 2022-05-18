@@ -183,7 +183,7 @@
 				</section>
 
 				<section class="mb-24" style="flex:21;padding-left:16px;">
-					<span class="section-title section-subtitle mb-24">Amortization Schedules</span>
+					<!-- <span class="section-title section-subtitle mb-24">Amortization Schedules</span>
 					<div class="loan-details mb-24">
 						<table class="table table-stripped th-nbt">
 							<thead>
@@ -297,7 +297,7 @@
 								</tr>
 							</tbody>
 						</table>
-					</div>
+					</div> -->
 					<div class="d-flex flex-row">
 						<div style="flex:2"></div>
 						<div v-if="loanAccount.loan_account_id" class="d-flex flex-row-reverse" style="flex:3">
@@ -338,7 +338,7 @@ export default {
 			loanAccounts:[],
 			filter:'',
 			loanAccount:{
-					loan_account_id:null,
+				loan_account_id:null,
 				cycle_no : 1,
 				ao_id : '',
 				product_id : '',
@@ -381,7 +381,7 @@ export default {
 	},
 	methods: {
 		fetchRejectedAccounts:function(){
-			axios.get(window.location.origin + '/transaction/rejected_accounts', {
+			axios.get(window.location.origin + '/api/account/rejected/', {
 			headers: {
 				'Authorization': 'Bearer ' + this.token,
 					'Content-Type': 'application/json',
@@ -389,7 +389,7 @@ export default {
 				}
 			})
 			.then(function (response) {
-				this.loanAccounts = response.data;
+				this.loanAccounts = response.data.data;
 			}.bind(this))
 			.catch(function (error) {
 				console.log(error);
