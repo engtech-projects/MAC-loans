@@ -62,7 +62,6 @@ class CreateLoanAccountsTable extends Migration
             $table->string('status');
             // branch
             $table->string('branch_code');
-
             $table->timestamps();
         });
     }

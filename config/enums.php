@@ -54,6 +54,13 @@ return [
 		'Restructure',
 	],
 
+	'payment_type' => [
+		'Cash Payment',
+		'Cheque Payment',
+		'Memo',
+		'POS',
+	],
+
 	
 	
 ];

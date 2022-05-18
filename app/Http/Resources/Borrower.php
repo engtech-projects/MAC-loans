@@ -44,9 +44,10 @@ class Borrower extends JsonResource
             'householdMembers' => $this->householdMembers,
             'businessInfo' => $this->businessInfo,
             'outstandingObligations' => $this->outstandingObligations,
-            'loanAccounts' => $this->loanAccounts,
+            // 'loanAccounts' => $this->loanAccounts,
             'created_at' => $this->created_at->format('m/d/Y'),
             'updated_at' => $this->updated_at->format('m/d/Y'),
+            'loan_accounts' => $this->getloanAccounts(),
         ];
     }
 }
