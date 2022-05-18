@@ -8,6 +8,7 @@ use App\Http\Controllers\MaintenanceController;
 use App\Http\Controllers\ClientInformationController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\ReportsController;
 use Illuminate\Routing\RouteGroup;
 
 /*
@@ -40,8 +41,23 @@ Route::group(['middleware' => 'auth'], function (){
 	Route::get('/maintenance/gl_setup', [MaintenanceController::class, 'glSetup'])->name('maintenance.gl_setup');
 	Route::get('/maintenance/account_retagging', [MaintenanceController::class, 'accountRetagging'])->name('maintenance.account_retagging');
 
-	Route::get('/maintenance/release_entry', [TransactionController::class, 'releaseEntry'])->name('transaction.release_entry');
-	Route::get('/maintenance/override_release', [TransactionController::class, 'overrideRelease'])->name('transaction.override_release');
+	Route::get('/transaction/release_entry', [TransactionController::class, 'releaseEntry'])->name('transaction.release_entry');
+	Route::get('/transaction/override_release', [TransactionController::class, 'overrideRelease'])->name('transaction.override_release');
+	Route::get('/transaction/rejected_release', [TransactionController::class, 'rejectedRelease'])->name('transaction.rejected_release');
+	Route::get('/transaction/rejected_release/edit/{id}', [TransactionController::class, 'rejectedReleaseEdit'])->name('transaction.rejected_release.edit');
+	Route::get('/transaction/repayment_entry', [TransactionController::class, 'repaymentEntry'])->name('transaction.repayment_entry');
+
+	Route::get('/reports/transaction/product', [ReportsController::class, 'transactionProduct'])->name('reports.transaction');
+	Route::get('/reports/release/product', [ReportsController::class, 'releaseProduct'])->name('reports.release.product');
+	Route::get('/reports/release/client', [ReportsController::class, 'releaseClient'])->name('reports.release.client');
+	Route::get('/reports/release/ao', [ReportsController::class, 'releaseAo'])->name('reports.release.ao');
+
+	Route::get('/reports/repayment/product', [ReportsController::class, 'repaymentProduct'])->name('reports.repayment.product');
+	Route::get('/reports/repayment/client', [ReportsController::class, 'repaymentClient'])->name('reports.repayment.client');
+
+	Route::get('/reports/collection/product', [ReportsController::class, 'collectionProduct'])->name('reports.collection.product');
+	Route::get('/reports/collection/client', [ReportsController::class, 'collectionClient'])->name('reports.collection.client');
+	Route::get('/reports/collection/ao', [ReportsController::class, 'collectionAo'])->name('reports.collection.ao');
 });
 
 

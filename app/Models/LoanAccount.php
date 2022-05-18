@@ -319,7 +319,6 @@ class LoanAccount extends Model
          $payment = null;
          $payment = $this->getPrevPayment($loanAccountId);
 
-
          if( !$isComplete ) return $payment;
         
          if( $payment->total_payable == $payment->amount_applied ){

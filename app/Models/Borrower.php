@@ -64,11 +64,10 @@ class Borrower extends Model
 
         $loanAccount = new LoanAccount();
         $activeAccounts = LoanAccount::where(['borrower_id' => $this->borrower_id, 'status' => 'released'])->get();
-
         foreach ($activeAccounts as $key => $value) {
             $value->outstandingBalance = $loanAccount->outstandingBalance($value->loan_account_id);
+			$value->current_amortization = $value->getCurrentAmortization();
         }
-
         return $activeAccounts;
     }
 }

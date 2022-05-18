@@ -19,7 +19,7 @@
 				<tr class="client-item" :class="isActive(b)" v-for="(b) in filterClient" :key="b.borrower_id">
 					<td>{{b.borrower_num}}</td>
 					<td><a href="#">{{b.firstname + ' ' + b.lastname}}</a></td>
-					<td><span @click="$emit('selectBorrower',b.borrower_id)" class="text-green c-pointer">select</span></td>
+					<td><span @click="$emit('selectBorrower',b.borrower_id);borrower=b" class="text-green c-pointer">select</span></td>
 				</tr>
 			</tbody>
 		</table>
@@ -51,11 +51,14 @@ export default {
 	data(){
 		return {
 			filter:'',
+			borrower:{
+				borrower_id:'',
+			}
 		}
 	},
 	methods:{
 		isActive:function(borrower){
-			if(borrower.borrower_id == this.id){
+			if(borrower.borrower_id == this.id || borrower.borrower_id == this.borrower.borrower_id){
 				return 'active';
 			}
 			return '';
