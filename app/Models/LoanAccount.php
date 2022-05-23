@@ -106,11 +106,11 @@ class LoanAccount extends Model
    		return Borrower::with(['businessInfo','employmentInfo','householdMembers','outstandingObligations'])->find($this->borrower_id);
    	}
 
+      public function 
+
       public function documents(){
         return $this->hasOne(Document::class, 'loan_account_id');
       }
-
-      // public function remainingBalance()
 
    	public function getPDI($loanAccountId) {
 
