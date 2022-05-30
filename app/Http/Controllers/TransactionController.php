@@ -20,11 +20,7 @@ class TransactionController extends Controller
 			'title' => 'Override Release',
 		]);
 	}
-<<<<<<< HEAD
 	
-=======
-
->>>>>>> 2df7fb2b0253fad08a2686dc0a3f581ad39fc121
 	public function rejectedRelease(){
 		return view('transaction.rejected_release')->with([
 			'nav' => ['transaction', 'rejected release'],
@@ -38,7 +34,6 @@ class TransactionController extends Controller
 			'title' => 'Rejected Release Edit',
 		]);
 	}
-<<<<<<< HEAD
 
 	public function repaymentEntry(){
 		return view('transaction.repayment_entry')->with([
@@ -53,6 +48,4 @@ class TransactionController extends Controller
 			'title' => 'Override Payment',
 		]);
 	}
-=======
->>>>>>> 2df7fb2b0253fad08a2686dc0a3f581ad39fc121
 }

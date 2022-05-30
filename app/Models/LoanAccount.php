@@ -330,7 +330,6 @@ class LoanAccount extends Model
 
    public function lastPayment($loanAccountId, $isComplete = false) {
 
-<<<<<<< HEAD
          if( !$isComplete ) return $payment;
         
          if( $payment->total_payable == $payment->amount_applied ){
@@ -338,11 +337,6 @@ class LoanAccount extends Model
          }
                 
          $isDelinquent = true;
-=======
-      $payment = null;
-      $payment = $this->getPrevPayment($loanAccountId);
-
->>>>>>> 2df7fb2b0253fad08a2686dc0a3f581ad39fc121
 
       if( !$isComplete ) return $payment;
      
