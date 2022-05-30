@@ -45,6 +45,7 @@ Route::group(['middleware' => 'auth'], function (){
 	Route::get('/transaction/override_release', [TransactionController::class, 'overrideRelease'])->name('transaction.override_release');
 	Route::get('/transaction/rejected_release', [TransactionController::class, 'rejectedRelease'])->name('transaction.rejected_release');
 	Route::get('/transaction/rejected_release/edit/{id}', [TransactionController::class, 'rejectedReleaseEdit'])->name('transaction.rejected_release.edit');
+<<<<<<< HEAD
 	Route::get('/transaction/repayment_entry', [TransactionController::class, 'repaymentEntry'])->name('transaction.repayment_entry');
 	Route::get('/transaction/override_payment', [TransactionController::class, 'overridePayment'])->name('transaction.override_payment');
 	Route::get('/transaction/overridepaymentdates', [TransactionController::class, 'overridePaymentDates']);
@@ -60,6 +61,8 @@ Route::group(['middleware' => 'auth'], function (){
 	Route::get('/reports/collection/product', [ReportsController::class, 'collectionProduct'])->name('reports.collection.product');
 	Route::get('/reports/collection/client', [ReportsController::class, 'collectionClient'])->name('reports.collection.client');
 	Route::get('/reports/collection/ao', [ReportsController::class, 'collectionAo'])->name('reports.collection.ao');
+=======
+>>>>>>> 2df7fb2b0253fad08a2686dc0a3f581ad39fc121
 });
 
 
