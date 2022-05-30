@@ -20,7 +20,7 @@
 								<th>Date Rel.</th>
 							</thead>
 							<tbody>
-								<tr @click="loanDetails=bl;setCycle()" class="existing-loans" :class="selected(bl.loan_account_id)" v-for="bl in borrower.loanAccounts" :key="bl.loan_account_id">
+								<tr @click="loanDetails=bl;setCycle()" class="existing-loans" :class="selected(bl.loan_account_id)" v-for="bl in borrower.loan_accounts" :key="bl.loan_account_id">
 									<td>{{bl.borrower_num}}</td>
 									<td>{{bl.loan_amount}}</td>
 									<td>5,000.00</td>
@@ -498,7 +498,7 @@
 			resetBorrower:function(){
 				this.borrower = {
 					borrower_id: null,
-					date_registered:'',
+					date_registered: this.dateToYMD(new Date()),
 					borrower_num:'',
 					firstname:'',
 					lastname:'',
@@ -597,7 +597,7 @@
 				}
 			},
 			setCycle:function(){
-				this.loanDetails.cycle_no = parseInt(this.borrower.loanAccounts.length + 1);
+				this.loanDetails.cycle_no = parseInt(this.borrower.loan_accounts.length + 1);
 			},
 			selectBorrower:function(borrower){
 				this.borrowers.map(function(data){

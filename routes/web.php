@@ -46,6 +46,8 @@ Route::group(['middleware' => 'auth'], function (){
 	Route::get('/transaction/rejected_release', [TransactionController::class, 'rejectedRelease'])->name('transaction.rejected_release');
 	Route::get('/transaction/rejected_release/edit/{id}', [TransactionController::class, 'rejectedReleaseEdit'])->name('transaction.rejected_release.edit');
 	Route::get('/transaction/repayment_entry', [TransactionController::class, 'repaymentEntry'])->name('transaction.repayment_entry');
+	Route::get('/transaction/override_payment', [TransactionController::class, 'overridePayment'])->name('transaction.override_payment');
+	Route::get('/transaction/overridepaymentdates', [TransactionController::class, 'overridePaymentDates']);
 
 	Route::get('/reports/transaction/product', [ReportsController::class, 'transactionProduct'])->name('reports.transaction');
 	Route::get('/reports/release/product', [ReportsController::class, 'releaseProduct'])->name('reports.release.product');

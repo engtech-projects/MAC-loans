@@ -52,7 +52,6 @@ class PaymentController extends BaseController
             'product_id' => ($request->has('product_id')) ? $request->input('product_id') : false,
             'branch_id' => 1
         ];
-
         $payment = new Payment();
      
         return $this->sendResponse( 
@@ -69,7 +68,6 @@ class PaymentController extends BaseController
         $payment = null;
 
         foreach ($request->input() as $key => $value) {
-            
             $payment = Payment::find($value['payment_id']);
             $payment->status = 'paid';
             $payment->save();

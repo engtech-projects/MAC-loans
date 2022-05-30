@@ -6,7 +6,7 @@
 		</div>
 		<table v-if="id" class="table table-stripped table-hover" id="clientsList">
 			<thead>
-				<th>Account #</th>
+				<th>Borrower #</th>
 				<th>Client Name</th>
 				<th></th>
 			</thead>
@@ -25,7 +25,7 @@
 		</table>
 		<table v-if="account" class="table table-stripped table-hover" id="clientsList">
 			<thead>
-				<th>Account #</th>
+				<th>Borrower #</th>
 				<th>Client Name</th>
 				<th></th>
 			</thead>
