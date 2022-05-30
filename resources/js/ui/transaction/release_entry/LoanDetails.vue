@@ -68,7 +68,7 @@
 				</div>
 				<div class="form-group mb-10 mr-16" style="flex:5">
 					<label for="type" class="form-label">Day Schedule</label>
-					<select required v-model="loanDetails.day_schedule" class="form-control form-input " id="type">
+					<select :disabled="isEnabled(loandetails.product_id)" required v-model="loanDetails.day_schedule" class="form-control form-input " id="type">
 						<option value="daily">Daily</option>
 						<option value="monday">Monday</option>
 						<option value="tuesday">Tuesday</option>
@@ -83,7 +83,7 @@
 			<div class="d-flex flex-row">
 				<div class="form-group mb-10 mr-16" style="flex:6">
 					<label for="interestRate" class="form-label">Interest Rate</label>
-					<input required disabled :value="interestRate + '%'" type="text" class="form-control form-input " id="interestRate">
+					<input required :value="interestRate + '%'" type="text" class="form-control form-input " id="interestRate">
 				</div>
 				<div class="form-group mb-10 mr-16" style="flex:6">
 					<label for="interestAmount" class="form-label">Interest Amount</label>
@@ -389,6 +389,12 @@ export default {
 					this.loanDetails.interest_rate = product.interest_rate;
 				}
 			}.bind(this));
+		},
+		isEnabled:function(data){
+			if(data){
+				return true;
+			}
+			return false;
 		}
 	},
 	watch: {

@@ -17522,6 +17522,13 @@ __webpack_require__.r(__webpack_exports__);
           this.loanDetails.interest_rate = product.interest_rate;
         }
       }.bind(this));
+    },
+    isEnabled: function isEnabled(data) {
+      if (data) {
+        return true;
+      }
+
+      return false;
     }
   },
   watch: {
@@ -75493,7 +75500,11 @@ var render = function () {
                             },
                           ],
                           staticClass: "form-control form-input ",
-                          attrs: { required: "", id: "type" },
+                          attrs: {
+                            disabled: _vm.isEnabled(_vm.loandetails.product_id),
+                            required: "",
+                            id: "type",
+                          },
                           on: {
                             change: function ($event) {
                               var $$selectedVal = Array.prototype.filter
@@ -75566,12 +75577,7 @@ var render = function () {
                     _vm._v(" "),
                     _c("input", {
                       staticClass: "form-control form-input ",
-                      attrs: {
-                        required: "",
-                        disabled: "",
-                        type: "text",
-                        id: "interestRate",
-                      },
+                      attrs: { required: "", type: "text", id: "interestRate" },
                       domProps: { value: _vm.interestRate + "%" },
                     }),
                   ]

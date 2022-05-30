@@ -48,8 +48,4 @@ class TransactionController extends Controller
 			'title' => 'Override Payment',
 		]);
 	}
-
-	public function overridePaymentDates(){
-		return \App\models\Payment::where('status','open')->orderBy('created_at', 'DESC')->select('created_at')->get();
-	}
 }
