@@ -13,6 +13,7 @@ use App\Http\Controllers\API\AccountOfficerController;
 use App\Http\Controllers\API\LoanAccountController;
 use App\Http\Controllers\API\UserController;
 use App\Http\Controllers\API\PaymentController;
+use App\Http\Controllers\API\ReportsController;
 
 
 /*
@@ -59,6 +60,10 @@ Route::middleware('auth:sanctum')->group( function () {
     Route::get('account/create-amortization/{account}', [LoanAccountController::class, 'createAmortizationSched']);
     Route::post('account/generate-amortization/', [LoanAccountController::class, 'generateAmortizationSched']);
 
+    // reports
+    Route::post('report/transaction/', [ReportsController::class, 'transactionReports']);
+    Route::post('report/release/', [ReportsController::class, 'releaseReports']);
+    // Route::post('report/repayment/', [ReportsController::class, 'repaymentReports']);
 });
 
 // Route::resource('products', ProductController::class);
