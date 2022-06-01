@@ -7300,6 +7300,5455 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/ui/reports/Transaction.vue?vue&type=script&lang=js&":
+/*!******************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/ui/reports/Transaction.vue?vue&type=script&lang=js& ***!
+  \******************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  methods: {
+    print: function print() {
+      var content = document.getElementById('printContent').innerHTML;
+      var target = document.querySelector('.to-print');
+      target.innerHTML = content;
+      window.print();
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/ui/reports/collection/Ao.vue?vue&type=script&lang=js&":
+/*!********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/ui/reports/collection/Ao.vue?vue&type=script&lang=js& ***!
+  \********************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  methods: {
+    print: function print() {
+      var content = document.getElementById('printContent').innerHTML;
+      var target = document.querySelector('.to-print');
+      target.innerHTML = content;
+      window.print();
+    }
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  props: ['token', 'loandetails', 'borrower', 'borrowerbday', 'saveloandetails'],
+  data: function data() {
+    return {
+      baseUrl: window.location.origin,
+      age: null,
+      products: [],
+      accountOfficers: [],
+      centers: [],
+      loanDetails: {
+        cycle_no: 1,
+        ao_id: '',
+        product_id: '',
+        center_id: '',
+        type: '',
+        payment_mode: '',
+        terms: '',
+        loan_amount: '',
+        no_of_installment: '',
+        day_schedule: '',
+        borrower_num: '',
+        co_borrower_name: '',
+        co_borrower_address: '',
+        co_borrower_id_type: '',
+        co_borrower_id_number: '',
+        co_borrower_id_date_issued: '',
+        co_maker_name: '',
+        co_maker_address: '',
+        co_maker_id_type: '',
+        co_maker_id_number: '',
+        co_maker_id_date_issued: '',
+        document_stamp: '',
+        filing_fee: '',
+        insurance: '',
+        notarial_fee: '100.00',
+        prepaid_interest: '',
+        affidavit_fee: '',
+        memo: '',
+        total_deduction: '',
+        net_proceeds: '',
+        release_type: '',
+        documents: {
+          date_release: '',
+          description: '',
+          bank: '',
+          account_no: '',
+          card_no: '',
+          promissory_number: ''
+        }
+      }
+    };
+  },
+  methods: {
+    fetchProducts: function fetchProducts() {
+      axios.get(window.location.origin + '/api/product/', {
+        headers: {
+          'Authorization': 'Bearer ' + this.token,
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        }
+      }).then(function (response) {
+        this.products = response.data.data;
+      }.bind(this))["catch"](function (error) {
+        console.log(error);
+      }.bind(this));
+    },
+    fetchAo: function fetchAo() {
+      axios.get(window.location.origin + '/api/accountofficer/', {
+        headers: {
+          'Authorization': 'Bearer ' + this.token,
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        }
+      }).then(function (response) {
+        this.accountOfficers = response.data.data;
+      }.bind(this))["catch"](function (error) {
+        console.log(error);
+      }.bind(this));
+    },
+    fetchCenters: function fetchCenters() {
+      axios.get(window.location.origin + '/api/center/', {
+        headers: {
+          'Authorization': 'Bearer ' + this.token,
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        }
+      }).then(function (response) {
+        this.centers = response.data.data;
+      }.bind(this))["catch"](function (error) {
+        console.log(error);
+      }.bind(this));
+    },
+    navigate: function navigate(tab) {
+      document.getElementById(tab).click();
+    },
+    submit: function submit() {
+      document.getElementById('warningBtn').click();
+    },
+    notify: function notify(title, text, type) {
+      this.$notify({
+        group: 'foo',
+        title: title,
+        text: text,
+        type: type
+      });
+    }
+  },
+  watch: {
+    'loandetails': function loandetails(newValue) {
+      this.loanDetails = newValue;
+    },
+    'borrower': function borrower(newValue) {
+      this.loanDetails.borrower_id = newValue.borrower_id;
+      this.loanDetails.borrower_num = newValue.borrower_num;
+    },
+    'borrowerbday': function borrowerbday(newValue) {
+      this.age = this.calculateAge(newValue);
+    }
+  },
+  computed: {
+    interestRate: function interestRate() {
+      if (this.loanDetails.product_id != '') {
+        for (var i in this.products) {
+          if (this.products[i].product_id === this.loanDetails.product_id) {
+            return this.products[i].interest_rate;
+          }
+        }
+      }
+
+      return '';
+    },
+    interestAmount: function interestAmount() {
+      return (this.loanDetails.loan_amount * (this.interestRate * 0.01) * (this.loanDetails.terms / 30)).toFixed(2);
+    },
+    numberOfInstallment: function numberOfInstallment() {
+      var mode = 0;
+
+      if (this.loanDetails.payment_mode == 'Monthly') {
+        mode = 1;
+      } else if (this.loanDetails.payment_mode == 'Bi-Monthly') {
+        mode = 2;
+      } else if (this.loanDetails.payment_mode == 'Weekly') {
+        mode = 4;
+      } else {
+        mode = this.loanDetails.terms;
+      }
+
+      this.loanDetails.no_of_installment = Math.ceil(this.loanDetails.terms / mode);
+      return Math.ceil(this.loanDetails.terms / 30 * mode);
+    },
+    docStamp: function docStamp() {
+      this.loanDetails.documents_stamp = (this.loanDetails.loan_amount / 200 * 1.5 * this.loanDetails.terms / 365).toFixed(2);
+
+      if (this.loanDetails.terms / 30 > 12) {
+        this.loanDetails.documents_stamp = (this.loanDetails.loan_amount / 200 * 1.5).toFixed(2);
+      }
+
+      return this.loanDetails.documents_stamp;
+    },
+    calculateInsurance: function calculateInsurance() {
+      var rate = 1;
+
+      if (this.age > 65) {
+        rate = 2.8;
+      }
+
+      this.loanDetails.insurance = (this.loanDetails.loan_amount / 1000 * rate * Math.ceil(this.loanDetails.terms / 30)).toFixed(2);
+      return this.loanDetails.insurance;
+    },
+    totalDeductions: function totalDeductions() {
+      this.loanDetails.total_deduction = (parseFloat(this.loanDetails.memo) + parseFloat(this.loanDetails.filing_fee) + parseFloat(this.loanDetails.affidavit_fee) + parseFloat(this.loanDetails.notarial_fee) + parseFloat(this.loanDetails.documents_stamp) + parseFloat(this.loanDetails.insurance)).toFixed(2);
+      return this.loanDetails.total_deduction;
+    },
+    netProceeds: function netProceeds() {
+      this.loanDetails.net_proceeds = parseFloat(this.loanDetails.loan_amount) - parseFloat(this.loanDetails.total_deduction);
+      return this.loanDetails.net_proceeds;
+    }
+  },
+  mounted: function mounted() {
+    this.fetchProducts();
+    this.fetchAo();
+    this.fetchCenters();
+    this.loanDetails = this.loandetails;
+
+  }
+});
+
+/***/ }),
+
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/ui/transaction/rejected_release/RejectedRelease.vue?vue&type=script&lang=js&":
+/*!*******************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/ui/transaction/rejected_release/RejectedRelease.vue?vue&type=script&lang=js& ***!
+  \*******************************************************************************************************************************************************************************************************************************************/
+
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  props: ['token'],
+  data: function data() {
+    return {
+      loanAccounts: [],
+      filter: '',
+      loanAccount: {
+        loan_account_id: null,
+        cycle_no: 1,
+        ao_id: '',
+        product_id: '',
+        center_id: '',
+        type: '',
+        payment_mode: '',
+        terms: 0,
+        loan_amount: '',
+        no_of_installment: '',
+        day_schedule: '',
+        borrower_num: '',
+        co_borrower_name: '',
+        co_borrower_address: '',
+        co_borrower_id_type: '',
+        co_borrower_id_number: '',
+        co_borrower_id_date_issued: '',
+        co_maker_name: '',
+        co_maker_address: '',
+        co_maker_id_type: '',
+        co_maker_id_number: '',
+        co_maker_id_date_issued: '',
+        document_stamp: 0.00,
+        filing_fee: 0.00,
+        insurance: 0.00,
+        notarial_fee: 100.00,
+        prepaid_interest: 0.00,
+        affidavit_fee: 0.00,
+        memo: 0.00,
+        total_deduction: 0.00,
+        net_proceeds: 0.00,
+        release_type: '',
+        borrower: {
+          borrower_num: '################',
+          firstname: '',
+          middlename: '',
+          lastname: ''
+        }
+      }
+    };
+  },
+  methods: {
+    fetchRejectedAccounts: function fetchRejectedAccounts() {
+      axios.get(window.location.origin + '/api/account/rejected/', {
+        headers: {
+          'Authorization': 'Bearer ' + this.token,
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        }
+      }).then(function (response) {
+        this.loanAccounts = response.data.data;
+      }.bind(this))["catch"](function (error) {
+        console.log(error);
+      }.bind(this));
+    },
+    isActive: function isActive(data) {
+      if (data.loan_account_id == this.loanAccount.loan_account_id) {
+        return 'active';
+      }
+
+      return '';
+    }
+  },
+  computed: {
+    filterAccounts: function filterAccounts() {
+      var accounts = [];
+      this.loanAccounts.map(function (account) {
+        if (account.borrower.firstname.toLowerCase().includes(this.filter.toLowerCase()) || account.borrower.lastname.toLowerCase().includes(this.filter.toLowerCase()) || (account.borrower.firstname + ' ' + account.borrower.lastname).toLowerCase().includes(this.filter.toLowerCase()) || (account.borrower.lastname + ' ' + account.borrower.firstname).toLowerCase().includes(this.filter.toLowerCase()) || account.borrower.borrower_num.toLowerCase().includes(this.filter.toLowerCase())) {
+          accounts.push(account);
+        }
+      }.bind(this));
+      return accounts;
+    }
+  },
+  mounted: function mounted() {
+    this.fetchRejectedAccounts();
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/ui/transaction/rejected_release/RejectedReleaseEdit.vue?vue&type=script&lang=js&":
+/*!***********************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/ui/transaction/rejected_release/RejectedReleaseEdit.vue?vue&type=script&lang=js& ***!
+  \***********************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  props: ['token', 'title', 'id'],
+  data: function data() {
+    return {
+      rejectedAccounts: [],
+      baseUrl: window.location.origin,
+      rejectedAccount: {
+        borrower: {
+          borrower_id: null,
+          employmentInfo: [],
+          businessInfo: [],
+          householdMembers: [],
+          outstandingObligations: [],
+          loanAccounts: []
+        }
+      }
+    };
+  },
+  methods: {
+    fetchRejectedAccounts: function fetchRejectedAccounts() {
+      axios.get(window.location.origin + '/api/account/rejected', {
+        headers: {
+          'Authorization': 'Bearer ' + this.token,
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        }
+      }).then(function (response) {
+        this.rejectedAccounts = response.data.data; // this.setAccount;
+      }.bind(this))["catch"](function (error) {
+        console.log(error);
+      }.bind(this));
+    },
+    fetchRejectedAccount: function fetchRejectedAccount() {
+      axios.get(window.location.origin + '/api/account/show/' + this.id, {
+        headers: {
+          'Authorization': 'Bearer ' + this.token,
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        }
+      }).then(function (response) {
+        this.rejectedAccount = response.data.data;
+      }.bind(this))["catch"](function (error) {
+        console.log(error);
+      }.bind(this));
+    },
+    navigate: function navigate(tab) {
+      document.getElementById(tab).click();
+    },
+    nextCoborrower: function nextCoborrower(data) {
+      this.rejectedAccount = data;
+    },
+    nextBorrower: function nextBorrower(data) {
+      this.rejectedAccount.borrower = data;
+    },
+    selected: function selected(id) {
+      if (id == this.loanDetails.loan_account_id) {
+        return 'active';
+      }
+
+      return '';
+    },
+    selectAccount: function selectAccount(data) {
+      this.rejectedAccount = data;
+    },
+    resetLoanDetails: function resetLoanDetails() {
+      this.rejectedAccount = {
+        loan_account_id: null,
+        cycle_no: 1,
+        ao_id: '',
+        product_id: '',
+        center_id: '',
+        type: '',
+        payment_mode: '',
+        terms: 0,
+        loan_amount: '',
+        no_of_installment: '',
+        day_schedule: '',
+        borrower_num: '',
+        co_borrower_name: '',
+        co_borrower_address: '',
+        co_borrower_id_type: '',
+        co_borrower_id_number: '',
+        co_borrower_id_date_issued: '',
+        co_maker_name: '',
+        co_maker_address: '',
+        co_maker_id_type: '',
+        co_maker_id_number: '',
+        co_maker_id_date_issued: '',
+        document_stamp: 0.00,
+        filing_fee: 0.00,
+        insurance: 0.00,
+        notarial_fee: 100.00,
+        prepaid_interest: 0.00,
+        affidavit_fee: 0.00,
+        memo: 0.00,
+        total_deduction: 0.00,
+        net_proceeds: 0.00,
+        release_type: '',
+        borrower: {
+          borrower_id: null,
+          employmentInfo: [],
+          businessInfo: [],
+          householdMembers: [],
+          outstandingObligations: [],
+          loanAccounts: []
+        },
+        documents: {
+          date_release: '',
+          description: '',
+          bank: '',
+          account_no: '',
+          card_no: '',
+          promissory_number: ''
+        }
+      };
+    },
+    saveLoanDetails: function saveLoanDetails() {
+      axios.put(window.location.origin + '/api/account/update/' + this.rejectedAccount.loan_account_id, this.rejectedAccount, {
+        headers: {
+          'Authorization': 'Bearer ' + this.token,
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        }
+      }).then(function (response) {
+        this.notify('', response.data.message, 'success');
+        window.location.replace('/transaction/rejected_release');
+      }.bind(this))["catch"](function (error) {
+        console.log(error);
+      }.bind(this));
+    },
+    saveBorrower: function saveBorrower() {
+      axios.put(window.location.origin + '/api/borrower/' + this.rejectedAccount.borrower.borrower_id, this.rejectedAccount.borrower, {
+        headers: {
+          'Authorization': 'Bearer ' + this.token,
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        }
+      }).then(function (response) {
+        this.notify('', response.data.message, 'success');
+        this.rejectedAccount.status = 'pending';
+        this.saveLoanDetails();
+      }.bind(this))["catch"](function (error) {
+        console.log(error);
+      }.bind(this));
+    },
+    save: function save(data) {
+      this.rejectedAccount = data;
+      this.saveBorrower();
+    },
+    notify: function notify(title, text, type) {
+      this.$notify({
+        group: 'foo',
+        title: title,
+        text: text,
+        type: type
+      });
+    }
+  },
+  computed: {
+    borrowers: function borrowers() {
+      var list = [];
+      this.rejectedAccounts.map(function (data) {
+        list.push(data.borrower);
+      }.bind(this));
+      return list;
+    },
+    setAccount: function setAccount() {
+      this.rejectedAccounts.map(function (data) {
+        if (this.id == data.loan_account_id) {
+          this.rejectedAccount = data;
+        }
+      }.bind(this));
+    }
+  },
+  mounted: function mounted() {
+    this.fetchRejectedAccount();
+    this.fetchRejectedAccounts();
+    this.resetLoanDetails();
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/ui/transaction/release_entry/BorrowerCo.vue?vue&type=script&lang=js&":
+/*!***********************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/ui/transaction/release_entry/BorrowerCo.vue?vue&type=script&lang=js& ***!
+  \***********************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  methods: {
+    print: function print() {
+      var content = document.getElementById('printContent').innerHTML;
+      var target = document.querySelector('.to-print');
+      target.innerHTML = content;
+      window.print();
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/ui/reports/collection/Product.vue?vue&type=script&lang=js&":
+/*!*************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/ui/reports/collection/Product.vue?vue&type=script&lang=js& ***!
+  \*************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  methods: {
+    print: function print() {
+      var content = document.getElementById('printContent').innerHTML;
+      var target = document.querySelector('.to-print');
+      target.innerHTML = content;
+      window.print();
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/ui/reports/release/Ao.vue?vue&type=script&lang=js&":
+/*!*****************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/ui/reports/release/Ao.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  methods: {
+    print: function print() {
+      var content = document.getElementById('printContent').innerHTML;
+      var target = document.querySelector('.to-print');
+      target.innerHTML = content;
+      window.print();
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/ui/reports/release/Client.vue?vue&type=script&lang=js&":
+/*!*********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/ui/reports/release/Client.vue?vue&type=script&lang=js& ***!
+  \*********************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  methods: {
+    print: function print() {
+      var content = document.getElementById('printContent').innerHTML;
+      var target = document.querySelector('.to-print');
+      target.innerHTML = content;
+      window.print();
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/ui/reports/release/Product.vue?vue&type=script&lang=js&":
+/*!**********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/ui/reports/release/Product.vue?vue&type=script&lang=js& ***!
+  \**********************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  methods: {
+    print: function print() {
+      var content = document.getElementById('printContent').innerHTML;
+      var target = document.querySelector('.to-print');
+      target.innerHTML = content;
+      window.print();
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/ui/reports/repayment/Client.vue?vue&type=script&lang=js&":
+/*!***********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/ui/reports/repayment/Client.vue?vue&type=script&lang=js& ***!
+  \***********************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  methods: {
+    print: function print() {
+      var content = document.getElementById('printContent').innerHTML;
+      var target = document.querySelector('.to-print');
+      target.innerHTML = content;
+      window.print();
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/ui/reports/repayment/Product.vue?vue&type=script&lang=js&":
+/*!************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/ui/reports/repayment/Product.vue?vue&type=script&lang=js& ***!
+  \************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  methods: {
+    print: function print() {
+      var content = document.getElementById('printContent').innerHTML;
+      var target = document.querySelector('.to-print');
+      target.innerHTML = content;
+      window.print();
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/ui/transaction/override_release/OverrideRelease.vue?vue&type=script&lang=js&":
 /*!*******************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/ui/transaction/override_release/OverrideRelease.vue?vue&type=script&lang=js& ***!
@@ -11490,8 +16939,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  props: ['token', 'pborrower', 'psave', 'clear'],
+  props: ['token', 'pborrower', 'psave', 'clear', 'pclient', 'borrower_id'],
   data: function data() {
     return {
       baseUrl: window.location.origin,
@@ -11567,6 +17017,19 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   methods: {
+    fetchBorrower: function fetchBorrower() {
+      axios.get(window.location.origin + '/api/borrower/' + this.borrower_id, {
+        headers: {
+          'Authorization': 'Bearer ' + this.token,
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        }
+      }).then(function (response) {
+        this.borrower = response.data.data;
+      }.bind(this))["catch"](function (error) {
+        console.log(error);
+      }.bind(this));
+    },
     save: function save() {
       if (this.borrower.borrower_id) {
         axios.put(window.location.origin + '/api/borrower/' + this.borrower.borrower_id, this.borrower, {
@@ -11599,8 +17062,12 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     submitForm: function submitForm() {
-      this.$emit('nextBorrower', this.borrower.birthdate);
-      document.getElementById('borrowerBtn').click();
+      if (!this.pclient) {
+        this.$emit('nextBorrower', this.borrower.birthdate);
+        document.getElementById('borrowerBtn').click();
+      } else {
+        this.save();
+      }
     },
     navigate: function navigate() {
       document.getElementById('custom-content-below-coborrowerinfo-tab').click();
@@ -11714,7 +17181,9 @@ __webpack_require__.r(__webpack_exports__);
   },
   watch: {
     'pborrower': function pborrower(newValue) {
-      this.borrower = newValue;
+      if (!this.pclient) {
+        this.borrower = newValue;
+      }
     },
     'psave': function psave(newValue) {
       if (newValue != '') {
@@ -11734,6 +17203,10 @@ __webpack_require__.r(__webpack_exports__);
   },
   mounted: function mounted() {
     this.borrower.created_at = this.dateToYMD(new Date());
+
+    if (this.pclient) {
+      this.fetchBorrower();
+    }
   }
 });
 
@@ -13516,7 +18989,16 @@ vue__WEBPACK_IMPORTED_MODULE_3__["default"].component('loan-details', (__webpack
 vue__WEBPACK_IMPORTED_MODULE_3__["default"].component('rejected-loan-details', (__webpack_require__(/*! ./ui/transaction/rejected_release/LoanDetails.vue */ "./resources/js/ui/transaction/rejected_release/LoanDetails.vue")["default"]));
 vue__WEBPACK_IMPORTED_MODULE_3__["default"].component('rejected-release', (__webpack_require__(/*! ./ui/transaction/rejected_release/RejectedRelease.vue */ "./resources/js/ui/transaction/rejected_release/RejectedRelease.vue")["default"]));
 vue__WEBPACK_IMPORTED_MODULE_3__["default"].component('rejected-release-edit', (__webpack_require__(/*! ./ui/transaction/rejected_release/RejectedReleaseEdit.vue */ "./resources/js/ui/transaction/rejected_release/RejectedReleaseEdit.vue")["default"]));
-vue__WEBPACK_IMPORTED_MODULE_3__["default"].component('repayment-entry', (__webpack_require__(/*! ./ui/transaction/repayment_entry/RepaymentEntry.vue */ "./resources/js/ui/transaction/repayment_entry/RepaymentEntry.vue")["default"])); // Vue.config.devtools = false;
+vue__WEBPACK_IMPORTED_MODULE_3__["default"].component('repayment-entry', (__webpack_require__(/*! ./ui/transaction/repayment_entry/RepaymentEntry.vue */ "./resources/js/ui/transaction/repayment_entry/RepaymentEntry.vue")["default"]));
+vue__WEBPACK_IMPORTED_MODULE_3__["default"].component('reports-transaction', (__webpack_require__(/*! ./ui/reports/Transaction.vue */ "./resources/js/ui/reports/Transaction.vue")["default"]));
+vue__WEBPACK_IMPORTED_MODULE_3__["default"].component('reports-release-product', (__webpack_require__(/*! ./ui/reports/release/Product.vue */ "./resources/js/ui/reports/release/Product.vue")["default"]));
+vue__WEBPACK_IMPORTED_MODULE_3__["default"].component('reports-release-client', (__webpack_require__(/*! ./ui/reports/release/Client.vue */ "./resources/js/ui/reports/release/Client.vue")["default"]));
+vue__WEBPACK_IMPORTED_MODULE_3__["default"].component('reports-release-ao', (__webpack_require__(/*! ./ui/reports/release/Ao.vue */ "./resources/js/ui/reports/release/Ao.vue")["default"]));
+vue__WEBPACK_IMPORTED_MODULE_3__["default"].component('reports-repayment-product', (__webpack_require__(/*! ./ui/reports/repayment/Product.vue */ "./resources/js/ui/reports/repayment/Product.vue")["default"]));
+vue__WEBPACK_IMPORTED_MODULE_3__["default"].component('reports-repayment-client', (__webpack_require__(/*! ./ui/reports/repayment/Client.vue */ "./resources/js/ui/reports/repayment/Client.vue")["default"]));
+vue__WEBPACK_IMPORTED_MODULE_3__["default"].component('reports-collection-product', (__webpack_require__(/*! ./ui/reports/collection/Product.vue */ "./resources/js/ui/reports/collection/Product.vue")["default"]));
+vue__WEBPACK_IMPORTED_MODULE_3__["default"].component('reports-collection-client', (__webpack_require__(/*! ./ui/reports/collection/Client.vue */ "./resources/js/ui/reports/collection/Client.vue")["default"]));
+vue__WEBPACK_IMPORTED_MODULE_3__["default"].component('reports-collection-ao', (__webpack_require__(/*! ./ui/reports/collection/Ao.vue */ "./resources/js/ui/reports/collection/Ao.vue")["default"])); // Vue.config.devtools = false;
 
 var app = new vue__WEBPACK_IMPORTED_MODULE_3__["default"]({
   el: '#app',
@@ -37264,6 +42746,357 @@ component.options.__file = "resources/js/ui/maintenance/UserSettings.vue"
 
 /***/ }),
 
+/***/ "./resources/js/ui/reports/Transaction.vue":
+/*!*************************************************!*\
+  !*** ./resources/js/ui/reports/Transaction.vue ***!
+  \*************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _Transaction_vue_vue_type_template_id_35ff4e1e___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Transaction.vue?vue&type=template&id=35ff4e1e& */ "./resources/js/ui/reports/Transaction.vue?vue&type=template&id=35ff4e1e&");
+/* harmony import */ var _Transaction_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Transaction.vue?vue&type=script&lang=js& */ "./resources/js/ui/reports/Transaction.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _Transaction_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _Transaction_vue_vue_type_template_id_35ff4e1e___WEBPACK_IMPORTED_MODULE_0__.render,
+  _Transaction_vue_vue_type_template_id_35ff4e1e___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/ui/reports/Transaction.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/ui/reports/collection/Ao.vue":
+/*!***************************************************!*\
+  !*** ./resources/js/ui/reports/collection/Ao.vue ***!
+  \***************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _Ao_vue_vue_type_template_id_69798852___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Ao.vue?vue&type=template&id=69798852& */ "./resources/js/ui/reports/collection/Ao.vue?vue&type=template&id=69798852&");
+/* harmony import */ var _Ao_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Ao.vue?vue&type=script&lang=js& */ "./resources/js/ui/reports/collection/Ao.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _Ao_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _Ao_vue_vue_type_template_id_69798852___WEBPACK_IMPORTED_MODULE_0__.render,
+  _Ao_vue_vue_type_template_id_69798852___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/ui/reports/collection/Ao.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/ui/reports/collection/Client.vue":
+/*!*******************************************************!*\
+  !*** ./resources/js/ui/reports/collection/Client.vue ***!
+  \*******************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _Client_vue_vue_type_template_id_1452336f___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Client.vue?vue&type=template&id=1452336f& */ "./resources/js/ui/reports/collection/Client.vue?vue&type=template&id=1452336f&");
+/* harmony import */ var _Client_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Client.vue?vue&type=script&lang=js& */ "./resources/js/ui/reports/collection/Client.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _Client_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _Client_vue_vue_type_template_id_1452336f___WEBPACK_IMPORTED_MODULE_0__.render,
+  _Client_vue_vue_type_template_id_1452336f___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/ui/reports/collection/Client.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/ui/reports/collection/Product.vue":
+/*!********************************************************!*\
+  !*** ./resources/js/ui/reports/collection/Product.vue ***!
+  \********************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _Product_vue_vue_type_template_id_2a0656fb___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Product.vue?vue&type=template&id=2a0656fb& */ "./resources/js/ui/reports/collection/Product.vue?vue&type=template&id=2a0656fb&");
+/* harmony import */ var _Product_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Product.vue?vue&type=script&lang=js& */ "./resources/js/ui/reports/collection/Product.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _Product_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _Product_vue_vue_type_template_id_2a0656fb___WEBPACK_IMPORTED_MODULE_0__.render,
+  _Product_vue_vue_type_template_id_2a0656fb___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/ui/reports/collection/Product.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/ui/reports/release/Ao.vue":
+/*!************************************************!*\
+  !*** ./resources/js/ui/reports/release/Ao.vue ***!
+  \************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _Ao_vue_vue_type_template_id_ad12461a___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Ao.vue?vue&type=template&id=ad12461a& */ "./resources/js/ui/reports/release/Ao.vue?vue&type=template&id=ad12461a&");
+/* harmony import */ var _Ao_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Ao.vue?vue&type=script&lang=js& */ "./resources/js/ui/reports/release/Ao.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _Ao_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _Ao_vue_vue_type_template_id_ad12461a___WEBPACK_IMPORTED_MODULE_0__.render,
+  _Ao_vue_vue_type_template_id_ad12461a___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/ui/reports/release/Ao.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/ui/reports/release/Client.vue":
+/*!****************************************************!*\
+  !*** ./resources/js/ui/reports/release/Client.vue ***!
+  \****************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _Client_vue_vue_type_template_id_933b60e0___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Client.vue?vue&type=template&id=933b60e0& */ "./resources/js/ui/reports/release/Client.vue?vue&type=template&id=933b60e0&");
+/* harmony import */ var _Client_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Client.vue?vue&type=script&lang=js& */ "./resources/js/ui/reports/release/Client.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _Client_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _Client_vue_vue_type_template_id_933b60e0___WEBPACK_IMPORTED_MODULE_0__.render,
+  _Client_vue_vue_type_template_id_933b60e0___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/ui/reports/release/Client.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/ui/reports/release/Product.vue":
+/*!*****************************************************!*\
+  !*** ./resources/js/ui/reports/release/Product.vue ***!
+  \*****************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _Product_vue_vue_type_template_id_6c0c820c___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Product.vue?vue&type=template&id=6c0c820c& */ "./resources/js/ui/reports/release/Product.vue?vue&type=template&id=6c0c820c&");
+/* harmony import */ var _Product_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Product.vue?vue&type=script&lang=js& */ "./resources/js/ui/reports/release/Product.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _Product_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _Product_vue_vue_type_template_id_6c0c820c___WEBPACK_IMPORTED_MODULE_0__.render,
+  _Product_vue_vue_type_template_id_6c0c820c___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/ui/reports/release/Product.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/ui/reports/repayment/Client.vue":
+/*!******************************************************!*\
+  !*** ./resources/js/ui/reports/repayment/Client.vue ***!
+  \******************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _Client_vue_vue_type_template_id_49049a64___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Client.vue?vue&type=template&id=49049a64& */ "./resources/js/ui/reports/repayment/Client.vue?vue&type=template&id=49049a64&");
+/* harmony import */ var _Client_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Client.vue?vue&type=script&lang=js& */ "./resources/js/ui/reports/repayment/Client.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _Client_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _Client_vue_vue_type_template_id_49049a64___WEBPACK_IMPORTED_MODULE_0__.render,
+  _Client_vue_vue_type_template_id_49049a64___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/ui/reports/repayment/Client.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/ui/reports/repayment/Product.vue":
+/*!*******************************************************!*\
+  !*** ./resources/js/ui/reports/repayment/Product.vue ***!
+  \*******************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _Product_vue_vue_type_template_id_e8be62b4___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Product.vue?vue&type=template&id=e8be62b4& */ "./resources/js/ui/reports/repayment/Product.vue?vue&type=template&id=e8be62b4&");
+/* harmony import */ var _Product_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Product.vue?vue&type=script&lang=js& */ "./resources/js/ui/reports/repayment/Product.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _Product_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _Product_vue_vue_type_template_id_e8be62b4___WEBPACK_IMPORTED_MODULE_0__.render,
+  _Product_vue_vue_type_template_id_e8be62b4___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/ui/reports/repayment/Product.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
 /***/ "./resources/js/ui/transaction/override_release/OverrideRelease.vue":
 /*!**************************************************************************!*\
   !*** ./resources/js/ui/transaction/override_release/OverrideRelease.vue ***!
@@ -37888,6 +43721,150 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/ui/reports/Transaction.vue?vue&type=script&lang=js&":
+/*!**************************************************************************!*\
+  !*** ./resources/js/ui/reports/Transaction.vue?vue&type=script&lang=js& ***!
+  \**************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Transaction_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Transaction.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/ui/reports/Transaction.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Transaction_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/ui/reports/collection/Ao.vue?vue&type=script&lang=js&":
+/*!****************************************************************************!*\
+  !*** ./resources/js/ui/reports/collection/Ao.vue?vue&type=script&lang=js& ***!
+  \****************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Ao_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Ao.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/ui/reports/collection/Ao.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Ao_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/ui/reports/collection/Client.vue?vue&type=script&lang=js&":
+/*!********************************************************************************!*\
+  !*** ./resources/js/ui/reports/collection/Client.vue?vue&type=script&lang=js& ***!
+  \********************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Client_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Client.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/ui/reports/collection/Client.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Client_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/ui/reports/collection/Product.vue?vue&type=script&lang=js&":
+/*!*********************************************************************************!*\
+  !*** ./resources/js/ui/reports/collection/Product.vue?vue&type=script&lang=js& ***!
+  \*********************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Product_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Product.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/ui/reports/collection/Product.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Product_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/ui/reports/release/Ao.vue?vue&type=script&lang=js&":
+/*!*************************************************************************!*\
+  !*** ./resources/js/ui/reports/release/Ao.vue?vue&type=script&lang=js& ***!
+  \*************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Ao_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Ao.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/ui/reports/release/Ao.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Ao_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/ui/reports/release/Client.vue?vue&type=script&lang=js&":
+/*!*****************************************************************************!*\
+  !*** ./resources/js/ui/reports/release/Client.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Client_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Client.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/ui/reports/release/Client.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Client_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/ui/reports/release/Product.vue?vue&type=script&lang=js&":
+/*!******************************************************************************!*\
+  !*** ./resources/js/ui/reports/release/Product.vue?vue&type=script&lang=js& ***!
+  \******************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Product_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Product.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/ui/reports/release/Product.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Product_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/ui/reports/repayment/Client.vue?vue&type=script&lang=js&":
+/*!*******************************************************************************!*\
+  !*** ./resources/js/ui/reports/repayment/Client.vue?vue&type=script&lang=js& ***!
+  \*******************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Client_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Client.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/ui/reports/repayment/Client.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Client_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/ui/reports/repayment/Product.vue?vue&type=script&lang=js&":
+/*!********************************************************************************!*\
+  !*** ./resources/js/ui/reports/repayment/Product.vue?vue&type=script&lang=js& ***!
+  \********************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Product_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Product.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/ui/reports/repayment/Product.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Product_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
 /***/ "./resources/js/ui/transaction/override_release/OverrideRelease.vue?vue&type=script&lang=js&":
 /*!***************************************************************************************************!*\
   !*** ./resources/js/ui/transaction/override_release/OverrideRelease.vue?vue&type=script&lang=js& ***!
@@ -38367,6 +44344,159 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_UserSettings_vue_vue_type_template_id_3e2e4f92___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
 /* harmony export */ });
 /* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_UserSettings_vue_vue_type_template_id_3e2e4f92___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./UserSettings.vue?vue&type=template&id=3e2e4f92& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/ui/maintenance/UserSettings.vue?vue&type=template&id=3e2e4f92&");
+
+
+/***/ }),
+
+/***/ "./resources/js/ui/reports/Transaction.vue?vue&type=template&id=35ff4e1e&":
+/*!********************************************************************************!*\
+  !*** ./resources/js/ui/reports/Transaction.vue?vue&type=template&id=35ff4e1e& ***!
+  \********************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Transaction_vue_vue_type_template_id_35ff4e1e___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Transaction_vue_vue_type_template_id_35ff4e1e___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Transaction_vue_vue_type_template_id_35ff4e1e___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Transaction.vue?vue&type=template&id=35ff4e1e& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/ui/reports/Transaction.vue?vue&type=template&id=35ff4e1e&");
+
+
+/***/ }),
+
+/***/ "./resources/js/ui/reports/collection/Ao.vue?vue&type=template&id=69798852&":
+/*!**********************************************************************************!*\
+  !*** ./resources/js/ui/reports/collection/Ao.vue?vue&type=template&id=69798852& ***!
+  \**********************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Ao_vue_vue_type_template_id_69798852___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Ao_vue_vue_type_template_id_69798852___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Ao_vue_vue_type_template_id_69798852___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Ao.vue?vue&type=template&id=69798852& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/ui/reports/collection/Ao.vue?vue&type=template&id=69798852&");
+
+
+/***/ }),
+
+/***/ "./resources/js/ui/reports/collection/Client.vue?vue&type=template&id=1452336f&":
+/*!**************************************************************************************!*\
+  !*** ./resources/js/ui/reports/collection/Client.vue?vue&type=template&id=1452336f& ***!
+  \**************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Client_vue_vue_type_template_id_1452336f___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Client_vue_vue_type_template_id_1452336f___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Client_vue_vue_type_template_id_1452336f___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Client.vue?vue&type=template&id=1452336f& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/ui/reports/collection/Client.vue?vue&type=template&id=1452336f&");
+
+
+/***/ }),
+
+/***/ "./resources/js/ui/reports/collection/Product.vue?vue&type=template&id=2a0656fb&":
+/*!***************************************************************************************!*\
+  !*** ./resources/js/ui/reports/collection/Product.vue?vue&type=template&id=2a0656fb& ***!
+  \***************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Product_vue_vue_type_template_id_2a0656fb___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Product_vue_vue_type_template_id_2a0656fb___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Product_vue_vue_type_template_id_2a0656fb___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Product.vue?vue&type=template&id=2a0656fb& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/ui/reports/collection/Product.vue?vue&type=template&id=2a0656fb&");
+
+
+/***/ }),
+
+/***/ "./resources/js/ui/reports/release/Ao.vue?vue&type=template&id=ad12461a&":
+/*!*******************************************************************************!*\
+  !*** ./resources/js/ui/reports/release/Ao.vue?vue&type=template&id=ad12461a& ***!
+  \*******************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Ao_vue_vue_type_template_id_ad12461a___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Ao_vue_vue_type_template_id_ad12461a___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Ao_vue_vue_type_template_id_ad12461a___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Ao.vue?vue&type=template&id=ad12461a& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/ui/reports/release/Ao.vue?vue&type=template&id=ad12461a&");
+
+
+/***/ }),
+
+/***/ "./resources/js/ui/reports/release/Client.vue?vue&type=template&id=933b60e0&":
+/*!***********************************************************************************!*\
+  !*** ./resources/js/ui/reports/release/Client.vue?vue&type=template&id=933b60e0& ***!
+  \***********************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Client_vue_vue_type_template_id_933b60e0___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Client_vue_vue_type_template_id_933b60e0___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Client_vue_vue_type_template_id_933b60e0___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Client.vue?vue&type=template&id=933b60e0& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/ui/reports/release/Client.vue?vue&type=template&id=933b60e0&");
+
+
+/***/ }),
+
+/***/ "./resources/js/ui/reports/release/Product.vue?vue&type=template&id=6c0c820c&":
+/*!************************************************************************************!*\
+  !*** ./resources/js/ui/reports/release/Product.vue?vue&type=template&id=6c0c820c& ***!
+  \************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Product_vue_vue_type_template_id_6c0c820c___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Product_vue_vue_type_template_id_6c0c820c___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Product_vue_vue_type_template_id_6c0c820c___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Product.vue?vue&type=template&id=6c0c820c& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/ui/reports/release/Product.vue?vue&type=template&id=6c0c820c&");
+
+
+/***/ }),
+
+/***/ "./resources/js/ui/reports/repayment/Client.vue?vue&type=template&id=49049a64&":
+/*!*************************************************************************************!*\
+  !*** ./resources/js/ui/reports/repayment/Client.vue?vue&type=template&id=49049a64& ***!
+  \*************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Client_vue_vue_type_template_id_49049a64___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Client_vue_vue_type_template_id_49049a64___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Client_vue_vue_type_template_id_49049a64___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Client.vue?vue&type=template&id=49049a64& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/ui/reports/repayment/Client.vue?vue&type=template&id=49049a64&");
+
+
+/***/ }),
+
+/***/ "./resources/js/ui/reports/repayment/Product.vue?vue&type=template&id=e8be62b4&":
+/*!**************************************************************************************!*\
+  !*** ./resources/js/ui/reports/repayment/Product.vue?vue&type=template&id=e8be62b4& ***!
+  \**************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Product_vue_vue_type_template_id_e8be62b4___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Product_vue_vue_type_template_id_e8be62b4___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Product_vue_vue_type_template_id_e8be62b4___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Product.vue?vue&type=template&id=e8be62b4& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/ui/reports/repayment/Product.vue?vue&type=template&id=e8be62b4&");
 
 
 /***/ }),
@@ -44352,6 +50482,9634 @@ var staticRenderFns = [
             ),
           ]),
         ]),
+      ]),
+    ])
+  },
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/ui/reports/Transaction.vue?vue&type=template&id=35ff4e1e&":
+/*!***********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/ui/reports/Transaction.vue?vue&type=template&id=35ff4e1e& ***!
+  \***********************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function () {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "d-flex flex-column", staticStyle: { flex: "8" } },
+    [
+      _vm._m(0),
+      _vm._v(" "),
+      _c("div", { staticClass: "sep mb-45" }),
+      _vm._v(" "),
+      _vm._m(1),
+      _vm._v(" "),
+      _c("div", { staticClass: "d-flex flex-row-reverse mb-45" }, [
+        _c(
+          "a",
+          {
+            staticClass: "btn btn-default min-w-150",
+            attrs: { href: "#" },
+            on: {
+              click: function ($event) {
+                return _vm.print()
+              },
+            },
+          },
+          [_vm._v("Print")]
+        ),
+        _vm._v(" "),
+        _c(
+          "a",
+          {
+            staticClass: "btn btn-success min-w-150 mr-24",
+            attrs: { href: "#" },
+          },
+          [_vm._v("Download Excel")]
+        ),
+      ]),
+    ]
+  )
+}
+var staticRenderFns = [
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      { staticClass: "d-flex flex-row font-md align-items-center mb-16" },
+      [
+        _c(
+          "span",
+          {
+            staticClass: "font-lg text-primary-dark",
+            staticStyle: { flex: "3" },
+          },
+          [_vm._v("Transaction")]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass: "d-flex flex-row align-items-center mr-24",
+            staticStyle: { flex: "2" },
+          },
+          [
+            _c("span", { staticClass: "mr-10" }, [_vm._v("From: ")]),
+            _vm._v(" "),
+            _c("input", {
+              staticClass: "form-control",
+              attrs: { type: "date" },
+            }),
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass: "d-flex flex-row align-items-center mr-64",
+            staticStyle: { flex: "2" },
+          },
+          [
+            _c("span", { staticClass: "mr-10" }, [_vm._v("To: ")]),
+            _vm._v(" "),
+            _c("input", {
+              staticClass: "form-control",
+              attrs: { type: "date" },
+            }),
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass: "d-flex flex-row align-items-center",
+            staticStyle: { flex: "4" },
+          },
+          [
+            _c("span", { staticClass: "mr-10" }, [_vm._v("Type: ")]),
+            _vm._v(" "),
+            _c(
+              "select",
+              {
+                staticClass: "form-control",
+                attrs: { name: "", id: "selectProductClient" },
+              },
+              [
+                _c("option", { attrs: { value: "product" } }, [
+                  _vm._v("Summary Release and Payment by Product"),
+                ]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "client" } }, [
+                  _vm._v("Summary Release and Payment by Client"),
+                ]),
+              ]
+            ),
+          ]
+        ),
+      ]
+    )
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { attrs: { id: "printContent" } }, [
+      _c("img", {
+        staticClass: "mb-24",
+        attrs: { src: "/img/company_header_fit.png", alt: "" },
+      }),
+      _vm._v(" "),
+      _c("section", { attrs: { id: "productSection" } }, [
+        _c("div", { staticClass: "d-flex flex-column mb-16" }, [
+          _c("div", { staticClass: "d-flex flex-row align-items-center" }, [
+            _c("div", { staticClass: "flex-1" }),
+            _vm._v(" "),
+            _c("span", { staticClass: "font-30 text-bold text-primary-dark" }, [
+              _vm._v("SUMMARY RELEASE AND PAYMENT BY PRODUCT"),
+            ]),
+            _vm._v(" "),
+            _c(
+              "div",
+              {
+                staticClass: "flex-1",
+                staticStyle: { "padding-left": "24px" },
+              },
+              [
+                _c("span", { staticClass: "text-primary-dark mr-10" }, [
+                  _vm._v("Tuesday 12/21/2021"),
+                ]),
+                _vm._v(" "),
+                _c("span", { staticClass: "text-primary-dark" }, [
+                  _vm._v("Time: 11:36 AM"),
+                ]),
+              ]
+            ),
+          ]),
+          _vm._v(" "),
+          _c(
+            "span",
+            {
+              staticClass:
+                "text-center text-primary-dark text-bold font-md mb-5",
+            },
+            [_vm._v("Butuan Branch (001)")]
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              staticClass:
+                "d-flex flex-row justify-content-center text-primary-dark",
+            },
+            [
+              _c("span", { staticClass: "mr-5" }, [_vm._v("From:")]),
+              _c("span", { staticClass: "mr-16" }, [_vm._v("12/14/2021")]),
+              _vm._v(" "),
+              _c("span", { staticClass: "mr-5" }, [_vm._v("To:")]),
+              _c("span", [_vm._v("12/15/2021")]),
+            ]
+          ),
+        ]),
+        _vm._v(" "),
+        _c("section", { staticClass: "d-flex flex-column mb-16" }, [
+          _c(
+            "span",
+            {
+              staticClass: "text-bold bg-yellow-light",
+              staticStyle: { padding: "2px 5px" },
+            },
+            [_vm._v("RELEASES SUMMARY")]
+          ),
+          _vm._v(" "),
+          _c("table", { staticClass: "table td-nb table-thin" }, [
+            _c("thead", [
+              _c("th", [_vm._v("Reference")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Principal")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Interest")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Filing Fee")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Doc. Stamp")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Insurance")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Notarial")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Affidavit")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Deduct Bal")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Prepaid")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Net Proceeds")]),
+            ]),
+            _vm._v(" "),
+            _c("tbody", [
+              _c("tr", [
+                _c("td", [_vm._v("0063 - Pension Loan")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("8,500.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("2,435.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("121.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("41.66")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("500.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("200.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("1,484.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("6,347.00")]),
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("td", [_vm._v("0064 - Micro Group")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("8,500.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("2,435.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("121.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("41.66")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("500.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("200.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("1,484.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("6,347.00")]),
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("td", [_vm._v("0065 - Salary Loan")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("8,500.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("2,435.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("121.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("41.66")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("500.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("200.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("1,484.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("6,347.00")]),
+              ]),
+              _vm._v(" "),
+              _c("tr", { staticClass: "border-cell-gray-7" }, [
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+              ]),
+              _vm._v(" "),
+              _c("tr", { staticClass: "tr-pt-7" }, [
+                _c("td", [_vm._v("TOTAL RELEASES")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("122,500.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("8,435.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("121.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("41.66")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("500.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("200.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("1,484.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("20,347.00")]),
+              ]),
+            ]),
+          ]),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              staticClass:
+                "d-flex flex-row bg-yellow-pale p-5 align-items-center",
+            },
+            [
+              _c("div", { staticClass: "d-flex flex-column flex-1 mr-64" }, [
+                _c("div", { staticClass: "d-flex flex-row flex-1 mb-5" }, [
+                  _c(
+                    "div",
+                    {
+                      staticClass:
+                        "d-flex flex-row justify-content-between flex-2 mr-24",
+                    },
+                    [
+                      _c("span", { staticClass: "flex-1" }, [
+                        _vm._v("TOTAL CASH RELEASE"),
+                      ]),
+                      _vm._v(" "),
+                      _c("span", [_vm._v(":")]),
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "flex-1" }, [_vm._v("6,347.00")]),
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "d-flex flex-row flex-1 mb-5" }, [
+                  _c(
+                    "div",
+                    {
+                      staticClass:
+                        "d-flex flex-row justify-content-between flex-2 mr-24",
+                    },
+                    [
+                      _c("span", { staticClass: "flex-1" }, [
+                        _vm._v("TOTAL CHECK RELEASE"),
+                      ]),
+                      _vm._v(" "),
+                      _c("span", [_vm._v(":")]),
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "flex-1" }, [_vm._v("0.00")]),
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "d-flex flex-row flex-1" }, [
+                  _c(
+                    "div",
+                    {
+                      staticClass:
+                        "d-flex flex-row justify-content-between flex-2 mr-24",
+                    },
+                    [
+                      _c("span", { staticClass: "flex-1" }, [
+                        _vm._v("TOTAL MEMO RELEASE"),
+                      ]),
+                      _vm._v(" "),
+                      _c("span", [_vm._v(":")]),
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "flex-1" }, [_vm._v("1,484.00")]),
+                ]),
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "d-flex flex-column flex-1" }, [
+                _c("div", { staticClass: "info-display" }, [
+                  _c("span", { staticClass: "text-primary-dark" }, [
+                    _vm._v("TOTAL RELEASES"),
+                  ]),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "text-primary-dark" }, [
+                    _vm._v("17,000.00"),
+                  ]),
+                ]),
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "flex-2" }),
+            ]
+          ),
+        ]),
+        _vm._v(" "),
+        _c("section", { staticClass: "d-flex flex-column flex-1" }, [
+          _c(
+            "span",
+            {
+              staticClass: "text-bold bg-skyblue",
+              staticStyle: { padding: "2px 5px" },
+            },
+            [_vm._v("PAYMENT SUMMARY")]
+          ),
+          _vm._v(" "),
+          _c("table", { staticClass: "table td-nb table-thin" }, [
+            _c("thead", [
+              _c("th", [_vm._v("Reference")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Payment Type")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Principal")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Interest")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("PD Int.")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Over")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Discount")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Total Payment")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Net Int.")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("VAT")]),
+            ]),
+            _vm._v(" "),
+            _c("tbody", [
+              _c("tr", [
+                _c("td", [_vm._v("0063 - Pension Loan")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("CASH PAYMENT")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("8,500.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("2,435.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("121.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("41.66")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("500.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("200.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("4,150.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("487.50")]),
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("td"),
+                _vm._v(" "),
+                _c("td", [_vm._v("CHECK PAYMENT")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("8,500.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("2,435.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("121.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("41.66")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("500.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("200.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("4,150.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("487.50")]),
+              ]),
+              _vm._v(" "),
+              _c("tr", { staticClass: "border-cell-dashed" }, [
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+              ]),
+              _vm._v(" "),
+              _c("tr", { staticClass: "text-bold" }, [
+                _c("td", [_vm._v("TOTAL PRODUCT")]),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td", [_vm._v("17,000.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("5,435.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("352.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("82.66")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("1,000.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("400.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("8,150.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("987.50")]),
+              ]),
+              _vm._v(" "),
+              _c("tr", { staticClass: "border-cell-gray-7-dark" }, [
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+              ]),
+              _vm._v(" "),
+              _c("tr", { staticClass: "space-row" }, [
+                _c("td", [_vm._v("0063 - Pension Loan")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("CASH PAYMENT")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("8,500.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("2,435.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("121.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("41.66")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("500.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("200.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("4,150.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("487.50")]),
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("td"),
+                _vm._v(" "),
+                _c("td", [_vm._v("CHECK PAYMENT")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("8,500.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("2,435.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("121.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("41.66")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("500.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("200.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("4,150.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("487.50")]),
+              ]),
+              _vm._v(" "),
+              _c("tr", { staticClass: "border-cell-dashed" }, [
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+              ]),
+              _vm._v(" "),
+              _c("tr", { staticClass: "text-bold" }, [
+                _c("td", [_vm._v("TOTAL PRODUCT")]),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td", [_vm._v("17,000.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("5,435.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("352.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("82.66")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("1,000.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("400.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("8,150.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("987.50")]),
+              ]),
+              _vm._v(" "),
+              _c("tr", { staticClass: "border-cell-gray-7-dark" }, [
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+              ]),
+              _vm._v(" "),
+              _c("tr", { staticClass: "space-row" }, [
+                _c("td", [_vm._v("0063 - Salary Loan")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("CASH PAYMENT")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("8,500.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("2,435.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("121.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("41.66")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("500.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("200.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("4,150.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("487.50")]),
+              ]),
+              _vm._v(" "),
+              _c("tr", { staticClass: "border-cell-dashed" }, [
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+              ]),
+              _vm._v(" "),
+              _c("tr", { staticClass: "text-bold" }, [
+                _c("td", [_vm._v("TOTAL PRODUCT")]),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td", [_vm._v("17,000.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("5,435.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("352.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("82.66")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("1,000.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("400.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("8,150.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("987.50")]),
+              ]),
+              _vm._v(" "),
+              _c("tr", { staticClass: "border-cell-gray-7-dark" }, [
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+              ]),
+              _vm._v(" "),
+              _c("tr", { staticClass: "text-bold space-row-5" }, [
+                _c("td", [_vm._v("TOTAL PAYMENT")]),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td", [_vm._v("17,000.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("5,435.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("352.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("82.66")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("1,000.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("400.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("8,150.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("987.50")]),
+              ]),
+            ]),
+          ]),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              staticClass:
+                "d-flex flex-row bg-skyblue p-10 align-items-center mb-72",
+            },
+            [
+              _c("div", { staticClass: "d-flex flex-column flex-1 mr-64" }, [
+                _c("div", { staticClass: "d-flex flex-row flex-1 mb-5" }, [
+                  _c(
+                    "div",
+                    {
+                      staticClass:
+                        "d-flex flex-row justify-content-between flex-2 mr-24",
+                    },
+                    [
+                      _c("span", { staticClass: "flex-1" }, [
+                        _vm._v("TOTAL CASH RELEASE"),
+                      ]),
+                      _vm._v(" "),
+                      _c("span", [_vm._v(":")]),
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "flex-1" }, [_vm._v("6,347.00")]),
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "d-flex flex-row flex-1 mb-5" }, [
+                  _c(
+                    "div",
+                    {
+                      staticClass:
+                        "d-flex flex-row justify-content-between flex-2 mr-24",
+                    },
+                    [
+                      _c("span", { staticClass: "flex-1" }, [
+                        _vm._v("TOTAL CHECK RELEASE"),
+                      ]),
+                      _vm._v(" "),
+                      _c("span", [_vm._v(":")]),
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "flex-1" }, [_vm._v("0.00")]),
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "d-flex flex-row flex-1" }, [
+                  _c(
+                    "div",
+                    {
+                      staticClass:
+                        "d-flex flex-row justify-content-between flex-2 mr-24",
+                    },
+                    [
+                      _c("span", { staticClass: "flex-1" }, [
+                        _vm._v("TOTAL MEMO RELEASE"),
+                      ]),
+                      _vm._v(" "),
+                      _c("span", [_vm._v(":")]),
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "flex-1" }, [_vm._v("1,484.00")]),
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "d-flex flex-row flex-1" }, [
+                  _c(
+                    "div",
+                    {
+                      staticClass:
+                        "d-flex flex-row justify-content-between flex-2 mr-24",
+                    },
+                    [
+                      _c("span", { staticClass: "flex-1 pl-24" }, [
+                        _vm._v("DED BALANCE"),
+                      ]),
+                      _vm._v(" "),
+                      _c("span", [_vm._v(":")]),
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "flex-1" }, [_vm._v("14,852.00")]),
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "d-flex flex-row flex-1" }, [
+                  _c(
+                    "div",
+                    {
+                      staticClass:
+                        "d-flex flex-row justify-content-between flex-2 mr-24",
+                    },
+                    [
+                      _c("span", { staticClass: "flex-1 pl-24" }, [
+                        _vm._v("OFFSET PF"),
+                      ]),
+                      _vm._v(" "),
+                      _c("span", [_vm._v(":")]),
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "flex-1" }, [_vm._v("14,852.00")]),
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "d-flex flex-row flex-1" }, [
+                  _c(
+                    "div",
+                    {
+                      staticClass:
+                        "d-flex flex-row justify-content-between flex-2 mr-24",
+                    },
+                    [
+                      _c("span", { staticClass: "flex-1 pl-24" }, [
+                        _vm._v("OVER PAYMENT"),
+                      ]),
+                      _vm._v(" "),
+                      _c("span", [_vm._v(":")]),
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "flex-1" }, [_vm._v("14,852.00")]),
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "d-flex flex-row flex-1" }, [
+                  _c(
+                    "div",
+                    {
+                      staticClass:
+                        "d-flex flex-row justify-content-between flex-2 mr-24",
+                    },
+                    [
+                      _c("span", { staticClass: "flex-1 pl-24" }, [
+                        _vm._v("DISCOUNT"),
+                      ]),
+                      _vm._v(" "),
+                      _c("span", [_vm._v(":")]),
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "flex-1" }, [_vm._v("14,852.00")]),
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "d-flex flex-row flex-1" }, [
+                  _c(
+                    "div",
+                    {
+                      staticClass:
+                        "d-flex flex-row justify-content-between flex-2 mr-24",
+                    },
+                    [
+                      _c("span", { staticClass: "flex-1 pl-24" }, [
+                        _vm._v("CANCELLED"),
+                      ]),
+                      _vm._v(" "),
+                      _c("span", [_vm._v(":")]),
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "flex-1" }, [_vm._v("14,852.00")]),
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "d-flex flex-row flex-1" }, [
+                  _c(
+                    "div",
+                    {
+                      staticClass:
+                        "d-flex flex-row justify-content-between flex-2 mr-24",
+                    },
+                    [
+                      _c("span", { staticClass: "flex-1 pl-24" }, [
+                        _vm._v("BRANCH"),
+                      ]),
+                      _vm._v(" "),
+                      _c("span", [_vm._v(":")]),
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "flex-1" }, [_vm._v("14,852.00")]),
+                ]),
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "d-flex flex-column flex-1" }, [
+                _c("div", { staticClass: "info-display" }, [
+                  _c("span", { staticClass: "text-primary-dark" }, [
+                    _vm._v("TOTAL RELEASES"),
+                  ]),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "text-primary-dark" }, [
+                    _vm._v("172,222.00"),
+                  ]),
+                ]),
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "flex-2" }),
+            ]
+          ),
+        ]),
+      ]),
+      _vm._v(" "),
+      _c("section", { staticClass: "hide", attrs: { id: "clientSection" } }, [
+        _c("div", { staticClass: "d-flex flex-column mb-16" }, [
+          _c("div", { staticClass: "d-flex flex-row align-items-center" }, [
+            _c("div", { staticClass: "flex-1" }),
+            _vm._v(" "),
+            _c("span", { staticClass: "font-30 text-bold text-primary-dark" }, [
+              _vm._v("SUMMARY RELEASE AND PAYMENT BY CLIENT"),
+            ]),
+            _vm._v(" "),
+            _c(
+              "div",
+              {
+                staticClass: "flex-1",
+                staticStyle: { "padding-left": "24px" },
+              },
+              [
+                _c("span", { staticClass: "text-primary-dark mr-10" }, [
+                  _vm._v("Tuesday 12/21/2021"),
+                ]),
+                _vm._v(" "),
+                _c("span", { staticClass: "text-primary-dark" }, [
+                  _vm._v("Time: 11:36 AM"),
+                ]),
+              ]
+            ),
+          ]),
+          _vm._v(" "),
+          _c(
+            "span",
+            {
+              staticClass:
+                "text-center text-primary-dark text-bold font-md mb-5",
+            },
+            [_vm._v("Butuan Branch (001)")]
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              staticClass:
+                "d-flex flex-row justify-content-center text-primary-dark",
+            },
+            [
+              _c("span", { staticClass: "mr-5" }, [_vm._v("From:")]),
+              _c("span", { staticClass: "mr-16" }, [_vm._v("12/14/2021")]),
+              _vm._v(" "),
+              _c("span", { staticClass: "mr-5" }, [_vm._v("To:")]),
+              _c("span", [_vm._v("12/15/2021")]),
+            ]
+          ),
+        ]),
+        _vm._v(" "),
+        _c("section", { staticClass: "d-flex flex-column mb-16" }, [
+          _c(
+            "span",
+            {
+              staticClass: "text-bold bg-yellow-light",
+              staticStyle: { padding: "2px 5px" },
+            },
+            [_vm._v("RELEASES SUMMARY")]
+          ),
+          _vm._v(" "),
+          _c("table", { staticClass: "table td-nb table-thin" }, [
+            _c("thead", [
+              _c("th", [_vm._v("Borrower's Name")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Date Loan")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Term")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Amount Loan")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Fil. Fee")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("D.S")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Ins.")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Notarial")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Affidavit")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Ded. Bal")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Prep")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Net Prcds")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Type")]),
+            ]),
+            _vm._v(" "),
+            _c("tbody", [
+              _c("tr", [
+                _c("td", [_vm._v("Gabriel, Julio A.")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("12/15/21")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("720")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("3,500.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("70.66")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("26.25")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("236.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("100.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("3,607.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("CSH")]),
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("td", [_vm._v("Lagahit, Mario A.")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("12/15/21")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("720")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("3,500.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("70.66")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("26.25")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("236.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("100.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("3,607.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("CSH")]),
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("td", [_vm._v("Marco, Georgia A.")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("12/15/21")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("720")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("3,500.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("70.66")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("26.25")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("236.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("100.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("3,607.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("CSH")]),
+              ]),
+              _vm._v(" "),
+              _c("tr", { staticClass: "border-cell-gray-7" }, [
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+              ]),
+              _vm._v(" "),
+              _c("tr", { staticClass: "tr-pt-7 text-bold" }, [
+                _c("td", [_vm._v("TOTAL")]),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td", [_vm._v("9,500.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("210.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("26.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("236.66")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("100.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("3,607.00")]),
+                _vm._v(" "),
+                _c("td"),
+              ]),
+            ]),
+          ]),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              staticClass:
+                "d-flex flex-row bg-yellow-pale p-5 align-items-center",
+            },
+            [
+              _c("div", { staticClass: "d-flex flex-column flex-1 mr-64" }, [
+                _c("div", { staticClass: "d-flex flex-row flex-1 mb-5" }, [
+                  _c(
+                    "div",
+                    {
+                      staticClass:
+                        "d-flex flex-row justify-content-between flex-2 mr-24",
+                    },
+                    [
+                      _c("span", { staticClass: "flex-1" }, [
+                        _vm._v("TOTAL CASH RELEASE"),
+                      ]),
+                      _vm._v(" "),
+                      _c("span", [_vm._v(":")]),
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "flex-1" }, [_vm._v("6,347.00")]),
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "d-flex flex-row flex-1 mb-5" }, [
+                  _c(
+                    "div",
+                    {
+                      staticClass:
+                        "d-flex flex-row justify-content-between flex-2 mr-24",
+                    },
+                    [
+                      _c("span", { staticClass: "flex-1" }, [
+                        _vm._v("TOTAL CHECK RELEASE"),
+                      ]),
+                      _vm._v(" "),
+                      _c("span", [_vm._v(":")]),
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "flex-1" }, [_vm._v("0.00")]),
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "d-flex flex-row flex-1" }, [
+                  _c(
+                    "div",
+                    {
+                      staticClass:
+                        "d-flex flex-row justify-content-between flex-2 mr-24",
+                    },
+                    [
+                      _c("span", { staticClass: "flex-1" }, [
+                        _vm._v("TOTAL MEMO RELEASE"),
+                      ]),
+                      _vm._v(" "),
+                      _c("span", [_vm._v(":")]),
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "flex-1" }, [_vm._v("1,484.00")]),
+                ]),
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "d-flex flex-column flex-1" }, [
+                _c("div", { staticClass: "info-display" }, [
+                  _c("span", { staticClass: "text-primary-dark" }, [
+                    _vm._v("TOTAL RELEASES"),
+                  ]),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "text-primary-dark" }, [
+                    _vm._v("17,000.00"),
+                  ]),
+                ]),
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "flex-2" }),
+            ]
+          ),
+        ]),
+        _vm._v(" "),
+        _c("section", { staticClass: "d-flex flex-column flex-1" }, [
+          _c(
+            "span",
+            {
+              staticClass: "text-bold bg-skyblue",
+              staticStyle: { padding: "2px 5px" },
+            },
+            [_vm._v("COLLECTION REPORT")]
+          ),
+          _vm._v(" "),
+          _c("table", { staticClass: "table td-nb table-thin" }, [
+            _c("thead", [
+              _c("th", [_vm._v("Borrower's Name")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Date Pay")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("O.R#")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Principal")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Int.")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("PD Int.")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Over")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Discount")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Tot. Payment")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Net Int.")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("VAT")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Type")]),
+            ]),
+            _vm._v(" "),
+            _c("tbody", [
+              _c("tr", [
+                _c("td", [_vm._v("Gabriel, Julio A.")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("12/15/21")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("720")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("3,500.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("70.66")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("26.25")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("236.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("100.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("CSH")]),
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("td", [_vm._v("Lagahit, Mario A.")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("12/15/21")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("720")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("3,500.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("70.66")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("26.25")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("236.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("100.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("CSH")]),
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("td", [_vm._v("Marco, Georgia A.")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("12/15/21")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("720")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("3,500.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("70.66")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("26.25")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("236.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("100.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("CSH")]),
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("td", [_vm._v("Gabriel, Julio A.")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("12/15/21")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("720")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("3,500.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("70.66")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("26.25")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("236.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("100.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("CSH")]),
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("td", [_vm._v("Lagahit, Mario A.")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("12/15/21")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("720")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("3,500.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("70.66")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("26.25")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("236.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("100.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("CSH")]),
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("td", [_vm._v("Marco, Georgia A.")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("12/15/21")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("720")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("3,500.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("70.66")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("26.25")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("236.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("100.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("CSH")]),
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("td", [_vm._v("Gabriel, Julio A.")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("12/15/21")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("720")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("3,500.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("70.66")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("26.25")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("236.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("100.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("CSH")]),
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("td", [_vm._v("Lagahit, Mario A.")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("12/15/21")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("720")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("3,500.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("70.66")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("26.25")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("236.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("100.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("CSH")]),
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("td", [_vm._v("Marco, Georgia A.")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("12/15/21")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("720")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("3,500.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("70.66")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("26.25")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("236.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("100.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("CSH")]),
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("td", [_vm._v("Gabriel, Julio A.")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("12/15/21")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("720")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("3,500.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("70.66")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("26.25")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("236.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("100.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("CSH")]),
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("td", [_vm._v("Lagahit, Mario A.")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("12/15/21")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("720")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("3,500.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("70.66")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("26.25")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("236.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("100.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("CSH")]),
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("td", [_vm._v("Marco, Georgia A.")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("12/15/21")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("720")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("3,500.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("70.66")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("26.25")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("236.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("100.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("CSH")]),
+              ]),
+              _vm._v(" "),
+              _c("tr", { staticClass: "border-cell-gray-7" }, [
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+              ]),
+              _vm._v(" "),
+              _c("tr", { staticClass: "tr-pt-7 text-bold" }, [
+                _c("td", [_vm._v("TOTAL")]),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td", [_vm._v("9,500.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("210.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("26.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("236.66")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("100.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td"),
+              ]),
+            ]),
+          ]),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              staticClass:
+                "d-flex flex-row bg-skyblue p-10 align-items-center mb-72",
+            },
+            [
+              _c("div", { staticClass: "d-flex flex-column flex-1 mr-64" }, [
+                _c("div", { staticClass: "d-flex flex-row flex-1 mb-5" }, [
+                  _c(
+                    "div",
+                    {
+                      staticClass:
+                        "d-flex flex-row justify-content-between flex-2 mr-24",
+                    },
+                    [
+                      _c("span", { staticClass: "flex-1" }, [
+                        _vm._v("TOTAL CASH RELEASE"),
+                      ]),
+                      _vm._v(" "),
+                      _c("span", [_vm._v(":")]),
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "flex-1" }, [_vm._v("6,347.00")]),
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "d-flex flex-row flex-1 mb-5" }, [
+                  _c(
+                    "div",
+                    {
+                      staticClass:
+                        "d-flex flex-row justify-content-between flex-2 mr-24",
+                    },
+                    [
+                      _c("span", { staticClass: "flex-1" }, [
+                        _vm._v("TOTAL CHECK RELEASE"),
+                      ]),
+                      _vm._v(" "),
+                      _c("span", [_vm._v(":")]),
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "flex-1" }, [_vm._v("0.00")]),
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "d-flex flex-row flex-1" }, [
+                  _c(
+                    "div",
+                    {
+                      staticClass:
+                        "d-flex flex-row justify-content-between flex-2 mr-24",
+                    },
+                    [
+                      _c("span", { staticClass: "flex-1" }, [
+                        _vm._v("TOTAL MEMO RELEASE"),
+                      ]),
+                      _vm._v(" "),
+                      _c("span", [_vm._v(":")]),
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "flex-1" }, [_vm._v("1,484.00")]),
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "d-flex flex-row flex-1" }, [
+                  _c(
+                    "div",
+                    {
+                      staticClass:
+                        "d-flex flex-row justify-content-between flex-2 mr-24",
+                    },
+                    [
+                      _c("span", { staticClass: "flex-1 pl-24" }, [
+                        _vm._v("DED BALANCE"),
+                      ]),
+                      _vm._v(" "),
+                      _c("span", [_vm._v(":")]),
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "flex-1" }, [_vm._v("14,852.00")]),
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "d-flex flex-row flex-1" }, [
+                  _c(
+                    "div",
+                    {
+                      staticClass:
+                        "d-flex flex-row justify-content-between flex-2 mr-24",
+                    },
+                    [
+                      _c("span", { staticClass: "flex-1 pl-24" }, [
+                        _vm._v("OFFSET PF"),
+                      ]),
+                      _vm._v(" "),
+                      _c("span", [_vm._v(":")]),
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "flex-1" }, [_vm._v("14,852.00")]),
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "d-flex flex-row flex-1" }, [
+                  _c(
+                    "div",
+                    {
+                      staticClass:
+                        "d-flex flex-row justify-content-between flex-2 mr-24",
+                    },
+                    [
+                      _c("span", { staticClass: "flex-1 pl-24" }, [
+                        _vm._v("OVER PAYMENT"),
+                      ]),
+                      _vm._v(" "),
+                      _c("span", [_vm._v(":")]),
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "flex-1" }, [_vm._v("14,852.00")]),
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "d-flex flex-row flex-1" }, [
+                  _c(
+                    "div",
+                    {
+                      staticClass:
+                        "d-flex flex-row justify-content-between flex-2 mr-24",
+                    },
+                    [
+                      _c("span", { staticClass: "flex-1 pl-24" }, [
+                        _vm._v("DISCOUNT"),
+                      ]),
+                      _vm._v(" "),
+                      _c("span", [_vm._v(":")]),
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "flex-1" }, [_vm._v("14,852.00")]),
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "d-flex flex-row flex-1" }, [
+                  _c(
+                    "div",
+                    {
+                      staticClass:
+                        "d-flex flex-row justify-content-between flex-2 mr-24",
+                    },
+                    [
+                      _c("span", { staticClass: "flex-1 pl-24" }, [
+                        _vm._v("CANCELLED"),
+                      ]),
+                      _vm._v(" "),
+                      _c("span", [_vm._v(":")]),
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "flex-1" }, [_vm._v("14,852.00")]),
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "d-flex flex-row flex-1" }, [
+                  _c(
+                    "div",
+                    {
+                      staticClass:
+                        "d-flex flex-row justify-content-between flex-2 mr-24",
+                    },
+                    [
+                      _c("span", { staticClass: "flex-1 pl-24" }, [
+                        _vm._v("BRANCH"),
+                      ]),
+                      _vm._v(" "),
+                      _c("span", [_vm._v(":")]),
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "flex-1" }, [_vm._v("14,852.00")]),
+                ]),
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "d-flex flex-column flex-1" }, [
+                _c("div", { staticClass: "info-display" }, [
+                  _c("span", { staticClass: "text-primary-dark" }, [
+                    _vm._v("TOTAL RELEASES"),
+                  ]),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "text-primary-dark" }, [
+                    _vm._v("172,222.00"),
+                  ]),
+                ]),
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "flex-2" }),
+            ]
+          ),
+        ]),
+      ]),
+      _vm._v(" "),
+      _c("section", { staticClass: "d-flex flex-row mb-72" }, [
+        _c("span", { staticClass: "flex-2 pb-24 text-bold darker-bb mr-64" }, [
+          _vm._v("Prepared By:"),
+        ]),
+        _vm._v(" "),
+        _c("span", { staticClass: "flex-2 pb-24 text-bold darker-bb mr-64" }, [
+          _vm._v("Certified Corrected By:"),
+        ]),
+        _vm._v(" "),
+        _c("span", { staticClass: "flex-2 pb-24 text-bold darker-bb mr-64" }, [
+          _vm._v("Approved By:"),
+        ]),
+        _vm._v(" "),
+        _c("span", { staticClass: "flex-1" }),
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "d-flex mb-64" }, [
+        _c("img", {
+          staticClass: "w-100",
+          attrs: { src: "/img/logo-footer.png", alt: "" },
+        }),
+      ]),
+    ])
+  },
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/ui/reports/collection/Ao.vue?vue&type=template&id=69798852&":
+/*!*************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/ui/reports/collection/Ao.vue?vue&type=template&id=69798852& ***!
+  \*************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function () {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "d-flex flex-column", staticStyle: { flex: "8" } },
+    [
+      _vm._m(0),
+      _vm._v(" "),
+      _c("div", { staticClass: "sep mb-45" }),
+      _vm._v(" "),
+      _vm._m(1),
+      _vm._v(" "),
+      _vm._m(2),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "d-flex flex-row justify-content-between mb-45" },
+        [
+          _c(
+            "a",
+            {
+              staticClass: "btn btn-purple min-w-150",
+              attrs: {
+                href: "#",
+                "data-toggle": "modal",
+                "data-target": "#dstModal",
+              },
+            },
+            [_vm._v("Generate DST")]
+          ),
+          _vm._v(" "),
+          _c("div", { staticClass: "d-flex flex-row-reverse" }, [
+            _c(
+              "a",
+              {
+                staticClass: "btn btn-default min-w-150",
+                attrs: { href: "#" },
+                on: {
+                  click: function ($event) {
+                    return _vm.print()
+                  },
+                },
+              },
+              [_vm._v("Print")]
+            ),
+            _vm._v(" "),
+            _c(
+              "a",
+              {
+                staticClass: "btn btn-success min-w-150 mr-24",
+                attrs: { href: "#" },
+              },
+              [_vm._v("Download Excel")]
+            ),
+          ]),
+        ]
+      ),
+    ]
+  )
+}
+var staticRenderFns = [
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      { staticClass: "d-flex flex-row font-md align-items-center mb-16" },
+      [
+        _c(
+          "span",
+          {
+            staticClass: "font-lg text-primary-dark",
+            staticStyle: { flex: "3" },
+          },
+          [_vm._v("Transaction")]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass: "d-flex flex-row align-items-center mr-24",
+            staticStyle: { flex: "2" },
+          },
+          [
+            _c("span", { staticClass: "mr-10" }, [_vm._v("From: ")]),
+            _vm._v(" "),
+            _c("input", {
+              staticClass: "form-control",
+              attrs: { type: "date" },
+            }),
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass: "d-flex flex-row align-items-center mr-64",
+            staticStyle: { flex: "2" },
+          },
+          [
+            _c("span", { staticClass: "mr-10" }, [_vm._v("To: ")]),
+            _vm._v(" "),
+            _c("input", {
+              staticClass: "form-control",
+              attrs: { type: "date" },
+            }),
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass: "d-flex flex-row align-items-center mr-24",
+            staticStyle: { flex: "3" },
+          },
+          [
+            _c("span", { staticClass: "mr-10" }, [_vm._v("Type: ")]),
+            _vm._v(" "),
+            _c(
+              "select",
+              {
+                staticClass: "form-control",
+                attrs: { name: "", id: "selectProductClient" },
+              },
+              [
+                _c("option", { attrs: { value: "all_records" } }, [
+                  _vm._v("All Records"),
+                ]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "new_accounts" } }, [
+                  _vm._v("New Accounts"),
+                ]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "" } }, [_vm._v("By Center")]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "" } }, [_vm._v("By Product")]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "" } }, [
+                  _vm._v("By Account Officer"),
+                ]),
+              ]
+            ),
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass: "d-flex flex-row align-items-center mr-24",
+            staticStyle: { flex: "3" },
+          },
+          [
+            _c("span", { staticClass: "mr-10" }, [_vm._v("A.O: ")]),
+            _vm._v(" "),
+            _c(
+              "select",
+              {
+                staticClass: "form-control",
+                attrs: { name: "", id: "selectProductClient" },
+              },
+              [
+                _c("option", { attrs: { value: "" } }, [
+                  _vm._v("Allotment Loan"),
+                ]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "" } }, [_vm._v("Micro Group")]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "" } }, [
+                  _vm._v("Micro Individual"),
+                ]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "" } }, [
+                  _vm._v("Pension Emergency"),
+                ]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "" } }, [
+                  _vm._v("Pension Loan"),
+                ]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "" } }, [_vm._v("SME Loan")]),
+              ]
+            ),
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass: "d-flex flex-row align-items-center",
+            staticStyle: { flex: "3" },
+          },
+          [
+            _c("span", { staticClass: "mr-10" }, [_vm._v("Center: ")]),
+            _vm._v(" "),
+            _c(
+              "select",
+              {
+                staticClass: "form-control",
+                attrs: { name: "", id: "selectProductClient" },
+              },
+              [
+                _c("option", { attrs: { value: "" } }, [
+                  _vm._v("Allotment Loan"),
+                ]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "" } }, [_vm._v("Micro Group")]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "" } }, [
+                  _vm._v("Micro Individual"),
+                ]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "" } }, [
+                  _vm._v("Pension Emergency"),
+                ]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "" } }, [
+                  _vm._v("Pension Loan"),
+                ]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "" } }, [_vm._v("SME Loan")]),
+              ]
+            ),
+          ]
+        ),
+      ]
+    )
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { attrs: { id: "printContent" } }, [
+      _c("img", {
+        staticClass: "mb-24",
+        attrs: { src: "/img/company_header_fit.png", alt: "" },
+      }),
+      _vm._v(" "),
+      _c("section", { attrs: { id: "clientSection" } }, [
+        _c("div", { staticClass: "d-flex flex-column mb-24" }, [
+          _c("div", { staticClass: "d-flex flex-row align-items-center" }, [
+            _c("div", { staticClass: "flex-1 d-flex flex-column" }, [
+              _c("span", [_vm._v("Account Officer")]),
+              _vm._v(" "),
+              _c("span", { staticClass: "text-bold" }, [
+                _vm._v("001 - Jose Magbanua"),
+              ]),
+            ]),
+            _vm._v(" "),
+            _c("span", { staticClass: "font-30 text-bold text-primary-dark" }, [
+              _vm._v("COLLECTION RATE SUMMARY REPORT"),
+            ]),
+            _vm._v(" "),
+            _c(
+              "div",
+              {
+                staticClass: "flex-1 d-flex justify-content-end",
+                staticStyle: { "padding-left": "24px" },
+              },
+              [
+                _c("span", { staticClass: "text-primary-dark mr-10" }, [
+                  _vm._v("Tuesday 12/21/2021"),
+                ]),
+                _vm._v(" "),
+                _c("span", { staticClass: "text-primary-dark" }, [
+                  _vm._v("Time: 11:36 AM"),
+                ]),
+              ]
+            ),
+          ]),
+          _vm._v(" "),
+          _c(
+            "span",
+            {
+              staticClass:
+                "text-center text-primary-dark text-bold font-md mb-5",
+            },
+            [_vm._v("Butuan Branch (001)")]
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              staticClass:
+                "d-flex flex-row justify-content-center text-primary-dark",
+            },
+            [
+              _c("span", { staticClass: "mr-5" }, [_vm._v("From:")]),
+              _c("span", { staticClass: "mr-16" }, [_vm._v("12/14/2021")]),
+              _vm._v(" "),
+              _c("span", { staticClass: "mr-5" }, [_vm._v("To:")]),
+              _c("span", [_vm._v("12/15/2021")]),
+            ]
+          ),
+        ]),
+        _vm._v(" "),
+        _c("section", { staticClass: "d-flex flex-column mb-16" }, [
+          _c(
+            "span",
+            {
+              staticClass:
+                "text-block p-7 text-bold text-center font-md bbt-dashed-2 mb-7",
+            },
+            [_vm._v("ACTUAL COLLECTION")]
+          ),
+          _vm._v(" "),
+          _c("div", [
+            _c(
+              "span",
+              { staticClass: "text-block p-7 text-bold bg-yellow-pale" },
+              [_vm._v("002 - Micro Group")]
+            ),
+            _vm._v(" "),
+            _c("table", { staticClass: "table td-nb table-thin" }, [
+              _c("thead", [
+                _c("th", [_vm._v("Status")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("Acct.")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("Principal")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("Int.")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("PD Int.")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("Over")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("Discount")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("Tot. Payment")]),
+              ]),
+              _vm._v(" "),
+              _c("tbody", [
+                _c("tr", [
+                  _c("td", [_vm._v("Delinquent")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("720")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("3,500.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("70.66")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("26.25")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("236.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0.00")]),
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [_vm._v("Delinquent")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("720")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("3,500.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("70.66")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("26.25")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("236.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0.00")]),
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [_vm._v("Delinquent")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("720")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("3,500.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("70.66")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("26.25")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("236.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0.00")]),
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [_vm._v("Delinquent")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("720")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("3,500.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("70.66")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("26.25")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("236.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0.00")]),
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [_vm._v("Delinquent")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("720")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("3,500.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("70.66")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("26.25")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("236.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0.00")]),
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [_vm._v("Delinquent")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("720")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("3,500.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("70.66")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("26.25")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("236.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0.00")]),
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [_vm._v("Delinquent")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("720")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("3,500.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("70.66")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("26.25")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("236.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0.00")]),
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [_vm._v("Delinquent")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("720")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("3,500.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("70.66")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("26.25")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("236.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0.00")]),
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [_vm._v("Delinquent")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("720")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("3,500.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("70.66")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("26.25")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("236.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0.00")]),
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [_vm._v("Delinquent")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("720")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("3,500.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("70.66")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("26.25")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("236.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0.00")]),
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [_vm._v("Delinquent")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("720")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("3,500.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("70.66")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("26.25")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("236.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0.00")]),
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [_vm._v("Delinquent")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("720")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("3,500.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("70.66")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("26.25")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("236.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0.00")]),
+                ]),
+                _vm._v(" "),
+                _c("tr", { staticClass: "tr-pt-7 text-bold" }, [
+                  _c("td", [_vm._v("TOTAL")]),
+                  _vm._v(" "),
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("9,500.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("210.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("26.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("236.66")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0.00")]),
+                ]),
+                _vm._v(" "),
+                _c("tr", { staticClass: "border-cell-gray-7" }, [
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td"),
+                ]),
+              ]),
+            ]),
+          ]),
+          _vm._v(" "),
+          _c("div", [
+            _c(
+              "span",
+              { staticClass: "text-block p-7 text-bold bg-yellow-pale" },
+              [_vm._v("003 - Pension Loan")]
+            ),
+            _vm._v(" "),
+            _c("table", { staticClass: "table td-nb table-thin" }, [
+              _c("thead", [
+                _c("th", [_vm._v("Status")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("Acct.")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("Principal")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("Int.")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("PD Int.")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("Over")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("Discount")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("Tot. Payment")]),
+              ]),
+              _vm._v(" "),
+              _c("tbody", [
+                _c("tr", [
+                  _c("td", [_vm._v("Delinquent")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("720")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("3,500.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("70.66")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("26.25")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("236.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0.00")]),
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [_vm._v("Delinquent")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("720")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("3,500.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("70.66")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("26.25")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("236.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0.00")]),
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [_vm._v("Delinquent")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("720")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("3,500.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("70.66")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("26.25")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("236.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0.00")]),
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [_vm._v("Delinquent")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("720")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("3,500.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("70.66")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("26.25")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("236.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0.00")]),
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [_vm._v("Delinquent")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("720")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("3,500.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("70.66")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("26.25")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("236.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0.00")]),
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [_vm._v("Delinquent")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("720")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("3,500.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("70.66")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("26.25")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("236.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0.00")]),
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [_vm._v("Delinquent")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("720")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("3,500.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("70.66")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("26.25")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("236.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0.00")]),
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [_vm._v("Delinquent")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("720")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("3,500.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("70.66")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("26.25")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("236.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0.00")]),
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [_vm._v("Delinquent")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("720")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("3,500.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("70.66")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("26.25")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("236.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0.00")]),
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [_vm._v("Delinquent")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("720")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("3,500.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("70.66")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("26.25")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("236.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0.00")]),
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [_vm._v("Delinquent")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("720")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("3,500.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("70.66")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("26.25")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("236.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0.00")]),
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [_vm._v("Delinquent")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("720")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("3,500.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("70.66")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("26.25")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("236.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0.00")]),
+                ]),
+                _vm._v(" "),
+                _c("tr", { staticClass: "tr-pt-7 text-bold" }, [
+                  _c("td", [_vm._v("TOTAL")]),
+                  _vm._v(" "),
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("9,500.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("210.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("26.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("236.66")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0.00")]),
+                ]),
+                _vm._v(" "),
+                _c("tr", { staticClass: "border-cell-gray-7" }, [
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td"),
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td"),
+                ]),
+                _vm._v(" "),
+                _c("tr", { staticClass: "tr-py-7 text-bold bg-green-mint" }, [
+                  _c("td", [_vm._v("TOTAL")]),
+                  _vm._v(" "),
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("9,500.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("210.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("26.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("236.66")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0.00")]),
+                ]),
+              ]),
+            ]),
+          ]),
+          _vm._v(" "),
+          _c(
+            "span",
+            {
+              staticClass:
+                "text-block p-7 text-bold text-center font-md bbt-dashed-2 mb-7",
+            },
+            [_vm._v("DUE COLLECTION")]
+          ),
+          _vm._v(" "),
+          _c("div", [
+            _c(
+              "span",
+              { staticClass: "text-block p-7 text-bold bg-yellow-pale" },
+              [_vm._v("005 - Micro Individual")]
+            ),
+            _vm._v(" "),
+            _c("table", { staticClass: "table td-nb table-thin" }, [
+              _c("thead", [
+                _c("th", [_vm._v("Status")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("Acct.")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("Principal")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("Int.")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("PD Int.")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("Over")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("Discount")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("Tot. Payment")]),
+              ]),
+              _vm._v(" "),
+              _c("tbody", [
+                _c("tr", [
+                  _c("td", [_vm._v("Delinquent")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("720")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("3,500.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("70.66")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("26.25")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("236.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0.00")]),
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [_vm._v("Delinquent")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("720")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("3,500.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("70.66")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("26.25")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("236.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0.00")]),
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [_vm._v("Delinquent")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("720")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("3,500.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("70.66")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("26.25")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("236.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0.00")]),
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [_vm._v("Delinquent")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("720")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("3,500.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("70.66")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("26.25")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("236.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0.00")]),
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [_vm._v("Delinquent")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("720")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("3,500.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("70.66")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("26.25")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("236.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0.00")]),
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [_vm._v("Delinquent")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("720")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("3,500.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("70.66")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("26.25")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("236.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0.00")]),
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [_vm._v("Delinquent")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("720")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("3,500.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("70.66")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("26.25")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("236.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0.00")]),
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [_vm._v("Delinquent")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("720")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("3,500.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("70.66")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("26.25")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("236.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0.00")]),
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [_vm._v("Delinquent")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("720")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("3,500.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("70.66")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("26.25")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("236.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0.00")]),
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [_vm._v("Delinquent")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("720")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("3,500.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("70.66")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("26.25")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("236.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0.00")]),
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [_vm._v("Delinquent")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("720")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("3,500.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("70.66")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("26.25")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("236.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0.00")]),
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [_vm._v("Delinquent")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("720")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("3,500.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("70.66")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("26.25")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("236.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0.00")]),
+                ]),
+                _vm._v(" "),
+                _c("tr", { staticClass: "tr-pt-7 text-bold" }, [
+                  _c("td", [_vm._v("TOTAL")]),
+                  _vm._v(" "),
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("9,500.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("210.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("26.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("236.66")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0.00")]),
+                ]),
+                _vm._v(" "),
+                _c("tr", { staticClass: "border-cell-gray-7" }, [
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td"),
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td"),
+                ]),
+                _vm._v(" "),
+                _c("tr", { staticClass: "tr-py-7 text-bold bg-green-mint" }, [
+                  _c("td", [_vm._v("TOTAL")]),
+                  _vm._v(" "),
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("9,500.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("210.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("26.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("236.66")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0.00")]),
+                ]),
+              ]),
+            ]),
+          ]),
+          _vm._v(" "),
+          _c(
+            "span",
+            {
+              staticClass:
+                "text-block p-7 text-bold text-center font-md bbt-dashed-2 mb-7",
+            },
+            [_vm._v("COLLECTION RATE")]
+          ),
+          _vm._v(" "),
+          _c("table", { staticClass: "table mb-72" }, [
+            _c("tbody", [
+              _c("tr", { staticClass: "bg-skyblue tr-py-7 text-bold" }, [
+                _c("td", [_vm._v("Col. Rate")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0%")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.56%")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.49%")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("1.19%")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00%")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00%")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00%")]),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+              ]),
+            ]),
+          ]),
+        ]),
+      ]),
+      _vm._v(" "),
+      _c("section", { staticClass: "d-flex flex-row mb-72" }, [
+        _c("span", { staticClass: "flex-2 pb-24 text-bold darker-bb mr-64" }, [
+          _vm._v("Prepared By:"),
+        ]),
+        _vm._v(" "),
+        _c("span", { staticClass: "flex-2 pb-24 text-bold darker-bb mr-64" }, [
+          _vm._v("Certified Corrected By:"),
+        ]),
+        _vm._v(" "),
+        _c("span", { staticClass: "flex-2 pb-24 text-bold darker-bb mr-64" }, [
+          _vm._v("Approved By:"),
+        ]),
+        _vm._v(" "),
+        _c("span", { staticClass: "flex-1" }),
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "d-flex mb-24" }, [
+        _c("img", {
+          staticClass: "w-100",
+          attrs: { src: "/img/logo-footer.png", alt: "" },
+        }),
+      ]),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      { staticClass: "d-flex flex-row justify-content-end mb-24" },
+      [
+        _c(
+          "a",
+          {
+            staticClass: "text-green text-md text-bold mr-24",
+            attrs: { href: "#" },
+          },
+          [_vm._v("Previous Page")]
+        ),
+        _vm._v(" "),
+        _c(
+          "a",
+          { staticClass: "text-green text-md text-bold", attrs: { href: "#" } },
+          [_vm._v("Next Page")]
+        ),
+      ]
+    )
+  },
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/ui/reports/collection/Client.vue?vue&type=template&id=1452336f&":
+/*!*****************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/ui/reports/collection/Client.vue?vue&type=template&id=1452336f& ***!
+  \*****************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function () {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "d-flex flex-column", staticStyle: { flex: "8" } },
+    [
+      _vm._m(0),
+      _vm._v(" "),
+      _c("div", { staticClass: "sep mb-45" }),
+      _vm._v(" "),
+      _vm._m(1),
+      _vm._v(" "),
+      _vm._m(2),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "d-flex flex-row justify-content-between mb-45" },
+        [
+          _c(
+            "a",
+            {
+              staticClass: "btn btn-purple min-w-150",
+              attrs: {
+                href: "#",
+                "data-toggle": "modal",
+                "data-target": "#dstModal",
+              },
+            },
+            [_vm._v("Generate DST")]
+          ),
+          _vm._v(" "),
+          _c("div", { staticClass: "d-flex flex-row-reverse" }, [
+            _c(
+              "a",
+              {
+                staticClass: "btn btn-default min-w-150",
+                attrs: { href: "#" },
+                on: {
+                  click: function ($event) {
+                    return _vm.print()
+                  },
+                },
+              },
+              [_vm._v("Print")]
+            ),
+            _vm._v(" "),
+            _c(
+              "a",
+              {
+                staticClass: "btn btn-success min-w-150 mr-24",
+                attrs: { href: "#" },
+              },
+              [_vm._v("Download Excel")]
+            ),
+          ]),
+        ]
+      ),
+    ]
+  )
+}
+var staticRenderFns = [
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      { staticClass: "d-flex flex-row font-md align-items-center mb-16" },
+      [
+        _c(
+          "span",
+          {
+            staticClass: "font-lg text-primary-dark",
+            staticStyle: { flex: "3" },
+          },
+          [_vm._v("Transaction")]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass: "d-flex flex-row align-items-center mr-24",
+            staticStyle: { flex: "2" },
+          },
+          [
+            _c("span", { staticClass: "mr-10" }, [_vm._v("From: ")]),
+            _vm._v(" "),
+            _c("input", {
+              staticClass: "form-control",
+              attrs: { type: "date" },
+            }),
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass: "d-flex flex-row align-items-center mr-64",
+            staticStyle: { flex: "2" },
+          },
+          [
+            _c("span", { staticClass: "mr-10" }, [_vm._v("To: ")]),
+            _vm._v(" "),
+            _c("input", {
+              staticClass: "form-control",
+              attrs: { type: "date" },
+            }),
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass: "d-flex flex-row align-items-center mr-24",
+            staticStyle: { flex: "3" },
+          },
+          [
+            _c("span", { staticClass: "mr-10" }, [_vm._v("Type: ")]),
+            _vm._v(" "),
+            _c(
+              "select",
+              {
+                staticClass: "form-control",
+                attrs: { name: "", id: "selectProductClient" },
+              },
+              [
+                _c("option", { attrs: { value: "all_records" } }, [
+                  _vm._v("All Records"),
+                ]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "new_accounts" } }, [
+                  _vm._v("New Accounts"),
+                ]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "" } }, [_vm._v("By Center")]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "" } }, [_vm._v("By Product")]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "" } }, [
+                  _vm._v("By Account Officer"),
+                ]),
+              ]
+            ),
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass: "d-flex flex-row align-items-center mr-24",
+            staticStyle: { flex: "3" },
+          },
+          [
+            _c("span", { staticClass: "mr-10" }, [_vm._v("A.O: ")]),
+            _vm._v(" "),
+            _c(
+              "select",
+              {
+                staticClass: "form-control",
+                attrs: { name: "", id: "selectProductClient" },
+              },
+              [
+                _c("option", { attrs: { value: "" } }, [
+                  _vm._v("Allotment Loan"),
+                ]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "" } }, [_vm._v("Micro Group")]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "" } }, [
+                  _vm._v("Micro Individual"),
+                ]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "" } }, [
+                  _vm._v("Pension Emergency"),
+                ]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "" } }, [
+                  _vm._v("Pension Loan"),
+                ]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "" } }, [_vm._v("SME Loan")]),
+              ]
+            ),
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass: "d-flex flex-row align-items-center",
+            staticStyle: { flex: "3" },
+          },
+          [
+            _c("span", { staticClass: "mr-10" }, [_vm._v("Center: ")]),
+            _vm._v(" "),
+            _c(
+              "select",
+              {
+                staticClass: "form-control",
+                attrs: { name: "", id: "selectProductClient" },
+              },
+              [
+                _c("option", { attrs: { value: "" } }, [
+                  _vm._v("Allotment Loan"),
+                ]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "" } }, [_vm._v("Micro Group")]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "" } }, [
+                  _vm._v("Micro Individual"),
+                ]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "" } }, [
+                  _vm._v("Pension Emergency"),
+                ]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "" } }, [
+                  _vm._v("Pension Loan"),
+                ]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "" } }, [_vm._v("SME Loan")]),
+              ]
+            ),
+          ]
+        ),
+      ]
+    )
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { attrs: { id: "printContent" } }, [
+      _c("img", {
+        staticClass: "mb-24",
+        attrs: { src: "/img/company_header_fit.png", alt: "" },
+      }),
+      _vm._v(" "),
+      _c("section", { attrs: { id: "clientSection" } }, [
+        _c("div", { staticClass: "d-flex flex-column mb-24" }, [
+          _c("div", { staticClass: "d-flex flex-row align-items-center" }, [
+            _c("div", { staticClass: "flex-1" }),
+            _vm._v(" "),
+            _c("span", { staticClass: "font-30 text-bold text-primary-dark" }, [
+              _vm._v("COLLECTION RATE SUMMARY REPORT"),
+            ]),
+            _vm._v(" "),
+            _c(
+              "div",
+              {
+                staticClass: "flex-1",
+                staticStyle: { "padding-left": "24px" },
+              },
+              [
+                _c("span", { staticClass: "text-primary-dark mr-10" }, [
+                  _vm._v("Tuesday 12/21/2021"),
+                ]),
+                _vm._v(" "),
+                _c("span", { staticClass: "text-primary-dark" }, [
+                  _vm._v("Time: 11:36 AM"),
+                ]),
+              ]
+            ),
+          ]),
+          _vm._v(" "),
+          _c(
+            "span",
+            {
+              staticClass:
+                "text-center text-primary-dark text-bold font-md mb-5",
+            },
+            [_vm._v("Butuan Branch (001)")]
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              staticClass:
+                "d-flex flex-row justify-content-center text-primary-dark",
+            },
+            [
+              _c("span", { staticClass: "mr-5" }, [_vm._v("From:")]),
+              _c("span", { staticClass: "mr-16" }, [_vm._v("12/14/2021")]),
+              _vm._v(" "),
+              _c("span", { staticClass: "mr-5" }, [_vm._v("To:")]),
+              _c("span", [_vm._v("12/15/2021")]),
+            ]
+          ),
+        ]),
+        _vm._v(" "),
+        _c("section", { staticClass: "d-flex flex-column mb-16" }, [
+          _c(
+            "span",
+            {
+              staticClass:
+                "text-block p-7 text-bold text-center font-md bbt-dashed-2 mb-7",
+            },
+            [_vm._v("ACTUAL COLLECTION")]
+          ),
+          _vm._v(" "),
+          _c("div", [
+            _c(
+              "span",
+              { staticClass: "text-block p-7 text-bold bg-yellow-pale" },
+              [_vm._v("002 - Micro Group")]
+            ),
+            _vm._v(" "),
+            _c("table", { staticClass: "table td-nb table-thin" }, [
+              _c("thead", [
+                _c("th", [_vm._v("Borrower's Name")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("Date Pay")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("Acct.")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("Principal")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("Int.")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("PD Int.")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("Over")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("Discount")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("Tot. Payment")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("Stat")]),
+              ]),
+              _vm._v(" "),
+              _c("tbody", [
+                _c("tr", [
+                  _c("td", [_vm._v("Gabriel, Julio A.")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("12/15/21")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("720")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("3,500.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("70.66")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("26.25")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("236.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("Delinquent")]),
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [_vm._v("Lagahit, Mario A.")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("12/15/21")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("720")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("3,500.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("70.66")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("26.25")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("236.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("Delinquent")]),
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [_vm._v("Marco, Georgia A.")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("12/15/21")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("720")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("3,500.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("70.66")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("26.25")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("236.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("Delinquent")]),
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [_vm._v("Gabriel, Julio A.")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("12/15/21")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("720")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("3,500.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("70.66")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("26.25")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("236.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("Delinquent")]),
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [_vm._v("Lagahit, Mario A.")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("12/15/21")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("720")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("3,500.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("70.66")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("26.25")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("236.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("Delinquent")]),
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [_vm._v("Marco, Georgia A.")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("12/15/21")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("720")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("3,500.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("70.66")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("26.25")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("236.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("Delinquent")]),
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [_vm._v("Gabriel, Julio A.")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("12/15/21")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("720")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("3,500.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("70.66")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("26.25")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("236.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("Delinquent")]),
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [_vm._v("Lagahit, Mario A.")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("12/15/21")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("720")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("3,500.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("70.66")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("26.25")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("236.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("Delinquent")]),
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [_vm._v("Marco, Georgia A.")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("12/15/21")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("720")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("3,500.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("70.66")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("26.25")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("236.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("Delinquent")]),
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [_vm._v("Gabriel, Julio A.")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("12/15/21")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("720")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("3,500.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("70.66")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("26.25")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("236.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("Delinquent")]),
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [_vm._v("Lagahit, Mario A.")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("12/15/21")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("720")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("3,500.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("70.66")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("26.25")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("236.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("Delinquent")]),
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [_vm._v("Marco, Georgia A.")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("12/15/21")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("720")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("3,500.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("70.66")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("26.25")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("236.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("Delinquent")]),
+                ]),
+                _vm._v(" "),
+                _c("tr", { staticClass: "tr-pt-7 text-bold" }, [
+                  _c("td", [_vm._v("TOTAL")]),
+                  _vm._v(" "),
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("9,500.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("210.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("26.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("236.66")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0.00")]),
+                ]),
+                _vm._v(" "),
+                _c("tr", { staticClass: "border-cell-gray-7" }, [
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td"),
+                ]),
+              ]),
+            ]),
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "mb-16" }, [
+            _c(
+              "span",
+              { staticClass: "text-block p-7 text-bold bg-yellow-pale" },
+              [_vm._v("003 - Pension Loan")]
+            ),
+            _vm._v(" "),
+            _c("table", { staticClass: "table td-nb table-thin" }, [
+              _c("thead", [
+                _c("th", [_vm._v("Borrower's Name")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("Date Pay")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("Acct.")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("Principal")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("Int.")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("PD Int.")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("Over")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("Discount")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("Tot. Payment")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("Stat")]),
+              ]),
+              _vm._v(" "),
+              _c("tbody", [
+                _c("tr", [
+                  _c("td", [_vm._v("Gabriel, Julio A.")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("12/15/21")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("720")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("3,500.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("70.66")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("26.25")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("236.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("Delinquent")]),
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [_vm._v("Lagahit, Mario A.")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("12/15/21")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("720")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("3,500.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("70.66")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("26.25")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("236.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("Delinquent")]),
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [_vm._v("Marco, Georgia A.")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("12/15/21")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("720")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("3,500.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("70.66")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("26.25")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("236.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("Delinquent")]),
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [_vm._v("Gabriel, Julio A.")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("12/15/21")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("720")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("3,500.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("70.66")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("26.25")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("236.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("Delinquent")]),
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [_vm._v("Lagahit, Mario A.")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("12/15/21")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("720")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("3,500.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("70.66")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("26.25")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("236.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("Delinquent")]),
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [_vm._v("Marco, Georgia A.")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("12/15/21")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("720")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("3,500.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("70.66")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("26.25")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("236.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("Delinquent")]),
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [_vm._v("Gabriel, Julio A.")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("12/15/21")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("720")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("3,500.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("70.66")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("26.25")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("236.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("Delinquent")]),
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [_vm._v("Lagahit, Mario A.")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("12/15/21")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("720")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("3,500.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("70.66")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("26.25")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("236.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("Delinquent")]),
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [_vm._v("Marco, Georgia A.")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("12/15/21")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("720")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("3,500.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("70.66")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("26.25")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("236.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("Delinquent")]),
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [_vm._v("Gabriel, Julio A.")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("12/15/21")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("720")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("3,500.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("70.66")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("26.25")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("236.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("Delinquent")]),
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [_vm._v("Lagahit, Mario A.")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("12/15/21")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("720")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("3,500.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("70.66")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("26.25")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("236.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("Delinquent")]),
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [_vm._v("Marco, Georgia A.")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("12/15/21")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("720")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("3,500.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("70.66")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("26.25")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("236.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("Delinquent")]),
+                ]),
+                _vm._v(" "),
+                _c("tr", { staticClass: "tr-pt-7 text-bold" }, [
+                  _c("td", [_vm._v("TOTAL")]),
+                  _vm._v(" "),
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("9,500.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("210.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("26.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("236.66")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0.00")]),
+                ]),
+                _vm._v(" "),
+                _c("tr", { staticClass: "border-cell-gray-7" }, [
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td"),
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td"),
+                ]),
+                _vm._v(" "),
+                _c("tr", { staticClass: "tr-py-7 text-bold bg-green-mint" }, [
+                  _c("td", [_vm._v("TOTAL")]),
+                  _vm._v(" "),
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("9,500.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("210.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("26.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("236.66")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0.00")]),
+                  _vm._v(" "),
+                  _c("td"),
+                ]),
+              ]),
+            ]),
+          ]),
+          _vm._v(" "),
+          _c(
+            "span",
+            {
+              staticClass:
+                "text-block p-7 text-bold text-center font-md bbt-dashed-2 mb-7",
+            },
+            [_vm._v("DUE COLLECTION")]
+          ),
+          _vm._v(" "),
+          _c("div", { staticClass: "mb-16" }, [
+            _c(
+              "span",
+              { staticClass: "text-block p-7 text-bold bg-yellow-pale" },
+              [_vm._v("005 - Micro Individual")]
+            ),
+            _vm._v(" "),
+            _c("table", { staticClass: "table td-nb table-thin" }, [
+              _c("thead", [
+                _c("th", [_vm._v("Borrower's Name")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("Date Pay")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("Acct.")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("Principal")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("Int.")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("PD Int.")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("Over")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("Discount")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("Tot. Payment")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("Stat")]),
+              ]),
+              _vm._v(" "),
+              _c("tbody", [
+                _c("tr", [
+                  _c("td", [_vm._v("Gabriel, Julio A.")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("12/15/21")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("720")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("3,500.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("70.66")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("26.25")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("236.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("Delinquent")]),
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [_vm._v("Lagahit, Mario A.")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("12/15/21")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("720")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("3,500.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("70.66")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("26.25")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("236.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("Delinquent")]),
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [_vm._v("Marco, Georgia A.")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("12/15/21")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("720")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("3,500.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("70.66")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("26.25")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("236.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("Delinquent")]),
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [_vm._v("Gabriel, Julio A.")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("12/15/21")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("720")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("3,500.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("70.66")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("26.25")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("236.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("Delinquent")]),
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [_vm._v("Lagahit, Mario A.")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("12/15/21")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("720")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("3,500.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("70.66")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("26.25")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("236.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("Delinquent")]),
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [_vm._v("Marco, Georgia A.")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("12/15/21")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("720")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("3,500.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("70.66")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("26.25")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("236.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("Delinquent")]),
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [_vm._v("Gabriel, Julio A.")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("12/15/21")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("720")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("3,500.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("70.66")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("26.25")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("236.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("Delinquent")]),
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [_vm._v("Lagahit, Mario A.")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("12/15/21")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("720")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("3,500.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("70.66")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("26.25")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("236.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("Delinquent")]),
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [_vm._v("Marco, Georgia A.")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("12/15/21")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("720")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("3,500.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("70.66")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("26.25")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("236.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("Delinquent")]),
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [_vm._v("Gabriel, Julio A.")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("12/15/21")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("720")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("3,500.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("70.66")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("26.25")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("236.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("Delinquent")]),
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [_vm._v("Lagahit, Mario A.")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("12/15/21")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("720")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("3,500.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("70.66")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("26.25")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("236.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("Delinquent")]),
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [_vm._v("Marco, Georgia A.")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("12/15/21")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("720")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("3,500.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("70.66")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("26.25")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("236.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("Delinquent")]),
+                ]),
+                _vm._v(" "),
+                _c("tr", { staticClass: "tr-pt-7 text-bold" }, [
+                  _c("td", [_vm._v("TOTAL")]),
+                  _vm._v(" "),
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("9,500.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("210.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("26.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("236.66")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0.00")]),
+                ]),
+                _vm._v(" "),
+                _c("tr", { staticClass: "border-cell-gray-7" }, [
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td"),
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td"),
+                ]),
+                _vm._v(" "),
+                _c("tr", { staticClass: "tr-py-7 text-bold bg-green-mint" }, [
+                  _c("td", [_vm._v("TOTAL")]),
+                  _vm._v(" "),
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("9,500.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("210.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("26.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("236.66")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0.00")]),
+                  _vm._v(" "),
+                  _c("td"),
+                ]),
+              ]),
+            ]),
+          ]),
+          _vm._v(" "),
+          _c(
+            "span",
+            {
+              staticClass:
+                "text-block p-7 text-bold text-center font-md bbt-dashed-2 mb-7",
+            },
+            [_vm._v("COLLECTION RATE")]
+          ),
+          _vm._v(" "),
+          _c("table", { staticClass: "table mb-72" }, [
+            _c("tbody", [
+              _c("tr", { staticClass: "bg-skyblue tr-py-7 text-bold" }, [
+                _c("td", [_vm._v("Col. Rate")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0%")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.56%")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.49%")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("1.19%")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00%")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00%")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00%")]),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+              ]),
+            ]),
+          ]),
+        ]),
+      ]),
+      _vm._v(" "),
+      _c("section", { staticClass: "d-flex flex-row mb-72" }, [
+        _c("span", { staticClass: "flex-2 pb-24 text-bold darker-bb mr-64" }, [
+          _vm._v("Prepared By:"),
+        ]),
+        _vm._v(" "),
+        _c("span", { staticClass: "flex-2 pb-24 text-bold darker-bb mr-64" }, [
+          _vm._v("Certified Corrected By:"),
+        ]),
+        _vm._v(" "),
+        _c("span", { staticClass: "flex-2 pb-24 text-bold darker-bb mr-64" }, [
+          _vm._v("Approved By:"),
+        ]),
+        _vm._v(" "),
+        _c("span", { staticClass: "flex-1" }),
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "d-flex mb-24" }, [
+        _c("img", {
+          staticClass: "w-100",
+          attrs: { src: "/img/logo-footer.png", alt: "" },
+        }),
+      ]),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      { staticClass: "d-flex flex-row justify-content-end mb-24" },
+      [
+        _c(
+          "a",
+          {
+            staticClass: "text-green text-md text-bold mr-24",
+            attrs: { href: "#" },
+          },
+          [_vm._v("Previous Page")]
+        ),
+        _vm._v(" "),
+        _c(
+          "a",
+          { staticClass: "text-green text-md text-bold", attrs: { href: "#" } },
+          [_vm._v("Next Page")]
+        ),
+      ]
+    )
+  },
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/ui/reports/collection/Product.vue?vue&type=template&id=2a0656fb&":
+/*!******************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/ui/reports/collection/Product.vue?vue&type=template&id=2a0656fb& ***!
+  \******************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function () {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "d-flex flex-column", staticStyle: { flex: "8" } },
+    [
+      _vm._m(0),
+      _vm._v(" "),
+      _c("div", { staticClass: "sep mb-45" }),
+      _vm._v(" "),
+      _vm._m(1),
+      _vm._v(" "),
+      _vm._m(2),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "d-flex flex-row justify-content-between mb-45" },
+        [
+          _c(
+            "a",
+            {
+              staticClass: "btn btn-purple min-w-150",
+              attrs: {
+                href: "#",
+                "data-toggle": "modal",
+                "data-target": "#dstModal",
+              },
+            },
+            [_vm._v("Generate DST")]
+          ),
+          _vm._v(" "),
+          _c("div", { staticClass: "d-flex flex-row-reverse" }, [
+            _c(
+              "a",
+              {
+                staticClass: "btn btn-default min-w-150",
+                attrs: { href: "#" },
+                on: {
+                  click: function ($event) {
+                    return _vm.print()
+                  },
+                },
+              },
+              [_vm._v("Print")]
+            ),
+            _vm._v(" "),
+            _c(
+              "a",
+              {
+                staticClass: "btn btn-success min-w-150 mr-24",
+                attrs: { href: "#" },
+              },
+              [_vm._v("Download Excel")]
+            ),
+          ]),
+        ]
+      ),
+    ]
+  )
+}
+var staticRenderFns = [
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      { staticClass: "d-flex flex-row font-md align-items-center mb-16" },
+      [
+        _c(
+          "span",
+          {
+            staticClass: "font-lg text-primary-dark",
+            staticStyle: { flex: "3" },
+          },
+          [_vm._v("Transaction")]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass: "d-flex flex-row align-items-center mr-24",
+            staticStyle: { flex: "2" },
+          },
+          [
+            _c("span", { staticClass: "mr-10" }, [_vm._v("From: ")]),
+            _vm._v(" "),
+            _c("input", {
+              staticClass: "form-control",
+              attrs: { type: "date" },
+            }),
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass: "d-flex flex-row align-items-center mr-64",
+            staticStyle: { flex: "2" },
+          },
+          [
+            _c("span", { staticClass: "mr-10" }, [_vm._v("To: ")]),
+            _vm._v(" "),
+            _c("input", {
+              staticClass: "form-control",
+              attrs: { type: "date" },
+            }),
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass: "d-flex flex-row align-items-center mr-24",
+            staticStyle: { flex: "3" },
+          },
+          [
+            _c("span", { staticClass: "mr-10" }, [_vm._v("Type: ")]),
+            _vm._v(" "),
+            _c(
+              "select",
+              {
+                staticClass: "form-control",
+                attrs: { name: "", id: "selectProductClient" },
+              },
+              [
+                _c("option", { attrs: { value: "all_records" } }, [
+                  _vm._v("All Records"),
+                ]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "new_accounts" } }, [
+                  _vm._v("New Accounts"),
+                ]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "" } }, [_vm._v("By Center")]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "" } }, [_vm._v("By Product")]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "" } }, [
+                  _vm._v("By Account Officer"),
+                ]),
+              ]
+            ),
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass: "d-flex flex-row align-items-center mr-24",
+            staticStyle: { flex: "3" },
+          },
+          [
+            _c("span", { staticClass: "mr-10" }, [_vm._v("A.O: ")]),
+            _vm._v(" "),
+            _c(
+              "select",
+              {
+                staticClass: "form-control",
+                attrs: { name: "", id: "selectProductClient" },
+              },
+              [
+                _c("option", { attrs: { value: "" } }, [
+                  _vm._v("Allotment Loan"),
+                ]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "" } }, [_vm._v("Micro Group")]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "" } }, [
+                  _vm._v("Micro Individual"),
+                ]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "" } }, [
+                  _vm._v("Pension Emergency"),
+                ]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "" } }, [
+                  _vm._v("Pension Loan"),
+                ]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "" } }, [_vm._v("SME Loan")]),
+              ]
+            ),
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass: "d-flex flex-row align-items-center",
+            staticStyle: { flex: "3" },
+          },
+          [
+            _c("span", { staticClass: "mr-10" }, [_vm._v("Center: ")]),
+            _vm._v(" "),
+            _c(
+              "select",
+              {
+                staticClass: "form-control",
+                attrs: { name: "", id: "selectProductClient" },
+              },
+              [
+                _c("option", { attrs: { value: "" } }, [
+                  _vm._v("Allotment Loan"),
+                ]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "" } }, [_vm._v("Micro Group")]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "" } }, [
+                  _vm._v("Micro Individual"),
+                ]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "" } }, [
+                  _vm._v("Pension Emergency"),
+                ]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "" } }, [
+                  _vm._v("Pension Loan"),
+                ]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "" } }, [_vm._v("SME Loan")]),
+              ]
+            ),
+          ]
+        ),
+      ]
+    )
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { attrs: { id: "printContent" } }, [
+      _c("img", {
+        staticClass: "mb-24",
+        attrs: { src: "/img/company_header_fit.png", alt: "" },
+      }),
+      _vm._v(" "),
+      _c("section", { attrs: { id: "clientSection" } }, [
+        _c("div", { staticClass: "d-flex flex-column mb-24" }, [
+          _c("div", { staticClass: "d-flex flex-row align-items-center" }, [
+            _c("div", { staticClass: "flex-1" }),
+            _vm._v(" "),
+            _c("span", { staticClass: "font-30 text-bold text-primary-dark" }, [
+              _vm._v("COLLECTION RATE SUMMARY REPORT"),
+            ]),
+            _vm._v(" "),
+            _c(
+              "div",
+              {
+                staticClass: "flex-1",
+                staticStyle: { "padding-left": "24px" },
+              },
+              [
+                _c("span", { staticClass: "text-primary-dark mr-10" }, [
+                  _vm._v("Tuesday 12/21/2021"),
+                ]),
+                _vm._v(" "),
+                _c("span", { staticClass: "text-primary-dark" }, [
+                  _vm._v("Time: 11:36 AM"),
+                ]),
+              ]
+            ),
+          ]),
+          _vm._v(" "),
+          _c(
+            "span",
+            {
+              staticClass:
+                "text-center text-primary-dark text-bold font-md mb-5",
+            },
+            [_vm._v("Butuan Branch (001)")]
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              staticClass:
+                "d-flex flex-row justify-content-center text-primary-dark",
+            },
+            [
+              _c("span", { staticClass: "mr-5" }, [_vm._v("From:")]),
+              _c("span", { staticClass: "mr-16" }, [_vm._v("12/14/2021")]),
+              _vm._v(" "),
+              _c("span", { staticClass: "mr-5" }, [_vm._v("To:")]),
+              _c("span", [_vm._v("12/15/2021")]),
+            ]
+          ),
+        ]),
+        _vm._v(" "),
+        _c("section", { staticClass: "d-flex flex-column mb-16" }, [
+          _c(
+            "span",
+            {
+              staticClass:
+                "text-block p-7 text-bold text-center font-md bbt-dashed-2 mb-7",
+            },
+            [_vm._v("ACTUAL COLLECTION")]
+          ),
+          _vm._v(" "),
+          _c("div", [
+            _c(
+              "span",
+              { staticClass: "text-block p-7 text-bold bg-yellow-pale" },
+              [_vm._v("002 - Micro Group")]
+            ),
+            _vm._v(" "),
+            _c("table", { staticClass: "table td-nb table-thin" }, [
+              _c("thead", [
+                _c("th", [_vm._v("Status")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("Acct.")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("Principal")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("Int.")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("PD Int.")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("Over")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("Discount")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("Tot. Payment")]),
+              ]),
+              _vm._v(" "),
+              _c("tbody", [
+                _c("tr", [
+                  _c("td", [_vm._v("Delinquent")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("720")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("3,500.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("70.66")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("26.25")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("236.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0.00")]),
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [_vm._v("Delinquent")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("720")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("3,500.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("70.66")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("26.25")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("236.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0.00")]),
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [_vm._v("Delinquent")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("720")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("3,500.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("70.66")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("26.25")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("236.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0.00")]),
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [_vm._v("Delinquent")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("720")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("3,500.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("70.66")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("26.25")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("236.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0.00")]),
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [_vm._v("Delinquent")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("720")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("3,500.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("70.66")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("26.25")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("236.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0.00")]),
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [_vm._v("Delinquent")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("720")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("3,500.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("70.66")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("26.25")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("236.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0.00")]),
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [_vm._v("Delinquent")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("720")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("3,500.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("70.66")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("26.25")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("236.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0.00")]),
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [_vm._v("Delinquent")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("720")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("3,500.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("70.66")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("26.25")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("236.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0.00")]),
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [_vm._v("Delinquent")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("720")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("3,500.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("70.66")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("26.25")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("236.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0.00")]),
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [_vm._v("Delinquent")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("720")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("3,500.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("70.66")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("26.25")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("236.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0.00")]),
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [_vm._v("Delinquent")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("720")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("3,500.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("70.66")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("26.25")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("236.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0.00")]),
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [_vm._v("Delinquent")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("720")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("3,500.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("70.66")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("26.25")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("236.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0.00")]),
+                ]),
+                _vm._v(" "),
+                _c("tr", { staticClass: "tr-pt-7 text-bold" }, [
+                  _c("td", [_vm._v("TOTAL")]),
+                  _vm._v(" "),
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("9,500.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("210.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("26.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("236.66")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0.00")]),
+                ]),
+                _vm._v(" "),
+                _c("tr", { staticClass: "border-cell-gray-7" }, [
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td"),
+                ]),
+              ]),
+            ]),
+          ]),
+          _vm._v(" "),
+          _c("div", [
+            _c(
+              "span",
+              { staticClass: "text-block p-7 text-bold bg-yellow-pale" },
+              [_vm._v("003 - Pension Loan")]
+            ),
+            _vm._v(" "),
+            _c("table", { staticClass: "table td-nb table-thin" }, [
+              _c("thead", [
+                _c("th", [_vm._v("Status")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("Acct.")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("Principal")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("Int.")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("PD Int.")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("Over")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("Discount")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("Tot. Payment")]),
+              ]),
+              _vm._v(" "),
+              _c("tbody", [
+                _c("tr", [
+                  _c("td", [_vm._v("Delinquent")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("720")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("3,500.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("70.66")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("26.25")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("236.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0.00")]),
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [_vm._v("Delinquent")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("720")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("3,500.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("70.66")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("26.25")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("236.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0.00")]),
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [_vm._v("Delinquent")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("720")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("3,500.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("70.66")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("26.25")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("236.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0.00")]),
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [_vm._v("Delinquent")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("720")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("3,500.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("70.66")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("26.25")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("236.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0.00")]),
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [_vm._v("Delinquent")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("720")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("3,500.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("70.66")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("26.25")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("236.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0.00")]),
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [_vm._v("Delinquent")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("720")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("3,500.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("70.66")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("26.25")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("236.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0.00")]),
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [_vm._v("Delinquent")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("720")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("3,500.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("70.66")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("26.25")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("236.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0.00")]),
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [_vm._v("Delinquent")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("720")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("3,500.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("70.66")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("26.25")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("236.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0.00")]),
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [_vm._v("Delinquent")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("720")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("3,500.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("70.66")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("26.25")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("236.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0.00")]),
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [_vm._v("Delinquent")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("720")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("3,500.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("70.66")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("26.25")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("236.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0.00")]),
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [_vm._v("Delinquent")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("720")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("3,500.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("70.66")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("26.25")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("236.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0.00")]),
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [_vm._v("Delinquent")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("720")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("3,500.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("70.66")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("26.25")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("236.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0.00")]),
+                ]),
+                _vm._v(" "),
+                _c("tr", { staticClass: "tr-pt-7 text-bold" }, [
+                  _c("td", [_vm._v("TOTAL")]),
+                  _vm._v(" "),
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("9,500.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("210.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("26.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("236.66")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0.00")]),
+                ]),
+                _vm._v(" "),
+                _c("tr", { staticClass: "border-cell-gray-7" }, [
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td"),
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td"),
+                ]),
+                _vm._v(" "),
+                _c("tr", { staticClass: "tr-py-7 text-bold bg-green-mint" }, [
+                  _c("td", [_vm._v("TOTAL")]),
+                  _vm._v(" "),
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("9,500.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("210.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("26.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("236.66")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0.00")]),
+                ]),
+              ]),
+            ]),
+          ]),
+          _vm._v(" "),
+          _c(
+            "span",
+            {
+              staticClass:
+                "text-block p-7 text-bold text-center font-md bbt-dashed-2 mb-7",
+            },
+            [_vm._v("DUE COLLECTION")]
+          ),
+          _vm._v(" "),
+          _c("div", [
+            _c(
+              "span",
+              { staticClass: "text-block p-7 text-bold bg-yellow-pale" },
+              [_vm._v("005 - Micro Individual")]
+            ),
+            _vm._v(" "),
+            _c("table", { staticClass: "table td-nb table-thin" }, [
+              _c("thead", [
+                _c("th", [_vm._v("Status")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("Acct.")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("Principal")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("Int.")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("PD Int.")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("Over")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("Discount")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("Tot. Payment")]),
+              ]),
+              _vm._v(" "),
+              _c("tbody", [
+                _c("tr", [
+                  _c("td", [_vm._v("Delinquent")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("720")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("3,500.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("70.66")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("26.25")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("236.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0.00")]),
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [_vm._v("Delinquent")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("720")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("3,500.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("70.66")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("26.25")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("236.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0.00")]),
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [_vm._v("Delinquent")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("720")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("3,500.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("70.66")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("26.25")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("236.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0.00")]),
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [_vm._v("Delinquent")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("720")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("3,500.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("70.66")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("26.25")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("236.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0.00")]),
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [_vm._v("Delinquent")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("720")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("3,500.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("70.66")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("26.25")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("236.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0.00")]),
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [_vm._v("Delinquent")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("720")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("3,500.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("70.66")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("26.25")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("236.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0.00")]),
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [_vm._v("Delinquent")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("720")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("3,500.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("70.66")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("26.25")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("236.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0.00")]),
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [_vm._v("Delinquent")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("720")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("3,500.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("70.66")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("26.25")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("236.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0.00")]),
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [_vm._v("Delinquent")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("720")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("3,500.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("70.66")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("26.25")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("236.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0.00")]),
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [_vm._v("Delinquent")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("720")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("3,500.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("70.66")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("26.25")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("236.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0.00")]),
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [_vm._v("Delinquent")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("720")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("3,500.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("70.66")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("26.25")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("236.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0.00")]),
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [_vm._v("Delinquent")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("720")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("3,500.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("70.66")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("26.25")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("236.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0.00")]),
+                ]),
+                _vm._v(" "),
+                _c("tr", { staticClass: "tr-pt-7 text-bold" }, [
+                  _c("td", [_vm._v("TOTAL")]),
+                  _vm._v(" "),
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("9,500.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("210.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("26.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("236.66")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0.00")]),
+                ]),
+                _vm._v(" "),
+                _c("tr", { staticClass: "border-cell-gray-7" }, [
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td"),
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td"),
+                ]),
+                _vm._v(" "),
+                _c("tr", { staticClass: "tr-py-7 text-bold bg-green-mint" }, [
+                  _c("td", [_vm._v("TOTAL")]),
+                  _vm._v(" "),
+                  _c("td"),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("9,500.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("210.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("26.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("236.66")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100.00")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0.00")]),
+                ]),
+              ]),
+            ]),
+          ]),
+          _vm._v(" "),
+          _c(
+            "span",
+            {
+              staticClass:
+                "text-block p-7 text-bold text-center font-md bbt-dashed-2 mb-7",
+            },
+            [_vm._v("COLLECTION RATE")]
+          ),
+          _vm._v(" "),
+          _c("table", { staticClass: "table mb-72" }, [
+            _c("tbody", [
+              _c("tr", { staticClass: "bg-skyblue tr-py-7 text-bold" }, [
+                _c("td", [_vm._v("Col. Rate")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0%")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.56%")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.49%")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("1.19%")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00%")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00%")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00%")]),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+              ]),
+            ]),
+          ]),
+        ]),
+      ]),
+      _vm._v(" "),
+      _c("section", { staticClass: "d-flex flex-row mb-72" }, [
+        _c("span", { staticClass: "flex-2 pb-24 text-bold darker-bb mr-64" }, [
+          _vm._v("Prepared By:"),
+        ]),
+        _vm._v(" "),
+        _c("span", { staticClass: "flex-2 pb-24 text-bold darker-bb mr-64" }, [
+          _vm._v("Certified Corrected By:"),
+        ]),
+        _vm._v(" "),
+        _c("span", { staticClass: "flex-2 pb-24 text-bold darker-bb mr-64" }, [
+          _vm._v("Approved By:"),
+        ]),
+        _vm._v(" "),
+        _c("span", { staticClass: "flex-1" }),
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "d-flex mb-24" }, [
+        _c("img", {
+          staticClass: "w-100",
+          attrs: { src: "/img/logo-footer.png", alt: "" },
+        }),
+      ]),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      { staticClass: "d-flex flex-row justify-content-end mb-24" },
+      [
+        _c(
+          "a",
+          {
+            staticClass: "text-green text-md text-bold mr-24",
+            attrs: { href: "#" },
+          },
+          [_vm._v("Previous Page")]
+        ),
+        _vm._v(" "),
+        _c(
+          "a",
+          { staticClass: "text-green text-md text-bold", attrs: { href: "#" } },
+          [_vm._v("Next Page")]
+        ),
+      ]
+    )
+  },
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/ui/reports/release/Ao.vue?vue&type=template&id=ad12461a&":
+/*!**********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/ui/reports/release/Ao.vue?vue&type=template&id=ad12461a& ***!
+  \**********************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function () {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    {
+      staticClass: "d-flex flex-column",
+      staticStyle: { flex: "8", "min-height": "1600px" },
+    },
+    [
+      _vm._m(0),
+      _vm._v(" "),
+      _c("div", { staticClass: "sep mb-45" }),
+      _vm._v(" "),
+      _vm._m(1),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "d-flex flex-row justify-content-between mb-45" },
+        [
+          _c(
+            "a",
+            {
+              staticClass: "btn btn-purple min-w-150",
+              attrs: {
+                href: "#",
+                "data-toggle": "modal",
+                "data-target": "#dstModal",
+              },
+            },
+            [_vm._v("Generate DST")]
+          ),
+          _vm._v(" "),
+          _c("div", { staticClass: "d-flex flex-row-reverse" }, [
+            _c(
+              "a",
+              {
+                staticClass: "btn btn-default min-w-150",
+                attrs: { href: "#" },
+                on: { click: _vm.print },
+              },
+              [_vm._v("Print")]
+            ),
+            _vm._v(" "),
+            _c(
+              "a",
+              {
+                staticClass: "btn btn-success min-w-150 mr-24",
+                attrs: { href: "#" },
+              },
+              [_vm._v("Download Excel")]
+            ),
+          ]),
+        ]
+      ),
+    ]
+  )
+}
+var staticRenderFns = [
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      { staticClass: "d-flex flex-row font-md align-items-center mb-16" },
+      [
+        _c(
+          "span",
+          {
+            staticClass: "font-lg text-primary-dark",
+            staticStyle: { flex: "3" },
+          },
+          [_vm._v("Transaction")]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass: "d-flex flex-row align-items-center mr-24",
+            staticStyle: { flex: "2" },
+          },
+          [
+            _c("span", { staticClass: "mr-10" }, [_vm._v("From: ")]),
+            _vm._v(" "),
+            _c("input", {
+              staticClass: "form-control",
+              attrs: { type: "date" },
+            }),
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass: "d-flex flex-row align-items-center mr-64",
+            staticStyle: { flex: "2" },
+          },
+          [
+            _c("span", { staticClass: "mr-10" }, [_vm._v("To: ")]),
+            _vm._v(" "),
+            _c("input", {
+              staticClass: "form-control",
+              attrs: { type: "date" },
+            }),
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass: "d-flex flex-row align-items-center mr-24",
+            staticStyle: { flex: "2" },
+          },
+          [
+            _c("span", { staticClass: "mr-10" }, [_vm._v("Type: ")]),
+            _vm._v(" "),
+            _c(
+              "select",
+              {
+                staticClass: "form-control",
+                attrs: { name: "", id: "selectProductClient" },
+              },
+              [
+                _c("option", { attrs: { value: "all_records" } }, [
+                  _vm._v("All Records"),
+                ]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "new_accounts" } }, [
+                  _vm._v("New Accounts"),
+                ]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "" } }, [_vm._v("By Center")]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "" } }, [_vm._v("By Product")]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "" } }, [
+                  _vm._v("By Account Officer"),
+                ]),
+              ]
+            ),
+          ]
+        ),
+      ]
+    )
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { attrs: { id: "printContent" } }, [
+      _c("img", {
+        staticClass: "mb-24",
+        attrs: { src: "/img/company_header_fit.png", alt: "" },
+      }),
+      _vm._v(" "),
+      _c("section", { attrs: { id: "clientSection" } }, [
+        _c("div", { staticClass: "d-flex flex-column mb-24" }, [
+          _c("div", { staticClass: "d-flex flex-row align-items-center" }, [
+            _c("div", { staticClass: "flex-1 d-flex flex-column" }, [
+              _c("span", [_vm._v("Account Officer")]),
+              _vm._v(" "),
+              _c("span", { staticClass: "text-bold" }, [
+                _vm._v("001 - Jose Magbanua"),
+              ]),
+            ]),
+            _vm._v(" "),
+            _c("span", { staticClass: "font-30 text-bold text-primary-dark" }, [
+              _vm._v("ACCOUNT OFFICER RELEASE SUMMARY REPORT"),
+            ]),
+            _vm._v(" "),
+            _c(
+              "div",
+              {
+                staticClass: "flex-1 d-flex justify-content-end",
+                staticStyle: { "padding-left": "24px" },
+              },
+              [
+                _c("span", { staticClass: "text-primary-dark mr-10" }, [
+                  _vm._v("Tuesday 12/21/2021"),
+                ]),
+                _vm._v(" "),
+                _c("span", { staticClass: "text-primary-dark" }, [
+                  _vm._v("Time: 11:36 AM"),
+                ]),
+              ]
+            ),
+          ]),
+          _vm._v(" "),
+          _c(
+            "span",
+            {
+              staticClass:
+                "text-center text-primary-dark text-bold font-md mb-5",
+            },
+            [_vm._v("Butuan Branch (001)")]
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              staticClass:
+                "d-flex flex-row justify-content-center text-primary-dark",
+            },
+            [
+              _c("span", { staticClass: "mr-5" }, [_vm._v("From:")]),
+              _c("span", { staticClass: "mr-16" }, [_vm._v("12/14/2021")]),
+              _vm._v(" "),
+              _c("span", { staticClass: "mr-5" }, [_vm._v("To:")]),
+              _c("span", [_vm._v("12/15/2021")]),
+            ]
+          ),
+        ]),
+      ]),
+      _vm._v(" "),
+      _c("section", { staticClass: "d-flex flex-column mb-72" }, [
+        _c(
+          "span",
+          {
+            staticClass: "text-bold bg-yellow-light",
+            staticStyle: { padding: "2px 5px" },
+          },
+          [_vm._v("RELEASES SUMMARY")]
+        ),
+        _vm._v(" "),
+        _c("table", { staticClass: "table td-nb table-thin" }, [
+          _c("thead", [
+            _c("th", [_vm._v("Reference")]),
+            _vm._v(" "),
+            _c("th", [_vm._v("New Acct.")]),
+            _vm._v(" "),
+            _c("th", [_vm._v("Amt. Released")]),
+            _vm._v(" "),
+            _c("th", [_vm._v("Rep. Acct")]),
+            _vm._v(" "),
+            _c("th", [_vm._v("Amt. Released")]),
+            _vm._v(" "),
+            _c("th", [_vm._v("Total Released")]),
+          ]),
+          _vm._v(" "),
+          _c("tbody", [
+            _c("tr", [
+              _c("td", [_vm._v("003-Pension Loan")]),
+              _vm._v(" "),
+              _c("td", [_vm._v("0")]),
+              _vm._v(" "),
+              _c("td", [_vm._v("25,214.00")]),
+              _vm._v(" "),
+              _c("td", [_vm._v("2")]),
+              _vm._v(" "),
+              _c("td", [_vm._v("22,000.00")]),
+              _vm._v(" "),
+              _c("td", [_vm._v("22,000.00")]),
+            ]),
+            _vm._v(" "),
+            _c("tr", [
+              _c("td", [_vm._v("004-Micro Group")]),
+              _vm._v(" "),
+              _c("td", [_vm._v("0")]),
+              _vm._v(" "),
+              _c("td", [_vm._v("25,214.00")]),
+              _vm._v(" "),
+              _c("td", [_vm._v("2")]),
+              _vm._v(" "),
+              _c("td", [_vm._v("22,000.00")]),
+              _vm._v(" "),
+              _c("td", [_vm._v("22,000.00")]),
+            ]),
+            _vm._v(" "),
+            _c("tr", [
+              _c("td", [_vm._v("005-Salary Loan")]),
+              _vm._v(" "),
+              _c("td", [_vm._v("0")]),
+              _vm._v(" "),
+              _c("td", [_vm._v("25,214.00")]),
+              _vm._v(" "),
+              _c("td", [_vm._v("2")]),
+              _vm._v(" "),
+              _c("td", [_vm._v("22,000.00")]),
+              _vm._v(" "),
+              _c("td", [_vm._v("22,000.00")]),
+            ]),
+            _vm._v(" "),
+            _c("tr", { staticClass: "border-cell-gray-7" }, [
+              _c("td"),
+              _vm._v(" "),
+              _c("td"),
+              _vm._v(" "),
+              _c("td"),
+              _vm._v(" "),
+              _c("td"),
+              _vm._v(" "),
+              _c("td"),
+              _vm._v(" "),
+              _c("td"),
+            ]),
+            _vm._v(" "),
+            _c("tr", { staticClass: "tr-pt-7 text-bold bg-skyblue" }, [
+              _c("td", [_vm._v("TOTAL RELEASES")]),
+              _vm._v(" "),
+              _c("td", [_vm._v("0")]),
+              _vm._v(" "),
+              _c("td", [_vm._v("542,412.00")]),
+              _vm._v(" "),
+              _c("td", [_vm._v("6")]),
+              _vm._v(" "),
+              _c("td", [_vm._v("66,000.00")]),
+              _vm._v(" "),
+              _c("td", [_vm._v("66,000.00")]),
+            ]),
+          ]),
+        ]),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass:
+              "d-flex flex-row bg-yellow-pale p-5 align-items-center hide",
+          },
+          [
+            _c("div", { staticClass: "d-flex flex-column flex-1 mr-64" }, [
+              _c("div", { staticClass: "d-flex flex-row flex-1 mb-5" }, [
+                _c(
+                  "div",
+                  {
+                    staticClass:
+                      "d-flex flex-row justify-content-between flex-2 mr-24",
+                  },
+                  [
+                    _c("span", { staticClass: "flex-1" }, [
+                      _vm._v("TOTAL CASH RELEASE"),
+                    ]),
+                    _vm._v(" "),
+                    _c("span", [_vm._v(":")]),
+                  ]
+                ),
+                _vm._v(" "),
+                _c("span", { staticClass: "flex-1" }, [_vm._v("6,347.00")]),
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "d-flex flex-row flex-1 mb-5" }, [
+                _c(
+                  "div",
+                  {
+                    staticClass:
+                      "d-flex flex-row justify-content-between flex-2 mr-24",
+                  },
+                  [
+                    _c("span", { staticClass: "flex-1" }, [
+                      _vm._v("TOTAL CHECK RELEASE"),
+                    ]),
+                    _vm._v(" "),
+                    _c("span", [_vm._v(":")]),
+                  ]
+                ),
+                _vm._v(" "),
+                _c("span", { staticClass: "flex-1" }, [_vm._v("0.00")]),
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "d-flex flex-row flex-1" }, [
+                _c(
+                  "div",
+                  {
+                    staticClass:
+                      "d-flex flex-row justify-content-between flex-2 mr-24",
+                  },
+                  [
+                    _c("span", { staticClass: "flex-1" }, [
+                      _vm._v("TOTAL MEMO RELEASE"),
+                    ]),
+                    _vm._v(" "),
+                    _c("span", [_vm._v(":")]),
+                  ]
+                ),
+                _vm._v(" "),
+                _c("span", { staticClass: "flex-1" }, [_vm._v("1,484.00")]),
+              ]),
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "d-flex flex-column flex-1" }, [
+              _c("div", { staticClass: "info-display" }, [
+                _c("span", { staticClass: "text-primary-dark" }, [
+                  _vm._v("TOTAL RELEASES"),
+                ]),
+                _vm._v(" "),
+                _c("span", { staticClass: "text-primary-dark" }, [
+                  _vm._v("17,000.00"),
+                ]),
+              ]),
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "flex-2" }),
+          ]
+        ),
+      ]),
+      _vm._v(" "),
+      _c(
+        "section",
+        {
+          staticClass: "d-flex flex-row mb-72",
+          staticStyle: { "margin-top": "auto" },
+        },
+        [
+          _c(
+            "span",
+            { staticClass: "flex-2 pb-24 text-bold darker-bb mr-64" },
+            [_vm._v("Prepared By:")]
+          ),
+          _vm._v(" "),
+          _c(
+            "span",
+            { staticClass: "flex-2 pb-24 text-bold darker-bb mr-64" },
+            [_vm._v("Certified Corrected By:")]
+          ),
+          _vm._v(" "),
+          _c(
+            "span",
+            { staticClass: "flex-2 pb-24 text-bold darker-bb mr-64" },
+            [_vm._v("Approved By:")]
+          ),
+          _vm._v(" "),
+          _c("span", { staticClass: "flex-1" }),
+        ]
+      ),
+      _vm._v(" "),
+      _c("div", { staticClass: "d-flex mb-64" }, [
+        _c("img", {
+          staticClass: "w-100",
+          attrs: { src: "/img/logo-footer.png", alt: "" },
+        }),
+      ]),
+    ])
+  },
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/ui/reports/release/Client.vue?vue&type=template&id=933b60e0&":
+/*!**************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/ui/reports/release/Client.vue?vue&type=template&id=933b60e0& ***!
+  \**************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function () {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    {
+      staticClass: "d-flex flex-column",
+      staticStyle: { flex: "8", "min-height": "1500px" },
+    },
+    [
+      _vm._m(0),
+      _vm._v(" "),
+      _c("div", { staticClass: "sep mb-45" }),
+      _vm._v(" "),
+      _vm._m(1),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "d-flex flex-row justify-content-between mb-45" },
+        [
+          _c(
+            "a",
+            {
+              staticClass: "btn btn-purple min-w-150",
+              attrs: {
+                href: "#",
+                "data-toggle": "modal",
+                "data-target": "#dstModal",
+              },
+            },
+            [_vm._v("Generate DST")]
+          ),
+          _vm._v(" "),
+          _c("div", { staticClass: "d-flex flex-row-reverse" }, [
+            _c(
+              "a",
+              {
+                staticClass: "btn btn-default min-w-150",
+                attrs: { href: "#" },
+                on: { click: _vm.print },
+              },
+              [_vm._v("Print")]
+            ),
+            _vm._v(" "),
+            _c(
+              "a",
+              {
+                staticClass: "btn btn-success min-w-150 mr-24",
+                attrs: { href: "#" },
+              },
+              [_vm._v("Download Excel")]
+            ),
+          ]),
+        ]
+      ),
+      _vm._v(" "),
+      _vm._m(2),
+    ]
+  )
+}
+var staticRenderFns = [
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      { staticClass: "d-flex flex-row font-md align-items-center mb-16" },
+      [
+        _c(
+          "span",
+          {
+            staticClass: "font-lg text-primary-dark",
+            staticStyle: { flex: "3" },
+          },
+          [_vm._v("Transaction")]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass: "d-flex flex-row align-items-center mr-24",
+            staticStyle: { flex: "2" },
+          },
+          [
+            _c("span", { staticClass: "mr-10" }, [_vm._v("From: ")]),
+            _vm._v(" "),
+            _c("input", {
+              staticClass: "form-control",
+              attrs: { type: "date" },
+            }),
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass: "d-flex flex-row align-items-center mr-64",
+            staticStyle: { flex: "2" },
+          },
+          [
+            _c("span", { staticClass: "mr-10" }, [_vm._v("To: ")]),
+            _vm._v(" "),
+            _c("input", {
+              staticClass: "form-control",
+              attrs: { type: "date" },
+            }),
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass: "d-flex flex-row align-items-center mr-24",
+            staticStyle: { flex: "2" },
+          },
+          [
+            _c("span", { staticClass: "mr-10" }, [_vm._v("Type: ")]),
+            _vm._v(" "),
+            _c(
+              "select",
+              {
+                staticClass: "form-control",
+                attrs: { name: "", id: "selectProductClient" },
+              },
+              [
+                _c("option", { attrs: { value: "all_records" } }, [
+                  _vm._v("All Records"),
+                ]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "new_accounts" } }, [
+                  _vm._v("New Accounts"),
+                ]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "" } }, [_vm._v("By Center")]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "" } }, [_vm._v("By Product")]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "" } }, [
+                  _vm._v("By Account Officer"),
+                ]),
+              ]
+            ),
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass: "d-flex flex-row align-items-center",
+            staticStyle: { flex: "2" },
+          },
+          [
+            _c("span", { staticClass: "mr-10" }, [_vm._v("Spec: ")]),
+            _vm._v(" "),
+            _c(
+              "select",
+              {
+                staticClass: "form-control",
+                attrs: { name: "", id: "selectProductClient" },
+              },
+              [
+                _c("option", { attrs: { value: "" } }, [
+                  _vm._v("Allotment Loan"),
+                ]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "" } }, [_vm._v("Micro Group")]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "" } }, [
+                  _vm._v("Micro Individual"),
+                ]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "" } }, [
+                  _vm._v("Pension Emergency"),
+                ]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "" } }, [
+                  _vm._v("Pension Loan"),
+                ]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "" } }, [_vm._v("SME Loan")]),
+              ]
+            ),
+          ]
+        ),
+      ]
+    )
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { attrs: { id: "printContent" } }, [
+      _c("img", {
+        staticClass: "mb-24",
+        attrs: { src: "/img/company_header_fit.png", alt: "" },
+      }),
+      _vm._v(" "),
+      _c("section", { attrs: { id: "clientSection" } }, [
+        _c("div", { staticClass: "d-flex flex-column mb-16" }, [
+          _c("div", { staticClass: "d-flex flex-row align-items-center" }, [
+            _c("div", { staticClass: "flex-1" }),
+            _vm._v(" "),
+            _c("span", { staticClass: "font-30 text-bold text-primary-dark" }, [
+              _vm._v("SUMMARY OF LOAN RELEASE"),
+            ]),
+            _vm._v(" "),
+            _c(
+              "div",
+              {
+                staticClass: "flex-1",
+                staticStyle: { "padding-left": "24px" },
+              },
+              [
+                _c("span", { staticClass: "text-primary-dark mr-10" }, [
+                  _vm._v("Tuesday 12/21/2021"),
+                ]),
+                _vm._v(" "),
+                _c("span", { staticClass: "text-primary-dark" }, [
+                  _vm._v("Time: 11:36 AM"),
+                ]),
+              ]
+            ),
+          ]),
+          _vm._v(" "),
+          _c(
+            "span",
+            {
+              staticClass:
+                "text-center text-primary-dark text-bold font-md mb-5",
+            },
+            [_vm._v("Butuan Branch (001)")]
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              staticClass:
+                "d-flex flex-row justify-content-center text-primary-dark",
+            },
+            [
+              _c("span", { staticClass: "mr-5" }, [_vm._v("From:")]),
+              _c("span", { staticClass: "mr-16" }, [_vm._v("12/14/2021")]),
+              _vm._v(" "),
+              _c("span", { staticClass: "mr-5" }, [_vm._v("To:")]),
+              _c("span", [_vm._v("12/15/2021")]),
+            ]
+          ),
+        ]),
+        _vm._v(" "),
+        _c("section", { staticClass: "d-flex flex-column mb-16" }, [
+          _c(
+            "span",
+            {
+              staticClass: "text-bold bg-yellow-light",
+              staticStyle: { padding: "2px 5px" },
+            },
+            [_vm._v("RELEASES SUMMARY")]
+          ),
+          _vm._v(" "),
+          _c("table", { staticClass: "table td-nb table-thin" }, [
+            _c("thead", [
+              _c("th", [_vm._v("Acct. #")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Acct. Name")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Date Loan")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Term")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Amount Loan")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Fil. Fee")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("D.S")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Ins.")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Notl")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Affidavit")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Ded. Bal")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Prep")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Net Prcds")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Type")]),
+            ]),
+            _vm._v(" "),
+            _c("tbody", [
+              _c("tr", [
+                _c("td", [_vm._v("001-002-0012021")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("Gabriel, Julio A.")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("12/15/21")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("720")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("3,500.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("70.66")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("26.25")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("236.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("100.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("3,607.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("CSH")]),
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("td", [_vm._v("001-002-0012022")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("Lagahit, Mario A.")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("12/15/21")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("720")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("3,500.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("70.66")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("26.25")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("236.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("100.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("3,607.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("CSH")]),
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("td", [_vm._v("001-002-0012023")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("Marco, Georgia A.")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("12/15/21")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("720")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("3,500.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("70.66")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("26.25")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("236.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("100.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("3,607.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("CSH")]),
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("td", [_vm._v("001-002-0012021")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("Gabriel, Julio A.")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("12/15/21")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("720")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("3,500.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("70.66")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("26.25")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("236.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("100.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("3,607.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("CSH")]),
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("td", [_vm._v("001-002-0012022")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("Lagahit, Mario A.")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("12/15/21")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("720")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("3,500.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("70.66")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("26.25")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("236.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("100.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("3,607.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("CSH")]),
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("td", [_vm._v("001-002-0012023")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("Marco, Georgia A.")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("12/15/21")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("720")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("3,500.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("70.66")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("26.25")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("236.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("100.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("3,607.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("CSH")]),
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("td", [_vm._v("001-002-0012021")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("Gabriel, Julio A.")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("12/15/21")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("720")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("3,500.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("70.66")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("26.25")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("236.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("100.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("3,607.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("CSH")]),
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("td", [_vm._v("001-002-0012022")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("Lagahit, Mario A.")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("12/15/21")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("720")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("3,500.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("70.66")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("26.25")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("236.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("100.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("3,607.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("CSH")]),
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("td", [_vm._v("001-002-0012023")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("Marco, Georgia A.")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("12/15/21")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("720")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("3,500.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("70.66")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("26.25")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("236.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("100.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("3,607.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("CSH")]),
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("td", [_vm._v("001-002-0012021")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("Gabriel, Julio A.")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("12/15/21")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("720")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("3,500.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("70.66")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("26.25")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("236.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("100.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("3,607.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("CSH")]),
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("td", [_vm._v("001-002-0012022")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("Lagahit, Mario A.")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("12/15/21")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("720")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("3,500.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("70.66")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("26.25")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("236.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("100.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("3,607.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("CSH")]),
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("td", [_vm._v("001-002-0012023")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("Marco, Georgia A.")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("12/15/21")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("720")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("3,500.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("70.66")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("26.25")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("236.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("100.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("3,607.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("CSH")]),
+              ]),
+              _vm._v(" "),
+              _c("tr", { staticClass: "border-cell-gray-7" }, [
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+              ]),
+              _vm._v(" "),
+              _c("tr", { staticClass: "tr-pt-7 text-bold" }, [
+                _c("td", [_vm._v("TOTAL")]),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td", [_vm._v("9,500.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("210.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("26.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("236.66")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("100.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("3,607.00")]),
+                _vm._v(" "),
+                _c("td"),
+              ]),
+            ]),
+          ]),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              staticClass:
+                "d-flex flex-row bg-yellow-pale p-5 align-items-center",
+            },
+            [
+              _c("div", { staticClass: "d-flex flex-column flex-1 mr-64" }, [
+                _c("div", { staticClass: "d-flex flex-row flex-1 mb-5" }, [
+                  _c(
+                    "div",
+                    {
+                      staticClass:
+                        "d-flex flex-row justify-content-between flex-2 mr-24",
+                    },
+                    [
+                      _c("span", { staticClass: "flex-1" }, [
+                        _vm._v("TOTAL CASH RELEASE"),
+                      ]),
+                      _vm._v(" "),
+                      _c("span", [_vm._v(":")]),
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "flex-1" }, [_vm._v("6,347.00")]),
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "d-flex flex-row flex-1 mb-5" }, [
+                  _c(
+                    "div",
+                    {
+                      staticClass:
+                        "d-flex flex-row justify-content-between flex-2 mr-24",
+                    },
+                    [
+                      _c("span", { staticClass: "flex-1" }, [
+                        _vm._v("TOTAL CHECK RELEASE"),
+                      ]),
+                      _vm._v(" "),
+                      _c("span", [_vm._v(":")]),
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "flex-1" }, [_vm._v("0.00")]),
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "d-flex flex-row flex-1" }, [
+                  _c(
+                    "div",
+                    {
+                      staticClass:
+                        "d-flex flex-row justify-content-between flex-2 mr-24",
+                    },
+                    [
+                      _c("span", { staticClass: "flex-1" }, [
+                        _vm._v("TOTAL MEMO RELEASE"),
+                      ]),
+                      _vm._v(" "),
+                      _c("span", [_vm._v(":")]),
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "flex-1" }, [_vm._v("1,484.00")]),
+                ]),
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "d-flex flex-column flex-1" }, [
+                _c("div", { staticClass: "info-display" }, [
+                  _c("span", { staticClass: "text-primary-dark" }, [
+                    _vm._v("TOTAL RELEASES"),
+                  ]),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "text-primary-dark" }, [
+                    _vm._v("17,000.00"),
+                  ]),
+                ]),
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "flex-2" }),
+            ]
+          ),
+        ]),
+      ]),
+      _vm._v(" "),
+      _c(
+        "section",
+        {
+          staticClass: "d-flex flex-row mb-72",
+          staticStyle: { "margin-top": "auto" },
+        },
+        [
+          _c(
+            "span",
+            { staticClass: "flex-2 pb-24 text-bold darker-bb mr-64" },
+            [_vm._v("Prepared By:")]
+          ),
+          _vm._v(" "),
+          _c(
+            "span",
+            { staticClass: "flex-2 pb-24 text-bold darker-bb mr-64" },
+            [_vm._v("Certified Corrected By:")]
+          ),
+          _vm._v(" "),
+          _c(
+            "span",
+            { staticClass: "flex-2 pb-24 text-bold darker-bb mr-64" },
+            [_vm._v("Approved By:")]
+          ),
+          _vm._v(" "),
+          _c("span", { staticClass: "flex-1" }),
+        ]
+      ),
+      _vm._v(" "),
+      _c("div", { staticClass: "d-flex mb-64" }, [
+        _c("img", {
+          staticClass: "w-100",
+          attrs: { src: "dist/img/logo-footer.png", alt: "" },
+        }),
+      ]),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "d-flex mb-64", staticStyle: { "margin-top": "auto" } },
+        [
+          _c("img", {
+            staticClass: "w-100",
+            attrs: { src: "/img/logo-footer.png", alt: "" },
+          }),
+        ]
+      ),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      {
+        staticClass: "modal",
+        attrs: { id: "dstModal", tabindex: "-1", role: "dialog" },
+      },
+      [
+        _c(
+          "div",
+          {
+            staticClass: "modal-dialog modal-lg",
+            staticStyle: { "min-width": "60%" },
+            attrs: { role: "document" },
+          },
+          [
+            _c("div", { staticClass: "modal-content" }, [
+              _c("div", { staticClass: "modal-body p-24" }, [
+                _c("div", { staticClass: "d-flex flex-column" }, [
+                  _c("img", {
+                    staticClass: "mb-24",
+                    attrs: { src: "/img/company_header_fit.png", alt: "" },
+                  }),
+                  _vm._v(" "),
+                  _c("section", { attrs: { id: "clientSection" } }, [
+                    _c("div", { staticClass: "d-flex flex-column mb-16" }, [
+                      _c(
+                        "div",
+                        { staticClass: "d-flex flex-row align-items-center" },
+                        [
+                          _c("div", { staticClass: "flex-1" }),
+                          _vm._v(" "),
+                          _c(
+                            "span",
+                            {
+                              staticClass:
+                                "font-30 text-bold text-primary-dark",
+                            },
+                            [_vm._v("SUMMARY OF ALL NEW RELEASES BY DST")]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            {
+                              staticClass: "flex-1",
+                              staticStyle: { "padding-left": "24px" },
+                            },
+                            [
+                              _c(
+                                "span",
+                                { staticClass: "text-primary-dark mr-10" },
+                                [_vm._v("Tuesday 12/21/2021")]
+                              ),
+                              _vm._v(" "),
+                              _c("span", { staticClass: "text-primary-dark" }, [
+                                _vm._v("Time: 11:36 AM"),
+                              ]),
+                            ]
+                          ),
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "span",
+                        {
+                          staticClass:
+                            "text-center text-primary-dark text-bold font-md mb-5",
+                        },
+                        [_vm._v("Butuan Branch (001)")]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        {
+                          staticClass:
+                            "d-flex flex-row justify-content-center text-primary-dark",
+                        },
+                        [
+                          _c("span", { staticClass: "mr-5" }, [
+                            _vm._v("From:"),
+                          ]),
+                          _c("span", { staticClass: "mr-16" }, [
+                            _vm._v("12/14/2021"),
+                          ]),
+                          _vm._v(" "),
+                          _c("span", { staticClass: "mr-5" }, [_vm._v("To:")]),
+                          _c("span", [_vm._v("12/15/2021")]),
+                        ]
+                      ),
+                    ]),
+                    _vm._v(" "),
+                    _c("section", { staticClass: "d-flex flex-column mb-64" }, [
+                      _c(
+                        "span",
+                        {
+                          staticClass: "text-bold bg-yellow-light",
+                          staticStyle: { padding: "2px 5px" },
+                        },
+                        [_vm._v("RELEASES SUMMARY")]
+                      ),
+                      _vm._v(" "),
+                      _c("table", { staticClass: "table td-nb table-thin" }, [
+                        _c("thead", [
+                          _c("th", [_vm._v("Term")]),
+                          _vm._v(" "),
+                          _c("th", [_vm._v("Amount Loan")]),
+                          _vm._v(" "),
+                          _c("th", [_vm._v("Proportion")]),
+                          _vm._v(" "),
+                          _c("th", [_vm._v("Tax Rate")]),
+                          _vm._v(" "),
+                          _c("th", [_vm._v("DST Total")]),
+                        ]),
+                        _vm._v(" "),
+                        _c("tbody", [
+                          _c("tr", [
+                            _c("td", [_vm._v("30")]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v("0.00")]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v("0.00")]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v("0.00%")]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v("0.00")]),
+                          ]),
+                          _vm._v(" "),
+                          _c("tr", [
+                            _c("td", [_vm._v("60")]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v("0.00")]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v("0.00")]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v("0.00%")]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v("0.00")]),
+                          ]),
+                          _vm._v(" "),
+                          _c("tr", [
+                            _c("td", [_vm._v("90")]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v("0.00")]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v("0.00")]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v("0.00%")]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v("0.00")]),
+                          ]),
+                          _vm._v(" "),
+                          _c("tr", [
+                            _c("td", [_vm._v("120")]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v("0.00")]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v("0.00")]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v("0.00%")]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v("0.00")]),
+                          ]),
+                          _vm._v(" "),
+                          _c("tr", { staticClass: "border-cell-gray-7" }, [
+                            _c("td"),
+                            _vm._v(" "),
+                            _c("td"),
+                            _vm._v(" "),
+                            _c("td"),
+                            _vm._v(" "),
+                            _c("td"),
+                            _vm._v(" "),
+                            _c("td"),
+                          ]),
+                          _vm._v(" "),
+                          _c("tr", { staticClass: "tr-pt-7 text-bold" }, [
+                            _c("td", [_vm._v("TOTAL")]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v("22,000.00")]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v("10,000.00")]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v("0.00%")]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v("81.37")]),
+                          ]),
+                        ]),
+                      ]),
+                    ]),
+                  ]),
+                  _vm._v(" "),
+                  _c("section", { staticClass: "d-flex flex-row mb-72" }, [
+                    _c(
+                      "span",
+                      { staticClass: "flex-2 pb-24 text-bold darker-bb mr-64" },
+                      [_vm._v("Prepared By:")]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "span",
+                      { staticClass: "flex-2 pb-24 text-bold darker-bb mr-64" },
+                      [_vm._v("Certified Corrected By:")]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "span",
+                      { staticClass: "flex-2 pb-24 text-bold darker-bb mr-64" },
+                      [_vm._v("Approved By:")]
+                    ),
+                    _vm._v(" "),
+                    _c("span", { staticClass: "flex-1" }),
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    {
+                      staticClass:
+                        "d-flex flex-row justify-content-between mb-45",
+                    },
+                    [
+                      _c("span"),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "d-flex flex-row-reverse" }, [
+                        _c(
+                          "a",
+                          {
+                            staticClass: "btn btn-default min-w-150",
+                            attrs: { href: "#" },
+                          },
+                          [_vm._v("Print")]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "a",
+                          {
+                            staticClass: "btn btn-success min-w-150 mr-24",
+                            attrs: { href: "#" },
+                          },
+                          [_vm._v("Download Excel")]
+                        ),
+                      ]),
+                    ]
+                  ),
+                ]),
+              ]),
+            ]),
+          ]
+        ),
+      ]
+    )
+  },
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/ui/reports/release/Product.vue?vue&type=template&id=6c0c820c&":
+/*!***************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/ui/reports/release/Product.vue?vue&type=template&id=6c0c820c& ***!
+  \***************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function () {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    {
+      staticClass: "d-flex flex-column",
+      staticStyle: { flex: "8", "min-height": "1500px" },
+    },
+    [
+      _vm._m(0),
+      _vm._v(" "),
+      _c("div", { staticClass: "sep mb-45" }),
+      _vm._v(" "),
+      _vm._m(1),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "d-flex flex-row justify-content-between mb-45" },
+        [
+          _c(
+            "div",
+            {
+              staticClass:
+                "d-flex flex-row-reverse justify-content-start flex-1",
+            },
+            [
+              _c(
+                "a",
+                {
+                  staticClass: "btn btn-default min-w-150",
+                  attrs: { href: "#" },
+                  on: {
+                    click: function ($event) {
+                      return _vm.print()
+                    },
+                  },
+                },
+                [_vm._v("Print")]
+              ),
+              _vm._v(" "),
+              _c(
+                "a",
+                {
+                  staticClass: "btn btn-success min-w-150 mr-24",
+                  attrs: { href: "#" },
+                },
+                [_vm._v("Download Excel")]
+              ),
+            ]
+          ),
+        ]
+      ),
+    ]
+  )
+}
+var staticRenderFns = [
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      { staticClass: "d-flex flex-row font-md align-items-center mb-16" },
+      [
+        _c(
+          "span",
+          {
+            staticClass: "font-lg text-primary-dark",
+            staticStyle: { flex: "3" },
+          },
+          [_vm._v("Transaction")]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass: "d-flex flex-row align-items-center mr-24",
+            staticStyle: { flex: "2" },
+          },
+          [
+            _c("span", { staticClass: "mr-10" }, [_vm._v("From: ")]),
+            _vm._v(" "),
+            _c("input", {
+              staticClass: "form-control",
+              attrs: { type: "date" },
+            }),
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass: "d-flex flex-row align-items-center mr-64",
+            staticStyle: { flex: "2" },
+          },
+          [
+            _c("span", { staticClass: "mr-10" }, [_vm._v("To: ")]),
+            _vm._v(" "),
+            _c("input", {
+              staticClass: "form-control",
+              attrs: { type: "date" },
+            }),
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass: "d-flex flex-row align-items-center mr-24",
+            staticStyle: { flex: "2" },
+          },
+          [
+            _c("span", { staticClass: "mr-10" }, [_vm._v("Type: ")]),
+            _vm._v(" "),
+            _c(
+              "select",
+              {
+                staticClass: "form-control",
+                attrs: { name: "", id: "selectProductClient" },
+              },
+              [
+                _c("option", { attrs: { value: "all_records" } }, [
+                  _vm._v("All Records"),
+                ]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "new_accounts" } }, [
+                  _vm._v("New Accounts"),
+                ]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "" } }, [_vm._v("By Center")]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "" } }, [_vm._v("By Product")]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "" } }, [
+                  _vm._v("By Account Officer"),
+                ]),
+              ]
+            ),
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass: "d-flex flex-row align-items-center",
+            staticStyle: { flex: "2" },
+          },
+          [
+            _c("span", { staticClass: "mr-10" }, [_vm._v("Spec: ")]),
+            _vm._v(" "),
+            _c(
+              "select",
+              {
+                staticClass: "form-control",
+                attrs: { name: "", id: "selectProductClient" },
+              },
+              [
+                _c("option", { attrs: { value: "" } }, [
+                  _vm._v("Allotment Loan"),
+                ]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "" } }, [_vm._v("Micro Group")]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "" } }, [
+                  _vm._v("Micro Individual"),
+                ]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "" } }, [
+                  _vm._v("Pension Emergency"),
+                ]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "" } }, [
+                  _vm._v("Pension Loan"),
+                ]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "" } }, [_vm._v("SME Loan")]),
+              ]
+            ),
+          ]
+        ),
+      ]
+    )
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { attrs: { id: "printContent" } }, [
+      _c("img", {
+        staticClass: "mb-24",
+        attrs: { src: "/img/company_header_fit.png", alt: "" },
+      }),
+      _vm._v(" "),
+      _c("section", { attrs: { id: "clientSection" } }, [
+        _c("div", { staticClass: "d-flex flex-column mb-16" }, [
+          _c("div", { staticClass: "d-flex flex-row align-items-center" }, [
+            _c("div", { staticClass: "flex-1" }),
+            _vm._v(" "),
+            _c("span", { staticClass: "font-30 text-bold text-primary-dark" }, [
+              _vm._v("SUMMARY RELEASE AND PAYMENT BY PRODUCT"),
+            ]),
+            _vm._v(" "),
+            _c(
+              "div",
+              {
+                staticClass: "flex-1",
+                staticStyle: { "padding-left": "24px" },
+              },
+              [
+                _c("span", { staticClass: "text-primary-dark mr-10" }, [
+                  _vm._v("Tuesday 12/21/2021"),
+                ]),
+                _vm._v(" "),
+                _c("span", { staticClass: "text-primary-dark" }, [
+                  _vm._v("Time: 11:36 AM"),
+                ]),
+              ]
+            ),
+          ]),
+          _vm._v(" "),
+          _c(
+            "span",
+            {
+              staticClass:
+                "text-center text-primary-dark text-bold font-md mb-5",
+            },
+            [_vm._v("Butuan Branch (001)")]
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              staticClass:
+                "d-flex flex-row justify-content-center text-primary-dark",
+            },
+            [
+              _c("span", { staticClass: "mr-5" }, [_vm._v("From:")]),
+              _c("span", { staticClass: "mr-16" }, [_vm._v("12/14/2021")]),
+              _vm._v(" "),
+              _c("span", { staticClass: "mr-5" }, [_vm._v("To:")]),
+              _c("span", [_vm._v("12/15/2021")]),
+            ]
+          ),
+        ]),
+        _vm._v(" "),
+        _c("section", { staticClass: "d-flex flex-column mb-72" }, [
+          _c(
+            "span",
+            {
+              staticClass: "text-bold bg-yellow-light",
+              staticStyle: { padding: "2px 5px" },
+            },
+            [_vm._v("RELEASES SUMMARY")]
+          ),
+          _vm._v(" "),
+          _c("table", { staticClass: "table td-nb table-thin" }, [
+            _c("thead", [
+              _c("th", [_vm._v("Reference")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Principal")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Interest")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Filing Fee")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Doc. Stamp")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Insurance")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Notarial")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Affidavit")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Deduct Bal")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Prepaid")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Net Proceeds")]),
+            ]),
+            _vm._v(" "),
+            _c("tbody", [
+              _c("tr", [
+                _c("td", [_vm._v("0063 - Pension Loan")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("8,500.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("2,435.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("121.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("41.66")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("500.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("200.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("1,484.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("6,347.00")]),
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("td", [_vm._v("0064 - Micro Group")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("8,500.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("2,435.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("121.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("41.66")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("500.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("200.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("1,484.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("6,347.00")]),
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("td", [_vm._v("0065 - Salary Loan")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("8,500.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("2,435.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("121.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("41.66")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("500.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("200.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("1,484.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("6,347.00")]),
+              ]),
+              _vm._v(" "),
+              _c("tr", { staticClass: "border-cell-gray-7" }, [
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+              ]),
+              _vm._v(" "),
+              _c("tr", { staticClass: "tr-pt-7" }, [
+                _c("td", [_vm._v("TOTAL RELEASES")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("122,500.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("8,435.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("121.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("41.66")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("500.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("200.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("1,484.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("20,347.00")]),
+              ]),
+            ]),
+          ]),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              staticClass:
+                "d-flex flex-row bg-yellow-pale p-5 align-items-center",
+            },
+            [
+              _c("div", { staticClass: "d-flex flex-column flex-1 mr-64" }, [
+                _c("div", { staticClass: "d-flex flex-row flex-1 mb-5" }, [
+                  _c(
+                    "div",
+                    {
+                      staticClass:
+                        "d-flex flex-row justify-content-between flex-2 mr-24",
+                    },
+                    [
+                      _c("span", { staticClass: "flex-1" }, [
+                        _vm._v("TOTAL CASH RELEASE"),
+                      ]),
+                      _vm._v(" "),
+                      _c("span", [_vm._v(":")]),
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "flex-1" }, [_vm._v("6,347.00")]),
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "d-flex flex-row flex-1 mb-5" }, [
+                  _c(
+                    "div",
+                    {
+                      staticClass:
+                        "d-flex flex-row justify-content-between flex-2 mr-24",
+                    },
+                    [
+                      _c("span", { staticClass: "flex-1" }, [
+                        _vm._v("TOTAL CHECK RELEASE"),
+                      ]),
+                      _vm._v(" "),
+                      _c("span", [_vm._v(":")]),
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "flex-1" }, [_vm._v("0.00")]),
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "d-flex flex-row flex-1" }, [
+                  _c(
+                    "div",
+                    {
+                      staticClass:
+                        "d-flex flex-row justify-content-between flex-2 mr-24",
+                    },
+                    [
+                      _c("span", { staticClass: "flex-1" }, [
+                        _vm._v("TOTAL MEMO RELEASE"),
+                      ]),
+                      _vm._v(" "),
+                      _c("span", [_vm._v(":")]),
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "flex-1" }, [_vm._v("1,484.00")]),
+                ]),
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "d-flex flex-column flex-1" }, [
+                _c("div", { staticClass: "info-display" }, [
+                  _c("span", { staticClass: "text-primary-dark" }, [
+                    _vm._v("TOTAL RELEASES"),
+                  ]),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "text-primary-dark" }, [
+                    _vm._v("17,000.00"),
+                  ]),
+                ]),
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "flex-2" }),
+            ]
+          ),
+        ]),
+      ]),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "d-flex mb-64", staticStyle: { "margin-top": "auto" } },
+        [
+          _c("img", {
+            staticClass: "w-100",
+            attrs: { src: "/img/logo-footer.png", alt: "" },
+          }),
+        ]
+      ),
+    ])
+  },
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/ui/reports/repayment/Client.vue?vue&type=template&id=49049a64&":
+/*!****************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/ui/reports/repayment/Client.vue?vue&type=template&id=49049a64& ***!
+  \****************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function () {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    {
+      staticClass: "d-flex flex-column",
+      staticStyle: { flex: "8", "min-height": "1600px" },
+    },
+    [
+      _vm._m(0),
+      _vm._v(" "),
+      _c("div", { staticClass: "sep mb-45" }),
+      _vm._v(" "),
+      _vm._m(1),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "d-flex flex-row justify-content-between mb-45" },
+        [
+          _c(
+            "div",
+            {
+              staticClass:
+                "d-flex flex-row-reverse justify-content-start flex-1",
+            },
+            [
+              _c(
+                "a",
+                {
+                  staticClass: "btn btn-default min-w-150",
+                  attrs: { href: "#" },
+                  on: {
+                    click: function ($event) {
+                      return _vm.print()
+                    },
+                  },
+                },
+                [_vm._v("Print")]
+              ),
+              _vm._v(" "),
+              _c(
+                "a",
+                {
+                  staticClass: "btn btn-success min-w-150 mr-24",
+                  attrs: { href: "#" },
+                },
+                [_vm._v("Download Excel")]
+              ),
+            ]
+          ),
+        ]
+      ),
+    ]
+  )
+}
+var staticRenderFns = [
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      { staticClass: "d-flex flex-row font-md align-items-center mb-16" },
+      [
+        _c(
+          "span",
+          {
+            staticClass: "font-lg text-primary-dark",
+            staticStyle: { flex: "3" },
+          },
+          [_vm._v("Transaction")]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass: "d-flex flex-row align-items-center mr-24",
+            staticStyle: { flex: "2" },
+          },
+          [
+            _c("span", { staticClass: "mr-10" }, [_vm._v("From: ")]),
+            _vm._v(" "),
+            _c("input", {
+              staticClass: "form-control",
+              attrs: { type: "date" },
+            }),
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass: "d-flex flex-row align-items-center mr-64",
+            staticStyle: { flex: "2" },
+          },
+          [
+            _c("span", { staticClass: "mr-10" }, [_vm._v("To: ")]),
+            _vm._v(" "),
+            _c("input", {
+              staticClass: "form-control",
+              attrs: { type: "date" },
+            }),
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass: "d-flex flex-row align-items-center mr-24",
+            staticStyle: { flex: "2" },
+          },
+          [
+            _c("span", { staticClass: "mr-10" }, [_vm._v("Type: ")]),
+            _vm._v(" "),
+            _c(
+              "select",
+              {
+                staticClass: "form-control",
+                attrs: { name: "", id: "selectProductClient" },
+              },
+              [
+                _c("option", { attrs: { value: "all_records" } }, [
+                  _vm._v("All Records"),
+                ]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "new_accounts" } }, [
+                  _vm._v("New Accounts"),
+                ]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "" } }, [_vm._v("By Center")]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "" } }, [_vm._v("By Product")]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "" } }, [
+                  _vm._v("By Account Officer"),
+                ]),
+              ]
+            ),
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass: "d-flex flex-row align-items-center",
+            staticStyle: { flex: "2" },
+          },
+          [
+            _c("span", { staticClass: "mr-10" }, [_vm._v("Spec: ")]),
+            _vm._v(" "),
+            _c(
+              "select",
+              {
+                staticClass: "form-control",
+                attrs: { name: "", id: "selectProductClient" },
+              },
+              [
+                _c("option", { attrs: { value: "" } }, [
+                  _vm._v("Allotment Loan"),
+                ]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "" } }, [_vm._v("Micro Group")]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "" } }, [
+                  _vm._v("Micro Individual"),
+                ]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "" } }, [
+                  _vm._v("Pension Emergency"),
+                ]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "" } }, [
+                  _vm._v("Pension Loan"),
+                ]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "" } }, [_vm._v("SME Loan")]),
+              ]
+            ),
+          ]
+        ),
+      ]
+    )
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { attrs: { id: "printContent" } }, [
+      _c("img", {
+        staticClass: "mb-24",
+        attrs: { src: "/img/company_header_fit.png", alt: "" },
+      }),
+      _vm._v(" "),
+      _c("section", { attrs: { id: "clientSection" } }, [
+        _c("div", { staticClass: "d-flex flex-column mb-16" }, [
+          _c("div", { staticClass: "d-flex flex-row align-items-center" }, [
+            _c("div", { staticClass: "flex-1" }),
+            _vm._v(" "),
+            _c("span", { staticClass: "font-30 text-bold text-primary-dark" }, [
+              _vm._v("SUMMARY OF LOAN REPAYMENTS"),
+            ]),
+            _vm._v(" "),
+            _c(
+              "div",
+              {
+                staticClass: "flex-1",
+                staticStyle: { "padding-left": "24px" },
+              },
+              [
+                _c("span", { staticClass: "text-primary-dark mr-10" }, [
+                  _vm._v("Tuesday 12/21/2021"),
+                ]),
+                _vm._v(" "),
+                _c("span", { staticClass: "text-primary-dark" }, [
+                  _vm._v("Time: 11:36 AM"),
+                ]),
+              ]
+            ),
+          ]),
+          _vm._v(" "),
+          _c(
+            "span",
+            {
+              staticClass:
+                "text-center text-primary-dark text-bold font-md mb-5",
+            },
+            [_vm._v("Butuan Branch (001)")]
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              staticClass:
+                "d-flex flex-row justify-content-center text-primary-dark",
+            },
+            [
+              _c("span", { staticClass: "mr-5" }, [_vm._v("From:")]),
+              _c("span", { staticClass: "mr-16" }, [_vm._v("12/14/2021")]),
+              _vm._v(" "),
+              _c("span", { staticClass: "mr-5" }, [_vm._v("To:")]),
+              _c("span", [_vm._v("12/15/2021")]),
+            ]
+          ),
+        ]),
+        _vm._v(" "),
+        _c("section", { staticClass: "d-flex flex-column flex-1" }, [
+          _c("table", { staticClass: "table td-nb table-thin th-nbt" }, [
+            _c("thead", [
+              _c("th", [_vm._v("Borrower's Name")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Date Pay")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("O.R#")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Principal")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Int.")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("PD Int.")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Over")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Discount")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Tot. Payment")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Net Int.")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("VAT")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Type")]),
+            ]),
+            _vm._v(" "),
+            _c("tbody", [
+              _c("tr", [
+                _c("td", [_vm._v("Gabriel, Julio A.")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("12/15/21")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("720")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("3,500.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("70.66")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("26.25")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("236.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("100.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("CSH")]),
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("td", [_vm._v("Lagahit, Mario A.")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("12/15/21")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("720")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("3,500.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("70.66")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("26.25")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("236.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("100.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("CSH")]),
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("td", [_vm._v("Marco, Georgia A.")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("12/15/21")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("720")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("3,500.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("70.66")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("26.25")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("236.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("100.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("CSH")]),
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("td", [_vm._v("Gabriel, Julio A.")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("12/15/21")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("720")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("3,500.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("70.66")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("26.25")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("236.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("100.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("CSH")]),
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("td", [_vm._v("Lagahit, Mario A.")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("12/15/21")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("720")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("3,500.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("70.66")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("26.25")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("236.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("100.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("CSH")]),
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("td", [_vm._v("Marco, Georgia A.")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("12/15/21")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("720")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("3,500.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("70.66")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("26.25")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("236.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("100.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("CSH")]),
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("td", [_vm._v("Gabriel, Julio A.")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("12/15/21")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("720")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("3,500.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("70.66")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("26.25")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("236.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("100.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("CSH")]),
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("td", [_vm._v("Lagahit, Mario A.")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("12/15/21")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("720")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("3,500.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("70.66")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("26.25")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("236.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("100.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("CSH")]),
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("td", [_vm._v("Marco, Georgia A.")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("12/15/21")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("720")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("3,500.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("70.66")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("26.25")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("236.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("100.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("CSH")]),
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("td", [_vm._v("Gabriel, Julio A.")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("12/15/21")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("720")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("3,500.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("70.66")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("26.25")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("236.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("100.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("CSH")]),
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("td", [_vm._v("Lagahit, Mario A.")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("12/15/21")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("720")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("3,500.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("70.66")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("26.25")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("236.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("100.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("CSH")]),
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("td", [_vm._v("Marco, Georgia A.")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("12/15/21")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("720")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("3,500.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("70.66")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("26.25")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("236.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("100.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("CSH")]),
+              ]),
+              _vm._v(" "),
+              _c("tr", { staticClass: "border-cell-gray-7" }, [
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+              ]),
+              _vm._v(" "),
+              _c("tr", { staticClass: "tr-pt-7 text-bold" }, [
+                _c("td", [_vm._v("TOTAL")]),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td", [_vm._v("9,500.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("210.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("26.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("236.66")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("100.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td"),
+              ]),
+            ]),
+          ]),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              staticClass:
+                "d-flex flex-row bg-skyblue p-10 align-items-center mb-72",
+            },
+            [
+              _c("div", { staticClass: "d-flex flex-column flex-1 mr-64" }, [
+                _c("div", { staticClass: "d-flex flex-row flex-1 mb-5" }, [
+                  _c(
+                    "div",
+                    {
+                      staticClass:
+                        "d-flex flex-row justify-content-between flex-2 mr-24",
+                    },
+                    [
+                      _c("span", { staticClass: "flex-1" }, [
+                        _vm._v("TOTAL CASH RELEASE"),
+                      ]),
+                      _vm._v(" "),
+                      _c("span", [_vm._v(":")]),
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "flex-1" }, [_vm._v("6,347.00")]),
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "d-flex flex-row flex-1 mb-5" }, [
+                  _c(
+                    "div",
+                    {
+                      staticClass:
+                        "d-flex flex-row justify-content-between flex-2 mr-24",
+                    },
+                    [
+                      _c("span", { staticClass: "flex-1" }, [
+                        _vm._v("TOTAL CHECK RELEASE"),
+                      ]),
+                      _vm._v(" "),
+                      _c("span", [_vm._v(":")]),
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "flex-1" }, [_vm._v("0.00")]),
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "d-flex flex-row flex-1" }, [
+                  _c(
+                    "div",
+                    {
+                      staticClass:
+                        "d-flex flex-row justify-content-between flex-2 mr-24",
+                    },
+                    [
+                      _c("span", { staticClass: "flex-1" }, [
+                        _vm._v("TOTAL MEMO RELEASE"),
+                      ]),
+                      _vm._v(" "),
+                      _c("span", [_vm._v(":")]),
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "flex-1" }, [_vm._v("1,484.00")]),
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "d-flex flex-row flex-1" }, [
+                  _c(
+                    "div",
+                    {
+                      staticClass:
+                        "d-flex flex-row justify-content-between flex-2 mr-24",
+                    },
+                    [
+                      _c("span", { staticClass: "flex-1 pl-24" }, [
+                        _vm._v("DED BALANCE"),
+                      ]),
+                      _vm._v(" "),
+                      _c("span", [_vm._v(":")]),
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "flex-1" }, [_vm._v("14,852.00")]),
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "d-flex flex-row flex-1" }, [
+                  _c(
+                    "div",
+                    {
+                      staticClass:
+                        "d-flex flex-row justify-content-between flex-2 mr-24",
+                    },
+                    [
+                      _c("span", { staticClass: "flex-1 pl-24" }, [
+                        _vm._v("OFFSET PF"),
+                      ]),
+                      _vm._v(" "),
+                      _c("span", [_vm._v(":")]),
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "flex-1" }, [_vm._v("14,852.00")]),
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "d-flex flex-row flex-1" }, [
+                  _c(
+                    "div",
+                    {
+                      staticClass:
+                        "d-flex flex-row justify-content-between flex-2 mr-24",
+                    },
+                    [
+                      _c("span", { staticClass: "flex-1 pl-24" }, [
+                        _vm._v("OVER PAYMENT"),
+                      ]),
+                      _vm._v(" "),
+                      _c("span", [_vm._v(":")]),
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "flex-1" }, [_vm._v("14,852.00")]),
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "d-flex flex-row flex-1" }, [
+                  _c(
+                    "div",
+                    {
+                      staticClass:
+                        "d-flex flex-row justify-content-between flex-2 mr-24",
+                    },
+                    [
+                      _c("span", { staticClass: "flex-1 pl-24" }, [
+                        _vm._v("DISCOUNT"),
+                      ]),
+                      _vm._v(" "),
+                      _c("span", [_vm._v(":")]),
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "flex-1" }, [_vm._v("14,852.00")]),
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "d-flex flex-row flex-1" }, [
+                  _c(
+                    "div",
+                    {
+                      staticClass:
+                        "d-flex flex-row justify-content-between flex-2 mr-24",
+                    },
+                    [
+                      _c("span", { staticClass: "flex-1 pl-24" }, [
+                        _vm._v("CANCELLED"),
+                      ]),
+                      _vm._v(" "),
+                      _c("span", [_vm._v(":")]),
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "flex-1" }, [_vm._v("14,852.00")]),
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "d-flex flex-row flex-1" }, [
+                  _c(
+                    "div",
+                    {
+                      staticClass:
+                        "d-flex flex-row justify-content-between flex-2 mr-24",
+                    },
+                    [
+                      _c("span", { staticClass: "flex-1 pl-24" }, [
+                        _vm._v("BRANCH"),
+                      ]),
+                      _vm._v(" "),
+                      _c("span", [_vm._v(":")]),
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "flex-1" }, [_vm._v("14,852.00")]),
+                ]),
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "d-flex flex-column flex-1" }, [
+                _c("div", { staticClass: "info-display" }, [
+                  _c("span", { staticClass: "text-primary-dark" }, [
+                    _vm._v("TOTAL RELEASES"),
+                  ]),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "text-primary-dark" }, [
+                    _vm._v("172,222.00"),
+                  ]),
+                ]),
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "flex-2" }),
+            ]
+          ),
+        ]),
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "d-flex mb-64 mt-auto" }, [
+        _c("img", {
+          staticClass: "w-100",
+          attrs: { src: "/img/logo-footer.png", alt: "" },
+        }),
+      ]),
+    ])
+  },
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/ui/reports/repayment/Product.vue?vue&type=template&id=e8be62b4&":
+/*!*****************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/ui/reports/repayment/Product.vue?vue&type=template&id=e8be62b4& ***!
+  \*****************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function () {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    {
+      staticClass: "d-flex flex-column",
+      staticStyle: { flex: "8", "min-height": "1600px" },
+    },
+    [
+      _vm._m(0),
+      _vm._v(" "),
+      _c("div", { staticClass: "sep mb-45" }),
+      _vm._v(" "),
+      _vm._m(1),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "d-flex flex-row justify-content-between mb-45" },
+        [
+          _c(
+            "div",
+            {
+              staticClass:
+                "d-flex flex-row-reverse justify-content-start flex-1",
+            },
+            [
+              _c(
+                "a",
+                {
+                  staticClass: "btn btn-default min-w-150",
+                  attrs: { href: "#" },
+                  on: {
+                    click: function ($event) {
+                      return _vm.print()
+                    },
+                  },
+                },
+                [_vm._v("Print")]
+              ),
+              _vm._v(" "),
+              _c(
+                "a",
+                {
+                  staticClass: "btn btn-success min-w-150 mr-24",
+                  attrs: { href: "#" },
+                },
+                [_vm._v("Download Excel")]
+              ),
+            ]
+          ),
+        ]
+      ),
+    ]
+  )
+}
+var staticRenderFns = [
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      { staticClass: "d-flex flex-row font-md align-items-center mb-16" },
+      [
+        _c(
+          "span",
+          {
+            staticClass: "font-lg text-primary-dark",
+            staticStyle: { flex: "3" },
+          },
+          [_vm._v("Transaction")]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass: "d-flex flex-row align-items-center mr-24",
+            staticStyle: { flex: "2" },
+          },
+          [
+            _c("span", { staticClass: "mr-10" }, [_vm._v("From: ")]),
+            _vm._v(" "),
+            _c("input", {
+              staticClass: "form-control",
+              attrs: { type: "date" },
+            }),
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass: "d-flex flex-row align-items-center",
+            staticStyle: { flex: "2" },
+          },
+          [
+            _c("span", { staticClass: "mr-10" }, [_vm._v("To: ")]),
+            _vm._v(" "),
+            _c("input", {
+              staticClass: "form-control",
+              attrs: { type: "date" },
+            }),
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass: "d-flex flex-row align-items-center mr-24 hide",
+            staticStyle: { flex: "2" },
+          },
+          [
+            _c("span", { staticClass: "mr-10" }, [_vm._v("Type: ")]),
+            _vm._v(" "),
+            _c(
+              "select",
+              {
+                staticClass: "form-control",
+                attrs: { name: "", id: "selectProductClient" },
+              },
+              [
+                _c("option", { attrs: { value: "all_records" } }, [
+                  _vm._v("All Records"),
+                ]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "new_accounts" } }, [
+                  _vm._v("New Accounts"),
+                ]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "" } }, [_vm._v("By Center")]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "" } }, [_vm._v("By Product")]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "" } }, [
+                  _vm._v("By Account Officer"),
+                ]),
+              ]
+            ),
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass: "d-flex flex-row align-items-center hide",
+            staticStyle: { flex: "2" },
+          },
+          [
+            _c("span", { staticClass: "mr-10" }, [_vm._v("Spec: ")]),
+            _vm._v(" "),
+            _c(
+              "select",
+              {
+                staticClass: "form-control",
+                attrs: { name: "", id: "selectProductClient" },
+              },
+              [
+                _c("option", { attrs: { value: "" } }, [
+                  _vm._v("Allotment Loan"),
+                ]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "" } }, [_vm._v("Micro Group")]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "" } }, [
+                  _vm._v("Micro Individual"),
+                ]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "" } }, [
+                  _vm._v("Pension Emergency"),
+                ]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "" } }, [
+                  _vm._v("Pension Loan"),
+                ]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "" } }, [_vm._v("SME Loan")]),
+              ]
+            ),
+          ]
+        ),
+      ]
+    )
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { attrs: { id: "printContent" } }, [
+      _c("img", {
+        staticClass: "mb-24",
+        attrs: { src: "/img/company_header_fit.png", alt: "" },
+      }),
+      _vm._v(" "),
+      _c("section", { attrs: { id: "clientSection" } }, [
+        _c("div", { staticClass: "d-flex flex-column mb-16" }, [
+          _c("div", { staticClass: "d-flex flex-row align-items-center" }, [
+            _c("div", { staticClass: "flex-1" }),
+            _vm._v(" "),
+            _c("span", { staticClass: "font-30 text-bold text-primary-dark" }, [
+              _vm._v("SUMMARY RELEASE AND PAYMENT BY PRODUCT"),
+            ]),
+            _vm._v(" "),
+            _c(
+              "div",
+              {
+                staticClass: "flex-1",
+                staticStyle: { "padding-left": "24px" },
+              },
+              [
+                _c("span", { staticClass: "text-primary-dark mr-10" }, [
+                  _vm._v("Tuesday 12/21/2021"),
+                ]),
+                _vm._v(" "),
+                _c("span", { staticClass: "text-primary-dark" }, [
+                  _vm._v("Time: 11:36 AM"),
+                ]),
+              ]
+            ),
+          ]),
+          _vm._v(" "),
+          _c(
+            "span",
+            {
+              staticClass:
+                "text-center text-primary-dark text-bold font-md mb-5",
+            },
+            [_vm._v("Butuan Branch (001)")]
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              staticClass:
+                "d-flex flex-row justify-content-center text-primary-dark",
+            },
+            [
+              _c("span", { staticClass: "mr-5" }, [_vm._v("From:")]),
+              _c("span", { staticClass: "mr-16" }, [_vm._v("12/14/2021")]),
+              _vm._v(" "),
+              _c("span", { staticClass: "mr-5" }, [_vm._v("To:")]),
+              _c("span", [_vm._v("12/15/2021")]),
+            ]
+          ),
+        ]),
+        _vm._v(" "),
+        _c("section", { staticClass: "d-flex flex-column mb-72" }, [
+          _c(
+            "span",
+            {
+              staticClass: "text-bold bg-yellow-light",
+              staticStyle: { padding: "2px 5px" },
+            },
+            [_vm._v("RELEASES SUMMARY")]
+          ),
+          _vm._v(" "),
+          _c("table", { staticClass: "table td-nb table-thin" }, [
+            _c("thead", [
+              _c("th", [_vm._v("Reference")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Principal")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Interest")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Filing Fee")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Doc. Stamp")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Insurance")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Notarial")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Affidavit")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Deduct Bal")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Prepaid")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Net Proceeds")]),
+            ]),
+            _vm._v(" "),
+            _c("tbody", [
+              _c("tr", [
+                _c("td", [_vm._v("0063 - Pension Loan")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("8,500.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("2,435.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("121.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("41.66")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("500.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("200.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("1,484.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("6,347.00")]),
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("td", [_vm._v("0064 - Micro Group")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("8,500.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("2,435.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("121.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("41.66")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("500.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("200.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("1,484.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("6,347.00")]),
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("td", [_vm._v("0065 - Salary Loan")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("8,500.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("2,435.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("121.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("41.66")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("500.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("200.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("1,484.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("6,347.00")]),
+              ]),
+              _vm._v(" "),
+              _c("tr", { staticClass: "border-cell-gray-7" }, [
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td"),
+              ]),
+              _vm._v(" "),
+              _c("tr", { staticClass: "tr-pt-7" }, [
+                _c("td", [_vm._v("TOTAL RELEASES")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("122,500.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("8,435.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("121.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("41.66")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("500.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("200.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("1,484.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("0.00")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("20,347.00")]),
+              ]),
+            ]),
+          ]),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              staticClass:
+                "d-flex flex-row bg-yellow-pale p-5 align-items-center",
+            },
+            [
+              _c("div", { staticClass: "d-flex flex-column flex-1 mr-64" }, [
+                _c("div", { staticClass: "d-flex flex-row flex-1 mb-5" }, [
+                  _c(
+                    "div",
+                    {
+                      staticClass:
+                        "d-flex flex-row justify-content-between flex-2 mr-24",
+                    },
+                    [
+                      _c("span", { staticClass: "flex-1" }, [
+                        _vm._v("TOTAL CASH RELEASE"),
+                      ]),
+                      _vm._v(" "),
+                      _c("span", [_vm._v(":")]),
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "flex-1" }, [_vm._v("6,347.00")]),
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "d-flex flex-row flex-1 mb-5" }, [
+                  _c(
+                    "div",
+                    {
+                      staticClass:
+                        "d-flex flex-row justify-content-between flex-2 mr-24",
+                    },
+                    [
+                      _c("span", { staticClass: "flex-1" }, [
+                        _vm._v("TOTAL CHECK RELEASE"),
+                      ]),
+                      _vm._v(" "),
+                      _c("span", [_vm._v(":")]),
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "flex-1" }, [_vm._v("0.00")]),
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "d-flex flex-row flex-1" }, [
+                  _c(
+                    "div",
+                    {
+                      staticClass:
+                        "d-flex flex-row justify-content-between flex-2 mr-24",
+                    },
+                    [
+                      _c("span", { staticClass: "flex-1" }, [
+                        _vm._v("TOTAL MEMO RELEASE"),
+                      ]),
+                      _vm._v(" "),
+                      _c("span", [_vm._v(":")]),
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "flex-1" }, [_vm._v("1,484.00")]),
+                ]),
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "d-flex flex-column flex-1" }, [
+                _c("div", { staticClass: "info-display" }, [
+                  _c("span", { staticClass: "text-primary-dark" }, [
+                    _vm._v("TOTAL RELEASES"),
+                  ]),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "text-primary-dark" }, [
+                    _vm._v("17,000.00"),
+                  ]),
+                ]),
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "flex-2" }),
+            ]
+          ),
+        ]),
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "d-flex mb-64 mt-auto" }, [
+        _c("img", {
+          staticClass: "w-100",
+          attrs: { src: "/img/logo-footer.png", alt: "" },
+        }),
       ]),
     ])
   },
@@ -57319,24 +73077,47 @@ var render = function () {
         : _vm._e(),
       _vm._v(" "),
       _c("div", { staticClass: "d-flex flex-row-reverse" }, [
-        _c(
-          "a",
-          {
-            staticClass: "btn btn-success tab-navigate",
-            staticStyle: { flex: "2" },
-            attrs: {
-              href: "#custom-content-below-coborrowerinfo",
-              "data-tab": "custom-content-below-coborrowerinfo-tab",
-            },
-            on: {
-              click: function ($event) {
-                $event.preventDefault()
-                return _vm.submitForm()
+        !_vm.pclient
+          ? _c(
+              "a",
+              {
+                staticClass: "btn btn-success tab-navigate",
+                staticStyle: { flex: "2" },
+                attrs: {
+                  href: "#custom-content-below-coborrowerinfo",
+                  "data-tab": "custom-content-below-coborrowerinfo-tab",
+                },
+                on: {
+                  click: function ($event) {
+                    $event.preventDefault()
+                    return _vm.submitForm()
+                  },
+                },
               },
-            },
-          },
-          [_vm._v("Next")]
-        ),
+              [_vm._v("Next")]
+            )
+          : _vm._e(),
+        _vm._v(" "),
+        _vm.pclient
+          ? _c(
+              "a",
+              {
+                staticClass: "btn btn-success tab-navigate",
+                staticStyle: { flex: "2" },
+                attrs: {
+                  href: "#custom-content-below-coborrowerinfo",
+                  "data-tab": "custom-content-below-coborrowerinfo-tab",
+                },
+                on: {
+                  click: function ($event) {
+                    $event.preventDefault()
+                    return _vm.submitForm()
+                  },
+                },
+              },
+              [_vm._v("Save")]
+            )
+          : _vm._e(),
         _vm._v(" "),
         _c("div", { staticStyle: { flex: "22" } }),
       ]),

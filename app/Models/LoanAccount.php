@@ -184,7 +184,7 @@ class LoanAccount extends Model
       return $amortization;
    }
 
-   public function getCurrentAmortization(){
+    public function getCurrentAmortization(){
 
       $amortization = $this->currentAmortization();
       

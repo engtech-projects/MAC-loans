@@ -105,13 +105,13 @@
 					  <p>Rejected Release</p>
 					</a>
 				  </li>
-				  <li class="nav-item pick">
+				  <li class="nav-item pick {{isset($nav) && isActive($nav[1], 'repayment entry')? 'active menu-open' : ''}}">
 					  <div class="flex navicon">
 							<div class="top-line"></div>
 							<div class="mid-circle"></div>
 							<div class="bottom-line"></div>
 						</div>
-					<a href="repayment_entry.php" class="nav-link">
+					<a href="{{route('transaction.repayment_entry')}}" class="nav-link">
 					  <p>Repayment Entry</p>
 					</a>
 				  </li>
@@ -259,8 +259,8 @@
 				</ul>
 			</li>
 
-			<li class="nav-item">
-				<a href="reports_transaction_product.php" class="nav-link main-link">
+			<li class="nav-item pick {{isset($nav) && isActive($nav[0], 'reports')? 'active menu-open' : ''}}">
+				<a href="{{route('reports.transaction')}}" class="nav-link main-link">
 				  <p>
 					Reports
 					<i class="right fas fa-caret-right"></i>

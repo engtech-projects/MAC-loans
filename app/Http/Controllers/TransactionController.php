@@ -32,4 +32,12 @@ class TransactionController extends Controller
 			'title' => 'Rejected Release Edit',
 		]);
 	}
+
+	public function repaymentEntry(){
+		return view('transaction.repayment_entry')->with([
+			'nav' => ['transaction', 'repayment entry'],
+			'title' => 'Repayment Entry',
+		]);
+	}
+
 }
