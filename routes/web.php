@@ -60,6 +60,7 @@ Route::group(['middleware' => 'auth'], function (){
 	Route::get('/reports/collection/product', [ReportsController::class, 'collectionProduct'])->name('reports.collection.product');
 	Route::get('/reports/collection/client', [ReportsController::class, 'collectionClient'])->name('reports.collection.client');
 	Route::get('/reports/collection/ao', [ReportsController::class, 'collectionAo'])->name('reports.collection.ao');
+
 });
 
 

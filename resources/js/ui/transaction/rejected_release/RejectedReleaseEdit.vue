@@ -401,7 +401,7 @@
 		},
 		methods: {
 			fetchRejectedAccounts:function(){
-				axios.get(window.location.origin + '/transaction/rejected_accounts', {
+				axios.get(window.location.origin + '/api/account/rejected', {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
 						'Content-Type': 'application/json',
@@ -409,8 +409,24 @@
 					}
 				})
 				.then(function (response) {
-					this.rejectedAccounts = response.data;
-					this.setAccount;
+					this.rejectedAccounts = response.data.data;
+					// this.setAccount;
+				}.bind(this))
+				.catch(function (error) {
+					console.log(error);
+				}.bind(this));
+			},
+
+			fetchRejectedAccount:function(){
+				axios.get(window.location.origin + '/api/account/show/' + this.id, {
+				headers: {
+					'Authorization': 'Bearer ' + this.token,
+						'Content-Type': 'application/json',
+						'Accept': 'application/json'
+					}
+				})
+				.then(function (response) {
+					this.rejectedAccount = response.data.data;
 				}.bind(this))
 				.catch(function (error) {
 					console.log(error);
@@ -477,6 +493,14 @@
 						householdMembers : [],
 						outstandingObligations : [],
 						loanAccounts:[],
+					},
+					documents:{
+						date_release: '',
+						description: '',
+						bank: '',
+						account_no: '',
+						card_no:'',
+						promissory_number: '',
 					}
 				}
 			},
@@ -516,7 +540,15 @@
 			save:function(data){
 				this.rejectedAccount = data;
 				this.saveBorrower();
-			}
+			},
+				notify:function(title, text, type){
+				this.$notify({
+					group: 'foo',
+					title: title,
+					text: text,
+					type: type,
+				});
+			},
 		},
 		computed:{
 			borrowers:function(){
@@ -535,6 +567,7 @@
 			}
 		},
         mounted() {	
+			this.fetchRejectedAccount();
 			this.fetchRejectedAccounts();
 			this.resetLoanDetails();
         }

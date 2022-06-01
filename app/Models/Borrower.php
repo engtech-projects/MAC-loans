@@ -11,6 +11,7 @@ class Borrower extends Model
 
     protected $table = 'borrower_info';
     protected $primaryKey = 'borrower_id';
+	public static $snakeAttributes = false;
 	
     protected $fillable = [
     	'borrower_id',

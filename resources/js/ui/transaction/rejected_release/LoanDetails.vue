@@ -177,6 +177,46 @@
 			</div>
 		</section>
 
+		<section class="mb-24 pb-45" style="flex:21;border-bottom:1px solid #AAA">
+			<span class="section-title mb-24">Documents</span>
+			<div class="d-flex flex-column mb-24">
+				<span class="text-bold bg-yellow-light mb-10" style="padding:2px 5px;">Dacion en Pago</span>
+				<div class="d-flex justify-content-between mb-10">
+					<span class="align-self-end text-bold">Description</span>
+					<div class="d-flex align-items-center">
+						<span class="flex-1 mr-10 text-bold">Date Release</span>
+						<input :value="dateToYMD(new Date)" type="date" class="form-control form-input flex-1">
+					</div>
+				</div>
+				<textarea v-model="loanDetails.documents.description" class="form-control form-input no-resize" style="height:120px!important;"></textarea>
+			</div>
+			<div class="d-flex flex-column mb-16">
+				<span class="text-bold bg-yellow-light mb-10" style="padding:2px 5px;">DOA ATM / PASSBOOK</span>
+				<div class="form-group mb-10">
+					<label for="">Name of Bank</label>
+					<select v-model="loanDetails.documents.bank" name="" id="" class="form-control form-input">
+						<option value="Land Bank">Land Bank</option>
+						<option value="BDO">BDO</option>
+						<option value="BPI">BPI</option>
+					</select>
+				</div>
+				<div class="form-group mb-10">
+					<label for="">Account No.</label>
+					<input v-model="loanDetails.documents.account_no" type="text" class="form-control form-input">
+				</div>
+				<div class="form-group mb-10">
+					<label for="">Card No.</label>
+					<input v-model="loanDetails.documents.card_no" type="text" class="form-control form-input">
+				</div>
+			</div>
+			<div class="d-flex flex-column">
+				<span class="text-bold bg-yellow-light mb-10" style="padding:2px 5px;">MOA / SME</span>
+				<div class="form-group mb-10">
+					<label for="">Promissory Number</label>
+					<input v-model="loanDetails.documents.promissory_number" type="text" class="form-control form-input">
+				</div>
+			</div>
+		</section>
 
 
 		<div class="d-flex flex-row-reverse mb-45 justify-content-between">
@@ -253,7 +293,15 @@ export default {
 				memo : '',
 				total_deduction : '',
 				net_proceeds : '',
-				release_type : ''
+				release_type : '',
+				documents:{
+					date_release: '',
+					description: '',
+					bank: '',
+					account_no: '',
+					card_no:'',
+					promissory_number: '',
+				}
 			}
 		}
 	},
@@ -360,11 +408,11 @@ export default {
 			return Math.ceil((this.loanDetails.terms / 30) * mode);
 		},
 		docStamp:function(){
-			this.loanDetails.document_stamp =  (this.loanDetails.loan_amount / 200 * 1.5 * this.loanDetails.terms / 365).toFixed(2);
+			this.loanDetails.documents_stamp =  (this.loanDetails.loan_amount / 200 * 1.5 * this.loanDetails.terms / 365).toFixed(2);
 			if(this.loanDetails.terms / 30 > 12){
-				this.loanDetails.document_stamp =  (this.loanDetails.loan_amount / 200 * 1.5).toFixed(2);
+				this.loanDetails.documents_stamp =  (this.loanDetails.loan_amount / 200 * 1.5).toFixed(2);
 			}
-			return this.loanDetails.document_stamp;
+			return this.loanDetails.documents_stamp;
 		},
 		calculateInsurance:function(){
 			let rate = 1;
@@ -375,7 +423,7 @@ export default {
 			return this.loanDetails.insurance;
 		},
 		totalDeductions:function(){
-			this.loanDetails.total_deduction = (parseFloat(this.loanDetails.memo) + parseFloat(this.loanDetails.filing_fee) + parseFloat(this.loanDetails.affidavit_fee) + parseFloat(this.loanDetails.notarial_fee) + parseFloat(this.loanDetails.document_stamp) + parseFloat(this.loanDetails.insurance)).toFixed(2);
+			this.loanDetails.total_deduction = (parseFloat(this.loanDetails.memo) + parseFloat(this.loanDetails.filing_fee) + parseFloat(this.loanDetails.affidavit_fee) + parseFloat(this.loanDetails.notarial_fee) + parseFloat(this.loanDetails.documents_stamp) + parseFloat(this.loanDetails.insurance)).toFixed(2);
 			return this.loanDetails.total_deduction;
 		},
 		netProceeds:function(){

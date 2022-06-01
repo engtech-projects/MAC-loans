@@ -80,7 +80,7 @@ class PaymentController extends BaseController
             }
         }
 
-        return $this->sendResponse($request->input(), 'Override');
+        return $this->sendResponse('Override', 'Override');
 
     }
 
