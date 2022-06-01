@@ -18,6 +18,7 @@
  Vue.component('personal-information', require('./ui/client_information/PersonalInformation.vue').default);
  Vue.component('branch', require('./components/Branch.vue').default);
  Vue.component('client-list-side', require('./components/ClientListSide.vue').default);
+ Vue.component('upload-file', require('./components/UploadFile.vue').default);
  
  Vue.component('cancel-payments', require('./ui/maintenance/CancelPayments.vue').default);
  Vue.component('product-setup', require('./ui/maintenance/ProductSetup.vue').default);

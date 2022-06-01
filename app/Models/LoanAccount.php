@@ -191,7 +191,7 @@ class LoanAccount extends Model
       # compute for total payables
       # compute for total payments
       # get last payment
-
+	  if($amortization){
       $amortization->shortpayment = $this->shortpayment($amortization->loan_account_id, $amortization->id);
       // $amortization->prev_record = $this->getPrevRecord($amortization->loan_account_id, $amortization->id);
       $amortization->delinquent = $this->getDelinquent($amortization->amortization_id);
@@ -230,7 +230,7 @@ class LoanAccount extends Model
             }
          }
       }
-      
+	}
       return $amortization;
    }
 
