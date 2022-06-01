@@ -37,6 +37,11 @@
  Vue.component('rejected-release', require('./ui/transaction/rejected_release/RejectedRelease.vue').default);
  Vue.component('rejected-release-edit', require('./ui/transaction/rejected_release/RejectedReleaseEdit.vue').default);
  Vue.component('repayment-entry', require('./ui/transaction/repayment_entry/RepaymentEntry.vue').default);
+
+ Vue.component('repayment-details', require('./ui/transaction/repayment_entry/RepaymentDetails.vue').default);
+ Vue.component('override-payment', require('./ui/transaction/override_payment/OverridePayment.vue').default);
+ Vue.component('overridepayment-details', require('./ui/transaction/override_payment/LoanDetails.vue').default);
+
  Vue.component('reports-transaction', require('./ui/reports/Transaction.vue').default);
  Vue.component('reports-release-product', require('./ui/reports/release/Product.vue').default);
  Vue.component('reports-release-client', require('./ui/reports/release/Client.vue').default);
@@ -46,7 +51,7 @@
  Vue.component('reports-collection-product', require('./ui/reports/collection/Product.vue').default);
  Vue.component('reports-collection-client', require('./ui/reports/collection/Client.vue').default);
  Vue.component('reports-collection-ao', require('./ui/reports/collection/Ao.vue').default);
- 
+
  // Vue.config.devtools = false;
  const app = new Vue({
 	 el: '#app',

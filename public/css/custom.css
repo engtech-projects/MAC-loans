@@ -4,6 +4,10 @@
 	cursor: pointer;
 }
 
+.client-item.active {
+	background-color: #78e08f;
+}
+
 .hover-primary-dark:hover {
 	background-color: #293f54;
 	color: #FFF;

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Carbon\Carbon;
+use DB;
 
 class TransactionController extends Controller
 {
@@ -18,7 +20,7 @@ class TransactionController extends Controller
 			'title' => 'Override Release',
 		]);
 	}
-
+	
 	public function rejectedRelease(){
 		return view('transaction.rejected_release')->with([
 			'nav' => ['transaction', 'rejected release'],
@@ -40,4 +42,14 @@ class TransactionController extends Controller
 		]);
 	}
 
+	public function overridePayment(){
+		return view('transaction.override_payment')->with([
+			'nav' => ['transaction', 'override payment'],
+			'title' => 'Override Payment',
+		]);
+	}
+
+	public function overridePaymentDates(){
+		return \App\models\Payment::where('status','open')->orderBy('created_at', 'DESC')->select('created_at')->get();
+	}
 }

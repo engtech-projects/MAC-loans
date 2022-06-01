@@ -7,7 +7,7 @@
 			<div class="d-flex flex-row">
 				<div style="flex:18" class="mr-16"></div>
 				<div class="form-group mb-10" style="flex:7">
-					<label for="dateRelease" class="form-label">Date Release</label>
+					<label for="dateRelease" class="form-label">Loan Created</label>
 					<input :value="dateToYMD(new Date)" disabled type="date" class="form-control form-input " id="dateRelease">
 				</div>
 			</div>
@@ -63,7 +63,7 @@
 					<input required v-model="loanDetails.loan_amount" type="number" class="form-control form-input " id="center">
 				</div>
 				<div class="form-group mb-10 mr-16" style="flex:4">
-					<label for="group" class="form-label">Terms</label>
+					<label for="group" class="form-label">Terms/Days</label>
 					<input required v-model="loanDetails.terms" type="number" class="form-control form-input " id="group">
 				</div>
 				<div class="form-group mb-10 mr-16" style="flex:5">
@@ -112,7 +112,7 @@
 					</div>
 					<div class="d-flex flex-row mb-16">
 						<label for="dueDate" class="form-label" style="flex:3">Insurance</label>
-						<input :value="formatToCurrency(calculateInsurance)" required disabled type="text" class="form-control form-input text-right mr-16" style="flex:4" id="dueDate">
+						<input :value="formatToCurrency(calculateInsurance)" required type="text" class="form-control form-input text-right mr-16" style="flex:4" id="dueDate">
 						<span class="flex-1" style="padding:7px 15px"></span>
 					</div>
 					<div class="d-flex flex-row mb-16">
@@ -427,17 +427,22 @@ export default {
 		},
 		numberOfInstallment:function(){
 			let mode = this.loanDetails.terms;
+			let result = 0;
 			if(this.loanDetails.payment_mode == 'Monthly'){
 				mode = 30;
+				result = Math.ceil((this.loanDetails.terms / mode))
 			}else if(this.loanDetails.payment_mode == 'Bi-Monthly'){
 				mode = 15;
+				result = Math.ceil((this.loanDetails.terms / mode))
 			}else if(this.loanDetails.payment_mode == 'Weekly'){
-				mode = 7;
+				mode = 30;
+				result = Math.ceil((this.loanDetails.terms / mode)*4);
 			}else{
 				mode = this.loanDetails.terms
+				result = Math.ceil((this.loanDetails.terms / mode))
 			}
-			this.loanDetails.no_of_installment = Math.ceil((this.loanDetails.terms / mode));
-			return Math.ceil((this.loanDetails.terms / mode));
+			this.loanDetails.no_of_installment = result;
+			return result;
 		},
 		docStamp:function(){
 			this.loanDetails.document_stamp =  (this.loanDetails.loan_amount / 200 * 1.5 * this.loanDetails.terms / 365).toFixed(2);

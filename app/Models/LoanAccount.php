@@ -350,7 +350,6 @@ class LoanAccount extends Model
            $isDelinquent = false;
          }
       }
-
       
       return $payment;
    }

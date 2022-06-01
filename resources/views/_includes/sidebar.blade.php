@@ -115,13 +115,13 @@
 					  <p>Repayment Entry</p>
 					</a>
 				  </li>
-				  <li class="nav-item pick">
+				  <li class="nav-item pick {{isset($nav) && isActive($nav[1], 'override payment')? 'active menu-open' : ''}}">
 					  <div class="flex navicon">
 							<div class="top-line"></div>
 							<div class="mid-circle"></div>
 							<div class="bottom-line invis"></div>
 						</div>
-					<a href="override_payment.php" class="nav-link">
+					<a href="{{route('transaction.override_payment')}}" class="nav-link">
 					  <p>Override Payment</p>
 					</a>
 				  </li>

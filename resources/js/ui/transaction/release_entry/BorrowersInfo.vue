@@ -15,7 +15,7 @@
 						<div style="flex:4"></div>
 						<div class="form-group mb-10" style="flex: 5">
 							<label for="regDate" class="form-label">Date Registration</label>
-							<input type="date" v-model="borrower.date_registered" class="form-control form-input text-right" id="regDate">
+							<input type="date" disabled v-model="borrower.date_registered" class="form-control form-input text-right" id="regDate">
 						</div>
 					</div>
 					<div class="form-group mb-10" style="flex: 5">
@@ -39,7 +39,7 @@
 				</div>
 				<div class="form-group mb-10" style="flex: 6">
 					<label for="suffix" class="form-label">Suffix</label>
-					<input v-model="borrower.suffix" required type="text" class="form-control form-input " id="suffix">
+					<input v-model="borrower.suffix" type="text" class="form-control form-input " id="suffix">
 				</div>
 			</div>
 			<div class="form-group mb-10">
