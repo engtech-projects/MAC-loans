@@ -65,40 +65,26 @@ class Payment extends Model
         $payment->rebates = $request->input('rebates');
         $payment->total_payable = $request->input('total_payable');
         $payment->amount_applied = $request->input('amount_applied');
-        
-        # update amortization
-        if( $payment->total_payable > $payment->amount_applied ){
-            $amortization = Amortization::find($payment->amortization_id)->update([ 'status' => 'delinquent' ]);
-        }else{
-            $amortization = Amortization::find($payment->amortization_id)->update([ 'status' => 'completed' ]);
-        }
-        
-        $payment->save();
-
-        $check = $account->checkAmortizationStatus($account->loan_account_id);
-
-        if( !$check ){
-            $account->update(['status' => 'completed']);
-        }
+             
+        $payment->save();      
 
         return $payment;
     }
 
-    public function cashPayment() {
+    public function overridePaymentAccounts($filters = array()) {
 
+        return Payment::join('loan_accounts', 'loan_accounts.loan_account_id', '=', 'payment.loan_account_id')
+                            ->join('borrower_info', 'borrower_info.borrower_id', '=', 'loan_accounts.borrower_id')
+                            ->whereDate('payment.created_at', '=', $filters['created_at'])
+                            ->where('payment.status', '=', 'open')
+                            ->get(['payment.*', 'loan_accounts.*', 'borrower_info.*']);
     }
 
-    public function chequePayment() {
+    public function delete() {}
 
-    }
-
-    public function memoPayment() {
-
-    }
-
-    public function POSPayment() {
-
-    }
+    public function overridePayment() {}
+    
+    public function cancelPayment() {}
 
 
 }

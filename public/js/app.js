@@ -8988,6 +8988,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
 //
 //
 //
@@ -9028,15 +9029,202 @@ __webpack_require__.r(__webpack_exports__);
       target.innerHTML = content;
       window.print();
     }
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  props: ['token', 'loandetails', 'borrower', 'borrowerbday', 'saveloandetails'],
+  data: function data() {
+    return {
+      baseUrl: window.location.origin,
+      age: null,
+      products: [],
+      accountOfficers: [],
+      centers: [],
+      loanDetails: {
+        cycle_no: 1,
+        ao_id: '',
+        product_id: '',
+        center_id: '',
+        type: '',
+        payment_mode: '',
+        terms: '',
+        loan_amount: '',
+        no_of_installment: '',
+        day_schedule: '',
+        borrower_num: '',
+        co_borrower_name: '',
+        co_borrower_address: '',
+        co_borrower_id_type: '',
+        co_borrower_id_number: '',
+        co_borrower_id_date_issued: '',
+        co_maker_name: '',
+        co_maker_address: '',
+        co_maker_id_type: '',
+        co_maker_id_number: '',
+        co_maker_id_date_issued: '',
+        document_stamp: '',
+        filing_fee: '',
+        insurance: '',
+        notarial_fee: '100.00',
+        prepaid_interest: '',
+        affidavit_fee: '',
+        memo: '',
+        total_deduction: '',
+        net_proceeds: '',
+        release_type: '',
+        documents: {
+          date_release: '',
+          description: '',
+          bank: '',
+          account_no: '',
+          card_no: '',
+          promissory_number: ''
+        }
+      }
+    };
+  },
+  methods: {
+    fetchProducts: function fetchProducts() {
+      axios.get(window.location.origin + '/api/product/', {
+        headers: {
+          'Authorization': 'Bearer ' + this.token,
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        }
+      }).then(function (response) {
+        this.products = response.data.data;
+      }.bind(this))["catch"](function (error) {
+        console.log(error);
+      }.bind(this));
+    },
+    fetchAo: function fetchAo() {
+      axios.get(window.location.origin + '/api/accountofficer/', {
+        headers: {
+          'Authorization': 'Bearer ' + this.token,
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        }
+      }).then(function (response) {
+        this.accountOfficers = response.data.data;
+      }.bind(this))["catch"](function (error) {
+        console.log(error);
+      }.bind(this));
+    },
+    fetchCenters: function fetchCenters() {
+      axios.get(window.location.origin + '/api/center/', {
+        headers: {
+          'Authorization': 'Bearer ' + this.token,
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        }
+      }).then(function (response) {
+        this.centers = response.data.data;
+      }.bind(this))["catch"](function (error) {
+        console.log(error);
+      }.bind(this));
+    },
+    navigate: function navigate(tab) {
+      document.getElementById(tab).click();
+    },
+    submit: function submit() {
+      document.getElementById('warningBtn').click();
+    },
+    notify: function notify(title, text, type) {
+      this.$notify({
+        group: 'foo',
+        title: title,
+        text: text,
+        type: type
+      });
+    }
+  },
+  watch: {
+    'loandetails': function loandetails(newValue) {
+      this.loanDetails = newValue;
+    },
+    'borrower': function borrower(newValue) {
+      this.loanDetails.borrower_id = newValue.borrower_id;
+      this.loanDetails.borrower_num = newValue.borrower_num;
+    },
+    'borrowerbday': function borrowerbday(newValue) {
+      this.age = this.calculateAge(newValue);
+    }
+  },
+  computed: {
+    interestRate: function interestRate() {
+      if (this.loanDetails.product_id != '') {
+        for (var i in this.products) {
+          if (this.products[i].product_id === this.loanDetails.product_id) {
+            return this.products[i].interest_rate;
+          }
+        }
+      }
+
+      return '';
+    },
+    interestAmount: function interestAmount() {
+      return (this.loanDetails.loan_amount * (this.interestRate * 0.01) * (this.loanDetails.terms / 30)).toFixed(2);
+    },
+    numberOfInstallment: function numberOfInstallment() {
+      var mode = 0;
+
+      if (this.loanDetails.payment_mode == 'Monthly') {
+        mode = 1;
+      } else if (this.loanDetails.payment_mode == 'Bi-Monthly') {
+        mode = 2;
+      } else if (this.loanDetails.payment_mode == 'Weekly') {
+        mode = 4;
+      } else {
+        mode = this.loanDetails.terms;
+      }
+
+      this.loanDetails.no_of_installment = Math.ceil(this.loanDetails.terms / mode);
+      return Math.ceil(this.loanDetails.terms / 30 * mode);
+    },
+    docStamp: function docStamp() {
+      this.loanDetails.documents_stamp = (this.loanDetails.loan_amount / 200 * 1.5 * this.loanDetails.terms / 365).toFixed(2);
+
+      if (this.loanDetails.terms / 30 > 12) {
+        this.loanDetails.documents_stamp = (this.loanDetails.loan_amount / 200 * 1.5).toFixed(2);
+      }
+
+      return this.loanDetails.documents_stamp;
+    },
+    calculateInsurance: function calculateInsurance() {
+      var rate = 1;
+
+      if (this.age > 65) {
+        rate = 2.8;
+      }
+
+      this.loanDetails.insurance = (this.loanDetails.loan_amount / 1000 * rate * Math.ceil(this.loanDetails.terms / 30)).toFixed(2);
+      return this.loanDetails.insurance;
+    },
+    totalDeductions: function totalDeductions() {
+      this.loanDetails.total_deduction = (parseFloat(this.loanDetails.memo) + parseFloat(this.loanDetails.filing_fee) + parseFloat(this.loanDetails.affidavit_fee) + parseFloat(this.loanDetails.notarial_fee) + parseFloat(this.loanDetails.documents_stamp) + parseFloat(this.loanDetails.insurance)).toFixed(2);
+      return this.loanDetails.total_deduction;
+    },
+    netProceeds: function netProceeds() {
+      this.loanDetails.net_proceeds = parseFloat(this.loanDetails.loan_amount) - parseFloat(this.loanDetails.total_deduction);
+      return this.loanDetails.net_proceeds;
+    }
+  },
+  mounted: function mounted() {
+    this.fetchProducts();
+    this.fetchAo();
+    this.fetchCenters();
+    this.loanDetails = this.loandetails;
+
   }
 });
 
 /***/ }),
 
-/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/ui/reports/collection/Client.vue?vue&type=script&lang=js&":
-/*!************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/ui/reports/collection/Client.vue?vue&type=script&lang=js& ***!
-  \************************************************************************************************************************************************************************************************************************/
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/ui/transaction/rejected_release/RejectedRelease.vue?vue&type=script&lang=js&":
+/*!*******************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/ui/transaction/rejected_release/RejectedRelease.vue?vue&type=script&lang=js& ***!
+  \*******************************************************************************************************************************************************************************************************************************************/
+
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -9156,6 +9344,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
 //
 //
 //
@@ -9488,6 +9677,107 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  props: ['token'],
+  data: function data() {
+    return {
+      loanAccounts: [],
+      filter: '',
+      loanAccount: {
+        loan_account_id: null,
+        cycle_no: 1,
+        ao_id: '',
+        product_id: '',
+        center_id: '',
+        type: '',
+        payment_mode: '',
+        terms: 0,
+        loan_amount: '',
+        no_of_installment: '',
+        day_schedule: '',
+        borrower_num: '',
+        co_borrower_name: '',
+        co_borrower_address: '',
+        co_borrower_id_type: '',
+        co_borrower_id_number: '',
+        co_borrower_id_date_issued: '',
+        co_maker_name: '',
+        co_maker_address: '',
+        co_maker_id_type: '',
+        co_maker_id_number: '',
+        co_maker_id_date_issued: '',
+        document_stamp: 0.00,
+        filing_fee: 0.00,
+        insurance: 0.00,
+        notarial_fee: 100.00,
+        prepaid_interest: 0.00,
+        affidavit_fee: 0.00,
+        memo: 0.00,
+        total_deduction: 0.00,
+        net_proceeds: 0.00,
+        release_type: '',
+        borrower: {
+          borrower_num: '################',
+          firstname: '',
+          middlename: '',
+          lastname: ''
+        }
+      }
+    };
+  },
+  methods: {
+    fetchRejectedAccounts: function fetchRejectedAccounts() {
+      axios.get(window.location.origin + '/api/account/rejected/', {
+        headers: {
+          'Authorization': 'Bearer ' + this.token,
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        }
+      }).then(function (response) {
+        this.loanAccounts = response.data.data;
+      }.bind(this))["catch"](function (error) {
+        console.log(error);
+      }.bind(this));
+    },
+    isActive: function isActive(data) {
+      if (data.loan_account_id == this.loanAccount.loan_account_id) {
+        return 'active';
+      }
+
+      return '';
+    }
+  },
+  computed: {
+    filterAccounts: function filterAccounts() {
+      var accounts = [];
+      this.loanAccounts.map(function (account) {
+        if (account.borrower.firstname.toLowerCase().includes(this.filter.toLowerCase()) || account.borrower.lastname.toLowerCase().includes(this.filter.toLowerCase()) || (account.borrower.firstname + ' ' + account.borrower.lastname).toLowerCase().includes(this.filter.toLowerCase()) || (account.borrower.lastname + ' ' + account.borrower.firstname).toLowerCase().includes(this.filter.toLowerCase()) || account.borrower.borrower_num.toLowerCase().includes(this.filter.toLowerCase())) {
+          accounts.push(account);
+        }
+      }.bind(this));
+      return accounts;
+    }
+  },
+  mounted: function mounted() {
+    this.fetchRejectedAccounts();
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/ui/transaction/rejected_release/RejectedReleaseEdit.vue?vue&type=script&lang=js&":
+/*!***********************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/ui/transaction/rejected_release/RejectedReleaseEdit.vue?vue&type=script&lang=js& ***!
+  \***********************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+
 //
 //
 //
@@ -9870,6 +10160,201 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  props: ['token', 'title', 'id'],
+  data: function data() {
+    return {
+      rejectedAccounts: [],
+      baseUrl: window.location.origin,
+      rejectedAccount: {
+        borrower: {
+          borrower_id: null,
+          employmentInfo: [],
+          businessInfo: [],
+          householdMembers: [],
+          outstandingObligations: [],
+          loanAccounts: []
+        }
+      }
+    };
+  },
+  methods: {
+    fetchRejectedAccounts: function fetchRejectedAccounts() {
+      axios.get(window.location.origin + '/api/account/rejected', {
+        headers: {
+          'Authorization': 'Bearer ' + this.token,
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        }
+      }).then(function (response) {
+        this.rejectedAccounts = response.data.data; // this.setAccount;
+      }.bind(this))["catch"](function (error) {
+        console.log(error);
+      }.bind(this));
+    },
+    fetchRejectedAccount: function fetchRejectedAccount() {
+      axios.get(window.location.origin + '/api/account/show/' + this.id, {
+        headers: {
+          'Authorization': 'Bearer ' + this.token,
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        }
+      }).then(function (response) {
+        this.rejectedAccount = response.data.data;
+      }.bind(this))["catch"](function (error) {
+        console.log(error);
+      }.bind(this));
+    },
+    navigate: function navigate(tab) {
+      document.getElementById(tab).click();
+    },
+    nextCoborrower: function nextCoborrower(data) {
+      this.rejectedAccount = data;
+    },
+    nextBorrower: function nextBorrower(data) {
+      this.rejectedAccount.borrower = data;
+    },
+    selected: function selected(id) {
+      if (id == this.loanDetails.loan_account_id) {
+        return 'active';
+      }
+
+      return '';
+    },
+    selectAccount: function selectAccount(data) {
+      this.rejectedAccount = data;
+    },
+    resetLoanDetails: function resetLoanDetails() {
+      this.rejectedAccount = {
+        loan_account_id: null,
+        cycle_no: 1,
+        ao_id: '',
+        product_id: '',
+        center_id: '',
+        type: '',
+        payment_mode: '',
+        terms: 0,
+        loan_amount: '',
+        no_of_installment: '',
+        day_schedule: '',
+        borrower_num: '',
+        co_borrower_name: '',
+        co_borrower_address: '',
+        co_borrower_id_type: '',
+        co_borrower_id_number: '',
+        co_borrower_id_date_issued: '',
+        co_maker_name: '',
+        co_maker_address: '',
+        co_maker_id_type: '',
+        co_maker_id_number: '',
+        co_maker_id_date_issued: '',
+        document_stamp: 0.00,
+        filing_fee: 0.00,
+        insurance: 0.00,
+        notarial_fee: 100.00,
+        prepaid_interest: 0.00,
+        affidavit_fee: 0.00,
+        memo: 0.00,
+        total_deduction: 0.00,
+        net_proceeds: 0.00,
+        release_type: '',
+        borrower: {
+          borrower_id: null,
+          employmentInfo: [],
+          businessInfo: [],
+          householdMembers: [],
+          outstandingObligations: [],
+          loanAccounts: []
+        },
+        documents: {
+          date_release: '',
+          description: '',
+          bank: '',
+          account_no: '',
+          card_no: '',
+          promissory_number: ''
+        }
+      };
+    },
+    saveLoanDetails: function saveLoanDetails() {
+      axios.put(window.location.origin + '/api/account/update/' + this.rejectedAccount.loan_account_id, this.rejectedAccount, {
+        headers: {
+          'Authorization': 'Bearer ' + this.token,
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        }
+      }).then(function (response) {
+        this.notify('', response.data.message, 'success');
+        window.location.replace('/transaction/rejected_release');
+      }.bind(this))["catch"](function (error) {
+        console.log(error);
+      }.bind(this));
+    },
+    saveBorrower: function saveBorrower() {
+      axios.put(window.location.origin + '/api/borrower/' + this.rejectedAccount.borrower.borrower_id, this.rejectedAccount.borrower, {
+        headers: {
+          'Authorization': 'Bearer ' + this.token,
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        }
+      }).then(function (response) {
+        this.notify('', response.data.message, 'success');
+        this.rejectedAccount.status = 'pending';
+        this.saveLoanDetails();
+      }.bind(this))["catch"](function (error) {
+        console.log(error);
+      }.bind(this));
+    },
+    save: function save(data) {
+      this.rejectedAccount = data;
+      this.saveBorrower();
+    },
+    notify: function notify(title, text, type) {
+      this.$notify({
+        group: 'foo',
+        title: title,
+        text: text,
+        type: type
+      });
+    }
+  },
+  computed: {
+    borrowers: function borrowers() {
+      var list = [];
+      this.rejectedAccounts.map(function (data) {
+        list.push(data.borrower);
+      }.bind(this));
+      return list;
+    },
+    setAccount: function setAccount() {
+      this.rejectedAccounts.map(function (data) {
+        if (this.id == data.loan_account_id) {
+          this.rejectedAccount = data;
+        }
+      }.bind(this));
+    }
+  },
+  mounted: function mounted() {
+    this.fetchRejectedAccount();
+    this.fetchRejectedAccounts();
+    this.resetLoanDetails();
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/ui/transaction/release_entry/BorrowerCo.vue?vue&type=script&lang=js&":
+/*!***********************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/ui/transaction/release_entry/BorrowerCo.vue?vue&type=script&lang=js& ***!
+  \***********************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
 //
 //
 //

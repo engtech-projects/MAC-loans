@@ -11,6 +11,7 @@ class Borrower extends Model
 
     protected $table = 'borrower_info';
     protected $primaryKey = 'borrower_id';
+	public static $snakeAttributes = false;
 	
     protected $fillable = [
     	'borrower_id',
@@ -60,7 +61,15 @@ class Borrower extends Model
     	return $this->hasMany(OutstandingObligations::class, 'borrower_id');
     }
 
-    public function loanAccounts() {
-        return $this->hasMany(LoanAccount::class, 'borrower_id');
+    public function getLoanAccounts() {
+
+        $loanAccount = new LoanAccount();
+        $activeAccounts = LoanAccount::where(['borrower_id' => $this->borrower_id, 'status' => 'released'])->get();
+
+        foreach ($activeAccounts as $key => $value) {
+            $value->outstandingBalance = $loanAccount->outstandingBalance($value->loan_account_id);
+        }
+
+        return $activeAccounts;
     }
 }

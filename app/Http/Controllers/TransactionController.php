@@ -18,7 +18,7 @@ class TransactionController extends Controller
 			'title' => 'Override Release',
 		]);
 	}
-	
+
 	public function rejectedRelease(){
 		return view('transaction.rejected_release')->with([
 			'nav' => ['transaction', 'rejected release'],
@@ -39,4 +39,5 @@ class TransactionController extends Controller
 			'title' => 'Repayment Entry',
 		]);
 	}
+
 }
