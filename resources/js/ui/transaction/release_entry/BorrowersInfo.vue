@@ -28,8 +28,8 @@
 					</div>
 				</div>
 				<div class="upload-photo d-flex flex-column" style="flex:4">
-					<img :src="baseUrl + '/img/user.png'" alt="">
-					<a href="#" class="btn btn-primary" style="padding:10px!important">Upload or Take a Photo</a>
+					<img :src="img" alt="" style="max-width:250px;">
+					<a href="#" data-toggle="modal" data-target="#uploadModal" class="btn btn-primary" style="padding:10px!important">Upload or Take a Photo</a>
 				</div>
 			</div>
 			<div class="d-flex flex-row">
@@ -414,6 +414,7 @@
 			<!-- <a href="#" @click.prevent="clearInfo()" class="btn btn-yellow-light min-w-150 mr-16">Clear Info</a> -->
 			<div style="flex:22"></div>
 		</div>
+		<upload-file @imageCapture="imageCapture"/>
 	</div>
 </template>
 
@@ -423,6 +424,7 @@
 		data(){
 			return {
 				baseUrl: window.location.origin,
+				img: window.location.origin + '/img/user.png',
 				borrower: {
 					borrower_id: null,
 					date_registered:'',
@@ -511,6 +513,8 @@
 				}.bind(this));
 			},
 			save: function(){
+				this.borrower.img = this.img;
+				console.log(this.borrower)
 				if(this.borrower.borrower_id){
 						axios.put(window.location.origin + '/api/borrower/' + this.borrower.borrower_id, this.borrower, {
 							headers: {
@@ -633,9 +637,18 @@
 				var m = date.getMonth() + 1;
 				var y = date.getFullYear();
 				return '' + y + '-' + (m<=9 ? '0' + m : m) + '-' + (d <= 9 ? '0' + d : d);
+			},
+			imageCapture:function(img){
+				this.img = img;
 			}
 		},
 		watch: {
+			'img'(newValue){
+				if(!newValue){
+					alert('hello');
+					this.img = this.baseUrl + '/img/user.png'
+				}
+			},
 			'pborrower'(newValue) {
 				if(!this.pclient){
 					this.borrower = newValue;

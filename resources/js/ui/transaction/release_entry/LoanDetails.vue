@@ -36,7 +36,7 @@
 			<div class="d-flex flex-row">
 				<div class="form-group mb-10 mr-16" style="flex:7">
 					<label for="center" class="form-label">Center</label>
-					<select required v-model="loanDetails.center_id" name="" id="" class="form-control form-input ">
+					<select :disabled="!loanDetails.product_id" required v-model="loanDetails.center_id" name="" id="" class="form-control form-input ">
 						<option v-for="center in centers" :key="center.center_id" :value="center.center_id">{{center.center}}</option>
 					</select>
 				</div>
@@ -68,7 +68,7 @@
 				</div>
 				<div class="form-group mb-10 mr-16" style="flex:5">
 					<label for="type" class="form-label">Day Schedule</label>
-					<select required v-model="loanDetails.day_schedule" class="form-control form-input " id="type">
+					<select :disabled="!loanDetails.product_id" required v-model="loanDetails.day_schedule" class="form-control form-input " id="type">
 						<option value="daily">Daily</option>
 						<option value="monday">Monday</option>
 						<option value="tuesday">Tuesday</option>
@@ -83,7 +83,7 @@
 			<div class="d-flex flex-row">
 				<div class="form-group mb-10 mr-16" style="flex:6">
 					<label for="interestRate" class="form-label">Interest Rate</label>
-					<input required disabled :value="interestRate + '%'" type="text" class="form-control form-input " id="interestRate">
+					<input required :value="interestRate + '%'" type="text" class="form-control form-input " id="interestRate">
 				</div>
 				<div class="form-group mb-10 mr-16" style="flex:6">
 					<label for="interestAmount" class="form-label">Interest Amount</label>
@@ -131,8 +131,11 @@
 						<span class="flex-1" style="padding:7px 15px"></span>
 					</div>
 					<div class="d-flex flex-row mb-16">
-						<label for="dueDate" class="form-label" style="flex:3">Memo</label>
-						<input v-model="loanDetails.memo" type="text" class="form-control form-input text-right mr-16" style="flex:4" id="dueDate">
+						<div style="flex:3;align-items:center" class="d-flex">
+							<input v-model="memoChecked" type="checkbox" class="" style="margin-right:10px;width:25px;height:25px;"> 
+							<label for="dueDate" class="form-label" style="margin-bottom:0;">Memo</label>
+						</div>
+						<input :disabled="!memoChecked" v-model="loanDetails.memo" type="text" class="form-control form-input text-right mr-16" style="flex:4" id="dueDate">
 						<span class="flex-1" style="padding:7px 15px"></span>
 					</div>
 				</div>
@@ -242,6 +245,7 @@ export default {
 			products:[],
 			accountOfficers:[],
 			centers:[],
+			memoChecked:true,
 			loanDetails: {
 				cycle_no : 1,
 				ao_id : '',
@@ -289,7 +293,7 @@ export default {
 	},
 	methods:{
 		fetchProducts: function(){
-			axios.get(window.location.origin + '/api/product/', {
+			axios.get(window.location.origin + '/api/product', {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
 					'Content-Type': 'application/json',
@@ -304,7 +308,7 @@ export default {
 			}.bind(this));
 		},
 		fetchAo: function(){
-			axios.get(window.location.origin + '/api/accountofficer/', {
+			axios.get(window.location.origin + '/api/accountofficer', {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
 					'Content-Type': 'application/json',
@@ -389,6 +393,12 @@ export default {
 					this.loanDetails.interest_rate = product.interest_rate;
 				}
 			}.bind(this));
+		},
+		isEnabled:function(data){
+			if(data){
+				return true;
+			}
+			return false;
 		}
 	},
 	watch: {
@@ -404,6 +414,16 @@ export default {
 		'borrowerbday'(newValue) {
 			this.age = this.calculateAge(newValue);
 		},
+		'memoChecked'(newValue){
+			if(!newValue){
+				this.loanDetails.memo = 0;
+			}
+		},
+		'loanDetails.center_id'(newValue){
+			if(newValue){
+				console.log(newValue);
+			}
+		}
 		// 'saveloandetails'(newValue) {
 		// 	if(newValue){
 		// 		this.save();
@@ -423,6 +443,7 @@ export default {
 		},
 		interestAmount:function(){
 			this.loanDetails.interest_amount = (this.loanDetails.loan_amount * (this.interestRate * 0.01) * (this.loanDetails.terms / 30)).toFixed(2);
+			this.loanDetails.prepaid_interest = (this.loanDetails.loan_amount * (this.interestRate * 0.01) * (this.loanDetails.terms / 30)).toFixed(2);
 			return (this.loanDetails.loan_amount * (this.interestRate * 0.01) * (this.loanDetails.terms / 30)).toFixed(2);
 		},
 		numberOfInstallment:function(){
