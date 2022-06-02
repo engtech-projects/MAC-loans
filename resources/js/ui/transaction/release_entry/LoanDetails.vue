@@ -87,7 +87,7 @@
 				</div>
 				<div class="form-group mb-10 mr-16" style="flex:6">
 					<label for="interestAmount" class="form-label">Interest Amount</label>
-					<input required :value="interestAmount" disabled type="text" class="form-control form-input " id="group">
+					<input required :value="interestAmount" type="text" class="form-control form-input " id="group">
 				</div>
 				<div class="form-group mb-10 mr-16" style="flex:6">
 					<label for="numberOfInstallment" class="form-label">Number of Installment</label>
@@ -135,7 +135,7 @@
 							<input v-model="memoChecked" type="checkbox" class="" style="margin-right:10px;width:25px;height:25px;"> 
 							<label for="dueDate" class="form-label" style="margin-bottom:0;">Memo</label>
 						</div>
-						<input :disabled="!memoChecked" v-model="loanDetails.memo" type="text" class="form-control form-input text-right mr-16" style="flex:4" id="dueDate">
+						<input v-model="loanDetails.memo" type="text" class="form-control form-input text-right mr-16" style="flex:4" id="dueDate">
 						<span class="flex-1" style="padding:7px 15px"></span>
 					</div>
 				</div>
@@ -161,7 +161,7 @@
 				</div>
 				<div class="flex-1"></div>
 			</div>
-			<div class="d-flex align-items-center">
+			<div class="d-flex align-items-center" v-if="memoChecked">
 				<span class="mr-16 font-20" style="margin-top:10px">Memo - Deduct to Balance</span>
 				<div class="d-flex align-items-end flex-1">
 					<div class="form-group mr-16 flex-1">
@@ -245,7 +245,7 @@ export default {
 			products:[],
 			accountOfficers:[],
 			centers:[],
-			memoChecked:true,
+			memoChecked:false,
 			loanDetails: {
 				cycle_no : 1,
 				ao_id : '',
@@ -415,9 +415,9 @@ export default {
 			this.age = this.calculateAge(newValue);
 		},
 		'memoChecked'(newValue){
-			if(!newValue){
-				this.loanDetails.memo = 0;
-			}
+			// if(!newValue){
+			// 	this.loanDetails.memo = 0;
+			// }
 		},
 		'loanDetails.center_id'(newValue){
 			if(newValue){

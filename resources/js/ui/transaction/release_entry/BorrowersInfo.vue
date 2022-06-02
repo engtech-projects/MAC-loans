@@ -514,7 +514,7 @@
 			},
 			save: function(){
 				this.borrower.img = this.img;
-				console.log(this.borrower)
+				console.log(this.borrower.img)
 				if(this.borrower.borrower_id){
 						axios.put(window.location.origin + '/api/borrower/' + this.borrower.borrower_id, this.borrower, {
 							headers: {

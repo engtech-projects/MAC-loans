@@ -17191,7 +17191,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     save: function save() {
       this.borrower.img = this.img;
-      console.log(this.borrower);
+      console.log(this.borrower.img);
 
       if (this.borrower.borrower_id) {
         axios.put(window.location.origin + '/api/borrower/' + this.borrower.borrower_id, this.borrower, {
@@ -17640,7 +17640,7 @@ __webpack_require__.r(__webpack_exports__);
       products: [],
       accountOfficers: [],
       centers: [],
-      memoChecked: true,
+      memoChecked: false,
       loanDetails: {
         cycle_no: 1,
         ao_id: '',
@@ -17798,10 +17798,9 @@ __webpack_require__.r(__webpack_exports__);
     'borrowerbday': function borrowerbday(newValue) {
       this.age = this.calculateAge(newValue);
     },
-    'memoChecked': function memoChecked(newValue) {
-      if (!newValue) {
-        this.loanDetails.memo = 0;
-      }
+    'memoChecked': function memoChecked(newValue) {// if(!newValue){
+      // 	this.loanDetails.memo = 0;
+      // }
     },
     'loanDetails.center_id': function loanDetailsCenter_id(newValue) {
       if (newValue) {
@@ -76210,12 +76209,7 @@ var render = function () {
                     _vm._v(" "),
                     _c("input", {
                       staticClass: "form-control form-input ",
-                      attrs: {
-                        required: "",
-                        disabled: "",
-                        type: "text",
-                        id: "group",
-                      },
+                      attrs: { required: "", type: "text", id: "group" },
                       domProps: { value: _vm.interestAmount },
                     }),
                   ]
@@ -76557,11 +76551,7 @@ var render = function () {
                         ],
                         staticClass: "form-control form-input text-right mr-16",
                         staticStyle: { flex: "4" },
-                        attrs: {
-                          disabled: !_vm.memoChecked,
-                          type: "text",
-                          id: "dueDate",
-                        },
+                        attrs: { type: "text", id: "dueDate" },
                         domProps: { value: _vm.loanDetails.memo },
                         on: {
                           input: function ($event) {
@@ -76719,7 +76709,20 @@ var render = function () {
                 _c("div", { staticClass: "flex-1" }),
               ]),
               _vm._v(" "),
-              _vm._m(0),
+              _vm.memoChecked
+                ? _c("div", { staticClass: "d-flex align-items-center" }, [
+                    _c(
+                      "span",
+                      {
+                        staticClass: "mr-16 font-20",
+                        staticStyle: { "margin-top": "10px" },
+                      },
+                      [_vm._v("Memo - Deduct to Balance")]
+                    ),
+                    _vm._v(" "),
+                    _vm._m(0),
+                  ])
+                : _vm._e(),
             ]
           ),
           _vm._v(" "),
@@ -77034,48 +77037,38 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "d-flex align-items-center" }, [
-      _c(
-        "span",
-        { staticClass: "mr-16 font-20", staticStyle: { "margin-top": "10px" } },
-        [_vm._v("Memo - Deduct to Balance")]
-      ),
-      _vm._v(" "),
-      _c("div", { staticClass: "d-flex align-items-end flex-1" }, [
-        _c("div", { staticClass: "form-group mr-16 flex-1" }, [
-          _c(
-            "select",
-            {
-              staticClass: "form-control form-input pr-12 mr-16 text-green",
-              attrs: { name: "", id: "" },
-            },
-            [_c("option", { attrs: { value: "" } }, [_vm._v("5000")])]
-          ),
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "form-group flex-2" }, [
-          _c(
-            "label",
-            { staticClass: "form-label", attrs: { for: "dueDate" } },
-            [_vm._v("Account # and Balance")]
-          ),
-          _vm._v(" "),
-          _c(
-            "select",
-            {
-              staticClass: "form-control form-input pr-12 mr-16 text-green",
-              attrs: { name: "", id: "" },
-            },
-            [
-              _c("option", { attrs: { value: "" } }, [
-                _vm._v("1232542154 - P 5000.00"),
-              ]),
-            ]
-          ),
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "flex-1" }),
+    return _c("div", { staticClass: "d-flex align-items-end flex-1" }, [
+      _c("div", { staticClass: "form-group mr-16 flex-1" }, [
+        _c(
+          "select",
+          {
+            staticClass: "form-control form-input pr-12 mr-16 text-green",
+            attrs: { name: "", id: "" },
+          },
+          [_c("option", { attrs: { value: "" } }, [_vm._v("5000")])]
+        ),
       ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-group flex-2" }, [
+        _c("label", { staticClass: "form-label", attrs: { for: "dueDate" } }, [
+          _vm._v("Account # and Balance"),
+        ]),
+        _vm._v(" "),
+        _c(
+          "select",
+          {
+            staticClass: "form-control form-input pr-12 mr-16 text-green",
+            attrs: { name: "", id: "" },
+          },
+          [
+            _c("option", { attrs: { value: "" } }, [
+              _vm._v("1232542154 - P 5000.00"),
+            ]),
+          ]
+        ),
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "flex-1" }),
     ])
   },
 ]
