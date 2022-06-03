@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\API\BaseController as BaseController;
 use Validator;
 use Carbon\Carbon;
+use Storage;
+use File;
 use App\Models\Borrower;
 use App\Models\EmploymentInfo;
 use App\Models\BusinessInfo;
@@ -44,7 +46,20 @@ class BorrowerController extends BaseController
         $request->merge(['borrower_num' => $borrower->generateBorrowerNum() ]);
         // create borrower
         $borrower = Borrower::create($request->input());
+
         // upload image goes here.. .
+        $folderPath = public_path().'/uploads/borrower/';
+        $img = $request->img;
+        $imgParts = explode(";base64", $img);
+        $imageTypeAux = explode("image/", $imgParts[0]);
+        $imageType = $imageTypeAux[1];
+        
+        $imageBase64 = base64_decode($imgParts[1]);
+        $fileName = $borrower->borrower_id . '.png';
+        
+        $file = $folderPath . $fileName;
+        Storage::put($file, $imageBase64);
+
         // add other details
         $borrower->employmentInfo = $request->input('employmentInfo');
         $borrower->businessInfo = $request->input('businessInfo');
