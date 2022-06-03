@@ -48,7 +48,7 @@ class BorrowerController extends BaseController
         $borrower = Borrower::create($request->input());
 
         // upload image goes here.. .
-        $folderPath = public_path().'/uploads/borrower/';
+        $folderPath = '/uploads/borrower/';
         $img = $request->img;
         $imgParts = explode(";base64", $img);
         $imageTypeAux = explode("image/", $imgParts[0]);
@@ -58,7 +58,8 @@ class BorrowerController extends BaseController
         $fileName = $borrower->borrower_id . '.png';
         
         $file = $folderPath . $fileName;
-        Storage::put($file, $imageBase64);
+        Storage::disk("public")->put($file, $imageBase64);
+        // $request->img->store($folderPath);
 
         // add other details
         $borrower->employmentInfo = $request->input('employmentInfo');
