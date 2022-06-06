@@ -112,7 +112,7 @@
 					</div>
 					<div class="d-flex flex-row mb-16">
 						<label for="dueDate" class="form-label" style="flex:3">Insurance</label>
-						<input :value="formatToCurrency(calculateInsurance)" required type="text" class="form-control form-input text-right mr-16" style="flex:4" id="dueDate">
+						<input v-model="loanDetails.insurance" required type="text" class="form-control form-input text-right mr-16" style="flex:4" id="dueDate">
 						<span class="flex-1" style="padding:7px 15px"></span>
 					</div>
 					<div class="d-flex flex-row mb-16">
@@ -238,7 +238,7 @@
 
 <script>
 export default {
-	props:['token', 'loandetails', 'borrower', 'borrowerbday', 'saveloandetails'],
+	props:['token', 'loandetails', 'borrower', 'borrowerbday', 'saveloandetails', 'idtype'],
 	data(){
 		return {
 			age:null,
@@ -441,6 +441,9 @@ export default {
 			}
 			return '';
 		},
+		idType:function(){
+			return JSON.parse(this.idtype);
+		},
 		interestAmount:function(){
 			this.loanDetails.interest_amount = (this.loanDetails.loan_amount * (this.interestRate * 0.01) * (this.loanDetails.terms / 30)).toFixed(2);
 			this.loanDetails.prepaid_interest = (this.loanDetails.loan_amount * (this.interestRate * 0.01) * (this.loanDetails.terms / 30)).toFixed(2);
@@ -477,7 +480,7 @@ export default {
 			if(this.age > 65){
 				rate = 2.8;
 			}
-			this.loanDetails.insurance =  ((this.loanDetails.loan_amount / 1000) * rate * (Math.ceil(this.loanDetails.terms / 30))).toFixed(2);
+			// this.loanDetails.insurance =  ((this.loanDetails.loan_amount / 1000) * rate * (Math.ceil(this.loanDetails.terms / 30))).toFixed(2);
 			return this.loanDetails.insurance;
 		},
 		totalDeductions:function(){

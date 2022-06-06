@@ -61,10 +61,10 @@ class Borrower extends Model
     	return $this->hasMany(OutstandingObligations::class, 'borrower_id');
     }
 
-    public function getLoanAccounts() {
-
+    public function getLoanAccounts($status) {
         $loanAccount = new LoanAccount();
-        $activeAccounts = LoanAccount::where(['borrower_id' => $this->borrower_id, 'status' => 'released'])->get();
+        // $activeAccounts = LoanAccount::where(['borrower_id' => $this->borrower_id, 'status' => $status])->get();
+		$activeAccounts = $status=='all'?LoanAccount::where(['borrower_id' => $this->borrower_id])->get():LoanAccount::where(['borrower_id' => $this->borrower_id, 'status' => $status])->get();
         foreach ($activeAccounts as $key => $value) {
             $value->outstandingBalance = $loanAccount->outstandingBalance($value->loan_account_id);
 			$value->current_amortization = $value->getCurrentAmortization();

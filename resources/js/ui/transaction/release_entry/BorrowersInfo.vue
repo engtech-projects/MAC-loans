@@ -81,11 +81,7 @@
 				<div class="form-group mb-10 mr-16" style="flex: 3">
 					<label for="idType" class="form-label">ID Type</label>
 					<select v-model="borrower.id_type" required name="" id="" class="form-control form-input">
-						<option value="SSS">SSS</option>
-						<option value="UMID">GSIS/UMID</option>
-						<option value="Driver's License">Driver's License</option>
-						<option value="Passport">Passport</option>
-						<option value="Senior ID">Senior ID</option>
+						<option v-for="i in idtype" :key="i" :value="i">{{i}}</option>
 					</select>
 				</div>
 				<div class="form-group mb-10 mr-16" style="flex: 3">
@@ -140,11 +136,7 @@
 				<div class="form-group mb-10 mr-16" style="flex: 3">
 					<label for="spouseIdType" class="form-label">ID Type</label>
 					<select v-model="borrower.spouse_id_type" name="" id="" class="form-control form-input">
-						<option value="SSS">SSS</option>
-						<option value="UMID">GSIS/UMID</option>
-						<option value="Driver's License">Driver's License</option>
-						<option value="Passport">Passport</option>
-						<option value="Senior ID">Senior ID</option>
+						<option v-for="i in idtype" :key="i" :value="i">{{i}}</option>
 					</select>
 				</div>
 				<div class="form-group mb-10 mr-16" style="flex: 3">
@@ -420,7 +412,7 @@
 
 <script>
     export default {
-		props:['token','pborrower', 'psave','clear','pclient','borrower_id'],
+		props:['token','pborrower', 'psave','clear','pclient','borrower_id', 'idtype'],
 		data(){
 			return {
 				baseUrl: window.location.origin,

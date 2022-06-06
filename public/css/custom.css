@@ -1,5 +1,8 @@
 
 /* UTILITIES */
+.allcaps {
+	text-transform: uppercase!important;
+}
 .c-pointer {
 	cursor: pointer;
 }

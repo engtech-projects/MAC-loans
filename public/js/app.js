@@ -16329,7 +16329,23 @@ __webpack_require__.r(__webpack_exports__);
           'Accept': 'application/json'
         }
       }).then(function (response) {
-        this.rejectedAccounts = response.data.data; // this.setAccount;
+        this.rejectedAccounts = response.data.data; // console.log(response.data.data);
+        // this.setAccount;
+      }.bind(this))["catch"](function (error) {
+        console.log(error);
+      }.bind(this));
+    },
+    fetchBorrower: function fetchBorrower(borrower) {
+      axios.get(window.location.origin + '/api/borrower/' + borrower.borrower.borrower_id, {
+        headers: {
+          'Authorization': 'Bearer ' + this.token,
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        }
+      }).then(function (response) {
+        borrower.borrower = response.data.data;
+        borrower.documents = borrower.document;
+        this.rejectedAccount = borrower;
       }.bind(this))["catch"](function (error) {
         console.log(error);
       }.bind(this));
@@ -16342,7 +16358,8 @@ __webpack_require__.r(__webpack_exports__);
           'Accept': 'application/json'
         }
       }).then(function (response) {
-        this.rejectedAccount = response.data.data;
+        this.fetchBorrower(response.data.data); // console.log(response.data.data);
+        // this.rejectedAccount = response.data.data;
       }.bind(this))["catch"](function (error) {
         console.log(error);
       }.bind(this));
@@ -16364,7 +16381,7 @@ __webpack_require__.r(__webpack_exports__);
       return '';
     },
     selectAccount: function selectAccount(data) {
-      this.rejectedAccount = data;
+      this.fetchBorrower(data);
     },
     resetLoanDetails: function resetLoanDetails() {
       this.rejectedAccount = {
@@ -16579,12 +16596,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  props: ['loandetails', 'borrowers'],
+  props: ['loandetails', 'borrowers', 'idtype'],
   data: function data() {
     return {
       searchMode: true,
@@ -17090,16 +17103,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  props: ['token', 'pborrower', 'psave', 'clear', 'pclient', 'borrower_id'],
+  props: ['token', 'pborrower', 'psave', 'clear', 'pclient', 'borrower_id', 'idtype'],
   data: function data() {
     return {
       baseUrl: window.location.origin,
@@ -17633,7 +17638,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  props: ['token', 'loandetails', 'borrower', 'borrowerbday', 'saveloandetails'],
+  props: ['token', 'loandetails', 'borrower', 'borrowerbday', 'saveloandetails', 'idtype'],
   data: function data() {
     return {
       age: null,
@@ -17825,6 +17830,9 @@ __webpack_require__.r(__webpack_exports__);
 
       return '';
     },
+    idType: function idType() {
+      return JSON.parse(this.idtype);
+    },
     interestAmount: function interestAmount() {
       this.loanDetails.interest_amount = (this.loanDetails.loan_amount * (this.interestRate * 0.01) * (this.loanDetails.terms / 30)).toFixed(2);
       this.loanDetails.prepaid_interest = (this.loanDetails.loan_amount * (this.interestRate * 0.01) * (this.loanDetails.terms / 30)).toFixed(2);
@@ -17865,9 +17873,9 @@ __webpack_require__.r(__webpack_exports__);
 
       if (this.age > 65) {
         rate = 2.8;
-      }
+      } // this.loanDetails.insurance =  ((this.loanDetails.loan_amount / 1000) * rate * (Math.ceil(this.loanDetails.terms / 30))).toFixed(2);
 
-      this.loanDetails.insurance = (this.loanDetails.loan_amount / 1000 * rate * Math.ceil(this.loanDetails.terms / 30)).toFixed(2);
+
       return this.loanDetails.insurance;
     },
     totalDeductions: function totalDeductions() {
@@ -18321,8 +18329,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  props: ['token'],
+  props: ['token', 'idtype'],
   data: function data() {
     return {
       clearData: {
@@ -18384,7 +18393,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     fetchBorrowers: function fetchBorrowers() {
-      axios.get(window.location.origin + '/api/borrower', {
+      axios.get(window.location.origin + '/api/borrower?accountStatus=all', {
         headers: {
           'Authorization': 'Bearer ' + this.token,
           'Content-Type': 'application/json',
@@ -18507,6 +18516,19 @@ __webpack_require__.r(__webpack_exports__);
           this.setCycle();
         }
       }.bind(this));
+    },
+    print: function print() {
+      var content = document.getElementById('printContent').innerHTML;
+      var target = document.querySelector('.to-print');
+      target.innerHTML = content;
+      var cancel = document.querySelector('#cancelModal');
+      cancel.click();
+      window.print();
+    }
+  },
+  computed: {
+    idType: function idType() {
+      return JSON.parse(this.idtype);
     }
   },
   mounted: function mounted() {
@@ -19549,6 +19571,22 @@ vue__WEBPACK_IMPORTED_MODULE_0__["default"].mixin({
     },
     formatToCurrency: function formatToCurrency(amount) {
       return parseFloat(amount).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,");
+    },
+    numToWords: function numToWords(numberInput) {
+      var oneToTwenty = ['', 'one ', 'two ', 'three ', 'four ', 'five ', 'six ', 'seven ', 'eight ', 'nine ', 'ten ', 'eleven ', 'twelve ', 'thirteen ', 'fourteen ', 'fifteen ', 'sixteen ', 'seventeen ', 'eighteen ', 'nineteen '];
+      var tenth = ['', '', 'twenty', 'thirty', 'forty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety'];
+      if (numberInput.toString().length > 7) return 'overlimit';
+      console.log(numberInput); //let num = ('0000000000'+ numberInput).slice(-10).match(/^(\d{1})(\d{2})(\d{2})(\d{2})(\d{1})(\d{2})$/);
+
+      var num = ('0000000' + numberInput).slice(-7).match(/^(\d{1})(\d{1})(\d{2})(\d{1})(\d{2})$/);
+      console.log(num);
+      if (!num) return;
+      var outputText = num[1] != 0 ? (oneToTwenty[Number(num[1])] || "".concat(tenth[num[1][0]], " ").concat(oneToTwenty[num[1][1]])) + ' million ' : '';
+      outputText += num[2] != 0 ? (oneToTwenty[Number(num[2])] || "".concat(tenth[num[2][0]], " ").concat(oneToTwenty[num[2][1]])) + 'hundred ' : '';
+      outputText += num[3] != 0 ? (oneToTwenty[Number(num[3])] || "".concat(tenth[num[3][0]], " ").concat(oneToTwenty[num[3][1]])) + ' thousand ' : '';
+      outputText += num[4] != 0 ? (oneToTwenty[Number(num[4])] || "".concat(tenth[num[4][0]], " ").concat(oneToTwenty[num[4][1]])) + 'hundred ' : '';
+      outputText += num[5] != 0 ? oneToTwenty[Number(num[5])] || "".concat(tenth[num[5][0]], " ").concat(oneToTwenty[num[5][1]], " ") : '';
+      return outputText;
     }
   }
 });
@@ -65930,7 +65968,7 @@ var render = function () {
                         },
                       ],
                       staticClass: "form-control form-input ",
-                      attrs: { required: "", type: "text", id: "suffix" },
+                      attrs: { type: "text", id: "suffix" },
                       domProps: { value: _vm.borrower.suffix },
                       on: {
                         input: function ($event) {
@@ -69293,6 +69331,14 @@ var render = function () {
                       ),
                       _vm._v(" "),
                       _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.loanDetails.insurance,
+                            expression: "loanDetails.insurance",
+                          },
+                        ],
                         staticClass: "form-control form-input text-right mr-16",
                         staticStyle: { flex: "4" },
                         attrs: {
@@ -69301,8 +69347,18 @@ var render = function () {
                           type: "text",
                           id: "dueDate",
                         },
-                        domProps: {
-                          value: _vm.formatToCurrency(_vm.calculateInsurance),
+                        domProps: { value: _vm.loanDetails.insurance },
+                        on: {
+                          input: function ($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.loanDetails,
+                              "insurance",
+                              $event.target.value
+                            )
+                          },
                         },
                       }),
                       _vm._v(" "),
@@ -72205,29 +72261,14 @@ var render = function () {
                             },
                           },
                         },
-                        [
-                          _c("option", { attrs: { value: "SSS" } }, [
-                            _vm._v("SSS"),
-                          ]),
-                          _vm._v(" "),
-                          _c("option", { attrs: { value: "UMID" } }, [
-                            _vm._v("GSIS/UMID"),
-                          ]),
-                          _vm._v(" "),
-                          _c(
+                        _vm._l(_vm.idtype, function (i) {
+                          return _c(
                             "option",
-                            { attrs: { value: "Driver's License" } },
-                            [_vm._v("Driver's License")]
-                          ),
-                          _vm._v(" "),
-                          _c("option", { attrs: { value: "Passport" } }, [
-                            _vm._v("Passport"),
-                          ]),
-                          _vm._v(" "),
-                          _c("option", { attrs: { value: "Senior ID" } }, [
-                            _vm._v("Senior ID"),
-                          ]),
-                        ]
+                            { key: i, domProps: { value: i } },
+                            [_vm._v(_vm._s(i))]
+                          )
+                        }),
+                        0
                       ),
                     ]
                   ),
@@ -72485,29 +72526,14 @@ var render = function () {
                             },
                           },
                         },
-                        [
-                          _c("option", { attrs: { value: "SSS" } }, [
-                            _vm._v("SSS"),
-                          ]),
-                          _vm._v(" "),
-                          _c("option", { attrs: { value: "UMID" } }, [
-                            _vm._v("GSIS/UMID"),
-                          ]),
-                          _vm._v(" "),
-                          _c(
+                        _vm._l(_vm.idtype, function (i) {
+                          return _c(
                             "option",
-                            { attrs: { value: "Driver's License" } },
-                            [_vm._v("Driver's License")]
-                          ),
-                          _vm._v(" "),
-                          _c("option", { attrs: { value: "Passport" } }, [
-                            _vm._v("Passport"),
-                          ]),
-                          _vm._v(" "),
-                          _c("option", { attrs: { value: "Senior ID" } }, [
-                            _vm._v("Senior ID"),
-                          ]),
-                        ]
+                            { key: i, domProps: { value: i } },
+                            [_vm._v(_vm._s(i))]
+                          )
+                        }),
+                        0
                       ),
                     ]
                   ),
@@ -73293,27 +73319,14 @@ var render = function () {
                           },
                         },
                       },
-                      [
-                        _c("option", { attrs: { value: "SSS" } }, [
-                          _vm._v("SSS"),
-                        ]),
-                        _vm._v(" "),
-                        _c("option", { attrs: { value: "UMID" } }, [
-                          _vm._v("GSIS/UMID"),
-                        ]),
-                        _vm._v(" "),
-                        _c("option", { attrs: { value: "Driver's License" } }, [
-                          _vm._v("Driver's License"),
-                        ]),
-                        _vm._v(" "),
-                        _c("option", { attrs: { value: "Passport" } }, [
-                          _vm._v("Passport"),
-                        ]),
-                        _vm._v(" "),
-                        _c("option", { attrs: { value: "Senior ID" } }, [
-                          _vm._v("Senior ID"),
-                        ]),
-                      ]
+                      _vm._l(_vm.idtype, function (i) {
+                        return _c(
+                          "option",
+                          { key: i, domProps: { value: i } },
+                          [_vm._v(_vm._s(i))]
+                        )
+                      }),
+                      0
                     ),
                   ]
                 ),
@@ -73698,27 +73711,14 @@ var render = function () {
                           },
                         },
                       },
-                      [
-                        _c("option", { attrs: { value: "SSS" } }, [
-                          _vm._v("SSS"),
-                        ]),
-                        _vm._v(" "),
-                        _c("option", { attrs: { value: "UMID" } }, [
-                          _vm._v("GSIS/UMID"),
-                        ]),
-                        _vm._v(" "),
-                        _c("option", { attrs: { value: "Driver's License" } }, [
-                          _vm._v("Driver's License"),
-                        ]),
-                        _vm._v(" "),
-                        _c("option", { attrs: { value: "Passport" } }, [
-                          _vm._v("Passport"),
-                        ]),
-                        _vm._v(" "),
-                        _c("option", { attrs: { value: "Senior ID" } }, [
-                          _vm._v("Senior ID"),
-                        ]),
-                      ]
+                      _vm._l(_vm.idtype, function (i) {
+                        return _c(
+                          "option",
+                          { key: i, domProps: { value: i } },
+                          [_vm._v(_vm._s(i))]
+                        )
+                      }),
+                      0
                     ),
                   ]
                 ),
@@ -76351,11 +76351,29 @@ var render = function () {
                       ),
                       _vm._v(" "),
                       _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.loanDetails.insurance,
+                            expression: "loanDetails.insurance",
+                          },
+                        ],
                         staticClass: "form-control form-input text-right mr-16",
                         staticStyle: { flex: "4" },
                         attrs: { required: "", type: "text", id: "dueDate" },
-                        domProps: {
-                          value: _vm.formatToCurrency(_vm.calculateInsurance),
+                        domProps: { value: _vm.loanDetails.insurance },
+                        on: {
+                          input: function ($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.loanDetails,
+                              "insurance",
+                              $event.target.value
+                            )
+                          },
                         },
                       }),
                       _vm._v(" "),
@@ -77216,6 +77234,7 @@ var render = function () {
                 [
                   _c("borrowers-info", {
                     attrs: {
+                      idtype: _vm.idType,
                       clear: _vm.clearData.borrower,
                       token: _vm.token,
                       pborrower: _vm.borrower,
@@ -77239,6 +77258,7 @@ var render = function () {
               _vm._v(" "),
               _c("co-borrower", {
                 attrs: {
+                  idtype: _vm.idType,
                   borrowers: _vm.borrowers,
                   loandetails: _vm.loanDetails,
                 },
@@ -77258,6 +77278,7 @@ var render = function () {
                 [
                   _c("loan-details", {
                     attrs: {
+                      idtype: _vm.idtype,
                       saveloandetails: _vm.saveLoanDetails,
                       borrowerbday: _vm.borrowerBirthdate,
                       borrower: _vm.bborrower,
@@ -77325,7 +77346,7 @@ var render = function () {
                               {
                                 staticClass: "tab-pane fade show active",
                                 attrs: {
-                                  id: "dacion-en-pago",
+                                  id: "printContent",
                                   role: "tabpanel",
                                   "aria-labelledby":
                                     "custom-content-below-home-tab",
@@ -77342,7 +77363,239 @@ var render = function () {
                                   },
                                 }),
                                 _vm._v(" "),
-                                _vm._m(5),
+                                _c(
+                                  "div",
+                                  {
+                                    staticClass: "d-flex flex-column font-md",
+                                    staticStyle: { padding: "0 35px" },
+                                  },
+                                  [
+                                    _vm._m(5),
+                                    _vm._v(" "),
+                                    _c("section", { staticClass: "font-md" }, [
+                                      _c(
+                                        "span",
+                                        { staticClass: "text-block mb-24" },
+                                        [
+                                          _vm._v(
+                                            "KNOW ALL MEN BY THESE PRESENTS:"
+                                          ),
+                                        ]
+                                      ),
+                                      _vm._v(" "),
+                                      _c("p", [
+                                        _vm._v(
+                                          "\n\t\t\t\t\t\t\t\t\t\tThis INSTURMENT made and executed this 14TH day of DECEMBER 2021 at Button City, Philippines, by and between: "
+                                        ),
+                                        _c(
+                                          "span",
+                                          {
+                                            staticClass:
+                                              "text-underlined allcaps",
+                                          },
+                                          [
+                                            _vm._v(
+                                              _vm._s(_vm.borrower.fullname)
+                                            ),
+                                          ]
+                                        ),
+                                        _vm._v(" single/married to "),
+                                        _c(
+                                          "span",
+                                          {
+                                            staticClass:
+                                              "text-underlined allcaps",
+                                          },
+                                          [
+                                            _vm._v(
+                                              _vm._s(
+                                                _vm.borrower.spouse_lastname +
+                                                  ", " +
+                                                  _vm.borrower.spouse_firstname
+                                              )
+                                            ),
+                                          ]
+                                        ),
+                                        _vm._v(
+                                          " of legal age, Filipino citizen, and resident of "
+                                        ),
+                                        _c(
+                                          "span",
+                                          {
+                                            staticClass:
+                                              "text-underlined allcaps",
+                                          },
+                                          [_vm._v(_vm._s(_vm.borrower.address))]
+                                        ),
+                                        _vm._v(
+                                          "  herein after called the FIRST PARTY;\n\t\t\t\t\t\t\t\t\t"
+                                        ),
+                                      ]),
+                                      _vm._v(" "),
+                                      _c("p", [
+                                        _vm._v(
+                                          "\n\t\t\t\t\t\t\t\t\t\tMAC LENDING a lending institution, duly registered under the laws of the Republic of the Philippines and with postal address at T. Cabo Extension, Butuan City represented by its Branch Manager JANINE L DESCALLAR herein after called as the SECOND PARTY;\n\t\t\t\t\t\t\t\t\t"
+                                        ),
+                                      ]),
+                                      _vm._v(" "),
+                                      _c("p", [_vm._v("WITNESSETH:")]),
+                                      _vm._v(" "),
+                                      _c("p", [
+                                        _vm._v(
+                                          "\n\t\t\t\t\t\t\t\t\t\tThat the FIRST PARTY hereby acknowledges to have been indebted to the SECOND PARTY in the sum of "
+                                        ),
+                                        _c(
+                                          "span",
+                                          {
+                                            staticClass:
+                                              "text-underlined allcaps",
+                                          },
+                                          [
+                                            _vm._v(
+                                              _vm._s(
+                                                _vm.numToWords(
+                                                  _vm.loanDetails.loan_amount
+                                                )
+                                              )
+                                            ),
+                                          ]
+                                        ),
+                                        _vm._v(
+                                          " (P" +
+                                            _vm._s(
+                                              _vm.formatToCurrency(
+                                                _vm.loanDetails.loan_amount
+                                              )
+                                            ) +
+                                            "). Philippines currency, as of this date, since, he/she could no longer paid it in full by way of cash, hence, by presents the FIRST PARTY, voluntarily assign, transfer convey and set over unto the SECOND PARTY that certain PERSONAL property particularly describe as follows: \n\t\t\t\t\t\t\t\t\t"
+                                        ),
+                                      ]),
+                                      _vm._v(" "),
+                                      _vm._m(6),
+                                      _vm._v(" "),
+                                      _vm._m(7),
+                                      _vm._v(" "),
+                                      _c("p", [
+                                        _vm._v(
+                                          "\n\t\t\t\t\t\t\t\t\t\tThat the SECOND PARTY does hereby accept this assignment in payment of the total/partial obligation owing to him/her by the FIRST PARTY as above stated, (giving to the Second Party, however, the option to repurchase the above-describe property from the First Party for the sum of and after the date hereof, which right shall automatically be deemed cancelled, it not exercised within 15 days from the date hereof).\n\t\t\t\t\t\t\t\t\t"
+                                        ),
+                                      ]),
+                                      _vm._v(" "),
+                                      _c("p", [
+                                        _vm._v(
+                                          "\n\t\t\t\t\t\t\t\t\t\tThat by virtue of this presents, the indebtedness of FIRST PARTY as cited above is hereby paid and extinguished. \n\t\t\t\t\t\t\t\t\t"
+                                        ),
+                                      ]),
+                                      _vm._v(" "),
+                                      _c("p", [
+                                        _vm._v(
+                                          "\n\t\t\t\t\t\t\t\t\t\tIN WITNESS WHEREOF, the parties hereto have hereunto set their hands this_____________________________ at Butuan City, Philippines.\n\t\t\t\t\t\t\t\t\t"
+                                        ),
+                                      ]),
+                                      _vm._v(" "),
+                                      _vm._m(8),
+                                      _vm._v(" "),
+                                      _c("p", { staticClass: "mb-64" }, [
+                                        _vm._v(
+                                          "\n\t\t\t\t\t\t\t\t\t\tWITH MY MARITAL CONSENT: \n\t\t\t\t\t\t\t\t\t"
+                                        ),
+                                      ]),
+                                      _vm._v(" "),
+                                      _vm._m(9),
+                                      _vm._v(" "),
+                                      _c(
+                                        "span",
+                                        { staticClass: "text-block" },
+                                        [_vm._v("ACKNOWLEDGEMENT")]
+                                      ),
+                                      _vm._v(" "),
+                                      _c(
+                                        "span",
+                                        { staticClass: "text-block" },
+                                        [_vm._v("REPUBLIC OF THE PHILIPPINES)")]
+                                      ),
+                                      _vm._v(" "),
+                                      _c(
+                                        "span",
+                                        { staticClass: "text-block" },
+                                        [
+                                          _vm._v(
+                                            "CITY OF ____________________)S.S."
+                                          ),
+                                        ]
+                                      ),
+                                      _vm._v(" "),
+                                      _c(
+                                        "span",
+                                        { staticClass: "text-block mb-36" },
+                                        [
+                                          _vm._v(
+                                            "X---------------------------------/"
+                                          ),
+                                        ]
+                                      ),
+                                      _vm._v(" "),
+                                      _c("p", [
+                                        _vm._v(
+                                          "\n\t\t\t\t\t\t\t\t\t\tBEFORE ME, a notary public for and in the City of Butuan, Philippines this________________ day of_______________,  personally appeared the above named person, known to me and to me known to be the same person of the foregoing instrument, consisting of one (1) page including this page where the acknowledgement is written, signed by the parties and their two (2) instrumental witness, and they acknowledgement to me that the same are their own free will and voluntary act and deed.The Valid ID's of the parties were exhibited to me the same being that which appears below their respective names and signatures above.\n\t\t\t\t\t\t\t\t\t"
+                                        ),
+                                      ]),
+                                      _vm._v(" "),
+                                      _vm._m(10),
+                                    ]),
+                                    _vm._v(" "),
+                                    _c("div", { staticClass: "mb-72" }),
+                                    _vm._v(" "),
+                                    _c(
+                                      "div",
+                                      {
+                                        staticClass:
+                                          "d-flex flex-row-reverse mb-45",
+                                      },
+                                      [
+                                        _c(
+                                          "a",
+                                          {
+                                            staticClass:
+                                              "btn btn-default min-w-150",
+                                            attrs: { href: "#" },
+                                            on: {
+                                              click: function ($event) {
+                                                $event.preventDefault()
+                                                return _vm.print()
+                                              },
+                                            },
+                                          },
+                                          [_vm._v("Print")]
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "a",
+                                          {
+                                            staticClass:
+                                              "btn btn-success min-w-150 mr-24",
+                                            attrs: { href: "#" },
+                                          },
+                                          [_vm._v("Download Excel")]
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "a",
+                                          {
+                                            staticClass:
+                                              "btn btn-danger min-w-150 mr-24 hide",
+                                            attrs: {
+                                              href: "#",
+                                              id: "cancelModal",
+                                              "data-dismiss": "modal",
+                                            },
+                                          },
+                                          [_vm._v("Cancel")]
+                                        ),
+                                      ]
+                                    ),
+                                  ]
+                                ),
                               ]
                             ),
                             _vm._v(" "),
@@ -77368,7 +77621,7 @@ var render = function () {
                                   },
                                 }),
                                 _vm._v(" "),
-                                _vm._m(6),
+                                _vm._m(11),
                               ]
                             ),
                           ]
@@ -77748,207 +78001,109 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c(
       "div",
-      {
-        staticClass: "d-flex flex-column font-md",
-        staticStyle: { padding: "0 35px" },
-      },
+      { staticClass: "d-flex flex-column title align-items-center mb-24" },
       [
         _c(
-          "div",
-          { staticClass: "d-flex flex-column title align-items-center mb-24" },
-          [
-            _c(
-              "span",
-              { staticClass: "font-26 text-bold text-primary-dark lh-1" },
-              [_vm._v("DACION EN PAGO")]
-            ),
-          ]
+          "span",
+          { staticClass: "font-26 text-bold text-primary-dark lh-1" },
+          [_vm._v("DACION EN PAGO")]
         ),
-        _vm._v(" "),
-        _c("section", { staticClass: "font-md" }, [
-          _c("span", { staticClass: "text-block mb-24" }, [
-            _vm._v("KNOW ALL MEN BY THESE PRESENTS:"),
-          ]),
-          _vm._v(" "),
-          _c("p", [
-            _vm._v(
-              "\n\t\t\t\t\t\t\t\t\t\tThis INSTURMENT made and executed this 14TH day of DECEMBER 2021 at Button City, Philippines, by and between: "
-            ),
-            _c("span", { staticClass: "text-underlined" }, [
-              _vm._v("LOLITO T. AMODIA"),
-            ]),
-            _vm._v(
-              " single/married to_________________________________________  of legal age, Filipino citizen, and resident of "
-            ),
-            _c("span", { staticClass: "text-underlined" }, [
-              _vm._v("P-9 MJ SANTOS TUNGAO, BUTUAN CITY AGUSAN DEL NORTE"),
-            ]),
-            _vm._v(
-              "  herein after called the FIRST PARTY;\n\t\t\t\t\t\t\t\t\t"
-            ),
-          ]),
-          _vm._v(" "),
-          _c("p", [
-            _vm._v(
-              "\n\t\t\t\t\t\t\t\t\t\tMAC LENDING a lending institution, duly registered under the laws of the Republic of the Philippines and with postal address at T. Cabo Extension, Butuan City represented by its Branch Manager JANINE L DESCALLAR herein after called as the SECOND PARTY;\n\t\t\t\t\t\t\t\t\t"
-            ),
-          ]),
-          _vm._v(" "),
-          _c("p", [_vm._v("WITNESSETH:")]),
-          _vm._v(" "),
-          _c("p", [
-            _vm._v(
-              "\n\t\t\t\t\t\t\t\t\t\tThat the FIRST PARTY hereby acknowledges to have been indebted to the SECOND PARTY in the sum of THIRTEEN THOUSAND PESOS (P13,000.00). Philippines currency, as of this date, since, he/she could no longer paid it in full by way of cash, hence, by presents the FIRST PARTY, voluntarily assign, transfer convey and set over unto the SECOND PARTY that certain PERSONAL property particularly describe as follows: \n\t\t\t\t\t\t\t\t\t"
-            ),
-          ]),
-          _vm._v(" "),
-          _c("p", [
-            _c("span", { staticClass: "text-block" }, [_vm._v("Description:")]),
-            _vm._v(
-              " CR No.:283729891; Plate No.:1501-00000126137; Engine No.: KPY00E276322; Chassis No.: KPY00276400; Make: HONDA MOTOR WORLD, INC.; Series: CETI 25MSE; Body Type: MOTORCYCLE RED; XRM 125 DS \n\t\t\t\t\t\t\t\t\t"
-            ),
-          ]),
-          _vm._v(" "),
-          _c("p", [
-            _c("span", { staticClass: "text-block" }, [
-              _vm._v(
-                "of which the FIRST PARTY is registered owner, his/her property thereto being evidence by"
-              ),
-            ]),
-            _vm._v(
-              "\n\t\t\t\t\t\t\t\t\t\t____________________________________________.\n\t\t\t\t\t\t\t\t\t"
-            ),
-          ]),
-          _vm._v(" "),
-          _c("p", [
-            _vm._v(
-              "\n\t\t\t\t\t\t\t\t\t\tThat the SECOND PARTY does hereby accept this assignment in payment of the total/partial obligation owing to him/her by the FIRST PARTY as above stated, (giving to the Second Party, however, the option to repurchase the above-describe property from the First Party for the sum of and after the date hereof, which right shall automatically be deemed cancelled, it not exercised within 15 days from the date hereof).\n\t\t\t\t\t\t\t\t\t"
-            ),
-          ]),
-          _vm._v(" "),
-          _c("p", [
-            _vm._v(
-              "\n\t\t\t\t\t\t\t\t\t\tThat by virtue of this presents, the indebtedness of FIRST PARTY as cited above is hereby paid and extinguished. \n\t\t\t\t\t\t\t\t\t"
-            ),
-          ]),
-          _vm._v(" "),
-          _c("p", [
-            _vm._v(
-              "\n\t\t\t\t\t\t\t\t\t\tIN WITNESS WHEREOF, the parties hereto have hereunto set their hands this_____________________________ at Butuan City, Philippines.\n\t\t\t\t\t\t\t\t\t"
-            ),
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "d-flex flex-row mb-24" }, [
-            _c("div", { staticClass: "flex-1" }, [
-              _c("span", { staticClass: "text-block" }, [
-                _vm._v("LOLITO AMODIA "),
-              ]),
-              _vm._v(" "),
-              _c("span", { staticClass: "text-block" }, [
-                _vm._v("FIRST PARTY"),
-              ]),
-              _vm._v(" "),
-              _c("span", { staticClass: "text-block" }, [
-                _vm._v("Type of ID: BRGY ID"),
-              ]),
-              _vm._v(" "),
-              _c("span", { staticClass: "text-block" }, [
-                _vm._v("I.D Number: 2021-13"),
-              ]),
-              _vm._v(" "),
-              _c("span", { staticClass: "text-block" }, [
-                _vm._v("Date:______________________________"),
-              ]),
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "flex-2" }, [
-              _c("span", { staticClass: "text-block" }, [
-                _vm._v("MARK ANTHONY M. CHAVEZ"),
-              ]),
-              _vm._v(" "),
-              _c("span", { staticClass: "text-block" }, [
-                _vm._v("(SECOND PARTY)"),
-              ]),
-              _vm._v(" "),
-              _c("span", { staticClass: "text-block" }, [
-                _vm._v("TIN:920-403-726-000"),
-              ]),
-            ]),
-          ]),
-          _vm._v(" "),
-          _c("p", { staticClass: "mb-64" }, [
-            _vm._v(
-              "\n\t\t\t\t\t\t\t\t\t\tWITH MY MARITAL CONSENT: \n\t\t\t\t\t\t\t\t\t"
-            ),
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "d-flex flex-row align-items-end mb-36" }, [
-            _c("div", { staticClass: "flex-1 mr-64" }, [
-              _c("span", { staticClass: "text-block" }, [
-                _vm._v("SIGNED IN THE PRESENCE OF:"),
-              ]),
-              _vm._v(" "),
-              _c("span", [_vm._v("______________________________________")]),
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "flex-2" }, [
-              _c("span", [_vm._v("______________________________________")]),
-            ]),
-          ]),
-          _vm._v(" "),
-          _c("span", { staticClass: "text-block" }, [
-            _vm._v("ACKNOWLEDGEMENT"),
-          ]),
-          _vm._v(" "),
-          _c("span", { staticClass: "text-block" }, [
-            _vm._v("REPUBLIC OF THE PHILIPPINES)"),
-          ]),
-          _vm._v(" "),
-          _c("span", { staticClass: "text-block" }, [
-            _vm._v("CITY OF ____________________)S.S."),
-          ]),
-          _vm._v(" "),
-          _c("span", { staticClass: "text-block mb-36" }, [
-            _vm._v("X---------------------------------/"),
-          ]),
-          _vm._v(" "),
-          _c("p", [
-            _vm._v(
-              "\n\t\t\t\t\t\t\t\t\t\tBEFORE ME, a notary public for and in the City of Butuan, Philippines this________________ day of_______________,  personally appeared the above named person, known to me and to me known to be the same person of the foregoing instrument, consisting of one (1) page including this page where the acknowledgement is written, signed by the parties and their two (2) instrumental witness, and they acknowledgement to me that the same are their own free will and voluntary act and deed.The Valid ID's of the parties were exhibited to me the same being that which appears below their respective names and signatures above.\n\t\t\t\t\t\t\t\t\t"
-            ),
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "d-flex flex-column" }, [
-            _c("span", [_vm._v("Doc. No.___________")]),
-            _vm._v(" "),
-            _c("span", [_vm._v("Page No.___________")]),
-            _vm._v(" "),
-            _c("span", [_vm._v("Book No.___________")]),
-            _vm._v(" "),
-            _c("span", [_vm._v("Series of___________")]),
-          ]),
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "mb-72" }),
-        _vm._v(" "),
-        _c("div", { staticClass: "d-flex flex-row-reverse mb-45" }, [
-          _c(
-            "a",
-            { staticClass: "btn btn-default min-w-150", attrs: { href: "#" } },
-            [_vm._v("Print")]
-          ),
-          _vm._v(" "),
-          _c(
-            "a",
-            {
-              staticClass: "btn btn-success min-w-150 mr-24",
-              attrs: { href: "#" },
-            },
-            [_vm._v("Download Excel")]
-          ),
-        ]),
       ]
     )
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("p", [
+      _c("span", { staticClass: "text-block" }, [_vm._v("Description:")]),
+      _vm._v(
+        " CR No.:283729891; Plate No.:1501-00000126137; Engine No.: KPY00E276322; Chassis No.: KPY00276400; Make: HONDA MOTOR WORLD, INC.; Series: CETI 25MSE; Body Type: MOTORCYCLE RED; XRM 125 DS \n\t\t\t\t\t\t\t\t\t"
+      ),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("p", [
+      _c("span", { staticClass: "text-block" }, [
+        _vm._v(
+          "of which the FIRST PARTY is registered owner, his/her property thereto being evidence by"
+        ),
+      ]),
+      _vm._v(
+        "\n\t\t\t\t\t\t\t\t\t\t____________________________________________.\n\t\t\t\t\t\t\t\t\t"
+      ),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "d-flex flex-row mb-24" }, [
+      _c("div", { staticClass: "flex-1" }, [
+        _c("span", { staticClass: "text-block" }, [_vm._v("LOLITO AMODIA ")]),
+        _vm._v(" "),
+        _c("span", { staticClass: "text-block" }, [_vm._v("FIRST PARTY")]),
+        _vm._v(" "),
+        _c("span", { staticClass: "text-block" }, [
+          _vm._v("Type of ID: BRGY ID"),
+        ]),
+        _vm._v(" "),
+        _c("span", { staticClass: "text-block" }, [
+          _vm._v("I.D Number: 2021-13"),
+        ]),
+        _vm._v(" "),
+        _c("span", { staticClass: "text-block" }, [
+          _vm._v("Date:______________________________"),
+        ]),
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "flex-2" }, [
+        _c("span", { staticClass: "text-block" }, [
+          _vm._v("MARK ANTHONY M. CHAVEZ"),
+        ]),
+        _vm._v(" "),
+        _c("span", { staticClass: "text-block" }, [_vm._v("(SECOND PARTY)")]),
+        _vm._v(" "),
+        _c("span", { staticClass: "text-block" }, [
+          _vm._v("TIN:920-403-726-000"),
+        ]),
+      ]),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "d-flex flex-row align-items-end mb-36" }, [
+      _c("div", { staticClass: "flex-1 mr-64" }, [
+        _c("span", { staticClass: "text-block" }, [
+          _vm._v("SIGNED IN THE PRESENCE OF:"),
+        ]),
+        _vm._v(" "),
+        _c("span", [_vm._v("______________________________________")]),
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "flex-2" }, [
+        _c("span", [_vm._v("______________________________________")]),
+      ]),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "d-flex flex-column" }, [
+      _c("span", [_vm._v("Doc. No.___________")]),
+      _vm._v(" "),
+      _c("span", [_vm._v("Page No.___________")]),
+      _vm._v(" "),
+      _c("span", [_vm._v("Book No.___________")]),
+      _vm._v(" "),
+      _c("span", [_vm._v("Series of___________")]),
+    ])
   },
   function () {
     var _vm = this

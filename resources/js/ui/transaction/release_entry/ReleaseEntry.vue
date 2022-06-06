@@ -47,16 +47,16 @@
 					</ul>
 					<div class="tab-content" id="custom-content-below-tabContent">
 						<div class="tab-pane fade show active" id="custom-content-below-borrowerinfo" role="tabpanel" aria-labelledby="custom-content-below-home-tab">
-							<borrowers-info @nextBorrower="nextBorrower" @borrowerCleared="clearData.borrower=0" @savedInfo="savedInfo" @saveBorrower="saveInfo=''" @clearBorrowerInfo="resetBorrower" :clear="clearData.borrower" :token="token" :pborrower="borrower" :psave="saveInfo"></borrowers-info>
+							<borrowers-info :idtype="idType" @nextBorrower="nextBorrower" @borrowerCleared="clearData.borrower=0" @savedInfo="savedInfo" @saveBorrower="saveInfo=''" @clearBorrowerInfo="resetBorrower" :clear="clearData.borrower" :token="token" :pborrower="borrower" :psave="saveInfo"></borrowers-info>
 						</div>
 
 
-						<co-borrower :borrowers="borrowers" :loandetails="loanDetails" @update-loan-details="updateLoanDetails"></co-borrower>
+						<co-borrower :idtype="idType" :borrowers="borrowers" :loandetails="loanDetails" @update-loan-details="updateLoanDetails"></co-borrower>
 
 
 
 						<div class="tab-pane fade" id="custom-content-below-loaddetails" role="tabpanel" aria-labelledby="custom-content-below-messages-tab">
-							<loan-details :saveloandetails="saveLoanDetails" :borrowerbday="borrowerBirthdate" :borrower="bborrower" :token="token" :loandetails="loanDetails"></loan-details>
+							<loan-details :idtype="idtype" :saveloandetails="saveLoanDetails" :borrowerbday="borrowerBirthdate" :borrower="bborrower" :token="token" :loandetails="loanDetails"></loan-details>
 						</div>
 
 
@@ -115,7 +115,7 @@
 							</li>
 						</ul>
 						<div class="tab-content" id="custom-content-below-tabContent">
-							<div class="tab-pane fade show active" id="dacion-en-pago" role="tabpanel" aria-labelledby="custom-content-below-home-tab">
+							<div  class="tab-pane fade show active" id="printContent" role="tabpanel" aria-labelledby="custom-content-below-home-tab">
 								<img :src="baseUrl+'/img/company_header.png'" style="width:100%" class="mb-16" alt="Company Header">
 								<div class="d-flex flex-column font-md" style="padding:0 35px;">
 									
@@ -125,14 +125,14 @@
 									<section class="font-md">
 										<span class="text-block mb-24">KNOW ALL MEN BY THESE PRESENTS:</span>
 										<p>
-											This INSTURMENT made and executed this 14TH day of DECEMBER 2021 at Button City, Philippines, by and between: <span class="text-underlined">LOLITO T. AMODIA</span> single/married to_________________________________________  of legal age, Filipino citizen, and resident of <span class="text-underlined">P-9 MJ SANTOS TUNGAO, BUTUAN CITY AGUSAN DEL NORTE</span>  herein after called the FIRST PARTY;
+											This INSTURMENT made and executed this 14TH day of DECEMBER 2021 at Button City, Philippines, by and between: <span class="text-underlined allcaps">{{borrower.fullname}}</span> single/married to <span class="text-underlined allcaps">{{borrower.spouse_lastname + ', ' + borrower.spouse_firstname}}</span> of legal age, Filipino citizen, and resident of <span class="text-underlined allcaps">{{borrower.address}}</span>  herein after called the FIRST PARTY;
 										</p>
 										<p>
 											MAC LENDING a lending institution, duly registered under the laws of the Republic of the Philippines and with postal address at T. Cabo Extension, Butuan City represented by its Branch Manager JANINE L DESCALLAR herein after called as the SECOND PARTY;
 										</p>
 										<p>WITNESSETH:</p>
 										<p>
-											That the FIRST PARTY hereby acknowledges to have been indebted to the SECOND PARTY in the sum of THIRTEEN THOUSAND PESOS (P13,000.00). Philippines currency, as of this date, since, he/she could no longer paid it in full by way of cash, hence, by presents the FIRST PARTY, voluntarily assign, transfer convey and set over unto the SECOND PARTY that certain PERSONAL property particularly describe as follows: 
+											That the FIRST PARTY hereby acknowledges to have been indebted to the SECOND PARTY in the sum of <span class="text-underlined allcaps">{{numToWords(loanDetails.loan_amount)}}</span> (P{{formatToCurrency(loanDetails.loan_amount)}}). Philippines currency, as of this date, since, he/she could no longer paid it in full by way of cash, hence, by presents the FIRST PARTY, voluntarily assign, transfer convey and set over unto the SECOND PARTY that certain PERSONAL property particularly describe as follows: 
 										</p>
 										<p>
 											<span class="text-block">Description:</span> CR No.:283729891; Plate No.:1501-00000126137; Engine No.: KPY00E276322; Chassis No.: KPY00276400; Make: HONDA MOTOR WORLD, INC.; Series: CETI 25MSE; Body Type: MOTORCYCLE RED; XRM 125 DS 
@@ -198,8 +198,9 @@
 
 									<div class="mb-72"></div>
 									<div class="d-flex flex-row-reverse mb-45">
-										<a href="#" class="btn btn-default min-w-150">Print</a>
+										<a @click.prevent="print()" href="#" class="btn btn-default min-w-150">Print</a>
 										<a href="#" class="btn btn-success min-w-150 mr-24">Download Excel</a>
+										<a href="#" id="cancelModal" data-dismiss="modal" class="btn btn-danger min-w-150 mr-24 hide">Cancel</a>
 									</div>
 								</div>
 							</div>
@@ -421,7 +422,7 @@
 
 <script>
     export default {
-		props:['token'],
+		props:['token', 'idtype'],
 		data(){
 			return {
 				clearData:{
@@ -480,7 +481,7 @@
 		},
 		methods: {
 			fetchBorrowers:function(){
-				axios.get(window.location.origin + '/api/borrower', {
+				axios.get(window.location.origin + '/api/borrower?accountStatus=all', {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
 						'Content-Type': 'application/json',
@@ -606,7 +607,20 @@
 						this.setCycle();
 					}
 				}.bind(this));
-			}
+			},
+			print:function(){
+				var content = document.getElementById('printContent').innerHTML;
+				var target = document.querySelector('.to-print');
+				target.innerHTML = content;
+				var cancel = document.querySelector('#cancelModal');
+				cancel.click();
+				window.print();
+			},
+		},
+		computed:{
+			idType:function(){
+			return JSON.parse(this.idtype);
+		},
 		},
         mounted() {	
 			this.fetchBorrowers();

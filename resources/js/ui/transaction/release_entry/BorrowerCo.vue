@@ -21,11 +21,11 @@
 					<div class="form-group mb-10 mr-16" style="flex: 3">
 						<label for="coIdType" class="form-label">ID Type</label>
 						<select v-model="loanDetails.co_borrower_id_type" required name="" id="" class="form-control form-input">
-							<option value="SSS">SSS</option>
-							<option value="UMID">GSIS/UMID</option>
+							<option v-for="i in idtype" :key="i" :value="i">{{i}}</option>
+							<!-- <option value="UMID">GSIS/UMID</option>
 							<option value="Driver's License">Driver's License</option>
 							<option value="Passport">Passport</option>
-							<option value="Senior ID">Senior ID</option>
+							<option value="Senior ID">Senior ID</option> -->
 						</select>
 					</div>
 					<div class="form-group mb-10 mr-16" style="flex: 3">
@@ -56,11 +56,7 @@
 					<div class="form-group mb-10 mr-16" style="flex: 3">
 						<label for="coIdType" class="form-label">ID Type</label>
 						<select v-model="loanDetails.co_maker_id_type" required name="" id="" class="form-control form-input">
-							<option value="SSS">SSS</option>
-							<option value="UMID">GSIS/UMID</option>
-							<option value="Driver's License">Driver's License</option>
-							<option value="Passport">Passport</option>
-							<option value="Senior ID">Senior ID</option>
+							<option v-for="i in idtype" :key="i" :value="i">{{i}}</option>
 						</select>
 					</div>
 					<div class="form-group mb-10 mr-16" style="flex: 3">
@@ -87,7 +83,7 @@
 </template>
 <script>
 export default {
-	props:['loandetails', 'borrowers'],
+	props:['loandetails', 'borrowers', 'idtype'],
 	data(){
 		return {
 			searchMode:true,

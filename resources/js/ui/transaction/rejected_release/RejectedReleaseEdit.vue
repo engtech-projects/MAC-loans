@@ -410,7 +410,26 @@
 				})
 				.then(function (response) {
 					this.rejectedAccounts = response.data.data;
+					// console.log(response.data.data);
 					// this.setAccount;
+				}.bind(this))
+				.catch(function (error) {
+					console.log(error);
+				}.bind(this));
+			},
+
+			fetchBorrower:function(borrower){
+				axios.get(window.location.origin + '/api/borrower/' + borrower.borrower.borrower_id, {
+					headers: {
+						'Authorization': 'Bearer ' + this.token,
+						'Content-Type': 'application/json',
+						'Accept': 'application/json'
+					}
+				})
+				.then(function (response) {
+					borrower.borrower = response.data.data;
+					borrower.documents = borrower.document;
+					this.rejectedAccount = borrower;
 				}.bind(this))
 				.catch(function (error) {
 					console.log(error);
@@ -426,7 +445,9 @@
 					}
 				})
 				.then(function (response) {
-					this.rejectedAccount = response.data.data;
+					this.fetchBorrower(response.data.data);
+					// console.log(response.data.data);
+					// this.rejectedAccount = response.data.data;
 				}.bind(this))
 				.catch(function (error) {
 					console.log(error);
@@ -450,7 +471,7 @@
 				return '';
 			},
 			selectAccount:function(data){
-				this.rejectedAccount = data;
+				this.fetchBorrower(data);
 			},
 			resetLoanDetails:function(){
 				this.rejectedAccount = {
