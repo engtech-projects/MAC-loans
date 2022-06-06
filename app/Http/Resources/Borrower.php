@@ -22,6 +22,7 @@ class Borrower extends JsonResource
             'middlename' => $this->middlename,
             'lastname' => $this->lastname,
             'fullname' => $this->fullname($this),
+            'photo' => $this->getPhoto(),
             'suffix' => $this->suffix,
             'address' => $this->address,
             'birthdate' => $this->birthdate,
