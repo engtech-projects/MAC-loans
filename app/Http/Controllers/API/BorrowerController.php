@@ -43,14 +43,18 @@ class BorrowerController extends BaseController
 
         $borrower = new Borrower();    
         // add borrower_num to request data
-        $request->merge(['borrower_num' => $borrower->generateBorrowerNum() ]);
+        $request->merge(['borrower_num' => '']);
         // create borrower
         $borrower = Borrower::create($request->input());
+        $borrower->borrower_num = $borrower->generateBorrowerNum();
+        $borrower->save();
         // upload image goes here.. .
 
         if ( $request->hasFile('img') ){
             $borrower->setBorrowerPhoto($request->file('img'), false);
-        }else{
+        }
+
+        if( isset($request->img) ) {
             $borrower->setBorrowerPhoto($request->img);
         }
 
@@ -109,7 +113,9 @@ class BorrowerController extends BaseController
 
         if ( $request->hasFile('img') ){
             $borrower->setBorrowerPhoto($request->file('img'), false);
-        }else{
+        }
+
+        if( isset($request->img) ) {
             $borrower->setBorrowerPhoto($request->img);
         }
 

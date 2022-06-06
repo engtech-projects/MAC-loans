@@ -59,15 +59,16 @@ class LoanAccount extends Model
    ];
 
 
-	public static function generateAccountNum($branchCode, $productCode) {
+	public static function generateAccountNum($branchCode, $productCode, $identifier) {
 		// compute for the document transaction
-		$accountNum = $branchCode . '-' .$productCode . '-' . '001';
+		$accountNum = $branchCode . '-' .$productCode . '-' . str_pad($identifier, 7, '0', STR_PAD_LEFT);
 		return $accountNum;
 	}
 
-	public static function getCycleNo() {
-		// retrieve 
-		return 1;
+	public static function getCycleNo($id) {
+      $cycleNo = LoanAccount::where(['borrower_id' => $id, 'status' => 'released'])->count();
+
+      return $cycleNo + 1;
 	}
 
 	public function center() {

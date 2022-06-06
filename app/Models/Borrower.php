@@ -44,7 +44,7 @@ class Borrower extends Model
     ];
 
     public function generateBorrowerNum() {
-    	return '123456';
+        return str_pad($this->borrower_id, 7, '0', STR_PAD_LEFT);
     }
 
     public function fullname() {
@@ -138,30 +138,36 @@ class Borrower extends Model
 
             $file->storeAs('public/' . $dirs['docs'], $name);
         }
-
     }
 
     public function businessInfo() {
     	return $this->hasMany(BusinessInfo::class, 'borrower_id');
     }
+
     public function employmentInfo() {
     	return $this->hasMany(EmploymentInfo::class, 'borrower_id');
     }
+
     public function householdMembers() {
     	return $this->hasMany(HouseholdMembers::class, 'borrower_id');
     }
+
     public function outstandingObligations() {
     	return $this->hasMany(OutstandingObligations::class, 'borrower_id');
     }
 
-    public function getLoanAccounts() {
+    public function loanAccounts() {
+
+        // return $this->hasMany(LoanAccount::class, 'borrower_id');
 
         $loanAccount = new LoanAccount();
         $activeAccounts = LoanAccount::where(['borrower_id' => $this->borrower_id])->get();
+
         foreach ($activeAccounts as $key => $value) {
             $value->outstandingBalance = $loanAccount->outstandingBalance($value->loan_account_id);
 			$value->current_amortization = $value->getCurrentAmortization();
         }
+
         return $activeAccounts;
     }
 }

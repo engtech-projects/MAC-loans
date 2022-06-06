@@ -36,15 +36,18 @@ class LoanAccountController extends BaseController
         $product = Product::find($request->input('product_id'));
 
         $request->merge([
-            'cycle_no' => LoanAccount::getCycleNo(),
+            'cycle_no' => LoanAccount::getCycleNo($borrower->borrower_id),
             'status' => 'pending',
-            'account_num' => LoanAccount::generateAccountNum($branch->branch_code, $product->product_code),
+            'account_num' => '',
             'borrower_num' =>  $borrower->borrower_num,
             'borrower_id' =>  $borrower->borrower_id,
             'branch_code' => $branch->branch_code,
         ]);
+
         $account = LoanAccount::create($request->input());
-        
+        $account->account_num = LoanAccount::generateAccountNum($branch->branch_code, $product->product_code, $account->loan_account_id);
+        $account->save();
+
         if( $account->loan_account_id ) {
             Document::create(
                 array_merge(
