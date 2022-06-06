@@ -48,12 +48,12 @@ class BorrowerController extends BaseController
         $borrower = Borrower::create($request->input());
         // upload image goes here.. .
 
-        if ( $request->file('img') ){
+        if ( $request->hasFile('img') ){
             $borrower->setBorrowerPhoto($request->file('img'), false);
         }else{
             $borrower->setBorrowerPhoto($request->img);
         }
-        
+
         // add other details
         $borrower->employmentInfo = $request->input('employmentInfo');
         $borrower->businessInfo = $request->input('businessInfo');
@@ -106,6 +106,16 @@ class BorrowerController extends BaseController
 
         $borrower->fill($request->input());
         $borrower->save();
+
+        if ( $request->hasFile('img') ){
+            $borrower->setBorrowerPhoto($request->file('img'), false);
+        }else{
+            $borrower->setBorrowerPhoto($request->img);
+        }
+
+        if( $request->hasFile('files') ) {
+            $borrower->setDocs($request->file('files'));
+        }
 
         $borrower->employmentInfo = $request->input('employmentInfo');
         $borrower->businessInfo = $request->input('businessInfo');

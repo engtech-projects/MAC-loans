@@ -51,13 +51,38 @@ class Borrower extends Model
     	return ucfirst($this->lastname) . ', ' . ucfirst($this->firstname) . ' '. ucfirst($this->middlename) . ' '. ucfirst($this->suffix);
     }
 
+    public function directories() {
+
+        $root = storage_path('app/public/');
+        $main = 'borrowers/';
+        $identifier = $this->borrower_id . '/';
+        $photo = 'photo/';
+        $docs = 'docs/';
+
+        // if borrowers folder does not exist. create folder
+        if( !File::isDirectory(($root . $main)) ){
+            // create folder
+            File::makeDirectory(($root . $main), 0777, true, true);
+        }
+
+        if( !File::isDirectory( ($root . $main . $identifier) )) {
+            File::makeDirectory(($root . $main . $identifier), 0777, true, true);
+            File::makeDirectory(($root . $main . $identifier . $photo), 0777, true, true);
+            File::makeDirectory(($root . $main . $identifier . $docs), 0777, true, true);
+        }
+
+        return [
+            'identifier' => $main . $identifier,
+            'photo' => $main . $identifier . $photo,
+            'docs' => $main . $identifier .$docs,
+        ];
+    }
+
     public function getPhoto() {
 
-        $dir = 'public/borrowers/' . $this->borrower_id . '/photo/';
-        $files = Storage::files($dir);
-        // $path = 'storage/borrowers/' . $this->borrower_id . '/' . $this->borrower_id . '.png';
-        // return url($path);
-
+        $dirs = $this->directories();
+        $files = Storage::files('public/' . $dirs['photo']);
+  
         if( count($files) > 0 ){
             return url(Str::replace('public', 'storage', $files[0]));
         }
@@ -67,21 +92,7 @@ class Borrower extends Model
 
     public function setBorrowerPhoto($img, $capture = true) {
 
-        $dir = storage_path('app/public/borrowers/');
-        $bDir = $dir . $this->borrower_id;
-        $path = 'borrowers/' . $this->borrower_id . '/photo/';
-
-        // if borrowers folder does not exist. create folder
-        if( !File::isDirectory($dir) ){
-            // create folder
-            File::makeDirectory($dir, 0777, true, true);
-        }
-
-        if( !File::isDirectory($bDir) ) {
-            File::makeDirectory($bDir, 0777, true, true);
-            File::makeDirectory($bDir . '/photo/', 0777, true, true);
-            File::makeDirectory($bDir . '/docs/', 0777, true, true);
-        }
+        $dirs = $this->directories();
 
         if( $capture ){
 
@@ -89,14 +100,45 @@ class Borrower extends Model
             // $imageTypeAux = explode("image/", $imgParts[0]);
             // $imageType = $imageTypeAux[1];
             $content = base64_decode($imgParts[1]);
-            $fileName = $path . $this->borrower_id . '.png';
+            $fileName = $dirs['photo'] . $this->borrower_id . '.png';
 
         }else{
             $content = $img;
-            $fileName = $path . $this->borrower_id . '.' . $content->getClientOriginalExtension();
+            $fileName = $dirs['photo'] . $this->borrower_id . '.' . $content->getClientOriginalExtension();
         }
 
         Storage::disk("public")->put($fileName, $content);
+    }
+
+    public function getDocs() {
+
+        $dirs = $this->directories();
+
+        $files = Storage::files('public/' . $dirs['docs']);
+        $docs = [];  
+        if( count($files) > 0 ){
+
+            foreach ($files as $file) {
+                $docs[] = url(Str::replace('public', 'storage', $file));
+            }
+            
+            return $docs;
+        }
+
+        return false;
+    }    
+
+    public function setDocs($files) {
+
+        $dirs = $this->directories();
+
+        foreach ($files as $file) {
+            
+            $name = $file->getClientOriginalName();
+
+            $file->storeAs('public/' . $dirs['docs'], $name);
+        }
+
     }
 
     public function businessInfo() {
