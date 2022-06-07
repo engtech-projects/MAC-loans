@@ -4,6 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
+use Storage;
+use File;
 
 class Borrower extends Model
 {
@@ -41,34 +44,130 @@ class Borrower extends Model
     ];
 
     public function generateBorrowerNum() {
-    	return '123456';
+        return str_pad($this->borrower_id, 7, '0', STR_PAD_LEFT);
     }
 
     public function fullname() {
     	return ucfirst($this->lastname) . ', ' . ucfirst($this->firstname) . ' '. ucfirst($this->middlename) . ' '. ucfirst($this->suffix);
     }
 
+    public function directories() {
+
+        $root = storage_path('app/public/');
+        $main = 'borrowers/';
+        $identifier = $this->borrower_id . '/';
+        $photo = 'photo/';
+        $docs = 'docs/';
+
+        // if borrowers folder does not exist. create folder
+        if( !File::isDirectory(($root . $main)) ){
+            // create folder
+            File::makeDirectory(($root . $main), 0777, true, true);
+        }
+
+        if( !File::isDirectory( ($root . $main . $identifier) )) {
+            File::makeDirectory(($root . $main . $identifier), 0777, true, true);
+            File::makeDirectory(($root . $main . $identifier . $photo), 0777, true, true);
+            File::makeDirectory(($root . $main . $identifier . $docs), 0777, true, true);
+        }
+
+        return [
+            'identifier' => $main . $identifier,
+            'photo' => $main . $identifier . $photo,
+            'docs' => $main . $identifier .$docs,
+        ];
+    }
+
+    public function getPhoto() {
+
+        $dirs = $this->directories();
+        $files = Storage::files('public/' . $dirs['photo']);
+  
+        if( count($files) > 0 ){
+            return url(Str::replace('public', 'storage', $files[0]));
+        }
+
+        return false;
+    }
+
+    public function setBorrowerPhoto($img, $capture = true) {
+
+        $dirs = $this->directories();
+
+        if( $capture ){
+
+            $imgParts = explode(";base64", $img);
+            // $imageTypeAux = explode("image/", $imgParts[0]);
+            // $imageType = $imageTypeAux[1];
+            $content = base64_decode($imgParts[1]);
+            $fileName = $dirs['photo'] . $this->borrower_id . '.png';
+
+        }else{
+            $content = $img;
+            $fileName = $dirs['photo'] . $this->borrower_id . '.' . $content->getClientOriginalExtension();
+        }
+
+        Storage::disk("public")->put($fileName, $content);
+    }
+
+    public function getDocs() {
+
+        $dirs = $this->directories();
+
+        $files = Storage::files('public/' . $dirs['docs']);
+        $docs = [];  
+        if( count($files) > 0 ){
+
+            foreach ($files as $file) {
+                $docs[] = url(Str::replace('public', 'storage', $file));
+            }
+            
+            return $docs;
+        }
+
+        return false;
+    }    
+
+    public function setDocs($files) {
+
+        $dirs = $this->directories();
+
+        foreach ($files as $file) {
+            
+            $name = $file->getClientOriginalName();
+
+            $file->storeAs('public/' . $dirs['docs'], $name);
+        }
+    }
+
     public function businessInfo() {
     	return $this->hasMany(BusinessInfo::class, 'borrower_id');
     }
+
     public function employmentInfo() {
     	return $this->hasMany(EmploymentInfo::class, 'borrower_id');
     }
+
     public function householdMembers() {
     	return $this->hasMany(HouseholdMembers::class, 'borrower_id');
     }
+
     public function outstandingObligations() {
     	return $this->hasMany(OutstandingObligations::class, 'borrower_id');
     }
 
-    public function getLoanAccounts() {
+    public function loanAccounts() {
+
+        // return $this->hasMany(LoanAccount::class, 'borrower_id');
 
         $loanAccount = new LoanAccount();
-        $activeAccounts = LoanAccount::where(['borrower_id' => $this->borrower_id, 'status' => 'released'])->get();
+        $activeAccounts = LoanAccount::where(['borrower_id' => $this->borrower_id])->get();
+
         foreach ($activeAccounts as $key => $value) {
             $value->outstandingBalance = $loanAccount->outstandingBalance($value->loan_account_id);
 			$value->current_amortization = $value->getCurrentAmortization();
         }
+
         return $activeAccounts;
     }
 }

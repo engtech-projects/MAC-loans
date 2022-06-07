@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\API\BaseController as BaseController;
 use Validator;
 use Carbon\Carbon;
+use Storage;
+use File;
 use App\Models\Borrower;
 use App\Models\EmploymentInfo;
 use App\Models\BusinessInfo;
@@ -41,10 +43,21 @@ class BorrowerController extends BaseController
 
         $borrower = new Borrower();    
         // add borrower_num to request data
-        $request->merge(['borrower_num' => $borrower->generateBorrowerNum() ]);
+        $request->merge(['borrower_num' => '']);
         // create borrower
         $borrower = Borrower::create($request->input());
+        $borrower->borrower_num = $borrower->generateBorrowerNum();
+        $borrower->save();
         // upload image goes here.. .
+
+        if ( $request->hasFile('img') ){
+            $borrower->setBorrowerPhoto($request->file('img'), false);
+        }
+
+        if( isset($request->img) ) {
+            $borrower->setBorrowerPhoto($request->img);
+        }
+
         // add other details
         $borrower->employmentInfo = $request->input('employmentInfo');
         $borrower->businessInfo = $request->input('businessInfo');
@@ -97,6 +110,18 @@ class BorrowerController extends BaseController
 
         $borrower->fill($request->input());
         $borrower->save();
+
+        if ( $request->hasFile('img') ){
+            $borrower->setBorrowerPhoto($request->file('img'), false);
+        }
+
+        if( isset($request->img) ) {
+            $borrower->setBorrowerPhoto($request->img);
+        }
+
+        if( $request->hasFile('files') ) {
+            $borrower->setDocs($request->file('files'));
+        }
 
         $borrower->employmentInfo = $request->input('employmentInfo');
         $borrower->businessInfo = $request->input('businessInfo');
