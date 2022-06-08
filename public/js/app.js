@@ -5728,7 +5728,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -5741,8 +5740,7 @@ __webpack_require__.r(__webpack_exports__);
       img: null,
       camera: null,
       deviceId: null,
-      devices: [],
-      isCamera: true
+      devices: []
     };
   },
   computed: {
@@ -5770,7 +5768,6 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     onCapture: function onCapture() {
-      this.isCamera = true;
       this.img = this.$refs.webcam.capture();
       this.$emit('imageCapture', this.img);
     },
@@ -5798,14 +5795,13 @@ __webpack_require__.r(__webpack_exports__);
       input.click();
     },
     encodeImageFileAsURL: function encodeImageFileAsURL() {
-      this.isCamera = false;
       var file = document.getElementById('selectImage').files[0];
       var reader = new FileReader();
 
       reader.onloadend = function () {
-        // console.log('RESULT', reader.result);
-        this.img = reader.result; // console.log(this.img);
-      };
+        this.img = reader.result;
+        this.$emit('imageCapture', this.img);
+      }.bind(this);
 
       reader.readAsDataURL(file);
     }
@@ -46716,23 +46712,19 @@ var render = function () {
                     ? _c("code", [_vm._v(_vm._s(_vm.device.label))])
                     : _vm._e(),
                   _vm._v(" "),
-                  _c("img", { attrs: { src: _vm.img, alt: "" } }),
-                  _vm._v(" "),
-                  _vm.isCamera
-                    ? _c("web-cam", {
-                        ref: "webcam",
-                        staticClass: "mb-16",
-                        staticStyle: { "background-color": "#000" },
-                        attrs: { "device-id": _vm.deviceId, width: "100%" },
-                        on: {
-                          started: _vm.onStarted,
-                          stopped: _vm.onStopped,
-                          error: _vm.onError,
-                          cameras: _vm.onCameras,
-                          "camera-change": _vm.onCameraChange,
-                        },
-                      })
-                    : _vm._e(),
+                  _c("web-cam", {
+                    ref: "webcam",
+                    staticClass: "mb-16",
+                    staticStyle: { "background-color": "#000" },
+                    attrs: { "device-id": _vm.deviceId, width: "100%" },
+                    on: {
+                      started: _vm.onStarted,
+                      stopped: _vm.onStopped,
+                      error: _vm.onError,
+                      cameras: _vm.onCameras,
+                      "camera-change": _vm.onCameraChange,
+                    },
+                  }),
                   _vm._v(" "),
                   _c("div", { staticClass: "d-flex" }, [
                     _c(
@@ -46782,7 +46774,11 @@ var render = function () {
                     _vm._v(" "),
                     _c("input", {
                       staticClass: "hide",
-                      attrs: { id: "selectImage", type: "file" },
+                      attrs: {
+                        id: "selectImage",
+                        type: "file",
+                        accept: "image/*",
+                      },
                       on: {
                         change: function ($event) {
                           return _vm.encodeImageFileAsURL()

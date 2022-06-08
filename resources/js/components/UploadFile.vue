@@ -6,8 +6,7 @@
 					<div class="container">
 						<h2>Current Camera</h2>
 						<code v-if="device">{{ device.label }}</code>
-						<img :src="img" alt="">
-						<web-cam v-if="isCamera" ref="webcam"
+						<web-cam ref="webcam"
 								:device-id="deviceId"
 								width="100%"
 								@started="onStarted" 
@@ -24,7 +23,7 @@
 										:key="device.deviceId" 
 										:value="device.deviceId">{{ device.label }}</option>
 								</select>
-								<input id="selectImage" type="file" class="hide" @change="encodeImageFileAsURL()">
+								<input id="selectImage" type="file" accept="image/*" class="hide" @change="encodeImageFileAsURL()">
 								<button type="button" 
 										class="btn btn-success mr-10" 
 										@click="selectImage()">Upload File</button>
@@ -67,7 +66,6 @@ export default {
       camera: null,
       deviceId: null,
       devices: [],
-	  isCamera:true,
     };
   },
   computed: {
@@ -90,7 +88,6 @@ export default {
   },
   methods: {
     onCapture() {
-	  this.isCamera = true;
       this.img = this.$refs.webcam.capture();
 	  this.$emit('imageCapture', this.img);
     },
@@ -123,14 +120,12 @@ export default {
 		input.click();
 	},
 	encodeImageFileAsURL:function() {
-		this.isCamera = false;
 		var file = document.getElementById('selectImage').files[0];
 		var reader = new FileReader();
 		reader.onloadend = function() {
-			// console.log('RESULT', reader.result);
 			this.img = reader.result;
-			// console.log(this.img);
-		}
+			this.$emit('imageCapture', this.img);
+		}.bind(this);
 		reader.readAsDataURL(file);
 	}
   }
