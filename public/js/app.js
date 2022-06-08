@@ -5724,6 +5724,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -5736,7 +5741,8 @@ __webpack_require__.r(__webpack_exports__);
       img: null,
       camera: null,
       deviceId: null,
-      devices: []
+      devices: [],
+      isCamera: true
     };
   },
   computed: {
@@ -5764,6 +5770,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     onCapture: function onCapture() {
+      this.isCamera = true;
       this.img = this.$refs.webcam.capture();
       this.$emit('imageCapture', this.img);
     },
@@ -5785,6 +5792,22 @@ __webpack_require__.r(__webpack_exports__);
     onCameraChange: function onCameraChange(deviceId) {
       this.deviceId = deviceId;
       this.camera = deviceId; //   console.log("On Camera Change Event", deviceId);
+    },
+    selectImage: function selectImage() {
+      var input = document.getElementById('selectImage');
+      input.click();
+    },
+    encodeImageFileAsURL: function encodeImageFileAsURL() {
+      this.isCamera = false;
+      var file = document.getElementById('selectImage').files[0];
+      var reader = new FileReader();
+
+      reader.onloadend = function () {
+        // console.log('RESULT', reader.result);
+        this.img = reader.result; // console.log(this.img);
+      };
+
+      reader.readAsDataURL(file);
     }
   }
 });
@@ -46693,19 +46716,23 @@ var render = function () {
                     ? _c("code", [_vm._v(_vm._s(_vm.device.label))])
                     : _vm._e(),
                   _vm._v(" "),
-                  _c("web-cam", {
-                    ref: "webcam",
-                    staticClass: "mb-16",
-                    staticStyle: { "background-color": "#000" },
-                    attrs: { "device-id": _vm.deviceId, width: "100%" },
-                    on: {
-                      started: _vm.onStarted,
-                      stopped: _vm.onStopped,
-                      error: _vm.onError,
-                      cameras: _vm.onCameras,
-                      "camera-change": _vm.onCameraChange,
-                    },
-                  }),
+                  _c("img", { attrs: { src: _vm.img, alt: "" } }),
+                  _vm._v(" "),
+                  _vm.isCamera
+                    ? _c("web-cam", {
+                        ref: "webcam",
+                        staticClass: "mb-16",
+                        staticStyle: { "background-color": "#000" },
+                        attrs: { "device-id": _vm.deviceId, width: "100%" },
+                        on: {
+                          started: _vm.onStarted,
+                          stopped: _vm.onStopped,
+                          error: _vm.onError,
+                          cameras: _vm.onCameras,
+                          "camera-change": _vm.onCameraChange,
+                        },
+                      })
+                    : _vm._e(),
                   _vm._v(" "),
                   _c("div", { staticClass: "d-flex" }, [
                     _c(
@@ -46751,6 +46778,30 @@ var render = function () {
                         }),
                       ],
                       2
+                    ),
+                    _vm._v(" "),
+                    _c("input", {
+                      staticClass: "hide",
+                      attrs: { id: "selectImage", type: "file" },
+                      on: {
+                        change: function ($event) {
+                          return _vm.encodeImageFileAsURL()
+                        },
+                      },
+                    }),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-success mr-10",
+                        attrs: { type: "button" },
+                        on: {
+                          click: function ($event) {
+                            return _vm.selectImage()
+                          },
+                        },
+                      },
+                      [_vm._v("Upload File")]
                     ),
                     _vm._v(" "),
                     _c(
@@ -77668,9 +77719,7 @@ var render = function () {
                                                 [
                                                   _vm._v(
                                                     "I.D Number: " +
-                                                      _vm._s(
-                                                        _vm.borrower.id_number
-                                                      )
+                                                      _vm._s(_vm.borrower.id_no)
                                                   ),
                                                 ]
                                               ),
@@ -78219,7 +78268,7 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("p", [
       _vm._v(
-        "\n\t\t\t\t\t\t\t\t\t\tMAC LENDING a lending institution, duly registered under the laws of the Republic of the Philippines and with postal address at T. Cabo Extension, Butuan City represented by its Branch Manager "
+        "\n\t\t\t\t\t\t\t\t\t\tMAC LENDING a lending institution, duly registered under the laws of the Republic of the Philippines and with postal address at T. Calo Extension, Butuan City represented by its Branch Manager "
       ),
       _c("b", [_vm._v("JANINE L. DESCALLAR")]),
       _vm._v(" herein after called as the "),

@@ -128,7 +128,7 @@
 											This INSTURMENT made and executed this <b>{{nthDay(this.dateToD(new Date))}}</b> day of <b class="allcaps">{{this.dateToFullMonth(new Date)}}  {{this.dateToY(new Date)}}</b> at Butuan City, Philippines, by and between: <span class="text-underlined allcaps text-bold">{{fullName(borrower.firstname, borrower.middlename,borrower.lastname)}}</span> single/married to <span class="text-underlined allcaps text-bold">{{fullName(borrower.spouse_firstname,borrower.spouse_middlename,borrower.spouse_lastname)}}</span> of legal age, Filipino citizen, and resident of <span class="text-underlined allcaps text-bold">{{borrower.address}}</span>  herein after called the <b>FIRST PARTY</b>;
 										</p>
 										<p>
-											MAC LENDING a lending institution, duly registered under the laws of the Republic of the Philippines and with postal address at T. Cabo Extension, Butuan City represented by its Branch Manager <b>JANINE L. DESCALLAR</b> herein after called as the <b>SECOND PARTY</b>;
+											MAC LENDING a lending institution, duly registered under the laws of the Republic of the Philippines and with postal address at T. Calo Extension, Butuan City represented by its Branch Manager <b>JANINE L. DESCALLAR</b> herein after called as the <b>SECOND PARTY</b>;
 										</p>
 										<p>WITNESSETH:</p>
 										<p>
@@ -156,7 +156,7 @@
 												<span class="text-block allcaps">{{fullName(borrower.firstname,borrower.middlename,borrower.lastname)}} </span>
 												<span class="text-block">FIRST PARTY</span>
 												<span class="text-block">Type of ID: {{borrower.id_type}}</span>
-												<span class="text-block">I.D Number: {{borrower.id_number}}</span>
+												<span class="text-block">I.D Number: {{borrower.id_no}}</span>
 												<span class="text-block">Date: {{borrower.id_date_issued}}</span>
 											</div>
 											<div class="flex-2 text-bold">
