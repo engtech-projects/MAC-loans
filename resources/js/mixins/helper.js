@@ -8,6 +8,22 @@ Vue.mixin({
 			var y = date.getFullYear();
 			return '' + y + '-' + (m<=9 ? '0' + m : m) + '-' + (d <= 9 ? '0' + d : d);
 		},
+		dateToD:function(date){
+			var d = date.getDate();
+			return d;
+		},
+		dateToM:function(date){
+			var m = date.getMonth() + 1;
+		},
+		dateToY:function(date){
+			return date.getFullYear();
+		},
+		dateToFullMonth:function(date){
+			const monthNames = ["January", "February", "March", "April", "May", "June",
+								"July", "August", "September", "October", "November", "December"
+								];
+			return monthNames[date.getMonth()];
+		},
 		capitalizeFirstLetter(str) {
 			return str.charAt(0).toUpperCase() + str.slice(1);
 		},
@@ -44,6 +60,15 @@ Vue.mixin({
 			outputText +=num[5] != 0 ? (oneToTwenty[Number(num[5])] || `${tenth[num[5][0]]} ${oneToTwenty[num[5][1]]} `) : ''; 
 		
 			return outputText;
+		},
+		nthDay:function(d){
+			if (d > 3 && d < 21) return d + 'th';
+			switch (d % 10) {
+				case 1:  return d + "st";
+				case 2:  return d + "nd";
+				case 3:  return d + "rd";
+				default: return d + "th";
+			}
 		}
 	}
 })

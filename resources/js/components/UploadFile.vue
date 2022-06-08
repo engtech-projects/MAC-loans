@@ -88,10 +88,10 @@ export default {
 	  this.$emit('imageCapture', this.img);
     },
     onStarted(stream) {
-      console.log("On Started Event", stream);
+    //   console.log("On Started Event", stream);
     },
     onStopped(stream) {
-      console.log("On Stopped Event", stream);
+    //   console.log("On Stopped Event", stream);
     },
     onStop() {
       this.$refs.webcam.stop();
@@ -100,16 +100,16 @@ export default {
       this.$refs.webcam.start();
     },
     onError(error) {
-      console.log("On Error Event", error);
+    //   console.log("On Error Event", error);
     },
     onCameras(cameras) {
       this.devices = cameras;
-      console.log("On Cameras Event", cameras);
+    //   console.log("On Cameras Event", cameras);
     },
     onCameraChange(deviceId) {
       this.deviceId = deviceId;
       this.camera = deviceId;
-      console.log("On Camera Change Event", deviceId);
+    //   console.log("On Camera Change Event", deviceId);
     }
   }
 };

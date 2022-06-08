@@ -5767,11 +5767,9 @@ __webpack_require__.r(__webpack_exports__);
       this.img = this.$refs.webcam.capture();
       this.$emit('imageCapture', this.img);
     },
-    onStarted: function onStarted(stream) {
-      console.log("On Started Event", stream);
+    onStarted: function onStarted(stream) {//   console.log("On Started Event", stream);
     },
-    onStopped: function onStopped(stream) {
-      console.log("On Stopped Event", stream);
+    onStopped: function onStopped(stream) {//   console.log("On Stopped Event", stream);
     },
     onStop: function onStop() {
       this.$refs.webcam.stop();
@@ -5779,17 +5777,14 @@ __webpack_require__.r(__webpack_exports__);
     onStart: function onStart() {
       this.$refs.webcam.start();
     },
-    onError: function onError(error) {
-      console.log("On Error Event", error);
+    onError: function onError(error) {//   console.log("On Error Event", error);
     },
     onCameras: function onCameras(cameras) {
-      this.devices = cameras;
-      console.log("On Cameras Event", cameras);
+      this.devices = cameras; //   console.log("On Cameras Event", cameras);
     },
     onCameraChange: function onCameraChange(deviceId) {
       this.deviceId = deviceId;
-      this.camera = deviceId;
-      console.log("On Camera Change Event", deviceId);
+      this.camera = deviceId; //   console.log("On Camera Change Event", deviceId);
     }
   }
 });
@@ -18524,6 +18519,13 @@ __webpack_require__.r(__webpack_exports__);
       var cancel = document.querySelector('#cancelModal');
       cancel.click();
       window.print();
+    },
+    dacionDate: function dacionDate() {
+      var text = '';
+      text += this.nthDay(this.dateToD(new Date())) + ' day of ';
+      text += this.dateToFullMonth(new Date()) + ' ';
+      text += this.dateToY(new Date());
+      return text;
     }
   },
   computed: {
@@ -18534,7 +18536,8 @@ __webpack_require__.r(__webpack_exports__);
   mounted: function mounted() {
     this.fetchBorrowers();
     this.resetBorrower();
-    this.resetLoanDetails(); // this.navigate('custom-content-below-loandetails-tab');
+    this.resetLoanDetails(); // console.log(this.loanDetails.documents);
+    // this.navigate('custom-content-below-loandetails-tab');
     // this.navigate('custom-content-below-coborrowerinfo-tab');
   }
 });
@@ -19554,6 +19557,20 @@ vue__WEBPACK_IMPORTED_MODULE_0__["default"].mixin({
       var y = date.getFullYear();
       return '' + y + '-' + (m <= 9 ? '0' + m : m) + '-' + (d <= 9 ? '0' + d : d);
     },
+    dateToD: function dateToD(date) {
+      var d = date.getDate();
+      return d;
+    },
+    dateToM: function dateToM(date) {
+      var m = date.getMonth() + 1;
+    },
+    dateToY: function dateToY(date) {
+      return date.getFullYear();
+    },
+    dateToFullMonth: function dateToFullMonth(date) {
+      var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+      return monthNames[date.getMonth()];
+    },
     capitalizeFirstLetter: function capitalizeFirstLetter(str) {
       return str.charAt(0).toUpperCase() + str.slice(1);
     },
@@ -19587,6 +19604,23 @@ vue__WEBPACK_IMPORTED_MODULE_0__["default"].mixin({
       outputText += num[4] != 0 ? (oneToTwenty[Number(num[4])] || "".concat(tenth[num[4][0]], " ").concat(oneToTwenty[num[4][1]])) + 'hundred ' : '';
       outputText += num[5] != 0 ? oneToTwenty[Number(num[5])] || "".concat(tenth[num[5][0]], " ").concat(oneToTwenty[num[5][1]], " ") : '';
       return outputText;
+    },
+    nthDay: function nthDay(d) {
+      if (d > 3 && d < 21) return d + 'th';
+
+      switch (d % 10) {
+        case 1:
+          return d + "st";
+
+        case 2:
+          return d + "nd";
+
+        case 3:
+          return d + "rd";
+
+        default:
+          return d + "th";
+      }
     }
   }
 });
@@ -75328,8 +75362,6 @@ var render = function () {
         _vm._v(" "),
         _c("div", { staticStyle: { flex: "22" } }),
       ]),
-      _vm._v(" "),
-      _c("upload-file", { on: { imageCapture: _vm.imageCapture } }),
     ],
     1
   )
@@ -77385,17 +77417,27 @@ var render = function () {
                                       _vm._v(" "),
                                       _c("p", [
                                         _vm._v(
-                                          "\n\t\t\t\t\t\t\t\t\t\tThis INSTURMENT made and executed this 14TH day of DECEMBER 2021 at Button City, Philippines, by and between: "
+                                          "\n\t\t\t\t\t\t\t\t\t\tThis INSTURMENT made and executed this "
+                                        ),
+                                        _c("b", [
+                                          _vm._v(_vm._s(_vm.dacionDate())),
+                                        ]),
+                                        _vm._v(
+                                          "  at Butuan City, Philippines, by and between: "
                                         ),
                                         _c(
                                           "span",
                                           {
                                             staticClass:
-                                              "text-underlined allcaps",
+                                              "text-underlined allcaps text-bold",
                                           },
                                           [
                                             _vm._v(
-                                              _vm._s(_vm.borrower.fullname)
+                                              _vm._s(
+                                                _vm.borrower.lastname +
+                                                  ", " +
+                                                  _vm.borrower.firstname
+                                              )
                                             ),
                                           ]
                                         ),
@@ -77404,7 +77446,7 @@ var render = function () {
                                           "span",
                                           {
                                             staticClass:
-                                              "text-underlined allcaps",
+                                              "text-underlined allcaps text-bold",
                                           },
                                           [
                                             _vm._v(
@@ -77423,7 +77465,7 @@ var render = function () {
                                           "span",
                                           {
                                             staticClass:
-                                              "text-underlined allcaps",
+                                              "text-underlined allcaps text-bold",
                                           },
                                           [_vm._v(_vm._s(_vm.borrower.address))]
                                         ),
@@ -77432,23 +77474,23 @@ var render = function () {
                                         ),
                                       ]),
                                       _vm._v(" "),
-                                      _c("p", [
-                                        _vm._v(
-                                          "\n\t\t\t\t\t\t\t\t\t\tMAC LENDING a lending institution, duly registered under the laws of the Republic of the Philippines and with postal address at T. Cabo Extension, Butuan City represented by its Branch Manager JANINE L DESCALLAR herein after called as the SECOND PARTY;\n\t\t\t\t\t\t\t\t\t"
-                                        ),
-                                      ]),
+                                      _vm._m(6),
                                       _vm._v(" "),
                                       _c("p", [_vm._v("WITNESSETH:")]),
                                       _vm._v(" "),
                                       _c("p", [
                                         _vm._v(
-                                          "\n\t\t\t\t\t\t\t\t\t\tThat the FIRST PARTY hereby acknowledges to have been indebted to the SECOND PARTY in the sum of "
+                                          "\n\t\t\t\t\t\t\t\t\t\tThat the "
+                                        ),
+                                        _c("b", [_vm._v("FIRST PARTY")]),
+                                        _vm._v(
+                                          " hereby acknowledges to have been indebted to the SECOND PARTY in the sum of "
                                         ),
                                         _c(
                                           "span",
                                           {
                                             staticClass:
-                                              "text-underlined allcaps",
+                                              "text-underlined allcaps text-bold",
                                           },
                                           [
                                             _vm._v(
@@ -77460,40 +77502,174 @@ var render = function () {
                                             ),
                                           ]
                                         ),
+                                        _vm._v(" "),
+                                        _c("b", [
+                                          _vm._v(
+                                            "(P" +
+                                              _vm._s(
+                                                _vm.formatToCurrency(
+                                                  _vm.loanDetails.loan_amount
+                                                )
+                                              ) +
+                                              ")"
+                                          ),
+                                        ]),
                                         _vm._v(
-                                          " (P" +
-                                            _vm._s(
-                                              _vm.formatToCurrency(
-                                                _vm.loanDetails.loan_amount
-                                              )
-                                            ) +
-                                            "). Philippines currency, as of this date, since, he/she could no longer paid it in full by way of cash, hence, by presents the FIRST PARTY, voluntarily assign, transfer convey and set over unto the SECOND PARTY that certain PERSONAL property particularly describe as follows: \n\t\t\t\t\t\t\t\t\t"
+                                          ". Philippines currency, as of this date, since, he/she could no longer paid it in full by way of cash, hence, by presents the "
+                                        ),
+                                        _c("b", [_vm._v("FIRST PARTY")]),
+                                        _vm._v(
+                                          ", voluntarily assign, transfer convey and set over unto the "
+                                        ),
+                                        _c("b", [_vm._v("SECOND PARTY")]),
+                                        _vm._v(
+                                          " that certain PERSONAL property particularly describe as follows: \n\t\t\t\t\t\t\t\t\t"
                                         ),
                                       ]),
                                       _vm._v(" "),
-                                      _vm._m(6),
+                                      _c("p", [
+                                        _c(
+                                          "span",
+                                          { staticClass: "text-block" },
+                                          [_vm._v("Description:")]
+                                        ),
+                                        _vm._v(" "),
+                                        _c("b", [
+                                          _vm._v(
+                                            _vm._s(
+                                              _vm.loanDetails.documents
+                                                .description
+                                            )
+                                          ),
+                                        ]),
+                                      ]),
                                       _vm._v(" "),
                                       _vm._m(7),
                                       _vm._v(" "),
-                                      _c("p", [
-                                        _vm._v(
-                                          "\n\t\t\t\t\t\t\t\t\t\tThat the SECOND PARTY does hereby accept this assignment in payment of the total/partial obligation owing to him/her by the FIRST PARTY as above stated, (giving to the Second Party, however, the option to repurchase the above-describe property from the First Party for the sum of and after the date hereof, which right shall automatically be deemed cancelled, it not exercised within 15 days from the date hereof).\n\t\t\t\t\t\t\t\t\t"
-                                        ),
-                                      ]),
-                                      _vm._v(" "),
-                                      _c("p", [
-                                        _vm._v(
-                                          "\n\t\t\t\t\t\t\t\t\t\tThat by virtue of this presents, the indebtedness of FIRST PARTY as cited above is hereby paid and extinguished. \n\t\t\t\t\t\t\t\t\t"
-                                        ),
-                                      ]),
-                                      _vm._v(" "),
-                                      _c("p", [
-                                        _vm._v(
-                                          "\n\t\t\t\t\t\t\t\t\t\tIN WITNESS WHEREOF, the parties hereto have hereunto set their hands this_____________________________ at Butuan City, Philippines.\n\t\t\t\t\t\t\t\t\t"
-                                        ),
-                                      ]),
-                                      _vm._v(" "),
                                       _vm._m(8),
+                                      _vm._v(" "),
+                                      _vm._m(9),
+                                      _vm._v(" "),
+                                      _c("p", [
+                                        _vm._v(
+                                          "\n\t\t\t\t\t\t\t\t\t\tIN WITNESS WHEREOF, the parties hereto have hereunto set their hands this " +
+                                            _vm._s(_vm.dacionDate()) +
+                                            " at Butuan City, Philippines.\n\t\t\t\t\t\t\t\t\t"
+                                        ),
+                                      ]),
+                                      _vm._v(" "),
+                                      _c(
+                                        "div",
+                                        {
+                                          staticClass: "d-flex flex-row mb-24",
+                                        },
+                                        [
+                                          _c(
+                                            "div",
+                                            { staticClass: "flex-1 text-bold" },
+                                            [
+                                              _c(
+                                                "span",
+                                                { staticClass: "text-block" },
+                                                [
+                                                  _vm._v(
+                                                    _vm._s(
+                                                      _vm.loanDetails
+                                                        .co_borrower_name
+                                                    ) + " "
+                                                  ),
+                                                ]
+                                              ),
+                                              _vm._v(" "),
+                                              _c(
+                                                "span",
+                                                { staticClass: "text-block" },
+                                                [_vm._v("FIRST PARTY")]
+                                              ),
+                                              _vm._v(" "),
+                                              _c(
+                                                "span",
+                                                { staticClass: "text-block" },
+                                                [
+                                                  _vm._v(
+                                                    "Type of ID: " +
+                                                      _vm._s(
+                                                        _vm.loanDetails
+                                                          .co_borrower_id_type
+                                                      )
+                                                  ),
+                                                ]
+                                              ),
+                                              _vm._v(" "),
+                                              _c(
+                                                "span",
+                                                { staticClass: "text-block" },
+                                                [
+                                                  _vm._v(
+                                                    "I.D Number: " +
+                                                      _vm._s(
+                                                        _vm.loanDetails
+                                                          .co_borrower_id_number
+                                                      )
+                                                  ),
+                                                ]
+                                              ),
+                                              _vm._v(" "),
+                                              _c(
+                                                "span",
+                                                { staticClass: "text-block" },
+                                                [
+                                                  _vm._v(
+                                                    "Date: " +
+                                                      _vm._s(
+                                                        _vm.loanDetails
+                                                          .co_borrower_id_date_issued
+                                                      )
+                                                  ),
+                                                ]
+                                              ),
+                                            ]
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "div",
+                                            { staticClass: "flex-2 text-bold" },
+                                            [
+                                              _c(
+                                                "span",
+                                                { staticClass: "text-block" },
+                                                [
+                                                  _vm._v(
+                                                    _vm._s(
+                                                      _vm.loanDetails
+                                                        .co_maker_name
+                                                    )
+                                                  ),
+                                                ]
+                                              ),
+                                              _vm._v(" "),
+                                              _c(
+                                                "span",
+                                                { staticClass: "text-block" },
+                                                [_vm._v("(SECOND PARTY)")]
+                                              ),
+                                              _vm._v(" "),
+                                              _c(
+                                                "span",
+                                                { staticClass: "text-block" },
+                                                [
+                                                  _vm._v(
+                                                    _vm._s(
+                                                      _vm.loanDetails
+                                                        .co_maker_id_number
+                                                    )
+                                                  ),
+                                                ]
+                                              ),
+                                            ]
+                                          ),
+                                        ]
+                                      ),
                                       _vm._v(" "),
                                       _c("p", { staticClass: "mb-64" }, [
                                         _vm._v(
@@ -77501,7 +77677,7 @@ var render = function () {
                                         ),
                                       ]),
                                       _vm._v(" "),
-                                      _vm._m(9),
+                                      _vm._m(10),
                                       _vm._v(" "),
                                       _c(
                                         "span",
@@ -77537,11 +77713,13 @@ var render = function () {
                                       _vm._v(" "),
                                       _c("p", [
                                         _vm._v(
-                                          "\n\t\t\t\t\t\t\t\t\t\tBEFORE ME, a notary public for and in the City of Butuan, Philippines this________________ day of_______________,  personally appeared the above named person, known to me and to me known to be the same person of the foregoing instrument, consisting of one (1) page including this page where the acknowledgement is written, signed by the parties and their two (2) instrumental witness, and they acknowledgement to me that the same are their own free will and voluntary act and deed.The Valid ID's of the parties were exhibited to me the same being that which appears below their respective names and signatures above.\n\t\t\t\t\t\t\t\t\t"
+                                          "\n\t\t\t\t\t\t\t\t\t\tBEFORE ME, a notary public for and in the City of Butuan, Philippines this " +
+                                            _vm._s(_vm.dacionDate()) +
+                                            ",  personally appeared the above named person, known to me and to me known to be the same person of the foregoing instrument, consisting of one (1) page including this page where the acknowledgement is written, signed by the parties and their two (2) instrumental witness, and they acknowledgement to me that the same are their own free will and voluntary act and deed.The Valid ID's of the parties were exhibited to me the same being that which appears below their respective names and signatures above.\n\t\t\t\t\t\t\t\t\t"
                                         ),
                                       ]),
                                       _vm._v(" "),
-                                      _vm._m(10),
+                                      _vm._m(11),
                                     ]),
                                     _vm._v(" "),
                                     _c("div", { staticClass: "mb-72" }),
@@ -77621,7 +77799,7 @@ var render = function () {
                                   },
                                 }),
                                 _vm._v(" "),
-                                _vm._m(11),
+                                _vm._m(12),
                               ]
                             ),
                           ]
@@ -78016,10 +78194,13 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("p", [
-      _c("span", { staticClass: "text-block" }, [_vm._v("Description:")]),
       _vm._v(
-        " CR No.:283729891; Plate No.:1501-00000126137; Engine No.: KPY00E276322; Chassis No.: KPY00276400; Make: HONDA MOTOR WORLD, INC.; Series: CETI 25MSE; Body Type: MOTORCYCLE RED; XRM 125 DS \n\t\t\t\t\t\t\t\t\t"
+        "\n\t\t\t\t\t\t\t\t\t\tMAC LENDING a lending institution, duly registered under the laws of the Republic of the Philippines and with postal address at T. Cabo Extension, Butuan City represented by its Branch Manager "
       ),
+      _c("b", [_vm._v("JANINE L DESCALLAR")]),
+      _vm._v(" herein after called as the "),
+      _c("b", [_vm._v("SECOND PARTY")]),
+      _vm._v(";\n\t\t\t\t\t\t\t\t\t"),
     ])
   },
   function () {
@@ -78028,8 +78209,10 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("p", [
       _c("span", { staticClass: "text-block" }, [
+        _vm._v("of which the "),
+        _c("b", [_vm._v("FIRST PARTY")]),
         _vm._v(
-          "of which the FIRST PARTY is registered owner, his/her property thereto being evidence by"
+          " is registered owner, his/her property thereto being evidence by"
         ),
       ]),
       _vm._v(
@@ -78041,36 +78224,32 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "d-flex flex-row mb-24" }, [
-      _c("div", { staticClass: "flex-1" }, [
-        _c("span", { staticClass: "text-block" }, [_vm._v("LOLITO AMODIA ")]),
-        _vm._v(" "),
-        _c("span", { staticClass: "text-block" }, [_vm._v("FIRST PARTY")]),
-        _vm._v(" "),
-        _c("span", { staticClass: "text-block" }, [
-          _vm._v("Type of ID: BRGY ID"),
-        ]),
-        _vm._v(" "),
-        _c("span", { staticClass: "text-block" }, [
-          _vm._v("I.D Number: 2021-13"),
-        ]),
-        _vm._v(" "),
-        _c("span", { staticClass: "text-block" }, [
-          _vm._v("Date:______________________________"),
-        ]),
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "flex-2" }, [
-        _c("span", { staticClass: "text-block" }, [
-          _vm._v("MARK ANTHONY M. CHAVEZ"),
-        ]),
-        _vm._v(" "),
-        _c("span", { staticClass: "text-block" }, [_vm._v("(SECOND PARTY)")]),
-        _vm._v(" "),
-        _c("span", { staticClass: "text-block" }, [
-          _vm._v("TIN:920-403-726-000"),
-        ]),
-      ]),
+    return _c("p", [
+      _vm._v(
+        "\n\t\t\t\t\t\t\t\t\t\tThat the SECOND PARTY does hereby accept this assignment in payment of the total/partial obligation owing to him/her by the "
+      ),
+      _c("b", [_vm._v("FIRST PARTY")]),
+      _vm._v(
+        " as above stated, (giving to the Second Party, however, the option to repurchase the above-describe property from the "
+      ),
+      _c("b", [_vm._v("First Party")]),
+      _vm._v(
+        " for the sum of and after the date hereof, which right shall automatically be deemed cancelled, it not exercised within 15 days from the date hereof).\n\t\t\t\t\t\t\t\t\t"
+      ),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("p", [
+      _vm._v(
+        "\n\t\t\t\t\t\t\t\t\t\tThat by virtue of this presents, the indebtedness of "
+      ),
+      _c("b", [_vm._v("FIRST PARTY")]),
+      _vm._v(
+        " as cited above is hereby paid and extinguished. \n\t\t\t\t\t\t\t\t\t"
+      ),
     ])
   },
   function () {

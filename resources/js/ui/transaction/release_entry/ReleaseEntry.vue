@@ -125,44 +125,44 @@
 									<section class="font-md">
 										<span class="text-block mb-24">KNOW ALL MEN BY THESE PRESENTS:</span>
 										<p>
-											This INSTURMENT made and executed this 14TH day of DECEMBER 2021 at Button City, Philippines, by and between: <span class="text-underlined allcaps">{{borrower.fullname}}</span> single/married to <span class="text-underlined allcaps">{{borrower.spouse_lastname + ', ' + borrower.spouse_firstname}}</span> of legal age, Filipino citizen, and resident of <span class="text-underlined allcaps">{{borrower.address}}</span>  herein after called the FIRST PARTY;
+											This INSTURMENT made and executed this <b>{{dacionDate()}}</b>  at Butuan City, Philippines, by and between: <span class="text-underlined allcaps text-bold">{{borrower.lastname + ', ' + borrower.firstname}}</span> single/married to <span class="text-underlined allcaps text-bold">{{borrower.spouse_lastname + ', ' + borrower.spouse_firstname}}</span> of legal age, Filipino citizen, and resident of <span class="text-underlined allcaps text-bold">{{borrower.address}}</span>  herein after called the FIRST PARTY;
 										</p>
 										<p>
-											MAC LENDING a lending institution, duly registered under the laws of the Republic of the Philippines and with postal address at T. Cabo Extension, Butuan City represented by its Branch Manager JANINE L DESCALLAR herein after called as the SECOND PARTY;
+											MAC LENDING a lending institution, duly registered under the laws of the Republic of the Philippines and with postal address at T. Cabo Extension, Butuan City represented by its Branch Manager <b>JANINE L DESCALLAR</b> herein after called as the <b>SECOND PARTY</b>;
 										</p>
 										<p>WITNESSETH:</p>
 										<p>
-											That the FIRST PARTY hereby acknowledges to have been indebted to the SECOND PARTY in the sum of <span class="text-underlined allcaps">{{numToWords(loanDetails.loan_amount)}}</span> (P{{formatToCurrency(loanDetails.loan_amount)}}). Philippines currency, as of this date, since, he/she could no longer paid it in full by way of cash, hence, by presents the FIRST PARTY, voluntarily assign, transfer convey and set over unto the SECOND PARTY that certain PERSONAL property particularly describe as follows: 
+											That the <b>FIRST PARTY</b> hereby acknowledges to have been indebted to the SECOND PARTY in the sum of <span class="text-underlined allcaps text-bold">{{numToWords(loanDetails.loan_amount)}}</span> <b>(P{{formatToCurrency(loanDetails.loan_amount)}})</b>. Philippines currency, as of this date, since, he/she could no longer paid it in full by way of cash, hence, by presents the <b>FIRST PARTY</b>, voluntarily assign, transfer convey and set over unto the <b>SECOND PARTY</b> that certain PERSONAL property particularly describe as follows: 
 										</p>
 										<p>
-											<span class="text-block">Description:</span> CR No.:283729891; Plate No.:1501-00000126137; Engine No.: KPY00E276322; Chassis No.: KPY00276400; Make: HONDA MOTOR WORLD, INC.; Series: CETI 25MSE; Body Type: MOTORCYCLE RED; XRM 125 DS 
+											<span class="text-block">Description:</span> <b>{{loanDetails.documents.description}}</b>
 										</p>
 										<p>
-											<span class="text-block">of which the FIRST PARTY is registered owner, his/her property thereto being evidence by</span>
+											<span class="text-block">of which the <b>FIRST PARTY</b> is registered owner, his/her property thereto being evidence by</span>
 											____________________________________________.
 										</p>
 										<p>
-											That the SECOND PARTY does hereby accept this assignment in payment of the total/partial obligation owing to him/her by the FIRST PARTY as above stated, (giving to the Second Party, however, the option to repurchase the above-describe property from the First Party for the sum of and after the date hereof, which right shall automatically be deemed cancelled, it not exercised within 15 days from the date hereof).
+											That the SECOND PARTY does hereby accept this assignment in payment of the total/partial obligation owing to him/her by the <b>FIRST PARTY</b> as above stated, (giving to the Second Party, however, the option to repurchase the above-describe property from the <b>First Party</b> for the sum of and after the date hereof, which right shall automatically be deemed cancelled, it not exercised within 15 days from the date hereof).
 										</p>
 										<p>
-											That by virtue of this presents, the indebtedness of FIRST PARTY as cited above is hereby paid and extinguished. 
+											That by virtue of this presents, the indebtedness of <b>FIRST PARTY</b> as cited above is hereby paid and extinguished. 
 										</p>
 										<p>
-											IN WITNESS WHEREOF, the parties hereto have hereunto set their hands this_____________________________ at Butuan City, Philippines.
+											IN WITNESS WHEREOF, the parties hereto have hereunto set their hands this {{dacionDate()}} at Butuan City, Philippines.
 										</p>
 
 										<div class="d-flex flex-row mb-24">
-											<div class="flex-1">
-												<span class="text-block">LOLITO AMODIA </span>
+											<div class="flex-1 text-bold">
+												<span class="text-block">{{loanDetails.co_borrower_name}} </span>
 												<span class="text-block">FIRST PARTY</span>
-												<span class="text-block">Type of ID: BRGY ID</span>
-												<span class="text-block">I.D Number: 2021-13</span>
-												<span class="text-block">Date:______________________________</span>
+												<span class="text-block">Type of ID: {{loanDetails.co_borrower_id_type}}</span>
+												<span class="text-block">I.D Number: {{loanDetails.co_borrower_id_number}}</span>
+												<span class="text-block">Date: {{loanDetails.co_borrower_id_date_issued}}</span>
 											</div>
-											<div class="flex-2">
-												<span class="text-block">MARK ANTHONY M. CHAVEZ</span>
+											<div class="flex-2 text-bold">
+												<span class="text-block">{{loanDetails.co_maker_name}}</span>
 												<span class="text-block">(SECOND PARTY)</span>
-												<span class="text-block">TIN:920-403-726-000</span>
+												<span class="text-block">{{loanDetails.co_maker_id_number}}</span>
 											</div>
 										</div>
 
@@ -186,7 +186,7 @@
 										<span class="text-block mb-36">X---------------------------------/</span>
 
 										<p>
-											BEFORE ME, a notary public for and in the City of Butuan, Philippines this________________ day of_______________,  personally appeared the above named person, known to me and to me known to be the same person of the foregoing instrument, consisting of one (1) page including this page where the acknowledgement is written, signed by the parties and their two (2) instrumental witness, and they acknowledgement to me that the same are their own free will and voluntary act and deed.The Valid ID's of the parties were exhibited to me the same being that which appears below their respective names and signatures above.
+											BEFORE ME, a notary public for and in the City of Butuan, Philippines this {{dacionDate()}},  personally appeared the above named person, known to me and to me known to be the same person of the foregoing instrument, consisting of one (1) page including this page where the acknowledgement is written, signed by the parties and their two (2) instrumental witness, and they acknowledgement to me that the same are their own free will and voluntary act and deed.The Valid ID's of the parties were exhibited to me the same being that which appears below their respective names and signatures above.
 										</p>
 										<div class="d-flex flex-column">
 											<span>Doc. No.___________</span>
@@ -616,6 +616,13 @@
 				cancel.click();
 				window.print();
 			},
+			dacionDate:function(){
+				var text = '';
+				text += this.nthDay(this.dateToD(new Date)) + ' day of ';
+				text += this.dateToFullMonth(new Date) + ' ';
+				text += this.dateToY(new Date);
+				return text;
+			}
 		},
 		computed:{
 			idType:function(){
@@ -626,6 +633,7 @@
 			this.fetchBorrowers();
 			this.resetBorrower();
 			this.resetLoanDetails();
+			// console.log(this.loanDetails.documents);
 			// this.navigate('custom-content-below-loandetails-tab');
 			// this.navigate('custom-content-below-coborrowerinfo-tab');
         }
