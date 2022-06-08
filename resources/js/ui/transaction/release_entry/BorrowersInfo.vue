@@ -406,7 +406,7 @@
 			<!-- <a href="#" @click.prevent="clearInfo()" class="btn btn-yellow-light min-w-150 mr-16">Clear Info</a> -->
 			<div style="flex:22"></div>
 		</div>
-		<!-- <upload-file @imageCapture="imageCapture"/> -->
+		<upload-file @imageCapture="imageCapture"/>
 	</div>
 </template>
 

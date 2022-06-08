@@ -75392,6 +75392,8 @@ var render = function () {
         _vm._v(" "),
         _c("div", { staticStyle: { flex: "22" } }),
       ]),
+      _vm._v(" "),
+      _c("upload-file", { on: { imageCapture: _vm.imageCapture } }),
     ],
     1
   )
