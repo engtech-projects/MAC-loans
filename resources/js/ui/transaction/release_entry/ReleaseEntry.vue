@@ -125,10 +125,10 @@
 									<section class="font-md">
 										<span class="text-block mb-24">KNOW ALL MEN BY THESE PRESENTS:</span>
 										<p>
-											This INSTURMENT made and executed this <b>{{dacionDate()}}</b>  at Butuan City, Philippines, by and between: <span class="text-underlined allcaps text-bold">{{borrower.lastname + ', ' + borrower.firstname}}</span> single/married to <span class="text-underlined allcaps text-bold">{{borrower.spouse_lastname + ', ' + borrower.spouse_firstname}}</span> of legal age, Filipino citizen, and resident of <span class="text-underlined allcaps text-bold">{{borrower.address}}</span>  herein after called the FIRST PARTY;
+											This INSTURMENT made and executed this <b>{{nthDay(this.dateToD(new Date))}}</b> day of <b class="allcaps">{{this.dateToFullMonth(new Date)}}  {{this.dateToY(new Date)}}</b> at Butuan City, Philippines, by and between: <span class="text-underlined allcaps text-bold">{{borrower.firstname + ' ' + borrower.middlename.charAt(0) + '. ' + borrower.lastname}}</span> single/married to <span class="text-underlined allcaps text-bold">{{borrower.spouse_firstname + ' ' + borrower.spouse_middlename.charAt(0) + '. ' + borrower.spouse_lastname}}</span> of legal age, Filipino citizen, and resident of <span class="text-underlined allcaps text-bold">{{borrower.address}}</span>  herein after called the <b>FIRST PARTY</b>;
 										</p>
 										<p>
-											MAC LENDING a lending institution, duly registered under the laws of the Republic of the Philippines and with postal address at T. Cabo Extension, Butuan City represented by its Branch Manager <b>JANINE L DESCALLAR</b> herein after called as the <b>SECOND PARTY</b>;
+											MAC LENDING a lending institution, duly registered under the laws of the Republic of the Philippines and with postal address at T. Cabo Extension, Butuan City represented by its Branch Manager <b>JANINE L. DESCALLAR</b> herein after called as the <b>SECOND PARTY</b>;
 										</p>
 										<p>WITNESSETH:</p>
 										<p>
@@ -142,7 +142,7 @@
 											____________________________________________.
 										</p>
 										<p>
-											That the SECOND PARTY does hereby accept this assignment in payment of the total/partial obligation owing to him/her by the <b>FIRST PARTY</b> as above stated, (giving to the Second Party, however, the option to repurchase the above-describe property from the <b>First Party</b> for the sum of and after the date hereof, which right shall automatically be deemed cancelled, it not exercised within 15 days from the date hereof).
+											That the SECOND PARTY does hereby accept this assignment in payment of the total/partial obligation owing to him/her by the <b>FIRST PARTY</b> as above stated, (giving to the Second Party, however, the option to repurchase the above-describe property from the <b>FIRST PARTY</b> for the sum of and after the date hereof, which right shall automatically be deemed cancelled, it not exercised within 15 days from the date hereof).
 										</p>
 										<p>
 											That by virtue of this presents, the indebtedness of <b>FIRST PARTY</b> as cited above is hereby paid and extinguished. 
@@ -153,16 +153,16 @@
 
 										<div class="d-flex flex-row mb-24">
 											<div class="flex-1 text-bold">
-												<span class="text-block">{{loanDetails.co_borrower_name}} </span>
+												<span class="text-block allcaps">{{borrower.firstname + ' ' + borrower.middlename.charAt(0) + '. ' + borrower.lastname}} </span>
 												<span class="text-block">FIRST PARTY</span>
-												<span class="text-block">Type of ID: {{loanDetails.co_borrower_id_type}}</span>
-												<span class="text-block">I.D Number: {{loanDetails.co_borrower_id_number}}</span>
-												<span class="text-block">Date: {{loanDetails.co_borrower_id_date_issued}}</span>
+												<span class="text-block">Type of ID: {{borrower.id_type}}</span>
+												<span class="text-block">I.D Number: {{borrower.id_number}}</span>
+												<span class="text-block">Date: {{borrower.id_date_issued}}</span>
 											</div>
 											<div class="flex-2 text-bold">
-												<span class="text-block">{{loanDetails.co_maker_name}}</span>
+												<span class="text-block">MARK ANTHONY M. CHAVEZ</span>
 												<span class="text-block">(SECOND PARTY)</span>
-												<span class="text-block">{{loanDetails.co_maker_id_number}}</span>
+												<span class="text-block">TIN: 920-403-726-000</span>
 											</div>
 										</div>
 
@@ -432,7 +432,37 @@
 				saveInfo:'',
 				saveLoanDetails:false,
 				bborrower:{borrower_id:'', borrower_num:''},
-				borrower:'',
+				borrower:{
+					borrower_id: null,
+					date_registered: this.dateToYMD(new Date()),
+					borrower_num:'',
+					firstname:'',
+					lastname:'',
+					middlename:'',
+					suffix :'' ,
+					address :'' ,
+					birthdate :'',
+					gender :'' ,
+					status :'' ,
+					contact_number :'',
+					id_type :'',
+					id_no :'',
+					id_date_issued :'',
+					spouse_firstname:'',
+					spouse_lastname:'',
+					spouse_middlename:'',
+					spouse_address :'',
+					spouse_birthdate :'',
+					spouse_id_type :'',
+					spouse_id_no :'',
+					spouse_id_date_issued :'',
+					employmentInfo : [],
+					businessInfo : [],
+					householdMembers : [],
+					outstandingObligations : [],
+					loanAccounts:[],
+					created_at: this.dateToYMD(new Date()),
+				},
 				baseUrl: window.location.origin,
 				borrowers:[],
 				loanDetails: {
@@ -551,6 +581,7 @@
 				}
 				return '';
 			},
+		
 			resetLoanDetails:function(){
 				this.loanDetails = {
 					loan_account_id:null,

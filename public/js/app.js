@@ -18339,7 +18339,37 @@ __webpack_require__.r(__webpack_exports__);
         borrower_id: '',
         borrower_num: ''
       },
-      borrower: '',
+      borrower: {
+        borrower_id: null,
+        date_registered: this.dateToYMD(new Date()),
+        borrower_num: '',
+        firstname: '',
+        lastname: '',
+        middlename: '',
+        suffix: '',
+        address: '',
+        birthdate: '',
+        gender: '',
+        status: '',
+        contact_number: '',
+        id_type: '',
+        id_no: '',
+        id_date_issued: '',
+        spouse_firstname: '',
+        spouse_lastname: '',
+        spouse_middlename: '',
+        spouse_address: '',
+        spouse_birthdate: '',
+        spouse_id_type: '',
+        spouse_id_no: '',
+        spouse_id_date_issued: '',
+        employmentInfo: [],
+        businessInfo: [],
+        householdMembers: [],
+        outstandingObligations: [],
+        loanAccounts: [],
+        created_at: this.dateToYMD(new Date())
+      },
       baseUrl: window.location.origin,
       borrowers: [],
       loanDetails: {
@@ -77420,10 +77450,26 @@ var render = function () {
                                           "\n\t\t\t\t\t\t\t\t\t\tThis INSTURMENT made and executed this "
                                         ),
                                         _c("b", [
-                                          _vm._v(_vm._s(_vm.dacionDate())),
+                                          _vm._v(
+                                            _vm._s(
+                                              _vm.nthDay(
+                                                this.dateToD(new Date())
+                                              )
+                                            )
+                                          ),
+                                        ]),
+                                        _vm._v(" day of "),
+                                        _c("b", { staticClass: "allcaps" }, [
+                                          _vm._v(
+                                            _vm._s(
+                                              this.dateToFullMonth(new Date())
+                                            ) +
+                                              "  " +
+                                              _vm._s(this.dateToY(new Date()))
+                                          ),
                                         ]),
                                         _vm._v(
-                                          "  at Butuan City, Philippines, by and between: "
+                                          " at Butuan City, Philippines, by and between: "
                                         ),
                                         _c(
                                           "span",
@@ -77434,9 +77480,13 @@ var render = function () {
                                           [
                                             _vm._v(
                                               _vm._s(
-                                                _vm.borrower.lastname +
-                                                  ", " +
-                                                  _vm.borrower.firstname
+                                                _vm.borrower.firstname +
+                                                  " " +
+                                                  _vm.borrower.middlename.charAt(
+                                                    0
+                                                  ) +
+                                                  ". " +
+                                                  _vm.borrower.lastname
                                               )
                                             ),
                                           ]
@@ -77451,9 +77501,13 @@ var render = function () {
                                           [
                                             _vm._v(
                                               _vm._s(
-                                                _vm.borrower.spouse_lastname +
-                                                  ", " +
-                                                  _vm.borrower.spouse_firstname
+                                                _vm.borrower.spouse_firstname +
+                                                  " " +
+                                                  _vm.borrower.spouse_middlename.charAt(
+                                                    0
+                                                  ) +
+                                                  ". " +
+                                                  _vm.borrower.spouse_lastname
                                               )
                                             ),
                                           ]
@@ -77469,9 +77523,9 @@ var render = function () {
                                           },
                                           [_vm._v(_vm._s(_vm.borrower.address))]
                                         ),
-                                        _vm._v(
-                                          "  herein after called the FIRST PARTY;\n\t\t\t\t\t\t\t\t\t"
-                                        ),
+                                        _vm._v("  herein after called the "),
+                                        _c("b", [_vm._v("FIRST PARTY")]),
+                                        _vm._v(";\n\t\t\t\t\t\t\t\t\t"),
                                       ]),
                                       _vm._v(" "),
                                       _vm._m(6),
@@ -77570,12 +77624,20 @@ var render = function () {
                                             [
                                               _c(
                                                 "span",
-                                                { staticClass: "text-block" },
+                                                {
+                                                  staticClass:
+                                                    "text-block allcaps",
+                                                },
                                                 [
                                                   _vm._v(
                                                     _vm._s(
-                                                      _vm.loanDetails
-                                                        .co_borrower_name
+                                                      _vm.borrower.firstname +
+                                                        " " +
+                                                        _vm.borrower.middlename.charAt(
+                                                          0
+                                                        ) +
+                                                        ". " +
+                                                        _vm.borrower.lastname
                                                     ) + " "
                                                   ),
                                                 ]
@@ -77594,8 +77656,7 @@ var render = function () {
                                                   _vm._v(
                                                     "Type of ID: " +
                                                       _vm._s(
-                                                        _vm.loanDetails
-                                                          .co_borrower_id_type
+                                                        _vm.borrower.id_type
                                                       )
                                                   ),
                                                 ]
@@ -77608,8 +77669,7 @@ var render = function () {
                                                   _vm._v(
                                                     "I.D Number: " +
                                                       _vm._s(
-                                                        _vm.loanDetails
-                                                          .co_borrower_id_number
+                                                        _vm.borrower.id_number
                                                       )
                                                   ),
                                                 ]
@@ -77622,8 +77682,8 @@ var render = function () {
                                                   _vm._v(
                                                     "Date: " +
                                                       _vm._s(
-                                                        _vm.loanDetails
-                                                          .co_borrower_id_date_issued
+                                                        _vm.borrower
+                                                          .id_date_issued
                                                       )
                                                   ),
                                                 ]
@@ -77631,43 +77691,7 @@ var render = function () {
                                             ]
                                           ),
                                           _vm._v(" "),
-                                          _c(
-                                            "div",
-                                            { staticClass: "flex-2 text-bold" },
-                                            [
-                                              _c(
-                                                "span",
-                                                { staticClass: "text-block" },
-                                                [
-                                                  _vm._v(
-                                                    _vm._s(
-                                                      _vm.loanDetails
-                                                        .co_maker_name
-                                                    )
-                                                  ),
-                                                ]
-                                              ),
-                                              _vm._v(" "),
-                                              _c(
-                                                "span",
-                                                { staticClass: "text-block" },
-                                                [_vm._v("(SECOND PARTY)")]
-                                              ),
-                                              _vm._v(" "),
-                                              _c(
-                                                "span",
-                                                { staticClass: "text-block" },
-                                                [
-                                                  _vm._v(
-                                                    _vm._s(
-                                                      _vm.loanDetails
-                                                        .co_maker_id_number
-                                                    )
-                                                  ),
-                                                ]
-                                              ),
-                                            ]
-                                          ),
+                                          _vm._m(10),
                                         ]
                                       ),
                                       _vm._v(" "),
@@ -77677,7 +77701,7 @@ var render = function () {
                                         ),
                                       ]),
                                       _vm._v(" "),
-                                      _vm._m(10),
+                                      _vm._m(11),
                                       _vm._v(" "),
                                       _c(
                                         "span",
@@ -77719,7 +77743,7 @@ var render = function () {
                                         ),
                                       ]),
                                       _vm._v(" "),
-                                      _vm._m(11),
+                                      _vm._m(12),
                                     ]),
                                     _vm._v(" "),
                                     _c("div", { staticClass: "mb-72" }),
@@ -77799,7 +77823,7 @@ var render = function () {
                                   },
                                 }),
                                 _vm._v(" "),
-                                _vm._m(12),
+                                _vm._m(13),
                               ]
                             ),
                           ]
@@ -78197,7 +78221,7 @@ var staticRenderFns = [
       _vm._v(
         "\n\t\t\t\t\t\t\t\t\t\tMAC LENDING a lending institution, duly registered under the laws of the Republic of the Philippines and with postal address at T. Cabo Extension, Butuan City represented by its Branch Manager "
       ),
-      _c("b", [_vm._v("JANINE L DESCALLAR")]),
+      _c("b", [_vm._v("JANINE L. DESCALLAR")]),
       _vm._v(" herein after called as the "),
       _c("b", [_vm._v("SECOND PARTY")]),
       _vm._v(";\n\t\t\t\t\t\t\t\t\t"),
@@ -78232,7 +78256,7 @@ var staticRenderFns = [
       _vm._v(
         " as above stated, (giving to the Second Party, however, the option to repurchase the above-describe property from the "
       ),
-      _c("b", [_vm._v("First Party")]),
+      _c("b", [_vm._v("FIRST PARTY")]),
       _vm._v(
         " for the sum of and after the date hereof, which right shall automatically be deemed cancelled, it not exercised within 15 days from the date hereof).\n\t\t\t\t\t\t\t\t\t"
       ),
@@ -78250,6 +78274,22 @@ var staticRenderFns = [
       _vm._v(
         " as cited above is hereby paid and extinguished. \n\t\t\t\t\t\t\t\t\t"
       ),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "flex-2 text-bold" }, [
+      _c("span", { staticClass: "text-block" }, [
+        _vm._v("MARK ANTHONY M. CHAVEZ"),
+      ]),
+      _vm._v(" "),
+      _c("span", { staticClass: "text-block" }, [_vm._v("(SECOND PARTY)")]),
+      _vm._v(" "),
+      _c("span", { staticClass: "text-block" }, [
+        _vm._v("TIN: 920-403-726-000"),
+      ]),
     ])
   },
   function () {
