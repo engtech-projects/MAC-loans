@@ -69,6 +69,9 @@ Vue.mixin({
 				case 3:  return d + "rd";
 				default: return d + "th";
 			}
+		},
+		fullName:function(f,m,l){
+			return m? f+' '+m.charAt(0)+'. '+l:f+' ' +l;
 		}
 	}
 })

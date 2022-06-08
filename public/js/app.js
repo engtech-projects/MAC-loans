@@ -19651,6 +19651,9 @@ vue__WEBPACK_IMPORTED_MODULE_0__["default"].mixin({
         default:
           return d + "th";
       }
+    },
+    fullName: function fullName(f, m, l) {
+      return m ? f + ' ' + m.charAt(0) + '. ' + l : f + ' ' + l;
     }
   }
 });
@@ -77482,13 +77485,11 @@ var render = function () {
                                           [
                                             _vm._v(
                                               _vm._s(
-                                                _vm.borrower.firstname +
-                                                  " " +
-                                                  _vm.borrower.middlename.charAt(
-                                                    0
-                                                  ) +
-                                                  ". " +
+                                                _vm.fullName(
+                                                  _vm.borrower.firstname,
+                                                  _vm.borrower.middlename,
                                                   _vm.borrower.lastname
+                                                )
                                               )
                                             ),
                                           ]
@@ -77503,13 +77504,12 @@ var render = function () {
                                           [
                                             _vm._v(
                                               _vm._s(
-                                                _vm.borrower.spouse_firstname +
-                                                  " " +
-                                                  _vm.borrower.spouse_middlename.charAt(
-                                                    0
-                                                  ) +
-                                                  ". " +
+                                                _vm.fullName(
+                                                  _vm.borrower.spouse_firstname,
+                                                  _vm.borrower
+                                                    .spouse_middlename,
                                                   _vm.borrower.spouse_lastname
+                                                )
                                               )
                                             ),
                                           ]
@@ -77633,13 +77633,11 @@ var render = function () {
                                                 [
                                                   _vm._v(
                                                     _vm._s(
-                                                      _vm.borrower.firstname +
-                                                        " " +
-                                                        _vm.borrower.middlename.charAt(
-                                                          0
-                                                        ) +
-                                                        ". " +
+                                                      _vm.fullName(
+                                                        _vm.borrower.firstname,
+                                                        _vm.borrower.middlename,
                                                         _vm.borrower.lastname
+                                                      )
                                                     ) + " "
                                                   ),
                                                 ]
