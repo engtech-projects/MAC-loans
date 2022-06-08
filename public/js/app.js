@@ -18351,6 +18351,7 @@ __webpack_require__.r(__webpack_exports__);
       clearData: {
         borrower: 0
       },
+      activeTab: 'dacion-en-pago-tab',
       borrowerBirthdate: '',
       saveInfo: '',
       saveLoanDetails: false,
@@ -18562,7 +18563,7 @@ __webpack_require__.r(__webpack_exports__);
       }.bind(this));
     },
     print: function print() {
-      var content = document.getElementById('printContent').innerHTML;
+      var content = document.getElementById('dacion-en-pago').innerHTML;
       var target = document.querySelector('.to-print');
       target.innerHTML = content;
       var cancel = document.querySelector('#cancelModal');
@@ -18575,6 +18576,10 @@ __webpack_require__.r(__webpack_exports__);
       text += this.dateToFullMonth(new Date()) + ' ';
       text += this.dateToY(new Date());
       return text;
+    },
+    switchTab: function switchTab(tab) {
+      this.activeTab = tab;
+      document.getElementById(tab).click();
     }
   },
   computed: {
@@ -18586,8 +18591,8 @@ __webpack_require__.r(__webpack_exports__);
     this.fetchBorrowers();
     this.resetBorrower();
     this.resetLoanDetails(); // console.log(this.loanDetails.documents);
-    // this.navigate('custom-content-below-loandetails-tab');
-    // this.navigate('custom-content-below-coborrowerinfo-tab');
+
+    this.navigate('custom-content-below-loandetails-tab'); // this.navigate('custom-content-below-coborrowerinfo-tab');
   }
 });
 
@@ -19673,6 +19678,9 @@ vue__WEBPACK_IMPORTED_MODULE_0__["default"].mixin({
     },
     fullName: function fullName(f, m, l) {
       return m ? f + ' ' + m.charAt(0) + '. ' + l : f + ' ' + l;
+    },
+    isActive: function isActive(a, b) {
+      return a == b ? 'active' : '';
     }
   }
 });
@@ -77443,10 +77451,69 @@ var render = function () {
                         "d-flex flex-column flex-md-row align-items-start",
                     },
                     [
-                      _vm._m(3),
+                      _c(
+                        "div",
+                        {
+                          staticClass:
+                            "flex-2 light-border d-flex flex-column letter-nav xs-mb-32 xs-flex-1",
+                        },
+                        [
+                          _vm._m(3),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            {
+                              staticClass: "pxy-25 light-bb hover-light",
+                              class: _vm.isActive(
+                                "dacion-en-pago-tab",
+                                _vm.activeTab
+                              ),
+                              attrs: { "data-tab": "dacion-en-pago-tab" },
+                              on: {
+                                click: function ($event) {
+                                  return _vm.switchTab("dacion-en-pago-tab")
+                                },
+                              },
+                            },
+                            [
+                              _c("span", { staticClass: "text-20" }, [
+                                _vm._v("DACION EN PAGO"),
+                              ]),
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _vm._m(4),
+                          _vm._v(" "),
+                          _vm._m(5),
+                          _vm._v(" "),
+                          _vm._m(6),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            {
+                              staticClass: "pxy-25 hover-light",
+                              class: _vm.isActive(
+                                "promissory-note-tab",
+                                _vm.activeTab
+                              ),
+                              attrs: { "data-tab": "promissory-note-tab" },
+                              on: {
+                                click: function ($event) {
+                                  return _vm.switchTab("promissory-note-tab")
+                                },
+                              },
+                            },
+                            [
+                              _c("span", { staticClass: "text-20" }, [
+                                _vm._v("Promissory Note"),
+                              ]),
+                            ]
+                          ),
+                        ]
+                      ),
                       _vm._v(" "),
                       _c("div", { staticStyle: { flex: "6" } }, [
-                        _vm._m(4),
+                        _vm._m(7),
                         _vm._v(" "),
                         _c(
                           "div",
@@ -77460,7 +77527,7 @@ var render = function () {
                               {
                                 staticClass: "tab-pane fade show active",
                                 attrs: {
-                                  id: "printContent",
+                                  id: "dacion-en-pago",
                                   role: "tabpanel",
                                   "aria-labelledby":
                                     "custom-content-below-home-tab",
@@ -77484,7 +77551,7 @@ var render = function () {
                                     staticStyle: { padding: "0 35px" },
                                   },
                                   [
-                                    _vm._m(5),
+                                    _vm._m(8),
                                     _vm._v(" "),
                                     _c("section", { staticClass: "font-md" }, [
                                       _c(
@@ -77577,7 +77644,7 @@ var render = function () {
                                         _vm._v(";\n\t\t\t\t\t\t\t\t\t"),
                                       ]),
                                       _vm._v(" "),
-                                      _vm._m(6),
+                                      _vm._m(9),
                                       _vm._v(" "),
                                       _c("p", [_vm._v("WITNESSETH:")]),
                                       _vm._v(" "),
@@ -77647,11 +77714,11 @@ var render = function () {
                                         ]),
                                       ]),
                                       _vm._v(" "),
-                                      _vm._m(7),
+                                      _vm._m(10),
                                       _vm._v(" "),
-                                      _vm._m(8),
+                                      _vm._m(11),
                                       _vm._v(" "),
-                                      _vm._m(9),
+                                      _vm._m(12),
                                       _vm._v(" "),
                                       _c("p", [
                                         _vm._v(
@@ -77736,7 +77803,7 @@ var render = function () {
                                             ]
                                           ),
                                           _vm._v(" "),
-                                          _vm._m(10),
+                                          _vm._m(13),
                                         ]
                                       ),
                                       _vm._v(" "),
@@ -77746,7 +77813,7 @@ var render = function () {
                                         ),
                                       ]),
                                       _vm._v(" "),
-                                      _vm._m(11),
+                                      _vm._m(14),
                                       _vm._v(" "),
                                       _c(
                                         "span",
@@ -77788,7 +77855,7 @@ var render = function () {
                                         ),
                                       ]),
                                       _vm._v(" "),
-                                      _vm._m(12),
+                                      _vm._m(15),
                                     ]),
                                     _vm._v(" "),
                                     _c("div", { staticClass: "mb-72" }),
@@ -77868,7 +77935,7 @@ var render = function () {
                                   },
                                 }),
                                 _vm._v(" "),
-                                _vm._m(13),
+                                _vm._m(16),
                               ]
                             ),
                           ]
@@ -78132,65 +78199,38 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c(
       "div",
-      {
-        staticClass:
-          "flex-2 light-border d-flex flex-column letter-nav xs-mb-32 xs-flex-1",
-      },
-      [
-        _c(
-          "div",
-          {
-            staticClass: "pxy-25 light-bb hover-light",
-            attrs: { "data-tab": "" },
-          },
-          [_c("span", { staticClass: "text-20" }, [_vm._v("Reminder Letter")])]
-        ),
-        _vm._v(" "),
-        _c(
-          "div",
-          {
-            staticClass: "pxy-25 light-bb hover-light active",
-            attrs: { "data-tab": "dacion-en-pago-tab" },
-          },
-          [_c("span", { staticClass: "text-20" }, [_vm._v("DACION EN PAGO")])]
-        ),
-        _vm._v(" "),
-        _c(
-          "div",
-          {
-            staticClass: "pxy-25 light-bb hover-light",
-            attrs: { "data-tab": "" },
-          },
-          [_c("span", { staticClass: "text-20" }, [_vm._v("DOA For ATM")])]
-        ),
-        _vm._v(" "),
-        _c(
-          "div",
-          {
-            staticClass: "pxy-25 light-bb hover-light",
-            attrs: { "data-tab": "" },
-          },
-          [_c("span", { staticClass: "text-20" }, [_vm._v("MOA For SME")])]
-        ),
-        _vm._v(" "),
-        _c(
-          "div",
-          {
-            staticClass: "pxy-25 light-bb hover-light",
-            attrs: { "data-tab": "" },
-          },
-          [_c("span", { staticClass: "text-20" }, [_vm._v("SME Schedule")])]
-        ),
-        _vm._v(" "),
-        _c(
-          "div",
-          {
-            staticClass: "pxy-25 hover-light",
-            attrs: { "data-tab": "promissory-note-tab" },
-          },
-          [_c("span", { staticClass: "text-20" }, [_vm._v("Promissory Note")])]
-        ),
-      ]
+      { staticClass: "pxy-25 light-bb hover-light", attrs: { "data-tab": "" } },
+      [_c("span", { staticClass: "text-20" }, [_vm._v("Reminder Letter")])]
+    )
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      { staticClass: "pxy-25 light-bb hover-light", attrs: { "data-tab": "" } },
+      [_c("span", { staticClass: "text-20" }, [_vm._v("DOA For ATM")])]
+    )
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      { staticClass: "pxy-25 light-bb hover-light", attrs: { "data-tab": "" } },
+      [_c("span", { staticClass: "text-20" }, [_vm._v("MOA For SME")])]
+    )
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      { staticClass: "pxy-25 light-bb hover-light", attrs: { "data-tab": "" } },
+      [_c("span", { staticClass: "text-20" }, [_vm._v("SME Schedule")])]
     )
   },
   function () {

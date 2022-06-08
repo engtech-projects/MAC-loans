@@ -89,7 +89,7 @@
 						<div class="pxy-25 light-bb hover-light" data-tab="">
 							<span class="text-20">Reminder Letter</span>
 						</div>
-						<div class="pxy-25 light-bb hover-light active" data-tab="dacion-en-pago-tab">
+						<div @click="switchTab('dacion-en-pago-tab')" class="pxy-25 light-bb hover-light" :class="isActive('dacion-en-pago-tab',activeTab)" data-tab="dacion-en-pago-tab">
 							<span class="text-20">DACION EN PAGO</span>
 						</div>
 						<div class="pxy-25 light-bb hover-light" data-tab="">
@@ -101,7 +101,7 @@
 						<div class="pxy-25 light-bb hover-light" data-tab="">
 							<span class="text-20">SME Schedule</span>
 						</div>
-						<div class="pxy-25 hover-light" data-tab="promissory-note-tab">
+						<div @click="switchTab('promissory-note-tab')" class="pxy-25 hover-light" :class="isActive('promissory-note-tab',activeTab)" data-tab="promissory-note-tab">
 							<span class="text-20">Promissory Note</span>
 						</div>
 					</div>
@@ -115,7 +115,7 @@
 							</li>
 						</ul>
 						<div class="tab-content" id="custom-content-below-tabContent">
-							<div  class="tab-pane fade show active" id="printContent" role="tabpanel" aria-labelledby="custom-content-below-home-tab">
+							<div  class="tab-pane fade show active" id="dacion-en-pago" role="tabpanel" aria-labelledby="custom-content-below-home-tab">
 								<img :src="baseUrl+'/img/company_header.png'" style="width:100%" class="mb-16" alt="Company Header">
 								<div class="d-flex flex-column font-md" style="padding:0 35px;">
 									
@@ -428,6 +428,7 @@
 				clearData:{
 					borrower:0
 				},
+				activeTab:'dacion-en-pago-tab',
 				borrowerBirthdate:'',
 				saveInfo:'',
 				saveLoanDetails:false,
@@ -640,7 +641,7 @@
 				}.bind(this));
 			},
 			print:function(){
-				var content = document.getElementById('printContent').innerHTML;
+				var content = document.getElementById('dacion-en-pago').innerHTML;
 				var target = document.querySelector('.to-print');
 				target.innerHTML = content;
 				var cancel = document.querySelector('#cancelModal');
@@ -654,7 +655,10 @@
 				text += this.dateToY(new Date);
 				return text;
 			},
-			
+			switchTab:function(tab){
+				this.activeTab = tab;
+				document.getElementById(tab).click();
+			}
 		},
 		computed:{
 			idType:function(){
@@ -666,7 +670,7 @@
 			this.resetBorrower();
 			this.resetLoanDetails();
 			// console.log(this.loanDetails.documents);
-			// this.navigate('custom-content-below-loandetails-tab');
+			this.navigate('custom-content-below-loandetails-tab');
 			// this.navigate('custom-content-below-coborrowerinfo-tab');
         }
     }
