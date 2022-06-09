@@ -512,7 +512,7 @@
 		},
 		methods: {
 			fetchBorrowers:function(){
-				axios.get(window.location.origin + '/api/borrower?accountStatus=all', {
+				axios.get(window.location.origin + '/api/borrower', {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
 						'Content-Type': 'application/json',
@@ -522,6 +522,15 @@
 				.then(function (response) {
 					// console.log(response.data);
 					this.borrowers = response.data.data;
+				}.bind(this))
+				.catch(function (error) {
+					console.log(error);
+				}.bind(this));
+			},
+			fetchLoanAccounts:function(){
+				axios.get(window.location.origin + '/transaction/release_entry/loanaccounts?borrower=' + this.borrower.borrower_id)
+				.then(function (response) {
+					this.borrower.loan_accounts = response.data;
 				}.bind(this))
 				.catch(function (error) {
 					console.log(error);
@@ -636,6 +645,7 @@
 				this.borrowers.map(function(data){
 					if(borrower == data.borrower_id){
 						this.borrower = data;
+						this.fetchLoanAccounts();
 						this.setCycle();
 					}
 				}.bind(this));

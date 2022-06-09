@@ -46,7 +46,7 @@ class Borrower extends JsonResource
             'outstandingObligations' => $this->outstandingObligations,
             'created_at' => $this->created_at->format('m/d/Y'),
             'updated_at' => $this->updated_at->format('m/d/Y'),
-            'loan_accounts' => $this->getloanAccounts(isset($request->accountStatus)? $request->accountStatus:'released'),
+            'loan_accounts' => $this->getloanAccounts(),
         ];
     }
 }
