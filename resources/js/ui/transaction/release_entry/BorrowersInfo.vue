@@ -637,13 +637,13 @@
 		watch: {
 			'img'(newValue){
 				if(!newValue){
-					alert('hello');
 					this.img = this.baseUrl + '/img/user.png'
 				}
 			},
 			'pborrower'(newValue) {
 				if(!this.pclient){
 					this.borrower = newValue;
+					this.img = this.borrower.photo;
 				}
 			},
 			'psave'(newValue) {
