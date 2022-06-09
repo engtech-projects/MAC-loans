@@ -21,7 +21,7 @@ class CreateBorrowerInfoTable extends Migration
             $table->string('firstname');
             $table->string('middlename');
             $table->string('lastname');
-            $table->string('suffix');
+            $table->string('suffix')->nullable();
             $table->text('address');
             $table->date('birthdate');
             $table->string('gender');
