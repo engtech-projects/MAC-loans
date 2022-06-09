@@ -18590,9 +18590,8 @@ __webpack_require__.r(__webpack_exports__);
   mounted: function mounted() {
     this.fetchBorrowers();
     this.resetBorrower();
-    this.resetLoanDetails(); // console.log(this.loanDetails.documents);
-
-    this.navigate('custom-content-below-loandetails-tab'); // this.navigate('custom-content-below-coborrowerinfo-tab');
+    this.resetLoanDetails(); // this.navigate('custom-content-below-loandetails-tab');
+    // this.navigate('custom-content-below-coborrowerinfo-tab');
   }
 });
 
