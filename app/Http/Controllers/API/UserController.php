@@ -47,6 +47,8 @@ class UserController extends BaseController
 
         }
 
+        // user accessibility
+
         return $this->sendResponse(new UserResource($user), 'User Created');
     }
 

@@ -337,6 +337,8 @@ class LoanAccount extends Model
 
       if( !$isComplete ) return $payment;
      
+      if( !$payment ) return false;
+
       if( $payment->total_payable == $payment->amount_applied ){
           return $payment;
       }

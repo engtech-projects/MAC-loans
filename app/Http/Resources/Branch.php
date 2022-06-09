@@ -19,6 +19,7 @@ class Branch extends JsonResource
             'branch_code' => $this->branch_code,
             'branch_name' => $this->branch_name,
             'branch_address' => $this->branch_address,
+            'branch_manager' => $this->branch_manager,
             'status' => $this->status,
             'deleted' => $this->deleted,
             'created_at' => $this->created_at->format('m/d/Y'),
