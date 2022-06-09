@@ -28,7 +28,7 @@
 					</div>
 				</div>
 				<div class="upload-photo d-flex flex-column" style="flex:4">
-					<img :src="img" alt="" style="max-width:250px;" v-bind:src="borrower.photo">
+					<img :src="img" alt="" style="max-width:250px;">
 					<a href="#" data-toggle="modal" data-target="#uploadModal" class="btn btn-primary" style="padding:10px!important">Upload or Take a Photo</a>
 				</div>
 			</div>
