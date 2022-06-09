@@ -13,6 +13,6 @@ class Branch extends Model
     protected $primaryKey = 'branch_id';
 
     protected $fillable = [
-    	'branch_code', 'branch_name', 'branch_address', 'status', 'deleted'
+    	'branch_code', 'branch_name', 'branch_manager', 'branch_address', 'status', 'deleted'
     ];
 }
