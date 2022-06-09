@@ -48,6 +48,7 @@ Route::group(['middleware' => 'auth'], function (){
 	Route::get('/transaction/repayment_entry', [TransactionController::class, 'repaymentEntry'])->name('transaction.repayment_entry');
 	Route::get('/transaction/override_payment', [TransactionController::class, 'overridePayment'])->name('transaction.override_payment');
 	Route::get('/transaction/overridepaymentdates', [TransactionController::class, 'overridePaymentDates']);
+	Route::get('/transaction/release_entry/loanaccounts', [TransactionController::class, 'releaseAccounts']);
 
 	Route::get('/reports/transaction/product', [ReportsController::class, 'transactionProduct'])->name('reports.transaction');
 	Route::get('/reports/release/product', [ReportsController::class, 'releaseProduct'])->name('reports.release.product');

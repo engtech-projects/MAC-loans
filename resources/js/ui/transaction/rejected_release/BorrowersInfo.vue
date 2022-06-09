@@ -39,7 +39,7 @@
 				</div>
 				<div class="form-group mb-10" style="flex: 6">
 					<label for="suffix" class="form-label">Suffix</label>
-					<input v-model="borrower.suffix" required type="text" class="form-control form-input " id="suffix">
+					<input v-model="borrower.suffix" type="text" class="form-control form-input " id="suffix">
 				</div>
 			</div>
 			<div class="form-group mb-10">

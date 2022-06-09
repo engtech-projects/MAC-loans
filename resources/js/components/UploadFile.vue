@@ -23,6 +23,10 @@
 										:key="device.deviceId" 
 										:value="device.deviceId">{{ device.label }}</option>
 								</select>
+								<input id="selectImage" type="file" accept="image/*" class="hide" @change="encodeImageFileAsURL()">
+								<button type="button" 
+										class="btn btn-success mr-10" 
+										@click="selectImage()">Upload File</button>
 								<button type="button" 
 										class="btn btn-primary mr-10" 
 										@click="onCapture">Capture Photo</button>
@@ -61,7 +65,7 @@ export default {
       img: null,
       camera: null,
       deviceId: null,
-      devices: []
+      devices: [],
     };
   },
   computed: {
@@ -88,10 +92,10 @@ export default {
 	  this.$emit('imageCapture', this.img);
     },
     onStarted(stream) {
-      console.log("On Started Event", stream);
+    //   console.log("On Started Event", stream);
     },
     onStopped(stream) {
-      console.log("On Stopped Event", stream);
+    //   console.log("On Stopped Event", stream);
     },
     onStop() {
       this.$refs.webcam.stop();
@@ -100,17 +104,30 @@ export default {
       this.$refs.webcam.start();
     },
     onError(error) {
-      console.log("On Error Event", error);
+    //   console.log("On Error Event", error);
     },
     onCameras(cameras) {
       this.devices = cameras;
-      console.log("On Cameras Event", cameras);
+    //   console.log("On Cameras Event", cameras);
     },
     onCameraChange(deviceId) {
       this.deviceId = deviceId;
       this.camera = deviceId;
-      console.log("On Camera Change Event", deviceId);
-    }
+    //   console.log("On Camera Change Event", deviceId);
+    },
+	selectImage:function(){
+		var input = document.getElementById('selectImage');
+		input.click();
+	},
+	encodeImageFileAsURL:function() {
+		var file = document.getElementById('selectImage').files[0];
+		var reader = new FileReader();
+		reader.onloadend = function() {
+			this.img = reader.result;
+			this.$emit('imageCapture', this.img);
+		}.bind(this);
+		reader.readAsDataURL(file);
+	}
   }
 };
 </script>

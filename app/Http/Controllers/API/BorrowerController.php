@@ -27,7 +27,6 @@ class BorrowerController extends BaseController
 
     	$borrowers = Borrower::all();
     	return $this->sendResponse(BorrowerResource::collection($borrowers), 'Borrowers');
-
     }
      /**
      * Show the form for creating a new resource.

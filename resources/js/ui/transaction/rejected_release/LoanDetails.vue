@@ -112,7 +112,7 @@
 					</div>
 					<div class="d-flex flex-row mb-16">
 						<label for="dueDate" class="form-label" style="flex:3">Insurance</label>
-						<input :value="formatToCurrency(calculateInsurance)" required disabled type="text" class="form-control form-input text-right mr-16" style="flex:4" id="dueDate">
+						<input v-model="loanDetails.insurance" required disabled type="text" class="form-control form-input text-right mr-16" style="flex:4" id="dueDate">
 						<span class="flex-1" style="padding:7px 15px"></span>
 					</div>
 					<div class="d-flex flex-row mb-16">

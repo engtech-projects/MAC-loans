@@ -47,16 +47,16 @@
 					</ul>
 					<div class="tab-content" id="custom-content-below-tabContent">
 						<div class="tab-pane fade show active" id="custom-content-below-borrowerinfo" role="tabpanel" aria-labelledby="custom-content-below-home-tab">
-							<borrowers-info @nextBorrower="nextBorrower" @borrowerCleared="clearData.borrower=0" @savedInfo="savedInfo" @saveBorrower="saveInfo=''" @clearBorrowerInfo="resetBorrower" :clear="clearData.borrower" :token="token" :pborrower="borrower" :psave="saveInfo"></borrowers-info>
+							<borrowers-info :idtype="idType" @nextBorrower="nextBorrower" @borrowerCleared="clearData.borrower=0" @savedInfo="savedInfo" @saveBorrower="saveInfo=''" @clearBorrowerInfo="resetBorrower" :clear="clearData.borrower" :token="token" :pborrower="borrower" :psave="saveInfo"></borrowers-info>
 						</div>
 
 
-						<co-borrower :borrowers="borrowers" :loandetails="loanDetails" @update-loan-details="updateLoanDetails"></co-borrower>
+						<co-borrower :idtype="idType" :borrowers="borrowers" :loandetails="loanDetails" @update-loan-details="updateLoanDetails"></co-borrower>
 
 
 
 						<div class="tab-pane fade" id="custom-content-below-loaddetails" role="tabpanel" aria-labelledby="custom-content-below-messages-tab">
-							<loan-details :saveloandetails="saveLoanDetails" :borrowerbday="borrowerBirthdate" :borrower="bborrower" :token="token" :loandetails="loanDetails"></loan-details>
+							<loan-details :idtype="idtype" :saveloandetails="saveLoanDetails" :borrowerbday="borrowerBirthdate" :borrower="bborrower" :token="token" :loandetails="loanDetails"></loan-details>
 						</div>
 
 
@@ -89,7 +89,7 @@
 						<div class="pxy-25 light-bb hover-light" data-tab="">
 							<span class="text-20">Reminder Letter</span>
 						</div>
-						<div class="pxy-25 light-bb hover-light active" data-tab="dacion-en-pago-tab">
+						<div @click="switchTab('dacion-en-pago-tab')" class="pxy-25 light-bb hover-light" :class="isActive('dacion-en-pago-tab',activeTab)" data-tab="dacion-en-pago-tab">
 							<span class="text-20">DACION EN PAGO</span>
 						</div>
 						<div class="pxy-25 light-bb hover-light" data-tab="">
@@ -101,7 +101,7 @@
 						<div class="pxy-25 light-bb hover-light" data-tab="">
 							<span class="text-20">SME Schedule</span>
 						</div>
-						<div class="pxy-25 hover-light" data-tab="promissory-note-tab">
+						<div @click="switchTab('promissory-note-tab')" class="pxy-25 hover-light" :class="isActive('promissory-note-tab',activeTab)" data-tab="promissory-note-tab">
 							<span class="text-20">Promissory Note</span>
 						</div>
 					</div>
@@ -115,7 +115,7 @@
 							</li>
 						</ul>
 						<div class="tab-content" id="custom-content-below-tabContent">
-							<div class="tab-pane fade show active" id="dacion-en-pago" role="tabpanel" aria-labelledby="custom-content-below-home-tab">
+							<div  class="tab-pane fade show active" id="dacion-en-pago" role="tabpanel" aria-labelledby="custom-content-below-home-tab">
 								<img :src="baseUrl+'/img/company_header.png'" style="width:100%" class="mb-16" alt="Company Header">
 								<div class="d-flex flex-column font-md" style="padding:0 35px;">
 									
@@ -125,44 +125,44 @@
 									<section class="font-md">
 										<span class="text-block mb-24">KNOW ALL MEN BY THESE PRESENTS:</span>
 										<p>
-											This INSTURMENT made and executed this 14TH day of DECEMBER 2021 at Button City, Philippines, by and between: <span class="text-underlined">LOLITO T. AMODIA</span> single/married to_________________________________________  of legal age, Filipino citizen, and resident of <span class="text-underlined">P-9 MJ SANTOS TUNGAO, BUTUAN CITY AGUSAN DEL NORTE</span>  herein after called the FIRST PARTY;
+											This INSTURMENT made and executed this <b>{{nthDay(this.dateToD(new Date))}}</b> day of <b class="allcaps">{{this.dateToFullMonth(new Date)}}  {{this.dateToY(new Date)}}</b> at Butuan City, Philippines, by and between: <span class="text-underlined allcaps text-bold">{{fullName(borrower.firstname, borrower.middlename,borrower.lastname)}}</span> single/married to <span class="text-underlined allcaps text-bold">{{fullName(borrower.spouse_firstname,borrower.spouse_middlename,borrower.spouse_lastname)}}</span> of legal age, Filipino citizen, and resident of <span class="text-underlined allcaps text-bold">{{borrower.address}}</span>  herein after called the <b>FIRST PARTY</b>;
 										</p>
 										<p>
-											MAC LENDING a lending institution, duly registered under the laws of the Republic of the Philippines and with postal address at T. Cabo Extension, Butuan City represented by its Branch Manager JANINE L DESCALLAR herein after called as the SECOND PARTY;
+											MAC LENDING a lending institution, duly registered under the laws of the Republic of the Philippines and with postal address at T. Calo Extension, Butuan City represented by its Branch Manager <b>JANINE L. DESCALLAR</b> herein after called as the <b>SECOND PARTY</b>;
 										</p>
 										<p>WITNESSETH:</p>
 										<p>
-											That the FIRST PARTY hereby acknowledges to have been indebted to the SECOND PARTY in the sum of THIRTEEN THOUSAND PESOS (P13,000.00). Philippines currency, as of this date, since, he/she could no longer paid it in full by way of cash, hence, by presents the FIRST PARTY, voluntarily assign, transfer convey and set over unto the SECOND PARTY that certain PERSONAL property particularly describe as follows: 
+											That the <b>FIRST PARTY</b> hereby acknowledges to have been indebted to the SECOND PARTY in the sum of <span class="text-underlined allcaps text-bold">{{numToWords(loanDetails.loan_amount)}}</span> <b>(P{{formatToCurrency(loanDetails.loan_amount)}})</b>. Philippines currency, as of this date, since, he/she could no longer paid it in full by way of cash, hence, by presents the <b>FIRST PARTY</b>, voluntarily assign, transfer convey and set over unto the <b>SECOND PARTY</b> that certain PERSONAL property particularly describe as follows: 
 										</p>
 										<p>
-											<span class="text-block">Description:</span> CR No.:283729891; Plate No.:1501-00000126137; Engine No.: KPY00E276322; Chassis No.: KPY00276400; Make: HONDA MOTOR WORLD, INC.; Series: CETI 25MSE; Body Type: MOTORCYCLE RED; XRM 125 DS 
+											<span class="text-block">Description:</span> <b>{{loanDetails.documents.description}}</b>
 										</p>
 										<p>
-											<span class="text-block">of which the FIRST PARTY is registered owner, his/her property thereto being evidence by</span>
+											<span class="text-block">of which the <b>FIRST PARTY</b> is registered owner, his/her property thereto being evidence by</span>
 											____________________________________________.
 										</p>
 										<p>
-											That the SECOND PARTY does hereby accept this assignment in payment of the total/partial obligation owing to him/her by the FIRST PARTY as above stated, (giving to the Second Party, however, the option to repurchase the above-describe property from the First Party for the sum of and after the date hereof, which right shall automatically be deemed cancelled, it not exercised within 15 days from the date hereof).
+											That the SECOND PARTY does hereby accept this assignment in payment of the total/partial obligation owing to him/her by the <b>FIRST PARTY</b> as above stated, (giving to the Second Party, however, the option to repurchase the above-describe property from the <b>FIRST PARTY</b> for the sum of and after the date hereof, which right shall automatically be deemed cancelled, it not exercised within 15 days from the date hereof).
 										</p>
 										<p>
-											That by virtue of this presents, the indebtedness of FIRST PARTY as cited above is hereby paid and extinguished. 
+											That by virtue of this presents, the indebtedness of <b>FIRST PARTY</b> as cited above is hereby paid and extinguished. 
 										</p>
 										<p>
-											IN WITNESS WHEREOF, the parties hereto have hereunto set their hands this_____________________________ at Butuan City, Philippines.
+											IN WITNESS WHEREOF, the parties hereto have hereunto set their hands this {{dacionDate()}} at Butuan City, Philippines.
 										</p>
 
 										<div class="d-flex flex-row mb-24">
-											<div class="flex-1">
-												<span class="text-block">LOLITO AMODIA </span>
+											<div class="flex-1 text-bold">
+												<span class="text-block allcaps">{{fullName(borrower.firstname,borrower.middlename,borrower.lastname)}} </span>
 												<span class="text-block">FIRST PARTY</span>
-												<span class="text-block">Type of ID: BRGY ID</span>
-												<span class="text-block">I.D Number: 2021-13</span>
-												<span class="text-block">Date:______________________________</span>
+												<span class="text-block">Type of ID: {{borrower.id_type}}</span>
+												<span class="text-block">I.D Number: {{borrower.id_no}}</span>
+												<span class="text-block">Date: {{borrower.id_date_issued}}</span>
 											</div>
-											<div class="flex-2">
+											<div class="flex-2 text-bold">
 												<span class="text-block">MARK ANTHONY M. CHAVEZ</span>
 												<span class="text-block">(SECOND PARTY)</span>
-												<span class="text-block">TIN:920-403-726-000</span>
+												<span class="text-block">TIN: 920-403-726-000</span>
 											</div>
 										</div>
 
@@ -186,7 +186,7 @@
 										<span class="text-block mb-36">X---------------------------------/</span>
 
 										<p>
-											BEFORE ME, a notary public for and in the City of Butuan, Philippines this________________ day of_______________,  personally appeared the above named person, known to me and to me known to be the same person of the foregoing instrument, consisting of one (1) page including this page where the acknowledgement is written, signed by the parties and their two (2) instrumental witness, and they acknowledgement to me that the same are their own free will and voluntary act and deed.The Valid ID's of the parties were exhibited to me the same being that which appears below their respective names and signatures above.
+											BEFORE ME, a notary public for and in the City of Butuan, Philippines this {{dacionDate()}},  personally appeared the above named person, known to me and to me known to be the same person of the foregoing instrument, consisting of one (1) page including this page where the acknowledgement is written, signed by the parties and their two (2) instrumental witness, and they acknowledgement to me that the same are their own free will and voluntary act and deed.The Valid ID's of the parties were exhibited to me the same being that which appears below their respective names and signatures above.
 										</p>
 										<div class="d-flex flex-column">
 											<span>Doc. No.___________</span>
@@ -198,8 +198,9 @@
 
 									<div class="mb-72"></div>
 									<div class="d-flex flex-row-reverse mb-45">
-										<a href="#" class="btn btn-default min-w-150">Print</a>
+										<a @click.prevent="print()" href="#" class="btn btn-default min-w-150">Print</a>
 										<a href="#" class="btn btn-success min-w-150 mr-24">Download Excel</a>
+										<a href="#" id="cancelModal" data-dismiss="modal" class="btn btn-danger min-w-150 mr-24 hide">Cancel</a>
 									</div>
 								</div>
 							</div>
@@ -421,17 +422,48 @@
 
 <script>
     export default {
-		props:['token'],
+		props:['token', 'idtype'],
 		data(){
 			return {
 				clearData:{
 					borrower:0
 				},
+				activeTab:'dacion-en-pago-tab',
 				borrowerBirthdate:'',
 				saveInfo:'',
 				saveLoanDetails:false,
 				bborrower:{borrower_id:'', borrower_num:''},
-				borrower:'',
+				borrower:{
+					borrower_id: null,
+					date_registered: this.dateToYMD(new Date()),
+					borrower_num:'',
+					firstname:'',
+					lastname:'',
+					middlename:'',
+					suffix :'' ,
+					address :'' ,
+					birthdate :'',
+					gender :'' ,
+					status :'' ,
+					contact_number :'',
+					id_type :'',
+					id_no :'',
+					id_date_issued :'',
+					spouse_firstname:'',
+					spouse_lastname:'',
+					spouse_middlename:'',
+					spouse_address :'',
+					spouse_birthdate :'',
+					spouse_id_type :'',
+					spouse_id_no :'',
+					spouse_id_date_issued :'',
+					employmentInfo : [],
+					businessInfo : [],
+					householdMembers : [],
+					outstandingObligations : [],
+					loanAccounts:[],
+					created_at: this.dateToYMD(new Date()),
+				},
 				baseUrl: window.location.origin,
 				borrowers:[],
 				loanDetails: {
@@ -495,6 +527,15 @@
 					console.log(error);
 				}.bind(this));
 			},
+			fetchLoanAccounts:function(){
+				axios.get(window.location.origin + '/transaction/release_entry/loanaccounts?borrower=' + this.borrower.borrower_id)
+				.then(function (response) {
+					this.borrower.loan_accounts = response.data;
+				}.bind(this))
+				.catch(function (error) {
+					console.log(error);
+				}.bind(this));
+			},
 			resetBorrower:function(){
 				this.borrower = {
 					borrower_id: null,
@@ -550,6 +591,7 @@
 				}
 				return '';
 			},
+		
 			resetLoanDetails:function(){
 				this.loanDetails = {
 					loan_account_id:null,
@@ -603,10 +645,35 @@
 				this.borrowers.map(function(data){
 					if(borrower == data.borrower_id){
 						this.borrower = data;
+						this.fetchLoanAccounts();
 						this.setCycle();
 					}
 				}.bind(this));
+			},
+			print:function(){
+				var content = document.getElementById('dacion-en-pago').innerHTML;
+				var target = document.querySelector('.to-print');
+				target.innerHTML = content;
+				var cancel = document.querySelector('#cancelModal');
+				cancel.click();
+				window.print();
+			},
+			dacionDate:function(){
+				var text = '';
+				text += this.nthDay(this.dateToD(new Date)) + ' day of ';
+				text += this.dateToFullMonth(new Date) + ' ';
+				text += this.dateToY(new Date);
+				return text;
+			},
+			switchTab:function(tab){
+				this.activeTab = tab;
+				document.getElementById(tab).click();
 			}
+		},
+		computed:{
+			idType:function(){
+			return JSON.parse(this.idtype);
+		},
 		},
         mounted() {	
 			this.fetchBorrowers();

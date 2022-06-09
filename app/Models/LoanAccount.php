@@ -10,9 +10,9 @@ use DB;
 
 class LoanAccount extends Model
 {
-   use HasFactory;
-   protected $table = 'loan_accounts';
-   protected $primaryKey = 'loan_account_id';
+	use HasFactory;
+	protected $table = 'loan_accounts';
+	protected $primaryKey = 'loan_account_id';
 	protected $with = ['documents', 'borrower', 'center', 'branch', 'product', 'accountOfficer', 'payments'];
 
    protected $fillable = [

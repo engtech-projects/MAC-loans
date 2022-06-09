@@ -14,6 +14,11 @@ class TransactionController extends Controller
 			'title' => 'Release Entry',
 		]);
 	}
+
+	public function releaseAccounts(Request $request){
+		return \App\Models\LoanAccount::where('borrower_id', $request->borrower)->get();
+	}
+
 	public function overrideRelease(){
 		return view('transaction.override_release')->with([
 			'nav' => ['transaction', 'override release'],
