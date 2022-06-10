@@ -24,6 +24,14 @@ Vue.mixin({
 								];
 			return monthNames[date.getMonth()];
 		},
+		todayTime:function(date){
+			var hour = date.getHours() > 12? (date.getHours() - 12) : date.getHours();
+			return hour + ':' + date.getMinutes();
+		},
+		dateFullDay:function(date){
+			const weekday = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+			return weekday[date.getDay()];
+		},
 		capitalizeFirstLetter(str) {
 			return str.charAt(0).toUpperCase() + str.slice(1);
 		},
@@ -46,10 +54,8 @@ Vue.mixin({
 			let tenth = ['', '', 'twenty','thirty','forty','fifty', 'sixty','seventy','eighty','ninety'];
 		
 			if(numberInput.toString().length > 7) return 'overlimit' ;
-			console.log(numberInput);
 			//let num = ('0000000000'+ numberInput).slice(-10).match(/^(\d{1})(\d{2})(\d{2})(\d{2})(\d{1})(\d{2})$/);
 		  let num = ('0000000'+ numberInput).slice(-7).match(/^(\d{1})(\d{1})(\d{2})(\d{1})(\d{2})$/);
-			console.log(num);
 			if(!num) return;
 		
 			let outputText = num[1] != 0 ? (oneToTwenty[Number(num[1])] || `${tenth[num[1][0]]} ${oneToTwenty[num[1][1]]}` )+' million ' : ''; 
@@ -75,6 +81,9 @@ Vue.mixin({
 		},
 		isActive:function(a,b){
 			return a==b?'active':'';
+		},
+		replaceAll:function(str, find, replace) {
+			return str.replace(new RegExp(escapeRegExp(find), 'g'), replace);
 		}
 	}
 })
