@@ -18,9 +18,9 @@ class CreateDocumentsTable extends Migration
             $table->unsignedInteger('loan_account_id');
             $table->date('date_release');
             $table->tinyText('description');
-            $table->string('bank');
-            $table->string('account_no');
-            $table->string('card_no');
+            $table->string('bank')->nullable();
+            $table->string('account_no')->nullable();
+            $table->string('card_no')->nullable();
             $table->string('promissory_number');
             $table->timestamps();
         });

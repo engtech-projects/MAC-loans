@@ -665,6 +665,7 @@
 				this.fetchBorrowers();
 				this.bborrower = data;
 				this.saveLoanDetails = true;
+				this.navigate('custom-content-below-borrowerinfo-tab');
 			},
 			nextBorrower:function(data){
 				this.borrowerBirthdate = data;

@@ -17762,7 +17762,6 @@ __webpack_require__.r(__webpack_exports__);
         }).then(function (response) {
           this.notify('', response.data.message, 'success');
           this.$emit('savedInfo', response.data.data);
-          console.log(response.data);
         }.bind(this))["catch"](function (error) {
           console.log(error);
         }.bind(this));
@@ -17776,7 +17775,6 @@ __webpack_require__.r(__webpack_exports__);
         }).then(function (response) {
           this.notify('', response.data.message, 'success');
           this.$emit('savedInfo', response.data.data);
-          console.log(response.data);
         }.bind(this))["catch"](function (error) {
           console.log(error);
         }.bind(this));
@@ -18582,6 +18580,7 @@ __webpack_require__.r(__webpack_exports__);
       this.fetchBorrowers();
       this.bborrower = data;
       this.saveLoanDetails = true;
+      this.navigate('custom-content-below-borrowerinfo-tab');
     },
     nextBorrower: function nextBorrower(data) {
       this.borrowerBirthdate = data;

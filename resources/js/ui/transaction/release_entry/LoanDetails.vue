@@ -355,7 +355,6 @@ export default {
 					.then(function (response) {
 						this.notify('',response.data.message, 'success');
 						this.$emit('savedInfo', response.data.data)
-						console.log(response.data);
 					}.bind(this))
 					.catch(function (error) {
 						console.log(error);
@@ -371,7 +370,6 @@ export default {
 				.then(function (response) {
 					this.notify('',response.data.message, 'success');
 					this.$emit('savedInfo', response.data.data)
-					console.log(response.data);
 				}.bind(this))
 				.catch(function (error) {
 					console.log(error);
