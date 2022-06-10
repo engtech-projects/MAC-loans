@@ -17762,7 +17762,6 @@ __webpack_require__.r(__webpack_exports__);
         }).then(function (response) {
           this.notify('', response.data.message, 'success');
           this.$emit('savedInfo', response.data.data);
-          console.log(response.data);
         }.bind(this))["catch"](function (error) {
           console.log(error);
         }.bind(this));
@@ -17776,7 +17775,6 @@ __webpack_require__.r(__webpack_exports__);
         }).then(function (response) {
           this.notify('', response.data.message, 'success');
           this.$emit('savedInfo', response.data.data);
-          console.log(response.data);
         }.bind(this))["catch"](function (error) {
           console.log(error);
         }.bind(this));
@@ -17922,6 +17920,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+//
 //
 //
 //
@@ -18581,6 +18580,7 @@ __webpack_require__.r(__webpack_exports__);
       this.fetchBorrowers();
       this.bborrower = data;
       this.saveLoanDetails = true;
+      this.navigate('custom-content-below-borrowerinfo-tab');
     },
     nextBorrower: function nextBorrower(data) {
       this.borrowerBirthdate = data;
@@ -18701,6 +18701,15 @@ __webpack_require__.r(__webpack_exports__);
         }
       }.bind(this));
       return result;
+    },
+    pendingLoanAccounts: function pendingLoanAccounts() {
+      var accounts = [];
+      this.borrower.loan_accounts.map(function (account) {
+        if (account.status == 'released') {
+          accounts.push(account);
+        }
+      }.bind(this));
+      return accounts;
     }
   },
   watch: {
@@ -77428,32 +77437,40 @@ var render = function () {
                       _vm._v(" "),
                       _c(
                         "tbody",
-                        _vm._l(_vm.borrower.loan_accounts, function (bl) {
-                          return _c(
-                            "tr",
-                            {
-                              key: bl.loan_account_id,
-                              staticClass: "existing-loans",
-                              class: _vm.selected(bl.loan_account_id),
-                              on: {
-                                click: function ($event) {
-                                  _vm.loanDetails = bl
-                                  _vm.setCycle()
+                        [
+                          _vm.pendingLoanAccounts.length < 1
+                            ? _c("tr", [
+                                _c("td", [_vm._v("No released accounts yet.")]),
+                              ])
+                            : _vm._e(),
+                          _vm._v(" "),
+                          _vm._l(_vm.pendingLoanAccounts, function (bl) {
+                            return _c(
+                              "tr",
+                              {
+                                key: bl.loan_account_id,
+                                staticClass: "existing-loans",
+                                class: _vm.selected(bl.loan_account_id),
+                                on: {
+                                  click: function ($event) {
+                                    _vm.loanDetails = bl
+                                    _vm.setCycle()
+                                  },
                                 },
                               },
-                            },
-                            [
-                              _c("td", [_vm._v(_vm._s(bl.borrower_num))]),
-                              _vm._v(" "),
-                              _c("td", [_vm._v(_vm._s(bl.loan_amount))]),
-                              _vm._v(" "),
-                              _c("td", [_vm._v("5,000.00")]),
-                              _vm._v(" "),
-                              _c("td", [_vm._v("12/12/2021")]),
-                            ]
-                          )
-                        }),
-                        0
+                              [
+                                _c("td", [_vm._v(_vm._s(bl.account_num))]),
+                                _vm._v(" "),
+                                _c("td", [_vm._v(_vm._s(bl.loan_amount))]),
+                                _vm._v(" "),
+                                _c("td", [_vm._v("5,000.00")]),
+                                _vm._v(" "),
+                                _c("td", [_vm._v("12/12/2021")]),
+                              ]
+                            )
+                          }),
+                        ],
+                        2
                       ),
                     ]
                   ),
