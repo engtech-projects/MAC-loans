@@ -18712,8 +18712,8 @@ __webpack_require__.r(__webpack_exports__);
     this.fetchBorrowers();
     this.resetBorrower();
     this.resetLoanDetails();
-    this.fetchProducts();
-    this.navigate('custom-content-below-loandetails-tab'); // this.navigate('custom-content-below-coborrowerinfo-tab');
+    this.fetchProducts(); //this.navigate('custom-content-below-loandetails-tab');
+    // this.navigate('custom-content-below-coborrowerinfo-tab');
   }
 });
 
