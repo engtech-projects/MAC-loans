@@ -86,7 +86,8 @@
 				<span class="light-bb text-bold text-primary-dark text-lg pb-16 mb-24 text-block">Letters</span>
 				<div class="d-flex flex-column flex-md-row align-items-start">
 					<div class="flex-2 light-border d-flex flex-column letter-nav xs-mb-32 xs-flex-1">
-						<div class="pxy-25 light-bb hover-light" data-tab="">
+
+						<div @click="switchTab('reminder-letter-tab')" class="pxy-25 light-bb hover-light" data-tab="" :class="isActive('reminder-letter-tab',activeTab)">
 							<span class="text-20">Reminder Letter</span>
 						</div>
 						<div @click="switchTab('dacion-en-pago-tab')" class="pxy-25 light-bb hover-light" :class="isActive('dacion-en-pago-tab',activeTab)" data-tab="dacion-en-pago-tab">
@@ -108,14 +109,56 @@
 					<div style="flex:6">
 						<ul class="nav nav-tabs hide" id="custom-content-below-tab" role="tablist">
 							<li class="nav-item">
-								<a class="nav-link active" id="dacion-en-pago-tab" data-toggle="pill" href="#dacion-en-pago" role="tab" aria-controls="custom-content-below-home" aria-selected="true">DACION EN PAGO</a>
+								<a class="nav-link active" id="reminder-letter-tab" data-toggle="pill" href="#reminder-letter" role="tab" aria-controls="custom-content-below-home" aria-selected="true">Reminder Letter</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" id="dacion-en-pago-tab" data-toggle="pill" href="#dacion-en-pago" role="tab" aria-controls="custom-content-below-home" aria-selected="true">DACION EN PAGO</a>
 							</li>
 							<li class="nav-item">
 								<a class="nav-link" id="promissory-note-tab" data-toggle="pill" href="#promissory-note" role="tab" aria-controls="custom-content-below-profile" aria-selected="false">Promissory Note</a>
 							</li>
 						</ul>
 						<div class="tab-content" id="custom-content-below-tabContent">
-							<div  class="tab-pane fade show active" id="dacion-en-pago" role="tabpanel" aria-labelledby="custom-content-below-home-tab">
+
+							<div  class="tab-pane fade show active" id="reminder-letter" role="tabpanel" aria-labelledby="custom-content-below-home-tab">
+								<img :src="baseUrl+'/img/company_header.png'" style="width:100%" class="mb-45" alt="Company Header">
+								<div class="d-flex flex-column font-md" style="padding:0 35px;">
+									
+									<div class="d-flex flex-column title align-items-start mb-24">
+										<span class="font-26 lh-1">MGA PAHINUMDOM</span>
+									</div>
+									<section class="font-md">
+										<ol class="mb-64">
+											<li class="mb-12">Ginadili ang pagdawat o pagbayad kong walay resibo. Gikinahanglan adunay e-isyu Nga resibo gikan sa Account Officer sa MAC.</li>
+											<li class="mb-12">Ginadili ang pagpahulam ug kwarta Sa Account Officer gikan sa cliente.</li>
+											<li class="mb-12">Ginadili ug bawal ang "Sakay sakay loan"</li>
+											<li class="mb-12">Ginadilang pagbayad pinaagi sa pera padala or money transfer;
+												Kong pananglitan aduna kamoy ipadala pambayad, palihog pagpahibalo sa kani nga mga numero (Nasipit: 0917.723.5473, Butuan: 0917-676-5066)</li>
+										</ol>
+										<p class="" style="margin-bottom:150px">
+											Ako si <b class="allcaps darker-bb">{{fullName(borrower.firstname, borrower.middlename,borrower.lastname)}}</b>
+											akong giila ug nasabtan ang pamahayag sa wala pa ang pag pirma ug pagkahingpit sa transaksyon sa kredito ug nga ako ug kami hingpit nga nagka uyon sa mga kondisyon nga gipahayag sa maong kasabutan
+										</p>
+										<span class="mb-72"></span>
+										<div class="d-flex flex-column mb-72">
+											<span class="dark-bb mb-12" style="max-width:350px"></span>
+											<span>( Perma sa Borrower / Petsa )</span>
+										</div>
+									</section>
+									<div class="d-flex mb-24">
+										<img src="/img/logo-footer.png" class="w-100" alt="">
+									</div>
+									<div class="mb-72"></div>
+									<div class="d-flex flex-row-reverse mb-45 no-print">
+										<button id="cancelDacionModal" data-dismiss="modal" class="btn btn-danger min-w-150 mr-24 hide">Cancel</button>
+										<button @click="printReminder()" class="btn btn-default min-w-150">Print</button>
+										<button data-dismiss="modal" id="excelBtn" class="btn btn-success min-w-150 mr-24">Download Excel</button>
+									</div>
+								</div>
+							</div>
+							
+
+							<div  class="tab-pane fade" id="dacion-en-pago" role="tabpanel" aria-labelledby="custom-content-below-home-tab">
 								<img :src="baseUrl+'/img/company_header.png'" style="width:100%" class="mb-16" alt="Company Header">
 								<div class="d-flex flex-column font-md" style="padding:0 35px;">
 									
@@ -188,19 +231,21 @@
 										<p>
 											BEFORE ME, a notary public for and in the City of Butuan, Philippines this {{dacionDate()}},  personally appeared the above named person, known to me and to me known to be the same person of the foregoing instrument, consisting of one (1) page including this page where the acknowledgement is written, signed by the parties and their two (2) instrumental witness, and they acknowledgement to me that the same are their own free will and voluntary act and deed.The Valid ID's of the parties were exhibited to me the same being that which appears below their respective names and signatures above.
 										</p>
-										<div class="d-flex flex-column">
+										<div class="d-flex flex-column mb-24">
 											<span>Doc. No.___________</span>
 											<span>Page No.___________</span>
 											<span>Book No.___________</span>
 											<span>Series of___________</span>
 										</div>
 									</section>
-
+									<div class="d-flex mb-24">
+										<img src="/img/logo-footer.png" class="w-100" alt="">
+									</div>
 									<div class="mb-72"></div>
-									<div class="d-flex flex-row-reverse mb-45">
-										<a @click.prevent="print()" href="#" class="btn btn-default min-w-150">Print</a>
-										<a href="#" class="btn btn-success min-w-150 mr-24">Download Excel</a>
-										<a href="#" id="cancelModal" data-dismiss="modal" class="btn btn-danger min-w-150 mr-24 hide">Cancel</a>
+									<div class="d-flex flex-row-reverse mb-45 no-print">
+										<button id="cancelDacionModal" data-dismiss="modal" class="btn btn-danger min-w-150 mr-24 hide">Cancel</button>
+										<button @click="print()" class="btn btn-default min-w-150">Print</button>
+										<button data-dismiss="modal" id="excelBtn" class="btn btn-success min-w-150 mr-24">Download Excel</button>
 									</div>
 								</div>
 							</div>
@@ -214,16 +259,16 @@
 										</div>
 										<div class="d-flex flex-column">
 											<span class="font-26 text-bold text-primary-dark lh-1">PROMISSORY NOTE</span>
-											<span class="text-center text-primary-dark font-20">001-003-002371</span>
+											<span class="text-center text-primary-dark font-20">{{loanDetails.documents.promissory_number}}</span>
 										</div>
 										<div class="flex-1 d-flex justify-content-end pr-10">
-											<span class=" mr-10">Tuesday 12/21/2021</span>
-											<span class="">Time: 11:36 AM</span>
+											<span class=" mr-10">{{dateFullDay(new Date())}} {{dateToYMD(new Date()).split('-').join('/')}}</span>
+											<span class="">Time: {{todayTime(new Date())}} {{(new Date()).getHours() > 12? 'PM':'AM'}}</span>
 										</div>
 									</div>
 									<section>
 										<p class="font-md">
-											I/We Lagahit, Virginia C. borrowed and received the amount of Five Thousand Pesos (P 5,000.00) and promise to pay jointly and severally (solidarily) to the MICRO ACCESS LOANS CORPORATION until full payment of the said amount including interest rate of ( 3.00% ) per month. And with the following terms and conditions stated below:
+											I/We {{borrower.lastname + ', ' + borrower.firstname + ' ' + borrower.middlename.charAt(0) + '.'}} borrowed and received the amount of <span class="allcaps">{{numToWords(loanDetails.loan_amount)}} PESOS</span> (P {{formatToCurrency(loanDetails.loan_amount)}}) and promise to pay jointly and severally (solidarily) to the MICRO ACCESS LOANS CORPORATION until full payment of the said amount including interest rate of ( {{formatToCurrency(loanDetails.interest_rate)}}% ) per month. And with the following terms and conditions stated below:
 										</p>
 									</section>
 									<span class="bbt-8 py-7 text-center text-20 text-bold mb-16">TERMS AND CONDITIONS</span>
@@ -235,7 +280,7 @@
 														<span class="">Interest Rate</span>
 														<span>:</span>
 													</div>
-													<span class="flex-2">3.00%</span>
+													<span class="flex-2">{{formatToCurrency(loanDetails.interest_rate)}}%</span>
 												</div>
 
 												<div class="d-flex flex-row">
@@ -243,7 +288,7 @@
 														<span class="">Term (No. of days)</span>
 														<span>:</span>
 													</div>
-													<span class="flex-2">150 day(s)</span>
+													<span class="flex-2">{{loanDetails.terms}} day(s)</span>
 												</div>
 
 												<div class="d-flex flex-row">
@@ -251,7 +296,7 @@
 														<span class="">Mode of Payment</span>
 														<span>:</span>
 													</div>
-													<span class="flex-2">Monthly</span>
+													<span class="flex-2">{{loanDetails.payment_mode}}</span>
 												</div>
 											</div>
 											<div class="d-flex flex-column flex-1 font-md">
@@ -260,7 +305,7 @@
 														<span class="">Due Date</span>
 														<span>:</span>
 													</div>
-													<span class="flex-2 darker-bb"></span>
+													<span class="flex-2 darker-bb">{{dueDate.split('-').join('/')}}</span>
 												</div>
 
 												<div class="d-flex flex-row">
@@ -268,7 +313,7 @@
 														<span class="">Product</span>
 														<span>:</span>
 													</div>
-													<span class="flex-2">Pension Loan</span>
+													<span class="flex-2">{{productName}}</span>
 												</div>
 											</div>
 										</div>
@@ -276,14 +321,14 @@
 									<span class="bbt-8 py-7 text-center text-20 text-bold mb-16">OTHER CONDITIONS</span>
 									<section class="font-md mb-45">
 										<p style="line-height:1.8" class="mb-64">
-											In case of default, this note will be due and demandable without further demand, and an additional fee of (2%) per missed payment of the scheduled amortization as penalty, And in case this note be given to hands of an attorney an additional charged of (10%) of the total amount due will be charged as attorney's fee, further, the borrower is liable to litigation expenses, damages, etc. should the failure on the part of the borrower reach the courts. In cases that the borrower/s changes address/ transfer of residence without notice to MICRO ACCESS LOANS CORPORATION in writing, the address indicated in this note shall be the address for purposes of delivery of notices and other matters pertaining to the loan. Shall any issue/case that may arise as a result of this promissory note on any document in relation hereto, venue shall be at the civil courts of Butuan City, Agusan del Norte, to the exclusion of other court or at the option of MICRO ACCESS LOANS CORPORATION The Borrower/s hereby authorized the MICRO ACCESS LOANS CORPORATION to assign, sell or otherwise negotiate this note with any financial institution on its face value. Done this _____________ day of _________________________.
+											In case of default, this note will be due and demandable without further demand, and an additional fee of (2%) per missed payment of the scheduled amortization as penalty, And in case this note be given to hands of an attorney an additional charged of (10%) of the total amount due will be charged as attorney's fee, further, the borrower is liable to litigation expenses, damages, etc. should the failure on the part of the borrower reach the courts. In cases that the borrower/s changes address/ transfer of residence without notice to MICRO ACCESS LOANS CORPORATION in writing, the address indicated in this note shall be the address for purposes of delivery of notices and other matters pertaining to the loan. Shall any issue/case that may arise as a result of this promissory note on any document in relation hereto, venue shall be at the civil courts of Butuan City, Agusan del Norte, to the exclusion of other court or at the option of MICRO ACCESS LOANS CORPORATION The Borrower/s hereby authorized the MICRO ACCESS LOANS CORPORATION to assign, sell or otherwise negotiate this note with any financial institution on its face value. Done this <b>{{nthDay(this.dateToD(new Date))}}</b> day of <b class="allcaps">{{this.dateToFullMonth(new Date)}}  {{this.dateToY(new Date)}}</b>.
 										</p>
 
 										<div class="d-flex flex-row">
 											<div class="flex-1"></div>
 											<div class="d-flex flex-column flex-3">
 												<div class="d-flex">
-													<span class="mr-5">Lagahit, Virginia C. </span>
+													<span class="mr-5">{{fullName(borrower.firstname, borrower.middlename,borrower.lastname)}} </span>
 													<span></span>
 												</div>
 												<div class="d-flex">
@@ -292,40 +337,40 @@
 												</div>
 												<div class="d-flex">
 													<span class="mr-5">Type of ID : </span>
-													<span>SENIOR ID</span>
+													<span>{{borrower.id_type}}</span>
 												</div>
 												<div class="d-flex">
 													<span class="mr-5">ID Number : </span>
-													<span>7124-A</span>
+													<span>{{borrower.id_no}}</span>
 												</div>
 												<div class="d-flex">
 													<span class="mr-5">Date Issue : </span>
-													<span>01/01/00</span>
+													<span>{{dateToYMD(new Date(borrower.id_date_issued)).split('-').join('/')}}</span>
 												</div>
 											</div>
 											<div class="d-flex flex-column flex-3 align-items-end">
 												<div>
 													<div class="d-flex">
-														<span class="mr-5">Lagahit, Virginia C. </span>
+														<span class="mr-5">{{loanDetails.co_borrower_name}} </span>
 														<span></span>
 													</div>
 													<div class="d-flex">
-														<span class="mr-5">Borrower Signature</span>
+														<span class="mr-5">Co-Borrower Signature</span>
 														<span></span>
 													</div>
 													<div class="d-flex">
 														<span class="mr-5">Type of ID : </span>
-														<span>SENIOR ID</span>
+														<span>{{loanDetails.co_borrower_id_type}}</span>
 													</div>
 													<div class="d-flex">
 														<span class="mr-5">ID Number : </span>
-														<span>7124-A</span>
+														<span>{{loanDetails.co_borrower_id_number}}</span>
 													</div>
 													<div class="d-flex">
 														<span class="mr-5">Date Issue : </span>
-														<span>01/01/00</span>
+														<span>{{dateToYMD(new Date(loanDetails.co_borrower_id_date_issued)).split('-').join('/')}}</span>
 													</div>
-												</div>
+													</div>
 												
 											</div>
 											<div class="flex-1"></div>
@@ -340,19 +385,19 @@
 											<div class="flex-1"></div>
 											<div class="d-flex flex-column flex-2 font-md">
 												<div class="d-flex flex-row flex-1 justify-content-between pr-24">
-													<span class="">Co-Borrower Signature</span>
+													<span class="">Co-Maker Signature</span>
 												</div>
 											</div>
 											<div class="d-flex flex-row flex-2 font-md justify-content-end">
 												<div class="d-flex flex-column">
 													<div class="d-flex flex-row flex-1 justify-content-between pr-24">
-														<span class="">Type of ID :</span>
+														<span class="">Type of ID : {{loanDetails.co_maker_id_type}}</span>
 													</div>
 													<div class="d-flex flex-row flex-1 justify-content-between pr-24">
-														<span class="">ID Number  :</span>
+														<span class="">ID Number  : {{loanDetails.co_maker_id_number}}</span>
 													</div>
 													<div class="d-flex flex-row flex-1 justify-content-between pr-24">
-														<span class="">Date Issue :</span>
+														<span class="">Date Issue : {{loanDetails.co_maker_id_date_issued}}</span>
 													</div>
 												</div>
 											</div>
@@ -366,7 +411,7 @@
 											<span>Butuan City</span>
 										</div>
 										<p>
-											SUBSCRIBE AND SWORN before me this___ day of ___________, 20___, and tax identetification number written above,
+											SUBSCRIBE AND SWORN before me this <b>{{nthDay(this.dateToD(new Date))}}</b>, day of <b class="allcaps">{{this.dateToFullMonth(new Date)}},  {{this.dateToY(new Date)}}</b> and tax identetification number written above,
 											Known to me and to me known to be the same person who executed the foregoing Promissory Note and they Acknowledged to me that the same is their own free and voluntary act and as well as the free and voluntary act and deed of the entitles herein represented with full power so to do and for the uses and purposes thereon set forth.
 										</p>
 										<p>
@@ -375,17 +420,19 @@
 										<p class="text-block text-right">
 											NOTARY PUBLIC
 										</p>
-										<div class="d-flex flex-column">
+										<div class="d-flex flex-column mb-24">
 											<span>Doc. No.___________</span>
 											<span>Page No.___________</span>
 											<span>Book No.___________</span>
 											<span>Series of___________</span>
 										</div>
 									</section>
-
+									<div class="d-flex mb-24">
+										<img src="/img/logo-footer.png" class="w-100" alt="">
+									</div>
 									<div class="mb-72"></div>
-									<div class="d-flex flex-row-reverse mb-45">
-										<a href="#" class="btn btn-default min-w-150">Print</a>
+									<div class="d-flex flex-row-reverse mb-45 no-print">
+										<a @click.prevent="printPromissory()" href="#" class="btn btn-default min-w-150">Print</a>
 										<a href="#" class="btn btn-success min-w-150 mr-24">Download Excel</a>
 									</div>
 								</div>
@@ -428,7 +475,7 @@
 				clearData:{
 					borrower:0
 				},
-				activeTab:'dacion-en-pago-tab',
+				activeTab:'reminder-letter-tab',
 				borrowerBirthdate:'',
 				saveInfo:'',
 				saveLoanDetails:false,
@@ -507,10 +554,46 @@
 						card_no:'',
 						promissory_number: '',
 					}
-				}
+				},
+				products:[],
+				amortizationSched:[],
+				dueDate:'',
 			}
 		},
 		methods: {
+			amortSched:function(){
+				axios.post(window.location.origin + '/api/account/generate-amortization', this.loanDetails, {
+					headers: {
+						'Authorization': 'Bearer ' + this.token,
+						'Content-Type': 'application/json',
+						'Accept': 'application/json'
+					}
+				})
+				.then(function (response) {
+					this.amortizationSched = response.data.data;
+					if(this.amortizationSched.length > 0){
+						this.dueDate = this.amortizationSched[this.amortizationSched.length-1].amortization_date;
+					}
+				}.bind(this))
+				.catch(function (error) {
+					console.log(error);
+				}.bind(this));
+			},
+			fetchProducts: function(){
+				axios.get(window.location.origin + '/api/product', {
+					headers: {
+						'Authorization': 'Bearer ' + this.token,
+						'Content-Type': 'application/json',
+						'Accept': 'application/json'
+					}
+				})
+				.then(function (response) {
+					this.products = response.data.data;
+				}.bind(this))
+				.catch(function (error) {
+					console.log(error);
+				}.bind(this));
+			},
 			fetchBorrowers:function(){
 				axios.get(window.location.origin + '/api/borrower', {
 				headers: {
@@ -645,18 +728,38 @@
 				this.borrowers.map(function(data){
 					if(borrower == data.borrower_id){
 						this.borrower = data;
-						this.fetchLoanAccounts();
+						// this.fetchLoanAccounts();
 						this.setCycle();
 					}
 				}.bind(this));
 			},
+			
 			print:function(){
 				var content = document.getElementById('dacion-en-pago').innerHTML;
 				var target = document.querySelector('.to-print');
 				target.innerHTML = content;
-				var cancel = document.querySelector('#cancelModal');
-				cancel.click();
+				var cancelButton = document.getElementById('cancelDacionModal');
+				cancelButton.click();
 				window.print();
+			},
+			printPromissory:function(){
+				var content = document.getElementById('promissory-note').innerHTML;
+				var target = document.querySelector('.to-print');
+				target.innerHTML = content;
+				var cancelButton = document.getElementById('cancelDacionModal');
+				cancelButton.click();
+				window.print();
+			},
+			printReminder:function(){
+				var content = document.getElementById('reminder-letter').innerHTML;
+				var target = document.querySelector('.to-print');
+				target.innerHTML = content;
+				var cancelButton = document.getElementById('cancelDacionModal');
+				cancelButton.click();
+				window.print();
+			},
+			say(say){
+				alert(say);
 			},
 			dacionDate:function(){
 				var text = '';
@@ -672,14 +775,29 @@
 		},
 		computed:{
 			idType:function(){
-			return JSON.parse(this.idtype);
+				return JSON.parse(this.idtype);
+			},
+			productName:function(){
+				var result = '';
+				this.products.map(function(product){
+					if(product.product_id==this.loanDetails.product_id){
+						result = product.product_name;
+					}
+				}.bind(this));
+				return result;
+			},
 		},
+		watch:{
+			'loanDetails.loan_account_id':function(newValue){
+				newValue? this.amortSched():[];
+			}
 		},
         mounted() {	
 			this.fetchBorrowers();
 			this.resetBorrower();
 			this.resetLoanDetails();
-			// this.navigate('custom-content-below-loandetails-tab');
+			this.fetchProducts();
+			this.navigate('custom-content-below-loandetails-tab');
 			// this.navigate('custom-content-below-coborrowerinfo-tab');
         }
     }
