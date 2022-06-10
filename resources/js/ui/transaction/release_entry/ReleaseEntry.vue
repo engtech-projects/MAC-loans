@@ -20,8 +20,9 @@
 								<th>Date Rel.</th>
 							</thead>
 							<tbody>
-								<tr @click="loanDetails=bl;setCycle()" class="existing-loans" :class="selected(bl.loan_account_id)" v-for="bl in borrower.loan_accounts" :key="bl.loan_account_id">
-									<td>{{bl.borrower_num}}</td>
+								<tr v-if="pendingLoanAccounts.length < 1"><td>No released accounts yet.</td></tr>
+								<tr @click="loanDetails=bl;setCycle()" class="existing-loans" :class="selected(bl.loan_account_id)" v-for="bl in pendingLoanAccounts" :key="bl.loan_account_id">
+									<td>{{bl.account_num}}</td>
 									<td>{{bl.loan_amount}}</td>
 									<td>5,000.00</td>
 									<td>12/12/2021</td>
@@ -786,6 +787,15 @@
 				}.bind(this));
 				return result;
 			},
+			pendingLoanAccounts:function(){
+				var accounts = [];
+				this.borrower.loan_accounts.map(function(account){
+					if(account.status == 'released'){
+						accounts.push(account);
+					}
+				}.bind(this));
+				return accounts;
+			}
 		},
 		watch:{
 			'loanDetails.loan_account_id':function(newValue){

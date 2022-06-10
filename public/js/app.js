@@ -18391,6 +18391,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: ['token', 'idtype'],
   data: function data() {
@@ -18701,6 +18702,15 @@ __webpack_require__.r(__webpack_exports__);
         }
       }.bind(this));
       return result;
+    },
+    pendingLoanAccounts: function pendingLoanAccounts() {
+      var accounts = [];
+      this.borrower.loan_accounts.map(function (account) {
+        if (account.status == 'released') {
+          accounts.push(account);
+        }
+      }.bind(this));
+      return accounts;
     }
   },
   watch: {
@@ -77428,32 +77438,40 @@ var render = function () {
                       _vm._v(" "),
                       _c(
                         "tbody",
-                        _vm._l(_vm.borrower.loan_accounts, function (bl) {
-                          return _c(
-                            "tr",
-                            {
-                              key: bl.loan_account_id,
-                              staticClass: "existing-loans",
-                              class: _vm.selected(bl.loan_account_id),
-                              on: {
-                                click: function ($event) {
-                                  _vm.loanDetails = bl
-                                  _vm.setCycle()
+                        [
+                          _vm.pendingLoanAccounts.length < 1
+                            ? _c("tr", [
+                                _c("td", [_vm._v("No released accounts yet.")]),
+                              ])
+                            : _vm._e(),
+                          _vm._v(" "),
+                          _vm._l(_vm.pendingLoanAccounts, function (bl) {
+                            return _c(
+                              "tr",
+                              {
+                                key: bl.loan_account_id,
+                                staticClass: "existing-loans",
+                                class: _vm.selected(bl.loan_account_id),
+                                on: {
+                                  click: function ($event) {
+                                    _vm.loanDetails = bl
+                                    _vm.setCycle()
+                                  },
                                 },
                               },
-                            },
-                            [
-                              _c("td", [_vm._v(_vm._s(bl.borrower_num))]),
-                              _vm._v(" "),
-                              _c("td", [_vm._v(_vm._s(bl.loan_amount))]),
-                              _vm._v(" "),
-                              _c("td", [_vm._v("5,000.00")]),
-                              _vm._v(" "),
-                              _c("td", [_vm._v("12/12/2021")]),
-                            ]
-                          )
-                        }),
-                        0
+                              [
+                                _c("td", [_vm._v(_vm._s(bl.account_num))]),
+                                _vm._v(" "),
+                                _c("td", [_vm._v(_vm._s(bl.loan_amount))]),
+                                _vm._v(" "),
+                                _c("td", [_vm._v("5,000.00")]),
+                                _vm._v(" "),
+                                _c("td", [_vm._v("12/12/2021")]),
+                              ]
+                            )
+                          }),
+                        ],
+                        2
                       ),
                     ]
                   ),
