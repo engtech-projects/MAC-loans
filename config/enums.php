@@ -46,6 +46,7 @@ return [
 		'Drivers Licence',
 		'Solo Parent ID',
 		'PWD ID',
+		'Others'
 	],
 
 	'release_type' => [
