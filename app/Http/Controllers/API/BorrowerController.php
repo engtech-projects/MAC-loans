@@ -53,7 +53,7 @@ class BorrowerController extends BaseController
             $borrower->setBorrowerPhoto($request->file('img'), false);
         }
 
-        if( isset($request->img) ) {
+        if( isset($request->img) && $request->img ) {
             $borrower->setBorrowerPhoto($request->img);
         }
 
