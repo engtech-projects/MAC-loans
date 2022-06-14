@@ -17122,7 +17122,7 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       baseUrl: window.location.origin,
-      img: window.location.origin + '/img/user.png',
+      img: null,
       borrower: {
         borrower_id: null,
         date_registered: '',
@@ -17389,6 +17389,15 @@ __webpack_require__.r(__webpack_exports__);
         this.clearInfo();
         this.$emit('borrowerCleared');
       }
+    }
+  },
+  computed: {
+    borrowerImg: function borrowerImg() {
+      if (!this.img) {
+        return window.location.origin + '/img/user.png';
+      }
+
+      return this.img;
     }
   },
   mounted: function mounted() {
@@ -19120,8 +19129,8 @@ __webpack_require__.r(__webpack_exports__);
     this.fetchBorrowers();
     this.resetBorrower();
     this.resetLoanDetails();
-    this.fetchProducts();
-    this.navigate('custom-content-below-loandetails-tab'); // this.navigate('custom-content-below-coborrowerinfo-tab');
+    this.fetchProducts(); // this.navigate('custom-content-below-loandetails-tab');
+    // this.navigate('custom-content-below-coborrowerinfo-tab');
   }
 });
 
@@ -73572,7 +73581,7 @@ var render = function () {
                   [
                     _c("img", {
                       staticStyle: { "max-width": "250px" },
-                      attrs: { src: _vm.img, alt: "" },
+                      attrs: { src: _vm.borrowerImg, alt: "" },
                     }),
                     _vm._v(" "),
                     _c(

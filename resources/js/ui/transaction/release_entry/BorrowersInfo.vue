@@ -28,7 +28,7 @@
 					</div>
 				</div>
 				<div class="upload-photo d-flex flex-column" style="flex:4">
-					<img :src="img" alt="" style="max-width:250px;">
+					<img :src="borrowerImg" alt="" style="max-width:250px;">
 					<a href="#" data-toggle="modal" data-target="#uploadModal" class="btn btn-primary" style="padding:10px!important">Upload or Take a Photo</a>
 				</div>
 			</div>
@@ -416,7 +416,7 @@
 		data(){
 			return {
 				baseUrl: window.location.origin,
-				img: window.location.origin + '/img/user.png',
+				img: null,
 				borrower: {
 					borrower_id: null,
 					date_registered:'',
@@ -660,6 +660,14 @@
 					this.clearInfo();
 					this.$emit('borrowerCleared');
 				}
+			}
+		},
+		computed: {
+			borrowerImg:function(){
+				if(!this.img){
+					return window.location.origin + '/img/user.png';
+				}
+				return this.img;
 			}
 		},
         mounted() {							
