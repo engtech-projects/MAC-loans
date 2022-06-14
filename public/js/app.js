@@ -17828,11 +17828,7 @@ __webpack_require__.r(__webpack_exports__);
       // 	this.loanDetails.memo = 0;
       // }
     },
-    'loanDetails.center_id': function loanDetailsCenter_id(newValue) {
-      if (newValue) {
-        console.log(newValue);
-      }
-    } // 'saveloandetails'(newValue) {
+    'loanDetails.center_id': function loanDetailsCenter_id(newValue) {} // 'saveloandetails'(newValue) {
     // 	if(newValue){
     // 		this.save();
     // 	}
@@ -17929,7 +17925,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-//
 //
 //
 //
@@ -19067,6 +19062,14 @@ __webpack_require__.r(__webpack_exports__);
       cancelButton.click();
       window.print();
     },
+    printSchedule: function printSchedule() {
+      var content = document.getElementById('sme-schedule').innerHTML;
+      var target = document.querySelector('.to-print');
+      target.innerHTML = content;
+      var cancelButton = document.getElementById('cancelDacionModal');
+      cancelButton.click();
+      window.print();
+    },
     say: function say(_say) {
       alert(_say);
     },
@@ -19106,7 +19109,6 @@ __webpack_require__.r(__webpack_exports__);
     },
     amortAmount: function amortAmount() {
       if (this.amortizationSched.length > 0) {
-        console.log(this.numToWords(this.formatToAmount(this.amortizationSched[0].principal)));
         return this.amortizationSched[0].principal;
       }
 
@@ -19118,6 +19120,16 @@ __webpack_require__.r(__webpack_exports__);
         amount += parseFloat(this.formatToAmount(sched.principal));
       }.bind(this));
       return amount;
+    },
+    totalInterest: function totalInterest() {
+      var amount = 0;
+      this.amortizationSched.map(function (sched) {
+        amount += parseFloat(this.formatToAmount(sched.interest));
+      }.bind(this));
+      return amount;
+    },
+    totalPayable: function totalPayable() {
+      return this.totalPrincipal + this.totalInterest;
     }
   },
   watch: {
@@ -78113,6 +78125,11 @@ var render = function () {
                                 _vm.activeTab
                               ),
                               attrs: { "data-tab": "" },
+                              on: {
+                                click: function ($event) {
+                                  return _vm.switchTab("sme-schedule-tab")
+                                },
+                              },
                             },
                             [
                               _c("span", { staticClass: "text-20" }, [
@@ -79750,162 +79767,203 @@ var render = function () {
                                   [
                                     _vm._m(32),
                                     _vm._v(" "),
-                                    _c("section", { staticClass: "font-md" }, [
-                                      _c(
-                                        "div",
-                                        {
-                                          staticClass:
-                                            "d-flex flex-column mb-36",
-                                        },
-                                        [
-                                          _c("span", [
-                                            _vm._v("Loan Account Number : "),
-                                            _c("b", [
-                                              _vm._v(
-                                                _vm._s(
-                                                  _vm.loanDetails.account_num
-                                                )
-                                              ),
-                                            ]),
-                                          ]),
-                                          _vm._v(" "),
-                                          _c("span", [
-                                            _vm._v("Loan Status : "),
-                                            _c("b", [
-                                              _vm._v(
-                                                _vm._s(_vm.loanDetails.status)
-                                              ),
-                                            ]),
-                                          ]),
-                                          _vm._v(" "),
-                                          _c("span", [
-                                            _vm._v("Customer Number : "),
-                                            _c("b", [
-                                              _vm._v(
-                                                _vm._s(
-                                                  _vm.borrower.borrower_num
-                                                )
-                                              ),
-                                            ]),
-                                          ]),
-                                          _vm._v(" "),
-                                          _c("span", [
-                                            _vm._v("Account Name : "),
-                                            _c("b", [
-                                              _vm._v(
-                                                _vm._s(
-                                                  _vm.fullName(
-                                                    _vm.borrower.firstname,
-                                                    _vm.borrower.middlename,
-                                                    _vm.borrower.lastname
+                                    _c(
+                                      "section",
+                                      { staticClass: "font-md mb-45" },
+                                      [
+                                        _c(
+                                          "div",
+                                          {
+                                            staticClass:
+                                              "d-flex flex-column mb-36",
+                                          },
+                                          [
+                                            _c("span", [
+                                              _vm._v("Loan Account Number : "),
+                                              _c("b", [
+                                                _vm._v(
+                                                  _vm._s(
+                                                    _vm.loanDetails.account_num
                                                   )
-                                                )
-                                              ),
-                                            ]),
-                                          ]),
-                                          _vm._v(" "),
-                                          _c("span", [
-                                            _vm._v("Address : "),
-                                            _c("b", [
-                                              _vm._v(
-                                                _vm._s(_vm.borrower.address)
-                                              ),
-                                            ]),
-                                          ]),
-                                        ]
-                                      ),
-                                      _vm._v(" "),
-                                      _c(
-                                        "table",
-                                        {
-                                          staticClass:
-                                            "table table-bordered table-thin",
-                                        },
-                                        [
-                                          _vm._m(33),
-                                          _vm._v(" "),
-                                          _c(
-                                            "tbody",
-                                            [
-                                              _vm._l(
-                                                _vm.amortizationSched,
-                                                function (sched, i) {
-                                                  return _c("tr", { key: i }, [
-                                                    _c("td", [
-                                                      _vm._v(_vm._s(i + 1)),
-                                                    ]),
-                                                    _vm._v(" "),
-                                                    _c("td", [
-                                                      _vm._v(
-                                                        _vm._s(
-                                                          _vm
-                                                            .dateToYMD(
-                                                              new Date(
-                                                                sched.amortization_date
-                                                              )
-                                                            )
-                                                            .split("/")
-                                                            .join("")
-                                                        )
-                                                      ),
-                                                    ]),
-                                                    _vm._v(" "),
-                                                    _c("td", [
-                                                      _vm._v(
-                                                        _vm._s(sched.principal)
-                                                      ),
-                                                    ]),
-                                                    _vm._v(" "),
-                                                    _c("td", [
-                                                      _vm._v(
-                                                        _vm._s(sched.interest)
-                                                      ),
-                                                    ]),
-                                                    _vm._v(" "),
-                                                    _c("td", [
-                                                      _vm._v(
-                                                        _vm._s(sched.total)
-                                                      ),
-                                                    ]),
-                                                    _vm._v(" "),
-                                                    _c("td", [
-                                                      _vm._v(
-                                                        _vm._s(
-                                                          sched.principal_balance
-                                                        )
-                                                      ),
-                                                    ]),
-                                                  ])
-                                                }
-                                              ),
-                                              _vm._v(" "),
-                                              _c("tr", [
-                                                _c("td"),
-                                                _vm._v(" "),
-                                                _c("td"),
-                                                _vm._v(" "),
-                                                _c("td", [
-                                                  _c("b", [
-                                                    _vm._v(
-                                                      _vm._s(_vm.totalPrincipal)
-                                                    ),
-                                                  ]),
-                                                ]),
-                                                _vm._v(" "),
-                                                _vm._m(34),
-                                                _vm._v(" "),
-                                                _vm._m(35),
-                                                _vm._v(" "),
-                                                _c("td"),
+                                                ),
                                               ]),
-                                            ],
-                                            2
-                                          ),
-                                        ]
-                                      ),
-                                    ]),
+                                            ]),
+                                            _vm._v(" "),
+                                            _c("span", [
+                                              _vm._v("Loan Status : "),
+                                              _c("b", [
+                                                _vm._v(
+                                                  _vm._s(_vm.loanDetails.status)
+                                                ),
+                                              ]),
+                                            ]),
+                                            _vm._v(" "),
+                                            _c("span", [
+                                              _vm._v("Customer Number : "),
+                                              _c("b", [
+                                                _vm._v(
+                                                  _vm._s(
+                                                    _vm.borrower.borrower_num
+                                                  )
+                                                ),
+                                              ]),
+                                            ]),
+                                            _vm._v(" "),
+                                            _c("span", [
+                                              _vm._v("Account Name : "),
+                                              _c("b", [
+                                                _vm._v(
+                                                  _vm._s(
+                                                    _vm.fullName(
+                                                      _vm.borrower.firstname,
+                                                      _vm.borrower.middlename,
+                                                      _vm.borrower.lastname
+                                                    )
+                                                  )
+                                                ),
+                                              ]),
+                                            ]),
+                                            _vm._v(" "),
+                                            _c("span", [
+                                              _vm._v("Address : "),
+                                              _c("b", [
+                                                _vm._v(
+                                                  _vm._s(_vm.borrower.address)
+                                                ),
+                                              ]),
+                                            ]),
+                                          ]
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "table",
+                                          {
+                                            staticClass:
+                                              "table table-bordered table-thin",
+                                          },
+                                          [
+                                            _vm._m(33),
+                                            _vm._v(" "),
+                                            _c(
+                                              "tbody",
+                                              [
+                                                _vm._l(
+                                                  _vm.amortizationSched,
+                                                  function (sched, i) {
+                                                    return _c(
+                                                      "tr",
+                                                      { key: i },
+                                                      [
+                                                        _c("td", [
+                                                          _vm._v(_vm._s(i + 1)),
+                                                        ]),
+                                                        _vm._v(" "),
+                                                        _c("td", [
+                                                          _vm._v(
+                                                            _vm._s(
+                                                              _vm
+                                                                .dateToYMD(
+                                                                  new Date(
+                                                                    sched.amortization_date
+                                                                  )
+                                                                )
+                                                                .split("/")
+                                                                .join("")
+                                                            )
+                                                          ),
+                                                        ]),
+                                                        _vm._v(" "),
+                                                        _c("td", [
+                                                          _vm._v(
+                                                            _vm._s(
+                                                              sched.principal
+                                                            )
+                                                          ),
+                                                        ]),
+                                                        _vm._v(" "),
+                                                        _c("td", [
+                                                          _vm._v(
+                                                            _vm._s(
+                                                              sched.interest
+                                                            )
+                                                          ),
+                                                        ]),
+                                                        _vm._v(" "),
+                                                        _c("td", [
+                                                          _vm._v(
+                                                            _vm._s(sched.total)
+                                                          ),
+                                                        ]),
+                                                        _vm._v(" "),
+                                                        _c("td", [
+                                                          _vm._v(
+                                                            _vm._s(
+                                                              sched.principal_balance
+                                                            )
+                                                          ),
+                                                        ]),
+                                                      ]
+                                                    )
+                                                  }
+                                                ),
+                                                _vm._v(" "),
+                                                _c(
+                                                  "tr",
+                                                  {
+                                                    staticClass:
+                                                      "dark-bt bg-very-light",
+                                                  },
+                                                  [
+                                                    _vm._m(34),
+                                                    _vm._v(" "),
+                                                    _c("td", [
+                                                      _c("b", [
+                                                        _vm._v(
+                                                          _vm._s(
+                                                            _vm.formatToCurrency(
+                                                              _vm.totalPrincipal
+                                                            )
+                                                          )
+                                                        ),
+                                                      ]),
+                                                    ]),
+                                                    _vm._v(" "),
+                                                    _c("td", [
+                                                      _c("b", [
+                                                        _vm._v(
+                                                          _vm._s(
+                                                            _vm.formatToCurrency(
+                                                              _vm.totalInterest
+                                                            )
+                                                          )
+                                                        ),
+                                                      ]),
+                                                    ]),
+                                                    _vm._v(" "),
+                                                    _c("td", [
+                                                      _c("b", [
+                                                        _vm._v(
+                                                          _vm._s(
+                                                            _vm.formatToCurrency(
+                                                              _vm.totalPayable
+                                                            )
+                                                          )
+                                                        ),
+                                                      ]),
+                                                    ]),
+                                                    _vm._v(" "),
+                                                    _c("td"),
+                                                  ]
+                                                ),
+                                              ],
+                                              2
+                                            ),
+                                          ]
+                                        ),
+                                      ]
+                                    ),
                                     _vm._v(" "),
-                                    _vm._m(36),
+                                    _vm._m(35),
                                     _vm._v(" "),
                                     _c("div", { staticClass: "mb-72" }),
                                     _vm._v(" "),
@@ -79936,7 +79994,7 @@ var render = function () {
                                               "btn btn-default min-w-150",
                                             on: {
                                               click: function ($event) {
-                                                return _vm.printMoa()
+                                                return _vm.printSchedule()
                                               },
                                             },
                                           },
@@ -79998,7 +80056,7 @@ var render = function () {
                                           "d-flex flex-row align-items-center mb-36",
                                       },
                                       [
-                                        _vm._m(37),
+                                        _vm._m(36),
                                         _vm._v(" "),
                                         _c(
                                           "div",
@@ -80147,7 +80205,7 @@ var render = function () {
                                                     "d-flex flex-row",
                                                 },
                                                 [
-                                                  _vm._m(38),
+                                                  _vm._m(37),
                                                   _vm._v(" "),
                                                   _c(
                                                     "span",
@@ -80173,7 +80231,7 @@ var render = function () {
                                                     "d-flex flex-row",
                                                 },
                                                 [
-                                                  _vm._m(39),
+                                                  _vm._m(38),
                                                   _vm._v(" "),
                                                   _c(
                                                     "span",
@@ -80196,7 +80254,7 @@ var render = function () {
                                                     "d-flex flex-row",
                                                 },
                                                 [
-                                                  _vm._m(40),
+                                                  _vm._m(39),
                                                   _vm._v(" "),
                                                   _c(
                                                     "span",
@@ -80229,7 +80287,7 @@ var render = function () {
                                                     "d-flex flex-row",
                                                 },
                                                 [
-                                                  _vm._m(41),
+                                                  _vm._m(40),
                                                   _vm._v(" "),
                                                   _c(
                                                     "span",
@@ -80257,7 +80315,7 @@ var render = function () {
                                                     "d-flex flex-row",
                                                 },
                                                 [
-                                                  _vm._m(42),
+                                                  _vm._m(41),
                                                   _vm._v(" "),
                                                   _c(
                                                     "span",
@@ -80374,7 +80432,7 @@ var render = function () {
                                                   ]
                                                 ),
                                                 _vm._v(" "),
-                                                _vm._m(43),
+                                                _vm._m(42),
                                                 _vm._v(" "),
                                                 _c(
                                                   "div",
@@ -80474,7 +80532,7 @@ var render = function () {
                                                     ]
                                                   ),
                                                   _vm._v(" "),
-                                                  _vm._m(44),
+                                                  _vm._m(43),
                                                   _vm._v(" "),
                                                   _c(
                                                     "div",
@@ -80594,7 +80652,7 @@ var render = function () {
                                               staticClass: "flex-1",
                                             }),
                                             _vm._v(" "),
-                                            _vm._m(45),
+                                            _vm._m(44),
                                             _vm._v(" "),
                                             _c(
                                               "div",
@@ -80689,7 +80747,7 @@ var render = function () {
                                     ),
                                     _vm._v(" "),
                                     _c("section", { staticClass: "font-md" }, [
-                                      _vm._m(46),
+                                      _vm._m(45),
                                       _vm._v(" "),
                                       _c("p", [
                                         _vm._v(
@@ -80737,10 +80795,10 @@ var render = function () {
                                         ]
                                       ),
                                       _vm._v(" "),
-                                      _vm._m(47),
+                                      _vm._m(46),
                                     ]),
                                     _vm._v(" "),
-                                    _vm._m(48),
+                                    _vm._m(47),
                                     _vm._v(" "),
                                     _c("div", { staticClass: "mb-72" }),
                                     _vm._v(" "),
@@ -81707,13 +81765,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("td", [_c("b")])
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("td", [_c("b")])
+    return _c("td", { attrs: { colspan: "2" } }, [_c("b", [_vm._v("TOTAL")])])
   },
   function () {
     var _vm = this

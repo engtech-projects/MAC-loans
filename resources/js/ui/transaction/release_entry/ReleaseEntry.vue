@@ -100,7 +100,7 @@
 						<div @click="switchTab('moa-for-sme-tab')" class="pxy-25 light-bb hover-light" :class="isActive('moa-for-sme-tab',activeTab)" data-tab="">
 							<span class="text-20">MOA For SME</span>
 						</div>
-						<div class="pxy-25 light-bb hover-light" :class="isActive('sme-schedule-tab',activeTab)" data-tab="">
+						<div @click="switchTab('sme-schedule-tab')" class="pxy-25 light-bb hover-light" :class="isActive('sme-schedule-tab',activeTab)" data-tab="">
 							<span class="text-20">SME Schedule</span>
 						</div>
 						<div @click="switchTab('promissory-note-tab')" class="pxy-25 hover-light" :class="isActive('promissory-note-tab',activeTab)" data-tab="promissory-note-tab">
@@ -565,7 +565,7 @@
 									<div class="d-flex flex-column title align-items-center mb-24">
 										<span class="font-26 text-bold text-primary-dark lh-1">SME SCHEDULE</span>
 									</div>
-									<section class="font-md">
+									<section class="font-md mb-45">
 										<div class="d-flex flex-column mb-36">
 											<span>Loan Account Number : <b>{{loanDetails.account_num}}</b></span>
 											<span>Loan Status : <b>{{loanDetails.status}}</b></span>
@@ -591,12 +591,11 @@
 													<td>{{sched.total}}</td>
 													<td>{{sched.principal_balance}}</td>
 												</tr>
-												<tr>
-													<td></td>
-													<td></td>
-													<td><b>{{totalPrincipal}}</b></td>
-													<td><b></b></td>
-													<td><b></b></td>
+												<tr class="dark-bt bg-very-light">
+													<td colspan="2"><b>TOTAL</b></td>
+													<td><b>{{formatToCurrency(totalPrincipal)}}</b></td>
+													<td><b>{{formatToCurrency(totalInterest)}}</b></td>
+													<td><b>{{formatToCurrency(totalPayable)}}</b></td>
 													<td></td>
 												</tr>
 											</tbody>
@@ -608,7 +607,7 @@
 									<div class="mb-72"></div>
 									<div class="d-flex flex-row-reverse mb-45 no-print">
 										<button id="cancelDacionModal" data-dismiss="modal" class="btn btn-danger min-w-150 mr-24 hide">Cancel</button>
-										<button @click="printMoa()" class="btn btn-default min-w-150">Print</button>
+										<button @click="printSchedule()" class="btn btn-default min-w-150">Print</button>
 										<button data-dismiss="modal" id="excelBtn" class="btn btn-success min-w-150 mr-24">Download Excel</button>
 									</div>
 								</div>
@@ -1144,6 +1143,14 @@
 				cancelButton.click();
 				window.print();
 			},
+			printSchedule:function(){
+				var content = document.getElementById('sme-schedule').innerHTML;
+				var target = document.querySelector('.to-print');
+				target.innerHTML = content;
+				var cancelButton = document.getElementById('cancelDacionModal');
+				cancelButton.click();
+				window.print();
+			},
 			say(say){
 				alert(say);
 			},
@@ -1183,7 +1190,6 @@
 			},
 			amortAmount:function(){
 				if(this.amortizationSched.length > 0){
-					console.log(this.numToWords(this.formatToAmount(this.amortizationSched[0].principal)));
 					return this.amortizationSched[0].principal;
 				}
 				return 0;
@@ -1194,6 +1200,16 @@
 					amount += parseFloat(this.formatToAmount(sched.principal));
 				}.bind(this));
 				return amount;
+			},
+			totalInterest:function(){
+				var amount = 0;
+				this.amortizationSched.map(function(sched){
+					amount += parseFloat(this.formatToAmount(sched.interest));
+				}.bind(this));
+				return amount;
+			},
+			totalPayable:function(){
+				return this.totalPrincipal + this.totalInterest;
 			}
 		},
 		watch:{

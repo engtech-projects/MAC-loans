@@ -418,9 +418,7 @@ export default {
 			// }
 		},
 		'loanDetails.center_id'(newValue){
-			if(newValue){
-				console.log(newValue);
-			}
+			
 		}
 		// 'saveloandetails'(newValue) {
 		// 	if(newValue){
