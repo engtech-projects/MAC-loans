@@ -94,13 +94,13 @@
 						<div @click="switchTab('dacion-en-pago-tab')" class="pxy-25 light-bb hover-light" :class="isActive('dacion-en-pago-tab',activeTab)" data-tab="dacion-en-pago-tab">
 							<span class="text-20">DACION EN PAGO</span>
 						</div>
-						<div class="pxy-25 light-bb hover-light" data-tab="">
+						<div @click="switchTab('doa-for-atm-tab')" class="pxy-25 light-bb hover-light" :class="isActive('doa-for-atm-tab',activeTab)" data-tab="">
 							<span class="text-20">DOA For ATM</span>
 						</div>
-						<div class="pxy-25 light-bb hover-light" data-tab="">
+						<div @click="switchTab('moa-for-sme-tab')" class="pxy-25 light-bb hover-light" :class="isActive('moa-for-sme-tab',activeTab)" data-tab="">
 							<span class="text-20">MOA For SME</span>
 						</div>
-						<div class="pxy-25 light-bb hover-light" data-tab="">
+						<div class="pxy-25 light-bb hover-light" :class="isActive('sme-schedule-tab',activeTab)" data-tab="">
 							<span class="text-20">SME Schedule</span>
 						</div>
 						<div @click="switchTab('promissory-note-tab')" class="pxy-25 hover-light" :class="isActive('promissory-note-tab',activeTab)" data-tab="promissory-note-tab">
@@ -114,6 +114,16 @@
 							</li>
 							<li class="nav-item">
 								<a class="nav-link" id="dacion-en-pago-tab" data-toggle="pill" href="#dacion-en-pago" role="tab" aria-controls="custom-content-below-home" aria-selected="true">DACION EN PAGO</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" id="doa-for-atm-tab" data-toggle="pill" href="#doa-for-atm" role="tab" aria-controls="custom-content-below-home" aria-selected="true">DACION EN PAGO</a>
+							</li>
+								<li class="nav-item">
+								<a class="nav-link" id="moa-for-sme-tab" data-toggle="pill" href="#moa-for-sme" role="tab" aria-controls="custom-content-below-home" aria-selected="true">MOA FOR SME</a>
+							</li>
+							<li>
+								<li class="nav-item">
+								<a class="nav-link" id="sme-schedule-tab" data-toggle="pill" href="#sme-schedule" role="tab" aria-controls="custom-content-below-home" aria-selected="true">SME Schedule</a>
 							</li>
 							<li class="nav-item">
 								<a class="nav-link" id="promissory-note-tab" data-toggle="pill" href="#promissory-note" role="tab" aria-controls="custom-content-below-profile" aria-selected="false">Promissory Note</a>
@@ -250,6 +260,364 @@
 									</div>
 								</div>
 							</div>
+
+
+
+							<div  class="tab-pane fade" id="doa-for-atm" role="tabpanel" aria-labelledby="custom-content-below-home-tab">
+								<img :src="baseUrl+'/img/company_header.png'" style="width:100%" class="mb-16" alt="Company Header">
+								<div class="d-flex flex-column font-md" style="padding:0 35px;">
+									
+									<div class="d-flex flex-column title align-items-center mb-24">
+										<span class="font-26 text-bold text-primary-dark lh-1">DOA FOR ATM</span>
+									</div>
+									<section class="font-md">
+										<span class="text-block mb-24">KNOW ALL MEN BY THESE PRESENTS:</span>
+										<p>
+											That I, {{fullName(borrower.firstname, borrower.middlename,borrower.lastname)}} Filipino, of legal age, married/single and a resident of {{borrower.address}} herein known as the ASSIGNOR;
+										</p>
+										<b class="text-center text-block allcaps mb-24">-AND-</b>
+										<p>
+											That for an in consideration of the Loan obtained by the ASSIGNOR from the ASSIGNEE the sum of <span class="allcaps">{{numToWords(loanDetails.loan_amount)}}</span> <span>(P{{formatToCurrency(loanDetails.loan_amount)}})</span>. ASSIGNOR, by these presents, assign his/her Pension/Salary  through ATM Card to ASSIGNEE, with the following ATM Card details to wit;
+										</p>
+										<div class="d-flex mb-24">
+											<div class="flex-1 flex-column align-items-center">
+												<b class="text-center text-block mb-16">Name of Bank</b>
+												<b class="text-center text-block">{{loanDetails.documents.bank}}</b>
+											</div>
+											<div class="flex-1 flex-column align-items-center">
+												<b class="text-center text-block mb-10">Account Number</b>
+												<b class="text-center text-block text-underlined" style="padding-bottom:3px;">Card No: {{loanDetails.documents.card_no}}</b>
+												<b class="text-center text-block" style="line-height:.1">Account No.: {{loanDetails.documents.account_no}}</b>
+											</div>
+										</div>
+										<p>That the ASSIGNOR hereby gives the full power to the ASSIGNEE the authority to take/withdraw and deduct in full the monthly amortization of <span class="allcaps">{{numToWords(formatToAmount(amortAmount))}}</span> <span>(P{{amortAmount}})</span> until the full settlement of the terms and conditions stated in the Promissory note. </p>
+
+										<p>
+											IN WITNESS WHEREOF, the parties hereto have hereunto set their hands this <b>{{nthDay(this.dateToD(new Date))}}</b> day of <b class="allcaps">{{this.dateToFullMonth(new Date)}}  {{this.dateToY(new Date)}}</b> at Butuan City, Philippines.
+										</p>
+
+										<div class="d-flex mb-45">
+											<div class="flex-1 d-flex flex-column align-items-center">
+												<b class="text-block allcaps">{{fullName(borrower.firstname, borrower.middlename,borrower.lastname)}}</b>
+												<span>ASSIGNOR</span>
+											</div>
+											<div class="flex-1 d-flex flex-column align-items-center">
+												<b class="text-block">JANINE L. DESCALLAR</b>
+												<span>ASSIGNEE</span>
+											</div>
+										</div>
+
+										<center class="text-sm text-bold">SIGNED IN THE PRESENCE OF</center>
+
+
+										<div class="d-flex mb-45">
+											<div class="flex-1 d-flex flex-column align-items-center">
+												
+											</div>
+											<div class="flex-1 d-flex flex-column align-items-center">
+												<b class="text-block">JOCETE ANGELIE J. GASCON</b>
+												<span>Witness</span>
+											</div>
+										</div>
+
+										<center class="text-sm text-bold">ACKNOWLEDGEDMENT</center>
+										<span class="text-block">Republic of the Philippines     )</span>
+										<span class="text-block mb-16">Butuan City		    )</span>
+
+										<div class="d-flex flex-column mb-24">
+											<div class="d-flex mb-24">
+												<span class="flex-1">Name</span>
+												<span class="flex-1">CTC NO./I.D. No.</span>
+												<span class="flex-1">Date</span>
+												<span class="flex-1">Place</span>
+											</div>
+											<div class="d-flex mb-16">
+												<b class="flex-1 allcaps">{{fullName(borrower.firstname, borrower.middlename,borrower.lastname)}}</b>
+												<b class="flex-1"><span class="allcaps">{{borrower.id_type}}</span> ID: {{borrower.id_no}}</b>
+												<b class="flex-1"></b>
+												<b class="flex-1">BUTUAN CITY</b>
+											</div>
+											<div class="d-flex">
+												<b class="flex-1">JANINE L. DESCALLAR</b>
+												<b class="flex-1">TIN: 938-417-539-000</b>
+												<b class="flex-1"></b>
+												<b class="flex-1">BUTUAN CITY</b>
+											</div>
+										</div>
+
+										<p class="mb-24">
+											Known to me and to me known to be the same persons who executed the foregoing Deed of Assignment and Acknowledgement to me that the same is their own free and voluntary act and as well as the free and voluntary act and deed of the entities herein represented with full power so to do and for the uses and purposes thereon set forth.
+										</p>
+										<p class="mb-24">
+											<center>IN WITNESS WHEREOF, I have set my hand and affixed my Notarial Seal on date place above written.</center>
+										</p>
+										
+										<div class="d-flex align-items-end mb-36">
+											<div class="d-flex flex-column mb-24 flex-3">
+												<span>Doc. No.___________</span>
+												<span>Page No.___________</span>
+												<span>Book No.___________</span>
+												<span>Series of___________</span>
+											</div>
+											<span class="flex-1">Notary Public</span>
+										</div>
+
+									</section>
+									<div class="d-flex mb-24">
+										<img src="/img/logo-footer.png" class="w-100" alt="">
+									</div>
+									<div class="mb-72"></div>
+									<div class="d-flex flex-row-reverse mb-45 no-print">
+										<button id="cancelDacionModal" data-dismiss="modal" class="btn btn-danger min-w-150 mr-24 hide">Cancel</button>
+										<button @click="printDoa()" class="btn btn-default min-w-150">Print</button>
+										<button data-dismiss="modal" id="excelBtn" class="btn btn-success min-w-150 mr-24">Download Excel</button>
+									</div>
+								</div>
+							</div>
+
+
+
+
+
+							<div  class="tab-pane fade" id="moa-for-sme" role="tabpanel" aria-labelledby="custom-content-below-home-tab">
+								<img :src="baseUrl+'/img/company_header.png'" style="width:100%" class="mb-16" alt="Company Header">
+								<div class="d-flex flex-column font-md" style="padding:0 35px;">
+									
+									<div class="d-flex flex-column title align-items-center mb-24">
+										<span class="font-26 text-bold text-primary-dark lh-1">MEMORANDUM AGREEMENT</span>
+									</div>
+									<section class="font-md">
+										<span class="text-block mb-24">KNOW ALL MEN BY THESE PRESENTS:</span>
+										
+										<p class="mb-36">
+											This AGREEMENT made and entered into this      th day of          at MICRO ACCESS LOANS CORPORATION Butuan City, Philippines by and among the undersigned borrowers under the loan program of  Micro Access Loans Corporation. 
+
+										</p>
+
+										<div class="d-flex mb-24">
+											<div class="flex-1">
+												<center>MAKER/S</center>
+												<b class="text-block allcaps">{{fullName(borrower.firstname,borrower.middlename,borrower.lastname)}}</b>
+											</div>
+											<div class="flex-1">
+												<center>ADDRESS</center>
+												<b class="text-block allcaps">{{borrower.address}}</b>
+											</div>
+										</div>
+
+										<div class="d-flex mb-36">
+											<div class="flex-1">
+												<center>CO-MAKER</center>
+												<b class="text-block allcaps">{{loanDetails.co_maker_name}}</b>
+											</div>
+											<div class="flex-1">
+												<center>ADDRESS</center>
+												<b class="text-block allcaps">{{loanDetails.co_maker_address}}</b>
+											</div>
+										</div>
+
+										<p class="mb-36">
+											WHEREAS, we the borrowers of <b>Micro Access Loans Corporation</b> have voluntarily promised, committed and bound as we do hereby promised, commit and bind ourselves solidarily to fully pay our <b>loan</b> with <b>Micro Access Loans Corporation</b> in the amount of <span class="text-underlined allcaps text-bold">{{numToWords(loanDetails.loan_amount)}}</span> <b>(P{{formatToCurrency(loanDetails.loan_amount)}})</b> and until the full settlement of the term and condition as stated in the Promissory Note with PN No. <b>001-007-0000190:</b>
+										</p>
+
+										<p class="mb-24">
+											<b>NOW, THEREFORE,</b> for and in consideration of the premises herein set forth, the parties have agreed to enter into a Memorandum of Agreement subject to the following condition:
+										</p>
+
+										<ol class="mb-36">
+											<li>To open a checking account to be used for issuance of post-dated checks to <b>Micro Access Loans Corporation</b> as payment for our <b>loan</b> amortization;
+											</li>
+											<li>
+												Remit the loan amortization based on the schedule of amortization as stated in the <b class="text-underlined">Promissory Note</b>;
+											</li>
+											<li>
+												That we, the borrowers shall pay our obligation promptly according to the schedule;
+											</li>
+											<li>
+												That <b>Micro Access Loans Corporation</b> shall release the proceeds of the loan to the applicant upon issuance and delivery of the checks in favor of <b>MAC</b>. to cover the amortization of the loan to <b>Micro Access Loans Corporation;</b>
+											</li>
+											<li>
+												That we, the borrowers may verify our remaining <b>loan</b> balance with <b>Micro Access Loans Corporation</b> to ensure payment of our amortization;
+											</li>
+											<li>
+												That we bind ourselves jointly and severally liable (act as surety) to <b>Micro Access Loans Corporation</b> in the event the check issued to <b>Micro Access Loans Corporation</b> may bounced, and
+											</li>
+											<li>
+												That I/We understand the contents of this document, and hereby voluntarily and willingly affix our signature below.
+											</li>
+										</ol>
+
+										<p class="mb-36">
+											<b>IN WITNESS WHEREOF</b>, the parties hereunto signed this instrument on this <b>{{nthDay(this.dateToD(new Date))}}</b> day of <b class="allcaps">{{this.dateToFullMonth(new Date)}}  {{this.dateToY(new Date)}}</b> at ___________________ Butuan City, Philippines.
+										</p>
+
+										<div class="d-flex justify-content-center mb-36">
+											<div class="flex-1 text-center">
+												<b class="allcaps text-block">{{fullName(borrower.firstname,borrower.middlename,borrower.lastname)}}</b>
+												<span>Name and Signature of Borrower</span>
+											</div>
+											<div class="flex-1 text-center">
+												<b class="allcaps text-block">{{loanDetails.co_borrower_name}} </b>
+												<span> Name and Signature of Co-Borrower</span>
+											</div>
+										</div>
+
+										<div class="d-flex justify-content-center mb-36">
+											<div class="flex-1 text-center">
+												<b class="allcaps text-block">{{fullName(borrower.spouse_firstname,borrower.spouse_middlename,borrower.spouse_lastname)}} </b>
+												<span>Name and Signature of Marital Consent</span>
+											</div>
+											<div class="flex-1 text-center">
+												<b class="allcaps text-block">{{loanDetails.co_maker_name}} </b>
+												<span> Name and Signature of Co-Maker</span>
+											</div>
+										</div>
+
+										<center class="mb-16">SIGNED IN THE PRESENCE OF:</center>
+
+										<div class="d-flex justify-content-center mb-24">
+											<div class="flex-1 text-center">
+												<b class="allcaps text-block">YRRA SECRETARIA</b>
+											</div>
+											<div class="flex-1 text-center">
+												<b class="allcaps text-block">JANINE L. DESCALLAR</b>
+											</div>
+										</div>
+
+										<center class="mb-16">ACKNOWLEDGMENT</center>
+
+										<span class="text-block">REPUBLIC OF THE PHILIPPINES)</span>
+										<span class="text-block mb-36">City of Butuan			) S.S</span>
+
+										<p class="mb-36">BEFORE ME, a Notary Public for and in the above jurisdiction, personally appeared:</p>
+
+										<div class="d-flex mb-24">
+											<span class="flex-2 mr-45">Name</span>
+											<span class="flex-1 mr-45">CTC/ID No.</span>
+											<span class="flex-3 mr-45">Issued at</span>
+											<span class="flex-1">issued on</span>
+										</div>
+
+										<div class="d-flex flex-column mb-36">
+											<div class="d-flex mb-24">
+												<div class="flex-2 bb-black-1 mr-45"></div>
+												<div class="flex-1 bb-black-1 mr-45"></div>
+												<div class="flex-3 bb-black-1 mr-45"></div>
+												<div class="flex-1 bb-black-1"></div>
+											</div>
+											<div class="d-flex mb-24">
+												<div class="flex-2 bb-black-1 mr-45"></div>
+												<div class="flex-1 bb-black-1 mr-45"></div>
+												<div class="flex-3 bb-black-1 mr-45"></div>
+												<div class="flex-1 bb-black-1"></div>
+											</div>
+											<div class="d-flex mb-24">
+												<div class="flex-2 bb-black-1 mr-45"></div>
+												<div class="flex-1 bb-black-1 mr-45"></div>
+												<div class="flex-3 bb-black-1 mr-45"></div>
+												<div class="flex-1 bb-black-1"></div>
+											</div>
+											<div class="d-flex">
+												<div class="flex-2 bb-black-1 mr-45"></div>
+												<div class="flex-1 bb-black-1 mr-45"></div>
+												<div class="flex-3 bb-black-1 mr-45"></div>
+												<div class="flex-1 bb-black-1"></div>
+											</div>
+										</div>
+
+										<p class="mb-36">
+											Known to me and to me known to be the same person who executed the foregoing MOA on which  the Acknowledgement is  written signed by the parties and their instrumental witnesses on each and every hereof, and the parties have acknowledged to me that the same is their free and voluntary act and deed, as well as those of the parties which they respectively present.
+
+										</p>
+
+										<p class="mb-36">
+											WITNESS MY HAND AND SEAL on this  <b>{{nthDay(this.dateToD(new Date))}}</b> day of <b class="allcaps">{{this.dateToFullMonth(new Date)}}  {{this.dateToY(new Date)}}</b> at the place first written above.
+										</p>
+										
+										<div class="d-flex align-items-end mb-36">
+											<div class="d-flex flex-column mb-24 flex-3">
+												<span>Doc. No.___________</span>
+												<span>Page No.___________</span>
+												<span>Book No.___________</span>
+												<span>Series of___________</span>
+											</div>
+										</div>
+
+									</section>
+									<div class="d-flex mb-24">
+										<img src="/img/logo-footer.png" class="w-100" alt="">
+									</div>
+									<div class="mb-72"></div>
+									<div class="d-flex flex-row-reverse mb-45 no-print">
+										<button id="cancelDacionModal" data-dismiss="modal" class="btn btn-danger min-w-150 mr-24 hide">Cancel</button>
+										<button @click="printMoa()" class="btn btn-default min-w-150">Print</button>
+										<button data-dismiss="modal" id="excelBtn" class="btn btn-success min-w-150 mr-24">Download Excel</button>
+									</div>
+								</div>
+							</div>
+
+
+
+							<div  class="tab-pane fade" id="sme-schedule" role="tabpanel" aria-labelledby="custom-content-below-home-tab">
+								<img :src="baseUrl+'/img/company_header.png'" style="width:100%" class="mb-16" alt="Company Header">
+								<div class="d-flex flex-column font-md" style="padding:0 35px;">
+									
+									<div class="d-flex flex-column title align-items-center mb-24">
+										<span class="font-26 text-bold text-primary-dark lh-1">SME SCHEDULE</span>
+									</div>
+									<section class="font-md">
+										<div class="d-flex flex-column mb-36">
+											<span>Loan Account Number : <b>{{loanDetails.account_num}}</b></span>
+											<span>Loan Status : <b>{{loanDetails.status}}</b></span>
+											<span>Customer Number : <b>{{borrower.borrower_num}}</b></span>
+											<span>Account Name : <b>{{fullName(borrower.firstname,borrower.middlename,borrower.lastname)}}</b></span>
+											<span>Address : <b>{{borrower.address}}</b></span>
+										</div>
+										<table class="table table-bordered table-thin">
+											<thead>
+												<th>AMORT NO.</th>
+												<th>DATE</th>
+												<th>PRINCIPAL</th>
+												<th>INTEREST</th>
+												<th>TOTAL</th>
+												<th>BALANCE</th>
+											</thead>
+											<tbody>
+												<tr v-for="(sched, i) in amortizationSched" :key="i">
+													<td>{{i+1}}</td>
+													<td>{{dateToYMD(new Date(sched.amortization_date)).split('/').join('')}}</td>
+													<td>{{sched.principal}}</td>
+													<td>{{sched.interest}}</td>
+													<td>{{sched.total}}</td>
+													<td>{{sched.principal_balance}}</td>
+												</tr>
+												<tr>
+													<td></td>
+													<td></td>
+													<td><b>{{totalPrincipal}}</b></td>
+													<td><b></b></td>
+													<td><b></b></td>
+													<td></td>
+												</tr>
+											</tbody>
+										</table>
+									</section>
+									<div class="d-flex mb-24">
+										<img src="/img/logo-footer.png" class="w-100" alt="">
+									</div>
+									<div class="mb-72"></div>
+									<div class="d-flex flex-row-reverse mb-45 no-print">
+										<button id="cancelDacionModal" data-dismiss="modal" class="btn btn-danger min-w-150 mr-24 hide">Cancel</button>
+										<button @click="printMoa()" class="btn btn-default min-w-150">Print</button>
+										<button data-dismiss="modal" id="excelBtn" class="btn btn-success min-w-150 mr-24">Download Excel</button>
+									</div>
+								</div>
+							</div>
+
+
+
+
+
 
 							<div class="tab-pane fade" id="promissory-note" role="tabpanel" aria-labelledby="custom-content-below-home-tab">
 								<img :src="baseUrl+'/img/company_header.png'" style="width:100%" class="mb-45" alt="Company Header">
@@ -760,6 +1128,22 @@
 				cancelButton.click();
 				window.print();
 			},
+			printDoa:function(){
+				var content = document.getElementById('doa-for-atm').innerHTML;
+				var target = document.querySelector('.to-print');
+				target.innerHTML = content;
+				var cancelButton = document.getElementById('cancelDacionModal');
+				cancelButton.click();
+				window.print();
+			},
+			printMoa:function(){
+				var content = document.getElementById('moa-for-sme').innerHTML;
+				var target = document.querySelector('.to-print');
+				target.innerHTML = content;
+				var cancelButton = document.getElementById('cancelDacionModal');
+				cancelButton.click();
+				window.print();
+			},
 			say(say){
 				alert(say);
 			},
@@ -796,6 +1180,20 @@
 					}
 				}.bind(this));
 				return accounts;
+			},
+			amortAmount:function(){
+				if(this.amortizationSched.length > 0){
+					console.log(this.numToWords(this.formatToAmount(this.amortizationSched[0].principal)));
+					return this.amortizationSched[0].principal;
+				}
+				return 0;
+			},
+			totalPrincipal:function(){
+				var amount = 0;
+				this.amortizationSched.map(function(sched){
+					amount += parseFloat(this.formatToAmount(sched.principal));
+				}.bind(this));
+				return amount;
 			}
 		},
 		watch:{
@@ -808,7 +1206,7 @@
 			this.resetBorrower();
 			this.resetLoanDetails();
 			this.fetchProducts();
-			//this.navigate('custom-content-below-loandetails-tab');
+			// this.navigate('custom-content-below-loandetails-tab');
 			// this.navigate('custom-content-below-coborrowerinfo-tab');
         }
     }
