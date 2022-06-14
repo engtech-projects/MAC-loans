@@ -179,7 +179,7 @@
 									<section class="font-md">
 										<span class="text-block mb-24">KNOW ALL MEN BY THESE PRESENTS:</span>
 										<p>
-											This INSTURMENT made and executed this <b>{{nthDay(this.dateToD(new Date))}}</b> day of <b class="allcaps">{{this.dateToFullMonth(new Date)}}  {{this.dateToY(new Date)}}</b> at Butuan City, Philippines, by and between: <span class="text-underlined allcaps text-bold">{{fullName(borrower.firstname, borrower.middlename,borrower.lastname)}}</span> single/married to <span class="text-underlined allcaps text-bold">{{fullName(borrower.spouse_firstname,borrower.spouse_middlename,borrower.spouse_lastname)}}</span> of legal age, Filipino citizen, and resident of <span class="text-underlined allcaps text-bold">{{borrower.address}}</span>  herein after called the <b>FIRST PARTY</b>;
+											This INSTURMENT made and executed this _________ day of ___________  at Butuan City, Philippines, by and between: <span class="text-underlined allcaps text-bold">{{fullName(borrower.firstname, borrower.middlename,borrower.lastname)}}</span> single/married to <span class="text-underlined allcaps text-bold">{{fullName(borrower.spouse_firstname,borrower.spouse_middlename,borrower.spouse_lastname)}}</span> of legal age, Filipino citizen, and resident of <span class="text-underlined allcaps text-bold">{{borrower.address}}</span>  herein after called the <b>FIRST PARTY</b>;
 										</p>
 										<p>
 											MAC LENDING a lending institution, duly registered under the laws of the Republic of the Philippines and with postal address at T. Calo Extension, Butuan City represented by its Branch Manager <b>JANINE L. DESCALLAR</b> herein after called as the <b>SECOND PARTY</b>;
@@ -220,7 +220,7 @@
 											</div>
 										</div>
 
-										<p class="mb-64">
+										<p class="mb-64 text-bold">
 											WITH MY MARITAL CONSENT: 
 										</p>
 
@@ -240,7 +240,7 @@
 										<span class="text-block mb-36">X---------------------------------/</span>
 
 										<p>
-											BEFORE ME, a notary public for and in the City of Butuan, Philippines this {{dacionDate()}},  personally appeared the above named person, known to me and to me known to be the same person of the foregoing instrument, consisting of one (1) page including this page where the acknowledgement is written, signed by the parties and their two (2) instrumental witness, and they acknowledgement to me that the same are their own free will and voluntary act and deed.The Valid ID's of the parties were exhibited to me the same being that which appears below their respective names and signatures above.
+											BEFORE ME, a notary public for and in the City of Butuan, Philippines this ____ day of ______________,  personally appeared the above named person, known to me and to me known to be the same person of the foregoing instrument, consisting of one (1) page including this page where the acknowledgement is written, signed by the parties and their two (2) instrumental witness, and they acknowledgement to me that the same are their own free will and voluntary act and deed.The Valid ID's of the parties were exhibited to me the same being that which appears below their respective names and signatures above.
 										</p>
 										<div class="d-flex flex-column mb-24">
 											<span>Doc. No.___________</span>
@@ -268,21 +268,24 @@
 								<div class="d-flex flex-column font-md" style="padding:0 35px;">
 									
 									<div class="d-flex flex-column title align-items-center mb-24">
-										<span class="font-26 text-bold text-primary-dark lh-1">DOA FOR ATM</span>
+										<span class="font-26 text-bold text-primary-dark lh-1">DEED OF ASSIGNMENT</span>
 									</div>
 									<section class="font-md">
-										<span class="text-block mb-24">KNOW ALL MEN BY THESE PRESENTS:</span>
+										<span class="text-block mb-24 text-bold">KNOW ALL MEN BY THESE PRESENTS:</span>
 										<p>
-											That I, {{fullName(borrower.firstname, borrower.middlename,borrower.lastname)}} Filipino, of legal age, married/single and a resident of {{borrower.address}} herein known as the ASSIGNOR;
+											That I, <b><u> {{fullName(borrower.firstname, borrower.middlename,borrower.lastname)}} </u></b> Filipino, of legal age, married/single and a resident of <b> <u> {{borrower.address}}</u> </b> herein known as the <b>ASSIGNOR;</b> 
 										</p>
 										<b class="text-center text-block allcaps mb-24">-AND-</b>
 										<p>
-											That for an in consideration of the Loan obtained by the ASSIGNOR from the ASSIGNEE the sum of <span class="allcaps">{{numToWords(loanDetails.loan_amount)}}</span> <span>(P{{formatToCurrency(loanDetails.loan_amount)}})</span>. ASSIGNOR, by these presents, assign his/her Pension/Salary  through ATM Card to ASSIGNEE, with the following ATM Card details to wit;
+											<b> Micro Access Loans Corporation </b> a lending institution, duly registered under the laws of the Republic of the Philippines and with postal address at T. Calo St. Limaha , Butuan City represented by the Branch Manager <b> <u>JANINE L. DESCALLAR  </u></b> hereinafter known as the <b> ASSIGNEE;</b>
+										</p>
+										<p>
+											That for an in consideration of the Loan obtained by the ASSIGNOR from the ASSIGNEE the sum of <span class="allcaps text-bold">{{numToWords(loanDetails.loan_amount)}}</span>  <span class="text-bold text-underline">(P{{formatToCurrency(loanDetails.loan_amount)}})</span>. ASSIGNOR, by these presents, assign his/her Pension/Salary  through ATM Card to ASSIGNEE, with the following ATM Card details to wit;
 										</p>
 										<div class="d-flex mb-24">
 											<div class="flex-1 flex-column align-items-center">
 												<b class="text-center text-block mb-16">Name of Bank</b>
-												<b class="text-center text-block">{{loanDetails.documents.bank}}</b>
+												<b class="text-center text-block text-underlined">{{loanDetails.documents.bank}}</b>
 											</div>
 											<div class="flex-1 flex-column align-items-center">
 												<b class="text-center text-block mb-10">Account Number</b>
@@ -293,7 +296,7 @@
 										<p>That the ASSIGNOR hereby gives the full power to the ASSIGNEE the authority to take/withdraw and deduct in full the monthly amortization of <span class="allcaps">{{numToWords(formatToAmount(amortAmount))}}</span> <span>(P{{amortAmount}})</span> until the full settlement of the terms and conditions stated in the Promissory note. </p>
 
 										<p>
-											IN WITNESS WHEREOF, the parties hereto have hereunto set their hands this <b>{{nthDay(this.dateToD(new Date))}}</b> day of <b class="allcaps">{{this.dateToFullMonth(new Date)}}  {{this.dateToY(new Date)}}</b> at Butuan City, Philippines.
+											IN WITNESS WHEREOF, the parties hereto have hereunto set their hands this _____ day of __________ at Butuan City, Philippines.
 										</p>
 
 										<div class="d-flex mb-45">
@@ -324,6 +327,9 @@
 										<span class="text-block">Republic of the Philippines     )</span>
 										<span class="text-block mb-16">Butuan City		    )</span>
 
+										<p class="mb-24">
+											<center>BEFORE ME  a notary public in this ________ day of ______________ at City of Butuan, Philippines, personally appeared the following persons:</center>
+										</p>
 										<div class="d-flex flex-column mb-24">
 											<div class="d-flex mb-24">
 												<span class="flex-1">Name</span>
@@ -397,27 +403,27 @@
 										<div class="d-flex mb-24">
 											<div class="flex-1">
 												<center>MAKER/S</center>
-												<b class="text-block allcaps">{{fullName(borrower.firstname,borrower.middlename,borrower.lastname)}}</b>
+												<center> <b class="text-block allcaps">{{fullName(borrower.firstname,borrower.middlename,borrower.lastname)}}</b></center>
 											</div>
 											<div class="flex-1">
 												<center>ADDRESS</center>
-												<b class="text-block allcaps">{{borrower.address}}</b>
+												<center>  <b class="text-block allcaps">{{borrower.address}}</b></center>
 											</div>
 										</div>
 
 										<div class="d-flex mb-36">
 											<div class="flex-1">
 												<center>CO-MAKER</center>
-												<b class="text-block allcaps">{{loanDetails.co_maker_name}}</b>
+												<center><b class="text-block allcaps">{{loanDetails.co_maker_name}}</b></center>
 											</div>
 											<div class="flex-1">
 												<center>ADDRESS</center>
-												<b class="text-block allcaps">{{loanDetails.co_maker_address}}</b>
+												<center><b class="text-block allcaps">{{loanDetails.co_maker_address}}</b></center>
 											</div>
 										</div>
 
 										<p class="mb-36">
-											WHEREAS, we the borrowers of <b>Micro Access Loans Corporation</b> have voluntarily promised, committed and bound as we do hereby promised, commit and bind ourselves solidarily to fully pay our <b>loan</b> with <b>Micro Access Loans Corporation</b> in the amount of <span class="text-underlined allcaps text-bold">{{numToWords(loanDetails.loan_amount)}}</span> <b>(P{{formatToCurrency(loanDetails.loan_amount)}})</b> and until the full settlement of the term and condition as stated in the Promissory Note with PN No. <b>001-007-0000190:</b>
+											WHEREAS, we the borrowers of <b>Micro Access Loans Corporation</b> have voluntarily promised, committed and bound as we do hereby promised, commit and bind ourselves solidarily to fully pay our <b>loan</b> with <b>Micro Access Loans Corporation</b> in the amount of <span class="text-underlined allcaps text-bold">{{numToWords(loanDetails.loan_amount)}}</span> <b>(P{{formatToCurrency(loanDetails.loan_amount)}})</b> and until the full settlement of the term and condition as stated in the Promissory Note with PN No. <b> {{loanDetails.documents.promissory_number}}</b>
 										</p>
 
 										<p class="mb-24">
@@ -448,7 +454,7 @@
 										</ol>
 
 										<p class="mb-36">
-											<b>IN WITNESS WHEREOF</b>, the parties hereunto signed this instrument on this <b>{{nthDay(this.dateToD(new Date))}}</b> day of <b class="allcaps">{{this.dateToFullMonth(new Date)}}  {{this.dateToY(new Date)}}</b> at ___________________ Butuan City, Philippines.
+											<b>IN WITNESS WHEREOF</b>, the parties hereunto signed this instrument on this ________day of ____________ at ___________________ Butuan City, Philippines.
 										</p>
 
 										<div class="d-flex justify-content-center mb-36">
@@ -531,7 +537,7 @@
 										</p>
 
 										<p class="mb-36">
-											WITNESS MY HAND AND SEAL on this  <b>{{nthDay(this.dateToD(new Date))}}</b> day of <b class="allcaps">{{this.dateToFullMonth(new Date)}}  {{this.dateToY(new Date)}}</b> at the place first written above.
+											WITNESS MY HAND AND SEAL on this  ________ day of ___________ at the place first written above.
 										</p>
 										
 										<div class="d-flex align-items-end mb-36">
@@ -780,7 +786,7 @@
 											<span>Butuan City</span>
 										</div>
 										<p>
-											SUBSCRIBE AND SWORN before me this <b>{{nthDay(this.dateToD(new Date))}}</b>, day of <b class="allcaps">{{this.dateToFullMonth(new Date)}},  {{this.dateToY(new Date)}}</b> and tax identetification number written above,
+											SUBSCRIBE AND SWORN before me this _______, day of __________ </b> and tax identetification number written above,
 											Known to me and to me known to be the same person who executed the foregoing Promissory Note and they Acknowledged to me that the same is their own free and voluntary act and as well as the free and voluntary act and deed of the entitles herein represented with full power so to do and for the uses and purposes thereon set forth.
 										</p>
 										<p>
