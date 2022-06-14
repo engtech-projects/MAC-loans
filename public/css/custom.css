@@ -1,5 +1,6 @@
 
 /* UTILITIES */
+
 .allcaps {
 	text-transform: uppercase!important;
 }
@@ -498,6 +499,10 @@
 
 .bb-dark-8 {
 	border-bottom: 8px solid #777;
+}
+
+.bb-black-1 {
+	border-bottom: 1px solid #000;
 }
 
 .dark-bb {

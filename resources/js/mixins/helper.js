@@ -47,7 +47,10 @@ Vue.mixin({
 		},
 		formatToCurrency:function(amount) {
 			return parseFloat(amount).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,");
-		}, 
+		},
+		formatToAmount:function(currency){
+			return parseFloat(currency.toString().split(',').join(''));
+		},
 		numToWords:function(numberInput){
 			let oneToTwenty = ['','one ','two ','three ','four ', 'five ','six ','seven ','eight ','nine ','ten ',
 			'eleven ','twelve ','thirteen ','fourteen ','fifteen ','sixteen ','seventeen ','eighteen ','nineteen '];
