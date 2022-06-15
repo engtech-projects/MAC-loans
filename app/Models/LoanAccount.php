@@ -93,6 +93,12 @@ class LoanAccount extends Model
 	// 	return Borrower::with(['businessInfo','employmentInfo','householdMembers','outstandingObligations'])->find($this->borrower_id);
 	// }
 
+   public function borrowerPhoto() {
+
+      $borrower = Borrower::find($this->borrower_id);
+      return $borrower->getPhoto();
+   }
+
    public function borrower(){
       return $this->hasOne(Borrower::class, 'borrower_id', 'borrower_id');
    }
@@ -121,7 +127,7 @@ class LoanAccount extends Model
          $accounts->where('loan_accounts.center_id', '=', $filters['center_id']);
       }
 
-   if( isset($filters['product_id']) && $filters['product_id'] ){
+      if( isset($filters['product_id']) && $filters['product_id'] ){
          $accounts->where('loan_accounts.product_id', '=', $filters['product_id']);
       }
 
