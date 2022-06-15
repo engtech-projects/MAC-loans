@@ -116,7 +116,7 @@
 							<span class="">Interest</span>
 							<span>:</span>
 						</div>
-						<span class="flex-1 text-primary-dark">{{loanaccount.filing_fee}}</span>
+						<span class="flex-1 text-primary-dark">{{loanaccount.interest_amount}}</span>
 					</div>
 
 					<div class="d-flex flex-row mb-12">
@@ -132,7 +132,7 @@
 							<span class="">Rate</span>
 							<span>:</span>
 						</div>
-						<span class="flex-1 text-primary-dark">30%</span>
+						<span class="flex-1 text-primary-dark">{{loanaccount.interest_rate}}%</span>
 					</div>
 
 					<div class="d-flex flex-row mb-12">
@@ -239,7 +239,7 @@
 							</div>
 							<div class="d-flex mb-7">
 								<span class="mr-5">A/O: </span>
-								<span class="">025 - Janine C. Escallar</span>
+								<span class="">{{loanaccount.account_officer.ao_id}} - {{loanaccount.account_officer.name}}</span>
 							</div>
 							<div class="d-flex mb-7">
 								<span class="mr-5">Due Date: </span>
@@ -250,12 +250,12 @@
 								<span class="">{{loanaccount.type}}</span>
 							</div>
 							<div class="d-flex mb-7">
-								<span class="mr-5">Interest: </span>
-								<span class="">{{loanInterest}}</span>
+								<span class="mr-5">Interest Amount: </span>
+								<span class="">{{loanaccount.interest_amount}}</span>
 							</div>
 							<div class="d-flex mb-7">
 								<span class="mr-5">Int. Rate: </span>
-								<span class="">30% p.a. / 2.50% p.m.</span>
+								<span class="">{{loanaccount.interest_rate}}%</span>
 							</div>
 							<div class="d-flex mb-7">
 								<span class="mr-5">Mode: </span>
@@ -267,7 +267,7 @@
 							</div>
 							<div class="d-flex mb-7">
 								<span class="mr-5">ID #: </span>
-								<span class="">08-052415427-4</span>
+								<span class="">{{loanaccount.borrower.id_no}}</span>
 							</div>
 						</div>
 					</div>			
