@@ -53,6 +53,7 @@ class LoanAccount extends JsonResource
             'release_type' => $this->release_type,
             'status' => $this->status,
             // 'borrower_num' => $this->borrower_num,
+            'borrower_photo' => $this->borrowerPhoto(),
             'borrower' => $this->borrower,
             'account_officer' => $this->accountOfficer,
             'center' => $this->center,

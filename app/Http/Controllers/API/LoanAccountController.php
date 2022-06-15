@@ -145,6 +145,17 @@ class LoanAccountController extends BaseController
         return $this->sendResponse(($amortization->storeAmortizationSched($account)), 'Amortization Schedule Created');
     }
 
+    public function getPromissoryNo(Request $request) {
+
+        $branch = Branch::find(1);
+        $product = Product::find($request->input('product_id'));
+
+        $document = new Document();
+
+        return $document->getPromissoryNo($branch->branch_code, $product->product_code);
+
+    }
+
     // // end of day transaction
     // public function setDelinquent(){
 
