@@ -290,7 +290,7 @@
 												<b class="text-center text-block" style="line-height:.1">Account No.: {{loanDetails.documents.account_no}}</b>
 											</div>
 										</div>
-										<p>That the ASSIGNOR hereby gives the full power to the ASSIGNEE the authority to take/withdraw and deduct in full the monthly amortization of <span class="allcaps">{{numToWords(formatToAmount(amortAmount))}}</span> <span>(P{{amortAmount}})</span> until the full settlement of the terms and conditions stated in the Promissory note. </p>
+										<p>That the ASSIGNOR hereby gives the full power to the ASSIGNEE the authority to take/withdraw and deduct in full the monthly amortization of <span class="allcaps">{{numToWords(Math.ceil(amortAmountSingle))}}</span> <span>(P{{formatToCurrency(amortAmountSingle)}})</span> until the full settlement of the terms and conditions stated in the Promissory note. </p>
 
 										<p>
 											IN WITNESS WHEREOF, the parties hereto have hereunto set their hands this <b>{{nthDay(this.dateToD(new Date))}}</b> day of <b class="allcaps">{{this.dateToFullMonth(new Date)}}  {{this.dateToY(new Date)}}</b> at Butuan City, Philippines.
@@ -752,8 +752,17 @@
 										<div class="d-flex flex-row align-items-center">
 											<div class="flex-1"></div>
 											<div class="d-flex flex-column flex-2 font-md">
-												<div class="d-flex flex-row flex-1 justify-content-between pr-24">
-													<span class="">Co-Maker Signature</span>
+												<div class="d-flex">
+													<span class="mr-5">{{loanDetails.co_maker_name}} </span>
+													<span></span>
+												</div>
+												<div class="d-flex">
+													<span class="mr-5">Co-Maker Signature</span>
+													<span></span>
+												</div>
+												<div class="d-flex">
+													<span class="mr-5">Address : </span>
+													<span>{{loanDetails.co_maker_address}}</span>
 												</div>
 											</div>
 											<div class="d-flex flex-row flex-2 font-md justify-content-end">
@@ -1078,7 +1087,7 @@
 					total_deduction : 0.00,
 					net_proceeds : 0.00,
 					release_type : '',
-					interest_rate:'',
+					interest_rate:null,
 					interest_amount:'',
 					documents: {
 						date_release: this.dateToYMD(new Date),
@@ -1210,7 +1219,29 @@
 			},
 			totalPayable:function(){
 				return this.totalPrincipal + this.totalInterest;
-			}
+			},
+			amortAmountSingle:function(){
+				return ((parseInt(this.loanDetails.loan_amount) + parseInt(this.loanDetails.interest_amount)) / parseInt(this.numberOfInstallment)).toFixed(1);
+			},
+			numberOfInstallment:function(){
+				let mode = this.loanDetails.terms;
+				let result = 0;
+				if(this.loanDetails.payment_mode == 'Monthly'){
+					mode = 30;
+					result = Math.ceil((this.loanDetails.terms / mode))
+				}else if(this.loanDetails.payment_mode == 'Bi-Monthly'){
+					mode = 15;
+					result = Math.ceil((this.loanDetails.terms / mode))
+				}else if(this.loanDetails.payment_mode == 'Weekly'){
+					mode = 30;
+					result = Math.ceil((this.loanDetails.terms / mode)*4);
+				}else{
+					mode = this.loanDetails.terms
+					result = Math.ceil((this.loanDetails.terms / mode))
+				}
+				this.loanDetails.no_of_installment = result;
+				return result;
+			},
 		},
 		watch:{
 			'loanDetails.loan_account_id':function(newValue){

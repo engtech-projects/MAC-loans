@@ -5643,7 +5643,7 @@ __webpack_require__.r(__webpack_exports__);
     login: function login() {
       axios.post(window.location.origin + '/api/login', this.data.credentials).then(function (response) {
         this.data.token = response.data.data.token;
-        this.makeAuth();
+        window.location.replace(window.location.origin + '/dashboard'); // this.makeAuth();
       }.bind(this))["catch"](function (error) {
         console.log(error);
       }.bind(this));
@@ -15480,6 +15480,9 @@ __webpack_require__.r(__webpack_exports__);
     netProceeds: function netProceeds() {
       this.loanDetails.net_proceeds = parseFloat(this.loanDetails.loan_amount) - parseFloat(this.loanDetails.total_deduction);
       return this.loanDetails.net_proceeds;
+    },
+    amortAmount: function amortAmount() {
+      (this.loanDetails.loan_amount + this.interestAmount) / this.numberOfInstallment;
     }
   },
   mounted: function mounted() {
@@ -17230,7 +17233,7 @@ __webpack_require__.r(__webpack_exports__);
         axios.post(window.location.origin + '/api/borrower', this.borrower, {
           headers: {
             'Authorization': 'Bearer ' + this.token,
-            'Content-Type': 'application/json',
+            'Content-Type': 'aMpplication/json',
             'Accept': 'application/json'
           }
         }).then(function (response) {
@@ -17660,6 +17663,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: ['token', 'loandetails', 'borrower', 'borrowerbday', 'saveloandetails', 'idtype'],
   data: function data() {
@@ -17669,6 +17678,9 @@ __webpack_require__.r(__webpack_exports__);
       accountOfficers: [],
       centers: [],
       memoChecked: false,
+      currentProduct: {
+        product_name: null
+      },
       loanDetails: {
         cycle_no: 1,
         ao_id: '',
@@ -17801,6 +17813,7 @@ __webpack_require__.r(__webpack_exports__);
       this.products.map(function (product) {
         if (product.product_id == this.loanDetails.product_id) {
           this.loanDetails.interest_rate = product.interest_rate;
+          this.currentProduct = product;
         }
       }.bind(this));
     },
@@ -17836,8 +17849,15 @@ __webpack_require__.r(__webpack_exports__);
 
   },
   computed: {
+    productEnable: function productEnable() {
+      if (this.currentProduct.product_name == 'Micro Group' || this.currentProduct.product_name == 'Micro Individual') {
+        return true;
+      }
+
+      return false;
+    },
     interestRate: function interestRate() {
-      if (this.loanDetails.product_id != '') {
+      if (this.loanDetails.product_id != '' && !this.loanDetails.interest_rate) {
         for (var i in this.products) {
           if (this.products[i].product_id === this.loanDetails.product_id) {
             return this.products[i].interest_rate;
@@ -17845,7 +17865,7 @@ __webpack_require__.r(__webpack_exports__);
         }
       }
 
-      return '';
+      return this.loanDetails.interest_rate;
     },
     idType: function idType() {
       return JSON.parse(this.idtype);
@@ -17909,6 +17929,7 @@ __webpack_require__.r(__webpack_exports__);
     this.fetchAo();
     this.fetchCenters();
     this.loanDetails = this.loandetails;
+    this.setInterestRate();
   }
 });
 
@@ -17925,6 +17946,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -18998,7 +19028,7 @@ __webpack_require__.r(__webpack_exports__);
         total_deduction: 0.00,
         net_proceeds: 0.00,
         release_type: '',
-        interest_rate: '',
+        interest_rate: null,
         interest_amount: '',
         documents: {
           date_release: this.dateToYMD(new Date()),
@@ -19130,6 +19160,30 @@ __webpack_require__.r(__webpack_exports__);
     },
     totalPayable: function totalPayable() {
       return this.totalPrincipal + this.totalInterest;
+    },
+    amortAmountSingle: function amortAmountSingle() {
+      return ((parseInt(this.loanDetails.loan_amount) + parseInt(this.loanDetails.interest_amount)) / parseInt(this.numberOfInstallment)).toFixed(1);
+    },
+    numberOfInstallment: function numberOfInstallment() {
+      var mode = this.loanDetails.terms;
+      var result = 0;
+
+      if (this.loanDetails.payment_mode == 'Monthly') {
+        mode = 30;
+        result = Math.ceil(this.loanDetails.terms / mode);
+      } else if (this.loanDetails.payment_mode == 'Bi-Monthly') {
+        mode = 15;
+        result = Math.ceil(this.loanDetails.terms / mode);
+      } else if (this.loanDetails.payment_mode == 'Weekly') {
+        mode = 30;
+        result = Math.ceil(this.loanDetails.terms / mode * 4);
+      } else {
+        mode = this.loanDetails.terms;
+        result = Math.ceil(this.loanDetails.terms / mode);
+      }
+
+      this.loanDetails.no_of_installment = result;
+      return result;
     }
   },
   watch: {
@@ -76498,56 +76552,92 @@ var render = function () {
                       [_vm._v("Center")]
                     ),
                     _vm._v(" "),
-                    _c(
-                      "select",
-                      {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.loanDetails.center_id,
-                            expression: "loanDetails.center_id",
+                    !_vm.productEnable
+                      ? _c("select", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.loanDetails.center_id,
+                              expression: "loanDetails.center_id",
+                            },
+                          ],
+                          staticClass: "form-control form-input ",
+                          attrs: {
+                            disabled: "",
+                            required: "",
+                            name: "",
+                            id: "",
                           },
-                        ],
-                        staticClass: "form-control form-input ",
-                        attrs: {
-                          disabled: !_vm.loanDetails.product_id,
-                          required: "",
-                          name: "",
-                          id: "",
-                        },
-                        on: {
-                          change: function ($event) {
-                            var $$selectedVal = Array.prototype.filter
-                              .call($event.target.options, function (o) {
-                                return o.selected
-                              })
-                              .map(function (o) {
-                                var val = "_value" in o ? o._value : o.value
-                                return val
-                              })
-                            _vm.$set(
-                              _vm.loanDetails,
-                              "center_id",
-                              $event.target.multiple
-                                ? $$selectedVal
-                                : $$selectedVal[0]
+                          on: {
+                            change: function ($event) {
+                              var $$selectedVal = Array.prototype.filter
+                                .call($event.target.options, function (o) {
+                                  return o.selected
+                                })
+                                .map(function (o) {
+                                  var val = "_value" in o ? o._value : o.value
+                                  return val
+                                })
+                              _vm.$set(
+                                _vm.loanDetails,
+                                "center_id",
+                                $event.target.multiple
+                                  ? $$selectedVal
+                                  : $$selectedVal[0]
+                              )
+                            },
+                          },
+                        })
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _vm.productEnable
+                      ? _c(
+                          "select",
+                          {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.loanDetails.center_id,
+                                expression: "loanDetails.center_id",
+                              },
+                            ],
+                            staticClass: "form-control form-input ",
+                            attrs: { required: "", name: "", id: "" },
+                            on: {
+                              change: function ($event) {
+                                var $$selectedVal = Array.prototype.filter
+                                  .call($event.target.options, function (o) {
+                                    return o.selected
+                                  })
+                                  .map(function (o) {
+                                    var val = "_value" in o ? o._value : o.value
+                                    return val
+                                  })
+                                _vm.$set(
+                                  _vm.loanDetails,
+                                  "center_id",
+                                  $event.target.multiple
+                                    ? $$selectedVal
+                                    : $$selectedVal[0]
+                                )
+                              },
+                            },
+                          },
+                          _vm._l(_vm.centers, function (center) {
+                            return _c(
+                              "option",
+                              {
+                                key: center.center_id,
+                                domProps: { value: center.center_id },
+                              },
+                              [_vm._v(_vm._s(center.center))]
                             )
-                          },
-                        },
-                      },
-                      _vm._l(_vm.centers, function (center) {
-                        return _c(
-                          "option",
-                          {
-                            key: center.center_id,
-                            domProps: { value: center.center_id },
-                          },
-                          [_vm._v(_vm._s(center.center))]
+                          }),
+                          0
                         )
-                      }),
-                      0
-                    ),
+                      : _vm._e(),
                   ]
                 ),
                 _vm._v(" "),
@@ -76780,69 +76870,102 @@ var render = function () {
                         [_vm._v("Day Schedule")]
                       ),
                       _vm._v(" "),
-                      _c(
-                        "select",
-                        {
-                          directives: [
+                      !_vm.productEnable
+                        ? _c("select", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.loanDetails.day_schedule,
+                                expression: "loanDetails.day_schedule",
+                              },
+                            ],
+                            staticClass: "form-control form-input ",
+                            attrs: { disabled: "", required: "", id: "type" },
+                            on: {
+                              change: function ($event) {
+                                var $$selectedVal = Array.prototype.filter
+                                  .call($event.target.options, function (o) {
+                                    return o.selected
+                                  })
+                                  .map(function (o) {
+                                    var val = "_value" in o ? o._value : o.value
+                                    return val
+                                  })
+                                _vm.$set(
+                                  _vm.loanDetails,
+                                  "day_schedule",
+                                  $event.target.multiple
+                                    ? $$selectedVal
+                                    : $$selectedVal[0]
+                                )
+                              },
+                            },
+                          })
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _vm.productEnable
+                        ? _c(
+                            "select",
                             {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.loanDetails.day_schedule,
-                              expression: "loanDetails.day_schedule",
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.loanDetails.day_schedule,
+                                  expression: "loanDetails.day_schedule",
+                                },
+                              ],
+                              staticClass: "form-control form-input ",
+                              attrs: { required: "", id: "type" },
+                              on: {
+                                change: function ($event) {
+                                  var $$selectedVal = Array.prototype.filter
+                                    .call($event.target.options, function (o) {
+                                      return o.selected
+                                    })
+                                    .map(function (o) {
+                                      var val =
+                                        "_value" in o ? o._value : o.value
+                                      return val
+                                    })
+                                  _vm.$set(
+                                    _vm.loanDetails,
+                                    "day_schedule",
+                                    $event.target.multiple
+                                      ? $$selectedVal
+                                      : $$selectedVal[0]
+                                  )
+                                },
+                              },
                             },
-                          ],
-                          staticClass: "form-control form-input ",
-                          attrs: {
-                            disabled: !_vm.loanDetails.product_id,
-                            required: "",
-                            id: "type",
-                          },
-                          on: {
-                            change: function ($event) {
-                              var $$selectedVal = Array.prototype.filter
-                                .call($event.target.options, function (o) {
-                                  return o.selected
-                                })
-                                .map(function (o) {
-                                  var val = "_value" in o ? o._value : o.value
-                                  return val
-                                })
-                              _vm.$set(
-                                _vm.loanDetails,
-                                "day_schedule",
-                                $event.target.multiple
-                                  ? $$selectedVal
-                                  : $$selectedVal[0]
-                              )
-                            },
-                          },
-                        },
-                        [
-                          _c("option", { attrs: { value: "daily" } }, [
-                            _vm._v("Daily"),
-                          ]),
-                          _vm._v(" "),
-                          _c("option", { attrs: { value: "monday" } }, [
-                            _vm._v("Monday"),
-                          ]),
-                          _vm._v(" "),
-                          _c("option", { attrs: { value: "tuesday" } }, [
-                            _vm._v("Tuesday"),
-                          ]),
-                          _vm._v(" "),
-                          _c("option", { attrs: { value: "wednesday" } }, [
-                            _vm._v("Wednesday"),
-                          ]),
-                          _vm._v(" "),
-                          _c("option", { attrs: { value: "thursday" } }, [
-                            _vm._v("Thursday"),
-                          ]),
-                          _vm._v(" "),
-                          _c("option", { attrs: { value: "friday" } }, [
-                            _vm._v("Friday"),
-                          ]),
-                        ]
-                      ),
+                            [
+                              _c("option", { attrs: { value: "daily" } }, [
+                                _vm._v("Daily"),
+                              ]),
+                              _vm._v(" "),
+                              _c("option", { attrs: { value: "monday" } }, [
+                                _vm._v("Monday"),
+                              ]),
+                              _vm._v(" "),
+                              _c("option", { attrs: { value: "tuesday" } }, [
+                                _vm._v("Tuesday"),
+                              ]),
+                              _vm._v(" "),
+                              _c("option", { attrs: { value: "wednesday" } }, [
+                                _vm._v("Wednesday"),
+                              ]),
+                              _vm._v(" "),
+                              _c("option", { attrs: { value: "thursday" } }, [
+                                _vm._v("Thursday"),
+                              ]),
+                              _vm._v(" "),
+                              _c("option", { attrs: { value: "friday" } }, [
+                                _vm._v("Friday"),
+                              ]),
+                            ]
+                          )
+                        : _vm._e(),
                     ]
                   ),
                   _vm._v(" "),
@@ -76868,9 +76991,29 @@ var render = function () {
                     ),
                     _vm._v(" "),
                     _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.loanDetails.interest_rate,
+                          expression: "loanDetails.interest_rate",
+                        },
+                      ],
                       staticClass: "form-control form-input ",
                       attrs: { required: "", type: "text", id: "interestRate" },
-                      domProps: { value: _vm.interestRate + "%" },
+                      domProps: { value: _vm.loanDetails.interest_rate },
+                      on: {
+                        input: function ($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.loanDetails,
+                            "interest_rate",
+                            $event.target.value
+                          )
+                        },
+                      },
                     }),
                   ]
                 ),
@@ -78909,8 +79052,8 @@ var render = function () {
                                               _vm._v(
                                                 _vm._s(
                                                   _vm.numToWords(
-                                                    _vm.formatToAmount(
-                                                      _vm.amortAmount
+                                                    Math.ceil(
+                                                      _vm.amortAmountSingle
                                                     )
                                                   )
                                                 )
@@ -78921,7 +79064,11 @@ var render = function () {
                                           _c("span", [
                                             _vm._v(
                                               "(P" +
-                                                _vm._s(_vm.amortAmount) +
+                                                _vm._s(
+                                                  _vm.formatToCurrency(
+                                                    _vm.amortAmountSingle
+                                                  )
+                                                ) +
                                                 ")"
                                             ),
                                           ]),
@@ -80652,7 +80799,58 @@ var render = function () {
                                               staticClass: "flex-1",
                                             }),
                                             _vm._v(" "),
-                                            _vm._m(44),
+                                            _c(
+                                              "div",
+                                              {
+                                                staticClass:
+                                                  "d-flex flex-column flex-2 font-md",
+                                              },
+                                              [
+                                                _c(
+                                                  "div",
+                                                  { staticClass: "d-flex" },
+                                                  [
+                                                    _c(
+                                                      "span",
+                                                      { staticClass: "mr-5" },
+                                                      [
+                                                        _vm._v(
+                                                          _vm._s(
+                                                            _vm.loanDetails
+                                                              .co_maker_name
+                                                          ) + " "
+                                                        ),
+                                                      ]
+                                                    ),
+                                                    _vm._v(" "),
+                                                    _c("span"),
+                                                  ]
+                                                ),
+                                                _vm._v(" "),
+                                                _vm._m(44),
+                                                _vm._v(" "),
+                                                _c(
+                                                  "div",
+                                                  { staticClass: "d-flex" },
+                                                  [
+                                                    _c(
+                                                      "span",
+                                                      { staticClass: "mr-5" },
+                                                      [_vm._v("Address : ")]
+                                                    ),
+                                                    _vm._v(" "),
+                                                    _c("span", [
+                                                      _vm._v(
+                                                        _vm._s(
+                                                          _vm.loanDetails
+                                                            .co_maker_address
+                                                        )
+                                                      ),
+                                                    ]),
+                                                  ]
+                                                ),
+                                              ]
+                                            ),
                                             _vm._v(" "),
                                             _c(
                                               "div",
@@ -81882,12 +82080,10 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "d-flex flex-column flex-2 font-md" }, [
-      _c(
-        "div",
-        { staticClass: "d-flex flex-row flex-1 justify-content-between pr-24" },
-        [_c("span", {}, [_vm._v("Co-Maker Signature")])]
-      ),
+    return _c("div", { staticClass: "d-flex" }, [
+      _c("span", { staticClass: "mr-5" }, [_vm._v("Co-Maker Signature")]),
+      _vm._v(" "),
+      _c("span"),
     ])
   },
   function () {
