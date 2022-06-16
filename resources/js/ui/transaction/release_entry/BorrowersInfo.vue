@@ -527,9 +527,9 @@
 					axios.post(window.location.origin + '/api/borrower', this.borrower, {
 						headers: {
 							'Authorization': 'Bearer ' + this.token,
-							'Content-Type': 'application/json',
+							'Content-Type': 'aMpplication/json',
 							'Accept': 'application/json'
-						}
+						} 
 					})
 					.then(function (response) {
 						this.notify('',response.data.message, 'success');

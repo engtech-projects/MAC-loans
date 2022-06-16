@@ -429,6 +429,9 @@ export default {
 		netProceeds:function(){
 			this.loanDetails.net_proceeds = (parseFloat(this.loanDetails.loan_amount) - parseFloat(this.loanDetails.total_deduction));
 			return this.loanDetails.net_proceeds;
+		},
+		amortAmount:function(){
+			(this.loanDetails.loan_amount + this.interestAmount) / this.numberOfInstallment;
 		}
 	},
 	mounted(){

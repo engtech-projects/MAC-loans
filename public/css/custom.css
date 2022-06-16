@@ -181,6 +181,10 @@
 	background-color: #ffcc99;
 }
 
+.bg-very-light {
+	background-color: #f2f2f2;
+}
+
 .text-white {
 	color: #FFF;
 }
@@ -507,6 +511,10 @@
 
 .dark-bb {
 	border-bottom: 2px solid #aaa!important;
+}
+
+.dark-bt {
+	border-top: 2px solid #aaa!important;
 }
 
 .br-dark {
@@ -1275,6 +1283,9 @@
 	.no-print {
 		display: none!important;
 	}
+	.modal-backdrop {
+		background-color: transparent!important;
+	 }
 }
 
 @media (max-width: 576px) {  

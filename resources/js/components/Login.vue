@@ -64,7 +64,8 @@ export default {
 			axios.post(window.location.origin + '/api/login', this.data.credentials)
 			.then(function (response) {
 				this.data.token = response.data.data.token;
-				this.makeAuth();
+				window.location.replace(window.location.origin + '/dashboard');
+				// this.makeAuth();
 			}.bind(this))
 			.catch(function (error) {
 				console.log(error);

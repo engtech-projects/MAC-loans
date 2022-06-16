@@ -36,7 +36,10 @@
 			<div class="d-flex flex-row">
 				<div class="form-group mb-10 mr-16" style="flex:7">
 					<label for="center" class="form-label">Center</label>
-					<select :disabled="!loanDetails.product_id" required v-model="loanDetails.center_id" name="" id="" class="form-control form-input ">
+					<select v-if="!productEnable" disabled required v-model="loanDetails.center_id" name="" id="" class="form-control form-input ">
+						<!-- <option v-for="center in centers" :key="center.center_id" :value="center.center_id">{{center.center}}</option> -->
+					</select>
+					<select v-if="productEnable" required v-model="loanDetails.center_id" name="" id="" class="form-control form-input ">
 						<option v-for="center in centers" :key="center.center_id" :value="center.center_id">{{center.center}}</option>
 					</select>
 				</div>
@@ -68,7 +71,10 @@
 				</div>
 				<div class="form-group mb-10 mr-16" style="flex:5">
 					<label for="type" class="form-label">Day Schedule</label>
-					<select :disabled="!loanDetails.product_id" required v-model="loanDetails.day_schedule" class="form-control form-input " id="type">
+					<select v-if="!productEnable" disabled required v-model="loanDetails.day_schedule" class="form-control form-input " id="type">
+						
+					</select>
+					<select v-if="productEnable" required v-model="loanDetails.day_schedule" class="form-control form-input " id="type">
 						<option value="daily">Daily</option>
 						<option value="monday">Monday</option>
 						<option value="tuesday">Tuesday</option>
@@ -83,7 +89,7 @@
 			<div class="d-flex flex-row">
 				<div class="form-group mb-10 mr-16" style="flex:6">
 					<label for="interestRate" class="form-label">Interest Rate</label>
-					<input required :value="interestRate + '%'" type="text" class="form-control form-input " id="interestRate">
+					<input required v-model="loanDetails.interest_rate" type="text" class="form-control form-input " id="interestRate">
 				</div>
 				<div class="form-group mb-10 mr-16" style="flex:6">
 					<label for="interestAmount" class="form-label">Interest Amount</label>
@@ -246,6 +252,9 @@ export default {
 			accountOfficers:[],
 			centers:[],
 			memoChecked:false,
+			currentProduct:{
+				product_name:null,
+			},
 			loanDetails: {
 				cycle_no : 1,
 				ao_id : '',
@@ -389,6 +398,7 @@ export default {
 			this.products.map(function(product){
 				if(product.product_id == this.loanDetails.product_id){
 					this.loanDetails.interest_rate = product.interest_rate;
+					this.currentProduct = product;
 				}
 			}.bind(this));
 		},
@@ -418,9 +428,7 @@ export default {
 			// }
 		},
 		'loanDetails.center_id'(newValue){
-			if(newValue){
-				console.log(newValue);
-			}
+			
 		}
 		// 'saveloandetails'(newValue) {
 		// 	if(newValue){
@@ -429,15 +437,21 @@ export default {
 		// },
 	},
 	computed: {
+		productEnable:function(){
+			if(this.currentProduct.product_name == 'Micro Group' || this.currentProduct.product_name == 'Micro Individual'){
+				return true;
+			}
+			return false;
+		},
 		interestRate:function(){
-			if(this.loanDetails.product_id != ''){
+			if(this.loanDetails.product_id != '' && !this.loanDetails.interest_rate){
 				for(let i in this.products){
 					if(this.products[i].product_id === this.loanDetails.product_id){
 						return this.products[i].interest_rate;
 					}
 				}
 			}
-			return '';
+			return this.loanDetails.interest_rate;
 		},
 		idType:function(){
 			return JSON.parse(this.idtype);
@@ -495,6 +509,7 @@ export default {
 		this.fetchAo();
 		this.fetchCenters();
 		this.loanDetails = this.loandetails;
+		this.setInterestRate();
 	}
 }
 </script>
