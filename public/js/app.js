@@ -67971,7 +67971,7 @@ var render = function () {
                           }),
                         ]),
                         _vm._v(" "),
-                        _c("td", [_vm._v(_vm._s(b.borrower.borrower_num))]),
+                        _c("td", [_vm._v(_vm._s(b.account_num))]),
                         _vm._v(" "),
                         _c("td", [
                           _c("a", { attrs: { href: "#" } }, [
@@ -68412,7 +68412,19 @@ var render = function () {
             ]
           ),
           _vm._v(" "),
-          _vm._m(0),
+          _c(
+            "div",
+            {
+              staticClass: "upload-photo d-flex flex-column",
+              staticStyle: { flex: "4", "padding-top": "36px" },
+            },
+            [
+              _c("img", {
+                staticStyle: { "max-width": "250px" },
+                attrs: { src: _vm.loanaccount.borrower_photo, alt: "" },
+              }),
+            ]
+          ),
         ]),
         _vm._v(" "),
         _c("div", { staticClass: "sep mb-24" }),
@@ -68440,7 +68452,7 @@ var render = function () {
                 ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "d-flex flex-row mb-12" }, [
-                  _vm._m(1),
+                  _vm._m(0),
                   _vm._v(" "),
                   _c("span", { staticClass: "flex-1 text-primary-dark" }, [
                     _vm._v(_vm._s(_vm.loanaccount.filing_fee)),
@@ -68448,7 +68460,7 @@ var render = function () {
                 ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "d-flex flex-row mb-12" }, [
-                  _vm._m(2),
+                  _vm._m(1),
                   _vm._v(" "),
                   _c("span", { staticClass: "flex-1 text-primary-dark" }, [
                     _vm._v(_vm._s(_vm.loanaccount.document_stamp)),
@@ -68456,7 +68468,7 @@ var render = function () {
                 ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "d-flex flex-row mb-12" }, [
-                  _vm._m(3),
+                  _vm._m(2),
                   _vm._v(" "),
                   _c("span", { staticClass: "flex-1 text-primary-dark" }, [
                     _vm._v(_vm._s(_vm.loanaccount.insurance)),
@@ -68464,7 +68476,7 @@ var render = function () {
                 ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "d-flex flex-row mb-12" }, [
-                  _vm._m(4),
+                  _vm._m(3),
                   _vm._v(" "),
                   _c("span", { staticClass: "flex-1 text-primary-dark" }, [
                     _vm._v(_vm._s(_vm.loanaccount.notarial_fee)),
@@ -68472,7 +68484,7 @@ var render = function () {
                 ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "d-flex flex-row mb-12" }, [
-                  _vm._m(5),
+                  _vm._m(4),
                   _vm._v(" "),
                   _c("span", { staticClass: "flex-1 text-primary-dark" }, [
                     _vm._v(_vm._s(_vm.loanaccount.prepaid_interest)),
@@ -68480,7 +68492,7 @@ var render = function () {
                 ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "d-flex flex-row mb-12" }, [
-                  _vm._m(6),
+                  _vm._m(5),
                   _vm._v(" "),
                   _c("span", { staticClass: "flex-1 text-primary-dark" }, [
                     _vm._v(_vm._s(_vm.loanaccount.memo)),
@@ -68488,7 +68500,7 @@ var render = function () {
                 ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "d-flex flex-row mb-12" }, [
-                  _vm._m(7),
+                  _vm._m(6),
                   _vm._v(" "),
                   _c("span", { staticClass: "flex-1 text-primary-dark" }, [
                     _vm._v(_vm._s(_vm.loanaccount.net_proceeds)),
@@ -68496,7 +68508,7 @@ var render = function () {
                 ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "d-flex flex-row mb-12" }, [
-                  _vm._m(8),
+                  _vm._m(7),
                   _vm._v(" "),
                   _c("span", { staticClass: "flex-1 text-primary-dark" }, [
                     _vm._v(_vm._s(_vm.loanaccount.release_type)),
@@ -68510,7 +68522,7 @@ var render = function () {
                 ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "d-flex flex-row mb-12" }, [
-                  _vm._m(9),
+                  _vm._m(8),
                   _vm._v(" "),
                   _c("span", { staticClass: "flex-1 text-primary-dark" }, [
                     _vm._v(_vm._s(_vm.loanaccount.loan_amount)),
@@ -68518,10 +68530,18 @@ var render = function () {
                 ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "d-flex flex-row mb-12" }, [
+                  _vm._m(9),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "flex-1 text-primary-dark" }, [
+                    _vm._v(_vm._s(_vm.loanaccount.interest_amount)),
+                  ]),
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "d-flex flex-row mb-12" }, [
                   _vm._m(10),
                   _vm._v(" "),
                   _c("span", { staticClass: "flex-1 text-primary-dark" }, [
-                    _vm._v(_vm._s(_vm.loanaccount.filing_fee)),
+                    _vm._v(_vm._s(_vm.loanaccount.terms) + " Days"),
                   ]),
                 ]),
                 _vm._v(" "),
@@ -68529,14 +68549,12 @@ var render = function () {
                   _vm._m(11),
                   _vm._v(" "),
                   _c("span", { staticClass: "flex-1 text-primary-dark" }, [
-                    _vm._v(_vm._s(_vm.loanaccount.terms) + " Days"),
+                    _vm._v(_vm._s(_vm.loanaccount.interest_rate) + "%"),
                   ]),
                 ]),
                 _vm._v(" "),
-                _vm._m(12),
-                _vm._v(" "),
                 _c("div", { staticClass: "d-flex flex-row mb-12" }, [
-                  _vm._m(13),
+                  _vm._m(12),
                   _vm._v(" "),
                   _c("span", { staticClass: "flex-1 text-primary-dark" }, [
                     _vm._v(_vm._s(_vm.loanaccount.type)),
@@ -68544,7 +68562,7 @@ var render = function () {
                 ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "d-flex flex-row mb-12" }, [
-                  _vm._m(14),
+                  _vm._m(13),
                   _vm._v(" "),
                   _c("span", { staticClass: "flex-1 text-primary-dark" }, [
                     _vm._v(_vm._s(_vm.loanaccount.payment_mode)),
@@ -68552,7 +68570,7 @@ var render = function () {
                 ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "d-flex flex-row mb-12" }, [
-                  _vm._m(15),
+                  _vm._m(14),
                   _vm._v(" "),
                   _c("span", { staticClass: "flex-1 text-primary-dark" }, [
                     _vm._v(_vm._s(_vm.loanaccount.product.product_name)),
@@ -68560,7 +68578,7 @@ var render = function () {
                 ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "d-flex flex-row mb-12" }, [
-                  _vm._m(16),
+                  _vm._m(15),
                   _vm._v(" "),
                   _c("span", { staticClass: "flex-1 text-primary-dark" }, [
                     _vm._v(
@@ -68793,7 +68811,7 @@ var render = function () {
                               ]),
                             ]),
                             _vm._v(" "),
-                            _vm._m(17),
+                            _vm._m(16),
                             _vm._v(" "),
                             _c("div", { staticClass: "d-flex mb-7" }, [
                               _c("span", { staticClass: "mr-5" }, [
@@ -68866,7 +68884,21 @@ var render = function () {
                               ),
                             ]),
                             _vm._v(" "),
-                            _vm._m(18),
+                            _c("div", { staticClass: "d-flex mb-7" }, [
+                              _c("span", { staticClass: "mr-5" }, [
+                                _vm._v("A/O: "),
+                              ]),
+                              _vm._v(" "),
+                              _c("span", {}, [
+                                _vm._v(
+                                  _vm._s(
+                                    _vm.loanaccount.account_officer.ao_id
+                                  ) +
+                                    " - " +
+                                    _vm._s(_vm.loanaccount.account_officer.name)
+                                ),
+                              ]),
+                            ]),
                             _vm._v(" "),
                             _c("div", { staticClass: "d-flex mb-7" }, [
                               _c("span", { staticClass: "mr-5" }, [
@@ -68888,15 +68920,25 @@ var render = function () {
                             _vm._v(" "),
                             _c("div", { staticClass: "d-flex mb-7" }, [
                               _c("span", { staticClass: "mr-5" }, [
-                                _vm._v("Interest: "),
+                                _vm._v("Interest Amount: "),
                               ]),
                               _vm._v(" "),
                               _c("span", {}, [
-                                _vm._v(_vm._s(_vm.loanInterest)),
+                                _vm._v(_vm._s(_vm.loanaccount.interest_amount)),
                               ]),
                             ]),
                             _vm._v(" "),
-                            _vm._m(19),
+                            _c("div", { staticClass: "d-flex mb-7" }, [
+                              _c("span", { staticClass: "mr-5" }, [
+                                _vm._v("Int. Rate: "),
+                              ]),
+                              _vm._v(" "),
+                              _c("span", {}, [
+                                _vm._v(
+                                  _vm._s(_vm.loanaccount.interest_rate) + "%"
+                                ),
+                              ]),
+                            ]),
                             _vm._v(" "),
                             _c("div", { staticClass: "d-flex mb-7" }, [
                               _c("span", { staticClass: "mr-5" }, [
@@ -68924,7 +68966,15 @@ var render = function () {
                               ]),
                             ]),
                             _vm._v(" "),
-                            _vm._m(20),
+                            _c("div", { staticClass: "d-flex mb-7" }, [
+                              _c("span", { staticClass: "mr-5" }, [
+                                _vm._v("ID #: "),
+                              ]),
+                              _vm._v(" "),
+                              _c("span", {}, [
+                                _vm._v(_vm._s(_vm.loanaccount.borrower.id_no)),
+                              ]),
+                            ]),
                           ]
                         ),
                       ]),
@@ -68947,7 +68997,7 @@ var render = function () {
                               "table",
                               { staticClass: "table th-nbt table-thin" },
                               [
-                                _vm._m(21),
+                                _vm._m(17),
                                 _vm._v(" "),
                                 _c(
                                   "tbody",
@@ -69105,9 +69155,9 @@ var render = function () {
                     ]),
                     _vm._v(" "),
                     _c("div", { staticClass: "d-flex flex-row" }, [
-                      _vm._m(22),
+                      _vm._m(18),
                       _vm._v(" "),
-                      _vm._m(23),
+                      _vm._m(19),
                       _vm._v(" "),
                       _c(
                         "div",
@@ -69332,7 +69382,7 @@ var render = function () {
                           staticStyle: { "border-top": "7px solid #999" },
                         },
                         [
-                          _vm._m(24),
+                          _vm._m(20),
                           _vm._v(" "),
                           _c(
                             "tbody",
@@ -69388,7 +69438,7 @@ var render = function () {
                               { staticClass: "flex-1 d-flex flex-column" },
                               [
                                 _c("div", { staticClass: "d-flex flex-row" }, [
-                                  _vm._m(25),
+                                  _vm._m(21),
                                   _vm._v(" "),
                                   _c("span", { staticClass: "flex-1" }, [
                                     _vm._v(
@@ -69400,7 +69450,7 @@ var render = function () {
                                 ]),
                                 _vm._v(" "),
                                 _c("div", { staticClass: "d-flex flex-row" }, [
-                                  _vm._m(26),
+                                  _vm._m(22),
                                   _vm._v(" "),
                                   _c("span", { staticClass: "flex-1" }, [
                                     _vm._v(
@@ -69418,7 +69468,7 @@ var render = function () {
                                       "d-flex flex-row bb-dark-5 pb-7",
                                   },
                                   [
-                                    _vm._m(27),
+                                    _vm._m(23),
                                     _vm._v(" "),
                                     _c("span", { staticClass: "flex-1" }, [
                                       _vm._v(
@@ -69437,7 +69487,7 @@ var render = function () {
                                       "d-flex flex-row align-items-center",
                                   },
                                   [
-                                    _vm._m(28),
+                                    _vm._m(24),
                                     _vm._v(" "),
                                     _c(
                                       "span",
@@ -69466,7 +69516,7 @@ var render = function () {
                     _c("div", { staticClass: "flex-3" }),
                   ]),
                   _vm._v(" "),
-                  _vm._m(29),
+                  _vm._m(25),
                 ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "d-flex flex-row-reverse" }, [
@@ -69533,7 +69583,7 @@ var render = function () {
                     staticStyle: { "min-height": "200px", padding: "16px" },
                   },
                   [
-                    _vm._m(30),
+                    _vm._m(26),
                     _vm._v(" "),
                     _c("div", { staticClass: "d-flex flex-row" }, [
                       _c("div", { staticStyle: { flex: "2" } }),
@@ -69612,17 +69662,17 @@ var render = function () {
                       staticStyle: { padding: "0 50px" },
                     },
                     [
-                      _vm._m(31),
+                      _vm._m(27),
                       _vm._v(" "),
-                      _vm._m(32),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "sep-dark mb-16" }),
-                      _vm._v(" "),
-                      _vm._m(33),
+                      _vm._m(28),
                       _vm._v(" "),
                       _c("div", { staticClass: "sep-dark mb-16" }),
                       _vm._v(" "),
-                      _vm._m(34),
+                      _vm._m(29),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "sep-dark mb-16" }),
+                      _vm._v(" "),
+                      _vm._m(30),
                       _vm._v(" "),
                       _c("div", { staticClass: "mb-72" }),
                       _vm._v(" "),
@@ -69682,19 +69732,6 @@ var render = function () {
   ])
 }
 var staticRenderFns = [
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      {
-        staticClass: "upload-photo d-flex flex-column",
-        staticStyle: { flex: "4", "padding-top": "36px" },
-      },
-      [_c("img", { attrs: { src: "/img/user.png", alt: "" } })]
-    )
-  },
   function () {
     var _vm = this
     var _h = _vm.$createElement
@@ -69849,19 +69886,11 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "d-flex flex-row mb-12" }, [
-      _c(
-        "div",
-        { staticClass: "d-flex flex-row flex-1 justify-content-between pr-24" },
-        [
-          _c("span", {}, [_vm._v("Rate")]),
-          _vm._v(" "),
-          _c("span", [_vm._v(":")]),
-        ]
-      ),
-      _vm._v(" "),
-      _c("span", { staticClass: "flex-1 text-primary-dark" }, [_vm._v("30%")]),
-    ])
+    return _c(
+      "div",
+      { staticClass: "d-flex flex-row flex-1 justify-content-between pr-24" },
+      [_c("span", {}, [_vm._v("Rate")]), _vm._v(" "), _c("span", [_vm._v(":")])]
+    )
   },
   function () {
     var _vm = this
@@ -69919,36 +69948,6 @@ var staticRenderFns = [
       _c("span", { staticClass: "mr-5" }, [_vm._v("Amort: ")]),
       _vm._v(" "),
       _c("span", [_vm._v("3,033.00")]),
-    ])
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "d-flex mb-7" }, [
-      _c("span", { staticClass: "mr-5" }, [_vm._v("A/O: ")]),
-      _vm._v(" "),
-      _c("span", {}, [_vm._v("025 - Janine C. Escallar")]),
-    ])
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "d-flex mb-7" }, [
-      _c("span", { staticClass: "mr-5" }, [_vm._v("Int. Rate: ")]),
-      _vm._v(" "),
-      _c("span", {}, [_vm._v("30% p.a. / 2.50% p.m.")]),
-    ])
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "d-flex mb-7" }, [
-      _c("span", { staticClass: "mr-5" }, [_vm._v("ID #: ")]),
-      _vm._v(" "),
-      _c("span", {}, [_vm._v("08-052415427-4")]),
     ])
   },
   function () {
@@ -85231,36 +85230,8 @@ var render = function () {
                                           },
                                           [
                                             _vm._v(
-                                              "\n\t\t\t\t\t\t\t\t\t\t\t\tIn case of default, this note will be due and demandable without further demand, and an additional fee of (2%) per missed payment of the scheduled amortization as penalty, And in case this note be given to hands of an attorney an additional charged of (10%) of the total amount due will be charged as attorney's fee, further, the borrower is liable to litigation expenses, damages, etc. should the failure on the part of the borrower reach the courts. In cases that the borrower/s changes address/ transfer of residence without notice to MICRO ACCESS LOANS CORPORATION in writing, the address indicated in this note shall be the address for purposes of delivery of notices and other matters pertaining to the loan. Shall any issue/case that may arise as a result of this promissory note on any document in relation hereto, venue shall be at the civil courts of Butuan City, Agusan del Norte, to the exclusion of other court or at the option of MICRO ACCESS LOANS CORPORATION The Borrower/s hereby authorized the MICRO ACCESS LOANS CORPORATION to assign, sell or otherwise negotiate this note with any financial institution on its face value. Done this "
+                                              "\n\t\t\t\t\t\t\t\t\t\t\t\tIn case of default, this note will be due and demandable without further demand, and an additional fee of (2%) per missed payment of the scheduled amortization as penalty, And in case this note be given to hands of an attorney an additional charged of (10%) of the total amount due will be charged as attorney's fee, further, the borrower is liable to litigation expenses, damages, etc. should the failure on the part of the borrower reach the courts. In cases that the borrower/s changes address/ transfer of residence without notice to MICRO ACCESS LOANS CORPORATION in writing, the address indicated in this note shall be the address for purposes of delivery of notices and other matters pertaining to the loan. Shall any issue/case that may arise as a result of this promissory note on any document in relation hereto, venue shall be at the civil courts of Butuan City, Agusan del Norte, to the exclusion of other court or at the option of MICRO ACCESS LOANS CORPORATION The Borrower/s hereby authorized the MICRO ACCESS LOANS CORPORATION to assign, sell or otherwise negotiate this note with any financial institution on its face value. Done this ________ day of __________.\n\t\t\t\t\t\t\t\t\t\t\t"
                                             ),
-                                            _c("b", [
-                                              _vm._v(
-                                                _vm._s(
-                                                  _vm.nthDay(
-                                                    this.dateToD(new Date())
-                                                  )
-                                                )
-                                              ),
-                                            ]),
-                                            _vm._v(" day of "),
-                                            _c(
-                                              "b",
-                                              { staticClass: "allcaps" },
-                                              [
-                                                _vm._v(
-                                                  _vm._s(
-                                                    this.dateToFullMonth(
-                                                      new Date()
-                                                    )
-                                                  ) +
-                                                    "  " +
-                                                    _vm._s(
-                                                      this.dateToY(new Date())
-                                                    )
-                                                ),
-                                              ]
-                                            ),
-                                            _vm._v(".\n\t\t\t\t\t\t\t\t\t\t\t"),
                                           ]
                                         ),
                                         _vm._v(" "),
@@ -103004,7 +102975,7 @@ Vue.compile = compileToFunctions;
 /***/ ((module) => {
 
 "use strict";
-module.exports = JSON.parse('{"name":"axios","version":"0.21.4","description":"Promise based HTTP client for the browser and node.js","main":"index.js","scripts":{"test":"grunt test","start":"node ./sandbox/server.js","build":"NODE_ENV=production grunt build","preversion":"npm test","version":"npm run build && grunt version && git add -A dist && git add CHANGELOG.md bower.json package.json","postversion":"git push && git push --tags","examples":"node ./examples/server.js","coveralls":"cat coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js","fix":"eslint --fix lib/**/*.js"},"repository":{"type":"git","url":"https://github.com/axios/axios.git"},"keywords":["xhr","http","ajax","promise","node"],"author":"Matt Zabriskie","license":"MIT","bugs":{"url":"https://github.com/axios/axios/issues"},"homepage":"https://axios-http.com","devDependencies":{"coveralls":"^3.0.0","es6-promise":"^4.2.4","grunt":"^1.3.0","grunt-banner":"^0.6.0","grunt-cli":"^1.2.0","grunt-contrib-clean":"^1.1.0","grunt-contrib-watch":"^1.0.0","grunt-eslint":"^23.0.0","grunt-karma":"^4.0.0","grunt-mocha-test":"^0.13.3","grunt-ts":"^6.0.0-beta.19","grunt-webpack":"^4.0.2","istanbul-instrumenter-loader":"^1.0.0","jasmine-core":"^2.4.1","karma":"^6.3.2","karma-chrome-launcher":"^3.1.0","karma-firefox-launcher":"^2.1.0","karma-jasmine":"^1.1.1","karma-jasmine-ajax":"^0.1.13","karma-safari-launcher":"^1.0.0","karma-sauce-launcher":"^4.3.6","karma-sinon":"^1.0.5","karma-sourcemap-loader":"^0.3.8","karma-webpack":"^4.0.2","load-grunt-tasks":"^3.5.2","minimist":"^1.2.0","mocha":"^8.2.1","sinon":"^4.5.0","terser-webpack-plugin":"^4.2.3","typescript":"^4.0.5","url-search-params":"^0.10.0","webpack":"^4.44.2","webpack-dev-server":"^3.11.0"},"browser":{"./lib/adapters/http.js":"./lib/adapters/xhr.js"},"jsdelivr":"dist/axios.min.js","unpkg":"dist/axios.min.js","typings":"./index.d.ts","dependencies":{"follow-redirects":"^1.14.0"},"bundlesize":[{"path":"./dist/axios.min.js","threshold":"5kB"}]}');
+module.exports = JSON.parse('{"_args":[["axios@0.21.4","C:\\\\laragon\\\\www\\\\MAC-loans"]],"_development":true,"_from":"axios@0.21.4","_id":"axios@0.21.4","_inBundle":false,"_integrity":"sha512-ut5vewkiu8jjGBdqpM44XxjuCjq9LAKeHVmoVfHVzy8eHgxxq8SbAVQNovDA8mVi05kP0Ea/n/UzcSHcTJQfNg==","_location":"/axios","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"axios@0.21.4","name":"axios","escapedName":"axios","rawSpec":"0.21.4","saveSpec":null,"fetchSpec":"0.21.4"},"_requiredBy":["#DEV:/"],"_resolved":"https://registry.npmjs.org/axios/-/axios-0.21.4.tgz","_spec":"0.21.4","_where":"C:\\\\laragon\\\\www\\\\MAC-loans","author":{"name":"Matt Zabriskie"},"browser":{"./lib/adapters/http.js":"./lib/adapters/xhr.js"},"bugs":{"url":"https://github.com/axios/axios/issues"},"bundlesize":[{"path":"./dist/axios.min.js","threshold":"5kB"}],"dependencies":{"follow-redirects":"^1.14.0"},"description":"Promise based HTTP client for the browser and node.js","devDependencies":{"coveralls":"^3.0.0","es6-promise":"^4.2.4","grunt":"^1.3.0","grunt-banner":"^0.6.0","grunt-cli":"^1.2.0","grunt-contrib-clean":"^1.1.0","grunt-contrib-watch":"^1.0.0","grunt-eslint":"^23.0.0","grunt-karma":"^4.0.0","grunt-mocha-test":"^0.13.3","grunt-ts":"^6.0.0-beta.19","grunt-webpack":"^4.0.2","istanbul-instrumenter-loader":"^1.0.0","jasmine-core":"^2.4.1","karma":"^6.3.2","karma-chrome-launcher":"^3.1.0","karma-firefox-launcher":"^2.1.0","karma-jasmine":"^1.1.1","karma-jasmine-ajax":"^0.1.13","karma-safari-launcher":"^1.0.0","karma-sauce-launcher":"^4.3.6","karma-sinon":"^1.0.5","karma-sourcemap-loader":"^0.3.8","karma-webpack":"^4.0.2","load-grunt-tasks":"^3.5.2","minimist":"^1.2.0","mocha":"^8.2.1","sinon":"^4.5.0","terser-webpack-plugin":"^4.2.3","typescript":"^4.0.5","url-search-params":"^0.10.0","webpack":"^4.44.2","webpack-dev-server":"^3.11.0"},"homepage":"https://axios-http.com","jsdelivr":"dist/axios.min.js","keywords":["xhr","http","ajax","promise","node"],"license":"MIT","main":"index.js","name":"axios","repository":{"type":"git","url":"git+https://github.com/axios/axios.git"},"scripts":{"build":"NODE_ENV=production grunt build","coveralls":"cat coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js","examples":"node ./examples/server.js","fix":"eslint --fix lib/**/*.js","postversion":"git push && git push --tags","preversion":"npm test","start":"node ./sandbox/server.js","test":"grunt test","version":"npm run build && grunt version && git add -A dist && git add CHANGELOG.md bower.json package.json"},"typings":"./index.d.ts","unpkg":"dist/axios.min.js","version":"0.21.4"}');
 
 /***/ })
 

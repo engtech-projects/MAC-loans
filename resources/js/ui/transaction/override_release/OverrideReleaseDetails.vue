@@ -25,7 +25,7 @@
 					</div>
 				</div>
 				<div class="upload-photo d-flex flex-column" style="flex:4;padding-top:36px;">
-					<img src="/img/user.png" alt="">
+					<img :src="loanaccount.borrower_photo" alt="" style="max-width:250px;">
 				</div>
 			</div>
 			<div class="sep mb-24"></div>
