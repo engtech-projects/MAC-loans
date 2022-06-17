@@ -36,7 +36,7 @@
 						</tr>
 						<tr v-for="b in filterClient" :key="b.borrower.borrower_id" class="loan-item" :class="isActive(b)">
 							<td><input v-model="b.checked" type="checkbox" class="form-control form-box"></td>
-							<td>{{b.borrower.borrower_num}}</td>
+							<td>{{b.account_num}}</td>
 							<td><a href="#">{{b.borrower.firstname + ' ' + b.borrower.lastname}}</a></td>
 							<td><span @click="loanAccount=b" class="text-green c-pointer">Select</span></td>
 						</tr>
