@@ -4,7 +4,7 @@
 		<div class="mb-16"></div>
 		<div class="d-flex justify-content-between mb-24 bb-primary-dark pb-7 text-block">
 			<h1 class="m-0 font-35">Personal Information</h1>
-			<a href="#" class="btn btn-success min-w-150">Edit Information</a>
+			<a :href="'/client_information/personal_information_details/edit/' + borrower_id" class="btn btn-success min-w-150">Edit Information</a>
 		</div><!-- /.col -->
 		<div class="d-flex flex-column flex-sm-row personal-info" style="margin-bottom:24px;">
 			<div class="upload-photo mb-24">
@@ -50,7 +50,7 @@
 					<div class="col-xl-3 col-lg-6">
 						<div class="info-display">
 							<span>Birth Date</span>
-							<span>January 12, 1985</span>
+							<span>{{dateToMDY(new Date(borrower.birthdate))}}</span>
 						</div>
 					</div>
 					<div class="col-xl-1 col-lg-6">
@@ -74,7 +74,7 @@
 					<div class="col-xl-4 col-lg-6">
 						<div class="info-display">
 							<span>Registration Date</span>
-							<span>December 12, 2021</span>
+							<span>{{dateToMDY(new Date(borrower.date_registered))}}</span>
 						</div>
 					</div>
 				</div>

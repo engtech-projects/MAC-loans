@@ -81,7 +81,7 @@
 				<div class="form-group mb-10 mr-16" style="flex: 3">
 					<label for="idType" class="form-label">ID Type</label>
 					<select v-model="borrower.id_type" required name="" id="" class="form-control form-input">
-						<option v-for="i in idtype" :key="i" :value="i">{{i}}</option>
+						<option v-for="i in idType" :key="i" :value="i">{{i}}</option>
 					</select>
 				</div>
 				<div class="form-group mb-10 mr-16" style="flex: 3">
@@ -136,7 +136,7 @@
 				<div class="form-group mb-10 mr-16" style="flex: 3">
 					<label for="spouseIdType" class="form-label">ID Type</label>
 					<select v-model="borrower.spouse_id_type" name="" id="" class="form-control form-input">
-						<option v-for="i in idtype" :key="i" :value="i">{{i}}</option>
+						<option v-for="i in idType" :key="i" :value="i">{{i}}</option>
 					</select>
 				</div>
 				<div class="form-group mb-10 mr-16" style="flex: 3">
@@ -412,11 +412,12 @@
 
 <script>
     export default {
-		props:['token','pborrower', 'psave','clear','pclient','borrower_id', 'idtype'],
+		props:['token','pborrower', 'psave','clear','pclient','borrower_id', 'pidtype'],
 		data(){
 			return {
 				baseUrl: window.location.origin,
 				img: null,
+				idType:[],
 				borrower: {
 					borrower_id: null,
 					date_registered:'',
@@ -660,6 +661,9 @@
 					this.clearInfo();
 					this.$emit('borrowerCleared');
 				}
+			},
+			'pidtype':function(newValue){
+				this.idType = JSON.parse(newValue);
 			}
 		},
 		computed: {
@@ -675,6 +679,7 @@
 			if(this.pclient){
 				this.fetchBorrower();
 			}
+			this.idType = JSON.parse(this.pidtype);
         }
     }
 </script>

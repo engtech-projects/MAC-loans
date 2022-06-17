@@ -8,6 +8,12 @@ Vue.mixin({
 			var y = date.getFullYear();
 			return '' + y + '-' + (m<=9 ? '0' + m : m) + '-' + (d <= 9 ? '0' + d : d);
 		},
+		dateToMDY:function(date){
+			var m = this.dateToFullMonth(date);
+			var d = date.getDate();
+			var y = date.getFullYear();
+			return m + ' ' + d + ', ' + y;
+		},
 		dateToD:function(date){
 			var d = date.getDate();
 			return d;

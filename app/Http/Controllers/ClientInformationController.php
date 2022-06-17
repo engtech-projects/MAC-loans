@@ -27,4 +27,12 @@ class ClientInformationController extends Controller
 			'title' => 'Statement of Account List',
 		]);
 	}
+
+	public function personalInformationDetailsEdit($id){
+		return view('client_information.personal_information_details_edit')->with([
+			'nav' => ['client information', 'personal information list'],
+			'id' => $id,
+			'title' => 'Edit Personal Information',
+		]);
+	}
 }

@@ -13945,6 +13945,7 @@ __webpack_require__.r(__webpack_exports__);
         specification: ''
       },
       borrowers: [],
+      todaysReleases: [],
       loanAccount: {
         loan_amount: 0,
         documents: {
@@ -13985,6 +13986,13 @@ __webpack_require__.r(__webpack_exports__);
         console.log(error);
       }.bind(this));
     },
+    todaysRelease: function todaysRelease() {
+      axios.get(window.location.origin + '/transaction/todaysrelease').then(function (response) {
+        this.todaysReleases = response.data;
+      }.bind(this))["catch"](function (error) {
+        console.log(error);
+      }.bind(this));
+    },
     setCheckbox: function setCheckbox(data) {
       for (var i in data) {
         data[i].checked = false;
@@ -14011,6 +14019,7 @@ __webpack_require__.r(__webpack_exports__);
       }).then(function (response) {
         this.loanAccounts = this.setCheckbox(response.data.data);
         this.setDates;
+        this.todaysRelease();
       }.bind(this))["catch"](function (error) {
         console.log(error);
       }.bind(this));
@@ -14145,8 +14154,8 @@ __webpack_require__.r(__webpack_exports__);
     },
     totalCash: function totalCash() {
       var amount = 0;
-      this.loanAccounts.map(function (account) {
-        if (this.dateToYMD(new Date(account.created_at)) == this.dateToYMD(new Date(this.preference.date)) && account.release_type == 'Cash Release') {
+      this.todaysReleases.map(function (account) {
+        if (account.release_type == 'Cash Release') {
           amount += account.net_proceeds;
         }
       }.bind(this));
@@ -14154,8 +14163,8 @@ __webpack_require__.r(__webpack_exports__);
     },
     totalCheck: function totalCheck() {
       var amount = 0;
-      this.loanAccounts.map(function (account) {
-        if (this.dateToYMD(new Date(account.created_at)) == this.dateToYMD(new Date(this.preference.date)) && account.release_type == 'Cheque Release') {
+      this.todaysReleases.map(function (account) {
+        if (account.release_type == 'Cheque Release') {
           amount += account.net_proceeds;
         }
       }.bind(this));
@@ -14163,19 +14172,15 @@ __webpack_require__.r(__webpack_exports__);
     },
     totalDeduction: function totalDeduction() {
       var amount = 0;
-      this.loanAccounts.map(function (account) {
-        if (this.dateToYMD(new Date(account.created_at)) == this.dateToYMD(new Date(this.preference.date))) {
-          amount += account.total_deduction;
-        }
+      this.todaysReleases.map(function (account) {
+        amount += account.total_deduction;
       }.bind(this));
       return amount;
     },
     totalRelease: function totalRelease() {
       var amount = 0;
-      this.loanAccounts.map(function (account) {
-        if (this.dateToYMD(new Date(account.created_at)) == this.dateToYMD(new Date(this.preference.date))) {
-          amount += account.net_proceeds;
-        }
+      this.todaysReleases.map(function (account) {
+        amount += account.net_proceeds;
       }.bind(this));
       return amount;
     },
@@ -14214,6 +14219,11 @@ __webpack_require__.r(__webpack_exports__);
       }
 
       return true;
+    }
+  },
+  watch: {
+    'preference.date': function preferenceDate(newValue) {
+      this.todaysRelease();
     }
   },
   mounted: function mounted() {
@@ -18047,11 +18057,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  props: ['token', 'pborrower', 'psave', 'clear', 'pclient', 'borrower_id', 'idtype'],
+  props: ['token', 'pborrower', 'psave', 'clear', 'pclient', 'borrower_id', 'pidtype'],
   data: function data() {
     return {
       baseUrl: window.location.origin,
       img: null,
+      idType: [],
       borrower: {
         borrower_id: null,
         date_registered: '',
@@ -18318,6 +18329,9 @@ __webpack_require__.r(__webpack_exports__);
         this.clearInfo();
         this.$emit('borrowerCleared');
       }
+    },
+    'pidtype': function pidtype(newValue) {
+      this.idType = JSON.parse(newValue);
     }
   },
   computed: {
@@ -18335,6 +18349,8 @@ __webpack_require__.r(__webpack_exports__);
     if (this.pclient) {
       this.fetchBorrower();
     }
+
+    this.idType = JSON.parse(this.pidtype);
   }
 });
 
@@ -21161,6 +21177,12 @@ vue__WEBPACK_IMPORTED_MODULE_0__["default"].mixin({
       var m = date.getMonth() + 1;
       var y = date.getFullYear();
       return '' + y + '-' + (m <= 9 ? '0' + m : m) + '-' + (d <= 9 ? '0' + d : d);
+    },
+    dateToMDY: function dateToMDY(date) {
+      var m = this.dateToFullMonth(date);
+      var d = date.getDate();
+      var y = date.getFullYear();
+      return m + ' ' + d + ', ' + y;
     },
     dateToD: function dateToD(date) {
       var d = date.getDate();
@@ -52262,7 +52284,31 @@ var render = function () {
     _c("div", { staticClass: "container-fluid" }, [
       _c("div", { staticClass: "mb-16" }),
       _vm._v(" "),
-      _vm._m(0),
+      _c(
+        "div",
+        {
+          staticClass:
+            "d-flex justify-content-between mb-24 bb-primary-dark pb-7 text-block",
+        },
+        [
+          _c("h1", { staticClass: "m-0 font-35" }, [
+            _vm._v("Personal Information"),
+          ]),
+          _vm._v(" "),
+          _c(
+            "a",
+            {
+              staticClass: "btn btn-success min-w-150",
+              attrs: {
+                href:
+                  "/client_information/personal_information_details/edit/" +
+                  _vm.borrower_id,
+              },
+            },
+            [_vm._v("Edit Information")]
+          ),
+        ]
+      ),
       _vm._v(" "),
       _c(
         "div",
@@ -52341,7 +52387,17 @@ var render = function () {
               ]),
               _vm._v(" "),
               _c("div", { staticClass: "row info-container" }, [
-                _vm._m(1),
+                _c("div", { staticClass: "col-xl-3 col-lg-6" }, [
+                  _c("div", { staticClass: "info-display" }, [
+                    _c("span", [_vm._v("Birth Date")]),
+                    _vm._v(" "),
+                    _c("span", [
+                      _vm._v(
+                        _vm._s(_vm.dateToMDY(new Date(_vm.borrower.birthdate)))
+                      ),
+                    ]),
+                  ]),
+                ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "col-xl-1 col-lg-6" }, [
                   _c("div", { staticClass: "info-display" }, [
@@ -52367,7 +52423,19 @@ var render = function () {
                   ]),
                 ]),
                 _vm._v(" "),
-                _vm._m(2),
+                _c("div", { staticClass: "col-xl-4 col-lg-6" }, [
+                  _c("div", { staticClass: "info-display" }, [
+                    _c("span", [_vm._v("Registration Date")]),
+                    _vm._v(" "),
+                    _c("span", [
+                      _vm._v(
+                        _vm._s(
+                          _vm.dateToMDY(new Date(_vm.borrower.date_registered))
+                        )
+                      ),
+                    ]),
+                  ]),
+                ]),
               ]),
               _vm._v(" "),
               _c("div", { staticClass: "row info-container" }, [
@@ -52387,7 +52455,7 @@ var render = function () {
                   ]),
                 ]),
                 _vm._v(" "),
-                _vm._m(3),
+                _vm._m(0),
               ]),
               _vm._v(" "),
               _c("div", { staticClass: "row info-container xs-mb-32" }, [
@@ -52406,7 +52474,7 @@ var render = function () {
         ]
       ),
       _vm._v(" "),
-      _vm._m(4),
+      _vm._m(1),
     ]),
     _vm._v(" "),
     _c(
@@ -52416,7 +52484,7 @@ var render = function () {
         staticStyle: { width: "100%" },
       },
       [
-        _vm._m(5),
+        _vm._m(2),
         _vm._v(" "),
         _c(
           "table",
@@ -52424,7 +52492,7 @@ var render = function () {
             staticClass: "table table-stripped text-primary-dark light-border",
           },
           [
-            _vm._m(6),
+            _vm._m(3),
             _vm._v(" "),
             _c(
               "tbody",
@@ -52463,7 +52531,7 @@ var render = function () {
         staticStyle: { width: "100%" },
       },
       [
-        _vm._m(7),
+        _vm._m(4),
         _vm._v(" "),
         _c(
           "table",
@@ -52471,7 +52539,7 @@ var render = function () {
             staticClass: "table table-stripped text-primary-dark light-border",
           },
           [
-            _vm._m(8),
+            _vm._m(5),
             _vm._v(" "),
             _c(
               "tbody",
@@ -52514,7 +52582,7 @@ var render = function () {
         staticStyle: { width: "100%" },
       },
       [
-        _vm._m(9),
+        _vm._m(6),
         _vm._v(" "),
         _c(
           "table",
@@ -52522,7 +52590,7 @@ var render = function () {
             staticClass: "table table-stripped text-primary-dark light-border",
           },
           [
-            _vm._m(10),
+            _vm._m(7),
             _vm._v(" "),
             _c(
               "tbody",
@@ -52565,7 +52633,7 @@ var render = function () {
         staticStyle: { width: "100%" },
       },
       [
-        _vm._m(11),
+        _vm._m(8),
         _vm._v(" "),
         _c(
           "table",
@@ -52573,7 +52641,7 @@ var render = function () {
             staticClass: "table table-stripped text-primary-dark light-border",
           },
           [
-            _vm._m(12),
+            _vm._m(9),
             _vm._v(" "),
             _c(
               "tbody",
@@ -52607,53 +52675,6 @@ var render = function () {
   ])
 }
 var staticRenderFns = [
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      {
-        staticClass:
-          "d-flex justify-content-between mb-24 bb-primary-dark pb-7 text-block",
-      },
-      [
-        _c("h1", { staticClass: "m-0 font-35" }, [
-          _vm._v("Personal Information"),
-        ]),
-        _vm._v(" "),
-        _c(
-          "a",
-          { staticClass: "btn btn-success min-w-150", attrs: { href: "#" } },
-          [_vm._v("Edit Information")]
-        ),
-      ]
-    )
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-xl-3 col-lg-6" }, [
-      _c("div", { staticClass: "info-display" }, [
-        _c("span", [_vm._v("Birth Date")]),
-        _vm._v(" "),
-        _c("span", [_vm._v("January 12, 1985")]),
-      ]),
-    ])
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-xl-4 col-lg-6" }, [
-      _c("div", { staticClass: "info-display" }, [
-        _c("span", [_vm._v("Registration Date")]),
-        _vm._v(" "),
-        _c("span", [_vm._v("December 12, 2021")]),
-      ]),
-    ])
-  },
   function () {
     var _vm = this
     var _h = _vm.$createElement
@@ -68513,7 +68534,9 @@ var render = function () {
                   _vm._m(9),
                   _vm._v(" "),
                   _c("span", { staticClass: "flex-1 text-primary-dark" }, [
-                    _vm._v(_vm._s(_vm.loanaccount.loan_amount)),
+                    _vm._v(
+                      _vm._s(_vm.formatToCurrency(_vm.loanaccount.loan_amount))
+                    ),
                   ]),
                 ]),
                 _vm._v(" "),
@@ -68521,7 +68544,11 @@ var render = function () {
                   _vm._m(10),
                   _vm._v(" "),
                   _c("span", { staticClass: "flex-1 text-primary-dark" }, [
-                    _vm._v(_vm._s(_vm.loanaccount.filing_fee)),
+                    _vm._v(
+                      _vm._s(
+                        _vm.formatToCurrency(_vm.loanaccount.interest_amount)
+                      )
+                    ),
                   ]),
                 ]),
                 _vm._v(" "),
@@ -68533,7 +68560,13 @@ var render = function () {
                   ]),
                 ]),
                 _vm._v(" "),
-                _vm._m(12),
+                _c("div", { staticClass: "d-flex flex-row mb-12" }, [
+                  _vm._m(12),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "flex-1 text-primary-dark" }, [
+                    _vm._v(_vm._s(_vm.loanaccount.interest_rate) + "%"),
+                  ]),
+                ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "d-flex flex-row mb-12" }, [
                   _vm._m(13),
@@ -69849,19 +69882,11 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "d-flex flex-row mb-12" }, [
-      _c(
-        "div",
-        { staticClass: "d-flex flex-row flex-1 justify-content-between pr-24" },
-        [
-          _c("span", {}, [_vm._v("Rate")]),
-          _vm._v(" "),
-          _c("span", [_vm._v(":")]),
-        ]
-      ),
-      _vm._v(" "),
-      _c("span", { staticClass: "flex-1 text-primary-dark" }, [_vm._v("30%")]),
-    ])
+    return _c(
+      "div",
+      { staticClass: "d-flex flex-row flex-1 justify-content-between pr-24" },
+      [_c("span", {}, [_vm._v("Rate")]), _vm._v(" "), _c("span", [_vm._v(":")])]
+    )
   },
   function () {
     var _vm = this
@@ -78760,7 +78785,7 @@ var render = function () {
                           },
                         },
                       },
-                      _vm._l(_vm.idtype, function (i) {
+                      _vm._l(_vm.idType, function (i) {
                         return _c(
                           "option",
                           { key: i, domProps: { value: i } },
@@ -79152,7 +79177,7 @@ var render = function () {
                           },
                         },
                       },
-                      _vm._l(_vm.idtype, function (i) {
+                      _vm._l(_vm.idType, function (i) {
                         return _c(
                           "option",
                           { key: i, domProps: { value: i } },

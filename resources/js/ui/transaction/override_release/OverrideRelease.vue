@@ -129,6 +129,7 @@ export default {
 			loanAccounts:[],
 			preference:{date:'',specification:''},
 			borrowers:[],
+			todaysReleases:[],
 			loanAccount:{
 				loan_amount:0,
 				documents: {
@@ -165,6 +166,15 @@ export default {
 			.catch(function (error) {
 				console.log(error);
 			}.bind(this));
+		}, 
+		todaysRelease:function(){
+			axios.get(window.location.origin + '/transaction/todaysrelease')
+			.then(function (response) {
+				this.todaysReleases = response.data;
+			}.bind(this))
+			.catch(function (error) {
+				console.log(error);
+			}.bind(this));
 		},   
 		setCheckbox:function(data){
 			for(let i in data){
@@ -192,6 +202,7 @@ export default {
 			.then(function (response) {
 				this.loanAccounts = this.setCheckbox(response.data.data);
 				this.setDates;
+				this.todaysRelease();
 			}.bind(this))
 			.catch(function (error) {
 				console.log(error);
@@ -330,8 +341,8 @@ export default {
 		},
 		totalCash:function(){
 			var amount = 0;
-			this.loanAccounts.map(function(account){
-				if(this.dateToYMD(new Date(account.created_at)) == this.dateToYMD(new Date(this.preference.date)) && account.release_type == 'Cash Release'){
+			this.todaysReleases.map(function(account){
+				if(account.release_type == 'Cash Release'){
 					amount += account.net_proceeds;
 				}
 			}.bind(this));
@@ -339,8 +350,8 @@ export default {
 		},
 		totalCheck:function(){
 			var amount = 0;
-			this.loanAccounts.map(function(account){
-				if(this.dateToYMD(new Date(account.created_at)) == this.dateToYMD(new Date(this.preference.date)) && account.release_type == 'Cheque Release'){
+			this.todaysReleases.map(function(account){
+				if(account.release_type == 'Cheque Release'){
 					amount += account.net_proceeds;
 				}
 			}.bind(this));
@@ -348,19 +359,15 @@ export default {
 		},
 		totalDeduction:function(){
 			var amount = 0;
-			this.loanAccounts.map(function(account){
-				if(this.dateToYMD(new Date(account.created_at)) == this.dateToYMD(new Date(this.preference.date))){
-					amount += account.total_deduction;
-				}
+			this.todaysReleases.map(function(account){
+				amount += account.total_deduction;
 			}.bind(this));
 			return amount;
 		},
 		totalRelease:function(){
 			var amount = 0;
-			this.loanAccounts.map(function(account){
-				if(this.dateToYMD(new Date(account.created_at)) == this.dateToYMD(new Date(this.preference.date))){
-					amount += account.net_proceeds;
-				}
+			this.todaysReleases.map(function(account){
+				amount += account.net_proceeds;
 			}.bind(this));
 			return amount;
 		},
@@ -394,6 +401,11 @@ export default {
 				this.dates.unshift(this.dateToYMD(new Date));
 			}
 			return true;
+		}
+	},
+	watch:{
+		'preference.date':function(newValue){
+			this.todaysRelease();
 		}
 	},
 	mounted(){

@@ -108,7 +108,7 @@
 							<span class="">Amount Loan</span>
 							<span>:</span>
 						</div>
-						<span class="flex-1 text-primary-dark">{{loanaccount.loan_amount}}</span>
+						<span class="flex-1 text-primary-dark">{{formatToCurrency(loanaccount.loan_amount)}}</span>
 					</div>
 
 					<div class="d-flex flex-row mb-12">
@@ -116,7 +116,7 @@
 							<span class="">Interest</span>
 							<span>:</span>
 						</div>
-						<span class="flex-1 text-primary-dark">{{loanaccount.filing_fee}}</span>
+						<span class="flex-1 text-primary-dark">{{formatToCurrency(loanaccount.interest_amount)}}</span>
 					</div>
 
 					<div class="d-flex flex-row mb-12">
@@ -132,7 +132,7 @@
 							<span class="">Rate</span>
 							<span>:</span>
 						</div>
-						<span class="flex-1 text-primary-dark">30%</span>
+						<span class="flex-1 text-primary-dark">{{loanaccount.interest_rate}}%</span>
 					</div>
 
 					<div class="d-flex flex-row mb-12">
