@@ -116,10 +116,12 @@
 				<override-release-details @updateLoanAccounts="fetchAccounts();resetLoanAccount();" :csrf="csrf" :token="token" :ploanaccount="loanAccount" :pdate="preference.date"></override-release-details>
 			</div>
 		</div>
+		<print-docs :ploanDetails="loanAccount" :token="token"></print-docs>
 	</div>
 </template>
 
 <script>
+
 export default {
 	props:['token', 'csrf'],
 	data(){
@@ -127,7 +129,22 @@ export default {
 			loanAccounts:[],
 			preference:{date:'',specification:''},
 			borrowers:[],
-			loanAccount:{},
+			loanAccount:{
+				loan_amount:0,
+				documents: {
+					date_release: this.dateToYMD(new Date),
+					description: '',
+					bank: '',
+					account_no: '',
+					card_no:'',
+					promissory_number: '',
+				},
+				borrower:{
+					firstname:'',
+					middlename:'',
+					lastname:''
+				}
+			},
 			dates:[],
 			filter:{ao_id:null,product_id:null,center_id:null,date:null}
 		}
@@ -243,7 +260,15 @@ export default {
 				},
 				center:{
 					center:''
-				}
+				},
+				documents: {
+					date_release: this.dateToYMD(new Date),
+					description: '',
+					bank: '',
+					account_no: '',
+					card_no:'',
+					promissory_number: '',
+				},
 			};				
 		},
 		isActive:function(data){
@@ -354,7 +379,6 @@ export default {
 							}
 						}
 					}
-					console.log();
 				}.bind(this))			
 			}
 			return result;

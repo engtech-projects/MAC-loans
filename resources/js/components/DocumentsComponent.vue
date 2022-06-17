@@ -1,85 +1,5 @@
 <template>
-	<div class="container-fluid" style="padding:0!important">
-		<notifications group="foo" />
-		<div class="mb-16"></div>
-		<div class="ml-16 mb-24 bb-primary-dark pb-7 text-block d-flex justify-content-between">
-			<h1 class="m-0 font-35">Release Entry</h1>
-			<a href="#" @click.prevent="clearData.borrower=1;resetLoanDetails()" class="btn btn-primary-dark min-w-150">New Client</a>
-		</div><!-- /.col -->
-		<div class="d-flex flex-column flex-xl-row p-16">
-				<div style="flex:9;">
-					<client-list-side @selectBorrower="selectBorrower" :pborrowers="borrowers" :id="{}"></client-list-side>
-					<div d-flex flex-column v-if="borrower.borrower_id">
-						<span class="text-red font-md">Existing Current Loan Accounts</span>
-						<div class="mb-10"></div>
-						<table class="table table-stripped light-border table-hover">
-							<thead>
-								<th>Account #</th>
-								<th>Amount</th>
-								<th>Rem. Bal.</th>
-								<th>Date Rel.</th>
-							</thead>
-							<tbody>
-								<tr v-if="pendingLoanAccounts.length < 1"><td>No released accounts yet.</td></tr>
-								<tr @click="loanDetails=bl;setCycle()" class="existing-loans" :class="selected(bl.loan_account_id)" v-for="bl in pendingLoanAccounts" :key="bl.loan_account_id">
-									<td>{{bl.account_num}}</td>
-									<td>{{bl.loan_amount}}</td>
-									<td>5,000.00</td>
-									<td>12/12/2021</td>
-								</tr>
-							</tbody>
-						</table>
-					</div>
-				</div>
-				<div style="flex:20">
-					<ul class="nav nav-tabs" id="custom-content-below-tab" role="tablist" style="display:none;">
-						<li class="nav-item">
-							<a class="nav-link active" id="custom-content-below-borrowerinfo-tab" data-toggle="pill" href="#custom-content-below-borrowerinfo" role="tab" aria-controls="custom-content-below-home" aria-selected="true">Borrower Info</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" id="custom-content-below-coborrowerinfo-tab" data-toggle="pill" href="#custom-content-below-coborrowerinfo" role="tab" aria-controls="custom-content-below-profile" aria-selected="false">Co Borrower Info</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" id="custom-content-below-loandetails-tab" data-toggle="pill" href="#custom-content-below-loaddetails" role="tab" aria-controls="custom-content-below-messages" aria-selected="false">Loan Details</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" id="custom-content-below-promisory-tab" data-toggle="pill" href="#custom-content-below-promisory" role="tab" aria-controls="custom-content-below-settings" aria-selected="false">Settings</a>
-						</li>
-					</ul>
-					<div class="tab-content" id="custom-content-below-tabContent">
-						<div class="tab-pane fade show active" id="custom-content-below-borrowerinfo" role="tabpanel" aria-labelledby="custom-content-below-home-tab">
-							<borrowers-info :idtype="idType" @nextBorrower="nextBorrower" @borrowerCleared="clearData.borrower=0" @savedInfo="savedInfo" @saveBorrower="saveInfo=''" @clearBorrowerInfo="resetBorrower" :clear="clearData.borrower" :token="token" :pborrower="borrower" :psave="saveInfo"></borrowers-info>
-						</div>
-
-
-						<co-borrower :idtype="idType" :borrowers="borrowers" :loandetails="loanDetails" @update-loan-details="updateLoanDetails"></co-borrower>
-
-
-
-						<div class="tab-pane fade" id="custom-content-below-loaddetails" role="tabpanel" aria-labelledby="custom-content-below-messages-tab">
-							<loan-details :idtype="idtype" :saveloandetails="saveLoanDetails" :borrowerbday="borrowerBirthdate" :borrower="bborrower" :token="token" :loandetails="loanDetails"></loan-details>
-						</div>
-
-
-						<div class="tab-pane fade" id="custom-content-below-promisory" role="tabpanel" aria-labelledby="custom-content-below-settings-tab">
-							<div class="d-flex flex-column">
-								<section class="mb-24" style="flex:21;padding-left:16px;">
-									<span class="section-title mb-24">Promisory Details</span>
-
-								</section>
-
-
-
-								<div class="d-flex flex-row-reverse mb-45">
-									<a href="#" data-tab="custom-content-below-promisory-tab" class="btn btn-success tab-navigate" style="flex:2">Next</a>
-									<a href="#" data-tab="custom-content-below-loandetails-tab" class="btn btn-primary-dark mr-24 tab-navigate" style="flex:2">Back</a>
-									<div style="flex:22"></div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
+	<section>
 		<div class="modal" id="lettersModal" tabindex="-1" role="dialog">
 			<div class="modal-dialog modal-lg minw-70" role="document">
 				<div class="modal-content">
@@ -161,8 +81,7 @@
 											</div>
 											<div class="mb-72"></div>
 											<div class="d-flex flex-row-reverse mb-45 no-print">
-												<button id="cancelDacionModal" data-dismiss="modal" class="btn btn-danger min-w-150 mr-24 hide">Cancel</button>
-												<button @click="printReminder()" class="btn btn-default min-w-150">Print</button>
+												<button @click="printContent('reminder-letter')" class="btn btn-default min-w-150">Print</button>
 												<button data-dismiss="modal" id="excelBtn" class="btn btn-success min-w-150 mr-24">Download Excel</button>
 											</div>
 										</div>
@@ -254,8 +173,7 @@
 											</div>
 											<div class="mb-72"></div>
 											<div class="d-flex flex-row-reverse mb-45 no-print">
-												<button id="cancelDacionModal" data-dismiss="modal" class="btn btn-danger min-w-150 mr-24 hide">Cancel</button>
-												<button @click="print()" class="btn btn-default min-w-150">Print</button>
+												<button @click="printContent('dacion-en-pago')" class="btn btn-default min-w-150">Print</button>
 												<button data-dismiss="modal" id="excelBtn" class="btn btn-success min-w-150 mr-24">Download Excel</button>
 											</div>
 										</div>
@@ -374,8 +292,7 @@
 											</div>
 											<div class="mb-72"></div>
 											<div class="d-flex flex-row-reverse mb-45 no-print">
-												<button id="cancelDacionModal" data-dismiss="modal" class="btn btn-danger min-w-150 mr-24 hide">Cancel</button>
-												<button @click="printDoa()" class="btn btn-default min-w-150">Print</button>
+												<button @click="printContent('doa-for-atm')" class="btn btn-default min-w-150">Print</button>
 												<button data-dismiss="modal" id="excelBtn" class="btn btn-success min-w-150 mr-24">Download Excel</button>
 											</div>
 										</div>
@@ -555,8 +472,7 @@
 											</div>
 											<div class="mb-72"></div>
 											<div class="d-flex flex-row-reverse mb-45 no-print">
-												<button id="cancelDacionModal" data-dismiss="modal" class="btn btn-danger min-w-150 mr-24 hide">Cancel</button>
-												<button @click="printMoa()" class="btn btn-default min-w-150">Print</button>
+												<button @click="printContent('moa-for-sme')" class="btn btn-default min-w-150">Print</button>
 												<button data-dismiss="modal" id="excelBtn" class="btn btn-success min-w-150 mr-24">Download Excel</button>
 											</div>
 										</div>
@@ -613,7 +529,7 @@
 											<div class="mb-72"></div>
 											<div class="d-flex flex-row-reverse mb-45 no-print">
 												<button id="cancelDacionModal" data-dismiss="modal" class="btn btn-danger min-w-150 mr-24 hide">Cancel</button>
-												<button @click="printSchedule()" class="btn btn-default min-w-150">Print</button>
+												<button @click="printContent('sme-schedule')" class="btn btn-default min-w-150">Print</button>
 												<button data-dismiss="modal" id="excelBtn" class="btn btn-success min-w-150 mr-24">Download Excel</button>
 											</div>
 										</div>
@@ -812,7 +728,7 @@
 											</div>
 											<div class="mb-72"></div>
 											<div class="d-flex flex-row-reverse mb-45 no-print">
-												<a @click.prevent="printPromissory()" href="#" class="btn btn-default min-w-150">Print</a>
+												<a @click.prevent="printContent('promissory-note')" href="#" class="btn btn-default min-w-150">Print</a>
 												<a href="#" class="btn btn-success min-w-150 mr-24">Download Excel</a>
 											</div>
 										</div>
@@ -824,44 +740,24 @@
 				</div>
 			</div>
 		</div>
-		<div class="modal" id="warningModal" tabindex="-1" role="dialog">
-			<div class="modal-dialog modal-md" role="document">
-			<div class="modal-content">
-				<div class="modal-body p-24">
-					<div class="d-flex align-items-center">
-						<img :src="baseUrl+'/img/warning.png'" style="width:120px;height:auto;" class="mr-24" alt="warning icon">
-						<div class="d-flex flex-column">
-							<span class="text-primary-dark text-bold mb-24">
-								Please re check all the data if correct and genuine. If checking is done and verified, kindly press proceed.
-							</span>
-							<div class="d-flex mt-auto justify-content-between">
-								<a href="#" data-dismiss="modal" class="btn btn-danger min-w-120">Re Check</a>
-								<a @click.prevent="saveInfo=1" href="#" data-dismiss="modal" class="btn btn-primary-dark min-w-120">Proceed</a>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			</div>
-		</div>
-	</div>
+	</section>
 </template>
 
 <script>
-    export default {
-		props:['token', 'idtype'],
-		data(){
-			return {
-				clearData:{
-					borrower:0
-				},
-				activeTab:'reminder-letter-tab',
-				borrowerBirthdate:'',
-				saveInfo:'',
-				saveLoanDetails:false,
-				bborrower:{borrower_id:'', borrower_num:''},
-				borrower:{
-					borrower_id: null,
+export default {
+	props:['ploanDetails', 'token'],
+	data(){
+		return {
+			activeTab:'reminder-letter-tab',
+			baseUrl: window.location.origin,
+			loanDetails:{
+				loan_amount:0,
+				documents:{
+					description:'',
+				}
+			},
+			borrower:{
+				borrower_id: null,
 					date_registered: this.dateToYMD(new Date()),
 					borrower_num:'',
 					firstname:'',
@@ -890,379 +786,110 @@
 					outstandingObligations : [],
 					loanAccounts:[],
 					created_at: this.dateToYMD(new Date()),
-				},
-				baseUrl: window.location.origin,
-				borrowers:[],
-				loanDetails: {
-					loan_account_id:null,
-					cycle_no : 1,
-					ao_id : '',
-					product_id : '',
-					center_id : '',
-					type : '',
-					payment_mode : '',
-					terms : 0,
-					loan_amount : '',
-					no_of_installment : '',
-					day_schedule : '',
-					borrower_num : '',
-					co_borrower_name : '',
-					co_borrower_address : '',
-					co_borrower_id_type : '',
-					co_borrower_id_number : '',
-					co_borrower_id_date_issued : '',
-					co_maker_name : '',  
-					co_maker_address : '',
-					co_maker_id_type : '',
-					co_maker_id_number : '',
-					co_maker_id_date_issued : '',
-					document_stamp : 0.00,
-					filing_fee : 0.00,
-					insurance : 0.00,
-					notarial_fee : 100.00,
-					prepaid_interest : 0.00,
-					affidavit_fee : 0.00,
-					memo : 0.00,
-					total_deduction : 0.00,
-					net_proceeds : 0.00,
-					release_type : '',
-					documents: {
-						date_release: this.dateToYMD(new Date),
-						description: '',
-						bank: '',
-						account_no: '',
-						card_no:'',
-						promissory_number: '',
-					}
-				},
-				products:[],
-				amortizationSched:[],
-				dueDate:'',
-			}
+			},
+			amortizationSched:[],
+			dueDate:'',
+			products:[],
+		}
+	},
+	methods:{
+		switchTab:function(tab){
+			this.activeTab = tab;
+			document.getElementById(tab).click();
 		},
-		methods: {
-			amortSched:function(){
-				axios.post(window.location.origin + '/api/account/generate-amortization', this.loanDetails, {
-					headers: {
-						'Authorization': 'Bearer ' + this.token,
-						'Content-Type': 'application/json',
-						'Accept': 'application/json'
-					}
-				})
-				.then(function (response) {
-					this.amortizationSched = response.data.data;
-					if(this.amortizationSched.length > 0){
-						this.dueDate = this.amortizationSched[this.amortizationSched.length-1].amortization_date;
-					}
-				}.bind(this))
-				.catch(function (error) {
-					console.log(error);
-				}.bind(this));
-			},
-			fetchProducts: function(){
-				axios.get(window.location.origin + '/api/product', {
-					headers: {
-						'Authorization': 'Bearer ' + this.token,
-						'Content-Type': 'application/json',
-						'Accept': 'application/json'
-					}
-				})
-				.then(function (response) {
-					this.products = response.data.data;
-				}.bind(this))
-				.catch(function (error) {
-					console.log(error);
-				}.bind(this));
-			},
-			fetchBorrowers:function(){
-				axios.get(window.location.origin + '/api/borrower', {
+		dacionDate:function(){
+			var text = '';
+			text += this.nthDay(this.dateToD(new Date)) + ' day of ';
+			text += this.dateToFullMonth(new Date) + ' ';
+			text += this.dateToY(new Date);
+			return text;
+		},
+		amortSched:function(){
+			axios.post(window.location.origin + '/api/account/generate-amortization', this.loanDetails, {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
-						'Content-Type': 'application/json',
-						'Accept': 'application/json'
-					}
-				})
-				.then(function (response) {
-					// console.log(response.data);
-					this.borrowers = response.data.data;
-				}.bind(this))
-				.catch(function (error) {
-					console.log(error);
-				}.bind(this));
-			},
-			fetchLoanAccounts:function(){
-				axios.get(window.location.origin + '/transaction/release_entry/loanaccounts?borrower=' + this.borrower.borrower_id)
-				.then(function (response) {
-					this.borrower.loan_accounts = response.data;
-				}.bind(this))
-				.catch(function (error) {
-					console.log(error);
-				}.bind(this));
-			},
-			resetBorrower:function(){
-				this.borrower = {
-					borrower_id: null,
-					date_registered: this.dateToYMD(new Date()),
-					borrower_num:'',
-					firstname:'',
-					lastname:'',
-					middlename:'',
-					suffix :'' ,
-					address :'' ,
-					birthdate :'',
-					gender :'' ,
-					status :'' ,
-					contact_number :'',
-					id_type :'',
-					id_no :'',
-					id_date_issued :'',
-					spouse_firstname:'',
-					spouse_lastname:'',
-					spouse_middlename:'',
-					spouse_address :'',
-					spouse_birthdate :'',
-					spouse_id_type :'',
-					spouse_id_no :'',
-					spouse_id_date_issued :'',
-					employmentInfo : [],
-					businessInfo : [],
-					householdMembers : [],
-					outstandingObligations : [],
-					loanAccounts:[],
-					created_at: this.dateToYMD(new Date()),
-				};				
-			},
-		
-			navigate:function(tab){
-				document.getElementById(tab).click();
-			},
-			
-			updateLoanDetails:function(data){
-				this.loanDetails = data;
-			},
-			savedInfo:function(data){
-				this.fetchBorrowers();
-				this.bborrower = data;
-				this.saveLoanDetails = true;
-				this.navigate('custom-content-below-borrowerinfo-tab');
-			},
-			nextBorrower:function(data){
-				this.borrowerBirthdate = data;
-			},
-			selected:function(id){
-				if(id==this.loanDetails.loan_account_id){
-					return 'active';
+					'Content-Type': 'application/json',
+					'Accept': 'application/json'
 				}
-				return '';
-			},
-		
-			resetLoanDetails:function(){
-				this.loanDetails = {
-					loan_account_id:null,
-					cycle_no : 1,
-					ao_id : '',
-					product_id : '',
-					center_id : '',
-					type : '',
-					payment_mode : '',
-					terms : 0,
-					loan_amount : '',
-					no_of_installment : '',
-					day_schedule : '',
-					borrower_num : '',
-					co_borrower_name : '',
-					co_borrower_address : '',
-					co_borrower_id_type : '',
-					co_borrower_id_number : '',
-					co_borrower_id_date_issued : '',
-					co_maker_name : '',  
-					co_maker_address : '',
-					co_maker_id_type : '',
-					co_maker_id_number : '',
-					co_maker_id_date_issued : '',
-					document_stamp : 0.00,
-					filing_fee : 0.00,
-					insurance : 0.00,
-					notarial_fee : 100.00,
-					prepaid_interest : 0.00,
-					affidavit_fee : 0.00,
-					memo : 0.00,
-					total_deduction : 0.00,
-					net_proceeds : 0.00,
-					release_type : '',
-					interest_rate:null,
-					interest_amount:'',
-					documents: {
-						date_release: this.dateToYMD(new Date),
-						description: '',
-						bank: '',
-						account_no: '',
-						card_no:'',
-						promissory_number: '',
-					}
-				}
-			},
-			setCycle:function(){
-				this.loanDetails.cycle_no = parseInt(this.borrower.loan_accounts.length + 1);
-			},
-			selectBorrower:function(borrower){
-				this.borrowers.map(function(data){
-					if(borrower == data.borrower_id){
-						this.borrower = data;
-						// this.fetchLoanAccounts();
-						this.setCycle();
-					}
-				}.bind(this));
-			},
-			
-			print:function(){
-				var content = document.getElementById('dacion-en-pago').innerHTML;
-				var target = document.querySelector('.to-print');
-				target.innerHTML = content;
-				var cancelButton = document.getElementById('cancelDacionModal');
-				cancelButton.click();
-				window.print();
-			},
-			printPromissory:function(){
-				var content = document.getElementById('promissory-note').innerHTML;
-				var target = document.querySelector('.to-print');
-				target.innerHTML = content;
-				var cancelButton = document.getElementById('cancelDacionModal');
-				cancelButton.click();
-				window.print();
-			},
-			printReminder:function(){
-				var content = document.getElementById('reminder-letter').innerHTML;
-				var target = document.querySelector('.to-print');
-				target.innerHTML = content;
-				var cancelButton = document.getElementById('cancelDacionModal');
-				cancelButton.click();
-				window.print();
-			},
-			printDoa:function(){
-				var content = document.getElementById('doa-for-atm').innerHTML;
-				var target = document.querySelector('.to-print');
-				target.innerHTML = content;
-				var cancelButton = document.getElementById('cancelDacionModal');
-				cancelButton.click();
-				window.print();
-			},
-			printMoa:function(){
-				var content = document.getElementById('moa-for-sme').innerHTML;
-				var target = document.querySelector('.to-print');
-				target.innerHTML = content;
-				var cancelButton = document.getElementById('cancelDacionModal');
-				cancelButton.click();
-				window.print();
-			},
-			printSchedule:function(){
-				var content = document.getElementById('sme-schedule').innerHTML;
-				var target = document.querySelector('.to-print');
-				target.innerHTML = content;
-				var cancelButton = document.getElementById('cancelDacionModal');
-				cancelButton.click();
-				window.print();
-			},
-			say(say){
-				alert(say);
-			},
-			dacionDate:function(){
-				var text = '';
-				text += this.nthDay(this.dateToD(new Date)) + ' day of ';
-				text += this.dateToFullMonth(new Date) + ' ';
-				text += this.dateToY(new Date);
-				return text;
-			},
-			switchTab:function(tab){
-				this.activeTab = tab;
-				document.getElementById(tab).click();
-			}
-		},
-		computed:{
-			idType:function(){
-				return JSON.parse(this.idtype);
-			},
-			productName:function(){
-				var result = '';
-				this.products.map(function(product){
-					if(product.product_id==this.loanDetails.product_id){
-						result = product.product_name;
-					}
-				}.bind(this));
-				return result;
-			},
-			pendingLoanAccounts:function(){
-				var accounts = [];
-				this.borrower.loan_accounts.map(function(account){
-					if(account.status == 'released'){
-						accounts.push(account);
-					}
-				}.bind(this));
-				return accounts;
-			},
-			amortAmount:function(){
+			})
+			.then(function (response) {
+				this.amortizationSched = response.data.data;
 				if(this.amortizationSched.length > 0){
-					return this.amortizationSched[0].principal;
+					this.dueDate = this.amortizationSched[this.amortizationSched.length-1].amortization_date;
 				}
-				return 0;
-			},
-			totalPrincipal:function(){
-				var amount = 0;
-				this.amortizationSched.map(function(sched){
-					amount += parseFloat(this.formatToAmount(sched.principal));
-				}.bind(this));
-				return amount;
-			},
-			totalInterest:function(){
-				var amount = 0;
-				this.amortizationSched.map(function(sched){
-					amount += parseFloat(this.formatToAmount(sched.interest));
-				}.bind(this));
-				return amount;
-			},
-			totalPayable:function(){
-				return this.totalPrincipal + this.totalInterest;
-			},
-			amortAmountSingle:function(){
-				return ((parseInt(this.loanDetails.loan_amount) + parseInt(this.loanDetails.interest_amount)) / parseInt(this.numberOfInstallment)).toFixed(1);
-			},
-			numberOfInstallment:function(){
-				let mode = this.loanDetails.terms;
-				let result = 0;
-				if(this.loanDetails.payment_mode == 'Monthly'){
-					mode = 30;
-					result = Math.ceil((this.loanDetails.terms / mode))
-				}else if(this.loanDetails.payment_mode == 'Bi-Monthly'){
-					mode = 15;
-					result = Math.ceil((this.loanDetails.terms / mode))
-				}else if(this.loanDetails.payment_mode == 'Weekly'){
-					mode = 30;
-					result = Math.ceil((this.loanDetails.terms / mode)*4);
-				}else{
-					mode = this.loanDetails.terms
-					result = Math.ceil((this.loanDetails.terms / mode))
+			}.bind(this))
+			.catch(function (error) {
+				console.log(error);
+			}.bind(this));
+		},
+		fetchProducts: function(){
+			axios.get(window.location.origin + '/api/product', {
+				headers: {
+					'Authorization': 'Bearer ' + this.token,
+					'Content-Type': 'application/json',
+					'Accept': 'application/json'
 				}
-				this.loanDetails.no_of_installment = result;
-				return result;
-			},
+			})
+			.then(function (response) {
+				this.products = response.data.data;
+			}.bind(this))
+			.catch(function (error) {
+				console.log(error);
+			}.bind(this));
 		},
-		watch:{
-			'loanDetails.loan_account_id':function(newValue){
-				newValue? this.amortSched():[];
-			}
+		productName:function(){
+			var result = '';
+			this.products.map(function(product){
+				if(product.product_id==this.loanDetails.product_id){
+					result = product.product_name;
+				}
+			}.bind(this));
+			return result;
 		},
-        mounted() {	
-			this.fetchBorrowers();
-			this.resetBorrower();
-			this.resetLoanDetails();
-			this.fetchProducts();
-			// this.navigate('custom-content-below-loandetails-tab');
-			// this.navigate('custom-content-below-coborrowerinfo-tab');
-        }
-    }
-</script>
-<style lang="scss" scoped>
-	.existing-loans.active {
-		background-color: #78e08f;
+		printContent:function(printcontent){
+			var content = document.getElementById(printcontent).innerHTML;
+			var target = document.querySelector('.to-print');
+			target.innerHTML = content;
+			window.print();
+		}
+	},
+	computed:{
+		amortAmountSingle:function(){
+			return ((parseInt(this.loanDetails.loan_amount) + parseInt(this.loanDetails.interest_amount)) / parseInt(this.numberOfInstallment)).toFixed(1);
+		},
+		totalPrincipal:function(){
+			var amount = 0;
+			this.amortizationSched.map(function(sched){
+				amount += parseFloat(this.formatToAmount(sched.principal));
+			}.bind(this));
+			return amount;
+		},
+		totalInterest:function(){
+			var amount = 0;
+			this.amortizationSched.map(function(sched){
+				amount += parseFloat(this.formatToAmount(sched.interest));
+			}.bind(this));
+			return amount;
+		},
+		totalPayable:function(){
+			return this.totalPrincipal + this.totalInterest;
+		},
+		
+	},
+	watch:{
+		'loanDetails.loan_account_id':function(newValue){
+			newValue? this.amortSched():[];
+		},
+		'ploanDetails':function(newValue){
+			this.loanDetails = newValue;
+			this.loanDetails.documents = newValue.document? newValue.document:this.loanDetails.documents;
+			this.borrower = newValue.borrower;
+		}
+	},
+	mounted(){
+		this.loanDetails = this.ploanDetails;
+		this.borrower = this.ploanDetails.borrower;
+		this.fetchProducts();
 	}
-</style>
+}
+</script>
