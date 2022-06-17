@@ -26,9 +26,7 @@ class Amortization extends Model
 
     public function createAmortizationSched(LoanAccount $account, $dateRelease = null) {
 
-        $product = Product::find($account->product_id);
-        $terms = $account->terms / 30;
-        $interestAmount = $account->loan_amount * ($product->interest_rate / 100) * $terms;
+        $interestAmount = $account->interest_amount;
         $installments = $account->no_of_installment;
 
         if( $dateRelease ){
