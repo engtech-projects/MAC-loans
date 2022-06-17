@@ -20,6 +20,7 @@
  Vue.component('client-list-side', require('./components/ClientListSide.vue').default);
  Vue.component('upload-file', require('./components/UploadFile.vue').default);
  Vue.component('print-docs', require('./components/DocumentsComponent.vue').default);
+ Vue.component('borrower-container', require('./components/BorrowerContainer.vue').default);
  
  Vue.component('cancel-payments', require('./ui/maintenance/CancelPayments.vue').default);
  Vue.component('product-setup', require('./ui/maintenance/ProductSetup.vue').default);
