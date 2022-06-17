@@ -164,7 +164,7 @@
 							<span class="">Center Name</span>
 							<span>:</span>
 						</div>
-						<span class="flex-1 text-primary-dark">{{loanaccount.center.center}}</span>
+						<span class="flex-1 text-primary-dark">{{loanaccount.center? loanaccount.center.center:''}}</span>
 					</div>
 
 				</div>
@@ -263,7 +263,7 @@
 							</div>
 							<div class="d-flex mb-7">
 								<span class="mr-5">Center: </span>
-								<span class="">{{loanaccount.center.center}}</span>
+								<span class="">{{loanaccount.center? loanaccount.center.center:''}}</span>
 							</div>
 							<div class="d-flex mb-7">
 								<span class="mr-5">ID #: </span>

@@ -222,7 +222,7 @@
 				<span class="text-bold bg-yellow-light mb-10" style="padding:2px 5px;">MOA / SME</span>
 				<div class="form-group mb-10">
 					<label for="">Promissory Number</label>
-					<input v-model="loanDetails.documents.promissory_number" type="text" class="form-control form-input">
+					<input v-model="loanDetails.documents.promissory_number" disabled type="text" class="form-control form-input">
 				</div>
 			</div>
 		</section>
@@ -346,6 +346,21 @@ export default {
 				console.log(error);
 			}.bind(this));
 		},
+		fetchPromissoryNo: function(){
+			axios.post(window.location.origin + '/api/account/promissoryno',{'product_id':this.loanDetails.product_id}, {
+				headers: {
+					'Authorization': 'Bearer ' + this.token,
+					'Content-Type': 'application/json',
+					'Accept': 'application/json'
+				}
+			})
+			.then(function (response) {
+				this.loanDetails.documents.promissory_number = response.data;
+			}.bind(this))
+			.catch(function (error) {
+				console.log(error);
+			}.bind(this));
+		},
 		navigate:function(tab){
 			document.getElementById(tab).click();
 		},
@@ -427,8 +442,8 @@ export default {
 			// 	this.loanDetails.memo = 0;
 			// }
 		},
-		'loanDetails.center_id'(newValue){
-			
+		'loanDetails.product_id'(newValue){
+			this.fetchPromissoryNo();
 		}
 		// 'saveloandetails'(newValue) {
 		// 	if(newValue){

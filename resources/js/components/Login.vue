@@ -65,7 +65,7 @@ export default {
 			.then(function (response) {
 				this.data.token = response.data.data.token;
 				window.location.replace(window.location.origin + '/dashboard');
-				// this.makeAuth();
+				this.makeAuth();
 			}.bind(this))
 			.catch(function (error) {
 				console.log(error);
