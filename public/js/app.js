@@ -15024,12 +15024,6 @@ __webpack_require__.r(__webpack_exports__);
         console.log(error);
       }.bind(this));
     },
-    // dateToYMD:function(date) {
-    // 	var d = date.getDate();
-    // 	var m = date.getMonth() + 1;
-    // 	var y = date.getFullYear();
-    // 	return '' + y + '-' + (m<=9 ? '0' + m : m) + '-' + (d <= 9 ? '0' + d : d);
-    // },
     reject: function reject() {
       axios.put(window.location.origin + '/api/account/reject/' + this.loanaccount.loan_account_id, this.loanaccount, {
         headers: {
