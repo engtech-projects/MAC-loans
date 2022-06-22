@@ -340,7 +340,7 @@
 					<div class="d-flex flex-row">
 						<div class="d-flex font-md mr-24 align-items-center">
 							<span class="mr-5">Date:</span>
-							<span>{{dateToMDY2(new Date).split('-').join('/')}}</span>
+							<span>{{dateToMDY2(new Date(pdate)).split('-').join('/')}}</span>
 						</div>
 						<div class="d-flex font-md align-items-center mr-45">
 							<span class="mr-5">Time:</span>
@@ -348,7 +348,7 @@
 						</div>
 						<div class="d-flex flex-row align-items-center mr-24">
 							<span class="mr-10 flex-1">Account Officer : </span>
-							<select @change="overrideFilter" v-model="filter.ao" class="form-control flex-1 min-w-200" name="" id="">
+							<select @change="overrideFilter" v-model="filter.ao_id" class="form-control flex-1 min-w-200" name="" id="">
 								<option v-for="ao in aofficers" :key="ao.ao_id" :value="ao.ao_id">{{ao.name}}</option>
 							</select>
 						</div>
@@ -668,7 +668,7 @@ export default {
 	props:['ploanaccount', 'pdate', 'token', 'csrf'],
 	data(){
 		return {
-			filter:{ao_id:null,center_id:null,product_id:null, date:null},
+			filter:{ao_id:null,center_id:null,product_id:null, created_at:null},
 			borrower:'',
 			loanDetails:'',
 			loanaccount:{
@@ -766,6 +766,8 @@ export default {
 			}.bind(this));
 		},
 		fetchFilteredOverride: function(){
+			console.log(this.filter);
+			this.filter.created_at = this.pdate;
 			axios.post(window.location.origin + '/api/account/overrrideaccounts', this.filter, {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
@@ -839,7 +841,7 @@ export default {
 			window.print();
 		},
 		overrideFilter:function(){
-			if(this.filter.product || this.filter.center || this.filter.ao){
+			if(this.filter.product || this.filter.center || this.filter.ao_id){
 				this.fetchFilteredOverride();
 			}
 		},
@@ -883,7 +885,6 @@ export default {
 			this.filteredOverrides.map(function(fo){
 				if(fo.release_type == 'Cash Release'){
 					amount += parseFloat(fo.loan_amount);
-					console.log(fo);
 				}
 			});
 			return amount;

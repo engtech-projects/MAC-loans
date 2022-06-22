@@ -14968,7 +14968,7 @@ __webpack_require__.r(__webpack_exports__);
         ao_id: null,
         center_id: null,
         product_id: null,
-        date: null
+        created_at: null
       },
       borrower: '',
       loanDetails: '',
@@ -15059,6 +15059,8 @@ __webpack_require__.r(__webpack_exports__);
       }.bind(this));
     },
     fetchFilteredOverride: function fetchFilteredOverride() {
+      console.log(this.filter);
+      this.filter.created_at = this.pdate;
       axios.post(window.location.origin + '/api/account/overrrideaccounts', this.filter, {
         headers: {
           'Authorization': 'Bearer ' + this.token,
@@ -15123,7 +15125,7 @@ __webpack_require__.r(__webpack_exports__);
       window.print();
     },
     overrideFilter: function overrideFilter() {
-      if (this.filter.product || this.filter.center || this.filter.ao) {
+      if (this.filter.product || this.filter.center || this.filter.ao_id) {
         this.fetchFilteredOverride();
       }
     },
@@ -15169,7 +15171,6 @@ __webpack_require__.r(__webpack_exports__);
       this.filteredOverrides.map(function (fo) {
         if (fo.release_type == 'Cash Release') {
           amount += parseFloat(fo.loan_amount);
-          console.log(fo);
         }
       });
       return amount;
@@ -69500,7 +69501,7 @@ var render = function () {
                               _vm._v(
                                 _vm._s(
                                   _vm
-                                    .dateToMDY2(new Date())
+                                    .dateToMDY2(new Date(_vm.pdate))
                                     .split("-")
                                     .join("/")
                                 )
@@ -69550,8 +69551,8 @@ var render = function () {
                                   {
                                     name: "model",
                                     rawName: "v-model",
-                                    value: _vm.filter.ao,
-                                    expression: "filter.ao",
+                                    value: _vm.filter.ao_id,
+                                    expression: "filter.ao_id",
                                   },
                                 ],
                                 staticClass: "form-control flex-1 min-w-200",
@@ -69573,7 +69574,7 @@ var render = function () {
                                         })
                                       _vm.$set(
                                         _vm.filter,
-                                        "ao",
+                                        "ao_id",
                                         $event.target.multiple
                                           ? $$selectedVal
                                           : $$selectedVal[0]
