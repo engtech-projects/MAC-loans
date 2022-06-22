@@ -68864,7 +68864,11 @@ var render = function () {
                     _vm._m(17),
                     _vm._v(" "),
                     _c("span", { staticClass: "flex-1 text-primary-dark" }, [
-                      _vm._v(_vm._s(_vm.loanaccount.date_release)),
+                      _vm._v(
+                        _vm._s(
+                          _vm.loanaccount.date_release.split("-").join("/")
+                        )
+                      ),
                     ]),
                   ]),
                   _vm._v(" "),
@@ -68872,7 +68876,9 @@ var render = function () {
                     _vm._m(18),
                     _vm._v(" "),
                     _c("span", { staticClass: "flex-1 text-primary-dark" }, [
-                      _vm._v(_vm._s(_vm.loanaccount.due_date)),
+                      _vm._v(
+                        _vm._s(_vm.dateToYMD(_vm.dueDate).split("-").join("/"))
+                      ),
                     ]),
                   ]),
                 ]),
@@ -69198,7 +69204,16 @@ var render = function () {
                                   _vm._v("Due Date: "),
                                 ]),
                                 _vm._v(" "),
-                                _c("span", {}, [_vm._v(_vm._s(_vm.dueDate))]),
+                                _c("span", {}, [
+                                  _vm._v(
+                                    _vm._s(
+                                      _vm
+                                        .dateToYMD(_vm.dueDate)
+                                        .split("-")
+                                        .join("/")
+                                    )
+                                  ),
+                                ]),
                               ]),
                               _vm._v(" "),
                               _c("div", { staticClass: "d-flex mb-7" }, [
