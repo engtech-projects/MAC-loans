@@ -14223,7 +14223,7 @@ __webpack_require__.r(__webpack_exports__);
       this.todaysReleases.map(function (account) {
         amount += account.total_deduction;
       }.bind(this));
-      return amount;
+      return 0;
     },
     totalRelease: function totalRelease() {
       var amount = 0;

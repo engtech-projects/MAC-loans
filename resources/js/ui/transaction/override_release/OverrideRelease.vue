@@ -377,7 +377,7 @@ export default {
 			this.todaysReleases.map(function(account){
 				amount += account.total_deduction;
 			}.bind(this));
-			return amount;
+			return 0;
 		},
 		totalRelease:function(){
 			var amount = 0;
