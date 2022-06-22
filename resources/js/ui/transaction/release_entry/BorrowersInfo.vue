@@ -665,7 +665,12 @@
 		computed: {
 			borrowerImg:function(){
 				if(!this.img){
-					return window.location.origin + '/img/user.png';
+					if(!this.borrower.photo){
+						return window.location.origin + '/img/user.png';
+					}
+					else{
+						return this.borrower.photo;
+					}
 				}
 				return this.img;
 			}

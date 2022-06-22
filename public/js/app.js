@@ -7136,6 +7136,11 @@ __webpack_require__.r(__webpack_exports__);
       }.bind(this));
     }
   },
+  computed: {
+    borrowerPhoto: function borrowerPhoto() {
+      return this.borrower.photo ? this.borrower.photo : '/img/user.png';
+    }
+  },
   mounted: function mounted() {
     this.fetchBorrower();
   }
@@ -18405,7 +18410,11 @@ __webpack_require__.r(__webpack_exports__);
   computed: {
     borrowerImg: function borrowerImg() {
       if (!this.img) {
-        return window.location.origin + '/img/user.png';
+        if (!this.borrower.photo) {
+          return window.location.origin + '/img/user.png';
+        } else {
+          return this.borrower.photo;
+        }
       }
 
       return this.img;
@@ -52555,7 +52564,8 @@ var render = function () {
         [
           _c("div", { staticClass: "upload-photo mb-24" }, [
             _c("img", {
-              attrs: { src: _vm.baseUrl + "/img/user.png", alt: "" },
+              staticStyle: { "max-width": "250px" },
+              attrs: { src: _vm.borrowerPhoto, alt: "" },
             }),
             _vm._v(" "),
             _c(

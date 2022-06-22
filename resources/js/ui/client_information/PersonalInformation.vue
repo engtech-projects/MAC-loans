@@ -8,7 +8,7 @@
 		</div><!-- /.col -->
 		<div class="d-flex flex-column flex-sm-row personal-info" style="margin-bottom:24px;">
 			<div class="upload-photo mb-24">
-				<img :src="baseUrl + '/img/user.png'" alt="">
+				<img :src="borrowerPhoto" alt="" style="max-width:250px;">
 				<a href="#" class="btn btn-primary" style="padding:10px!important">Upload or Take a Photo</a>
 			</div>
 			<div class="flex-gap-24"></div>
@@ -313,6 +313,11 @@ export default {
 				console.log(error);
 			}.bind(this));
 		},
+	},
+	computed:{
+		borrowerPhoto:function(){
+			return this.borrower.photo? this.borrower.photo : '/img/user.png';
+		}
 	},
 	mounted(){
 		this.fetchBorrower();
