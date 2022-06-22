@@ -15140,6 +15140,9 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   computed: {
+    prepaidInterest: function prepaidInterest() {
+      return this.loanaccount.type == 'Add-On' ? 0 : this.loanaccount.prepaid_interest;
+    },
     dueDate: function dueDate() {
       if (this.amortizationSched.length > 0) {
         return this.amortizationSched[0].amortization_date;
@@ -52705,7 +52708,50 @@ var render = function () {
         ]
       ),
       _vm._v(" "),
-      _vm._m(1),
+      _c(
+        "div",
+        {
+          staticClass: "row info-container mb-24",
+          staticStyle: { width: "100%" },
+        },
+        [
+          _vm._m(1),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-xl-2 col-lg-6" }, [
+            _c("div", { staticClass: "info-display" }, [
+              _c("span", [_vm._v("First Name")]),
+              _vm._v(" "),
+              _c("span", [_vm._v(_vm._s(_vm.borrower.spouse_firstname))]),
+            ]),
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-xl-2 col-lg-6" }, [
+            _c("div", { staticClass: "info-display" }, [
+              _c("span", [_vm._v("Middle Name")]),
+              _vm._v(" "),
+              _c("span", [_vm._v(_vm._s(_vm.borrower.spouse_middlename))]),
+            ]),
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-xl-2 col-lg-6" }, [
+            _c("div", { staticClass: "info-display" }, [
+              _c("span", [_vm._v("Last Name")]),
+              _vm._v(" "),
+              _c("span", [_vm._v(_vm._s(_vm.borrower.spouse_lastname))]),
+            ]),
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-xl-3" }, [
+            _c("div", { staticClass: "info-display" }, [
+              _c("span", [_vm._v("Suffix")]),
+              _vm._v(" "),
+              _c("span", [_vm._v(_vm._s(_vm.borrower.suffix))]),
+            ]),
+          ]),
+          _vm._v(" "),
+          _vm._m(2),
+        ]
+      ),
     ]),
     _vm._v(" "),
     _c(
@@ -52715,7 +52761,7 @@ var render = function () {
         staticStyle: { width: "100%" },
       },
       [
-        _vm._m(2),
+        _vm._m(3),
         _vm._v(" "),
         _c(
           "table",
@@ -52723,7 +52769,7 @@ var render = function () {
             staticClass: "table table-stripped text-primary-dark light-border",
           },
           [
-            _vm._m(3),
+            _vm._m(4),
             _vm._v(" "),
             _c(
               "tbody",
@@ -52762,7 +52808,7 @@ var render = function () {
         staticStyle: { width: "100%" },
       },
       [
-        _vm._m(4),
+        _vm._m(5),
         _vm._v(" "),
         _c(
           "table",
@@ -52770,7 +52816,7 @@ var render = function () {
             staticClass: "table table-stripped text-primary-dark light-border",
           },
           [
-            _vm._m(5),
+            _vm._m(6),
             _vm._v(" "),
             _c(
               "tbody",
@@ -52813,7 +52859,7 @@ var render = function () {
         staticStyle: { width: "100%" },
       },
       [
-        _vm._m(6),
+        _vm._m(7),
         _vm._v(" "),
         _c(
           "table",
@@ -52821,7 +52867,7 @@ var render = function () {
             staticClass: "table table-stripped text-primary-dark light-border",
           },
           [
-            _vm._m(7),
+            _vm._m(8),
             _vm._v(" "),
             _c(
               "tbody",
@@ -52864,7 +52910,7 @@ var render = function () {
         staticStyle: { width: "100%" },
       },
       [
-        _vm._m(8),
+        _vm._m(9),
         _vm._v(" "),
         _c(
           "table",
@@ -52872,7 +52918,7 @@ var render = function () {
             staticClass: "table table-stripped text-primary-dark light-border",
           },
           [
-            _vm._m(9),
+            _vm._m(10),
             _vm._v(" "),
             _c(
               "tbody",
@@ -52924,65 +52970,25 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c(
       "div",
-      {
-        staticClass: "row info-container mb-24",
-        staticStyle: { width: "100%" },
-      },
+      { staticClass: "col-md-12", staticStyle: { height: "60px!important" } },
       [
-        _c(
-          "div",
-          {
-            staticClass: "col-md-12",
-            staticStyle: { height: "60px!important" },
-          },
-          [
-            _c("div", { staticClass: "info-display title" }, [
-              _c("span", [_vm._v("Spouse Information")]),
-            ]),
-          ]
-        ),
-        _vm._v(" "),
-        _c("div", { staticClass: "col-xl-2 col-lg-6" }, [
-          _c("div", { staticClass: "info-display" }, [
-            _c("span", [_vm._v("First Name")]),
-            _vm._v(" "),
-            _c("span", [_vm._v("Maria")]),
-          ]),
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "col-xl-2 col-lg-6" }, [
-          _c("div", { staticClass: "info-display" }, [
-            _c("span", [_vm._v("Middle Name")]),
-            _vm._v(" "),
-            _c("span", [_vm._v("Reyes")]),
-          ]),
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "col-xl-2 col-lg-6" }, [
-          _c("div", { staticClass: "info-display" }, [
-            _c("span", [_vm._v("Last Name")]),
-            _vm._v(" "),
-            _c("span", [_vm._v("Lagahit")]),
-          ]),
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "col-xl-3" }, [
-          _c("div", { staticClass: "info-display" }, [
-            _c("span", [_vm._v("Suffix")]),
-            _vm._v(" "),
-            _c("span", [_vm._v("Jr.")]),
-          ]),
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "col-xl-3" }, [
-          _c("div", { staticClass: "info-display" }, [
-            _c("span", [_vm._v("Birth Date")]),
-            _vm._v(" "),
-            _c("span", [_vm._v("March 12, 1976")]),
-          ]),
+        _c("div", { staticClass: "info-display title" }, [
+          _c("span", [_vm._v("Spouse Information")]),
         ]),
       ]
     )
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-xl-3" }, [
+      _c("div", { staticClass: "info-display" }, [
+        _c("span", [_vm._v("Birth Date")]),
+        _vm._v(" "),
+        _c("span", [_vm._v("March 12, 1976")]),
+      ]),
+    ])
   },
   function () {
     var _vm = this
@@ -68740,11 +68746,7 @@ var render = function () {
                     _vm._m(5),
                     _vm._v(" "),
                     _c("span", { staticClass: "flex-1 text-primary-dark" }, [
-                      _vm._v(
-                        _vm._s(
-                          _vm.formatToCurrency(_vm.loanaccount.prepaid_interest)
-                        )
-                      ),
+                      _vm._v(_vm._s(_vm.formatToCurrency(_vm.prepaidInterest))),
                     ]),
                   ]),
                   _vm._v(" "),

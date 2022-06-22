@@ -101,13 +101,12 @@ class Borrower extends Model
             // $imageType = $imageTypeAux[1];
             $content = base64_decode($imgParts[1]);
             $fileName = $dirs['photo'] . $this->borrower_id . '.png';
-
         }else{
             $content = $img;
             $fileName = $dirs['photo'] . $this->borrower_id . '.' . $content->getClientOriginalExtension();
         }
 
-        Storage::disk("public")->put($fileName, $content);
+       Storage::disk("public")->put($fileName, $content);
     }
 
     public function getDocs() {

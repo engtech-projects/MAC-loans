@@ -117,25 +117,25 @@
 			<div class="col-xl-2 col-lg-6">
 				<div class="info-display">
 					<span>First Name</span>
-					<span>Maria</span>
+					<span>{{borrower.spouse_firstname}}</span>
 				</div>
 			</div>
 			<div class="col-xl-2 col-lg-6">
 				<div class="info-display">
 					<span>Middle Name</span>
-					<span>Reyes</span>
+					<span>{{borrower.spouse_middlename}}</span>
 				</div>
 			</div>
 			<div class="col-xl-2 col-lg-6">
 				<div class="info-display">
 					<span>Last Name</span>
-					<span>Lagahit</span>
+					<span>{{borrower.spouse_lastname}}</span>
 				</div>
 			</div>
 			<div class="col-xl-3">
 				<div class="info-display">
 					<span>Suffix</span>
-					<span>Jr.</span>
+					<span>{{borrower.suffix}}</span>
 				</div>
 			</div>
 			<div class="col-xl-3">

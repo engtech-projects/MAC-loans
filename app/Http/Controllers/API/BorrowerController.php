@@ -39,6 +39,7 @@ class BorrowerController extends BaseController
      * Store a newly created resource in storage.
      */
     public function store(Request $request) {
+		dd($request->img);
         $borrower = new Borrower();    
         // add borrower_num to request data
         $request->merge(['borrower_num' => '']);
@@ -105,7 +106,6 @@ class BorrowerController extends BaseController
      * Update the specified resource in storage.
      */
     public function update(Request $request, Borrower $borrower) {
-
         $borrower->fill($request->input());
         $borrower->save();
 

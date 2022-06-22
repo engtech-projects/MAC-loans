@@ -75,7 +75,7 @@
 							<span class="">Prepaid Interest</span>
 							<span>:</span>
 						</div>
-						<span class="flex-1 text-primary-dark">{{formatToCurrency(loanaccount.prepaid_interest)}}</span>
+						<span class="flex-1 text-primary-dark">{{formatToCurrency(prepaidInterest)}}</span>
 					</div>
 
 					<div class="d-flex flex-row mb-12">
@@ -861,6 +861,9 @@ export default {
 		},
 	},
 	computed:{
+		prepaidInterest:function(){
+			return this.loanaccount.type=='Add-On'? 0:this.loanaccount.prepaid_interest;
+		},
 		dueDate:function(){
 			if(this.amortizationSched.length > 0){
 				return this.amortizationSched[0].amortization_date;
