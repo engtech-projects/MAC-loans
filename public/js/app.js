@@ -69614,8 +69614,8 @@ var render = function () {
                                   {
                                     name: "model",
                                     rawName: "v-model",
-                                    value: _vm.filter.center,
-                                    expression: "filter.center",
+                                    value: _vm.filter.center_id,
+                                    expression: "filter.center_id",
                                   },
                                 ],
                                 staticClass: "form-control min-w-200 flex-1",
@@ -69637,7 +69637,7 @@ var render = function () {
                                         })
                                       _vm.$set(
                                         _vm.filter,
-                                        "center",
+                                        "center_id",
                                         $event.target.multiple
                                           ? $$selectedVal
                                           : $$selectedVal[0]
@@ -69677,8 +69677,8 @@ var render = function () {
                                   {
                                     name: "model",
                                     rawName: "v-model",
-                                    value: _vm.filter.product,
-                                    expression: "filter.product",
+                                    value: _vm.filter.product_id,
+                                    expression: "filter.product_id",
                                   },
                                 ],
                                 staticClass: "form-control min-w-200 flex-1",
@@ -69700,7 +69700,7 @@ var render = function () {
                                         })
                                       _vm.$set(
                                         _vm.filter,
-                                        "product",
+                                        "product_id",
                                         $event.target.multiple
                                           ? $$selectedVal
                                           : $$selectedVal[0]

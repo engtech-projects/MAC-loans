@@ -354,13 +354,13 @@
 						</div>
 						<div class="d-flex flex-row align-items-center mr-24">
 							<span class="mr-10 flex-1">Center : </span>
-							<select @change="overrideFilter" v-model="filter.center" class="form-control min-w-200 flex-1" name="" id="">
+							<select @change="overrideFilter" v-model="filter.center_id" class="form-control min-w-200 flex-1" name="" id="">
 								<option v-for="center in centers" :key="center.center_id" :value="center.center_id">{{center.center}}</option>
 							</select>
 						</div>
 						<div class="d-flex flex-row align-items-center">
 							<span class="mr-10 flex-1">Product Name : </span>
-							<select @change="overrideFilter" v-model="filter.product" class="form-control min-w-200 flex-1" name="" id="">
+							<select @change="overrideFilter" v-model="filter.product_id" class="form-control min-w-200 flex-1" name="" id="">
 								<option v-for="product in products" :key="product.product_id" :value="product.product_id">{{product.product_name}}</option>
 							</select>
 						</div>
