@@ -18230,7 +18230,6 @@ __webpack_require__.r(__webpack_exports__);
     },
     save: function save() {
       this.borrower.img = this.img;
-      console.log(this.borrower.img);
 
       if (this.borrower.borrower_id) {
         axios.put(window.location.origin + '/api/borrower/' + this.borrower.borrower_id, this.borrower, {
@@ -18385,14 +18384,12 @@ __webpack_require__.r(__webpack_exports__);
   },
   watch: {
     'img': function img(newValue) {
-      if (!newValue) {
-        this.img = this.baseUrl + '/img/user.png';
+      if (!newValue) {// this.img = this.baseUrl + '/img/user.png'
       }
     },
     'pborrower': function pborrower(newValue) {
       if (!this.pclient) {
-        this.borrower = newValue;
-        this.img = this.borrower.photo;
+        this.borrower = newValue; // this.img = this.borrower.photo;
       }
     },
     'psave': function psave(newValue) {
