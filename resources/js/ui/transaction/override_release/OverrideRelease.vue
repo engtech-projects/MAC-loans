@@ -36,7 +36,7 @@
 						</tr>
 						<tr v-for="b in filterClient" :key="b.borrower.borrower_id" class="loan-item" :class="isActive(b)">
 							<td><input v-model="b.checked" type="checkbox" class="form-control form-box"></td>
-							<td>{{b.borrower.borrower_num}}</td>
+							<td>{{b.account_num}}</td>
 							<td><a href="#">{{b.borrower.firstname + ' ' + b.borrower.lastname}}</a></td>
 							<td><span @click="loanAccount=b" class="text-green c-pointer">Select</span></td>
 						</tr>
@@ -144,6 +144,9 @@ export default {
 					firstname:'',
 					middlename:'',
 					lastname:''
+				},
+				account_officer:{
+					name:'',
 				}
 			},
 			dates:[],
@@ -151,6 +154,14 @@ export default {
 		}
 	},
 	methods:{
+		notify:function(title, text, type){
+			this.$notify({
+				group: 'foo',
+				title: title,
+				text: text,
+				type: type,
+			});
+		},
 		fetchAccounts:function(){
 			axios.post(window.location.origin + '/api/account/overrrideaccounts', this.filter, {
 			headers: {
@@ -223,6 +234,7 @@ export default {
 				}
 			})
 			.then(function (response) {
+				this.notify('',response.data.message, 'success');
 				this.fetchAccounts();
 			}.bind(this))
 			.catch(function (error) {
@@ -280,6 +292,9 @@ export default {
 					card_no:'',
 					promissory_number: '',
 				},
+				account_officer:{
+					name:'',
+				}
 			};				
 		},
 		isActive:function(data){
@@ -369,7 +384,7 @@ export default {
 			this.todaysReleases.map(function(account){
 				amount += account.net_proceeds;
 			}.bind(this));
-			return amount;
+			return amount - this.totalDeduction;
 		},
 		filterClient:function(){
 			var result = [];
@@ -380,7 +395,7 @@ export default {
 							result.push(val);
 							return
 						}else{
-							if(val.borrower.borrower_num.toLowerCase().includes(this.preference.specification.toLowerCase()) || val.borrower.firstname.toLowerCase().includes(this.preference.specification.toLowerCase()) || val.borrower.lastname.toLowerCase().includes(this.preference.specification.toLowerCase()) || (val.borrower.firstname + ' ' + val.borrower.lastname).toLowerCase().includes(this.preference.specification.toLowerCase()) || (val.borrower.lastname + ' ' + val.borrower.firstname).toLowerCase().includes(this.preference.specification.toLowerCase())){
+							if(val.product.product_name.toLowerCase().includes(this.preference.specification.toLowerCase()) || (val.center && val.center.center.toLowerCase().includes(this.preference.specification.toLowerCase())) || val.account_num.toLowerCase().includes(this.preference.specification.toLowerCase()) || val.borrower.firstname.toLowerCase().includes(this.preference.specification.toLowerCase()) || val.borrower.lastname.toLowerCase().includes(this.preference.specification.toLowerCase()) || (val.borrower.firstname + ' ' + val.borrower.lastname).toLowerCase().includes(this.preference.specification.toLowerCase()) || (val.borrower.lastname + ' ' + val.borrower.firstname).toLowerCase().includes(this.preference.specification.toLowerCase())){
 								result.push(val);
 								return
 							}
