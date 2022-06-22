@@ -7053,11 +7053,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: ['borrower_id', 'token'],
   data: function data() {
@@ -52341,7 +52336,13 @@ var render = function () {
               ]),
               _vm._v(" "),
               _c("div", { staticClass: "row info-container" }, [
-                _vm._m(1),
+                _c("div", { staticClass: "col-xl-3 col-lg-6" }, [
+                  _c("div", { staticClass: "info-display" }, [
+                    _c("span", [_vm._v("Birth Date")]),
+                    _vm._v(" "),
+                    _c("span", [_vm._v(_vm._s(_vm.borrower.birthdate))]),
+                  ]),
+                ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "col-xl-1 col-lg-6" }, [
                   _c("div", { staticClass: "info-display" }, [
@@ -52367,7 +52368,13 @@ var render = function () {
                   ]),
                 ]),
                 _vm._v(" "),
-                _vm._m(2),
+                _c("div", { staticClass: "col-xl-4 col-lg-6" }, [
+                  _c("div", { staticClass: "info-display" }, [
+                    _c("span", [_vm._v("Registration Date")]),
+                    _vm._v(" "),
+                    _c("span", [_vm._v(_vm._s(_vm.borrower.date_registered))]),
+                  ]),
+                ]),
               ]),
               _vm._v(" "),
               _c("div", { staticClass: "row info-container" }, [
@@ -52387,7 +52394,13 @@ var render = function () {
                   ]),
                 ]),
                 _vm._v(" "),
-                _vm._m(3),
+                _c("div", { staticClass: "col-xl-2 col-lg-6" }, [
+                  _c("div", { staticClass: "info-display" }, [
+                    _c("span", [_vm._v("ID. Date")]),
+                    _vm._v(" "),
+                    _c("span", [_vm._v(_vm._s(_vm.borrower.id_date_issued))]),
+                  ]),
+                ]),
               ]),
               _vm._v(" "),
               _c("div", { staticClass: "row info-container xs-mb-32" }, [
@@ -52406,7 +52419,48 @@ var render = function () {
         ]
       ),
       _vm._v(" "),
-      _vm._m(4),
+      _c(
+        "div",
+        {
+          staticClass: "row info-container mb-24",
+          staticStyle: { width: "100%" },
+        },
+        [
+          _vm._m(1),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-xl-2 col-lg-6" }, [
+            _c("div", { staticClass: "info-display" }, [
+              _c("span", [_vm._v("First Name")]),
+              _vm._v(" "),
+              _c("span", [_vm._v(_vm._s(_vm.borrower.spouse_firstname))]),
+            ]),
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-xl-2 col-lg-6" }, [
+            _c("div", { staticClass: "info-display" }, [
+              _c("span", [_vm._v("Middle Name")]),
+              _vm._v(" "),
+              _c("span", [_vm._v(_vm._s(_vm.borrower.spouse_middlename))]),
+            ]),
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-xl-2 col-lg-6" }, [
+            _c("div", { staticClass: "info-display" }, [
+              _c("span", [_vm._v("Last Name")]),
+              _vm._v(" "),
+              _c("span", [_vm._v(_vm._s(_vm.borrower.spouse_lastname))]),
+            ]),
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-xl-3" }, [
+            _c("div", { staticClass: "info-display" }, [
+              _c("span", [_vm._v("Birth Date")]),
+              _vm._v(" "),
+              _c("span", [_vm._v(_vm._s(_vm.borrower.spouse_birthdate))]),
+            ]),
+          ]),
+        ]
+      ),
     ]),
     _vm._v(" "),
     _c(
@@ -52416,7 +52470,7 @@ var render = function () {
         staticStyle: { width: "100%" },
       },
       [
-        _vm._m(5),
+        _vm._m(2),
         _vm._v(" "),
         _c(
           "table",
@@ -52424,7 +52478,7 @@ var render = function () {
             staticClass: "table table-stripped text-primary-dark light-border",
           },
           [
-            _vm._m(6),
+            _vm._m(3),
             _vm._v(" "),
             _c(
               "tbody",
@@ -52463,7 +52517,7 @@ var render = function () {
         staticStyle: { width: "100%" },
       },
       [
-        _vm._m(7),
+        _vm._m(4),
         _vm._v(" "),
         _c(
           "table",
@@ -52471,7 +52525,7 @@ var render = function () {
             staticClass: "table table-stripped text-primary-dark light-border",
           },
           [
-            _vm._m(8),
+            _vm._m(5),
             _vm._v(" "),
             _c(
               "tbody",
@@ -52514,7 +52568,7 @@ var render = function () {
         staticStyle: { width: "100%" },
       },
       [
-        _vm._m(9),
+        _vm._m(6),
         _vm._v(" "),
         _c(
           "table",
@@ -52522,7 +52576,7 @@ var render = function () {
             staticClass: "table table-stripped text-primary-dark light-border",
           },
           [
-            _vm._m(10),
+            _vm._m(7),
             _vm._v(" "),
             _c(
               "tbody",
@@ -52537,17 +52591,17 @@ var render = function () {
                 _vm._v(" "),
                 _vm._l(_vm.borrower.outstandingObligations, function (ob) {
                   return _c("tr", { key: ob.id }, [
-                    _c("td", [_vm._v("Maria Lagahit")]),
+                    _c("td", [_vm._v(_vm._s(ob.creditor))]),
                     _vm._v(" "),
-                    _c("td", [_vm._v("32,000.00")]),
+                    _c("td", [_vm._v(_vm._s(ob.amount))]),
                     _vm._v(" "),
-                    _c("td", [_vm._v("21,201.00")]),
+                    _c("td", [_vm._v(_vm._s(ob.balance))]),
                     _vm._v(" "),
-                    _c("td", [_vm._v("12 Months")]),
+                    _c("td", [_vm._v(_vm._s(ob.term))]),
                     _vm._v(" "),
-                    _c("td", [_vm._v("12/12/2021")]),
+                    _c("td", [_vm._v(_vm._s(ob.due_date))]),
                     _vm._v(" "),
-                    _c("td"),
+                    _c("td", [_vm._v(_vm._s(ob.amortization))]),
                   ])
                 }),
               ],
@@ -52565,7 +52619,7 @@ var render = function () {
         staticStyle: { width: "100%" },
       },
       [
-        _vm._m(11),
+        _vm._m(8),
         _vm._v(" "),
         _c(
           "table",
@@ -52573,7 +52627,7 @@ var render = function () {
             staticClass: "table table-stripped text-primary-dark light-border",
           },
           [
-            _vm._m(12),
+            _vm._m(9),
             _vm._v(" "),
             _c(
               "tbody",
@@ -52586,15 +52640,15 @@ var render = function () {
                 _vm._v(" "),
                 _vm._l(_vm.borrower.businessInfo, function (biz) {
                   return _c("tr", { key: biz.id }, [
-                    _c("td", [_vm._v("Car Rental Service")]),
+                    _c("td", [_vm._v(_vm._s(biz.business_name))]),
                     _vm._v(" "),
-                    _c("td", [_vm._v("Butuan City")]),
+                    _c("td", [_vm._v(_vm._s(biz.business_address))]),
                     _vm._v(" "),
-                    _c("td", [_vm._v("09458545474")]),
+                    _c("td", [_vm._v(_vm._s(biz.contact_no))]),
                     _vm._v(" "),
-                    _c("td", [_vm._v("5")]),
+                    _c("td", [_vm._v(_vm._s(biz.years_in_business))]),
                     _vm._v(" "),
-                    _c("td", [_vm._v("2,000.00")]),
+                    _c("td", [_vm._v(_vm._s(biz.income))]),
                   ])
                 }),
               ],
@@ -52634,100 +52688,12 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-xl-3 col-lg-6" }, [
-      _c("div", { staticClass: "info-display" }, [
-        _c("span", [_vm._v("Birth Date")]),
-        _vm._v(" "),
-        _c("span", [_vm._v("January 12, 1985")]),
-      ]),
-    ])
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-xl-4 col-lg-6" }, [
-      _c("div", { staticClass: "info-display" }, [
-        _c("span", [_vm._v("Registration Date")]),
-        _vm._v(" "),
-        _c("span", [_vm._v("December 12, 2021")]),
-      ]),
-    ])
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-xl-2 col-lg-6" }, [
-      _c("div", { staticClass: "info-display" }, [
-        _c("span", [_vm._v("ID. Date")]),
-        _vm._v(" "),
-        _c("span", [_vm._v("12/12/2019")]),
-      ]),
-    ])
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
     return _c(
       "div",
-      {
-        staticClass: "row info-container mb-24",
-        staticStyle: { width: "100%" },
-      },
+      { staticClass: "col-md-12", staticStyle: { height: "60px!important" } },
       [
-        _c(
-          "div",
-          {
-            staticClass: "col-md-12",
-            staticStyle: { height: "60px!important" },
-          },
-          [
-            _c("div", { staticClass: "info-display title" }, [
-              _c("span", [_vm._v("Spouse Information")]),
-            ]),
-          ]
-        ),
-        _vm._v(" "),
-        _c("div", { staticClass: "col-xl-2 col-lg-6" }, [
-          _c("div", { staticClass: "info-display" }, [
-            _c("span", [_vm._v("First Name")]),
-            _vm._v(" "),
-            _c("span", [_vm._v("Maria")]),
-          ]),
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "col-xl-2 col-lg-6" }, [
-          _c("div", { staticClass: "info-display" }, [
-            _c("span", [_vm._v("Middle Name")]),
-            _vm._v(" "),
-            _c("span", [_vm._v("Reyes")]),
-          ]),
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "col-xl-2 col-lg-6" }, [
-          _c("div", { staticClass: "info-display" }, [
-            _c("span", [_vm._v("Last Name")]),
-            _vm._v(" "),
-            _c("span", [_vm._v("Lagahit")]),
-          ]),
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "col-xl-3" }, [
-          _c("div", { staticClass: "info-display" }, [
-            _c("span", [_vm._v("Suffix")]),
-            _vm._v(" "),
-            _c("span", [_vm._v("Jr.")]),
-          ]),
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "col-xl-3" }, [
-          _c("div", { staticClass: "info-display" }, [
-            _c("span", [_vm._v("Birth Date")]),
-            _vm._v(" "),
-            _c("span", [_vm._v("March 12, 1976")]),
-          ]),
+        _c("div", { staticClass: "info-display title" }, [
+          _c("span", [_vm._v("Spouse Information")]),
         ]),
       ]
     )
@@ -52849,7 +52815,7 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("thead", [
-      _c("th", [_vm._v("Type of Business")]),
+      _c("th", [_vm._v("Name of Business/Agency")]),
       _vm._v(" "),
       _c("th", [_vm._v("Business Address")]),
       _vm._v(" "),
