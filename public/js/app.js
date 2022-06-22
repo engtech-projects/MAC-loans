@@ -15144,11 +15144,13 @@ __webpack_require__.r(__webpack_exports__);
       return this.loanaccount.type == 'Add-On' ? 0 : this.loanaccount.prepaid_interest;
     },
     dueDate: function dueDate() {
-      if (this.amortizationSched.length > 0) {
-        return this.amortizationSched[0].amortization_date;
+      if (this.loanaccount.loan_account_id) {
+        var dt = new Date(this.loanaccount.date_release);
+        dt.setDate(dt.getDate() + this.loanaccount.terms);
+        return dt;
       }
 
-      return '';
+      return "";
     },
     loanInterest: function loanInterest() {
       if (this.amortizationSched.length > 0) {
