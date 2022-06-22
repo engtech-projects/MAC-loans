@@ -26,7 +26,7 @@
 					</div>
 				</div>
 				<div class="upload-photo d-flex flex-column" style="flex:4;padding-top:36px;">
-					<img src="/img/user.png" alt="">
+					<img :src="borrowerPhoto" alt="" style="max-width:250px;">
 				</div>
 			</div>
 			<div class="sep mb-24"></div>
@@ -870,7 +870,7 @@ export default {
 				dt.setDate(dt.getDate() + this.loanaccount.terms);
 				return dt;
 			}
-			return "";
+			return new Date
 		},
 		loanInterest:function(){
 			if(this.amortizationSched.length > 0){
@@ -910,11 +910,14 @@ export default {
 			var amount = 0;
 			return this.totalCash + this.totalMemo + this.totalCheque;
 		},
+		borrowerPhoto:function(){
+			return this.loanaccount.borrower_photo? this.loanaccount.borrower_photo : '/img/user.png';
+		}
 	},
 	watch:{
 		'ploanaccount'(newData){
 			this.loanaccount = newData;
-			this.loanaccount.date_release = this.dateToYMD(new Date);
+			this.loanaccount.date_release = this.dateToYMD(new Date());
 			this.loanaccount.loan_account_id?this.amortSched():null;
 		},
 	},
