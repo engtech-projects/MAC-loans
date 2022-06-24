@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 class ClientInformationController extends Controller
 {
+	
     public function personalInformationList(){
 		return view('client_information.personal_information_list')->with([
 			'nav' => ['client information', 'personal information list'],

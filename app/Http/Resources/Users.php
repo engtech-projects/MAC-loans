@@ -18,11 +18,13 @@ class Users extends JsonResource
             'id' => $this->id,
             'username' => $this->username,
             'status' => $this->status,
-            'branch_id' => $this->branch_id,
+            // 'branch_id' => $this->branch_id,
             'firstname' => $this->firstname,
             'middlename' => $this->middlename,
             'lastname' => $this->lastname,
-            'branches' => $this->getBranches(),
+            'branch' => $this->branch,
+            'accessibility' => $this->accessibility,
+            // 'branches' => $this->getBranches(),
         ];
     }
 }

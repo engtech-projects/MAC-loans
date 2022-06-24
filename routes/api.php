@@ -30,7 +30,9 @@ use App\Http\Controllers\API\ReportsController;
 # authentication
 Route::post('login', [AuthController::class, 'login'])->name('api.login');
 
-Route::middleware('auth:sanctum')->group( function () {
+
+Route::middleware(['auth:sanctum'])->group( function () {
+    Route::get('logout', [AuthController::class, 'logout'])->name('api.logout');
     Route::resource('user', UserController::class);
     Route::resource('product', ProductController::class);
     Route::resource('center', CenterController::class);

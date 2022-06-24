@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 // use App\Http\Controllers\Controller;
 use App\Http\Controllers\API\BaseController as BaseController;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\UserBranch;
 use Illuminate\Support\Facades\Hash;
@@ -48,6 +49,20 @@ class UserController extends BaseController
         }
 
         // user accessibility
+        $permissions = $request->input('permissions');
+
+        if( is_array($permissions) && count($permissions) > 0 ){
+
+            foreach ($permissions as $permission) {
+                
+                UserAccessibility::create([
+                    'id' => $user->id,
+                    'access_id' => $permission,
+                ]);
+            }
+
+        }
+
 
         return $this->sendResponse(new UserResource($user), 'User Created');
     }
@@ -56,6 +71,13 @@ class UserController extends BaseController
      * Display the specified resource.
      */
     public function show(User $user) {
+
+        // if( $user->hasAccess('view statement of accounts') ) {
+        //     return 'has acccess';
+        // }else{
+        //     return 'no access';
+        // }
+
         return $this->sendResponse(new UserResource($user), 'User fetched.');
     }
 

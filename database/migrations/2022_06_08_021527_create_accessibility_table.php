@@ -16,7 +16,8 @@ class CreateAccessibilityTable extends Migration
         Schema::create('accessibility', function (Blueprint $table) {
             $table->increments('access_id');
             $table->string('label');
-            $table->string('permissions');
+            $table->string('group');
+            $table->string('permission');
             $table->text('description');
             $table->timestamps();
         });

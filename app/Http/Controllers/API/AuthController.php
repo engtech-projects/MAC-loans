@@ -20,23 +20,26 @@ class AuthController extends BaseController
     public function login(Request $request) {
     	
     	$credentials = $request->only('username', 'password');
+        $branch_id = $request->branch_id;
 
     	if(Auth::attempt($credentials)){ 
 
-            $authUser = Auth::user(); 
-            $success['token'] =  $authUser->createToken('auth_token')->plainTextToken;
-            $success['name'] =  $authUser->username;
+            $success['token'] =  Auth::user()->createToken('auth_token')->plainTextToken;
+            $success['name'] =  Auth::user()->username;
+            $success['branch'] = $branch_id;
+            $success['tokens'] = Auth::user()->tokens;
             
-            return $this->sendResponse($success, 'User signed in');
-            
-        }
-        else{
+            return $this->sendResponse(Auth::user(), 'User signed in');
+        }else {
             return $this->sendError('Error.', ['error'=>'Unauthorised']);
         }
     }
 
     public function logout() {
-
+        auth()->user()->tokens()->delete();
+        return [
+            'message' => 'Logout'
+        ];
     }
 
 }

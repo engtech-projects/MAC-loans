@@ -24,7 +24,7 @@ class UserSeeder extends Seeder
             'middlename' => 'G',
             'lastname' => 'Payot',
 			'status' => 'active',
-			'branch_id' => 1,
+			// 'branch_id' => 1,
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(), 
         ]);
