@@ -29,7 +29,7 @@ class AuthController extends BaseController
             $success['branch'] = $branch_id;
             $success['tokens'] = Auth::user()->tokens;
             
-            return $this->sendResponse(Auth::user(), 'User signed in');
+            return $this->sendResponse($success, 'User signed in');
         }else {
             return $this->sendError('Error.', ['error'=>'Unauthorised']);
         }
