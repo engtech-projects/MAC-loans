@@ -4,11 +4,11 @@
 		<div class="mb-16"></div>
 		<div class="d-flex justify-content-between mb-24 bb-primary-dark pb-7 text-block">
 			<h1 class="m-0 font-35">Personal Information</h1>
-			<a href="#" class="btn btn-success min-w-150">Edit Information</a>
+			<a :href="'/client_information/personal_information_details/edit/' + borrower_id" class="btn btn-success min-w-150">Edit Information</a>
 		</div><!-- /.col -->
 		<div class="d-flex flex-column flex-sm-row personal-info" style="margin-bottom:24px;">
 			<div class="upload-photo mb-24">
-				<img :src="baseUrl + '/img/user.png'" alt="">
+				<img :src="borrowerPhoto" alt="" style="max-width:250px;">
 				<a href="#" class="btn btn-primary" style="padding:10px!important">Upload or Take a Photo</a>
 			</div>
 			<div class="flex-gap-24"></div>
@@ -50,7 +50,7 @@
 					<div class="col-xl-3 col-lg-6">
 						<div class="info-display">
 							<span>Birth Date</span>
-							<span>{{borrower.birthdate}}</span>
+							<span>{{dateToMDY(new Date(borrower.birthdate))}}</span>
 						</div>
 					</div>
 					<div class="col-xl-1 col-lg-6">
@@ -74,7 +74,7 @@
 					<div class="col-xl-4 col-lg-6">
 						<div class="info-display">
 							<span>Registration Date</span>
-							<span>{{borrower.date_registered}}</span>
+							<span>{{dateToMDY(new Date(borrower.date_registered))}}</span>
 						</div>
 					</div>
 				</div>
@@ -94,7 +94,7 @@
 					<div class="col-xl-2 col-lg-6">
 						<div class="info-display">
 							<span>ID. Date</span>
-							<span>{{borrower.id_date_issued}}</span>
+							<span>12/12/2019</span>
 						</div>
 					</div>
 				</div>
@@ -132,11 +132,16 @@
 					<span>{{borrower.spouse_lastname}}</span>
 				</div>
 			</div>
-			
+			<div class="col-xl-3">
+				<div class="info-display">
+					<span>Suffix</span>
+					<span>{{borrower.suffix}}</span>
+				</div>
+			</div>
 			<div class="col-xl-3">
 				<div class="info-display">
 					<span>Birth Date</span>
-					<span>{{borrower.spouse_birthdate}}</span>
+					<span>March 12, 1976</span>
 				</div>
 			</div>
 		</div>	
@@ -215,12 +220,12 @@
 					<tbody>
 						<tr v-if="borrower.outstandingObligations.length == 0"><td>No outstanding obligation information found.</td></tr>
 						<tr v-for="ob in borrower.outstandingObligations" :key="ob.id">
-							<td>{{ob.creditor}}</td>
-							<td>{{ob.amount}}</td>
-							<td>{{ob.balance}}</td>
-							<td>{{ob.term}}</td>
-							<td>{{ob.due_date}}</td>
-							<td>{{ob.amortization}}</td>
+							<td>Maria Lagahit</td>
+							<td>32,000.00</td>
+							<td>21,201.00</td>
+							<td>12 Months</td>
+							<td>12/12/2021</td>
+							<td></td>
 						</tr>
 					</tbody>
 				</table>
@@ -234,7 +239,7 @@
 				</div>
 				<table class="table table-stripped text-primary-dark light-border">
 					<thead>
-						<th>Name of Business/Agency</th>
+						<th>Type of Business</th>
 						<th>Business Address</th>
 						<th>Contact No.</th>
 						<th>Years in Business</th>
@@ -243,11 +248,11 @@
 					<tbody>
 						<tr v-if="borrower.businessInfo.length == 0"><td>No business information found.</td></tr>
 						<tr v-for="biz in borrower.businessInfo" :key="biz.id">
-							<td>{{biz.business_name}}</td>
-							<td>{{biz.business_address}}</td>
-							<td>{{biz.contact_no}}</td>
-							<td>{{biz.years_in_business}}</td>
-							<td>{{biz.income}}</td>
+							<td>Car Rental Service</td>
+							<td>Butuan City</td>
+							<td>09458545474</td>
+							<td>5</td>
+							<td>2,000.00</td>
 						</tr>
 					</tbody>
 				</table>
@@ -308,6 +313,11 @@ export default {
 				console.log(error);
 			}.bind(this));
 		},
+	},
+	computed:{
+		borrowerPhoto:function(){
+			return this.borrower.photo? this.borrower.photo : '/img/user.png';
+		}
 	},
 	mounted(){
 		this.fetchBorrower();
