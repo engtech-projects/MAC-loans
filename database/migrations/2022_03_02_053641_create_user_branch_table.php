@@ -14,7 +14,7 @@ class CreateUserBranchTable extends Migration
     public function up()
     {
         Schema::create('user_branch', function (Blueprint $table) {
-            $table->unsignedInteger('user_id');
+            $table->unsignedInteger('id');
             $table->unsignedInteger('branch_id');
             $table->timestamps();
         });

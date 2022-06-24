@@ -11,7 +11,6 @@ use App\Models\Document;
 use App\Models\Product;
 use App\Models\Amortization;
 use App\Models\Branch;
-use Session;
 use Carbon\Carbon;
 use App\Http\Resources\Borrower as BorrowerResource;
 use App\Http\Resources\LoanAccount as LoanAccountResource;

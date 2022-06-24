@@ -14,7 +14,7 @@ class CreateUserAccessibilityTable extends Migration
     public function up()
     {
         Schema::create('user_accessibility', function (Blueprint $table) {
-            $table->increments('id');
+            $table->unsignedInteger('id');
             $table->unsignedInteger('access_id');
             $table->timestamps();
         });
