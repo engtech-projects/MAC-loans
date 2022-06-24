@@ -57,4 +57,8 @@ class TransactionController extends Controller
 	public function overridePaymentDates(){
 		return \App\models\Payment::where('status','open')->orderBy('created_at', 'DESC')->select('created_at')->get();
 	}
+
+	public function todaysRelease(){
+		return \App\Models\LoanAccount::whereDate('date_release', Carbon::today())->get();
+	}
 }

@@ -105,7 +105,6 @@ class BorrowerController extends BaseController
      * Update the specified resource in storage.
      */
     public function update(Request $request, Borrower $borrower) {
-
         $borrower->fill($request->input());
         $borrower->save();
 

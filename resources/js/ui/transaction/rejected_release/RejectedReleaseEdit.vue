@@ -27,11 +27,11 @@
 					</ul>
 					<div class="tab-content" id="custom-content-below-tabContent">
 						<div class="tab-pane fade show active" id="custom-content-below-borrowerinfo" role="tabpanel" aria-labelledby="custom-content-below-home-tab">
-							<rejected-borrowers-info @nextBorrower="nextBorrower" :pborrower="rejectedAccount.borrower"></rejected-borrowers-info>
+							<rejected-borrowers-info :idType="idType" @nextBorrower="nextBorrower" :pborrower="rejectedAccount.borrower"></rejected-borrowers-info>
 						</div>
 
 
-						<co-borrower :borrowers="borrowers" :loandetails="rejectedAccount" @nextCoborrower="nextCoborrower"></co-borrower>
+						<co-borrower :idtype="idType" :borrowers="borrowers" :loandetails="rejectedAccount" @nextCoborrower="nextCoborrower"></co-borrower>
 
 
 
@@ -382,7 +382,7 @@
 
 <script>
     export default {
-		props:['token', 'title', 'id'],
+		props:['token', 'title', 'id', 'idtype'],
 		data(){
 			return {
 				rejectedAccounts:[],
@@ -396,7 +396,8 @@
 						outstandingObligations : [],
 						loanAccounts:[],
 					}
-				}
+				},
+				idTypes:[],
 			}
 		},
 		methods: {
@@ -585,6 +586,9 @@
 						this.rejectedAccount = data;
 					}
 				}.bind(this));
+			},
+			idType:function(){
+				return JSON.parse(this.idtype);
 			}
 		},
         mounted() {	

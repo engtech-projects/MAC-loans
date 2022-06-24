@@ -129,6 +129,7 @@ export default {
 			loanAccounts:[],
 			preference:{date:'',specification:''},
 			borrowers:[],
+			todaysReleases:[],
 			loanAccount:{
 				loan_amount:0,
 				documents: {
@@ -143,6 +144,9 @@ export default {
 					firstname:'',
 					middlename:'',
 					lastname:''
+				},
+				account_officer:{
+					name:'',
 				}
 			},
 			dates:[],
@@ -150,6 +154,14 @@ export default {
 		}
 	},
 	methods:{
+		notify:function(title, text, type){
+			this.$notify({
+				group: 'foo',
+				title: title,
+				text: text,
+				type: type,
+			});
+		},
 		fetchAccounts:function(){
 			axios.post(window.location.origin + '/api/account/overrrideaccounts', this.filter, {
 			headers: {
@@ -161,6 +173,15 @@ export default {
 			.then(function (response) {
 				this.loanAccounts = this.setCheckbox(response.data.data);
 				this.setDates;
+			}.bind(this))
+			.catch(function (error) {
+				console.log(error);
+			}.bind(this));
+		}, 
+		todaysRelease:function(){
+			axios.get(window.location.origin + '/transaction/todaysrelease')
+			.then(function (response) {
+				this.todaysReleases = response.data;
 			}.bind(this))
 			.catch(function (error) {
 				console.log(error);
@@ -192,6 +213,7 @@ export default {
 			.then(function (response) {
 				this.loanAccounts = this.setCheckbox(response.data.data);
 				this.setDates;
+				this.todaysRelease();
 			}.bind(this))
 			.catch(function (error) {
 				console.log(error);
@@ -212,6 +234,7 @@ export default {
 				}
 			})
 			.then(function (response) {
+				this.notify('',response.data.message, 'success');
 				this.fetchAccounts();
 			}.bind(this))
 			.catch(function (error) {
@@ -269,6 +292,9 @@ export default {
 					card_no:'',
 					promissory_number: '',
 				},
+				account_officer:{
+					name:'',
+				}
 			};				
 		},
 		isActive:function(data){
@@ -330,8 +356,8 @@ export default {
 		},
 		totalCash:function(){
 			var amount = 0;
-			this.loanAccounts.map(function(account){
-				if(this.dateToYMD(new Date(account.created_at)) == this.dateToYMD(new Date(this.preference.date)) && account.release_type == 'Cash Release'){
+			this.todaysReleases.map(function(account){
+				if(account.release_type == 'Cash Release'){
 					amount += account.net_proceeds;
 				}
 			}.bind(this));
@@ -339,8 +365,8 @@ export default {
 		},
 		totalCheck:function(){
 			var amount = 0;
-			this.loanAccounts.map(function(account){
-				if(this.dateToYMD(new Date(account.created_at)) == this.dateToYMD(new Date(this.preference.date)) && account.release_type == 'Cheque Release'){
+			this.todaysReleases.map(function(account){
+				if(account.release_type == 'Cheque Release'){
 					amount += account.net_proceeds;
 				}
 			}.bind(this));
@@ -348,21 +374,17 @@ export default {
 		},
 		totalDeduction:function(){
 			var amount = 0;
-			this.loanAccounts.map(function(account){
-				if(this.dateToYMD(new Date(account.created_at)) == this.dateToYMD(new Date(this.preference.date))){
-					amount += account.total_deduction;
-				}
+			this.todaysReleases.map(function(account){
+				amount += account.total_deduction;
 			}.bind(this));
-			return amount;
+			return 0;
 		},
 		totalRelease:function(){
 			var amount = 0;
-			this.loanAccounts.map(function(account){
-				if(this.dateToYMD(new Date(account.created_at)) == this.dateToYMD(new Date(this.preference.date))){
-					amount += account.net_proceeds;
-				}
+			this.todaysReleases.map(function(account){
+				amount += account.net_proceeds;
 			}.bind(this));
-			return amount;
+			return amount - this.totalDeduction;
 		},
 		filterClient:function(){
 			var result = [];
@@ -373,7 +395,7 @@ export default {
 							result.push(val);
 							return
 						}else{
-							if(val.borrower.borrower_num.toLowerCase().includes(this.preference.specification.toLowerCase()) || val.borrower.firstname.toLowerCase().includes(this.preference.specification.toLowerCase()) || val.borrower.lastname.toLowerCase().includes(this.preference.specification.toLowerCase()) || (val.borrower.firstname + ' ' + val.borrower.lastname).toLowerCase().includes(this.preference.specification.toLowerCase()) || (val.borrower.lastname + ' ' + val.borrower.firstname).toLowerCase().includes(this.preference.specification.toLowerCase())){
+							if(val.product.product_name.toLowerCase().includes(this.preference.specification.toLowerCase()) || (val.center && val.center.center.toLowerCase().includes(this.preference.specification.toLowerCase())) || val.account_num.toLowerCase().includes(this.preference.specification.toLowerCase()) || val.borrower.firstname.toLowerCase().includes(this.preference.specification.toLowerCase()) || val.borrower.lastname.toLowerCase().includes(this.preference.specification.toLowerCase()) || (val.borrower.firstname + ' ' + val.borrower.lastname).toLowerCase().includes(this.preference.specification.toLowerCase()) || (val.borrower.lastname + ' ' + val.borrower.firstname).toLowerCase().includes(this.preference.specification.toLowerCase())){
 								result.push(val);
 								return
 							}
@@ -394,6 +416,11 @@ export default {
 				this.dates.unshift(this.dateToYMD(new Date));
 			}
 			return true;
+		}
+	},
+	watch:{
+		'preference.date':function(newValue){
+			this.todaysRelease();
 		}
 	},
 	mounted(){

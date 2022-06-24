@@ -15,7 +15,7 @@
 						<div style="flex:4"></div>
 						<div class="form-group mb-10" style="flex: 5">
 							<label for="regDate" class="form-label">Date Registration</label>
-							<input type="date" v-model="borrower.date_registered" class="form-control form-input text-right" id="regDate">
+							<input disabled type="date" v-model="borrower.date_registered" class="form-control form-input text-right" id="regDate">
 						</div>
 					</div>
 					<div class="form-group mb-10" style="flex: 5">
@@ -81,11 +81,7 @@
 				<div class="form-group mb-10 mr-16" style="flex: 3">
 					<label for="idType" class="form-label">ID Type</label>
 					<select v-model="borrower.id_type" required name="" id="" class="form-control form-input">
-						<option value="SSS">SSS</option>
-						<option value="UMID">GSIS/UMID</option>
-						<option value="Driver's License">Driver's License</option>
-						<option value="Passport">Passport</option>
-						<option value="Senior ID">Senior ID</option>
+						<option v-for="type in idType" :key="type" :value="type">{{type}}</option>
 					</select>
 				</div>
 				<div class="form-group mb-10 mr-16" style="flex: 3">
@@ -140,11 +136,7 @@
 				<div class="form-group mb-10 mr-16" style="flex: 3">
 					<label for="spouseIdType" class="form-label">ID Type</label>
 					<select v-model="borrower.spouse_id_type" name="" id="" class="form-control form-input">
-						<option value="SSS">SSS</option>
-						<option value="UMID">GSIS/UMID</option>
-						<option value="Driver's License">Driver's License</option>
-						<option value="Passport">Passport</option>
-						<option value="Senior ID">Senior ID</option>
+						<option v-for="type in idType" :key="type" :value="type">{{type}}</option>
 					</select>
 				</div>
 				<div class="form-group mb-10 mr-16" style="flex: 3">
@@ -418,7 +410,7 @@
 
 <script>
     export default {
-		props:['token','pborrower', 'psave','clear'],
+		props:['token','pborrower', 'psave','clear', 'idType'],
 		data(){
 			return {
 				baseUrl: window.location.origin,

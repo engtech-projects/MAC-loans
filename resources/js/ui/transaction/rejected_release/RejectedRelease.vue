@@ -45,7 +45,7 @@
 								<div style="flex:4"></div>
 								<div class="form-group mb-10" style="flex: 5">
 									<label for="transactionDate" class="form-label">Transaction Date</label>
-									<input :value="dateToYMD(new Date)" type="date" class="form-control form-input text-right" id="transactionDate">
+									<input disabled :value="dateToYMD(new Date)" type="date" class="form-control form-input text-right" id="transactionDate">
 								</div>
 							</div>
 							<div class="form-group mb-5" style="flex: 5">
@@ -58,7 +58,7 @@
 							</div>
 						</div>
 						<div class="upload-photo d-flex flex-column" style="flex:4;padding-top:36px;">
-							<img src="/img/user.png" alt="">
+							<img :src="borrowerPhoto" alt="" style="max-width:250px;">
 						</div>
 					</div>
 					<div class="sep mb-24"></div>
@@ -114,7 +114,7 @@
 									<span class="">Prepaid Interest</span>
 									<span>:</span>
 								</div>
-								<span class="flex-1 text-primary-dark">{{formatToCurrency(loanAccount.prepaid_interest)}}</span>
+								<span class="flex-1 text-primary-dark">{{formatToCurrency(prepaidInterest)}}</span>
 							</div>
 
 							<div class="d-flex flex-row mb-12">
@@ -411,6 +411,12 @@ export default {
 				}
 			}.bind(this));
 			return accounts;
+		},
+		borrowerPhoto:function(){
+			return this.loanAccount.borrower_photo? this.loanAccount.borrower_photo : '/img/user.png';
+		},
+		prepaidInterest:function(){
+			return this.loanAccount.type=='Add-On'? 0:this.loanAccount.prepaid_interest;
 		}
 	},
 	mounted(){

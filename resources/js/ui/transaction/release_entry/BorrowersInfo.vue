@@ -506,7 +506,6 @@
 			},
 			save: function(){
 				this.borrower.img = this.img;
-				console.log(this.borrower.img)
 				if(this.borrower.borrower_id){
 						axios.put(window.location.origin + '/api/borrower/' + this.borrower.borrower_id, this.borrower, {
 							headers: {
@@ -637,13 +636,13 @@
 		watch: {
 			'img'(newValue){
 				if(!newValue){
-					this.img = this.baseUrl + '/img/user.png'
+					// this.img = this.baseUrl + '/img/user.png'
 				}
 			},
 			'pborrower'(newValue) {
 				if(!this.pclient){
 					this.borrower = newValue;
-					this.img = this.borrower.photo;
+					// this.img = this.borrower.photo;
 				}
 			},
 			'psave'(newValue) {
@@ -665,7 +664,12 @@
 		computed: {
 			borrowerImg:function(){
 				if(!this.img){
-					return window.location.origin + '/img/user.png';
+					if(!this.borrower.photo){
+						return window.location.origin + '/img/user.png';
+					}
+					else{
+						return this.borrower.photo;
+					}
 				}
 				return this.img;
 			}
