@@ -1,5 +1,6 @@
 <template>
 	<div class="d-flex flex-column">
+		<notifications group="foo" />
 		<section class="mb-24" style="flex:21;padding-left:16px;">
 			<span class="section-title mb-24">Details</span>
 			<div class="d-flex mb-12">
@@ -25,7 +26,7 @@
 					</div>
 				</div>
 				<div class="upload-photo d-flex flex-column" style="flex:4;padding-top:36px;">
-					<img :src="loanaccount.borrower_photo" alt="" style="max-width:250px;">
+					<img :src="borrowerPhoto" alt="" style="max-width:250px;">
 				</div>
 			</div>
 			<div class="sep mb-24"></div>
@@ -74,7 +75,7 @@
 							<span class="">Prepaid Interest</span>
 							<span>:</span>
 						</div>
-						<span class="flex-1 text-primary-dark">{{loanaccount.prepaid_interest}}</span>
+						<span class="flex-1 text-primary-dark">{{formatToCurrency(prepaidInterest)}}</span>
 					</div>
 
 					<div class="d-flex flex-row mb-12">
@@ -108,7 +109,7 @@
 							<span class="">Amount Loan</span>
 							<span>:</span>
 						</div>
-						<span class="flex-1 text-primary-dark">{{loanaccount.loan_amount}}</span>
+						<span class="flex-1 text-primary-dark">{{formatToCurrency(loanaccount.loan_amount)}}</span>
 					</div>
 
 					<div class="d-flex flex-row mb-12">
@@ -116,7 +117,7 @@
 							<span class="">Interest</span>
 							<span>:</span>
 						</div>
-						<span class="flex-1 text-primary-dark">{{loanaccount.interest_amount}}</span>
+						<span class="flex-1 text-primary-dark">{{formatToCurrency(loanaccount.interest_amount)}}</span>
 					</div>
 
 					<div class="d-flex flex-row mb-12">
@@ -166,6 +167,20 @@
 						</div>
 						<span class="flex-1 text-primary-dark">{{loanaccount.center? loanaccount.center.center:''}}</span>
 					</div>
+					<div class="d-flex flex-row mb-12">
+						<div class="d-flex flex-row flex-1 justify-content-between pr-24">
+							<span class="">Date Release</span>
+							<span>:</span>
+						</div>
+						<span class="flex-1 text-primary-dark">{{loanaccount.date_release.split('-').join('/')}}</span>
+					</div>
+					<div class="d-flex flex-row mb-12">
+						<div class="d-flex flex-row flex-1 justify-content-between pr-24">
+							<span class="">Due Date</span>
+							<span>:</span>
+						</div>
+						<span class="flex-1 text-primary-dark">{{dateToYMD(dueDate).split('-').join('/')}}</span>
+					</div>
 
 				</div>
 			</div>
@@ -212,7 +227,7 @@
 							</div>
 							<div class="d-flex mb-7">
 								<span class="mr-5">Amort: </span>
-								<span>3,033.00</span>
+								<span>{{amortAmount}}</span>
 							</div>
 							<div class="d-flex mb-7">
 								<span class="mr-5">Co-Borrower: </span>
@@ -239,23 +254,23 @@
 							</div>
 							<div class="d-flex mb-7">
 								<span class="mr-5">A/O: </span>
-								<span class="">{{loanaccount.account_officer.ao_id}} - {{loanaccount.account_officer.name}}</span>
+								<span class="">{{loanaccount.account_officer.name}}</span>
 							</div>
 							<div class="d-flex mb-7">
 								<span class="mr-5">Due Date: </span>
-								<span class="">{{dueDate}}</span>
+								<span class="">{{dateToYMD(dueDate).split('-').join('/')}}</span>
 							</div>
 							<div class="d-flex mb-7">
 								<span class="mr-5">Loan Type: </span>
 								<span class="">{{loanaccount.type}}</span>
 							</div>
 							<div class="d-flex mb-7">
-								<span class="mr-5">Interest Amount: </span>
-								<span class="">{{loanaccount.interest_amount}}</span>
+								<span class="mr-5">Interest: </span>
+								<span class="">{{loanInterest}}</span>
 							</div>
 							<div class="d-flex mb-7">
 								<span class="mr-5">Int. Rate: </span>
-								<span class="">{{loanaccount.interest_rate}}%</span>
+								<span class="">{{loanaccount.interest_rate + '%'}}</span>
 							</div>
 							<div class="d-flex mb-7">
 								<span class="mr-5">Mode: </span>
@@ -267,7 +282,7 @@
 							</div>
 							<div class="d-flex mb-7">
 								<span class="mr-5">ID #: </span>
-								<span class="">{{loanaccount.borrower.id_no}}</span>
+								<span class="">08-052415427-4</span>
 							</div>
 						</div>
 					</div>			
@@ -325,27 +340,27 @@
 					<div class="d-flex flex-row">
 						<div class="d-flex font-md mr-24 align-items-center">
 							<span class="mr-5">Date:</span>
-							<span>12/12/2021</span>
+							<span>{{dateToMDY2(new Date(pdate)).split('-').join('/')}}</span>
 						</div>
 						<div class="d-flex font-md align-items-center mr-45">
 							<span class="mr-5">Time:</span>
-							<span>12:00 PM</span>
+							<span>{{todayTime(new Date) + ' ' + amPm(new Date)}}</span>
 						</div>
 						<div class="d-flex flex-row align-items-center mr-24">
 							<span class="mr-10 flex-1">Account Officer : </span>
-							<select @change="overrideFilter" v-model="filter.ao" class="form-control flex-1 min-w-200" name="" id="">
+							<select @change="overrideFilter" v-model="filter.ao_id" class="form-control flex-1 min-w-200" name="" id="">
 								<option v-for="ao in aofficers" :key="ao.ao_id" :value="ao.ao_id">{{ao.name}}</option>
 							</select>
 						</div>
 						<div class="d-flex flex-row align-items-center mr-24">
 							<span class="mr-10 flex-1">Center : </span>
-							<select @change="overrideFilter" v-model="filter.center" class="form-control min-w-200 flex-1" name="" id="">
+							<select @change="overrideFilter" v-model="filter.center_id" class="form-control min-w-200 flex-1" name="" id="">
 								<option v-for="center in centers" :key="center.center_id" :value="center.center_id">{{center.center}}</option>
 							</select>
 						</div>
 						<div class="d-flex flex-row align-items-center">
 							<span class="mr-10 flex-1">Product Name : </span>
-							<select @change="overrideFilter" v-model="filter.product" class="form-control min-w-200 flex-1" name="" id="">
+							<select @change="overrideFilter" v-model="filter.product_id" class="form-control min-w-200 flex-1" name="" id="">
 								<option v-for="product in products" :key="product.product_id" :value="product.product_id">{{product.product_name}}</option>
 							</select>
 						</div>
@@ -468,8 +483,8 @@
 							<span class="font-26 text-bold text-primary-dark lh-1">CASH VOUCHER</span>
 						</div>
 						<div class="flex-1 d-flex justify-content-end pr-10">
-							<span class=" mr-10">Tuesday 12/21/2021</span>
-							<span class="">Time: 11:36 AM</span>
+							<span class=" mr-10">{{dateFullDay(new Date())}} {{dateToYMD(new Date()).split('-').join('/')}}</span>
+							<span class="">Time: {{todayTime(new Date())}} {{(new Date()).getHours() > 12? 'PM':'AM'}}</span>
 						</div>
 					</div>
 					<section class="mb-16">
@@ -479,7 +494,7 @@
 									<span class="flex-1 mw-150">Pay to</span>
 									<div class="d-flex flex-1">
 										<span class="mr-5">: </span>
-										<span> Puro, Jeryll R.</span>
+										<span> {{loanaccount.account_officer.name}}</span>
 									</div>
 								</div>
 								<div class="d-flex flex-row">
@@ -513,20 +528,20 @@
 									<span class="flex-1 mw-150">Particular</span>
 									<div class="d-flex flex-2">
 										<span class="mr-5">: </span>
-										<span> Loan Granted P 9,000.00 for 6 month(s) / weekly payment. With interest of 4% per month</span>
+										<span> Loan Granted P {{formatToCurrency(loanaccount.loan_amount)}} for {{loanaccount.terms / 30}} month(s) / weekly payment. With interest of {{loanaccount.interest_rate}}% per month</span>
 									</div>
 								</div>
 								<div class="d-flex flex-row">
 									<span class="flex-1 mw-150">Net Amount</span>
 									<div class="d-flex flex-2">
 										<span class="mr-5">: </span>
-										<span> P 8,607.00</span>
+										<span> P {{formatToCurrency(loanaccount.net_proceeds)}}</span>
 									</div>
 								</div>
 							</div>
 						</div>
 						<p class="mb-45">
-							Received payment from MICRO ACCESS LOANS CORPORATION - BUTUAN BRANCH (001) The sum of Eight Thousand Six Hundred Seven Pesos only.
+							Received payment from MICRO ACCESS LOANS CORPORATION - BUTUAN BRANCH (001) The sum of <span class="allcaps">{{numToWords(parseFloat(loanaccount.net_proceeds))}}</span> Pesos only.
 						</p>
 						<div class="d-flex flex-row">
 							<span class="flex-1">Received By: _________________________________</span>
@@ -549,14 +564,14 @@
 									<span class="flex-1 mw-150">Installment</span>
 									<div class="d-flex flex-2">
 										<span class="mr-5">: </span>
-										<span> 5 Monthly</span>
+										<span> {{loanaccount.terms/30}} Monthly</span>
 									</div>
 								</div>
 								<div class="d-flex flex-row">
 									<span class="flex-1 mw-150">Amortization</span>
 									<div class="d-flex flex-2">
 										<span class="mr-5">: </span>
-										<span> P 1,150.00</span>
+										<span> P {{amortAmount}}</span>
 									</div>
 								</div>
 							</div>
@@ -653,7 +668,7 @@ export default {
 	props:['ploanaccount', 'pdate', 'token', 'csrf'],
 	data(){
 		return {
-			filter:{ao_id:null,center_id:null,product_id:null, date:null},
+			filter:{ao_id:null,center_id:null,product_id:null, created_at:null},
 			borrower:'',
 			loanDetails:'',
 			loanaccount:{
@@ -665,6 +680,9 @@ export default {
 				},
 				center:{
 					center:''
+				},
+				account_officer:{
+					name:'',
 				}
 			},
 			amortizationSched:[],
@@ -673,9 +691,18 @@ export default {
 			aofficers:[],
 			productName:'',
 			filteredOverrides:[],
+			amortAmount:0,
 		}
 	},
 	methods:{
+		notify:function(title, text, type){
+			this.$notify({
+				group: 'foo',
+				title: title,
+				text: text,
+				type: type,
+			});
+		},
 		amortSched:function(){
 			axios.post(window.location.origin + '/api/account/generate-amortization', this.loanaccount, {
 				headers: {
@@ -686,6 +713,8 @@ export default {
 			})
 			.then(function (response) {
 				this.amortizationSched = response.data.data;
+				this.loanaccount.due_date = this.amortizationSched[this.amortizationSched.length - 1].amortization_date;
+				this.amortAmount = this.amortizationSched[0].total;
 			}.bind(this))
 			.catch(function (error) {
 				console.log(error);
@@ -737,6 +766,8 @@ export default {
 			}.bind(this));
 		},
 		fetchFilteredOverride: function(){
+			console.log(this.filter);
+			this.filter.created_at = this.pdate;
 			axios.post(window.location.origin + '/api/account/overrrideaccounts', this.filter, {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
@@ -761,9 +792,9 @@ export default {
 				}
 			})
 			.then(function (response) {
+				this.notify('',response.data.message, 'success');
 				this.$emit('updateLoanAccounts');
 				this.createAmortization();
-				console.log(response.data);
 			}.bind(this))
 			.catch(function (error) {
 				console.log(error);
@@ -785,12 +816,7 @@ export default {
 				console.log(error);
 			}.bind(this));
 		},
-		// dateToYMD:function(date) {
-		// 	var d = date.getDate();
-		// 	var m = date.getMonth() + 1;
-		// 	var y = date.getFullYear();
-		// 	return '' + y + '-' + (m<=9 ? '0' + m : m) + '-' + (d <= 9 ? '0' + d : d);
-		// },
+		
 		reject: function(){
 			axios.put(window.location.origin + '/api/account/reject/' + this.loanaccount.loan_account_id, this.loanaccount, {
 				headers: {
@@ -801,7 +827,6 @@ export default {
 			})
 			.then(function (response) {
 				this.$emit('updateLoanAccounts');
-				console.log(response.data);
 			}.bind(this))
 			.catch(function (error) {
 				console.log(error);
@@ -816,7 +841,7 @@ export default {
 			window.print();
 		},
 		overrideFilter:function(){
-			if(this.filter.product && this.filter.center && this.filter.ao){
+			if(this.filter.product || this.filter.center || this.filter.ao_id){
 				this.fetchFilteredOverride();
 			}
 		},
@@ -838,11 +863,16 @@ export default {
 		},
 	},
 	computed:{
+		prepaidInterest:function(){
+			return this.loanaccount.type=='Add-On'? 0:this.loanaccount.prepaid_interest;
+		},
 		dueDate:function(){
-			if(this.amortizationSched.length > 0){
-				return this.amortizationSched[0].amortization_date;
+			if(this.loanaccount.loan_account_id){
+				var dt = new Date(this.loanaccount.date_release);
+				dt.setDate(dt.getDate() + this.loanaccount.terms);
+				return dt;
 			}
-			return '';
+			return new Date
 		},
 		loanInterest:function(){
 			if(this.amortizationSched.length > 0){
@@ -855,7 +885,6 @@ export default {
 			this.filteredOverrides.map(function(fo){
 				if(fo.release_type == 'Cash Release'){
 					amount += parseFloat(fo.loan_amount);
-					console.log(fo);
 				}
 			});
 			return amount;
@@ -881,11 +910,16 @@ export default {
 		totalRelease:function(){
 			var amount = 0;
 			return this.totalCash + this.totalMemo + this.totalCheque;
+		},
+		borrowerPhoto:function(){
+			return this.loanaccount.borrower_photo? this.loanaccount.borrower_photo : '/img/user.png';
 		}
 	},
 	watch:{
 		'ploanaccount'(newData){
 			this.loanaccount = newData;
+			this.loanaccount.date_release = this.dateToYMD(new Date());
+			this.loanaccount.loan_account_id?this.amortSched():null;
 		},
 	},
 	mounted(){
@@ -895,4 +929,3 @@ export default {
 	}
 }
 </script>
-
