@@ -15307,14 +15307,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: ['loandetails', 'borrowers'],
   data: function data() {
@@ -15820,16 +15812,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  props: ['token', 'pborrower', 'psave', 'clear'],
+  props: ['token', 'pborrower', 'psave', 'clear', 'idType'],
   data: function data() {
     return {
       baseUrl: window.location.origin,
@@ -16934,6 +16918,12 @@ __webpack_require__.r(__webpack_exports__);
         }
       }.bind(this));
       return accounts;
+    },
+    borrowerPhoto: function borrowerPhoto() {
+      return this.loanAccount.borrower_photo ? this.loanAccount.borrower_photo : '/img/user.png';
+    },
+    prepaidInterest: function prepaidInterest() {
+      return this.loanAccount.type == 'Add-On' ? 0 : this.loanAccount.prepaid_interest;
     }
   },
   mounted: function mounted() {
@@ -17337,7 +17327,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  props: ['token', 'title', 'id'],
+  props: ['token', 'title', 'id', 'idtype'],
   data: function data() {
     return {
       rejectedAccounts: [],
@@ -17351,7 +17341,8 @@ __webpack_require__.r(__webpack_exports__);
           outstandingObligations: [],
           loanAccounts: []
         }
-      }
+      },
+      idTypes: []
     };
   },
   methods: {
@@ -17525,6 +17516,9 @@ __webpack_require__.r(__webpack_exports__);
           this.rejectedAccount = data;
         }
       }.bind(this));
+    },
+    idType: function idType() {
+      return JSON.parse(this.idtype);
     }
   },
   mounted: function mounted() {
@@ -71216,29 +71210,14 @@ var render = function () {
                             },
                           },
                         },
-                        [
-                          _c("option", { attrs: { value: "SSS" } }, [
-                            _vm._v("SSS"),
-                          ]),
-                          _vm._v(" "),
-                          _c("option", { attrs: { value: "UMID" } }, [
-                            _vm._v("GSIS/UMID"),
-                          ]),
-                          _vm._v(" "),
-                          _c(
+                        _vm._l(_vm.idtype, function (type) {
+                          return _c(
                             "option",
-                            { attrs: { value: "Driver's License" } },
-                            [_vm._v("Driver's License")]
-                          ),
-                          _vm._v(" "),
-                          _c("option", { attrs: { value: "Passport" } }, [
-                            _vm._v("Passport"),
-                          ]),
-                          _vm._v(" "),
-                          _c("option", { attrs: { value: "Senior ID" } }, [
-                            _vm._v("Senior ID"),
-                          ]),
-                        ]
+                            { key: type, domProps: { value: type } },
+                            [_vm._v(_vm._s(type))]
+                          )
+                        }),
+                        0
                       ),
                     ]
                   ),
@@ -71496,29 +71475,14 @@ var render = function () {
                             },
                           },
                         },
-                        [
-                          _c("option", { attrs: { value: "SSS" } }, [
-                            _vm._v("SSS"),
-                          ]),
-                          _vm._v(" "),
-                          _c("option", { attrs: { value: "UMID" } }, [
-                            _vm._v("GSIS/UMID"),
-                          ]),
-                          _vm._v(" "),
-                          _c(
+                        _vm._l(_vm.idtype, function (type) {
+                          return _c(
                             "option",
-                            { attrs: { value: "Driver's License" } },
-                            [_vm._v("Driver's License")]
-                          ),
-                          _vm._v(" "),
-                          _c("option", { attrs: { value: "Passport" } }, [
-                            _vm._v("Passport"),
-                          ]),
-                          _vm._v(" "),
-                          _c("option", { attrs: { value: "Senior ID" } }, [
-                            _vm._v("Senior ID"),
-                          ]),
-                        ]
+                            { key: type, domProps: { value: type } },
+                            [_vm._v(_vm._s(type))]
+                          )
+                        }),
+                        0
                       ),
                     ]
                   ),
@@ -71764,7 +71728,11 @@ var render = function () {
                               },
                             ],
                             staticClass: "form-control form-input text-right",
-                            attrs: { type: "date", id: "regDate" },
+                            attrs: {
+                              disabled: "",
+                              type: "date",
+                              id: "regDate",
+                            },
                             domProps: { value: _vm.borrower.date_registered },
                             on: {
                               input: function ($event) {
@@ -72295,27 +72263,14 @@ var render = function () {
                           },
                         },
                       },
-                      [
-                        _c("option", { attrs: { value: "SSS" } }, [
-                          _vm._v("SSS"),
-                        ]),
-                        _vm._v(" "),
-                        _c("option", { attrs: { value: "UMID" } }, [
-                          _vm._v("GSIS/UMID"),
-                        ]),
-                        _vm._v(" "),
-                        _c("option", { attrs: { value: "Driver's License" } }, [
-                          _vm._v("Driver's License"),
-                        ]),
-                        _vm._v(" "),
-                        _c("option", { attrs: { value: "Passport" } }, [
-                          _vm._v("Passport"),
-                        ]),
-                        _vm._v(" "),
-                        _c("option", { attrs: { value: "Senior ID" } }, [
-                          _vm._v("Senior ID"),
-                        ]),
-                      ]
+                      _vm._l(_vm.idType, function (type) {
+                        return _c(
+                          "option",
+                          { key: type, domProps: { value: type } },
+                          [_vm._v(_vm._s(type))]
+                        )
+                      }),
+                      0
                     ),
                   ]
                 ),
@@ -72700,27 +72655,14 @@ var render = function () {
                           },
                         },
                       },
-                      [
-                        _c("option", { attrs: { value: "SSS" } }, [
-                          _vm._v("SSS"),
-                        ]),
-                        _vm._v(" "),
-                        _c("option", { attrs: { value: "UMID" } }, [
-                          _vm._v("GSIS/UMID"),
-                        ]),
-                        _vm._v(" "),
-                        _c("option", { attrs: { value: "Driver's License" } }, [
-                          _vm._v("Driver's License"),
-                        ]),
-                        _vm._v(" "),
-                        _c("option", { attrs: { value: "Passport" } }, [
-                          _vm._v("Passport"),
-                        ]),
-                        _vm._v(" "),
-                        _c("option", { attrs: { value: "Senior ID" } }, [
-                          _vm._v("Senior ID"),
-                        ]),
-                      ]
+                      _vm._l(_vm.idType, function (type) {
+                        return _c(
+                          "option",
+                          { key: type, domProps: { value: type } },
+                          [_vm._v(_vm._s(type))]
+                        )
+                      }),
+                      0
                     ),
                   ]
                 ),
@@ -76293,7 +76235,11 @@ var render = function () {
                           _vm._v(" "),
                           _c("input", {
                             staticClass: "form-control form-input text-right",
-                            attrs: { type: "date", id: "transactionDate" },
+                            attrs: {
+                              disabled: "",
+                              type: "date",
+                              id: "transactionDate",
+                            },
                             domProps: { value: _vm.dateToYMD(new Date()) },
                           }),
                         ]
@@ -76355,7 +76301,19 @@ var render = function () {
                   ]
                 ),
                 _vm._v(" "),
-                _vm._m(3),
+                _c(
+                  "div",
+                  {
+                    staticClass: "upload-photo d-flex flex-column",
+                    staticStyle: { flex: "4", "padding-top": "36px" },
+                  },
+                  [
+                    _c("img", {
+                      staticStyle: { "max-width": "250px" },
+                      attrs: { src: _vm.borrowerPhoto, alt: "" },
+                    }),
+                  ]
+                ),
               ]),
               _vm._v(" "),
               _c("div", { staticClass: "sep mb-24" }),
@@ -76382,7 +76340,7 @@ var render = function () {
                   ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "d-flex flex-row mb-12" }, [
-                    _vm._m(4),
+                    _vm._m(3),
                     _vm._v(" "),
                     _c("span", { staticClass: "flex-1 text-primary-dark" }, [
                       _vm._v(
@@ -76394,7 +76352,7 @@ var render = function () {
                   ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "d-flex flex-row mb-12" }, [
-                    _vm._m(5),
+                    _vm._m(4),
                     _vm._v(" "),
                     _c("span", { staticClass: "flex-1 text-primary-dark" }, [
                       _vm._v(
@@ -76404,7 +76362,7 @@ var render = function () {
                   ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "d-flex flex-row mb-12" }, [
-                    _vm._m(6),
+                    _vm._m(5),
                     _vm._v(" "),
                     _c("span", { staticClass: "flex-1 text-primary-dark" }, [
                       _vm._v(
@@ -76416,7 +76374,7 @@ var render = function () {
                   ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "d-flex flex-row mb-12" }, [
-                    _vm._m(7),
+                    _vm._m(6),
                     _vm._v(" "),
                     _c("span", { staticClass: "flex-1 text-primary-dark" }, [
                       _vm._v(
@@ -76426,7 +76384,7 @@ var render = function () {
                   ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "d-flex flex-row mb-12" }, [
-                    _vm._m(8),
+                    _vm._m(7),
                     _vm._v(" "),
                     _c("span", { staticClass: "flex-1 text-primary-dark" }, [
                       _vm._v(
@@ -76438,19 +76396,15 @@ var render = function () {
                   ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "d-flex flex-row mb-12" }, [
-                    _vm._m(9),
+                    _vm._m(8),
                     _vm._v(" "),
                     _c("span", { staticClass: "flex-1 text-primary-dark" }, [
-                      _vm._v(
-                        _vm._s(
-                          _vm.formatToCurrency(_vm.loanAccount.prepaid_interest)
-                        )
-                      ),
+                      _vm._v(_vm._s(_vm.formatToCurrency(_vm.prepaidInterest))),
                     ]),
                   ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "d-flex flex-row mb-12" }, [
-                    _vm._m(10),
+                    _vm._m(9),
                     _vm._v(" "),
                     _c("span", { staticClass: "flex-1 text-primary-dark" }, [
                       _vm._v(
@@ -76460,7 +76414,7 @@ var render = function () {
                   ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "d-flex flex-row mb-12" }, [
-                    _vm._m(11),
+                    _vm._m(10),
                     _vm._v(" "),
                     _c("span", { staticClass: "flex-1 text-primary-dark" }, [
                       _vm._v(
@@ -76472,7 +76426,7 @@ var render = function () {
                   ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "d-flex flex-row mb-12" }, [
-                    _vm._m(12),
+                    _vm._m(11),
                     _vm._v(" "),
                     _c("span", { staticClass: "flex-1 text-primary-dark" }, [
                       _vm._v(_vm._s(_vm.loanAccount.release_type)),
@@ -76486,7 +76440,7 @@ var render = function () {
                   ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "d-flex flex-row mb-12" }, [
-                    _vm._m(13),
+                    _vm._m(12),
                     _vm._v(" "),
                     _c("span", { staticClass: "flex-1 text-primary-dark" }, [
                       _vm._v(_vm._s(_vm.loanAccount.release_type)),
@@ -76494,7 +76448,7 @@ var render = function () {
                   ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "d-flex flex-row mb-12" }, [
-                    _vm._m(14),
+                    _vm._m(13),
                     _vm._v(" "),
                     _c("span", { staticClass: "flex-1 text-primary-dark" }, [
                       _vm._v(
@@ -76506,7 +76460,7 @@ var render = function () {
                   ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "d-flex flex-row mb-12" }, [
-                    _vm._m(15),
+                    _vm._m(14),
                     _vm._v(" "),
                     _c("span", { staticClass: "flex-1 text-primary-dark" }, [
                       _vm._v(
@@ -76515,10 +76469,10 @@ var render = function () {
                     ]),
                   ]),
                   _vm._v(" "),
-                  _vm._m(16),
+                  _vm._m(15),
                   _vm._v(" "),
                   _c("div", { staticClass: "d-flex flex-row mb-12" }, [
-                    _vm._m(17),
+                    _vm._m(16),
                     _vm._v(" "),
                     _c("span", { staticClass: "flex-1 text-primary-dark" }, [
                       _vm._v(
@@ -76602,7 +76556,7 @@ var render = function () {
                       staticStyle: { "min-height": "200px", padding: "16px" },
                     },
                     [
-                      _vm._m(18),
+                      _vm._m(17),
                       _vm._v(" "),
                       _c("div", { staticClass: "d-flex flex-row" }, [
                         _c("div", { staticStyle: { flex: "2" } }),
@@ -76687,19 +76641,6 @@ var staticRenderFns = [
       _vm._v(" "),
       _c("th"),
     ])
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      {
-        staticClass: "upload-photo d-flex flex-column",
-        staticStyle: { flex: "4", "padding-top": "36px" },
-      },
-      [_c("img", { attrs: { src: "/img/user.png", alt: "" } })]
-    )
   },
   function () {
     var _vm = this
@@ -77013,7 +76954,10 @@ var render = function () {
                 },
                 [
                   _c("rejected-borrowers-info", {
-                    attrs: { pborrower: _vm.rejectedAccount.borrower },
+                    attrs: {
+                      idType: _vm.idType,
+                      pborrower: _vm.rejectedAccount.borrower,
+                    },
                     on: { nextBorrower: _vm.nextBorrower },
                   }),
                 ],
@@ -77022,6 +76966,7 @@ var render = function () {
               _vm._v(" "),
               _c("co-borrower", {
                 attrs: {
+                  idtype: _vm.idType,
                   borrowers: _vm.borrowers,
                   loandetails: _vm.rejectedAccount,
                 },
