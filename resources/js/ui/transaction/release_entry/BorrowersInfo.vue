@@ -28,7 +28,7 @@
 					</div>
 				</div>
 				<div class="upload-photo d-flex flex-column" style="flex:4">
-					<img :src="borrowerImg" alt="" style="max-width:250px;">
+					<img :src="borrowerPhoto" alt="" style="max-width:250px;">
 					<a href="#" data-toggle="modal" data-target="#uploadModal" class="btn btn-primary" style="padding:10px!important">Upload or Take a Photo</a>
 				</div>
 			</div>
@@ -672,6 +672,15 @@
 					}
 				}
 				return this.img;
+			},
+			borrowerPhoto:function(){
+				if(this.img){
+					return this.img;
+				}else if(this.borrower.photo && !this.img){
+					return this.borrower.photo;
+				}else{
+					return window.location.origin + '/img/user.png';
+				}
 			}
 		},
         mounted() {							

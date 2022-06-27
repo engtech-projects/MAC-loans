@@ -3,13 +3,14 @@
 		<notifications group="foo" />
 		<div class="mb-16"></div>
 		<div class="ml-16 mb-24 bb-primary-dark pb-7 text-block d-flex justify-content-between">
-			<h1 class="m-0 font-35">Release Entry</h1>
+			<h1 class="m-0 font-35">{{title}}</h1>
 			<a href="#" @click.prevent="clearData.borrower=1;resetLoanDetails()" class="btn btn-primary-dark min-w-150">New Client</a>
 		</div><!-- /.col -->
 		<div class="d-flex flex-column flex-xl-row p-16">
 				<div style="flex:9;">
-					<client-list-side @selectBorrower="selectBorrower" :pborrowers="borrowers" :id="{}"></client-list-side>
-					<div d-flex flex-column v-if="borrower.borrower_id">
+					<client-list-side v-if="rejectid" @selectAccount="selectAccount" :pborrowers="rejectedAccounts" :account="rejectedAccount.loan_account_id"></client-list-side>
+					<client-list-side v-if="!rejectid" @selectBorrower="selectBorrower" :pborrowers="borrowers" :id="{}"></client-list-side>
+					<div d-flex flex-column v-if="borrower.borrower_id && !rejectid">
 						<span class="text-red font-md">Existing Current Loan Accounts</span>
 						<div class="mb-10"></div>
 						<table class="table table-stripped light-border table-hover">
@@ -849,9 +850,20 @@
 
 <script>
     export default {
-		props:['token', 'idtype'],
+		props:['token', 'idtype','rejectid','title'],
 		data(){
 			return {
+				rejectedAccounts:[],
+				rejectedAccount:{
+					borrower:{
+						borrower_id:null,
+						employmentInfo : [],
+						businessInfo : [],
+						householdMembers : [],
+						outstandingObligations : [],
+						loanAccounts:[],
+					}
+				},
 				clearData:{
 					borrower:0
 				},
@@ -941,6 +953,62 @@
 			}
 		},
 		methods: {
+			selectAccount:function(data){
+				this.fetchBorrower(data);
+			},
+			fetchBorrower:function(borrower){
+				axios.get(window.location.origin + '/api/borrower/' + borrower.borrower.borrower_id, {
+					headers: {
+						'Authorization': 'Bearer ' + this.token,
+						'Content-Type': 'application/json',
+						'Accept': 'application/json'
+					}
+				})
+				.then(function (response) {
+					borrower.borrower = response.data.data;
+					borrower.documents = borrower.document;
+					this.rejectedAccount = borrower;
+					this.borrower = borrower.borrower;
+					this.loanDetails = borrower;
+				}.bind(this))
+				.catch(function (error) {
+					console.log(error);
+				}.bind(this));
+			},
+			fetchRejectedAccounts:function(){
+				axios.get(window.location.origin + '/api/account/rejected', {
+				headers: {
+					'Authorization': 'Bearer ' + this.token,
+						'Content-Type': 'application/json',
+						'Accept': 'application/json'
+					}
+				})
+				.then(function (response) {
+					this.rejectedAccounts = response.data.data;
+					// console.log(response.data.data);
+					// this.setAccount;
+				}.bind(this))
+				.catch(function (error) {
+					console.log(error);
+				}.bind(this));
+			},
+			fetchRejectedAccount:function(){
+				axios.get(window.location.origin + '/api/account/show/' + this.rejectid, {
+				headers: {
+					'Authorization': 'Bearer ' + this.token,
+						'Content-Type': 'application/json',
+						'Accept': 'application/json'
+					}
+				})
+				.then(function (response) {
+					this.fetchBorrower(response.data.data);
+					// console.log(response.data.data);
+					// this.rejectedAccount = response.data.data;
+				}.bind(this))
+				.catch(function (error) {
+					console.log(error);
+				}.bind(this));
+			},
 			amortSched:function(){
 				axios.post(window.location.origin + '/api/account/generate-amortization', this.loanDetails, {
 					headers: {
@@ -1256,6 +1324,8 @@
 			this.resetBorrower();
 			this.resetLoanDetails();
 			this.fetchProducts();
+			this.fetchRejectedAccounts();
+			this.fetchRejectedAccount();
 			// this.navigate('custom-content-below-loandetails-tab');
 			// this.navigate('custom-content-below-coborrowerinfo-tab');
         }
