@@ -16523,105 +16523,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-var _computed;
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -16955,7 +16856,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  props: ['token', 'rejectid'],
+  props: ['token'],
   data: function data() {
     return {
       loanAccounts: [],
@@ -16998,15 +16899,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           firstname: '',
           middlename: '',
           lastname: ''
-        },
-        product: {
-          product_name: ''
-        },
-        account_officer: {
-          name: ''
-        },
-        center: {
-          center: ''
         }
       }
     };
@@ -17033,7 +16925,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       return '';
     }
   },
-  computed: (_computed = {
+  computed: {
     filterAccounts: function filterAccounts() {
       var accounts = [];
       this.loanAccounts.map(function (account) {
@@ -17046,30 +16938,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     borrowerPhoto: function borrowerPhoto() {
       return this.loanAccount.borrower_photo ? this.loanAccount.borrower_photo : '/img/user.png';
     },
-    dueDate: function dueDate() {
-      if (this.loanAccount.loan_account_id) {
-        var dt = new Date(this.loanAccount.date_release);
-        dt.setDate(dt.getDate() + this.loanAccount.terms);
-        return dt;
-      }
-
-      return new Date();
+    prepaidInterest: function prepaidInterest() {
+      return this.loanAccount.type == 'Add-On' ? 0 : this.loanAccount.prepaid_interest;
     }
-  }, _defineProperty(_computed, "dueDate", function dueDate() {
-    if (this.loanAccount.loan_account_id) {
-      var dt = new Date(this.loanAccount.date_release);
-      dt.setDate(dt.getDate() + this.loanAccount.terms);
-      return dt;
-    }
-
-    return new Date();
-  }), _defineProperty(_computed, "numOfInstallment", function numOfInstallment() {
-    return this.loanAccount.terms / 30;
-  }), _defineProperty(_computed, "totalDeductions", function totalDeductions() {
-    return this.loanAccount.filing_fee + this.loanAccount.document_stamp + this.loanAccount.insurance + this.loanAccount.notarial_fee + this.loanAccount.prepaid_interest + this.loanAccount.affidavit_fee + this.loanAccount.memo;
-  }), _defineProperty(_computed, "center", function center() {
-    return this.loanAccount.center ? this.loanAccount.center.center : '';
-  }), _computed),
+  },
   mounted: function mounted() {
     this.fetchRejectedAccounts();
   }
@@ -76394,7 +76266,9 @@ var render = function () {
                         class: _vm.isActive(account),
                       },
                       [
-                        _c("td", [_vm._v(_vm._s(account.account_num))]),
+                        _c("td", [
+                          _vm._v(_vm._s(account.borrower.borrower_num)),
+                        ]),
                         _vm._v(" "),
                         _c("td", [
                           _c("a", { attrs: { href: "#" } }, [
@@ -76493,7 +76367,11 @@ var render = function () {
                           _vm._v(" "),
                           _c("input", {
                             staticClass: "form-control form-input text-right",
-                            attrs: { type: "date", id: "transactionDate" },
+                            attrs: {
+                              disabled: "",
+                              type: "date",
+                              id: "transactionDate",
+                            },
                             domProps: { value: _vm.dateToYMD(new Date()) },
                           }),
                         ]
@@ -76610,159 +76488,13 @@ var render = function () {
                     _vm._v(" "),
                     _c("span", { staticClass: "flex-1 text-primary-dark" }, [
                       _vm._v(
-                        _vm._s(
-                          _vm.formatToCurrency(_vm.loanAccount.interest_amount)
-                        )
-                      ),
-                    ]),
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "d-flex flex-row mb-12" }, [
-                    _vm._m(5),
-                    _vm._v(" "),
-                    _c("span", { staticClass: "flex-1 text-primary-dark" }, [
-                      _vm._v(_vm._s(_vm.loanAccount.terms)),
-                    ]),
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "d-flex flex-row mb-12" }, [
-                    _vm._m(6),
-                    _vm._v(" "),
-                    _c("span", { staticClass: "flex-1 text-primary-dark" }, [
-                      _vm._v(_vm._s(_vm.loanAccount.interest_rate) + "%"),
-                    ]),
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "d-flex flex-row mb-12" }, [
-                    _vm._m(7),
-                    _vm._v(" "),
-                    _c("span", { staticClass: "flex-1 text-primary-dark" }, [
-                      _vm._v(_vm._s(_vm.loanAccount.type)),
-                    ]),
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "d-flex flex-row mb-12" }, [
-                    _vm._m(8),
-                    _vm._v(" "),
-                    _c("span", { staticClass: "flex-1 text-primary-dark" }, [
-                      _vm._v(_vm._s(_vm.loanAccount.payment_mode)),
-                    ]),
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "d-flex flex-row mb-12" }, [
-                    _vm._m(9),
-                    _vm._v(" "),
-                    _c("span", { staticClass: "flex-1 text-primary-dark" }, [
-                      _vm._v(_vm._s(_vm.loanAccount.product.product_name)),
-                    ]),
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "d-flex flex-row mb-12" }, [
-                    _vm._m(10),
-                    _vm._v(" "),
-                    _c("span", { staticClass: "flex-1 text-primary-dark" }, [
-                      _vm._v(
-                        _vm._s(
-                          _vm.formatToCurrency(
-                            _vm.loanAccount.loan_amount - _vm.totalDeductions
-                          )
-                        )
-                      ),
-                    ]),
-                  ]),
-                  _vm._v("\n.\n\t\t\t\t\t\t\t"),
-                  _c("div", { staticClass: "d-flex flex-row mb-12" }, [
-                    _vm._m(11),
-                    _vm._v(" "),
-                    _c("span", { staticClass: "flex-1 text-primary-dark" }, [
-                      _vm._v(_vm._s(_vm.loanAccount.day_schedule)),
-                    ]),
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "d-flex flex-row mb-12" }, [
-                    _vm._m(12),
-                    _vm._v(" "),
-                    _c("span", { staticClass: "flex-1 text-primary-dark" }, [
-                      _vm._v(
-                        _vm._s(_vm.dateToYMD(_vm.dueDate).split("-").join("/"))
-                      ),
-                    ]),
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "d-flex flex-row mb-12" }, [
-                    _vm._m(13),
-                    _vm._v(" "),
-                    _c("span", { staticClass: "flex-1 text-primary-dark" }, [
-                      _vm._v(_vm._s(_vm.numOfInstallment)),
-                    ]),
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "d-flex flex-row mb-12" }, [
-                    _vm._m(14),
-                    _vm._v(" "),
-                    _c("span", { staticClass: "flex-1 text-primary-dark" }, [
-                      _vm._v(_vm._s(_vm.center)),
-                    ]),
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "d-flex flex-row mb-12" }, [
-                    _vm._m(15),
-                    _vm._v(" "),
-                    _c("span", { staticClass: "flex-1 text-primary-dark" }, [
-                      _vm._v(_vm._s(_vm.loanAccount.account_officer.name)),
-                    ]),
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "d-flex flex-row mb-12" }, [
-                    _vm._m(16),
-                    _vm._v(" "),
-                    _c("span", { staticClass: "flex-1 text-primary-dark" }, [
-                      _vm._v(_vm._s(_vm.loanAccount.co_borrower_name)),
-                    ]),
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "d-flex flex-row mb-12" }, [
-                    _vm._m(17),
-                    _vm._v(" "),
-                    _c("span", { staticClass: "flex-1 text-primary-dark" }, [
-                      _vm._v(_vm._s(_vm.loanAccount.co_borrower_address)),
-                    ]),
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "d-flex flex-row mb-12" }, [
-                    _vm._m(18),
-                    _vm._v(" "),
-                    _c("span", { staticClass: "flex-1 text-primary-dark" }, [
-                      _vm._v(_vm._s(_vm.loanAccount.co_maker_name)),
-                    ]),
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "d-flex flex-row mb-12" }, [
-                    _vm._m(19),
-                    _vm._v(" "),
-                    _c("span", { staticClass: "flex-1 text-primary-dark" }, [
-                      _vm._v(_vm._s(_vm.loanAccount.co_maker_address)),
-                    ]),
-                  ]),
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "d-flex flex-column flex-1" }, [
-                  _c("h4", { staticClass: "text-primary-dark mb-12" }, [
-                    _vm._v("Deductions"),
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "d-flex flex-row mb-12" }, [
-                    _vm._m(20),
-                    _vm._v(" "),
-                    _c("span", { staticClass: "flex-1 text-primary-dark" }, [
-                      _vm._v(
                         _vm._s(_vm.formatToCurrency(_vm.loanAccount.filing_fee))
                       ),
                     ]),
                   ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "d-flex flex-row mb-12" }, [
-                    _vm._m(21),
+                    _vm._m(5),
                     _vm._v(" "),
                     _c("span", { staticClass: "flex-1 text-primary-dark" }, [
                       _vm._v(
@@ -76774,7 +76506,7 @@ var render = function () {
                   ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "d-flex flex-row mb-12" }, [
-                    _vm._m(22),
+                    _vm._m(6),
                     _vm._v(" "),
                     _c("span", { staticClass: "flex-1 text-primary-dark" }, [
                       _vm._v(
@@ -76784,7 +76516,7 @@ var render = function () {
                   ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "d-flex flex-row mb-12" }, [
-                    _vm._m(23),
+                    _vm._m(7),
                     _vm._v(" "),
                     _c("span", { staticClass: "flex-1 text-primary-dark" }, [
                       _vm._v(
@@ -76796,31 +76528,15 @@ var render = function () {
                   ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "d-flex flex-row mb-12" }, [
-                    _vm._m(24),
+                    _vm._m(8),
                     _vm._v(" "),
                     _c("span", { staticClass: "flex-1 text-primary-dark" }, [
-                      _vm._v(
-                        _vm._s(
-                          _vm.formatToCurrency(_vm.loanAccount.prepaid_interest)
-                        )
-                      ),
+                      _vm._v(_vm._s(_vm.formatToCurrency(_vm.prepaidInterest))),
                     ]),
                   ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "d-flex flex-row mb-12" }, [
-                    _vm._m(25),
-                    _vm._v(" "),
-                    _c("span", { staticClass: "flex-1 text-primary-dark" }, [
-                      _vm._v(
-                        _vm._s(
-                          _vm.formatToCurrency(_vm.loanAccount.affidavit_fee)
-                        )
-                      ),
-                    ]),
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "d-flex flex-row mb-24" }, [
-                    _vm._m(26),
+                    _vm._m(9),
                     _vm._v(" "),
                     _c("span", { staticClass: "flex-1 text-primary-dark" }, [
                       _vm._v(
@@ -76829,40 +76545,74 @@ var render = function () {
                     ]),
                   ]),
                   _vm._v(" "),
-                  _c("div", {
-                    staticClass: "d-flex flex-row mb-12 bb-dark-10",
-                  }),
-                  _vm._v(" "),
                   _c("div", { staticClass: "d-flex flex-row mb-12" }, [
-                    _vm._m(27),
+                    _vm._m(10),
                     _vm._v(" "),
-                    _c(
-                      "span",
-                      { staticClass: "flex-1 text-primary-dark text-bold" },
-                      [
-                        _vm._v(
-                          _vm._s(_vm.formatToCurrency(_vm.totalDeductions))
-                        ),
-                      ]
-                    ),
+                    _c("span", { staticClass: "flex-1 text-primary-dark" }, [
+                      _vm._v(
+                        _vm._s(
+                          _vm.formatToCurrency(_vm.loanAccount.net_proceeds)
+                        )
+                      ),
+                    ]),
                   ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "d-flex flex-row mb-12" }, [
-                    _vm._m(28),
+                    _vm._m(11),
                     _vm._v(" "),
-                    _c(
-                      "span",
-                      { staticClass: "flex-1 text-primary-dark text-bold" },
-                      [
-                        _vm._v(
-                          _vm._s(
-                            _vm.formatToCurrency(
-                              _vm.loanAccount.loan_amount - _vm.totalDeductions
-                            )
-                          )
-                        ),
-                      ]
-                    ),
+                    _c("span", { staticClass: "flex-1 text-primary-dark" }, [
+                      _vm._v(_vm._s(_vm.loanAccount.release_type)),
+                    ]),
+                  ]),
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "d-flex flex-column flex-1" }, [
+                  _c("h4", { staticClass: "text-primary-dark mb-12" }, [
+                    _vm._v("SUMMARY OF RELEASE"),
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "d-flex flex-row mb-12" }, [
+                    _vm._m(12),
+                    _vm._v(" "),
+                    _c("span", { staticClass: "flex-1 text-primary-dark" }, [
+                      _vm._v(_vm._s(_vm.loanAccount.release_type)),
+                    ]),
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "d-flex flex-row mb-12" }, [
+                    _vm._m(13),
+                    _vm._v(" "),
+                    _c("span", { staticClass: "flex-1 text-primary-dark" }, [
+                      _vm._v(
+                        _vm._s(
+                          _vm.formatToCurrency(_vm.loanAccount.net_proceeds)
+                        )
+                      ),
+                    ]),
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "d-flex flex-row mb-12" }, [
+                    _vm._m(14),
+                    _vm._v(" "),
+                    _c("span", { staticClass: "flex-1 text-primary-dark" }, [
+                      _vm._v(
+                        _vm._s(_vm.formatToCurrency(_vm.loanAccount.memo))
+                      ),
+                    ]),
+                  ]),
+                  _vm._v(" "),
+                  _vm._m(15),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "d-flex flex-row mb-12" }, [
+                    _vm._m(16),
+                    _vm._v(" "),
+                    _c("span", { staticClass: "flex-1 text-primary-dark" }, [
+                      _vm._v(
+                        _vm._s(
+                          _vm.formatToCurrency(_vm.loanAccount.loan_amount)
+                        )
+                      ),
+                    ]),
                   ]),
                 ]),
               ]),
@@ -76938,7 +76688,7 @@ var render = function () {
                       staticStyle: { "min-height": "200px", padding: "16px" },
                     },
                     [
-                      _vm._m(29),
+                      _vm._m(17),
                       _vm._v(" "),
                       _c("div", { staticClass: "d-flex flex-row" }, [
                         _c("div", { staticStyle: { flex: "2" } }),
@@ -77032,215 +76782,7 @@ var staticRenderFns = [
       "div",
       { staticClass: "d-flex flex-row flex-1 justify-content-between pr-24" },
       [
-        _c("span", {}, [_vm._v("Amount Loan")]),
-        _vm._v(" "),
-        _c("span", [_vm._v(":")]),
-      ]
-    )
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      { staticClass: "d-flex flex-row flex-1 justify-content-between pr-24" },
-      [
-        _c("span", {}, [_vm._v("Interest")]),
-        _vm._v(" "),
-        _c("span", [_vm._v(":")]),
-      ]
-    )
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      { staticClass: "d-flex flex-row flex-1 justify-content-between pr-24" },
-      [_c("span", {}, [_vm._v("Term")]), _vm._v(" "), _c("span", [_vm._v(":")])]
-    )
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      { staticClass: "d-flex flex-row flex-1 justify-content-between pr-24" },
-      [_c("span", {}, [_vm._v("Rate")]), _vm._v(" "), _c("span", [_vm._v(":")])]
-    )
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      { staticClass: "d-flex flex-row flex-1 justify-content-between pr-24" },
-      [_c("span", {}, [_vm._v("Type")]), _vm._v(" "), _c("span", [_vm._v(":")])]
-    )
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      { staticClass: "d-flex flex-row flex-1 justify-content-between pr-24" },
-      [_c("span", {}, [_vm._v("Mode")]), _vm._v(" "), _c("span", [_vm._v(":")])]
-    )
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      { staticClass: "d-flex flex-row flex-1 justify-content-between pr-24" },
-      [
-        _c("span", {}, [_vm._v("Product")]),
-        _vm._v(" "),
-        _c("span", [_vm._v(":")]),
-      ]
-    )
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      { staticClass: "d-flex flex-row flex-1 justify-content-between pr-24" },
-      [
-        _c("span", {}, [_vm._v("Net Amount")]),
-        _vm._v(" "),
-        _c("span", [_vm._v(":")]),
-      ]
-    )
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      { staticClass: "d-flex flex-row flex-1 justify-content-between pr-24" },
-      [
-        _c("span", {}, [_vm._v("Day Schedule")]),
-        _vm._v(" "),
-        _c("span", [_vm._v(":")]),
-      ]
-    )
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      { staticClass: "d-flex flex-row flex-1 justify-content-between pr-24" },
-      [
-        _c("span", {}, [_vm._v("Due Date")]),
-        _vm._v(" "),
-        _c("span", [_vm._v(":")]),
-      ]
-    )
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      { staticClass: "d-flex flex-row flex-1 justify-content-between pr-24" },
-      [
-        _c("span", {}, [_vm._v("# of Installment")]),
-        _vm._v(" "),
-        _c("span", [_vm._v(":")]),
-      ]
-    )
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      { staticClass: "d-flex flex-row flex-1 justify-content-between pr-24" },
-      [
-        _c("span", {}, [_vm._v("Center Name")]),
-        _vm._v(" "),
-        _c("span", [_vm._v(":")]),
-      ]
-    )
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      { staticClass: "d-flex flex-row flex-1 justify-content-between pr-24" },
-      [
-        _c("span", {}, [_vm._v("Account Officer")]),
-        _vm._v(" "),
-        _c("span", [_vm._v(":")]),
-      ]
-    )
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      { staticClass: "d-flex flex-row flex-1 justify-content-between pr-24" },
-      [
-        _c("span", {}, [_vm._v("Co Borrower")]),
-        _vm._v(" "),
-        _c("span", [_vm._v(":")]),
-      ]
-    )
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      { staticClass: "d-flex flex-row flex-1 justify-content-between pr-24" },
-      [
-        _c("span", {}, [_vm._v("Co Borrower Address")]),
-        _vm._v(" "),
-        _c("span", [_vm._v(":")]),
-      ]
-    )
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      { staticClass: "d-flex flex-row flex-1 justify-content-between pr-24" },
-      [
-        _c("span", {}, [_vm._v("Co Maker")]),
-        _vm._v(" "),
-        _c("span", [_vm._v(":")]),
-      ]
-    )
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      { staticClass: "d-flex flex-row flex-1 justify-content-between pr-24" },
-      [
-        _c("span", {}, [_vm._v("Co Maker Address")]),
+        _c("span", {}, [_vm._v("Amount")]),
         _vm._v(" "),
         _c("span", [_vm._v(":")]),
       ]
@@ -77310,7 +76852,7 @@ var staticRenderFns = [
       "div",
       { staticClass: "d-flex flex-row flex-1 justify-content-between pr-24" },
       [
-        _c("span", {}, [_vm._v("Prepaid_interest")]),
+        _c("span", {}, [_vm._v("Prepaid Interest")]),
         _vm._v(" "),
         _c("span", [_vm._v(":")]),
       ]
@@ -77324,31 +76866,7 @@ var staticRenderFns = [
       "div",
       { staticClass: "d-flex flex-row flex-1 justify-content-between pr-24" },
       [
-        _c("span", {}, [_vm._v("Affidavit")]),
-        _vm._v(" "),
-        _c("span", [_vm._v(":")]),
-      ]
-    )
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      { staticClass: "d-flex flex-row flex-1 justify-content-between pr-24" },
-      [_c("span", {}, [_vm._v("Memo")]), _vm._v(" "), _c("span", [_vm._v(":")])]
-    )
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      { staticClass: "d-flex flex-row flex-1 justify-content-between pr-24" },
-      [
-        _c("span", { staticClass: "text-bold" }, [_vm._v("Total Deduction")]),
+        _c("span", {}, [_vm._v("Other / Mem")]),
         _vm._v(" "),
         _c("span", [_vm._v(":")]),
       ]
@@ -77362,7 +76880,95 @@ var staticRenderFns = [
       "div",
       { staticClass: "d-flex flex-row flex-1 justify-content-between pr-24" },
       [
-        _c("span", { staticClass: "text-bold" }, [_vm._v("Net Amount")]),
+        _c("span", {}, [_vm._v("Net Amount")]),
+        _vm._v(" "),
+        _c("span", [_vm._v(":")]),
+      ]
+    )
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      { staticClass: "d-flex flex-row flex-1 justify-content-between pr-24" },
+      [
+        _c("span", {}, [_vm._v("Cash Release Type")]),
+        _vm._v(" "),
+        _c("span", [_vm._v(":")]),
+      ]
+    )
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      { staticClass: "d-flex flex-row flex-1 justify-content-between pr-24" },
+      [
+        _c("span", {}, [_vm._v("Release Type")]),
+        _vm._v(" "),
+        _c("span", [_vm._v(":")]),
+      ]
+    )
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      { staticClass: "d-flex flex-row flex-1 justify-content-between pr-24" },
+      [
+        _c("span", {}, [_vm._v("Total Cash")]),
+        _vm._v(" "),
+        _c("span", [_vm._v(":")]),
+      ]
+    )
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      { staticClass: "d-flex flex-row flex-1 justify-content-between pr-24" },
+      [
+        _c("span", {}, [_vm._v("Total Memo")]),
+        _vm._v(" "),
+        _c("span", [_vm._v(":")]),
+      ]
+    )
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "d-flex flex-row mb-12" }, [
+      _c(
+        "div",
+        { staticClass: "d-flex flex-row flex-1 justify-content-between pr-24" },
+        [
+          _c("span", {}, [_vm._v("Total Check")]),
+          _vm._v(" "),
+          _c("span", [_vm._v(":")]),
+        ]
+      ),
+      _vm._v(" "),
+      _c("span", { staticClass: "flex-1 text-primary-dark" }, [_vm._v("0.00")]),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      { staticClass: "d-flex flex-row flex-1 justify-content-between pr-24" },
+      [
+        _c("span", {}, [_vm._v("Total Release")]),
         _vm._v(" "),
         _c("span", [_vm._v(":")]),
       ]

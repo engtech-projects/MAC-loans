@@ -25,7 +25,7 @@
 							<td></td>
 						</tr>
 						<tr v-for="account in filterAccounts" :key="account.loan_account_id" class="loan-item" :class="isActive(account)">
-							<td>{{account.account_num}}</td>
+							<td>{{account.borrower.borrower_num}}</td>
 							<td><a href="#">{{account.borrower.firstname + ' ' + account.borrower.lastname}}</a></td>
 							<td @click="loanAccount=account"><span class="text-green c-pointer">Select</span></td>
 						</tr>
@@ -45,7 +45,7 @@
 								<div style="flex:4"></div>
 								<div class="form-group mb-10" style="flex: 5">
 									<label for="transactionDate" class="form-label">Transaction Date</label>
-									<input :value="dateToYMD(new Date)" type="date" class="form-control form-input text-right" id="transactionDate">
+									<input disabled :value="dateToYMD(new Date)" type="date" class="form-control form-input text-right" id="transactionDate">
 								</div>
 							</div>
 							<div class="form-group mb-5" style="flex: 5">
@@ -58,7 +58,7 @@
 							</div>
 						</div>
 						<div class="upload-photo d-flex flex-column" style="flex:4;padding-top:36px;">
-							<img :src="borrowerPhoto" style="max-width:250px" alt="">
+							<img :src="borrowerPhoto" alt="" style="max-width:250px;">
 						</div>
 					</div>
 					<div class="sep mb-24"></div>
@@ -71,7 +71,7 @@
 							<h4 class="text-primary-dark mb-12">Loan Details</h4>
 							<div class="d-flex flex-row mb-12">
 								<div class="d-flex flex-row flex-1 justify-content-between pr-24">
-									<span class="">Amount Loan</span>
+									<span class="">Amount</span>
 									<span>:</span>
 								</div>
 								<span class="flex-1 text-primary-dark">{{formatToCurrency(loanAccount.loan_amount)}}</span>
@@ -79,141 +79,12 @@
 
 							<div class="d-flex flex-row mb-12">
 								<div class="d-flex flex-row flex-1 justify-content-between pr-24">
-									<span class="">Interest</span>
-									<span>:</span>
-								</div>
-								<span class="flex-1 text-primary-dark">{{formatToCurrency(loanAccount.interest_amount)}}</span>
-							</div>
-
-							<div class="d-flex flex-row mb-12">
-								<div class="d-flex flex-row flex-1 justify-content-between pr-24">
-									<span class="">Term</span>
-									<span>:</span>
-								</div>
-								<span class="flex-1 text-primary-dark">{{loanAccount.terms}}</span>
-							</div>
-
-							<div class="d-flex flex-row mb-12">
-								<div class="d-flex flex-row flex-1 justify-content-between pr-24">
-									<span class="">Rate</span>
-									<span>:</span>
-								</div>
-								<span class="flex-1 text-primary-dark">{{loanAccount.interest_rate}}%</span>
-							</div>
-
-							<div class="d-flex flex-row mb-12">
-								<div class="d-flex flex-row flex-1 justify-content-between pr-24">
-									<span class="">Type</span>
-									<span>:</span>
-								</div>
-								<span class="flex-1 text-primary-dark">{{loanAccount.type}}</span>
-							</div>
-
-							<div class="d-flex flex-row mb-12">
-								<div class="d-flex flex-row flex-1 justify-content-between pr-24">
-									<span class="">Mode</span>
-									<span>:</span>
-								</div>
-								<span class="flex-1 text-primary-dark">{{loanAccount.payment_mode}}</span>
-							</div>
-
-							<div class="d-flex flex-row mb-12">
-								<div class="d-flex flex-row flex-1 justify-content-between pr-24">
-									<span class="">Product</span>
-									<span>:</span>
-								</div>
-								<span class="flex-1 text-primary-dark">{{loanAccount.product.product_name}}</span>
-							</div>
-
-							<div class="d-flex flex-row mb-12">
-								<div class="d-flex flex-row flex-1 justify-content-between pr-24">
-									<span class="">Net Amount</span>
-									<span>:</span>
-								</div>
-								<span class="flex-1 text-primary-dark">{{formatToCurrency(loanAccount.loan_amount - totalDeductions)}}</span>
-							</div>
-.
-							<div class="d-flex flex-row mb-12">
-								<div class="d-flex flex-row flex-1 justify-content-between pr-24">
-									<span class="">Day Schedule</span>
-									<span>:</span>
-								</div>
-								<span class="flex-1 text-primary-dark">{{loanAccount.day_schedule}}</span>
-							</div>
-
-							<div class="d-flex flex-row mb-12">
-								<div class="d-flex flex-row flex-1 justify-content-between pr-24">
-									<span class="">Due Date</span>
-									<span>:</span>
-								</div>
-								<span class="flex-1 text-primary-dark">{{dateToYMD(dueDate).split('-').join('/')}}</span>
-							</div>
-
-							<div class="d-flex flex-row mb-12">
-								<div class="d-flex flex-row flex-1 justify-content-between pr-24">
-									<span class=""># of Installment</span>
-									<span>:</span>
-								</div>
-								<span class="flex-1 text-primary-dark">{{numOfInstallment}}</span>
-							</div>
-
-							<div class="d-flex flex-row mb-12">
-								<div class="d-flex flex-row flex-1 justify-content-between pr-24">
-									<span class="">Center Name</span>
-									<span>:</span>
-								</div>
-								<span class="flex-1 text-primary-dark">{{center}}</span>
-							</div>
-
-							<div class="d-flex flex-row mb-12">
-								<div class="d-flex flex-row flex-1 justify-content-between pr-24">
-									<span class="">Account Officer</span>
-									<span>:</span>
-								</div>
-								<span class="flex-1 text-primary-dark">{{loanAccount.account_officer.name}}</span>
-							</div>
-
-							<div class="d-flex flex-row mb-12">
-								<div class="d-flex flex-row flex-1 justify-content-between pr-24">
-									<span class="">Co Borrower</span>
-									<span>:</span>
-								</div>
-								<span class="flex-1 text-primary-dark">{{loanAccount.co_borrower_name}}</span>
-							</div>
-
-							<div class="d-flex flex-row mb-12">
-								<div class="d-flex flex-row flex-1 justify-content-between pr-24">
-									<span class="">Co Borrower Address</span>
-									<span>:</span>
-								</div>
-								<span class="flex-1 text-primary-dark">{{loanAccount.co_borrower_address}}</span>
-							</div>
-
-							<div class="d-flex flex-row mb-12">
-								<div class="d-flex flex-row flex-1 justify-content-between pr-24">
-									<span class="">Co Maker</span>
-									<span>:</span>
-								</div>
-								<span class="flex-1 text-primary-dark">{{loanAccount.co_maker_name}}</span>
-							</div>
-
-							<div class="d-flex flex-row mb-12">
-								<div class="d-flex flex-row flex-1 justify-content-between pr-24">
-									<span class="">Co Maker Address</span>
-									<span>:</span>
-								</div>
-								<span class="flex-1 text-primary-dark">{{loanAccount.co_maker_address}}</span>
-							</div>
-						</div>
-						<div class="d-flex flex-column flex-1">
-							<h4 class="text-primary-dark mb-12">Deductions</h4>
-							<div class="d-flex flex-row mb-12">
-								<div class="d-flex flex-row flex-1 justify-content-between pr-24">
 									<span class="">Filling Fee</span>
 									<span>:</span>
 								</div>
 								<span class="flex-1 text-primary-dark">{{formatToCurrency(loanAccount.filing_fee)}}</span>
 							</div>
+
 							<div class="d-flex flex-row mb-12">
 								<div class="d-flex flex-row flex-1 justify-content-between pr-24">
 									<span class="">Documents</span>
@@ -221,6 +92,7 @@
 								</div>
 								<span class="flex-1 text-primary-dark">{{formatToCurrency(loanAccount.document_stamp)}}</span>
 							</div>
+
 							<div class="d-flex flex-row mb-12">
 								<div class="d-flex flex-row flex-1 justify-content-between pr-24">
 									<span class="">Insurance</span>
@@ -228,6 +100,7 @@
 								</div>
 								<span class="flex-1 text-primary-dark">{{formatToCurrency(loanAccount.insurance)}}</span>
 							</div>
+
 							<div class="d-flex flex-row mb-12">
 								<div class="d-flex flex-row flex-1 justify-content-between pr-24">
 									<span class="">Notarial</span>
@@ -235,43 +108,75 @@
 								</div>
 								<span class="flex-1 text-primary-dark">{{formatToCurrency(loanAccount.notarial_fee)}}</span>
 							</div>
+
 							<div class="d-flex flex-row mb-12">
 								<div class="d-flex flex-row flex-1 justify-content-between pr-24">
-									<span class="">Prepaid_interest</span>
+									<span class="">Prepaid Interest</span>
 									<span>:</span>
 								</div>
-								<span class="flex-1 text-primary-dark">{{formatToCurrency(loanAccount.prepaid_interest)}}</span>
+								<span class="flex-1 text-primary-dark">{{formatToCurrency(prepaidInterest)}}</span>
 							</div>
+
 							<div class="d-flex flex-row mb-12">
 								<div class="d-flex flex-row flex-1 justify-content-between pr-24">
-									<span class="">Affidavit</span>
-									<span>:</span>
-								</div>
-								<span class="flex-1 text-primary-dark">{{formatToCurrency(loanAccount.affidavit_fee)}}</span>
-							</div>
-							<div class="d-flex flex-row mb-24">
-								<div class="d-flex flex-row flex-1 justify-content-between pr-24">
-									<span class="">Memo</span>
+									<span class="">Other / Mem</span>
 									<span>:</span>
 								</div>
 								<span class="flex-1 text-primary-dark">{{formatToCurrency(loanAccount.memo)}}</span>
 							</div>
-							<div class="d-flex flex-row mb-12 bb-dark-10">
-								
+
+							<div class="d-flex flex-row mb-12">
+								<div class="d-flex flex-row flex-1 justify-content-between pr-24">
+									<span class="">Net Amount</span>
+									<span>:</span>
+								</div>
+								<span class="flex-1 text-primary-dark">{{formatToCurrency(loanAccount.net_proceeds)}}</span>
+							</div>
+
+							<div class="d-flex flex-row mb-12">
+								<div class="d-flex flex-row flex-1 justify-content-between pr-24">
+									<span class="">Cash Release Type</span>
+									<span>:</span>
+								</div>
+								<span class="flex-1 text-primary-dark">{{loanAccount.release_type}}</span>
+							</div>
+						</div>
+						<div class="d-flex flex-column flex-1">
+							<h4 class="text-primary-dark mb-12">SUMMARY OF RELEASE</h4>
+							<div class="d-flex flex-row mb-12">
+								<div class="d-flex flex-row flex-1 justify-content-between pr-24">
+									<span class="">Release Type</span>
+									<span>:</span>
+								</div>
+								<span class="flex-1 text-primary-dark">{{loanAccount.release_type}}</span>
 							</div>
 							<div class="d-flex flex-row mb-12">
 								<div class="d-flex flex-row flex-1 justify-content-between pr-24">
-									<span class="text-bold">Total Deduction</span>
+									<span class="">Total Cash</span>
 									<span>:</span>
 								</div>
-								<span class="flex-1 text-primary-dark text-bold">{{formatToCurrency(totalDeductions)}}</span>
+								<span class="flex-1 text-primary-dark">{{formatToCurrency(loanAccount.net_proceeds)}}</span>
 							</div>
 							<div class="d-flex flex-row mb-12">
 								<div class="d-flex flex-row flex-1 justify-content-between pr-24">
-									<span class="text-bold">Net Amount</span>
+									<span class="">Total Memo</span>
 									<span>:</span>
 								</div>
-								<span class="flex-1 text-primary-dark text-bold">{{formatToCurrency(loanAccount.loan_amount - totalDeductions)}}</span>
+								<span class="flex-1 text-primary-dark">{{formatToCurrency(loanAccount.memo)}}</span>
+							</div>
+							<div class="d-flex flex-row mb-12">
+								<div class="d-flex flex-row flex-1 justify-content-between pr-24">
+									<span class="">Total Check</span>
+									<span>:</span>
+								</div>
+								<span class="flex-1 text-primary-dark">0.00</span>
+							</div>
+							<div class="d-flex flex-row mb-12">
+								<div class="d-flex flex-row flex-1 justify-content-between pr-24">
+									<span class="">Total Release</span>
+									<span>:</span>
+								</div>
+								<span class="flex-1 text-primary-dark">{{formatToCurrency(loanAccount.loan_amount)}}</span>
 							</div>
 						</div>
 					</div>
@@ -427,7 +332,7 @@
 
 <script>
 export default {
-	props:['token','rejectid'],
+	props:['token'],
 	data(){
 		return {
 			loanAccounts:[],
@@ -470,16 +375,7 @@ export default {
 					firstname:'',
 					middlename:'',
 					lastname:''
-				},
-				product:{
-					product_name:''
-				},
-				account_officer:{
-					name:''
-				},
-				center:{
-					center:''
-				}
+				} 
 			}
 		}
 	},
@@ -519,30 +415,8 @@ export default {
 		borrowerPhoto:function(){
 			return this.loanAccount.borrower_photo? this.loanAccount.borrower_photo : '/img/user.png';
 		},
-		dueDate:function(){
-			if(this.loanAccount.loan_account_id){
-				var dt = new Date(this.loanAccount.date_release);
-				dt.setDate(dt.getDate() + this.loanAccount.terms);
-				return dt;
-			}
-			return new Date
-		},
-		dueDate:function(){
-			if(this.loanAccount.loan_account_id){
-				var dt = new Date(this.loanAccount.date_release);
-				dt.setDate(dt.getDate() + this.loanAccount.terms);
-				return dt;
-			}
-			return new Date
-		},
-		numOfInstallment:function(){
-			return this.loanAccount.terms / 30;
-		},
-		totalDeductions:function(){
-			return this.loanAccount.filing_fee + this.loanAccount.document_stamp + this.loanAccount.insurance + this.loanAccount.notarial_fee + this.loanAccount.prepaid_interest + this.loanAccount.affidavit_fee + this.loanAccount.memo;
-		},
-		center:function(){
-			return this.loanAccount.center? this.loanAccount.center.center : '';
+		prepaidInterest:function(){
+			return this.loanAccount.type=='Add-On'? 0:this.loanAccount.prepaid_interest;
 		}
 	},
 	mounted(){
