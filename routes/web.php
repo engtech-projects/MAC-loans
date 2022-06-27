@@ -34,7 +34,7 @@ Route::group(['middleware' => 'auth'], function (){
 	Route::get('/client_information/personal_information_details/{id}', [ClientInformationController::class, 'personalInformationDetails'])->name('client_information.personal_information_details');
 	Route::get('/client_information/statement_of_accounts_list', [ClientInformationController::class, 'statementOfAccountsList'])->name('client_information.statement_of_accounts_list');
 	Route::get('/client_information/personal_information_details/edit/{id}', [ClientInformationController::class, 'personalInformationDetailsEdit'])->name('client_information.personal_information_details.edit');
-
+	
 	Route::get('/maintenance/cancel_payments', [MaintenanceController::class, 'cancelPayments'])->name('maintenance.cancel_payments');
 	Route::get('/maintenance/product_setup', [MaintenanceController::class, 'productSetup'])->name('maintenance.product_setup');
 	Route::get('/maintenance/center_ao', [MaintenanceController::class, 'centerAo'])->name('maintenance.center_ao');
@@ -50,6 +50,7 @@ Route::group(['middleware' => 'auth'], function (){
 	Route::get('/transaction/override_payment', [TransactionController::class, 'overridePayment'])->name('transaction.override_payment');
 	Route::get('/transaction/overridepaymentdates', [TransactionController::class, 'overridePaymentDates']);
 	Route::get('/transaction/release_entry/loanaccounts', [TransactionController::class, 'releaseAccounts']);
+	Route::get('/transaction/todaysrelease', [TransactionController::class, 'todaysRelease']);
 
 	Route::get('/reports/transaction/product', [ReportsController::class, 'transactionProduct'])->name('reports.transaction');
 	Route::get('/reports/release/product', [ReportsController::class, 'releaseProduct'])->name('reports.release.product');
