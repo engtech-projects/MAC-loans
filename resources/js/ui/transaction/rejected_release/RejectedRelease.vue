@@ -240,7 +240,7 @@
 									<span class="">Prepaid_interest</span>
 									<span>:</span>
 								</div>
-								<span class="flex-1 text-primary-dark">{{formatToCurrency(loanAccount.prepaid_interest)}}</span>
+								<span class="flex-1 text-primary-dark">{{formatToCurrency(prepaidInterest)}}</span>
 							</div>
 							<div class="d-flex flex-row mb-12">
 								<div class="d-flex flex-row flex-1 justify-content-between pr-24">
@@ -543,6 +543,9 @@ export default {
 		},
 		center:function(){
 			return this.loanAccount.center? this.loanAccount.center.center : '';
+		},
+		prepaidInterest:function(){
+			return this.loanAccount.type=='Add-On'? 0 : this.loanAccount.prepaid_interest;
 		}
 	},
 	mounted(){
