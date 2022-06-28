@@ -368,6 +368,7 @@ export default {
 			document.getElementById('warningBtn').click();
 		},
 		save: function(){
+			this.setPrepaidInterest();
 			if(this.loanDetails.loan_account_id){
 					axios.put(window.location.origin + '/api/account/update/' + this.loanDetails.loan_account_id, this.loanDetails, {
 						headers: {
@@ -422,6 +423,11 @@ export default {
 				return true;
 			}
 			return false;
+		},
+		setPrepaidInterest:function(){
+			if(this.loanDetails.type == 'Add-On'){
+				this.loanDetails.prepaid_interest = 0.00;
+			}
 		}
 	},
 	watch: {
