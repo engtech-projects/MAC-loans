@@ -62,7 +62,6 @@ class UserController extends BaseController
             }
 
         }
-
         return $this->sendResponse(new UserResource($user), 'User Created');
     }
 
@@ -70,13 +69,6 @@ class UserController extends BaseController
      * Display the specified resource.
      */
     public function show(User $user) {
-
-        // if( $user->hasAccess('view statement of accounts') ) {
-        //     return 'has acccess';
-        // }else{
-        //     return 'no access';
-        // }
-
         return $this->sendResponse(new UserResource($user), 'User fetched.');
     }
 

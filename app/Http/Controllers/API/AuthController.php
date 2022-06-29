@@ -22,7 +22,7 @@ class AuthController extends BaseController
     	$credentials = $request->only('username', 'password');
         $branch_id = $request->branch_id;
 
-    	if(Auth::attempt($credentials)){ 
+    	if(Auth::attempt($credentials)){
 
             $isAllowed = false;
 
