@@ -62,7 +62,6 @@ class UserController extends BaseController
             }
 
         }
-
         return $this->sendResponse(new UserResource($user), 'User Created');
     }
 
