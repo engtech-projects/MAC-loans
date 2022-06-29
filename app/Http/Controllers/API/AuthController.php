@@ -24,15 +24,27 @@ class AuthController extends BaseController
 
     	if(Auth::attempt($credentials)){ 
 
-            $success['token'] =  Auth::user()->createToken('auth_token')->plainTextToken;
-            $success['name'] =  Auth::user()->username;
-            $success['branch'] = $branch_id;
-            $success['tokens'] = Auth::user()->tokens;
-            
-            return $this->sendResponse($success, 'User signed in');
-        }else {
-            return $this->sendError('Error.', ['error'=>'Unauthorised']);
+            $isAllowed = false;
+
+            foreach (Auth::user()->branch as $branch) {
+                
+                if( $branch->branch_id == $branch_id ){
+                    $isAllowed = true;
+                    break;
+                }
+            }
+
+            if( $isAllowed ) {
+                $success['token'] =  Auth::user()->createToken('auth_token')->plainTextToken;
+                $success['name'] =  Auth::user()->username;
+                $success['branch'] = $branch_id;
+                // $success['tokens'] = Auth::user()->tokens;
+                return $this->sendResponse($success, 'User signed in');
+            }
         }
+        
+        return $this->sendError('Invalid Credentials / Cannot access specified branch', ['error' => 'Unauthorised']);
+        
     }
 
     public function logout() {

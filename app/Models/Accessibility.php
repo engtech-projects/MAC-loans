@@ -16,4 +16,30 @@ class Accessibility extends Model
     	'label', 'group', 'permission', 'description'
     ];
 
+    public function permissions() {
+
+    	$groups = [
+    		'Client Information',
+    		'Transaction',
+    		'Maintenance',
+    		'Reports',
+    		'End of Day',
+    		'Data'
+    	];
+
+    	$accessibility = [];
+
+    	foreach ($groups as $group) {
+    		
+    		$accessibility[$group] = Accessibility::where([ 'group' => $group ])->get();
+
+    		if( count($accessibility[$group]) > 0 ){
+
+    			foreach ($accessibility[$group] as $key => $value) {
+    				$value->child_permissions = Accessibility::where([ 'group' => $value->label ])->get();
+    			}
+    		}
+    	}
+    	return $accessibility;
+    }
 }

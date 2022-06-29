@@ -77,7 +77,7 @@ class LoanAccountController extends BaseController
     // yyyy-mm-dd format
     // get override release accounts
     public function overrideAccountList(Request $request) {
-    
+
         $filters = [
             'created_at' => ($request->has('date')) ? $request->input('date') : false,
             'ao_id' => ($request->has('ao_id')) ? $request->input('ao_id') : false,

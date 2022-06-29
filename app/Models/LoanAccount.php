@@ -115,19 +115,19 @@ class LoanAccount extends Model
 
       $accounts = LoanAccount::where('status', '=', 'pending');
 
-      if( isset($filters['created_at']) && $filters['created_at'] ){
+      if( isset($filters['created_at']) && $filters['created_at'] != 'all'){
          $accounts->whereDate('loan_accounts.created_at', '=', $filters['created_at'] );
       }
 
-      if( isset($filters['ao_id']) && $filters['ao_id'] ){
+      if( isset($filters['ao_id']) && $filters['ao_id'] != 'all' ){
          $accounts->where('loan_accounts.ao_id', '=', $filters['ao_id']);
       }
 
-      if( isset($filters['center_id']) && $filters['center_id'] ){
+      if( isset($filters['center_id']) && $filters['center_id'] != 'all' ){
          $accounts->where('loan_accounts.center_id', '=', $filters['center_id']);
       }
 
-      if( isset($filters['product_id']) && $filters['product_id'] ){
+      if( isset($filters['product_id']) && $filters['product_id'] != 'all' ){
          $accounts->where('loan_accounts.product_id', '=', $filters['product_id']);
       }
 
