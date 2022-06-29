@@ -14,6 +14,7 @@ use App\Http\Controllers\API\LoanAccountController;
 use App\Http\Controllers\API\UserController;
 use App\Http\Controllers\API\PaymentController;
 use App\Http\Controllers\API\ReportsController;
+use App\Http\Controllers\API\AccessibilityController;
 
 
 /*
@@ -40,6 +41,7 @@ Route::middleware(['auth:sanctum'])->group( function () {
     Route::resource('borrower', BorrowerController::class);
     Route::resource('accountofficer', AccountOfficerController::class);
     Route::resource('payment', PaymentController::class);
+    Route::resource('accessibility', AccessibilityController::class);
 
     // override payment list
     Route::post('payment/list/', [PaymentController::class, 'overridePaymentList']);

@@ -63,7 +63,6 @@ class UserController extends BaseController
 
         }
 
-
         return $this->sendResponse(new UserResource($user), 'User Created');
     }
 
@@ -93,13 +92,15 @@ class UserController extends BaseController
      */
     public function update(Request $request, User $user) {
 
-        $input = $request->all();
+        // $input = $request->all();
         // # add validator na pd dri
         // $user->username = $request->input('username');
         // $user->password = Hash::make($request->input('password'));
-        // $user->firstname = $request->input('firstname');
-        // $user->middlename = $request->input('middlename');
-        // $user->lastname = $request->input('lastname');
+        $user->firstname = $request->input('firstname');
+        $user->middlename = $request->input('middlename');
+        $user->lastname = $request->input('lastname');
+        $user->status = $request->input('status');
+        $user->update();
         // $branch->branch_code = isset($input['branch_code']) ? $input['branch_code'] : $branch->branch_code;
         // $branch->branch_name = isset($input['branch_name']) ? $input['branch_name'] : $branch->branch_name;
         // $branch->branch_address = isset($input['branch_address']) ? $input['branch_address'] : $branch->branch_address;
@@ -107,7 +108,7 @@ class UserController extends BaseController
         // $branch->deleted = isset($input['deleted']) ? $input['deleted'] : $branch->deleted;
         // $branch->save(); 
 
-        // return $this->sendResponse(new BranchResource($branch), 'Branch Updated.');
+        return $this->sendResponse(new UserResource($user), 'User Updated.');
     }
 
     /**
