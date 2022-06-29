@@ -115,7 +115,7 @@ class LoanAccount extends Model
 
       $accounts = LoanAccount::where('status', '=', 'pending');
 
-      if( isset($filters['created_at']) && $filters['created_at']){
+      if( isset($filters['created_at']) && $filters['created_at'] ){
          $accounts->whereDate('loan_accounts.created_at', '=', $filters['created_at'] );
       }
 
