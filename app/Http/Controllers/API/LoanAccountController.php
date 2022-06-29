@@ -126,6 +126,12 @@ class LoanAccountController extends BaseController
 
     public function destroy($id) {
 
+        // if( $user->hasAccess('delete releases') ) {
+        //     return 'has acccess';
+        // }else{
+        //     return 'no access';
+        // }
+
         $loanAccount = LoanAccount::find($id);
         $loanAccount->delete();
         return $this->sendResponse(['status' => 'Account deleted'], 'Deleted');
