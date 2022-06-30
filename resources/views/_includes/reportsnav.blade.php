@@ -7,7 +7,7 @@
 			<i class="fa fa-caret-right"></i>
 		</div>
 		<div class="pxy-25 light-bb d-flex justify-content-between align-items-center relative hover-light report-nav-item <?php echo isActiveNav($nav[1], 'release'); ?>">
-			<a href="reports_release.php" class="text-20 base-link">Release</a>
+			<a href="{{route('reports.release.summary')}}" class="text-20 base-link">Release</a>
 			<i class="fa fa-caret-right"></i>
 			<div class="ssub-menu light-border">
 				<div class="pxy-25 light-bb d-flex justify-content-between align-items-center hover-primary-dark">

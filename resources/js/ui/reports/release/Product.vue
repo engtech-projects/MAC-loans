@@ -4,24 +4,24 @@
 			<span class="font-lg text-primary-dark" style="flex:3">Transaction</span>
 			<div class="d-flex flex-row align-items-center mr-24" style="flex:2">
 				<span class="mr-10">From: </span>
-				<input type="date" class="form-control">
+				<input v-model="filter.date_from" type="date" class="form-control">
 			</div>
 			<div class="d-flex flex-row align-items-center mr-64" style="flex:2">
 				<span class="mr-10">To: </span>
-				<input type="date" class="form-control">
+				<input v-model="filter.date_to" type="date" class="form-control">
 			</div>
 			<div class="d-flex flex-row align-items-center mr-24" style="flex:2">
-				<span class="mr-10">Type: </span>
+				<!-- <span class="mr-10">Type: </span>
 				<select name="" id="selectProductClient" class="form-control">
 					<option value="all_records">All Records</option>
 					<option value="new_accounts">New Accounts</option>
 					<option value="">By Center</option>
 					<option value="">By Product</option>
 					<option value="">By Account Officer</option>
-				</select>
+				</select> -->
 			</div>
 			<div class="d-flex flex-row align-items-center" style="flex:2">
-				<span class="mr-10">Spec: </span>
+				<!-- <span class="mr-10">Spec: </span>
 				<select name="" id="selectProductClient" class="form-control">
 					<option value="">Allotment Loan</option>
 					<option value="">Micro Group</option>
@@ -29,7 +29,7 @@
 					<option value="">Pension Emergency</option>
 					<option value="">Pension Loan</option>
 					<option value="">SME Loan</option>
-				</select>
+				</select> -->
 			</div>
 		</div>
 		<div class="sep mb-45"></div>
@@ -40,7 +40,7 @@
 				<div class="d-flex flex-column mb-16">
 					<div class="d-flex flex-row align-items-center">
 						<div class="flex-1"></div>
-						<span class="font-30 text-bold text-primary-dark">SUMMARY RELEASE AND PAYMENT BY PRODUCT</span>
+						<span class="font-30 text-bold text-primary-dark">SUMMARY RELEASE BY PRODUCT</span>
 						<div class="flex-1" style="padding-left:24px">
 							<span class="text-primary-dark mr-10">Tuesday 12/21/2021</span>
 							<span class="text-primary-dark">Time: 11:36 AM</span>
@@ -69,44 +69,18 @@
 							<th>Net Proceeds</th>
 						</thead>
 						<tbody>
-							<tr>
-								<td>0063 - Pension Loan</td>
-								<td>8,500.00</td>
-								<td>2,435.00</td>
-								<td>121.00</td>
-								<td>41.66</td>
-								<td>500.00</td>
-								<td>200.00</td>
-								<td>0.00</td>
-								<td>1,484.00</td>
-								<td>0.00</td>
-								<td>6,347.00</td>
-							</tr>
-							<tr>
-								<td>0064 - Micro Group</td>
-								<td>8,500.00</td>
-								<td>2,435.00</td>
-								<td>121.00</td>
-								<td>41.66</td>
-								<td>500.00</td>
-								<td>200.00</td>
-								<td>0.00</td>
-								<td>1,484.00</td>
-								<td>0.00</td>
-								<td>6,347.00</td>
-							</tr>
-							<tr>
-								<td>0065 - Salary Loan</td>
-								<td>8,500.00</td>
-								<td>2,435.00</td>
-								<td>121.00</td>
-								<td>41.66</td>
-								<td>500.00</td>
-								<td>200.00</td>
-								<td>0.00</td>
-								<td>1,484.00</td>
-								<td>0.00</td>
-								<td>6,347.00</td>
+							<tr v-for="(a, i) in accounts" :key="i">
+								<td>{{a.reference}}</td>
+								<td>{{formatToCurrency(a.principal)}}</td>
+								<td>{{formatToCurrency(a.interest)}}</td>
+								<td>{{formatToCurrency(a.filing_fee)}}</td>
+								<td>{{formatToCurrency(a.document_stamp)}}</td>
+								<td>{{formatToCurrency(a.insurance)}}</td>
+								<td>{{formatToCurrency(a.notarial_fee)}}</td>
+								<td>{{formatToCurrency(a.affidavit_fee)}}</td>
+								<td>{{formatToCurrency(a.total_deduction)}}</td>
+								<td>{{formatToCurrency(a.prepaid_interest)}}</td>
+								<td>{{formatToCurrency(a.net_proceeds)}}</td>
 							</tr>
 							<tr class="border-cell-gray-7">
 								<td></td>
@@ -121,22 +95,22 @@
 								<td></td>
 								<td></td>
 							</tr>
-							<tr class="tr-pt-7">
+							<tr v-if="accounts.length > 0" class="tr-pt-7">
 								<td>TOTAL RELEASES</td>
-								<td>122,500.00</td>
-								<td>8,435.00</td>
-								<td>121.00</td>
-								<td>41.66</td>
-								<td>500.00</td>
-								<td>200.00</td>
-								<td>0.00</td>
-								<td>1,484.00</td>
-								<td>0.00</td>
-								<td>20,347.00</td>
+								<td>{{formatToCurrency(total('principal'))}}</td>
+								<td>{{formatToCurrency(total('interest'))}}</td>
+								<td>{{formatToCurrency(total('filing_fee'))}}</td>
+								<td>{{formatToCurrency(total('document_stamp'))}}</td>
+								<td>{{formatToCurrency(total('insurance'))}}</td>
+								<td>{{formatToCurrency(total('notarial_fee'))}}</td>
+								<td>{{formatToCurrency(total('affidavit_fee'))}}</td>
+								<td>{{formatToCurrency(total('total_deduction'))}}</td>
+								<td>{{formatToCurrency(total('prepaid_interest'))}}</td>
+								<td>{{formatToCurrency(total('net_proceeds'))}}</td>
 							</tr>
 						</tbody>
 					</table>
-					<div class="d-flex flex-row bg-yellow-pale p-5 align-items-center">
+					<div v-if="accounts.length > 0" class="d-flex flex-row bg-yellow-pale p-5 align-items-center">
 						<div class="d-flex flex-column flex-1 mr-64">
 							<div class="d-flex flex-row flex-1 mb-5">
 								<div class="d-flex flex-row justify-content-between flex-2 mr-24">
@@ -163,7 +137,7 @@
 						<div class="d-flex flex-column flex-1">
 							<div class="info-display">
 								<span class="text-primary-dark">TOTAL RELEASES</span>
-								<span class="text-primary-dark">17,000.00</span>
+								<span class="text-primary-dark">{{formatToCurrency(totalRelease)}}</span>
 							</div>
 						</div>
 						<div class="flex-2"></div>
@@ -188,13 +162,71 @@
 
 <script>
 export default {
+	props:['token'],
+	data(){
+		return {
+			filter:{
+				date_from: null,
+				date_to: null,
+				type:0,
+				spec:0,
+				category:'product',
+			},
+			accounts:[],
+		}
+	},
 	methods:{
+		fetchAccounts:function(){
+			axios.post('/api/report/release', this.filter, {
+			headers: {
+				'Authorization': 'Bearer ' + this.token,
+				'Content-Type': 'application/json',
+				'Accept': 'application/json'
+				}
+			})
+			.then(function (response) {
+				this.accounts = response.data.data;
+				console.log(response.data);
+			}.bind(this))
+			.catch(function (error) {
+				console.log(error);
+			}.bind(this));
+		}, 
 		print:function(){
 			var content = document.getElementById('printContent').innerHTML;
 			var target = document.querySelector('.to-print');
 			target.innerHTML = content;
 			window.print();
 		},
+		total:function(val){
+			var amount = 0;
+			this.accounts.map(function(item){
+				amount += parseFloat(item[val]);
+			}.bind(this));
+			return amount;
+		}
+	},
+	computed:{
+		totalRelease:function(){
+			var amount = 0;
+			this.accounts.map(function(item){
+				amount += parseFloat(item.net_proceeds)
+			}.bind(this));
+			return amount;
+		}
+	},
+	watch:{
+		 filter: {
+			handler(val){
+				if(val.date_from && val.date_to){
+					this.fetchAccounts();
+				}
+			},
+			deep: true
+		}
+	},
+	mounted(){
+		this.total('principal');
 	}
 }
 </script>
