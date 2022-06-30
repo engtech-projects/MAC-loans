@@ -11,7 +11,8 @@ class LoginController extends Controller
 {
     public function login(Request $request){
 		$user = User::where('username', $request->credentials['username'])->first();
-		if(Auth::attempt($request->credentials)) {
+		$credentials = ['username'=>$request->credentials['username'], 'password'=>$request->credentials['password']];
+		if(Auth::attempt($credentials)) {
 			Auth::user()->token = $request->token;
 			Session::put('token', $request->token);
 			return Auth::user();
