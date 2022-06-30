@@ -46,6 +46,7 @@
  Vue.component('overridepayment-details', require('./ui/transaction/override_payment/LoanDetails.vue').default);
 
  Vue.component('reports-transaction', require('./ui/reports/Transaction.vue').default);
+ Vue.component('reports-release-summary', require('./ui/reports/release/Summary.vue').default);
  Vue.component('reports-release-product', require('./ui/reports/release/Product.vue').default);
  Vue.component('reports-release-client', require('./ui/reports/release/Client.vue').default);
  Vue.component('reports-release-ao', require('./ui/reports/release/Ao.vue').default);

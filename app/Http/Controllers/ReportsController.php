@@ -12,6 +12,14 @@ class ReportsController extends Controller
 			'title' => 'Reports - Transaction',
 		]);
 	}
+
+	public function releaseSummary(){
+		return view('reports.release.summary')->with([
+			'nav' => ['reports', 'release',''],
+			'title' => 'Reports - Release',
+		]);
+	}
+
 	public function releaseProduct(){
 		return view('reports.release.product')->with([
 			'nav' => ['reports', 'release',''],
