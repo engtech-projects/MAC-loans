@@ -42,8 +42,12 @@
 									<span>Borrower's Number</span>
 									<span class="text-center">{{loanAccount.borrower.borrower_num}}</span>
 								</div>
-								<div style="flex:4"></div>
-								<div class="form-group mb-10" style="flex: 5">
+								<div style="flex:3"></div>
+								<div class="form-group mb-10 mr-16" style="flex: 5">
+									<label for="transactionDate" class="form-label">Loan Account #</label>
+									<input :value="loanAccount.account_num" type="text" class="form-control form-input text-right" id="loanAccountNumber">
+								</div>
+								<div class="form-group mb-10" style="flex: 4">
 									<label for="transactionDate" class="form-label">Transaction Date</label>
 									<input :value="dateToYMD(new Date)" type="date" class="form-control form-input text-right" id="transactionDate">
 								</div>
@@ -58,7 +62,7 @@
 							</div>
 						</div>
 						<div class="upload-photo d-flex flex-column" style="flex:4;padding-top:36px;">
-							<img :src="borrowerPhoto" style="max-width:250px" alt="">
+							<img :src="borrowerPhoto" style="max-width:210px" alt="">
 						</div>
 					</div>
 					<div class="sep mb-24"></div>
@@ -132,7 +136,7 @@
 								</div>
 								<span class="flex-1 text-primary-dark">{{formatToCurrency(loanAccount.loan_amount - totalDeductions)}}</span>
 							</div>
-.
+
 							<div class="d-flex flex-row mb-12">
 								<div class="d-flex flex-row flex-1 justify-content-between pr-24">
 									<span class="">Day Schedule</span>
@@ -141,14 +145,7 @@
 								<span class="flex-1 text-primary-dark">{{loanAccount.day_schedule}}</span>
 							</div>
 
-							<div class="d-flex flex-row mb-12">
-								<div class="d-flex flex-row flex-1 justify-content-between pr-24">
-									<span class="">Due Date</span>
-									<span>:</span>
-								</div>
-								<span class="flex-1 text-primary-dark">{{dateToYMD(dueDate).split('-').join('/')}}</span>
-							</div>
-
+					
 							<div class="d-flex flex-row mb-12">
 								<div class="d-flex flex-row flex-1 justify-content-between pr-24">
 									<span class=""># of Installment</span>
@@ -528,7 +525,7 @@ export default {
 			return new Date
 		},
 		dueDate:function(){
-			if(this.loanAccount.loan_account_id){
+			if(this.loanAccount.loan_account_id && this.loanAccount.date_release){
 				var dt = new Date(this.loanAccount.date_release);
 				dt.setDate(dt.getDate() + this.loanAccount.terms);
 				return dt;
