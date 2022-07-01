@@ -117,7 +117,7 @@
 									<span class="flex-1">TOTAL CASH RELEASE</span>
 									<span>:</span>
 								</div>
-								<span class="flex-1">6,347.00</span>
+								<span class="flex-1">{{formatToCurrency(totalRelease)}}</span>
 							</div>
 							<div class="d-flex flex-row flex-1 mb-5">
 								<div class="d-flex flex-row justify-content-between flex-2 mr-24">
@@ -131,7 +131,7 @@
 									<span class="flex-1">TOTAL MEMO RELEASE</span>
 									<span>:</span>
 								</div>
-								<span class="flex-1">1,484.00</span>
+								<span class="flex-1">0.00</span>
 							</div>
 						</div>
 						<div class="d-flex flex-column flex-1">
