@@ -369,6 +369,7 @@ export default {
 		},
 		save: function(){
 			this.setPrepaidInterest();
+			this.loanDetails.status = 'pending';
 			if(this.loanDetails.loan_account_id){
 					axios.put(window.location.origin + '/api/account/update/' + this.loanDetails.loan_account_id, this.loanDetails, {
 						headers: {

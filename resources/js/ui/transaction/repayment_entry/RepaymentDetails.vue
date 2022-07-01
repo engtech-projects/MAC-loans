@@ -335,7 +335,7 @@
 							<div class="sep-dark mb-10"></div>
 							<section class="mb-24">
 								<span class="py-12 darker-bb text-primary-dark text-24 text-bold text-block mb-10">Preview</span>
-								<div class="d-flex flex-row">
+								<div v-if="loanAccount.current_amortization" class="d-flex flex-row">
 									<div class="d-flex flex-column br-dark pr-16 flex-1 text-primary-dark font-md justify-content-start">
 										<div class="d-flex flex-column" style="margin-bottom:100px;">
 											<span class="mb-5 text-bold">Amortization Scheduled Payment</span>

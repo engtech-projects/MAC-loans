@@ -42,14 +42,14 @@
 						<div class="flex-1"></div>
 						<span class="font-30 text-bold text-primary-dark">SUMMARY RELEASE BY PRODUCT</span>
 						<div class="flex-1" style="padding-left:24px">
-							<span class="text-primary-dark mr-10">Tuesday 12/21/2021</span>
-							<span class="text-primary-dark">Time: 11:36 AM</span>
+							<span class="text-primary-dark mr-10">{{dateFullDay(new Date())}} {{dateToYMD(new Date()).split('-').join('/')}}</span>
+							<span class="text-primary-dark">Time: {{todayTime(new Date())}} {{(new Date()).getHours() > 12? 'PM':'AM'}}</span>
 						</div>
 					</div>
 					<span class="text-center text-primary-dark text-bold font-md mb-5">Butuan Branch (001)</span>
 					<div class="d-flex flex-row justify-content-center text-primary-dark">
-						<span class="mr-5">From:</span><span class="mr-16">12/14/2021</span>
-						<span class="mr-5">To:</span><span>12/15/2021</span>
+						<span class="mr-5">From:</span><span class="mr-16">{{dateToMDY2(new Date(filter.date_from)).split('-').join('/')}}</span>
+						<span class="mr-5">To:</span><span>{{dateToMDY2(new Date(filter.date_to)).split('-').join('/')}}</span>
 					</div>
 				</div>
 				<section class="d-flex flex-column mb-72">
@@ -168,7 +168,7 @@ export default {
 			filter:{
 				date_from: null,
 				date_to: null,
-				type:0,
+				type:'by_product',
 				spec:0,
 				category:'product',
 			},
