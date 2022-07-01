@@ -58,7 +58,7 @@
 
 
 						<div class="tab-pane fade" id="custom-content-below-loaddetails" role="tabpanel" aria-labelledby="custom-content-below-messages-tab">
-							<loan-details :idtype="idtype" :saveloandetails="saveLoanDetails" :borrowerbday="borrowerBirthdate" :borrower="bborrower" :token="token" :loandetails="loanDetails"></loan-details>
+							<loan-details :releasetype="releasetype" :idtype="idtype" :saveloandetails="saveLoanDetails" :borrowerbday="borrowerBirthdate" :borrower="bborrower" :token="token" :loandetails="loanDetails"></loan-details>
 						</div>
 
 
@@ -850,7 +850,7 @@
 
 <script>
     export default {
-		props:['token', 'idtype','rejectid','title'],
+		props:['token', 'idtype','rejectid','title', 'releasetype'],
 		data(){
 			return {
 				rejectedAccounts:[],

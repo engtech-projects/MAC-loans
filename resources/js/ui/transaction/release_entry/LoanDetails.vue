@@ -159,9 +159,9 @@
 					<div class="form-group">
 						<label for="dueDate" class="form-label">Release Type</label>
 						<select required v-model="loanDetails.release_type" name="" id="" class="form-control form-input pr-12 text-right mr-16 text-green">
-							<option value="Cash Release">Cash Release</option>
-							<option value="Cheque Release">Cheque Release</option>
-							<option value="Restructure Release">Restructure Release</option>
+							<option v-for="(r,p) in releaseType" :key="p" value="r">{{r}}</option>
+							<!-- <option value="Cheque Release">Cheque Release</option>
+							<option value="Restructure Release">Restructure Release</option> -->
 						</select>
 					</div>
 				</div>
@@ -244,7 +244,7 @@
 
 <script>
 export default {
-	props:['token', 'loandetails', 'borrower', 'borrowerbday', 'saveloandetails', 'idtype'],
+	props:['token', 'loandetails', 'borrower', 'borrowerbday', 'saveloandetails', 'idtype', 'releasetype'],
 	data(){
 		return {
 			age:null,
@@ -459,6 +459,9 @@ export default {
 		// },
 	},
 	computed: {
+		releaseType:function(){
+			return JSON.parse(this.releasetype);
+		},
 		productEnable:function(){
 			if(this.currentProduct.product_name == 'Micro Group' || this.currentProduct.product_name == 'Micro Individual'){
 				return true;

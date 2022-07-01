@@ -75,20 +75,20 @@
 						</thead>
 						<tbody>
 							<tr v-for="(a, b) in accounts" :key="b">
-								<td>0063 - Pension Loan</td>
-								<td>8,500.00</td>
-								<td>2,435.00</td>
-								<td>121.00</td>
-								<td>41.66</td>
-								<td>500.00</td>
-								<td>200.00</td>
-								<td>0.00</td>
-								<td>1,484.00</td>
-								<td>0.00</td>
-								<td>6,347.00</td>
-								<td></td>
-								<td></td>
-								<td></td>
+								<td>{{a.account_num}}</td>
+								<td>{{a.borrower}}</td>
+								<td>{{a.date_loan}}</td>
+								<td>{{a.term}}</td>
+								<td>{{formatToCurrency(a.amount_loan)}}</td>
+								<td>{{formatToCurrency(a.filing_fee)}}</td>
+								<td>{{formatToCurrency(a.document_stamp)}}<td>
+								<td>{{formatToCurrency(a.insurance)}}</td>
+								<td>{{formatToCurrency(a.notarial_fee)}}</td>
+								<td>{{formatToCurrency(a.affidavit_fee)}}</td>
+								<td>{{formatToCurrency(0)}}</td>
+								<td>{{formatToCurrency(a.prepaid_interest)}}</td>
+								<td>{{formatToCurrency(a.net_proceeds)}}</td>
+								<td>{{a.type}}</td>
 							</tr>
 							<!-- <tr>
 								<td>0063 - Pension Loan</td>
@@ -115,7 +115,7 @@
 									<span class="flex-1">TOTAL CASH RELEASE</span>
 									<span>:</span>
 								</div>
-								<span class="flex-1">6,347.00</span>
+								<span class="flex-1">{{formatToCurrency(totalRelease)}}</span>
 							</div>
 							<div class="d-flex flex-row flex-1 mb-5">
 								<div class="d-flex flex-row justify-content-between flex-2 mr-24">
@@ -129,13 +129,13 @@
 									<span class="flex-1">TOTAL MEMO RELEASE</span>
 									<span>:</span>
 								</div>
-								<span class="flex-1">1,484.00</span>
+								<span class="flex-1">0.00</span>
 							</div>
 						</div>
 						<div class="d-flex flex-column flex-1">
 							<div class="info-display">
 								<span class="text-primary-dark">TOTAL RELEASES</span>
-								<span class="text-primary-dark">17,000.00</span>
+								<span class="text-primary-dark">{{formatToCurrency(totalRelease)}}</span>
 							</div>
 						</div>
 						<div class="flex-2"></div>
@@ -168,7 +168,7 @@ export default {
 				date_to: null,
 				type:0,
 				spec:0,
-				category:'product',
+				category:'client',
 			},
 			products:[],
 			centers:[],
@@ -186,7 +186,7 @@ export default {
 				}
 			})
 			.then(function (response) {
-				this.accounts = response.data.data;
+				this.accounts = response.data.data.summary;
 				console.log(response.data);
 			}.bind(this))
 			.catch(function (error) {
@@ -279,13 +279,23 @@ export default {
 				set.push({id:item.ao_id, name:item.name});
 			}.bind(this));
 			return set;
+		},
+		totalRelease:function(){
+			var amount = 0;
+			this.accounts.map(function(item){
+				amount += parseFloat(item.net_proceeds)
+			}.bind(this));
+			return amount;
 		}
 	},
 	watch:{
 		 filter: {
 			handler(val){
-				if(val.date_from && val.date_to){
+				if(val.date_from && val.date_to && val.type){
 					this.fetchAccounts();
+					if(val.spec){
+						this.fetchAccounts();
+					}
 				}
 			},
 			deep: true
