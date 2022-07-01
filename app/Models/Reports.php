@@ -64,7 +64,8 @@ class Reports extends Model
 							'loan_accounts.product_id',
 							'loan_accounts.ao_id', 
 							'loan_accounts.center_id', 
-							'loan_accounts.branch_code'
+							'loan_accounts.branch_code',
+                            'loan_accounts.release_type'
 						]);
     }
 
@@ -117,6 +118,8 @@ class Reports extends Model
         	$payments = null;
         	$filters['product_id'] = $product->product_id;
         	$accounts = $this->getLoanAccounts($filters);
+            $product->cash = 0;
+            $product->check = 0;
 
         	if( count($accounts) > 0 ){
 
@@ -134,6 +137,14 @@ class Reports extends Model
 					$product->affidavit_fee += $account->affidavit_fee;
 					$product->total_deduction += $account->total_deduction;
 					$product->net_proceeds += $account->net_proceeds;
+
+                    if( str_contains(strtolower($account->release_type), 'cash')  ){
+                         $product->cash += $account->net_proceeds;
+                    }
+
+                    if( str_contains(strtolower($account->release_type), 'check') ){
+                         $product->check += $account->net_proceeds;
+                    }
 
 					if( count($account->payments) ){
 
