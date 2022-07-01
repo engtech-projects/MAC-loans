@@ -22,7 +22,7 @@ class CreateLoanAccountsTable extends Migration
             $table->integer('cycle_no');
             $table->unsignedInteger('ao_id'); // reference account_officer
             $table->unsignedInteger('product_id'); // reference product
-            $table->unsignedInteger('center_id'); // reference center
+            $table->unsignedInteger('center_id')->nullable(); // reference center
             $table->string('type');
             $table->string('payment_mode');
             $table->integer('terms');
@@ -31,7 +31,7 @@ class CreateLoanAccountsTable extends Migration
             $table->double('interest_amount', 10, 2);
             $table->integer('no_of_installment')->nullable();
             $table->date('due_date')->nullable();
-            $table->string('day_schedule');
+            $table->string('day_schedule')->nullable();
             $table->string('borrower_num');
             $table->unsignedInteger('borrower_id');
             // co_borrower
