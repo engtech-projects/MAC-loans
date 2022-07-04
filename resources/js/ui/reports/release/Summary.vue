@@ -81,7 +81,7 @@
 								<td>{{a.term}}</td>
 								<td>{{formatToCurrency(a.amount_loan)}}</td>
 								<td>{{formatToCurrency(a.filing_fee)}}</td>
-								<td>{{formatToCurrency(a.document_stamp)}}<td>
+								<td>{{formatToCurrency(a.document_stamp)}}</td>
 								<td>{{formatToCurrency(a.insurance)}}</td>
 								<td>{{formatToCurrency(a.notarial_fee)}}</td>
 								<td>{{formatToCurrency(a.affidavit_fee)}}</td>
