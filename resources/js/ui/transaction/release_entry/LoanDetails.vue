@@ -450,7 +450,9 @@ export default {
 			// }
 		},
 		'loanDetails.product_id'(newValue){
-			this.fetchPromissoryNo();
+			if(!this.loanDetails.documents.promissory_number || this.loanDetails.documents.promissory_number == ''){
+				this.fetchPromissoryNo();
+			}
 		}
 		// 'saveloandetails'(newValue) {
 		// 	if(newValue){
