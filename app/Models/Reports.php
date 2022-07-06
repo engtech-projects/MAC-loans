@@ -15,7 +15,10 @@ class Reports extends Model
     	$loanAccount = new LoanAccount();
 
     	if( isset($filters['date_from']) && isset($filters['date_to']) ){
-    		$loanAccount = LoanAccount::whereBetween(DB::raw('date(loan_accounts.date_release)'), [ $filters['date_from'], $filters['date_to'] ]);
+    		/*$loanAccount = LoanAccount::whereBetween(DB::raw('date(loan_accounts.date_release)'), [ $filters['date_from'], $filters['date_to'] ]);*/
+
+            $loanAccount = LoanAccount::whereDate('loan_accounts.date_release', '>=', $filters['date_from']);
+            $loanAccount = LoanAccount::whereDate('loan_accounts.date_release', '<=', $filters['date_to']);
     	}
 
 
@@ -90,7 +93,7 @@ class Reports extends Model
                 }else{
                     $filters[$type] = $filters['spec'];
                 }
-                
+
     			return $this->getReleaseByProduct($filters);
     			break;
 
