@@ -37,7 +37,6 @@ class ReportsController extends BaseController
 		$report = new Reports();
 
 		return $this->sendResponse($report->releaseReports($filters, $category), '');
-		// return $filters;
 	}
 
 	// public function releaseByClientReports(Request $request) {

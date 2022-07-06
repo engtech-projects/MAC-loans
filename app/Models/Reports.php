@@ -18,6 +18,7 @@ class Reports extends Model
     		$loanAccount = LoanAccount::whereBetween(DB::raw('date(loan_accounts.date_release)'), [ $filters['date_from'], $filters['date_to'] ]);
     	}
 
+
     	$loanAccount->where([ 'loan_accounts.status' => 'released' ]);
     	
     	if( isset($filters['product_id']) ){
@@ -83,6 +84,13 @@ class Reports extends Model
 
     	switch ($category) {
     		case 'product':
+                $type = $filters['type'];
+                if( $type == 'new' ){
+                    $filters['cycle_no'] = 1;
+                }else{
+                    $filters[$type] = $filters['spec'];
+                }
+                
     			return $this->getReleaseByProduct($filters);
     			break;
 
@@ -98,7 +106,12 @@ class Reports extends Model
     			break;
 
     		case 'account_officer':
-    			# code...
+                $type = $filters['type'];
+    			if( $type == 'new' ){
+                    $filters['cycle_no'] = 1;
+                }
+
+                return $this->getReleaseByAccountOfficer($filters);
     			break;
     		
     		default:
@@ -240,8 +253,45 @@ class Reports extends Model
     }
 
     public function getReleaseByAccountOfficer($filters) {
-    	
-    	
+    	   
+
+        $officers = AccountOfficer::where(['status' => 'active'])->get();
+        $products = Product::where([ 'status' => 'active' ])->get(['product_id', 'product_code', 'product_name', 'interest_rate']);
+
+        foreach ($officers as $officer) {
+            
+            $p = [];
+            foreach ($products as $product) {
+
+                $p[] = $product;
+
+                // $accounts = null;
+                // $filters['product_id'] = $product->product_id;
+                // $accounts = $this->getLoanAccounts($filters);
+                // // $officer->product = $accounts;
+                // // $officer->product = $product;
+
+                // if( count($accounts) > 0 ){
+                //     $product->reference = $product->product_code . ' - ' . $product->product_name;
+
+                //     // foreach ($accounts as $account) {
+                //     //     # code...
+                //     // }
+
+                // }
+
+                
+            }
+
+            $officer->products = $p;
+
+            break;
+        }
+
+        return $officers;
+
+
+
 
     }
 
