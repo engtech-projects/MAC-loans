@@ -69,7 +69,8 @@ class Reports extends Model
 							'loan_accounts.ao_id', 
 							'loan_accounts.center_id', 
 							'loan_accounts.branch_code',
-                            'loan_accounts.release_type'
+                            'loan_accounts.release_type',
+                            'loan_accounts.cycle_no'
 						]);
     }
 
@@ -256,46 +257,49 @@ class Reports extends Model
     }
 
     public function getReleaseByAccountOfficer($filters) {
-    	   
 
-        $officers = AccountOfficer::where(['status' => 'active'])->get();
-        $products = Product::where([ 'status' => 'active' ])->get(['product_id', 'product_code', 'product_name', 'interest_rate']);
+        $officers = AccountOfficer::where(['status' => 'active'])->get()->toArray();
 
-        foreach ($officers as $officer) {
-            
-            $p = [];
-            foreach ($products as $product) {
-
-                $p[] = $product;
-
-                // $accounts = null;
-                // $filters['product_id'] = $product->product_id;
-                // $accounts = $this->getLoanAccounts($filters);
-                // // $officer->product = $accounts;
-                // // $officer->product = $product;
-
-                // if( count($accounts) > 0 ){
-                //     $product->reference = $product->product_code . ' - ' . $product->product_name;
-
-                //     // foreach ($accounts as $account) {
-                //     //     # code...
-                //     // }
-
-                // }
-
-                
-            }
-
-            $officer->products = $p;
-
-            break;
+        if( $filters['type'] != 'all' ){
+            $aoId = $filters['type'];
+            $officers = AccountOfficer::where(['status' => 'active', 'ao_id' => $aoId ])->get()->toArray();    
         }
 
+        $products = Product::where([ 'status' => 'active' ])->get(['product_id', 'product_code', 'product_name', 'interest_rate'])->toArray();
+
+        foreach ($officers as $key => $value) {
+            
+            foreach ($products as $k => $v) {
+
+                $accounts = null;
+                $filters['product_id'] = $v['product_id'];
+                $filters['account_officer'] = $value['ao_id'];
+                
+                $accounts = $this->getLoanAccounts($filters);
+
+                if( count($accounts) > 0 ) {
+
+                    $v['reference'] = $v['product_code'] . ' - ' . $v['product_name'];
+                    $v['repeat_account'] = 0;
+                    $v['repeat_account_amount'] = 0;
+                    $v['new_account'] = 0;
+                    $v['new_account_amount'] = 0;
+                    foreach ($accounts as $account) {
+
+                        if( $account->cycle_no > 1 ){
+                            $v['repeat_account'] += 1;
+                            $v['repeat_account_amount'] += $account->loan_amount;
+                        }else{
+                             $v['new_account'] += 1;
+                             $v['new_account_amount'] += $account->loan_amount;
+                        }
+                    }
+                }
+
+                $officers[$key]['products'][] = $v;
+            }
+        }
         return $officers;
-
-
-
-
     }
 
 }
