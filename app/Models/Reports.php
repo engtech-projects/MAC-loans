@@ -105,7 +105,6 @@ class Reports extends Model
     			}else{
     				$filters[$type] = $filters['spec'];
     			}
-
     			return $this->getReleaseByClient($filters, false);
     			break;
 
