@@ -61,12 +61,12 @@
 						</thead>
 						<tbody>
 							<tr v-for="(account, a) in accounts" :key="a">
-								<td>003-Pension Loan</td>
-								<td>0</td>
-								<td>25,214.00</td>
-								<td>2</td>
-								<td>22,000.00</td>
-								<td>22,000.00</td>
+								<td>{{productsReference(account.products)}}</td>
+								<td>{{newAccounts(account.products)}}</td>
+								<td>{{formatToCurrency(newAccountsReleased(account.products))}}</td>
+								<td>{{repeatAccount(account.products)}}</td>
+								<td>{{formatToCurrency(repeatAccountReleased(account.products))}}</td>
+								<td>{{formatToCurrency(newAccountsReleased(account.products) + repeatAccountReleased(account.products))}}</td>
 								
 							</tr>
 							<!-- <tr>
@@ -95,13 +95,13 @@
 								<td></td>
 								<td></td>
 							</tr>
-							<tr class="tr-pt-7 text-bold bg-skyblue">
+							<tr v-if="accounts.length > 0" class="tr-pt-7 text-bold bg-skyblue">
 								<td>TOTAL RELEASES</td>
-								<td>0</td>
-								<td>542,412.00</td>
-								<td>6</td>
-								<td>66,000.00</td>
-								<td>66,000.00</td>
+								<td>{{totalNewAccounts}}</td>
+								<td>{{formatToCurrency(totalNewAccountsReleased)}}</td>
+								<td>{{totalRepeatAccount}}</td>
+								<td>{{formatToCurrency(totalRepeatAccountReleased)}}</td>
+								<td>{{formatToCurrency(totalNewAccountsReleased + totalRepeatAccountReleased)}}</td>
 							</tr>
 						</tbody>
 					</table>
@@ -213,6 +213,39 @@ export default {
 			target.innerHTML = content;
 			window.print();
 		},
+		productsReference:function(products){
+			if(products.length > 0 && products){
+				return products[0].reference;
+			}
+		},
+		newAccounts:function(products){
+			var amount = 0;
+			products.map(function(val){
+				amount += val.new_account;
+			});
+			return amount;
+		},
+		newAccountsReleased:function(products){
+			var amount = 0;
+			products.map(function(val){
+				amount += val.new_account_amount;
+			});
+			return amount;
+		},
+		repeatAccount:function(products){
+			var amount = 0;
+			products.map(function(val){
+				amount += val.repeat_account;
+			});
+			return amount;
+		},
+		repeatAccountReleased:function(products){
+			var amount = 0;
+			products.map(function(val){
+				amount += val.repeat_account_amount;
+			});
+			return amount;
+		}
 	},
 	watch:{
 		filter: {
@@ -246,6 +279,42 @@ export default {
 				}.bind(this));
 			}
 			return result;
+		},
+		totalNewAccounts:function(){
+			var amount = 0;
+			this.accounts.map(function(val){
+				val.products.map(function(val2){
+					amount += val2.new_account;
+				}.bind(this));
+			}.bind(this));
+			return amount;
+		},
+		totalNewAccountsReleased:function(){
+			var amount = 0;
+			this.accounts.map(function(val){
+				val.products.map(function(val2){
+					amount += val2.new_account_amount;
+				}.bind(this));
+			}.bind(this));
+			return amount;
+		},
+		totalRepeatAccount:function(){
+			var amount = 0;
+			this.accounts.map(function(val){
+				val.products.map(function(val2){
+					amount += val2.repeat_account;
+				}.bind(this));
+			}.bind(this));
+			return amount;
+		},
+		totalRepeatAccountReleased:function(){
+			var amount = 0;
+			this.accounts.map(function(val){
+				val.products.map(function(val2){
+					amount += val2.repeat_account_amount;
+				}.bind(this));
+			}.bind(this));
+			return amount;
 		}
 	},
 	mounted(){
