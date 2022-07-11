@@ -4,20 +4,17 @@
 		<span class="font-lg text-primary-dark" style="flex:3">Transaction</span>
 			<div class="d-flex flex-row align-items-center mr-24" style="flex:2">
 				<span class="mr-10">From: </span>
-				<input type="date" class="form-control">
+				<input v-model="filter.date_from" type="date" class="form-control">
 			</div>
 			<div class="d-flex flex-row align-items-center mr-64" style="flex:2">
 				<span class="mr-10">To: </span>
-				<input type="date" class="form-control">
+				<input v-model="filter.date_to" type="date" class="form-control">
 			</div>
 			<div class="d-flex flex-row align-items-center mr-24" style="flex:2">
 				<span class="mr-10">Type: </span>
-				<select name="" id="selectProductClient" class="form-control">
-					<option value="all_records">All Records</option>
-					<option value="new_accounts">New Accounts</option>
-					<option value="">By Center</option>
-					<option value="">By Product</option>
-					<option value="">By Account Officer</option>
+				<select v-model="filter.type" name="" id="selectProductClient" class="form-control">
+					<option value="all">All Records</option>
+					<option v-for="a in ao" :key="a.ao_id" :value="a.ao_id">{{a.name}}</option>
 				</select>
 			</div>
 		</div>
@@ -30,18 +27,24 @@
 					<div class="d-flex flex-row align-items-center">
 						<div class="flex-1 d-flex flex-column">
 							<span>Account Officer</span>
-							<span class="text-bold">001 - Jose Magbanua</span>
+							<span v-if="filter.type!='all'" class="text-bold">{{accountOfficer}}</span>
+							<span v-if="filter.type=='all'" class="text-bold">All Records</span>
 						</div>
 						<span class="font-30 text-bold text-primary-dark">ACCOUNT OFFICER RELEASE SUMMARY REPORT</span>
 						<div class="flex-1 d-flex justify-content-end" style="padding-left:24px">
-							<span class="text-primary-dark mr-10">Tuesday 12/21/2021</span>
-							<span class="text-primary-dark">Time: 11:36 AM</span>
+							<span class="text-primary-dark mr-10">{{dateFullDay(new Date())}} {{dateToYMD(new Date()).split('-').join('/')}}</span>
+							<span class="text-primary-dark">Time: {{todayTime(new Date())}} {{(new Date()).getHours() > 12? 'PM':'AM'}}</span>
 						</div>
 					</div>
-					<span class="text-center text-primary-dark text-bold font-md mb-5">Butuan Branch (001)</span>
-					<div class="d-flex flex-row justify-content-center text-primary-dark">
-						<span class="mr-5">From:</span><span class="mr-16">12/14/2021</span>
-						<span class="mr-5">To:</span><span>12/15/2021</span>
+					<span v-if="filter.type!='all'" class="text-center text-primary-dark text-bold font-md mb-5">{{branchName}}</span>
+					<span v-if="filter.type=='all'" class="text-center text-primary-dark text-bold font-md mb-5">All Branches</span>
+					<div v-if="filter.date_from&&filter.date_to" class="d-flex flex-row justify-content-center text-primary-dark">
+						<span class="mr-5">From:</span><span class="mr-16">{{dateToMDY2(new Date(filter.date_from)).split('-').join('/')}}</span>
+						<span class="mr-5">To:</span><span>{{dateToMDY2(new Date(filter.date_to)).split('-').join('/')}}</span>
+					</div>
+					<div v-if="!filter.date_from||!filter.date_to" class="d-flex flex-row justify-content-center text-primary-dark">
+						<span class="mr-5">From:</span><span class="mr-16">---</span>
+						<span class="mr-5">To:</span><span>---</span>
 					</div>
 				</div>
 			</section>
@@ -57,7 +60,7 @@
 							<th>Total Released</th>
 						</thead>
 						<tbody>
-							<tr>
+							<tr v-for="(account, a) in accounts" :key="a">
 								<td>003-Pension Loan</td>
 								<td>0</td>
 								<td>25,214.00</td>
@@ -66,7 +69,7 @@
 								<td>22,000.00</td>
 								
 							</tr>
-							<tr>
+							<!-- <tr>
 								<td>004-Micro Group</td>
 								<td>0</td>
 								<td>25,214.00</td>
@@ -83,7 +86,7 @@
 								<td>22,000.00</td>
 								<td>22,000.00</td>
 								
-							</tr>
+							</tr> -->
 							<tr class="border-cell-gray-7">
 								<td></td>
 								<td></td>
@@ -158,13 +161,95 @@
 
 <script>
 export default {
+	props:['token'],
+	data(){
+		return {
+			ao:[],
+			accounts:[],
+			filter:{
+				date_from: null,
+				date_to: null,
+				type:'all',
+				category:'account_officer',
+			},
+		}
+	},
 	methods:{
+		fetchAccounts:function(){
+			axios.post('/api/report/release', this.filter, {
+			headers: {
+				'Authorization': 'Bearer ' + this.token,
+				'Content-Type': 'application/json',
+				'Accept': 'application/json'
+				}
+			})
+			.then(function (response) {
+				this.accounts = [];
+				this.accounts = response.data.data;
+				console.log(response.data);
+			}.bind(this))
+			.catch(function (error) {
+				console.log(error);
+			}.bind(this));
+		}, 
+		fetchOfficers:function(){
+			axios.get(window.location.origin + '/api/accountofficer', {
+				headers: {
+					'Authorization': 'Bearer ' + this.token,
+					'Content-Type': 'application/json',
+					'Accept': 'application/json'
+				}
+			})
+			.then(function (response) {
+				this.ao = response.data.data;
+			}.bind(this))
+			.catch(function (error) {
+				console.log(error);
+			}.bind(this));
+		},
 		print:function(){
 			var content = document.getElementById('printContent').innerHTML;
 			var target = document.querySelector('.to-print');
 			target.innerHTML = content;
 			window.print();
 		},
+	},
+	watch:{
+		filter: {
+			handler(val){
+				if(val.date_from && val.date_to && val.type){
+					this.fetchAccounts();
+				}
+			},
+			deep: true
+		}
+	},
+	computed:{
+		accountOfficer:function(){
+			var result = '';
+			if(this.filter.type != 'all'){
+				this.ao.map(function(data){
+					if(this.filter.type == data.ao_id){
+						result += data.branch.branch_code + ' - ' +data.name;
+					}
+				}.bind(this));
+			}
+			return result;
+		},
+		branchName:function(){
+			var result = '';
+			if(this.filter.type != 'all'){
+				this.ao.map(function(data){
+					if(this.filter.type == data.ao_id){
+						result += data.branch.branch_name + ' (' + data.branch.branch_code + ')';
+					}
+				}.bind(this));
+			}
+			return result;
+		}
+	},
+	mounted(){
+		this.fetchOfficers();
 	}
 }
 </script>
