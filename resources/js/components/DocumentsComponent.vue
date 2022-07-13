@@ -233,7 +233,8 @@
 
 												<div class="d-flex mb-45">
 													<div class="flex-1 d-flex flex-column align-items-center">
-														
+														<b class="text-block">{{loanDetails.co_borrower_name}}</b>
+														<span>Witness</span>
 													</div>
 													<div class="flex-1 d-flex flex-column align-items-center">
 														<b class="text-block">JOCETE ANGELIE J. GASCON</b>
@@ -837,6 +838,14 @@ export default {
 				console.log(error);
 			}.bind(this));
 		},
+		printContent:function(printcontent){
+			var content = document.getElementById(printcontent).innerHTML;
+			var target = document.querySelector('.to-print');
+			target.innerHTML = content;
+			window.print();
+		}
+	},
+	computed:{
 		productName:function(){
 			var result = '';
 			this.products.map(function(product){
@@ -846,14 +855,6 @@ export default {
 			}.bind(this));
 			return result;
 		},
-		printContent:function(printcontent){
-			var content = document.getElementById(printcontent).innerHTML;
-			var target = document.querySelector('.to-print');
-			target.innerHTML = content;
-			window.print();
-		}
-	},
-	computed:{
 		amortAmountSingle:function(){
 			return ((parseInt(this.loanDetails.loan_amount) + parseInt(this.loanDetails.interest_amount)) / parseInt(this.numberOfInstallment)).toFixed(1);
 		},

@@ -319,7 +319,7 @@
 														
 													</div>
 													<div class="flex-1 d-flex flex-column align-items-center">
-														<b class="text-block">{{loanDetails.co_borrower_name}}</b>
+														<b class="text-block">JOCETE ANGELIE J. GASCON</b>
 														<span>Witness</span>
 													</div>
 												</div>
