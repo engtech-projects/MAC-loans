@@ -159,7 +159,7 @@
 					<div class="form-group">
 						<label for="dueDate" class="form-label">Release Type</label>
 						<select required v-model="loanDetails.release_type" name="" id="" class="form-control form-input pr-12 text-right mr-16 text-green">
-							<option v-for="(r,p) in releaseType" :key="p" value="r">{{r}}</option>
+							<option v-for="(r,p) in releaseType" :key="p" :value="r">{{r}}</option>
 							<!-- <option value="Cheque Release">Cheque Release</option>
 							<option value="Restructure Release">Restructure Release</option> -->
 						</select>
@@ -203,11 +203,7 @@
 				<span class="text-bold bg-yellow-light mb-10" style="padding:2px 5px;">DOA ATM / PASSBOOK</span>
 				<div class="form-group mb-10">
 					<label for="">Name of Bank</label>
-					<select v-model="loanDetails.documents.bank" name="" id="" class="form-control form-input">
-						<option value="Land Bank">Land Bank</option>
-						<option value="BDO">BDO</option>
-						<option value="BPI">BPI</option>
-					</select>
+					<input type="text" v-model="loanDetails.documents.bank" name="" id="" class="form-control form-input">
 				</div>
 				<div class="form-group mb-10">
 					<label for="">Account No.</label>
