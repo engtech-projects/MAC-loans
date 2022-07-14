@@ -15,6 +15,8 @@ use App\Http\Controllers\API\UserController;
 use App\Http\Controllers\API\PaymentController;
 use App\Http\Controllers\API\ReportsController;
 use App\Http\Controllers\API\AccessibilityController;
+use App\Http\Controllers\API\ChartOfAccountsController;
+use App\Http\Controllers\API\GLController;
 
 
 /*
@@ -42,6 +44,8 @@ Route::middleware(['auth:sanctum'])->group( function () {
     Route::resource('accountofficer', AccountOfficerController::class);
     Route::resource('payment', PaymentController::class);
     Route::resource('accessibility', AccessibilityController::class);
+    Route::resource('chart', ChartOfAccountsController::class);
+    Route::resource('gl', GLController::class);
 
     // override payment list
     Route::post('payment/list/', [PaymentController::class, 'overridePaymentList']);
@@ -54,6 +58,8 @@ Route::middleware(['auth:sanctum'])->group( function () {
 
     // override release
     Route::post('account/overrrideaccounts', [LoanAccountController::class, 'overrideAccountList']);
+    // cash voucher
+    Route::get('account/cashvoucher/{account}', [LoanAccountController::class, 'cashVoucher']);
 
     Route::post('account/override/', [LoanAccountController::class, 'override']);
     Route::delete('account/remove/{account}', [LoanAccountController::class, 'delete']);

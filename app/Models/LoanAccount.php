@@ -107,6 +107,106 @@ class LoanAccount extends Model
      return $this->hasOne(Document::class, 'loan_account_id');
    }
 
+   public function cashVoucher() {
+
+      $glAccounts = GeneralLedger::where(['type' => 'releasing'])->get();
+
+      $cashVoucher = [];
+
+      foreach ($glAccounts as $gl) {
+         
+         if( $gl->loans == 'Cash'  ){
+
+            if( $this->release_type == 'Cash' || $this->release_type == 'Cash Release'){
+               $cashVoucher[] = array(
+                  'acct' => $gl->code,
+                  'title' => $gl->accounting,
+                  'reference' => $gl->loans,
+                  'sl' => '',
+                  'debit' => 0,
+                  'credit' => 0
+               );
+               continue;   
+            }
+            continue;
+         }
+
+         if( $gl->loans == 'Check'  ){
+            
+             if( $this->release_type == 'Check' || $this->release_type == 'Check Release'){
+               $cashVoucher[] = array(
+                  'acct' => $gl->code,
+                  'title' => $gl->accounting,
+                  'reference' => $gl->loans,
+                  'sl' => '',
+                  'debit' => 0,
+                  'credit' => 0
+               );
+               continue;   
+            }
+            continue;
+         }
+
+         $cashVoucher[] = array(
+            'acct' => $gl->code,
+            'title' => $gl->accounting,
+            'reference' => $gl->loans,
+            'sl' => '',
+            'debit' => 0,
+            'credit' => 0
+         );
+      }
+
+      foreach ($cashVoucher as $key => $value) {
+         
+      //    // $cashVoucher[$key]['debit'] = '';
+
+         if( $value['reference'] == 'Loan Receivable' ){
+             $cashVoucher[$key]['debit'] = $this->loan_amount;
+         }
+
+         if( $value['reference'] == 'Check' ){
+             $cashVoucher[$key]['credit'] = $this->net_proceeds;
+         }
+
+         if( $value['reference'] == 'Cash' ){
+             $cashVoucher[$key]['credit'] = $this->net_proceeds;
+         }
+
+         if( $value['reference'] == 'Filing Fee' ){
+             $cashVoucher[$key]['credit'] = $this->filing_fee;
+         }
+
+         if( $value['reference'] == 'Documentary Stamp' ){
+             $cashVoucher[$key]['credit'] = $this->document_stamp;
+         }
+
+         if( $value['reference'] == 'Insurance' ){
+             $cashVoucher[$key]['credit'] = $this->net_proceeds;
+         }
+
+         if( $value['reference'] == 'Notarial' ){
+             $cashVoucher[$key]['credit'] = $this->notarial_fee;
+         }
+
+         if( $value['reference'] == 'Prepaid' ){
+             $cashVoucher[$key]['credit'] = $this->prepaid_interest;
+         }
+
+         if( $value['reference'] == 'Others' ){
+             $cashVoucher[$key]['credit'] = $this->affidavit_fee;
+         }
+
+         if( $value['reference'] == 'Memo' ){
+             $cashVoucher[$key]['credit'] = $this->memo;
+         }
+
+      }
+
+      return $cashVoucher;
+
+   }
+
    public function payments() {
       return $this->hasMany(Payment::class, 'loan_account_id')->where(['status' => 'paid']);
    }

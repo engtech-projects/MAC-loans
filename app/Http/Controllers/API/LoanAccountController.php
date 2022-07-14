@@ -11,6 +11,7 @@ use App\Models\Document;
 use App\Models\Product;
 use App\Models\Amortization;
 use App\Models\Branch;
+use App\Models\ChartOfAccounts;
 use Carbon\Carbon;
 use App\Http\Resources\Borrower as BorrowerResource;
 use App\Http\Resources\LoanAccount as LoanAccountResource;
@@ -158,6 +159,13 @@ class LoanAccountController extends BaseController
         $document = new Document();
 
         return $document->getPromissoryNo($branch->branch_code, $product->product_code);
+    }
+
+    public function cashVoucher(LoanAccount $account) {
+
+        
+        
+        return $this->sendResponse(new LoanAccountResource($account), 'Account fetched.');
 
     }
 
