@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             TestDataSeeder::class,
             AccessibilitySeeder::class,
+            GLSeeder::class,
         ]);
     }
 }
