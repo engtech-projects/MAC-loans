@@ -586,7 +586,14 @@
 								<th >Credit</th>
 							</thead>
 							<tbody>
-								<tr>
+								<tr v-for="(voucher, i) in vouchers" :key="i">
+									<td>{{voucher.acct}}</td>
+									<td>{{voucher.reference}}</td>
+									<td>{{voucher.sl}}</td>
+									<td>{{formatToCurrency(voucher.debit)}}</td>
+									<td>{{formatToCurrency(voucher.credit)}}</td>
+								</tr>
+								<!-- <tr>
 									<td>1205</td>
 									<td>Loans Receivable - Current</td>
 									<td></td>
@@ -613,21 +620,14 @@
 									<td></td>
 									<td>5,000.00</td>
 									<td>0.00</td>
-								</tr>
-								<tr>
-									<td>1205</td>
-									<td>Loans Receivable - Current</td>
-									<td></td>
-									<td>5,000.00</td>
-									<td>0.00</td>
-								</tr>
+								</tr>-->
 								<tr class="bg-black">
 									<td>TOTAL</td>
 									<td></td>
 									<td></td>
-									<td>5,000.00</td>
-									<td>5,000.00</td>
-								</tr>
+									<td>{{formatToCurrency(totalDebit)}}</td>
+									<td>{{formatToCurrency(totalCredit)}}</td>
+								</tr> 
 							</tbody>
 						</table>
 
@@ -672,6 +672,7 @@ export default {
 			borrower:'',
 			loanDetails:'',
 			loanaccount:{
+				account_num:'',
 				borrower:{
 					borrower_num:'',
 					firstname:'',
@@ -692,9 +693,25 @@ export default {
 			productName:'',
 			filteredOverrides:[],
 			amortAmount:0,
+			vouchers:[],
 		}
 	},
 	methods:{
+		fetchCashVoucher:function(){
+			axios.get(window.location.origin + '/api/account/cashvoucher/' + this.loanaccount.loan_account_id, {
+				headers: {
+					'Authorization': 'Bearer ' + this.token,
+					'Content-Type': 'application/json',
+					'Accept': 'application/json'
+				}
+			})
+			.then(function (response) {
+				this.vouchers = response.data.data.cash_voucher;
+			}.bind(this))
+			.catch(function (error) {
+				console.log(error);
+			}.bind(this));
+		},
 		notify:function(title, text, type){
 			this.$notify({
 				group: 'foo',
@@ -913,6 +930,20 @@ export default {
 		},
 		borrowerPhoto:function(){
 			return this.loanaccount.borrower_photo? this.loanaccount.borrower_photo : '/img/user.png';
+		},
+		totalDebit:function(){
+			var amount = 0;
+			this.vouchers.map(function(val){
+				amount+=val.debit;
+			}.bind(this));
+			return amount;
+		},
+		totalCredit:function(){
+			var amount = 0;
+			this.vouchers.map(function(val){
+				amount+=val.credit;
+			}.bind(this));
+			return amount;
 		}
 	},
 	watch:{
@@ -920,6 +951,10 @@ export default {
 			this.loanaccount = newData;
 			this.loanaccount.date_release = this.dateToYMD(new Date());
 			this.loanaccount.loan_account_id?this.amortSched():null;
+			if(this.loanaccount.account_num){
+				this.fetchCashVoucher();
+			}
+			
 		},
 	},
 	mounted(){

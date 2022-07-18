@@ -3,7 +3,7 @@
 @section('content')
     <!-- Main content -->
     <section class="content mb-45 app" id="app">
-		<user-settings></user-settings>
+		<user-settings token="{{Session::get('token')}}"></user-settings>
     </section>
     <!-- /.content -->
 	<!-- MODALS  -->
