@@ -792,7 +792,7 @@
 													<span>Butuan City</span>
 												</div>
 												<p>
-													SUBSCRIBE AND SWORN before me this _______, day of __________ </b> and tax identetification number written above,
+													SUBSCRIBE AND SWORN before me this _______, day of __________ and tax identetification number written above,
 													Known to me and to me known to be the same person who executed the foregoing Promissory Note and they Acknowledged to me that the same is their own free and voluntary act and as well as the free and voluntary act and deed of the entitles herein represented with full power so to do and for the uses and purposes thereon set forth.
 												</p>
 												<p>
@@ -1324,8 +1324,8 @@
 			this.resetBorrower();
 			this.resetLoanDetails();
 			this.fetchProducts();
-			this.fetchRejectedAccounts();
-			this.fetchRejectedAccount();
+			// this.fetchRejectedAccounts();
+			// this.fetchRejectedAccount();
 			// this.navigate('custom-content-below-loandetails-tab');
 			// this.navigate('custom-content-below-coborrowerinfo-tab');
         }
