@@ -180,7 +180,7 @@ class LoanAccount extends Model
          }
 
          if( $value['reference'] == 'Insurance' ){
-             $cashVoucher[$key]['credit'] = $this->net_proceeds;
+             $cashVoucher[$key]['credit'] = $this->insurance;
          }
 
          if( $value['reference'] == 'Notarial' ){
