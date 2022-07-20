@@ -157,9 +157,7 @@ class LoanAccount extends Model
          );
       }
 
-      foreach ($cashVoucher as $key => $value) {
-         
-      //    // $cashVoucher[$key]['debit'] = '';
+      foreach ($cashVoucher as $key => $value) {      
 
          if( $value['reference'] == 'Loan Receivable' ){
              $cashVoucher[$key]['debit'] = $this->loan_amount;

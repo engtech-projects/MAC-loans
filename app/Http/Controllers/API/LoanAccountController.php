@@ -163,10 +163,7 @@ class LoanAccountController extends BaseController
 
     public function cashVoucher(LoanAccount $account) {
 
-        
-        
         return $this->sendResponse(new LoanAccountResource($account), 'Account fetched.');
-
     }
 
     // // end of day transaction

@@ -160,7 +160,7 @@ class Borrower extends Model
         // return $this->hasMany(LoanAccount::class, 'borrower_id');
 
         $loanAccount = new LoanAccount();
-        $activeAccounts = LoanAccount::where(['borrower_id' => $this->borrower_id])->get();
+        $activeAccounts = LoanAccount::where(['borrower_id' => $this->borrower_id, 'status' => 'released'])->get();
 
         foreach ($activeAccounts as $key => $value) {
             $value->outstandingBalance = $loanAccount->outstandingBalance($value->loan_account_id);
