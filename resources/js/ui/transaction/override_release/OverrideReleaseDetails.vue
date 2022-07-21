@@ -494,14 +494,14 @@
 									<span class="flex-1 mw-150">Pay to</span>
 									<div class="d-flex flex-1">
 										<span class="mr-5">: </span>
-										<span> {{loanaccount.account_officer.name}}</span>
+										<span> {{loanaccount.borrower.lastname + ', ' + loanaccount.borrower.firstname + ' ' + loanaccount.borrower.middlename.charAt(0).toUpperCase() + '.'}}</span>
 									</div>
 								</div>
 								<div class="d-flex flex-row">
 									<span class="flex-1 mw-150">Voucher No.</span>
 									<div class="d-flex flex-1">
 										<span class="mr-5">: </span>
-										<span> 001-002-0010215</span>
+										<span>{{loanaccount.account_num}}</span>
 									</div>
 								</div>
 							</div>
@@ -638,7 +638,7 @@
 						<div class="d-flex flex-row px-45">
 							<div class="d-flex flex-column flex-1">
 								<span class="text-center bt-dark-2 py-12 mb-45">Borrow Sign / Printed Name</span>
-								<span class="text-center bt-dark-2 py-12 mb-45">Date Disbursed / Ackknowledged</span>
+								<span class="text-center bt-dark-2 py-12 mb-45">Date Disbursed / Acknowledged</span>
 							</div>
 							<div class="flex-1"></div>
 							<div class="d-flex flex-column flex-1">
@@ -706,6 +706,7 @@ export default {
 				}
 			})
 			.then(function (response) {
+				console.log(response.data.data);
 				this.vouchers = response.data.data.cash_voucher;
 			}.bind(this))
 			.catch(function (error) {
