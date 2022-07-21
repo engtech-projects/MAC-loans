@@ -25,7 +25,7 @@
 					</div>
 				</div>
 				<div class="upload-photo d-flex flex-column" style="flex:4;padding-top:36px;">
-					<img src="/img/user.png" alt="">
+					<img :src="borrowerPhoto" alt="" style="max-width:230px;">
 				</div>
 			</div>
 			<div class="sep mb-24"></div>
@@ -214,7 +214,7 @@
 							<span class="">Status</span>
 							<span>:</span>
 						</div>
-						<span class="flex-2 text-primary-dark">Delinquent</span>
+						<span class="flex-2 text-ocean">Delinquent</span>
 					</div>
 				</div>
 			</div>
@@ -764,7 +764,10 @@ export default {
 		},
 		totalScheduledPayment:function(){
 			return this.loanAccount.current_amortization.interest + this.loanAccount.current_amortization.principal + this.loanAccount.current_amortization.lastPayment.short_principal + this.loanAccount.current_amortization.lastPayment.short_interest;
-		}
+		},
+		borrowerPhoto:function(){
+			return this.pborrower.photo? this.pborrower.photo : '/img/user.png';
+		},
 	},
 	watch:{
 		'payment.amount_applied':function(newValue){
