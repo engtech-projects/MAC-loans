@@ -528,7 +528,7 @@
 									<span class="flex-1 mw-150">Particular</span>
 									<div class="d-flex flex-2">
 										<span class="mr-5">: </span>
-										<span> Loan Granted P {{formatToCurrency(loanaccount.loan_amount)}} for {{loanaccount.terms / 30}} {{loanaccount.payment_mode}} payment. With interest of {{loanaccount.interest_rate}}% per month</span>
+										<span> Loan Granted P {{formatToCurrency(loanaccount.loan_amount)}} for {{loanaccount.no_of_installment}} {{loanaccount.payment_mode}} payment. With interest of {{loanaccount.interest_rate}}% per month</span>
 									</div>
 								</div>
 								<div class="d-flex flex-row">
@@ -564,7 +564,7 @@
 									<span class="flex-1 mw-150">Installment</span>
 									<div class="d-flex flex-2">
 										<span class="mr-5">: </span>
-										<span> {{loanaccount.terms/30}} {{loanaccount.payment_mode}}</span>
+										<span> {{loanaccount.no_of_installment}} {{loanaccount.payment_mode}}</span>
 									</div>
 								</div>
 								<div class="d-flex flex-row">
@@ -586,7 +586,7 @@
 								<th >Credit</th>
 							</thead>
 							<tbody>
-								<tr v-for="(voucher, i) in vouchers" :key="i">
+								<tr v-for="(voucher, i) in vouchers" v-if="voucher.debit != 0 || voucher.credit != 0" :key="i">
 									<td>{{voucher.acct}}</td>
 									<td>{{voucher.title}}</td>
 									<td>{{voucher.sl}}</td>
