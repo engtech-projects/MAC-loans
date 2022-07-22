@@ -528,7 +528,7 @@
 									<span class="flex-1 mw-150">Particular</span>
 									<div class="d-flex flex-2">
 										<span class="mr-5">: </span>
-										<span> Loan Granted P {{formatToCurrency(loanaccount.loan_amount)}} for {{loanaccount.terms / 30}} month(s) / weekly payment. With interest of {{loanaccount.interest_rate}}% per month</span>
+										<span> Loan Granted P {{formatToCurrency(loanaccount.loan_amount)}} for {{loanaccount.terms / 30}} {{loanaccount.payment_mode}} payment. With interest of {{loanaccount.interest_rate}}% per month</span>
 									</div>
 								</div>
 								<div class="d-flex flex-row">
@@ -564,7 +564,7 @@
 									<span class="flex-1 mw-150">Installment</span>
 									<div class="d-flex flex-2">
 										<span class="mr-5">: </span>
-										<span> {{loanaccount.terms/30}} Monthly</span>
+										<span> {{loanaccount.terms/30}} {{loanaccount.payment_mode}}</span>
 									</div>
 								</div>
 								<div class="d-flex flex-row">
@@ -588,7 +588,7 @@
 							<tbody>
 								<tr v-for="(voucher, i) in vouchers" :key="i">
 									<td>{{voucher.acct}}</td>
-									<td>{{voucher.reference}}</td>
+									<td>{{voucher.title}}</td>
 									<td>{{voucher.sl}}</td>
 									<td>{{formatToCurrency(voucher.debit)}}</td>
 									<td>{{formatToCurrency(voucher.credit)}}</td>
