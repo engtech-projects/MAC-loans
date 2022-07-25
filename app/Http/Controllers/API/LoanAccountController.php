@@ -103,13 +103,15 @@ class LoanAccountController extends BaseController
 
         foreach ($request->input() as $key => $value) {
             
-            LoanAccount::where('loan_account_id', $value['loan_account_id'])
-                ->update([
-                    'transaction_date' => $value['transaction_date'],
-                    'date_release' => $value['date_release'],
-                    'due_date' => $value['due_date'],
-                    'status' => 'released',
-                ]);
+            $account = LoanAccount::find($value['loan_account_id']);
+
+            $account->transaction_date = $value['transaction_date'];
+            $account->date_release = $value['date_release'];
+            $account->due_date = $value['due_date'];
+            $account->status = 'released';
+            $account->update();
+
+            $this->createAmortizationSched($account);
         }
 
         return $this->sendResponse(['status' => 'released'], 'Released');
@@ -166,12 +168,11 @@ class LoanAccountController extends BaseController
         return $this->sendResponse(new LoanAccountResource($account), 'Account fetched.');
     }
 
-    // // end of day transaction
+    // end of day transaction
     // public function setDelinquent(){
 
     //     $loanAccount = new LoanAccount();
     //     $loanAccount->setDelinquent();
 
     // }
-
 }
