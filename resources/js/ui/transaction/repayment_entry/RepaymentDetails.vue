@@ -365,28 +365,28 @@
 														<span class="">Short Principal</span>
 														<span>:</span>
 													</div>
-													<span class="flex-1">P {{formatToCurrency(loanAccount.current_amortization.lastPayment.short_principal)}}</span>
+													<span class="flex-1">P {{loanAccount.current_amortization.lastPayment? formatToCurrency(loanAccount.current_amortization.lastPayment.short_principal): 0.00}}</span>
 												</div>
 												<div class="d-flex flex-row mb-10">
 													<div class="d-flex flex-row justify-content-between flex-1 mr-16">
 														<span class="">Adv. Principal</span>
 														<span>:</span>
 													</div>
-													<span class="flex-1">P {{formatToCurrency(loanAccount.current_amortization.lastPayment.advance_principal)}}</span>
+													<span class="flex-1">P {{loanAccount.current_amortization.lastPayment? formatToCurrency(loanAccount.current_amortization.lastPayment.advance_principal): 0.00}}</span>
 												</div>
 												<div class="d-flex flex-row">
 													<div class="d-flex flex-row justify-content-between flex-1 mr-16">
 														<span class="">Short Interest</span>
 														<span>:</span>
 													</div>
-													<span class="flex-1">P {{formatToCurrency(loanAccount.current_amortization.lastPayment.short_interest)}}</span>
+													<span class="flex-1">P {{loanAccount.current_amortization.lastPayment? formatToCurrency(loanAccount.current_amortization.lastPayment.short_interest):0.00}}</span>
 												</div>
 												<div class="d-flex flex-row">
 													<div class="d-flex flex-row justify-content-between flex-1 mr-16">
 														<span class="">Adv. Interest</span>
 														<span>:</span>
 													</div>
-													<span class="flex-1">P {{formatToCurrency(loanAccount.current_amortization.lastPayment.advance_interest)}}</span>
+													<span class="flex-1">P {{loanAccount.current_amortization.lastPayment? formatToCurrency(loanAccount.current_amortization.lastPayment.advance_interest):0.00}}</span>
 												</div>
 											</div>
 											
@@ -745,7 +745,10 @@ export default {
 	},
 	computed:{
 		totalPrincipal:function(){
-			return this.loanAccount.current_amortization.principal + this.loanAccount.current_amortization.lastPayment.short_principal - this.loanAccount.current_amortization.lastPayment.advance_principal
+			if(this.loanAccount.current_amortization.lastPayment){
+				return this.loanAccount.current_amortization.principal + this.loanAccount.current_amortization.lastPayment.short_principal - this.loanAccount.current_amortization.lastPayment.advance_principal
+			}
+			return 0;
 		},
 		totalInterest:function(){
 			return this.loanAccount.current_amortization.interest + this.loanAccount.current_amortization.short_interest - this.loanAccount.current_amortization.advance_interest
@@ -763,7 +766,10 @@ export default {
 			return this.pdi + this.penalty;
 		},
 		totalScheduledPayment:function(){
-			return this.loanAccount.current_amortization.interest + this.loanAccount.current_amortization.principal + this.loanAccount.current_amortization.lastPayment.short_principal + this.loanAccount.current_amortization.lastPayment.short_interest;
+			if(this.loanAccount.current_amortization.lastPayment){
+				return this.loanAccount.current_amortization.interest + this.loanAccount.current_amortization.principal + this.loanAccount.current_amortization.lastPayment.short_principal + this.loanAccount.current_amortization.lastPayment.short_interest;
+			}
+			return 0;
 		},
 		borrowerPhoto:function(){
 			return this.pborrower.photo? this.pborrower.photo : '/img/user.png';

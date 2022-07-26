@@ -820,7 +820,7 @@ export default {
 		},
 		createAmortization: function(){
 			// this.loanaccount.date_release = this.dateToYMD(new Date);
-			axios.get(window.location.origin + '/api/account/create-amortization/' + this.loanaccount.loan_account_id + '/', this.loanaccount, {
+			axios.get(window.location.origin + '/api/account/create-amortization/' + this.loanaccount.loan_account_id + '/', {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
 					'Content-Type': 'application/json',
@@ -828,6 +828,7 @@ export default {
 				}
 			})
 			.then(function (response) {
+				console.log('amortization generated');
 				console.log(response.data);
 			}.bind(this))
 			.catch(function (error) {
