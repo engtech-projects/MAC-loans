@@ -223,9 +223,13 @@ export default {
 			var accounts = [];
 			this.loanAccounts.map(function(account){
 				if(account.checked){
+					var dt = new Date();
+					dt.setDate(dt.getDate() + account.terms);
+					account.date_release = this.dateToYMD(new Date);
+					account.due_date = this.dateToYMD(dt);
 					accounts.push(account);
 				}
-			});
+			}.bind(this));
 			axios.post(window.location.origin + '/api/account/override', accounts, {
 			headers: {
 				'Authorization': 'Bearer ' + this.token,
@@ -333,6 +337,14 @@ export default {
 				}
 			}.bind(this));
 			return amount;
+		},
+		dueDate:function(){
+			if(this.loanAccount.loan_account_id){
+				var dt = new Date(this.loanAccount.date_release);
+				dt.setDate(dt.getDate() + this.loanAccount.terms);
+				return dt;
+			}
+			return new Date
 		},
 		unselected:function(){
 			var amount = 0;
