@@ -176,7 +176,7 @@ export default {
 	},
 	methods:{
 		fetchAccounts:function(){
-			axios.post('/api/report/release', this.filter, {
+			axios.post('api/report/release', this.filter, {
 			headers: {
 				'Authorization': 'Bearer ' + this.token,
 				'Content-Type': 'application/json',
@@ -193,7 +193,7 @@ export default {
 			}.bind(this));
 		}, 
 		fetchOfficers:function(){
-			axios.get(this.baserUrl() + '/api/accountofficer', {
+			axios.get(this.baserUrl() + 'api/accountofficer', {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
 					'Content-Type': 'application/json',

@@ -903,7 +903,7 @@
 					loanAccounts:[],
 					created_at: this.dateToYMD(new Date()),
 				},
-				baseUrl: this.baseUrl(),
+				baseUrl: this.baseURL(),
 				borrowers:[],
 				loanDetails: {
 					loan_account_id:null,
@@ -957,7 +957,7 @@
 				this.fetchBorrower(data);
 			},
 			fetchBorrower:function(borrower){
-				axios.get(this.baseUrl() + '/api/borrower/' + borrower.borrower.borrower_id, {
+				axios.get(this.baseURL() + 'api/borrower/' + borrower.borrower.borrower_id, {
 					headers: {
 						'Authorization': 'Bearer ' + this.token,
 						'Content-Type': 'application/json',
@@ -976,7 +976,7 @@
 				}.bind(this));
 			},
 			fetchRejectedAccounts:function(){
-				axios.get(this.baseUrl() + '/api/account/rejected', {
+				axios.get(this.baseURL() + 'api/account/rejected', {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
 						'Content-Type': 'application/json',
@@ -993,7 +993,7 @@
 				}.bind(this));
 			},
 			fetchRejectedAccount:function(){
-				axios.get(this.baseUrl() + '/api/account/show/' + this.rejectid, {
+				axios.get(this.baseURL() + 'api/account/show/' + this.rejectid, {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
 						'Content-Type': 'application/json',
@@ -1010,7 +1010,7 @@
 				}.bind(this));
 			},
 			amortSched:function(){
-				axios.post(this.baseUrl() + '/api/account/generate-amortization', this.loanDetails, {
+				axios.post(this.baseURL() + 'api/account/generate-amortization', this.loanDetails, {
 					headers: {
 						'Authorization': 'Bearer ' + this.token,
 						'Content-Type': 'application/json',
@@ -1028,7 +1028,7 @@
 				}.bind(this));
 			},
 			fetchProducts: function(){
-				axios.get(this.baseUrl() + '/api/product', {
+				axios.get(this.baseURL() + 'api/product', {
 					headers: {
 						'Authorization': 'Bearer ' + this.token,
 						'Content-Type': 'application/json',
@@ -1043,7 +1043,7 @@
 				}.bind(this));
 			},
 			fetchBorrowers:function(){
-				axios.get(this.baseUrl() + '/api/borrower', {
+				axios.get(this.baseURL() + 'api/borrower', {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
 						'Content-Type': 'application/json',
@@ -1059,7 +1059,7 @@
 				}.bind(this));
 			},
 			fetchLoanAccounts:function(){
-				axios.get(this.baseUrl() + '/transaction/release_entry/loanaccounts?borrower=' + this.borrower.borrower_id)
+				axios.get(this.baseURL() + 'transaction/release_entry/loanaccounts?borrower=' + this.borrower.borrower_id)
 				.then(function (response) {
 					this.borrower.loan_accounts = response.data;
 				}.bind(this))

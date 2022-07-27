@@ -298,7 +298,7 @@ export default {
 	},
 	methods:{
 		fetchProducts: function(){
-			axios.get(this.baseUrl() + '/api/product', {
+			axios.get(this.baseURL() + 'api/product', {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
 					'Content-Type': 'application/json',
@@ -313,7 +313,7 @@ export default {
 			}.bind(this));
 		},
 		fetchAo: function(){
-			axios.get(this.baseUrl() + '/api/accountofficer', {
+			axios.get(this.baseURL() + 'api/accountofficer', {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
 					'Content-Type': 'application/json',
@@ -328,7 +328,7 @@ export default {
 			}.bind(this));
 		},
 		fetchCenters: function(){
-			axios.get(this.baseUrl() + '/api/center/', {
+			axios.get(this.baseURL() + 'api/center/', {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
 					'Content-Type': 'application/json',
@@ -343,7 +343,7 @@ export default {
 			}.bind(this));
 		},
 		fetchPromissoryNo: function(){
-			axios.post(this.baseUrl() + '/api/account/promissoryno',{'product_id':this.loanDetails.product_id}, {
+			axios.post(this.baseURL() + 'api/account/promissoryno',{'product_id':this.loanDetails.product_id}, {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
 					'Content-Type': 'application/json',
@@ -367,7 +367,7 @@ export default {
 			this.setPrepaidInterest();
 			this.loanDetails.status = 'pending';
 			if(this.loanDetails.loan_account_id){
-					axios.put(this.baseUrl() + '/api/account/update/' + this.loanDetails.loan_account_id, this.loanDetails, {
+					axios.put(this.baseURL() + 'api/account/update/' + this.loanDetails.loan_account_id, this.loanDetails, {
 						headers: {
 							'Authorization': 'Bearer ' + this.token,
 							'Content-Type': 'application/json',
@@ -382,7 +382,7 @@ export default {
 						console.log(error);
 					}.bind(this));
 			}else {
-				axios.post(this.baseUrl() + '/api/account/create/' + this.loanDetails.borrower_id, this.loanDetails, {
+				axios.post(this.baseURL() + 'api/account/create/' + this.loanDetails.borrower_id, this.loanDetails, {
 					headers: {
 						'Authorization': 'Bearer ' + this.token,
 						'Content-Type': 'application/json',

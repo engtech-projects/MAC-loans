@@ -163,7 +163,7 @@ export default {
 			});
 		},
 		fetchAccounts:function(){
-			axios.post(this.baseUrl() + '/api/account/overrrideaccounts', this.filter, {
+			axios.post(this.baseURL() + 'api/account/overrrideaccounts', this.filter, {
 			headers: {
 				'Authorization': 'Bearer ' + this.token,
 				'Content-Type': 'application/json',
@@ -179,7 +179,7 @@ export default {
 			}.bind(this));
 		}, 
 		todaysRelease:function(){
-			axios.get(this.baseUrl() + '/transaction/todaysrelease')
+			axios.get(this.baseURL() + 'transaction/todaysrelease')
 			.then(function (response) {
 				this.todaysReleases = response.data;
 			}.bind(this))
@@ -203,7 +203,7 @@ export default {
 			return '' + y + '-' + (m<=9 ? '0' + m : m) + '-' + (d <= 9 ? '0' + d : d);
 		},
 		override:function(){
-			axios.get(this.baseUrl() + '/api/account/overrrideaccounts', {
+			axios.get(this.baseURL() + 'api/account/overrrideaccounts', {
 			headers: {
 				'Authorization': 'Bearer ' + this.token,
 					'Content-Type': 'application/json',
@@ -230,7 +230,7 @@ export default {
 					accounts.push(account);
 				}
 			}.bind(this));
-			axios.post(this.baseUrl() + '/api/account/override', accounts, {
+			axios.post(this.baseURL() + 'api/account/override', accounts, {
 			headers: {
 				'Authorization': 'Bearer ' + this.token,
 					'Content-Type': 'application/json',
@@ -309,7 +309,7 @@ export default {
 		},
 		reject:function(){
 			this.loanAccount.status = 'rejected';
-			axios.put(this.baseUrl() + '/api/account/update/' + this.loanAccount.loan_account_id, this.loanAccount, {
+			axios.put(this.baseURL() + 'api/account/update/' + this.loanAccount.loan_account_id, this.loanAccount, {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
 					'Content-Type': 'application/json',

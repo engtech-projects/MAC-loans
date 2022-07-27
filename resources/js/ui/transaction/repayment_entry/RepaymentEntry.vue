@@ -60,7 +60,7 @@ export default {
 	},
 	methods:{
 		fetchBorrowers:function(){
-			axios.get(this.baseUrl() + '/api/borrower', {
+			axios.get(this.baseURL() + 'api/borrower', {
 			headers: {
 				'Authorization': 'Bearer ' + this.token,
 					'Content-Type': 'application/json',
