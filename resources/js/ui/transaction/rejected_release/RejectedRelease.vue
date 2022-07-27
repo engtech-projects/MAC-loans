@@ -482,7 +482,7 @@ export default {
 	},
 	methods: {
 		fetchRejectedAccounts:function(){
-			axios.get(window.location.origin + '/api/account/rejected/', {
+			axios.get(this.baseUrl() + '/api/account/rejected/', {
 			headers: {
 				'Authorization': 'Bearer ' + this.token,
 					'Content-Type': 'application/json',

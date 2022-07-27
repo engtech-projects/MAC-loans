@@ -148,6 +148,9 @@ Vue.mixin({
 		},
 		replaceAll:function(str, find, replace) {
 			return str.replace(new RegExp(escapeRegExp(find), 'g'), replace);
+		},
+		baseUrl:function(){
+			return document.getElementById('baseUrl').href;
 		}
 	}
 })

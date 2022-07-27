@@ -193,7 +193,7 @@ export default {
 			}.bind(this));
 		}, 
 		fetchOfficers:function(){
-			axios.get(window.location.origin + '/api/accountofficer', {
+			axios.get(this.baserUrl() + '/api/accountofficer', {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
 					'Content-Type': 'application/json',
