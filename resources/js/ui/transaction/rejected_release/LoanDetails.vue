@@ -257,7 +257,7 @@ export default {
 	props:['token', 'loandetails', 'borrower', 'borrowerbday', 'saveloandetails'],
 	data(){
 		return {
-			baseUrl:this.baseUrl(),
+			baseUrl:this.baseURL(),
 			age:null,
 			products:[],
 			accountOfficers:[],
@@ -307,7 +307,7 @@ export default {
 	},
 	methods:{
 		fetchProducts: function(){
-			axios.get(this.baseUrl() + '/api/product/', {
+			axios.get(this.baseURL() + 'api/product/', {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
 					'Content-Type': 'application/json',
@@ -322,7 +322,7 @@ export default {
 			}.bind(this));
 		},
 		fetchAo: function(){
-			axios.get(this.baseUrl() + '/api/accountofficer/', {
+			axios.get(this.baseURL() + 'api/accountofficer/', {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
 					'Content-Type': 'application/json',
@@ -337,7 +337,7 @@ export default {
 			}.bind(this));
 		},
 		fetchCenters: function(){
-			axios.get(this.baseUrl() + '/api/center/', {
+			axios.get(this.baseURL() + 'api/center/', {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
 					'Content-Type': 'application/json',

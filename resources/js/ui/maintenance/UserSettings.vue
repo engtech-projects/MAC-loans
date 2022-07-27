@@ -141,7 +141,7 @@ export default {
 	},
 	methods:{
 		fetchAccounts: function(){
-			axios.get(this.baseUrl() + '/api/user/', {
+			axios.get(this.baseURL() + 'api/user/', {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
 					'Content-Type': 'application/json',

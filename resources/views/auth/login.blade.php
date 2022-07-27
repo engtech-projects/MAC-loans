@@ -15,7 +15,7 @@
   <link rel="stylesheet" href="{{ asset('css/adminlte.min.css') }}">
 </head>
 <body class="hold-transition login-page">
-	<a href="{{url('/')}}" id="baseUrl" class="hide"></a>
+	<a href="{{url('')}}" id="baseUrl" class="hide"></a>
 <div class="login-box" id="app">
   <!-- /.login-logo -->
   <login csrf="{{csrf_token()}}"></login>

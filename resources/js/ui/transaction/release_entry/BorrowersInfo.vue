@@ -415,7 +415,7 @@
 		props:['token','pborrower', 'psave','clear','pclient','borrower_id', 'idtype'],
 		data(){
 			return {
-				baseUrl: this.baseUrl(),
+				baseUrl: this.baseURL(),
 				img: null,
 				borrower: {
 					borrower_id: null,
@@ -490,7 +490,7 @@
 		},
 		methods: {
 			fetchBorrower:function(){
-				axios.get(this.baseUrl() + '/api/borrower/' + this.borrower_id, {
+				axios.get(this.baseURL() + 'api/borrower/' + this.borrower_id, {
 					headers: {
 						'Authorization': 'Bearer ' + this.token,
 						'Content-Type': 'application/json',
@@ -507,7 +507,7 @@
 			save: function(){
 				this.borrower.img = this.img;
 				if(this.borrower.borrower_id){
-						axios.put(this.baseUrl() + '/api/borrower/' + this.borrower.borrower_id, this.borrower, {
+						axios.put(this.baseURL() + 'api/borrower/' + this.borrower.borrower_id, this.borrower, {
 							headers: {
 								'Authorization': 'Bearer ' + this.token,
 								'Content-Type': 'application/json',
@@ -523,7 +523,7 @@
 							console.log(error);
 						}.bind(this));
 				}else {
-					axios.post(this.baseUrl() + '/api/borrower', this.borrower, {
+					axios.post(this.baseURL() + 'api/borrower', this.borrower, {
 						headers: {
 							'Authorization': 'Bearer ' + this.token,
 							'Content-Type': 'aMpplication/json',
@@ -665,7 +665,7 @@
 			borrowerImg:function(){
 				if(!this.img){
 					if(!this.borrower.photo){
-						return this.baseUrl() + '/img/user.png';
+						return this.baseURL() + 'img/user.png';
 					}
 					else{
 						return this.borrower.photo;
@@ -679,7 +679,7 @@
 				}else if(this.borrower.photo && !this.img){
 					return this.borrower.photo;
 				}else{
-					return this.baseUrl() + '/img/user.png';
+					return this.baseURL() + 'img/user.png';
 				}
 			}
 		},

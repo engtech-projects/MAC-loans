@@ -386,7 +386,7 @@
 		data(){
 			return {
 				rejectedAccounts:[],
-				baseUrl: this.baseUrl(),
+				baseUrl: this.baseURL(),
 				rejectedAccount:{
 					borrower:{
 						borrower_id:null,
@@ -401,7 +401,7 @@
 		},
 		methods: {
 			fetchRejectedAccounts:function(){
-				axios.get(this.baseUrl() + '/api/account/rejected', {
+				axios.get(this.baseURL() + 'api/account/rejected', {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
 						'Content-Type': 'application/json',
@@ -419,7 +419,7 @@
 			},
 
 			fetchBorrower:function(borrower){
-				axios.get(this.baseUrl() + '/api/borrower/' + borrower.borrower.borrower_id, {
+				axios.get(this.baseURL() + 'api/borrower/' + borrower.borrower.borrower_id, {
 					headers: {
 						'Authorization': 'Bearer ' + this.token,
 						'Content-Type': 'application/json',
@@ -437,7 +437,7 @@
 			},
 
 			fetchRejectedAccount:function(){
-				axios.get(this.baseUrl() + '/api/account/show/' + this.id, {
+				axios.get(this.baseURL() + 'api/account/show/' + this.id, {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
 						'Content-Type': 'application/json',
@@ -526,7 +526,7 @@
 				}
 			},
 			saveLoanDetails: function(){
-				axios.put(this.baseUrl() + '/api/account/update/' + this.rejectedAccount.loan_account_id, this.rejectedAccount, {
+				axios.put(this.baseURL() + 'api/account/update/' + this.rejectedAccount.loan_account_id, this.rejectedAccount, {
 					headers: {
 						'Authorization': 'Bearer ' + this.token,
 						'Content-Type': 'application/json',
@@ -542,7 +542,7 @@
 				}.bind(this));
 			},
 			saveBorrower: function(){
-				axios.put(this.baseUrl() + '/api/borrower/' + this.rejectedAccount.borrower.borrower_id, this.rejectedAccount.borrower, {
+				axios.put(this.baseURL() + 'api/borrower/' + this.rejectedAccount.borrower.borrower_id, this.rejectedAccount.borrower, {
 					headers: {
 						'Authorization': 'Bearer ' + this.token,
 						'Content-Type': 'application/json',

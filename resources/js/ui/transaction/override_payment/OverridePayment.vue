@@ -160,7 +160,7 @@ export default {
 	},
 	methods:{
 		fetchPayments:function(){
-			axios.post(this.baseUrl() + '/api/payment/list',this.filter,{
+			axios.post(this.baseURL() + 'api/payment/list',this.filter,{
 			headers: {
 				'Authorization': 'Bearer ' + this.token,
 				'Content-Type': 'application/json',
@@ -175,7 +175,7 @@ export default {
 			}.bind(this));
 		},
 		overridePaymentDates:function(){
-			axios.get(this.baseUrl() + '/transaction/overridepaymentdates')
+			axios.get(this.baseURL() + 'transaction/overridepaymentdates')
 			.then(function (response) {
 				this.dates = response.data;
 			}.bind(this))
