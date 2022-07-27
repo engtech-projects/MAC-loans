@@ -1,7 +1,7 @@
 <!-- Main Sidebar Container -->
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
 <!-- Brand Logo -->
-<a href="#" class="brand-link center-text">     
+<a href="{{url('/')}}" id="baseUrl" class="brand-link center-text">     
   <span class="logo">Micro Access Loan Corporation</span>
 </a>
 

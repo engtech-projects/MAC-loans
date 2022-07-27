@@ -141,7 +141,7 @@ export default {
 	},
 	methods:{
 		fetchAccounts: function(){
-			axios.get(window.location.origin + '/api/user/', {
+			axios.get(this.baseUrl() + '/api/user/', {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
 					'Content-Type': 'application/json',

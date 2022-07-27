@@ -750,7 +750,7 @@ export default {
 	data(){
 		return {
 			activeTab:'reminder-letter-tab',
-			baseUrl: window.location.origin,
+			baseUrl: this.baseUrl(),
 			loanDetails:{
 				loan_amount:0,
 				documents:{
@@ -806,7 +806,7 @@ export default {
 			return text;
 		},
 		amortSched:function(){
-			axios.post(window.location.origin + '/api/account/generate-amortization', this.loanDetails, {
+			axios.post(this.baseUrl() + '/api/account/generate-amortization', this.loanDetails, {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
 					'Content-Type': 'application/json',
@@ -824,7 +824,7 @@ export default {
 			}.bind(this));
 		},
 		fetchProducts: function(){
-			axios.get(window.location.origin + '/api/product', {
+			axios.get(this.baseUrl() + '/api/product', {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
 					'Content-Type': 'application/json',

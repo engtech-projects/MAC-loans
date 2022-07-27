@@ -670,7 +670,7 @@ export default {
 			return '';
 		},
 		amortSched:function(){
-			axios.post(window.location.origin + '/api/account/generate-amortization', this.loanAccount, {
+			axios.post(this.baseUrl() + '/api/account/generate-amortization', this.loanAccount, {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
 					'Content-Type': 'application/json',
@@ -725,7 +725,7 @@ export default {
 		pay:function(){
 			this.payment.loan_account_id = this.loanAccount.loan_account_id;
 			alert('paying...');
-			axios.post(window.location.origin + '/api/payment', this.payment, {
+			axios.post(this.baseUrl() + '/api/payment', this.payment, {
 				headers: {
 						'Authorization': 'Bearer ' + this.token,
 						'Content-Type': 'application/json',

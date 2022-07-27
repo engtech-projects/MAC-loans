@@ -266,7 +266,7 @@ export default {
 	props:['borrower_id','token'],
 	data(){
 		return {
-			baseUrl: window.location.origin,
+			baseUrl: this.baseUrl(),
 			borrower:{
 				borrower_id: null,
 				borrower_num:'',
@@ -299,7 +299,7 @@ export default {
 	},
 	methods:{
 		fetchBorrower:function(){
-			axios.get(window.location.origin + '/api/borrower/' + this.borrower_id, {
+			axios.get(this.baseUrl() + '/api/borrower/' + this.borrower_id, {
 			headers: {
 				'Authorization': 'Bearer ' + this.token,
 					'Content-Type': 'application/json',

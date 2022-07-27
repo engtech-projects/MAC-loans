@@ -114,7 +114,7 @@
 		},
 		methods: {
 			fetchProducts: function(){
-				axios.get(window.location.origin + '/api/product/', {
+				axios.get(this.baseUrl() + '/api/product/', {
 					headers: {
 						'Authorization': 'Bearer ' + this.token,
 						'Content-Type': 'application/json',
@@ -139,7 +139,7 @@
 			},
 			save: function(){
 				if(this.product.product_id){
-						axios.put(window.location.origin + '/api/product/' + this.product.product_id, this.product, {
+						axios.put(this.baseUrl() + '/api/product/' + this.product.product_id, this.product, {
 						headers: {
 								'Authorization': 'Bearer ' + this.token,
 								'Content-Type': 'application/json',
@@ -154,7 +154,7 @@
 							console.log(error);
 						}.bind(this));
 				}else {
-					axios.post(window.location.origin + '/api/product', this.product, {
+					axios.post(this.baseUrl() + '/api/product', this.product, {
 						headers: {
 								'Authorization': 'Bearer ' + this.token,
 								'Content-Type': 'application/json',

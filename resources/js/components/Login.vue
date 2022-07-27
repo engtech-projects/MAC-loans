@@ -61,10 +61,10 @@ export default {
 	},
 	methods: {
 		login:function(){
-			axios.post(window.location.origin + '/api/login', this.data.credentials)
+			axios.post(this.baseUrl() + '/api/login', this.data.credentials)
 			.then(function (response) {
 				this.data.token = response.data.data.token;
-				window.location.replace(window.location.origin + '/dashboard');
+				window.location.replace(this.baseUrl() + '/dashboard');
 				this.makeAuth();
 			}.bind(this))
 			.catch(function (error) {
@@ -81,9 +81,9 @@ export default {
 			}.bind(this));
 		}, 
 		makeAuth:function(){
-			axios.post(window.location.origin + '/login', this.data)
+			axios.post(this.baseUrl() + '/login', this.data)
 			.then(function (response) {
-				window.location.replace(window.location.origin + '/maintenance/product_setup');
+				window.location.replace(this.baseUrl() + '/maintenance/product_setup');
 			}.bind(this))
 			.catch(function (error) {
 				console.log(error);

@@ -698,7 +698,7 @@ export default {
 	},
 	methods:{
 		fetchCashVoucher:function(){
-			axios.get(window.location.origin + '/api/account/cashvoucher/' + this.loanaccount.loan_account_id, {
+			axios.get(this.baseUrl() + '/api/account/cashvoucher/' + this.loanaccount.loan_account_id, {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
 					'Content-Type': 'application/json',
@@ -722,7 +722,7 @@ export default {
 			});
 		},
 		amortSched:function(){
-			axios.post(window.location.origin + '/api/account/generate-amortization', this.loanaccount, {
+			axios.post(this.baseUrl() + '/api/account/generate-amortization', this.loanaccount, {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
 					'Content-Type': 'application/json',
@@ -739,7 +739,7 @@ export default {
 			}.bind(this));
 		},
 		fetchCenters:function(){
-			axios.get(window.location.origin + '/api/center', {
+			axios.get(this.baseUrl() + '/api/center', {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
 					'Content-Type': 'application/json',
@@ -754,7 +754,7 @@ export default {
 			}.bind(this));
 		},
 		fetchProducts: function(){
-			axios.get(window.location.origin + '/api/product/', {
+			axios.get(this.baseUrl() + '/api/product/', {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
 					'Content-Type': 'application/json',
@@ -769,7 +769,7 @@ export default {
 			}.bind(this));
 		},
 		fetchAo: function(){
-			axios.get(window.location.origin + '/api/accountofficer/', {
+			axios.get(this.baseUrl() + '/api/accountofficer/', {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
 					'Content-Type': 'application/json',
@@ -786,7 +786,7 @@ export default {
 		fetchFilteredOverride: function(){
 			console.log(this.filter);
 			this.filter.created_at = this.pdate;
-			axios.post(window.location.origin + '/api/account/overrrideaccounts', this.filter, {
+			axios.post(this.baseUrl() + '/api/account/overrrideaccounts', this.filter, {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
 					'Content-Type': 'application/json',
@@ -802,7 +802,7 @@ export default {
 		},
 		override: function(){
 			this.loanaccount.date_release = this.dateToYMD(new Date);
-			axios.post(window.location.origin + '/api/account/override', [this.loanaccount], {
+			axios.post(this.baseUrl() + '/api/account/override', [this.loanaccount], {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
 					'Content-Type': 'application/json',
@@ -820,7 +820,7 @@ export default {
 		},
 		createAmortization: function(){
 			// this.loanaccount.date_release = this.dateToYMD(new Date);
-			axios.get(window.location.origin + '/api/account/create-amortization/' + this.loanaccount.loan_account_id + '/', {
+			axios.get(this.baseUrl() + '/api/account/create-amortization/' + this.loanaccount.loan_account_id + '/', {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
 					'Content-Type': 'application/json',
@@ -837,7 +837,7 @@ export default {
 		},
 		
 		reject: function(){
-			axios.put(window.location.origin + '/api/account/reject/' + this.loanaccount.loan_account_id, this.loanaccount, {
+			axios.put(this.baseUrl() + '/api/account/reject/' + this.loanaccount.loan_account_id, this.loanaccount, {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
 					'Content-Type': 'application/json',

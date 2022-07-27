@@ -103,7 +103,7 @@ export default {
 	},
 	methods:{
 		fetchBranches:function(){
-			axios.get(window.location.origin + '/api/branch', {
+			axios.get(this.baseUrl() + '/api/branch', {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
 					'Content-Type': 'application/json',
@@ -120,7 +120,7 @@ export default {
 		},
 		save: function(){
 			if(this.branch.branch_id){
-					axios.put(window.location.origin + '/api/branch/' + this.branch.branch_id, this.branch,{
+					axios.put(this.baseUrl() + '/api/branch/' + this.branch.branch_id, this.branch,{
 						headers: {
 							'Authorization': 'Bearer ' + this.token,
 							'Content-Type': 'application/json',
@@ -136,7 +136,7 @@ export default {
 						console.log(error);
 					}.bind(this));
 			}else {
-				axios.post(window.location.origin + '/api/branch', this.branch,{
+				axios.post(this.baseUrl() + '/api/branch', this.branch,{
 					headers: {
 						'Authorization': 'Bearer ' + this.token,
 						'Content-Type': 'application/json',

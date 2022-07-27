@@ -190,7 +190,7 @@ export default {
 	},
 	methods:{
 		fetchCenters:function(){
-			axios.get(window.location.origin + '/api/center', {
+			axios.get(this.baseUrl() + '/api/center', {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
 					'Content-Type': 'application/json',
@@ -205,7 +205,7 @@ export default {
 			}.bind(this));
 		},
 		fetchOfficers:function(){
-			axios.get(window.location.origin + '/api/accountofficer', {
+			axios.get(this.baseUrl() + '/api/accountofficer', {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
 					'Content-Type': 'application/json',
@@ -224,7 +224,7 @@ export default {
 		},
 
 		fetchBranches:function(){
-			axios.get(window.location.origin + '/api/branch', {
+			axios.get(this.baseUrl() + '/api/branch', {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
 					'Content-Type': 'application/json',
@@ -242,7 +242,7 @@ export default {
 		
 		saveOfficer: function(){
 			if(this.officer.ao_id){
-					axios.put(window.location.origin + '/api/accountofficer/' + this.officer.ao_id, this.officer,{
+					axios.put(this.baseUrl() + '/api/accountofficer/' + this.officer.ao_id, this.officer,{
 						headers: {
 							'Authorization': 'Bearer ' + this.token,
 							'Content-Type': 'application/json',
@@ -257,7 +257,7 @@ export default {
 						console.log(error);
 					}.bind(this));
 			}else {
-				axios.post(window.location.origin + '/api/accountofficer', this.officer,{
+				axios.post(this.baseUrl() + '/api/accountofficer', this.officer,{
 					headers: {
 						'Authorization': 'Bearer ' + this.token,
 						'Content-Type': 'application/json',
@@ -277,7 +277,7 @@ export default {
 
 		save: function(){
 			if(this.center.center_id){
-					axios.put(window.location.origin + '/api/center/' + this.center.center_id, this.center,{
+					axios.put(this.baseUrl() + '/api/center/' + this.center.center_id, this.center,{
 						headers: {
 							'Authorization': 'Bearer ' + this.token,
 							'Content-Type': 'application/json',
@@ -292,7 +292,7 @@ export default {
 						console.log(error);
 					}.bind(this));
 			}else {
-				axios.post(window.location.origin + '/api/center', this.center,{
+				axios.post(this.baseUrl() + '/api/center', this.center,{
 					headers: {
 						'Authorization': 'Bearer ' + this.token,
 						'Content-Type': 'application/json',
