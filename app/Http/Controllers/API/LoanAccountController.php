@@ -170,21 +170,27 @@ class LoanAccountController extends BaseController
 
         $accountDetails = [];
 
-        // foreach ($borrower->loanAccounts() as $account) {
-            
-        //     // $accountDetails[] = [
-        //     //     'account_num' => $account->account_num,
-        //     //     'loan_amount' =>  $account->loan_amount,
-        //     //     'date_granted' => $account->date_released,
-        //     //     'term' => $account->terms,
-        //     //     'collection_rate' => '',
-        //     //     'payment_history' => '',
-        //     //     'loan_status' => ''
-        //     // ];
+        foreach ($borrower->loanAccounts() as $account) {
 
-        // }
-        // return $accountDetails;
-        return $borrower->loanAccounts();
+            $paymentHistory = 'Current';
+            
+            if( count($account->current_amortization['delinquent']) ) {
+                $paymentHistory = 'Delinquent';
+            }
+
+            $accountDetails[] = [
+                'account_num' => $account->account_num,
+                'loan_amount' =>  $account->loan_amount,
+                'date_granted' => $account->date_released,
+                'term' => $account->terms,
+                'collection_rate' => '',
+                'payment_history' => $paymentHistory,
+                'loan_status' => 'Current'
+            ];
+
+        }
+        return $accountDetails;
+        // return $borrower->loanAccounts();
     }
 
     // end of day transaction

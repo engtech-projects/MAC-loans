@@ -65,11 +65,12 @@ class Payment extends Model
         $payment->rebates = $request->input('rebates');
         $payment->total_payable = $request->input('total_payable');
         $payment->amount_applied = $request->input('amount_applied');
-        $payment->status = 'paid';
+        // $payment->status = 'paid';
         $payment->save();
 
         $amortization = Amortization::find( $payment->amortization_id );
         $amortization->status = 'paid';
+        
         if( $payment->short_principal > 0 ){
             $amortization->status = 'delinquent';
         }
