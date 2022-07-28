@@ -37,6 +37,7 @@ class PaymentController extends BaseController
 
         return $payment->addPayment($request);
     	// return $this->sendResponse(new PaymentResource($payment->addPayment($request)), 'Payment');
+        // return $request->input();
     }
 
 
@@ -63,7 +64,6 @@ class PaymentController extends BaseController
 
 
     public function overridePayment(Request $request) {
-
 
         $payment = null;
 

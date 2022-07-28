@@ -23,7 +23,7 @@ class CreatePaymentTable extends Migration
             $table->string('bank_name')->nullable();
             $table->string('reference_no')->nullable();
             $table->string('memo_type')->nullable();
-            $table->unsignedInteger('amortization_id'); // references amortization primary key
+            $table->unsignedInteger('amortization_id')->nullable(); // references amortization primary key
             $table->double('principal', 10, 2)->nullable();
             $table->double('interest', 10, 2)->nullable();
             $table->double('short_principal', 10, 2)->nullable();
