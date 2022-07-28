@@ -325,7 +325,7 @@ class LoanAccount extends Model
          if( count($amortization->delinquent) ){
 
             foreach ($amortization->delinquent as $key => $value) {
-               $value->payment = Payment::where([ 'loan_account_id' =>$value->loan_account_id, 'amortization_id' => $value->id ])->first();
+               $value->payment = Payment::where([ 'loan_account_id' =>$value->loan_account_id, 'amortization_id' => $value->id, 'status' => 'paid' ])->first();
 
                if( $value->payment ){
                   $amortization->short_principal += $value->payment->short_principal;
@@ -490,9 +490,9 @@ class LoanAccount extends Model
    public function getPrevPayment($loanAccountId, $paymentId = null){
 
       if( !$paymentId ){
-        $paymentId = Payment::where('loan_account_id', $loanAccountId)->max('payment_id');
+        $paymentId = Payment::where([ 'loan_account_id' => $loanAccountId, 'status' => 'paid' ])->max('payment_id');
       }else{
-         $paymentId = Payment::where('loan_account_id', $loanAccountId)
+         $paymentId = Payment::where(['loan_account_id' => $loanAccountId, 'status' => 'paid'])
                      ->where('payment_id', '<', $paymentId)
                      ->max('payment_id'); 
       }
@@ -532,7 +532,7 @@ class LoanAccount extends Model
    }
 
    // public function paymentHistory() {
-      
+
    // }
 
    // public function loanStatus() {
