@@ -44,7 +44,7 @@
 						<tr @click="loanAccount=account;amortSched();" v-for="account in pborrower.loan_accounts" :key="account.loan_account_id" :class="isActive(account.loan_account_id)">
 							<td>{{account.account_num}}</td>
 							<td>{{dateToYMD(new Date(account.date_release))}}</td>
-							<td>P {{formatToCurrency(account.current_amortization.outstandingBalance.interest_balance + account.current_amortization.outstandingBalance.principal_balance)}}</td>
+							<td>P {{formatToCurrency(account.outstandingBalance.interest_balance + account.outstandingBalance.principal_balance)}}</td>
 						</tr>
 					</tbody>
 				</table>
@@ -214,7 +214,7 @@
 							<span class="">Status</span>
 							<span>:</span>
 						</div>
-						<span class="flex-2 text-ocean">Delinquent</span>
+						<span class="flex-2 text-ocean">Current</span>
 					</div>
 				</div>
 			</div>
@@ -356,7 +356,7 @@
 										</div>
 										<div class="d-flex flex-column mb-10">
 											<span class="text-20 text-primary-dark">TOTAL</span>
-											<span class="bg-primary-dark text-white font-30 pxy-25 lh-1">P {{formatToCurrency(totalScheduledPayment)}}</span>
+											<span class="bg-primary-dark text-white font-30 pxy-25 lh-1">P {{formatToCurrency(loanAccount.current_amortization.interest + loanAccount.current_amortization.principal)}}</span>
 										</div>
 										<div class="d-flex flex-column bg-peach p-16">
 											<div class="d-flex flex-column mb-12">
@@ -521,14 +521,14 @@
 												<span>Principal Balance</span>
 												<span>:</span>
 											</div>
-											<span class="flex-1">P {{formatToCurrency(loanAccount.current_amortization.outstandingBalance.principal_balance)}}</span>
+											<span class="flex-1">P {{formatToCurrency(loanAccount.outstandingBalance.principal_balance)}}</span>
 										</div>
 										<div class="d-flex flex-row mb-5">
 											<div class="d-flex flex-row justify-content-between flex-1 mr-16">
 												<span>Interest Balance</span>
 												<span>:</span>
 											</div>
-											<span class="flex-1">P {{formatToCurrency(loanAccount.current_amortization.outstandingBalance.interest_balance)}}</span>
+											<span class="flex-1">P {{formatToCurrency(loanAccount.outstandingBalance.interest_balance)}}</span>
 										</div>
 										<div class="d-flex flex-row bb-dashed-2 mb-10">
 											<div class="d-flex flex-row justify-content-between flex-1 mr-16 mb-16">
@@ -542,7 +542,7 @@
 												<span>TOTAL</span>
 												<span>:</span>
 											</div>
-											<span class="flex-1">P {{formatToCurrency(loanAccount.current_amortization.outstandingBalance.interest_balance + loanAccount.current_amortization.outstandingBalance.principal_balance)}}</span>
+											<span class="flex-1">P {{formatToCurrency(loanAccount.outstandingBalance.interest_balance + loanAccount.outstandingBalance.principal_balance)}}</span>
 										</div>
 									</div>
 									<div class="flex-2"></div>
@@ -618,11 +618,6 @@ export default {
 					advance_interest:'',
 					short_principal:'',
 					advance_principal:'',
-					outstandingBalance:{
-						principal_balance:'',
-						interest_balance:'',
-						surcharge:'',
-					},
 					lastPayment:{
 						principal:'',
 						interest:'',
@@ -775,7 +770,7 @@ export default {
 			if(this.loanAccount.current_amortization.lastPayment){
 				return this.loanAccount.current_amortization.interest + this.loanAccount.current_amortization.principal + this.loanAccount.current_amortization.lastPayment.short_principal + this.loanAccount.current_amortization.lastPayment.short_interest;
 			}
-			return this.loanAccount.current_amortization.interest + this.loanAccount.current_amortization.principal;
+			return 0;
 		},
 		borrowerPhoto:function(){
 			return this.pborrower.photo? this.pborrower.photo : '/img/user.png';
