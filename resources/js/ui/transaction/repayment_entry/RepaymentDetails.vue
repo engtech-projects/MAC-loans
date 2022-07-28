@@ -790,6 +790,7 @@ export default {
 		},
 		'loanAccount.loan_account_id':function(newValue){
 			this.payment.total_payable = this.loanAccount.current_amortization.interest + this.loanAccount.current_amortization.principal;
+			this.payment.amortization_id = this.loanAccount.current_amortization.id;
 		}
 	},
 	mounted(){
