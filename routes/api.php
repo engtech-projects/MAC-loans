@@ -55,6 +55,7 @@ Route::middleware(['auth:sanctum'])->group( function () {
     Route::get('account/show/{account}', [LoanAccountController::class, 'showLoanAccount']);
     Route::post('account/create/{borrower}', [LoanAccountController::class, 'createLoanAccount']);
     Route::put('account/update/{account}', [LoanAccountController::class, 'updateLoanAccount']);
+    Route::get('account/statement/{borrower}', [LoanAccountController::class, 'statement']);
 
     // override release
     Route::post('account/overrrideaccounts', [LoanAccountController::class, 'overrideAccountList']);

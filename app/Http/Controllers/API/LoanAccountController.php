@@ -166,10 +166,25 @@ class LoanAccountController extends BaseController
         return $this->sendResponse(new LoanAccountResource($account), 'Account fetched.');
     }
 
-    public function statement() {
+    public function statement(Borrower $borrower) {
 
-        
-        
+        $accountDetails = [];
+
+        // foreach ($borrower->loanAccounts() as $account) {
+            
+        //     // $accountDetails[] = [
+        //     //     'account_num' => $account->account_num,
+        //     //     'loan_amount' =>  $account->loan_amount,
+        //     //     'date_granted' => $account->date_released,
+        //     //     'term' => $account->terms,
+        //     //     'collection_rate' => '',
+        //     //     'payment_history' => '',
+        //     //     'loan_status' => ''
+        //     // ];
+
+        // }
+        // return $accountDetails;
+        return $borrower->loanAccounts();
     }
 
     // end of day transaction
