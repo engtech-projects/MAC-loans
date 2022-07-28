@@ -68,14 +68,14 @@ class Payment extends Model
         // $payment->status = 'paid';
         $payment->save();
 
-        $amortization = Amortization::find( $payment->amortization_id );
-        $amortization->status = 'paid';
+        // $amortization = Amortization::find( $payment->amortization_id );
+        // $amortization->status = 'paid';
         
-        if( $payment->short_principal > 0 ){
-            $amortization->status = 'delinquent';
-        }
+        // if( $payment->short_principal > 0 ){
+        //     $amortization->status = 'delinquent';
+        // }
 
-        $amortization->save();
+        // $amortization->save();
 
         return $payment;
     }
