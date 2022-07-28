@@ -1,5 +1,6 @@
 <template>
 	<div style="flex:20">
+		<notifications group="foo" />
 		<section class="mb-24" style="flex:21;padding-left:16px;">
 			<span class="section-title mb-24">Details</span>
 			<div class="d-flex mb-12">
@@ -214,7 +215,7 @@
 							<span class="">Status</span>
 							<span>:</span>
 						</div>
-						<span class="flex-2 text-ocean">Delinquent</span>
+						<span class="flex-2 text-ocean">{{loanAccount.current_amortization.status}}</span>
 					</div>
 				</div>
 			</div>
@@ -546,6 +547,7 @@
 										</div>
 									</div>
 									<div class="flex-2"></div>
+									<button class="btn btn-danger hide" id="paymentCancelBtn" data-dismiss="modal">Cancel</button>
 								</div>
 							</section>
 						</section>
@@ -669,6 +671,14 @@ export default {
 		}
 	},
 	methods:{
+		notify:function(title, text, type){
+			this.$notify({
+				group: 'foo',
+				title: title,
+				text: text,
+				type: type,
+			});
+		},
 		isActive:function(id){
 			if(id == this.loanAccount.loan_account_id){
 				return 'active'
@@ -730,7 +740,6 @@ export default {
 		},
 		pay:function(){
 			this.payment.loan_account_id = this.loanAccount.loan_account_id;
-			alert('paying...');
 			axios.post(this.baseURL() + 'api/payment', this.payment, {
 				headers: {
 						'Authorization': 'Bearer ' + this.token,
@@ -739,7 +748,9 @@ export default {
 				}
 			})
 			.then(function (response) {
-				console.log(response.data);
+				var btn = document.getElementById('paymentCancelBtn');
+				btn.click();
+				this.notify('','Payment successful.', 'success');
 			}.bind(this))
 			.catch(function (error) {
 				console.log(error);
