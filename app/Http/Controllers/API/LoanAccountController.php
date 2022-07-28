@@ -113,7 +113,6 @@ class LoanAccountController extends BaseController
 
             $this->createAmortizationSched($account);
         }
-
         return $this->sendResponse(['status' => 'released'], 'Released');
     }
 
@@ -150,7 +149,7 @@ class LoanAccountController extends BaseController
     public function createAmortizationSched(LoanAccount $account) {
 
         $amortization = new Amortization();
-        return $this->sendResponse(($amortization->storeAmortizationSched($account)), 'Amortization Schedule Created');
+        $amortization->storeAmortizationSched($account);
     }
 
     public function getPromissoryNo(Request $request) {
@@ -164,8 +163,13 @@ class LoanAccountController extends BaseController
     }
 
     public function cashVoucher(LoanAccount $account) {
-
         return $this->sendResponse(new LoanAccountResource($account), 'Account fetched.');
+    }
+
+    public function statement() {
+
+        
+        
     }
 
     // end of day transaction
