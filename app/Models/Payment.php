@@ -94,5 +94,4 @@ class Payment extends Model
     
     public function cancelPayment() {}
 
-
 }

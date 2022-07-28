@@ -301,16 +301,17 @@ class LoanAccount extends Model
          // $amortization->prev_record = $this->getPrevRecord($amortization->loan_account_id, $amortization->id);
          $amortization->delinquent = $this->getDelinquent($amortization->amortization_id);
          $amortization->PrevPayment = $this->lastPayment($amortization->loan_account_id, true);
-         $amortization->lastPayment = $this->lastPayment($amortization->loan_account_id);
+         $amortization->lastPayment = $this->lastPayment($amortization->loan_account_id); 
 
+         if( $amortization->PrevPayment ){
             foreach ($amortization->delinquent as $key => $value) {
 
                if( $value->id < $amortization->id && $value->id > $amortization->PrevPayment->amortization_id){
                   continue;
                }
-
                $amortization->delinquent->forget($key);
             }
+         }
 
          $amortization->short_principal = 0;
          $amortization->advance_principal = 0;
@@ -344,7 +345,6 @@ class LoanAccount extends Model
       $totalPayable = $this->getTotalPayable($loanAccountId, $amortizationId);
       $totalPaid = $this->getTotalPayments($loanAccountId);
 
-
       $totalPaid = $totalPaid - ($totalPayable['interest'] + $totalPayable['principal']);
 
       if( $totalPaid < 0 ){
@@ -355,10 +355,8 @@ class LoanAccount extends Model
          ];
 
       }
-
       // $principal =  $totalPayable['principal'] - $totalPaid['principal'];
       // $interest =  $totalPayable['interest'] - $totalPaid['interest'];
-
       return [ 
          'principal' => 0, 
          'interest' => 0, 
@@ -463,11 +461,8 @@ class LoanAccount extends Model
       $payment = null;
       $payment = $this->getPrevPayment($loanAccountId);
 
-
       if( !$isComplete ) return $payment;
        
-      if( !$payment ) return false;
-     
       if( !$payment ) return false;
 
       if( $payment->total_payable == $payment->amount_applied ){
@@ -480,11 +475,15 @@ class LoanAccount extends Model
 
          $payment = $this->getPrevPayment($loanAccountId, $payment->payment_id);
 
-         if( $payment->total_payable == $payment->amount_applied ){
-           $isDelinquent = false;
+         if( $payment ){
+            if( $payment->total_payable == $payment->amount_applied ){
+              $isDelinquent = false;
+            }
+         }else{
+            $isDelinquent = false;
          }
       }
-      
+
       return $payment;
    }
 
@@ -495,10 +494,10 @@ class LoanAccount extends Model
       }else{
          $paymentId = Payment::where('loan_account_id', $loanAccountId)
                      ->where('payment_id', '<', $paymentId)
-                     ->max('payment_id');   
+                     ->max('payment_id'); 
       }
 
-      return Payment::find($paymentId);         
+      return Payment::find($paymentId);     
    }
 
    public function setDelinquent($branchCode) {
@@ -530,6 +529,14 @@ class LoanAccount extends Model
       $amortization = Amortization::whereIn('status', ['open', 'delinquent'])->where(['loan_account_id' => $loanAccountId])->get();
 
       return $amortization;
-   }	
+   }
 
+   public function paymentHistory() {
+
+   }
+
+   public function loanStatus() {
+
+
+   }
 }

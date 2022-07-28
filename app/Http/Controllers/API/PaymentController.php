@@ -35,8 +35,8 @@ class PaymentController extends BaseController
     	# get branch id and add to request data
     	$request->merge(['branch_id' => 2]);
 
-        return $payment->addPayment($request);
-    	// return $this->sendResponse(new PaymentResource($payment->addPayment($request)), 'Payment');
+        // $payment->addPayment($request);
+    	return $this->sendResponse(new PaymentResource($payment->addPayment($request)), 'Payment');
         // return $request->input();
     }
 
