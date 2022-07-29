@@ -535,7 +535,7 @@
 				})
 				.then(function (response) {
 					this.notify('',response.data.message, 'success');
-					window.location.replace('/transaction/rejected_release');
+					window.location.replace(this.baseURL() + '/transaction/rejected_release');
 				}.bind(this))
 				.catch(function (error) {
 					console.log(error);
