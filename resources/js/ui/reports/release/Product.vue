@@ -177,7 +177,7 @@ export default {
 	},
 	methods:{
 		fetchAccounts:function(){
-			axios.post('api/report/release', this.filter, {
+			axios.post(this.baseURL() + 'api/report/release', this.filter, {
 			headers: {
 				'Authorization': 'Bearer ' + this.token,
 				'Content-Type': 'application/json',

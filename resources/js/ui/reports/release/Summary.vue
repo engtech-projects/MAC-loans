@@ -182,7 +182,7 @@ export default {
 	},
 	methods:{
 		fetchAccounts:function(){
-			axios.post('api/report/release', this.filter, {
+			axios.post(this.baseURL() + 'api/report/release', this.filter, {
 			headers: {
 				'Authorization': 'Bearer ' + this.token,
 				'Content-Type': 'application/json',
@@ -198,7 +198,7 @@ export default {
 			}.bind(this));
 		}, 
 		fetchProducts: function(){
-			axios.get(this.baserUrl() + 'api/product/', {
+			axios.get(this.baseURL() + 'api/product/', {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
 					'Content-Type': 'application/json',
@@ -214,7 +214,7 @@ export default {
 			}.bind(this));
 		},
 		fetchCenters:function(){
-			axios.get(this.baserUrl() + 'api/center', {
+			axios.get(this.baseURL() + 'api/center', {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
 					'Content-Type': 'application/json',
@@ -230,7 +230,7 @@ export default {
 			}.bind(this));
 		},
 		fetchOfficers:function(){
-			axios.get(this.baserUrl() + 'api/accountofficer', {
+			axios.get(this.baseURL() + 'api/accountofficer', {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
 					'Content-Type': 'application/json',
