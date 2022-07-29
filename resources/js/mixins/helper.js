@@ -150,7 +150,8 @@ Vue.mixin({
 			return str.replace(new RegExp(escapeRegExp(find), 'g'), replace);
 		},
 		baseURL:function(){
-			return document.getElementById('baseUrl').href;
+			var href = document.getElementById('baseUrl').href;
+			return href.slice(-1)=='/'?href:href+'/';
 		}
 	}
 })

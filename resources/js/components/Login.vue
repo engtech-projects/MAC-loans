@@ -64,7 +64,6 @@ export default {
 			axios.post(this.baseURL() + 'api/login', this.data.credentials)
 			.then(function (response) {
 				this.data.token = response.data.data.token;
-				window.location.replace(this.baseURL() + 'dashboard');
 				this.makeAuth();
 			}.bind(this))
 			.catch(function (error) {
@@ -72,7 +71,7 @@ export default {
 			}.bind(this));
 		},
 		fetchBranches:function(){
-			axios.get('/branch')
+			axios.get(this.baseURL() + 'branch')
 			.then(function (response) {
 				this.branches = response.data;
 			}.bind(this))
@@ -92,6 +91,7 @@ export default {
 	},
 	mounted(){
 		this.fetchBranches();
+		console.log(this.baseURL());
 	}
 }
 </script>

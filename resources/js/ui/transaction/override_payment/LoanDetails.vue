@@ -159,7 +159,7 @@ export default {
 	props:['ppayment', 'token'],
 	methods:{
 		override:function(){
-			axios.post(this.baserUrl() + 'api/payment/override',[this.ppayment],{
+			axios.post(this.baseURL() + 'api/payment/override',[this.ppayment],{
 			headers: {
 				'Authorization': 'Bearer ' + this.token,
 				'Content-Type': 'application/json',

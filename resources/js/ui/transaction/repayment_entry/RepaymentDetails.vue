@@ -215,7 +215,9 @@
 							<span class="">Status</span>
 							<span>:</span>
 						</div>
-						<span class="flex-2 text-ocean">{{loanAccount.current_amortization.status}}</span>
+						<span v-if="loanAccount.current_amortization.delinquent.length > 0" class="flex-2 text-danger">Delinquent</span>
+                        <span v-if="loanAccount.current_amortization.delinquent.length == 0" class="flex-2 text-ocean">Current</span>
+						
 					</div>
 				</div>
 			</div>
