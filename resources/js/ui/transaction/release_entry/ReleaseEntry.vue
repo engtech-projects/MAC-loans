@@ -1324,8 +1324,8 @@
 			this.resetBorrower();
 			this.resetLoanDetails();
 			this.fetchProducts();
-			// this.fetchRejectedAccounts();
-			// this.fetchRejectedAccount();
+			this.fetchRejectedAccounts();
+			this.fetchRejectedAccount();
 			// this.navigate('custom-content-below-loandetails-tab');
 			// this.navigate('custom-content-below-coborrowerinfo-tab');
         }

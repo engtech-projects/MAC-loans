@@ -73,7 +73,7 @@ export default {
 	computed:{
 		filterClient:function(){
 			var result = [];
-			if(this.pborrowers.length > 0){
+			if(this.pborrowers.length > 0 && !this.account){
 				this.pborrowers.map(function(data){
 					if(data.borrower_num.toLowerCase().includes(this.filter.toLowerCase()) || data.firstname.toLowerCase().includes(this.filter.toLowerCase()) || data.lastname.toLowerCase().includes(this.filter.toLowerCase()) || (data.firstname + ' ' + data.lastname).toLowerCase().includes(this.filter.toLowerCase()) || (data.lastname + ' ' + data.firstname).toLowerCase().includes(this.filter.toLowerCase())){
 						result.push(data);
