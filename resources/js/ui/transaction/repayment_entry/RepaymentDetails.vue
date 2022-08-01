@@ -722,7 +722,7 @@ export default {
 						amount -= this.totalInterest;
 						this.payment.interest = this.totalInterest;
 						if(amount >= this.totalPrincipal){
-							this.payment.principal = this.totalPrincipal;
+							this.payment.principal = amount;
 							this.payment.advance_principal = amount - this.totalPrincipal;
 						}else{
 							this.payment.principal = amount;
