@@ -417,14 +417,14 @@
 													<span>Penalty</span>
 													<span>:</span>
 												</div>
-												<span class="flex-1">P {{formatToCurrency(loanAccount.current_amortization.penalty)}}</span>
+												<span class="flex-1">P {{formatToCurrency(penalty)}}</span>
 											</div>
 											<div class="d-flex flex-row mb-7">
 												<div class="d-flex flex-row justify-content-between flex-1 mr-16">
 													<span>PDI</span>
 													<span>:</span>
 												</div>
-												<span class="flex-1">P {{formatToCurrency(loanAccount.current_amortization.pdi)}}</span>
+												<span class="flex-1">P {{formatToCurrency(pdi)}}</span>
 											</div>
 											<!-- <div class="d-flex flex-row">
 												<div class="d-flex flex-row justify-content-between flex-1 mr-16">
@@ -498,14 +498,14 @@
 														<span class="pl-16">PDI</span>
 														<span>:</span>
 													</div>
-													<span class="flex-1">P {{formatToCurrency(pdi)}}</span>
+													<span class="flex-1">P {{formatToCurrency(pdi==0?loanAccount.current_amortization.pdi:0)}}</span>
 												</div>
 												<div class="d-flex flex-row">
 													<div class="d-flex flex-row justify-content-between flex-1 mr-16">
 														<span class="pl-16">Penalty</span>
 														<span>:</span>
 													</div>
-													<span class="flex-1">P {{formatToCurrency(penalty)}}</span>
+													<span class="flex-1">P {{formatToCurrency(penalty==0?loanAccount.current_amortization.penalty:0)}}</span>
 												</div>
 												
 											</div>
@@ -713,11 +713,15 @@ export default {
 			this.payment.advance_interest = 0;
 			this.payment.advance_principal = 0;
 			if(amount >= this.loanAccount.current_amortization.penalty){
-				amount -= this.loanAccount.current_amortization.penalty;
-				this.payment.penalty = this.loanAccount.current_amortization.penalty;
+				if(!this.waive.penalty){
+					amount -= this.loanAccount.current_amortization.penalty;
+					this.payment.penalty = this.loanAccount.current_amortization.penalty;
+				}		
 				if(amount >= this.pdi){
-					amount -= this.pdi;
-					this.payment.pdi = this.pdi;
+					if(!this.waive.pdi){
+						amount -= this.pdi;
+						this.payment.pdi = this.pdi;
+					}	
 					if(amount >= this.totalInterest){
 						amount -= this.totalInterest;
 						this.payment.interest = this.totalInterest;
@@ -782,7 +786,14 @@ export default {
 			return this.waive.penalty? 0 : this.loanAccount.current_amortization.penalty;
 		},
 		totalWaive:function(){
-			return this.pdi + this.penalty;
+			var val = 0;
+			if(this.pdi == 0){
+				val += this.loanAccount.current_amortization.pdi;
+			}
+			if(this.penalty == 0){
+				val += this.loanAccount.current_amortization.penalty;
+			}
+			return val;
 		},
 		totalScheduledPayment:function(){
 			if(this.loanAccount.current_amortization.lastPayment){
@@ -804,7 +815,13 @@ export default {
 		'loanAccount.loan_account_id':function(newValue){
 			this.payment.total_payable = this.loanAccount.current_amortization.interest + this.loanAccount.current_amortization.principal;
 			this.payment.amortization_id = this.loanAccount.current_amortization.id;
-		}
+		},
+		'waive.pdi':function(newValue){
+			this.distribute();
+		},
+		'waive.penalty':function(newValue){
+			this.distribute();
+		},
 	},
 	mounted(){
 
