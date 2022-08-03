@@ -331,7 +331,7 @@
 										<input type="checkbox" class="form-check-input" style="margin:0">
 										<span class="ml-18 text-primary-dark text-24 lh-1">Rebates</span>
 									</div>
-									<input :disabled="disabled(waive.rebates)" v-model="payment.rebates" type="text" class="form-control" placeholder="Amount">
+									<input @focusout="distribute()" :disabled="disabled(waive.rebates)" v-model="payment.rebates" type="text" class="form-control" placeholder="Amount">
 								</div>
 								<div class="flex-1 d-flex flex-row-reverse align-items-end"><input type="submit" class="btn btn-bright-blue min-w-150 mb-5" value="Pay"></div>
 							</div>
@@ -725,6 +725,7 @@ export default {
 					if(amount >= this.totalInterest){
 						amount -= this.totalInterest;
 						this.payment.interest = this.totalInterest;
+						this.payment.interest = this.payment.interest - this.payment.rebates < 0? 0 : this.payment.interest - this.payment.rebates;
 						if(amount >= this.totalPrincipal){
 							this.payment.principal = amount;
 							this.payment.advance_principal = amount - this.totalPrincipal;
@@ -736,6 +737,7 @@ export default {
 						this.payment.interest = amount;
 						this.payment.short_interest = this.totalInterest - amount;
 						this.payment.short_principal = this.totalPrincipal;
+						this.payment.interest = this.payment.interest - this.payment.rebates < 0? 0 : this.payment.interest - this.payment.rebates;
 					}
 				}else{
 					this.payment.pdi = amount;
