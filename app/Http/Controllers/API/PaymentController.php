@@ -48,11 +48,12 @@ class PaymentController extends BaseController
 
         $filters = [
             'created_at' => ($request->has('created_at')) ? $request->input('created_at') : false,
-            'ao_id' => ($request->has('ao_id')) ? $request->input('ao_id') : false,
-            'center_id' => ($request->has('center_id')) ? $request->input('center_id') : false,
-            'product_id' => ($request->has('product_id')) ? $request->input('product_id') : false,
-            'branch_id' => 1
+            // 'ao_id' => ($request->has('ao_id')) ? $request->input('ao_id') : false,
+            // 'center_id' => ($request->has('center_id')) ? $request->input('center_id') : false,
+            // 'product_id' => ($request->has('product_id')) ? $request->input('product_id') : false,
+            // 'branch_id' => 1
         ];
+
         $payment = new Payment();
      
         return $this->sendResponse( 
@@ -74,9 +75,10 @@ class PaymentController extends BaseController
 
             # update amortization
             if( $payment->total_payable > $payment->amount_applied ){
-                $amortization = Amortization::find($payment->amortization_id)->update([ 'status' => 'delinquent' ]);
+                Amortization::find($payment->amortization_id)->update([ 'status' => 'delinquent' ]);
+                LoanAccount::find($payment->loan_account_id)->update(['payment_status' => 'Delinquent']);
             }else{
-                $amortization = Amortization::find($payment->amortization_id)->update([ 'status' => 'paid' ]);
+                Amortization::find($payment->amortization_id)->update([ 'status' => 'paid' ]);
             }
         }
 

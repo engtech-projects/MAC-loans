@@ -109,6 +109,7 @@ class LoanAccountController extends BaseController
             $account->date_release = $value['date_release'];
             $account->due_date = $value['due_date'];
             $account->status = 'released';
+            $account->loan_status = 'Ongoing';
             $account->update();
 
             $this->createAmortizationSched($account);
@@ -172,25 +173,18 @@ class LoanAccountController extends BaseController
 
         foreach ($borrower->loanAccounts() as $account) {
 
-            $paymentHistory = 'Current';
-            
-            if( count($account->current_amortization['delinquent']) ) {
-                $paymentHistory = 'Delinquent';
-            }
-
             $accountDetails[] = [
                 'account_num' => $account->account_num,
                 'loan_amount' =>  $account->loan_amount,
-                'date_granted' => $account->date_released,
+                'date_granted' => $account->date_release,
                 'term' => $account->terms,
-                'collection_rate' => '',
-                'payment_history' => $paymentHistory,
-                'loan_status' => 'Current'
+                'collection_rate' => round(($account->totalPaid / $account->loan_amount) * 100),
+                'payment_history' => $account->payment_status,
+                'loan_status' => $account->loan_status
             ];
 
         }
         return $accountDetails;
-        // return $borrower->loanAccounts();
     }
 
     // end of day transaction

@@ -157,14 +157,13 @@ class Borrower extends Model
 
     public function loanAccounts() {
 
-        // return $this->hasMany(LoanAccount::class, 'borrower_id');
-
         $loanAccount = new LoanAccount();
         $activeAccounts = LoanAccount::where(['borrower_id' => $this->borrower_id, 'status' => 'released'])->get();
 
         foreach ($activeAccounts as $key => $value) {
             $value->outstandingBalance = $loanAccount->outstandingBalance($value->loan_account_id);
 			$value->current_amortization = $value->getCurrentAmortization();
+            $value->totalPaid = $value->getTotalPayments($value->loan_account_id);
         }
 
         return $activeAccounts;
