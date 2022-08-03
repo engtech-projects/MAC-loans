@@ -531,9 +531,9 @@ class LoanAccount extends Model
       return $amortization;
    }
 
-   // public function paymentHistory() {
-
-   // }
+   public function paymentHistory() {
+      
+   }
 
    // public function loanStatus() {
 

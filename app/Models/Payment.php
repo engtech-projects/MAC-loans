@@ -40,6 +40,11 @@ class Payment extends Model
         'status'
     ];
 
+
+    public function getTotalPayment() {
+        
+    }
+
     public function addPayment(Request $request){
 
         $account = LoanAccount::find($request->input('loan_account_id'));
