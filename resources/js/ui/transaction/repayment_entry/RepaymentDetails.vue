@@ -410,7 +410,7 @@
 													<span>Interest</span>
 													<span>:</span>
 												</div>
-												<span class="flex-1">P {{formatToCurrency(totalInterest)}}</span>
+												<span class="flex-1">P {{formatToCurrency(totalInterest - payment.rebates)}}</span>
 											</div>
 											<div class="d-flex flex-row mb-7">
 												<div class="d-flex flex-row justify-content-between flex-1 mr-16">
@@ -723,9 +723,9 @@ export default {
 						this.payment.pdi = this.pdi;
 					}	
 					if(amount >= this.totalInterest){
-						amount -= this.totalInterest;
 						this.payment.interest = this.totalInterest;
 						this.payment.interest = this.payment.interest - this.payment.rebates < 0? 0 : this.payment.interest - this.payment.rebates;
+						amount -= this.payment.interest;
 						if(amount >= this.totalPrincipal){
 							this.payment.principal = amount;
 							this.payment.advance_principal = amount - this.totalPrincipal;
