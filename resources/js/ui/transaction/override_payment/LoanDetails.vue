@@ -31,7 +31,7 @@
 			<div class="sep mb-24"></div>
 		</section>
 
-		<section v-if="ppayment.payment_id" class="mb-24" style="flex:21;padding-left:16px;">
+		<!-- <section v-if="ppayment.payment_id" class="mb-24" style="flex:21;padding-left:16px;">
 			<span class="section-title section-subtitle mb-16">Loan Account Summary</span>
 			<div class="d-flex" style="padding:16px;border:1px solid #ccc;">
 				<div class="d-flex flex-column flex-1">
@@ -73,7 +73,7 @@
 				</div>
 				<div class="flex-1"></div>
 			</div>
-		</section>
+		</section> -->
 
 		<section v-if="ppayment.payment_id" class="mb-24" style="flex:21;padding-left:16px;">
 			<span class="section-title section-subtitle mb-16">Payment Summary</span>
