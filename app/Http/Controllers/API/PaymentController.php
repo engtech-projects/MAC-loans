@@ -79,6 +79,7 @@ class PaymentController extends BaseController
                 LoanAccount::find($payment->loan_account_id)->update(['payment_status' => 'Delinquent']);
             }else{
                 Amortization::find($payment->amortization_id)->update([ 'status' => 'paid' ]);
+                LoanAccount::find($payment->loan_account_id)->update(['payment_status' => 'Current']);
             }
         }
 
