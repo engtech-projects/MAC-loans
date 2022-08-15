@@ -940,6 +940,21 @@
 	color:#293f54;
 }
 
+.btn-darkorange {
+	background-color: #d93600!important;
+	color:#FFF;
+}
+
+.btn-darkorange:hover {
+	background-color: #f9551f!important;
+	color:#FFF;
+}
+
+.btn-darkorange:active {
+	background-color: #d93600!important;
+	color:#FFF;
+}
+
 .btn-brown {
 	background-color: #8c4600!important;
 	color:#FFF;
