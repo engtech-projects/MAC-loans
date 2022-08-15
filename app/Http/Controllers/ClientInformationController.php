@@ -45,5 +45,8 @@ class ClientInformationController extends Controller
 		]);
 	}
 	
+	public function statement($id){
+		return \App\Models\LoanAccount::where('account_num', $id)->first();
+	}
 
 }

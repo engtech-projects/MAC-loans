@@ -39,6 +39,7 @@ Route::group(['middleware' => 'auth'], function (){
 	Route::get('/client_information/statement_of_accounts_list', [ClientInformationController::class, 'statementOfAccountsList'])->name('client_information.statement_of_accounts_list');
 	Route::get('/client_information/personal_information_details/edit/{id}', [ClientInformationController::class, 'personalInformationDetailsEdit'])->name('client_information.personal_information_details.edit');
 	Route::get('/client_information/account_statement_details/{id}', [ClientInformationController::class, 'accountStatementDetails'])->name('client_information.account_statement_details');
+	Route::get('/account/statement/{id}', [ClientInformationController::class, 'statement']);
 	
 	Route::get('/maintenance/cancel_payments', [MaintenanceController::class, 'cancelPayments'])->name('maintenance.cancel_payments');
 	Route::get('/maintenance/product_setup', [MaintenanceController::class, 'productSetup'])->name('maintenance.product_setup');

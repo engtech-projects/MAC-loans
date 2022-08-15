@@ -7,7 +7,7 @@
 			</div><!-- /.col -->
 
 			<form action="" class="mb-10">
-		<input type="text" class="form-control" placeholder="Search">
+		<input v-model="filter" type="text" class="form-control" placeholder="Search">
 	</form>
 	<table class="table table-stripped table-hover light-border mb-24 table-row-clickable" id="accountTable">
 		<thead>
@@ -20,7 +20,19 @@
 			<th>Current Loan Status</th>
 		</thead>
 		<tbody>
-			<tr>
+			<tr @click="fetchAccountId(a.account_num);selected=i" v-for="(a, i) in filteredAccounts" :key="i" :class="i==selected?'account-active':''">
+				<td>{{a.account_num}}</td>
+				<td>{{a.loan_amount}}</td>
+				<td>{{dateToMDY(new Date(a.date_granted))}}</td>
+				<td>{{a.term / 30}} Months</td>
+				<td>{{a.collection_rate}}%</td>
+				<td>{{a.payment_history}}</td>
+				<td>{{a.loan_status}}</td>
+			</tr>
+			<tr v-if="filteredAccounts.length == 0">
+				<td>No accounts found.</td>
+			</tr>
+			<!-- <tr>
 				<td>100-3429-15421</td>
 				<td>28,000.00</td>
 				<td>8/8/2021</td>
@@ -55,16 +67,7 @@
 				<td>30%</td>
 				<td>Delinquent</td>
 				<td>On going</td>
-			</tr>
-			<tr>
-				<td>100-3429-15421</td>
-				<td>28,000.00</td>
-				<td>8/8/2021</td>
-				<td>3 Months</td>
-				<td>30%</td>
-				<td>Delinquent</td>
-				<td>On going</td>
-			</tr>
+			</tr> -->
 		</tbody>
 	</table>
 	<div class="sep mb-24"></div>
@@ -172,7 +175,7 @@
 			</div>
 		</div>
 	</section>
-	<section id="accountDetails" class="hide">
+	<section v-if="loanDetails.loan_account_id" id="accountDetails" class="">
 		<div class="info-display title mb-12">
 			<span>Account Details</span>
 		</div>
@@ -191,32 +194,32 @@
 					<div class="flex mb-16">
 						<div class="flex-col granted-amount mr-24">
 							<span>Amount Granted</span>
-							<span>P 28,000.00</span>
+							<span>P {{formatToCurrency(loanDetails.loan_amount)}}</span>
 						</div>
 						<div class="flex-col flex-1">
 							<div class="row mb-16">
 								<div class="col-xl-3 col-lg-6">
 									<div class="info-display">
 										<span class="font-blue">Amortization</span>
-										<span>P 3,000.00</span>
+										<span>P {{formatToCurrency(loanDetails.current_amortization.principal + loanDetails.current_amortization.interest)}}</span>
 									</div>
 								</div>
 								<div class="col-xl-3 col-lg-6">
 									<div class="info-display">
 										<span class="font-blue">Release Date</span>
-										<span>February 3, 2022</span>
+										<span>{{dateToMDY(new Date(loanDetails.date_release))}}</span>
 									</div>
 								</div>
 								<div class="col-xl-3 col-lg-6">
 									<div class="info-display">
 										<span class="font-blue">Term</span>
-										<span>360 Days / 12 Month (s)</span>
+										<span>{{loanDetails.terms}} Days / {{loanDetails.terms / 30}} Month (s)</span>
 									</div>
 								</div>
 								<div class="col-xl-3 col-lg-6">
 									<div class="info-display">
 										<span class="font-blue">Due Date</span>
-										<span>03/21/2022</span>
+										<span>{{dateToMDY(new Date(loanDetails.due_date))}}</span>
 									</div>
 								</div>
 							</div>
@@ -224,25 +227,25 @@
 								<div class="col-xl-3 col-lg-6">
 									<div class="info-display">
 										<span class="font-blue">Interest</span>
-										<span>30% p.a / 3% p.m</span>
+										<span>{{loanDetails.interest_rate}}%</span>
 									</div>
 								</div>
 								<div class="col-xl-3 col-lg-6">
 									<div class="info-display">
 										<span class="font-blue">Mode</span>
-										<span>Monthly</span>
+										<span>{{loanDetails.payment_mode}}</span>
 									</div>
 								</div>
-								<div class="col-xl-3 col-lg-6">
+								<!-- <div class="col-xl-3 col-lg-6">
 									<div class="info-display">
 										<span class="font-blue">Group</span>
 										<span>Various Pension</span>
 									</div>
-								</div>
+								</div> -->
 								<div class="col-xl-3 col-lg-6">
 									<div class="info-display">
 										<span class="font-blue">Type</span>
-										<span>Add-on</span>
+										<span>{{loanDetails.type}}</span>
 									</div>
 								</div>
 							</div>
@@ -252,19 +255,19 @@
 						<div class="col-xl-3 col-lg-6">
 							<div class="info-display">
 								<span class="font-blue">Product Name</span>
-								<span>Pension Load</span>
+								<span>{{loanDetails.product.product_name}}</span>
 							</div>
 						</div>
 						<div class="col-xl-2 col-lg-6">
 							<div class="info-display">
 								<span class="font-blue">Cycle</span>
-								<span>20th</span>
+								<span>{{loanDetails.cycle_no}}</span>
 							</div>
 						</div>
 						<div class="col-xl-2 col-lg-6">
 							<div class="info-display">
 								<span class="font-blue">Status</span>
-								<span>Current</span>
+								<span>{{loanDetails.status}}</span>
 							</div>
 						</div>
 						<div class="col-xl-2 col-lg-6">
@@ -276,7 +279,7 @@
 						<div class="col-xl-3 col-lg-6">
 							<div class="info-display">
 								<span class="font-blue">Collection Rate</span>
-								<span>30%</span>
+								<span>{{loanDetails.interest_rate}}%</span>
 							</div>
 						</div>
 					</div>
@@ -285,19 +288,19 @@
 						<div class="col-xl-3 col-lg-6">
 							<div class="info-display">
 								<span class="font-blue">Co-Borrower</span>
-								<span>Cioneveve C. Langahit</span>
+								<span>{{loanDetails.co_borrower_name}}</span>
 							</div>
 						</div>
 						<div class="col-xl-5 col-lg-6">
 							<div class="info-display">
 								<span class="font-blue">Co-Borrower Address</span>
-								<span>P-10 Brgy. San Mateo, Butuan City</span>
+								<span>{{loanDetails.co_borrower_address}}</span>
 							</div>
 						</div>
 						<div class="col-xl-4 col-lg-6">
 							<div class="info-display">
 								<span class="font-blue">Co-Borrower ID</span>
-								<span>05-08452-054784</span>
+								<span>{{loanDetails.co_borrower_id_number}}</span>
 							</div>
 						</div>
 					</div>
@@ -306,19 +309,19 @@
 						<div class="col-xl-3 col-lg-6">
 							<div class="info-display">
 								<span class="font-blue">Co-Maker</span>
-								<span>Cioneveve C. Langahit</span>
+								<span>{{loanDetails.co_maker_name}}</span>
 							</div>
 						</div>
 						<div class="col-xl-5 col-lg-6">
 							<div class="info-display">
 								<span class="font-blue">Co-Maker Address</span>
-								<span>P-10 Brgy. San Mateo, Butuan City</span>
+								<span>{{loanDetails.co_maker_address}}</span>
 							</div>
 						</div>
 						<div class="col-xl-4 col-lg-6">
 							<div class="info-display">
 								<span class="font-blue">Co-Maker ID</span>
-								<span>05-08452-054784</span>
+								<span>{{loanDetails.co_maker_id_number}}</span>
 							</div>
 						</div>
 					</div>
@@ -339,6 +342,33 @@
 																		<th>Remarks</th>
 																	</thead>
 																	<tbody>
+																		<tr v-for="(p,pi) in loanDetails.payments" :key="pi">
+																			<td>{{dateToMDY(new Date(p.created_at))}}</td>
+																			<td>{{p.or_no}}</td>
+																			<td>{{p.payment_type}}</td>
+																			<td>{{p.reference_no}}</td>
+																			<td>{{formatToCurrency(p.principal)}}</td>
+																			<td>{{formatToCurrency(p.interest)}}</td>
+																			<td>{{formatToCurrency(p.pdi)}}</td>
+																			<td>{{formatToCurrency(p.penalty)}}</td>
+																			<td>{{formatToCurrency(p.amount_applied)}}</td>
+																			<td></td>
+																		</tr>
+																		<tr v-if="loanDetails.payments.length==0">
+																			<td>No payments yet.</td>
+																		</tr>
+																		<!-- <tr>
+																			<td>12/12/2021</td>
+																			<td>00212</td>
+																			<td>Cash</td>
+																			<td></td>
+																			<td>250.00</td>
+																			<td>100.00</td>
+																			<td>0.00</td>
+																			<td>0.00</td>
+																			<td>350.00</td>
+																			<td>CANCELLED</td>
+																		</tr>
 																		<tr>
 																			<td>12/12/2021</td>
 																			<td>00212</td>
@@ -385,32 +415,8 @@
 																			<td>0.00</td>
 																			<td>0.00</td>
 																			<td>350.00</td>
-																			<td>CANCELLED</td>
-																		</tr>
-																		<tr>
-																			<td>12/12/2021</td>
-																			<td>00212</td>
-																			<td>Cash</td>
 																			<td></td>
-																			<td>250.00</td>
-																			<td>100.00</td>
-																			<td>0.00</td>
-																			<td>0.00</td>
-																			<td>350.00</td>
-																			<td></td>
-																		</tr>
-																		<tr>
-																			<td>12/12/2021</td>
-																			<td>00212</td>
-																			<td>Cash</td>
-																			<td></td>
-																			<td>250.00</td>
-																			<td>100.00</td>
-																			<td>0.00</td>
-																			<td>0.00</td>
-																			<td>350.00</td>
-																			<td></td>
-																		</tr>
+																		</tr> -->
 																	</tbody>
 																</table>
 					</div>
@@ -793,199 +799,415 @@
 
 
 
-		<div class="modal" id="cashVoucherModal" tabindex="-1" role="dialog">
-											<div class="modal-dialog modal-lg minw-70" role="document">
-												<div class="modal-content">
-													<div class="modal-body font-md">
-														<img src="/img/company_header.png" style="width:100%" class="mb-24" alt="Company Header">
-														<div class="d-flex flex-column" style="padding:0 50px;">
-															<div class="d-flex flex-row align-items-center mb-24 darker-bb pb-10">
-																<div class="flex-1">
-																	<span class="text-primary-dark font-26">Butuan Branch (001)</span>
-																</div>
-																<div class="d-flex flex-column">
-																	<span class="font-26 text-bold text-primary-dark lh-1">CASH VOUCHER</span>
-																</div>
-																<div class="flex-1 d-flex justify-content-end pr-10">
-																	<span class=" mr-10">Tuesday 12/21/2021</span>
-																	<span class="">Time: 11:36 AM</span>
-																</div>
+		
+
+
+		<div class="modal" id="promisoryNoteModal" tabindex="-1" role="dialog">
+			<div class="modal-dialog modal-lg minw-70" role="document">
+			<div class="modal-content">
+				<div class="modal-body font-md" id="voucherPrintContent">
+					<img :src="baseUrl+'/img/company_header.png'" style="width:100%" class="mb-45" alt="Company Header">
+										<div class="d-flex flex-column" style="padding:0 50px;">
+											<div class="d-flex flex-row align-items-center mb-36">
+												<div class="flex-1">
+													<span class="text-primary-dark font-26">Butuan Branch (001)</span>
+												</div>
+												<div class="d-flex flex-column">
+													<span class="font-26 text-bold text-primary-dark lh-1">PROMISSORY NOTE</span>
+													<span class="text-center text-primary-dark font-20">{{loanDetails.documents.promissory_number}}</span>
+												</div>
+												<div class="flex-1 d-flex justify-content-end pr-10">
+													<span class=" mr-10">{{dateFullDay(new Date())}} {{dateToYMD(new Date()).split('-').join('/')}}</span>
+													<span class="">Time: {{todayTime(new Date())}} {{(new Date()).getHours() > 12? 'PM':'AM'}}</span>
+												</div>
+											</div>
+											<section>
+												<p class="font-md">
+													I/We {{borrower.lastname + ', ' + borrower.firstname + ' ' + borrower.middlename.charAt(0) + '.'}} borrowed and received the amount of <span class="allcaps">{{numToWords(loanDetails.loan_amount)}} PESOS</span> (P {{formatToCurrency(loanDetails.loan_amount)}}) and promise to pay jointly and severally (solidarily) to the MICRO ACCESS LOANS CORPORATION until full payment of the said amount including interest rate of ( {{formatToCurrency(loanDetails.interest_rate)}}% ) per month. And with the following terms and conditions stated below:
+												</p>
+											</section>
+											<span class="bbt-8 py-7 text-center text-20 text-bold mb-16">TERMS AND CONDITIONS</span>
+											<section class="mb-24" style="font-size:16px!important;line-height:1.3em!important">
+												<div class="d-flex flex-row">
+													<div class="d-flex flex-column flex-1 font-md">
+														<div class="d-flex flex-row">
+															<div class="d-flex flex-row flex-1 justify-content-between pr-24">
+																<span class="">Interest Rate</span>
+																<span>:</span>
 															</div>
-															<section class="mb-16">
-																<div class="d-flex flex-row">
-																	<div class="d-flex flex-column flex-2">
-																		<div class="d-flex flex-row mb-10">
-																			<span class="flex-1 mw-150">Pay to</span>
-																			<div class="d-flex flex-1">
-																				<span class="mr-5">: </span>
-																				<span> Puro, Jeryll R.</span>
-																			</div>
-																		</div>
-																		<div class="d-flex flex-row">
-																			<span class="flex-1 mw-150">Voucher No.</span>
-																			<div class="d-flex flex-1">
-																				<span class="mr-5">: </span>
-																				<span> 001-002-0010215</span>
-																			</div>
-																		</div>
-																	</div>
-																	<div class="flex-1"></div>
-																	<div class="d-flex flex-column-reverse flex-2">
-																		<div class="d-flex flex-row">
-																			<span class="flex-1 text-right">Voucher Date</span>
-																			<div class="d-flex flex-1">
-																				<span class="mr-5">: </span>
-																				<span> __________________</span>
-																			</div>
-																		</div>
-																	</div>
-																	<div class="flex-1"></div>
-																</div>
-															</section>
+															<span class="flex-2">{{formatToCurrency(loanDetails.interest_rate)}}%</span>
+														</div>
 
-															<div class="sep-dark mb-16"></div>
-
-															<section class="mb-24">
-																<div class="d-flex flex-row mb-24">
-																	<div class="d-flex flex-column flex-2">
-																		<div class="d-flex flex-row mb-10">
-																			<span class="flex-1 mw-150">Particular</span>
-																			<div class="d-flex flex-2">
-																				<span class="mr-5">: </span>
-																				<span> Loan Granted P 9,000.00 for 6 month(s) / weekly payment. With interest of 4% per month</span>
-																			</div>
-																		</div>
-																		<div class="d-flex flex-row">
-																			<span class="flex-1 mw-150">Net Amount</span>
-																			<div class="d-flex flex-2">
-																				<span class="mr-5">: </span>
-																				<span> P 8,607.00</span>
-																			</div>
-																		</div>
-																	</div>
-																</div>
-																<p class="mb-45">
-																	Received payment from MICRO ACCESS LOANS CORPORATION - BUTUAN BRANCH (001) The sum of Eight Thousand Six Hundred Seven Pesos only.
-																</p>
-																<div class="d-flex flex-row">
-																	<span class="flex-1">Received By: _________________________________</span>
-																	<span class="flex-1">Disbursed By: _________________________________</span>
-																</div>
-															</section>
-
-															<div class="sep-dark mb-16"></div>
-
-															<section>
-																<div class="d-flex flex-row justify-content-center mb-16 darker-bb pb-10">
-																	<div class="d-flex flex-column">
-																		<span class="font-26 text-bold text-primary-dark lh-1 text-center text-block">DISCLOSURE STATEMENT OF LOAN</span>
-																	</div>
-																</div>
-
-																<div class="d-flex flex-row mb-24 bb-dashed pb-16">
-																	<div class="d-flex flex-column flex-2">
-																		<div class="d-flex flex-row mb-10">
-																			<span class="flex-1 mw-150">Installment</span>
-																			<div class="d-flex flex-2">
-																				<span class="mr-5">: </span>
-																				<span> 5 Monthly</span>
-																			</div>
-																		</div>
-																		<div class="d-flex flex-row">
-																			<span class="flex-1 mw-150">Amortization</span>
-																			<div class="d-flex flex-2">
-																				<span class="mr-5">: </span>
-																				<span> P 1,150.00</span>
-																			</div>
-																		</div>
-																	</div>
-																</div>
-
-																<table class="table dark-border th-nb th-bb-dark mb-24">
-																	<thead>
-																		<th>Acct</th>
-																		<th>Title</th>
-																		<th>S/L</th>
-																		<th>Debit</th>
-																		<th>Credit</th>
-																	</thead>
-																	<tbody>
-																		<tr>
-																			<td>1205</td>
-																			<td>Loans Receivable - Current</td>
-																			<td></td>
-																			<td>5,000.00</td>
-																			<td>0.00</td>
-																		</tr>
-																		<tr>
-																			<td>1205</td>
-																			<td>Loans Receivable - Current</td>
-																			<td></td>
-																			<td>5,000.00</td>
-																			<td>0.00</td>
-																		</tr>
-																		<tr>
-																			<td>1205</td>
-																			<td>Loans Receivable - Current</td>
-																			<td></td>
-																			<td>5,000.00</td>
-																			<td>0.00</td>
-																		</tr>
-																		<tr>
-																			<td>1205</td>
-																			<td>Loans Receivable - Current</td>
-																			<td></td>
-																			<td>5,000.00</td>
-																			<td>0.00</td>
-																		</tr>
-																		<tr>
-																			<td>1205</td>
-																			<td>Loans Receivable - Current</td>
-																			<td></td>
-																			<td>5,000.00</td>
-																			<td>0.00</td>
-																		</tr>
-																		<tr class="bg-black">
-																			<td>TOTAL</td>
-																			<td></td>
-																			<td></td>
-																			<td>5,000.00</td>
-																			<td>5,000.00</td>
-																		</tr>
-																	</tbody>
-																</table>
-
-																<p class="mb-72">
-																	I/We acknowledge and understand the statement above prior to the signing and consummation of the credit transaction and that I/We fully agree to the to the terms and conditions stated on promissory note.
-																</p>
-
-																<div class="d-flex flex-row px-45">
-																	<div class="d-flex flex-column flex-1">
-																		<span class="text-center bt-dark-2 py-12 mb-45">Borrow Sign / Printed Name</span>
-																		<span class="text-center bt-dark-2 py-12 mb-45">Date Disbursed / Ackknowledged</span>
-																	</div>
-																	<div class="flex-1"></div>
-																	<div class="d-flex flex-column flex-1">
-																		<span class="text-center bt-dark-2 py-12 mb-45">Co-Borrow Sign / Printed Name</span>
-																		<span class="text-center bt-dark-2 py-12 mb-45">MAC Representative Signature</span>
-																	</div>
-																</div>
-
-															</section>
-
-															<div class="mb-72"></div>
-															<div class="d-flex flex-row-reverse mb-45">
-																<a href="#" class="btn btn-default min-w-150">Print</a>
-																<a href="#" class="btn btn-success min-w-150 mr-24">Download Excel</a>
+														<div class="d-flex flex-row">
+															<div class="d-flex flex-row flex-1 justify-content-between pr-24">
+																<span class="">Term (No. of days)</span>
+																<span>:</span>
 															</div>
-															<div class="d-flex mb-24">
-						<img src="/img/logo-footer.png" class="w-100" alt="">
-					</div>
+															<span class="flex-2">{{loanDetails.terms}} day(s)</span>
+														</div>
+
+														<div class="d-flex flex-row">
+															<div class="d-flex flex-row flex-1 justify-content-between pr-24">
+																<span class="">Mode of Payment</span>
+																<span>:</span>
+															</div>
+															<span class="flex-2">{{loanDetails.payment_mode}}</span>
+														</div>
+													</div>
+													<div class="d-flex flex-column flex-1 font-md">
+														<div class="d-flex flex-row">
+															<div class="d-flex flex-row flex-1 justify-content-between pr-24">
+																<span class="">Due Date</span>
+																<span>:</span>
+															</div>
+															<span class="flex-2 darker-bb">{{dateToMDY(new Date(loanDetails.due_date))}}</span>
+														</div>
+
+														<div class="d-flex flex-row">
+															<div class="d-flex flex-row flex-1 justify-content-between pr-24">
+																<span class="">Product</span>
+																<span>:</span>
+															</div>
+															<span class="flex-2">{{loanDetails.product.product_name}}</span>
 														</div>
 													</div>
 												</div>
+											</section>
+											<span class="bbt-8 py-7 text-center text-20 text-bold mb-16">OTHER CONDITIONS</span>
+											<section class="font-md mb-24" style="font-size:16px!important;line-height:1.3em!important">
+												<p style="line-height:1.8" class="mb-36">
+													In case of default, this note will be due and demandable without further demand, and an additional fee of (2%) per missed payment of the scheduled amortization as penalty, And in case this note be given to hands of an attorney an additional charged of (10%) of the total amount due will be charged as attorney's fee, further, the borrower is liable to litigation expenses, damages, etc. should the failure on the part of the borrower reach the courts. In cases that the borrower/s changes address/ transfer of residence without notice to MICRO ACCESS LOANS CORPORATION in writing, the address indicated in this note shall be the address for purposes of delivery of notices and other matters pertaining to the loan. Shall any issue/case that may arise as a result of this promissory note on any document in relation hereto, venue shall be at the civil courts of Butuan City, Agusan del Norte, to the exclusion of other court or at the option of MICRO ACCESS LOANS CORPORATION The Borrower/s hereby authorized the MICRO ACCESS LOANS CORPORATION to assign, sell or otherwise negotiate this note with any financial institution on its face value. Done this <b>{{nthDay(this.dateToD(new Date))}}</b> day of <b class="allcaps">{{this.dateToFullMonth(new Date)}}  {{this.dateToY(new Date)}}</b>.
+												</p>
+
+												<div class="d-flex flex-row">
+													<div class="flex-1"></div>
+													<div class="d-flex flex-column flex-3">
+														<div class="d-flex">
+															<span class="mr-5">{{fullName(borrower.firstname, borrower.middlename,borrower.lastname)}} </span>
+															<span></span>
+														</div>
+														<div class="d-flex">
+															<span class="mr-5">Borrower Signature</span>
+															<span></span>
+														</div>
+														<div class="d-flex">
+															<span class="mr-5">Type of ID : </span>
+															<span>{{borrower.id_type}}</span>
+														</div>
+														<div class="d-flex">
+															<span class="mr-5">ID Number : </span>
+															<span>{{borrower.id_no}}</span>
+														</div>
+														<div class="d-flex">
+															<span class="mr-5">Date Issue : </span>
+															<span>{{dateToYMD(new Date(borrower.id_date_issued)).split('-').join('/')}}</span>
+														</div>
+													</div>
+													<div class="d-flex flex-column flex-3 align-items-end">
+														<div>
+															<div class="d-flex">
+																<span class="mr-5">{{loanDetails.co_borrower_name}} </span>
+																<span></span>
+															</div>
+															<div class="d-flex">
+																<span class="mr-5">Co-Borrower Signature</span>
+																<span></span>
+															</div>
+															<div class="d-flex">
+																<span class="mr-5">Type of ID : </span>
+																<span>{{loanDetails.co_borrower_id_type}}</span>
+															</div>
+															<div class="d-flex">
+																<span class="mr-5">ID Number : </span>
+																<span>{{loanDetails.co_borrower_id_number}}</span>
+															</div>
+															<div class="d-flex">
+																<span class="mr-5">Date Issue : </span>
+																<span>{{dateToYMD(new Date(loanDetails.co_borrower_id_date_issued)).split('-').join('/')}}</span>
+															</div>
+															</div>
+														
+													</div>
+													<div class="flex-1"></div>
+												</div>
+											</section>
+											<span class="bbt-8 py-7 text-center text-20 text-bold mb-16">COMAKER STATEMENT</span>
+											<section class="font-md mb-24" style="font-size:16px!important;line-height:1.3em!important">
+												<p class="mb-24">
+													I agree to become a co-maker to this Promissory Note, I aware of the joint and severally (solidarilly) accountability in this note that in case the principal borrower missed their due amortization, I will assume all the obligation including all other penalties until full payment as stated in the condition of this note.
+												</p>
+												<div class="d-flex flex-row align-items-center">
+													<div class="flex-1"></div>
+													<div class="d-flex flex-column flex-2 font-md">
+														<div class="d-flex">
+															<span class="mr-5">{{loanDetails.co_maker_name}} </span>
+															<span></span>
+														</div>
+														<div class="d-flex">
+															<span class="mr-5">Co-Maker Signature</span>
+															<span></span>
+														</div>
+														<div class="d-flex">
+															<span class="mr-5">Address : </span>
+															<span>{{loanDetails.co_maker_address}}</span>
+														</div>
+													</div>
+													<div class="d-flex flex-row flex-2 font-md justify-content-end">
+														<div class="d-flex flex-column">
+															<div class="d-flex flex-row flex-1 justify-content-between pr-24">
+																<span class="">Type of ID : {{loanDetails.co_maker_id_type}}</span>
+															</div>
+															<div class="d-flex flex-row flex-1 justify-content-between pr-24">
+																<span class="">ID Number  : {{loanDetails.co_maker_id_number}}</span>
+															</div>
+															<div class="d-flex flex-row flex-1 justify-content-between pr-24">
+																<span class="">Date Issue : {{loanDetails.co_maker_id_date_issued}}</span>
+															</div>
+														</div>
+													</div>
+													<div class="flex-1"></div>
+												</div>
+											</section>
+											<span class="bbt-8 py-7 text-center text-20 text-bold mb-16">ACKNOWLEDGEMENT</span>
+											<section class="font-md" style="font-size:16px!important;line-height:1.3em!important">
+												<div class= "mb-24">
+													<span class="text-block">Republic of the Philippines</span>
+													<span>Butuan City</span>
+												</div>
+												<p>
+													SUBSCRIBE AND SWORN before me this _______, day of __________ </b> and tax identetification number written above,
+													Known to me and to me known to be the same person who executed the foregoing Promissory Note and they Acknowledged to me that the same is their own free and voluntary act and as well as the free and voluntary act and deed of the entitles herein represented with full power so to do and for the uses and purposes thereon set forth.
+												</p>
+												<p>
+													IN WITNESS WHEREOF, I have set my hand and affixed my Notarial Seal on date place above written.
+												</p>
+												<p class="text-block text-right">
+													NOTARY PUBLIC
+												</p>
+												<div class="d-flex flex-column mb-24">
+													<span>Doc. No.___________</span>
+													<span>Page No.___________</span>
+													<span>Book No.___________</span>
+													<span>Series of___________</span>
+												</div>
+											</section>
+											<div class="d-flex mb-24">
+												<img src="/img/logo-footer.png" class="w-100" alt="">
+											</div>
+											<div class="mb-72"></div>
+											<div class="d-flex flex-row-reverse mb-45 no-print">
+												<a @click.prevent="printContent('promissory-note')" href="#" class="btn btn-default min-w-150">Print</a>
+												<a href="#" class="btn btn-success min-w-150 mr-24">Download Excel</a>
 											</div>
 										</div>
+				</div>
+			</div>
+			</div>
+		</div>
+
+
+
+
+
+
+
+
+
+		<div class="modal" id="cashVoucherModal" tabindex="-1" role="dialog">
+			<div class="modal-dialog modal-lg minw-70" role="document">
+			<div class="modal-content">
+				<div class="modal-body font-md" id="voucherPrintContent">
+					<img src="/img/company_header.png" style="width:100%" class="mb-24" alt="Company Header">
+					<div class="d-flex flex-column" style="padding:0 50px;">
+						<div class="d-flex flex-row align-items-center mb-24 darker-bb pb-10">
+							<div class="flex-1">
+								<span class="text-primary-dark font-26">Butuan Branch (001)</span>
+							</div>
+							<div class="d-flex flex-column">
+								<span class="font-26 text-bold text-primary-dark lh-1">CASH VOUCHER</span>
+							</div>
+							<div class="flex-1 d-flex justify-content-end pr-10">
+								<span class=" mr-10">{{dateFullDay(new Date())}} {{dateToYMD(new Date()).split('-').join('/')}}</span>
+								<span class="">Time: {{todayTime(new Date())}} {{(new Date()).getHours() > 12? 'PM':'AM'}}</span>
+							</div>
+						</div>
+						<section class="mb-16">
+							<div class="d-flex flex-row">
+								<div class="d-flex flex-column flex-2">
+									<div class="d-flex flex-row mb-10">
+										<span class="flex-1 mw-150">Pay to</span>
+										<div class="d-flex flex-1">
+											<span class="mr-5">: </span>
+											<span> {{borrower.lastname + ', ' + borrower.firstname + ' ' + borrower.middlename.charAt(0).toUpperCase() + '.'}}</span>
+										</div>
+									</div>
+									<div class="d-flex flex-row">
+										<span class="flex-1 mw-150">Voucher No.</span>
+										<div class="d-flex flex-1">
+											<span class="mr-5">: </span>
+											<span>{{loanDetails.account_num}}</span>
+										</div>
+									</div>
+								</div>
+								<div class="flex-1"></div>
+								<div class="d-flex flex-column-reverse flex-2">
+									<div class="d-flex flex-row">
+										<span class="flex-1 text-right">Voucher Date</span>
+										<div class="d-flex flex-1">
+											<span class="mr-5">: </span>
+											<span> __________________</span>
+										</div>
+									</div>
+								</div>
+								<div class="flex-1"></div>
+							</div>
+						</section>
+
+						<div class="sep-dark mb-16"></div>
+
+						<section class="mb-24">
+							<div class="d-flex flex-row mb-24">
+								<div class="d-flex flex-column flex-2">
+									<div class="d-flex flex-row mb-10">
+										<span class="flex-1 mw-150">Particular</span>
+										<div class="d-flex flex-2">
+											<span class="mr-5">: </span>
+											<span> Loan Granted P {{formatToCurrency(loanDetails.loan_amount)}} for {{loanDetails.no_of_installment}} {{loanDetails.payment_mode}} payment. With interest of {{loanDetails.interest_rate}}% per month</span>
+										</div>
+									</div>
+									<div class="d-flex flex-row">
+										<span class="flex-1 mw-150">Net Amount</span>
+										<div class="d-flex flex-2">
+											<span class="mr-5">: </span>
+											<span> P {{formatToCurrency(loanDetails.net_proceeds)}}</span>
+										</div>
+									</div>
+								</div>
+							</div>
+							<p class="mb-45">
+								Received payment from MICRO ACCESS LOANS CORPORATION - BUTUAN BRANCH (001) The sum of <span class="allcaps">{{numToWords(parseFloat(loanDetails.net_proceeds))}}</span> Pesos only.
+							</p>
+							<div class="d-flex flex-row">
+								<span class="flex-1">Received By: _________________________________</span>
+								<span class="flex-1">Disbursed By: _________________________________</span>
+							</div>
+						</section>
+
+						<div class="sep-dark mb-16"></div>
+
+						<section>
+							<div class="d-flex flex-row justify-content-center mb-16 darker-bb pb-10">
+								<div class="d-flex flex-column">
+									<span class="font-26 text-bold text-primary-dark lh-1 text-center text-block">DISCLOSURE STATEMENT OF LOAN</span>
+								</div>
+							</div>
+
+							<div class="d-flex flex-row mb-24 bb-dashed pb-16">
+								<div class="d-flex flex-column flex-2">
+									<div class="d-flex flex-row mb-10">
+										<span class="flex-1 mw-150">Installment</span>
+										<div class="d-flex flex-2">
+											<span class="mr-5">: </span>
+											<span> {{loanDetails.no_of_installment}} {{loanDetails.payment_mode}}</span>
+										</div>
+									</div>
+									<div class="d-flex flex-row">
+										<span class="flex-1 mw-150">Amortization</span>
+										<div class="d-flex flex-2">
+											<span class="mr-5">: </span>
+											<span> P {{formatToCurrency(loanDetails.current_amortization.principal + loanDetails.current_amortization.interest)}}</span>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<table class="table dark-border th-nb th-bb-dark mb-24">
+								<thead>
+									<th >Acct</th>
+									<th >Title</th>
+									<th >S/L</th>
+									<th >Debit</th>
+									<th >Credit</th>
+								</thead>
+								<tbody>
+									<tr v-for="(voucher, i) in vouchers" v-if="voucher.debit != 0 || voucher.credit != 0" :key="i">
+										<td>{{voucher.acct}}</td>
+										<td>{{voucher.title}}</td>
+										<td>{{voucher.sl}}</td>
+										<td>{{formatToCurrency(voucher.debit)}}</td>
+										<td>{{formatToCurrency(voucher.credit)}}</td>
+									</tr>
+									<!-- <tr>
+										<td>1205</td>
+										<td>Loans Receivable - Current</td>
+										<td></td>
+										<td>5,000.00</td>
+										<td>0.00</td>
+									</tr>
+									<tr>
+										<td>1205</td>
+										<td>Loans Receivable - Current</td>
+										<td></td>
+										<td>5,000.00</td>
+										<td>0.00</td>
+									</tr>
+									<tr>
+										<td>1205</td>
+										<td>Loans Receivable - Current</td>
+										<td></td>
+										<td>5,000.00</td>
+										<td>0.00</td>
+									</tr>
+									<tr>
+										<td>1205</td>
+										<td>Loans Receivable - Current</td>
+										<td></td>
+										<td>5,000.00</td>
+										<td>0.00</td>
+									</tr>-->
+									<tr class="bg-black">
+										<td>TOTAL</td>
+										<td></td>
+										<td></td>
+										<td>{{formatToCurrency(totalDebit)}}</td>
+										<td>{{formatToCurrency(totalCredit)}}</td>
+									</tr> 
+								</tbody>
+							</table>
+
+							<p class="mb-72">
+								I/We acknowledge and understand the statement above prior to the signing and consummation of the credit transaction and that I/We fully agree to the to the terms and conditions stated on promissory note.
+							</p>
+
+							<div class="d-flex flex-row px-45">
+								<div class="d-flex flex-column flex-1">
+									<span class="text-center bt-dark-2 py-12 mb-45">Borrow Sign / Printed Name</span>
+									<span class="text-center bt-dark-2 py-12 mb-45">Date Disbursed / Acknowledged</span>
+								</div>
+								<div class="flex-1"></div>
+								<div class="d-flex flex-column flex-1">
+									<span class="text-center bt-dark-2 py-12 mb-45">Co-Borrow Sign / Printed Name</span>
+									<span class="text-center bt-dark-2 py-12 mb-45">MAC Representative Signature</span>
+								</div>
+							</div>
+
+						</section>
+
+						<div class="mb-72"></div>
+						<div class="d-flex flex-row-reverse mb-45 no-print">
+							<a @click="printVoucher()" href="#" class="btn btn-default min-w-150">Print</a>
+							<a href="#" class="btn btn-success min-w-150 mr-24">Download Excel</a>
+							<a href="#" id="cancelVoucherModal" data-dismiss="modal" class="btn btn-danger min-w-150 mr-24 hide">Cancel</a>
+						</div>
+						<div class="d-flex mb-24">
+						<img src="/img/logo-footer.png" class="w-100" alt="">
+					</div>
+					</div>
+				</div>
+			</div>
+			</div>
+		</div>
+
 
 
 
@@ -1191,7 +1413,7 @@
 
 
 
-		<div class="modal" id="schedulesModal" tabindex="-1" role="dialog">
+		<div class="modal" id="schedulesModals" tabindex="-1" role="dialog">
 								<div class="modal-dialog modal-lg minw-70" role="document">
 									<div class="modal-content">
 										<div class="modal-body">
@@ -1715,6 +1937,149 @@
 
 
 
+
+
+		<div class="modal" id="schedulesModal" tabindex="-1" role="dialog">
+		<div class="modal-dialog modal-lg minw-70" role="document">
+		  <div class="modal-content">
+			<div class="modal-body" id="amortPrintContent">
+			  	<img src="/img/company_header.png" style="width:100%" class="mb-16" alt="Company Header">
+				<div class="d-flex flex-column" style="padding:0 50px;">
+					<span class="text-center text-block dark-bb pb-10 text-bold font-lg mb-16">AMORTIZATION SCHEDULE</span>
+
+					<div class="d-flex flex-row mb-24">
+						<div class="d-flex flex-column flex-2">
+							<div class="d-flex mb-7">
+								<span class="mr-5 text-primary-dark text-bold">Name: </span>
+								<span class="text-primary-dark text-bold">{{borrower.lastname + ', ' + borrower.firstname}}</span>
+							</div>
+							<div class="d-flex mb-7">
+								<span class="mr-5">Address: </span>
+								<span>{{borrower.address}}</span>
+							</div>
+							<div class="d-flex mb-7">
+								<span class="mr-5">Date Release: </span>
+								<span>{{loanDetails.date_release}}</span>
+							</div>
+							<div class="d-flex mb-7">
+								<span class="mr-5">Amount Granted: </span>
+								<span>{{loanDetails.loan_amount}}</span>
+							</div>
+							<div class="d-flex mb-7">
+								<span class="mr-5">Term: </span>
+								<span>{{loanDetails.terms + ' Days'}}</span>
+							</div>
+							<div class="d-flex mb-7">
+								<span class="mr-5">Amort: </span>
+								<span>{{formatToCurrency(loanDetails.current_amortization.principal + loanDetails.current_amortization.interest)}}</span>
+							</div>
+							<div class="d-flex mb-7">
+								<span class="mr-5">Co-Borrower: </span>
+								<span>{{loanDetails.co_borrower_name}}</span>
+							</div>
+							<div class="d-flex mb-7">
+								<span class="mr-5">Co-Address: </span>
+								<span>{{loanDetails.co_borrower_address}}</span>
+							</div>
+							<div class="d-flex mb-7">
+								<span class="mr-5">Co-Maker: </span>
+								<span>{{loanDetails.co_maker_name}}</span>
+							</div>
+							<div class="d-flex mb-7">
+								<span class="mr-5">Co-Address: </span>
+								<span>{{loanDetails.co_maker_address}}</span>
+							</div>
+						</div>
+						<div class="flex-1"></div>
+						<div class="d-flex flex-column flex-2">
+							<div class="d-flex mb-7">
+								<span class="mr-5 text-primary-dark text-bold">Acc. #: </span>
+								<span class="text-primary-dark text-bold">{{loanDetails.account_num}}</span>
+							</div>
+							<div class="d-flex mb-7">
+								<span class="mr-5">A/O: </span>
+								<!-- <span class="">{{loanDetails.account_officer.name}}</span> -->
+								<span></span>
+							</div>
+							<div class="d-flex mb-7">
+								<span class="mr-5">Due Date: </span>
+								<span class="">{{dateToMDY(new Date(loanDetails.due_date))}}</span>
+							</div>
+							<div class="d-flex mb-7">
+								<span class="mr-5">Loan Type: </span>
+								<span class="">{{loanDetails.type}}</span>
+							</div>
+							<div class="d-flex mb-7">
+								<span class="mr-5">Interest: </span>
+								<span class="">{{formatToCurrency(loanDetails.interest_amount)}}</span>
+							</div>
+							<div class="d-flex mb-7">
+								<span class="mr-5">Int. Rate: </span>
+								<span class="">{{loanDetails.interest_rate + '%'}}</span>
+							</div>
+							<div class="d-flex mb-7">
+								<span class="mr-5">Mode: </span>
+								<span class="">{{loanDetails.payment_mode}}</span>
+							</div>
+							<div class="d-flex mb-7">
+								<span class="mr-5">Center: </span>
+								<span class="">{{loanDetails.center? loanDetails.center.center:''}}</span>
+							</div>
+							<div class="d-flex mb-7">
+								<span class="mr-5">ID #: </span>
+								<span class="">08-052415427-4</span>
+							</div>
+						</div>
+					</div>			
+
+					<section class="mb-24 d-flex flex-column">
+						<span class="text-bold bg-gray" style="padding:0 5px;">Schedules</span>
+						<div class="mb-10">
+							<table class="table th-nbt table-thin">
+								<thead>
+									<th>No.</th>
+									<th>Date</th>
+									<th>Principal</th>
+									<th>Interest</th>
+									<th>Total</th>
+									<th>Principal Balance</th>
+									<th>Interest Balance</th>
+								</thead>
+								<tbody>
+									<tr v-for="(sched, i) in amortizationSched" :key="i">
+										<td>{{i + 1}}</td>
+										<td>{{dateToYMD(new Date(sched.amortization_date))}}</td>
+										<td>{{sched.principal}}</td>
+										<td>{{sched.interest}}</td>
+										<td>{{sched.total}}</td>
+										<td>{{sched.principal_balance}}</td>
+										<td>{{sched.interest_balance}}</td>
+									</tr>
+								</tbody>
+							</table>
+							
+						</div>
+						<div class="mb-45"></div>	
+						<div class="mb-45"></div>			
+						<p class="text-block text-center" style="line-height:0!important;">This statement is a system generated copy!</p>
+						<p class="text-block text-center">&lt; End of file &gt;</p>
+					</section>
+					<div class="d-flex flex-row-reverse mb-45 no-print">
+						<a href="#" @click="printAmort()" class="btn btn-default min-w-150">Print</a>
+						<a href="#" class="btn btn-success min-w-150 mr-24">Download Excel</a>
+						<a href="#" id="cancelModal" data-dismiss="modal" class="btn btn-danger min-w-150 mr-24 hide">Cancel</a>
+					</div>
+				</div>
+			</div>
+		  </div>
+		</div>
+	</div>
+
+
+
+
+
+
 		<div class="modal" id="uploadedFilesModal" tabindex="-1" role="dialog">
 			<div class="modal-dialog modal-lg minw-70" role="document">
 				<div class="modal-content">
@@ -1736,6 +2101,7 @@ export default {
 	data(){
 		return {
 			baseUrl: this.baseURL(),
+			selected:null,
 			borrower:{
 				borrower_id: null,
 				borrower_num:'',
@@ -1764,10 +2130,78 @@ export default {
 				householdMembers : [],
 				outstandingObligations : [],
 			},
+			accounts:[],
 			img:'/img/user.png',
+			loanDetails: {
+				loan_account_id:null,
+				cycle_no : 1,
+				ao_id : '',
+				product_id : '',
+				center_id : '',
+				type : '',
+				payment_mode : '',
+				terms : 0,
+				loan_amount : '',
+				no_of_installment : '',
+				day_schedule : '',
+				borrower_num : '',
+				co_borrower_name : '',
+				co_borrower_address : '',
+				co_borrower_id_type : '',
+				co_borrower_id_number : '',
+				co_borrower_id_date_issued : '',
+				co_maker_name : '',  
+				co_maker_address : '',
+				co_maker_id_type : '',
+				co_maker_id_number : '',
+				co_maker_id_date_issued : '',
+				document_stamp : 0.00,
+				filing_fee : 0.00,
+				insurance : 0.00,
+				notarial_fee : 100.00,
+				prepaid_interest : 0.00,
+				affidavit_fee : 0.00,
+				memo : 0.00,
+				total_deduction : 0.00,
+				net_proceeds : 0.00,
+				release_type : '',
+				documents: {
+					date_release: this.dateToYMD(new Date),
+					description: '',
+					bank: '',
+					account_no: '',
+					card_no:'',
+					promissory_number: '',
+				},
+				current_amortization:{
+					interest:0,
+					principal:0
+				},
+				product:{
+					product_name:'',
+				}
+			},
+			vouchers:[],
+			amortizationSched:[],
+			filter:'',
 		}
 	},
 	methods:{
+		amortSched:function(){
+			axios.post(this.baseURL() + 'api/account/generate-amortization', this.loanDetails, {
+				headers: {
+					'Authorization': 'Bearer ' + this.token,
+					'Content-Type': 'application/json',
+					'Accept': 'application/json'
+				}
+			})
+			.then(function (response) {
+				this.amortizationSched = response.data.data;
+			}.bind(this))
+			.catch(function (error) {
+				console.log(error);
+			}.bind(this));
+		},
 		fetchBorrower:function(){
 			axios.get(this.baseURL() + 'api/borrower/' + this.borrower_id, {
 			headers: {
@@ -1794,7 +2228,58 @@ export default {
 				}
 			})
 			.then(function (response) {
-				console.log(response.data);
+				this.accounts = response.data;
+			}.bind(this))
+			.catch(function (error) {
+				console.log(error);
+			}.bind(this));
+		},
+
+		fetchCashVoucher:function(id){
+			axios.get(this.baseURL() + 'api/account/cashvoucher/' + id, {
+				headers: {
+					'Authorization': 'Bearer ' + this.token,
+					'Content-Type': 'application/json',
+					'Accept': 'application/json'
+				}
+			})
+			.then(function (response) {
+				this.vouchers = response.data.data.cash_voucher;
+			}.bind(this))
+			.catch(function (error) {
+				console.log(error);
+			}.bind(this));
+		},
+
+		fetchAccount:function(id){
+			axios.get(this.baseURL() + 'api/account/show/' + id, {
+			headers: {
+				'Authorization': 'Bearer ' + this.token,
+					'Content-Type': 'application/json',
+					'Accept': 'application/json'
+				}
+			})
+			.then(function (response) {
+				this.loanDetails = response.data.data;
+				this.loanDetails.documents = response.data.data.document;
+				this.amortSched();
+				this.fetchCashVoucher(id);
+			}.bind(this))
+			.catch(function (error) {
+				console.log(error);
+			}.bind(this));
+		},
+
+		fetchAccountId:function(id){
+			axios.get(this.baseURL() + 'account/statement/' + id, {
+			headers: {
+				'Authorization': 'Bearer ' + this.token,
+					'Content-Type': 'application/json',
+					'Accept': 'application/json'
+				}
+			})
+			.then(function (response) {
+				this.fetchAccount(response.data.loan_account_id);
 			}.bind(this))
 			.catch(function (error) {
 				console.log(error);
@@ -1808,6 +2293,32 @@ export default {
 	computed:{
 		borrowerPhoto:function(){
 			return this.borrower.photo? this.borrower.photo : this.img;
+		},
+		totalDebit:function(){
+			var amount = 0;
+			this.vouchers.map(function(val){
+				amount+=val.debit;
+			}.bind(this));
+			return amount;
+		},
+		totalCredit:function(){
+			var amount = 0;
+			this.vouchers.map(function(val){
+				amount+=val.credit;
+			}.bind(this));
+			return amount;
+		},
+		filteredAccounts:function(){
+			if(this.filter.length > 0){
+				var accounts = [];
+				this.accounts.map(function(acc){
+					if(acc.account_num.includes(this.filter)){
+						accounts.push(acc);
+					}
+				}.bind(this));
+				return accounts;
+			}
+			return this.accounts;
 		}
 	},
 	mounted(){
@@ -1815,3 +2326,9 @@ export default {
 	}
 }
 </script>
+
+<style>
+	.account-active {
+		background-color: #eee;
+	}
+</style>
