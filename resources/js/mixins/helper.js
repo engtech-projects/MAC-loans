@@ -143,6 +143,9 @@ Vue.mixin({
 		fullName:function(f,m,l){
 			return m? f+' '+m.charAt(0)+'. '+l:f+' ' +l;
 		},
+		fullNameReverse:function(f,m,l){
+			return m? l+', '+f+' '+m.charAt(0) + '.':f+' ' +l;
+		},
 		isActive:function(a,b){
 			return a==b?'active':'';
 		},
