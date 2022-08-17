@@ -273,7 +273,7 @@
 						<div class="col-xl-2 col-lg-6">
 							<div class="info-display">
 								<span class="font-blue">Center</span>
-								<span>{{loanDetails.center?loanDetails.center:''}}</span>
+								<span>{{loanDetails.center?loanDetails.center.center:''}}</span>
 							</div>
 						</div>
 						<div class="col-xl-3 col-lg-6">
