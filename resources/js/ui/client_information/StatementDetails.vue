@@ -182,7 +182,7 @@
 		<div class="flex-col accounts-list">
 			<div class="card mb-12">
 				<div class="card-header" style="background-color:#dfdfd0!important;">
-					<h3 class="card-title" style="color: #283f53;">Account Number: 1001-3429-15248</h3>
+					<h3 class="card-title" style="color: #283f53;">Account Number: {{loanDetails.account_num}}</h3>
 
 					<div class="card-tools">
 						<button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
@@ -273,7 +273,7 @@
 						<div class="col-xl-2 col-lg-6">
 							<div class="info-display">
 								<span class="font-blue">Center</span>
-								<span>---</span>
+								<span>{{loanDetails.center?loanDetails.center:''}}</span>
 							</div>
 						</div>
 						<div class="col-xl-3 col-lg-6">
@@ -566,7 +566,7 @@
 		<div class="modal" id="statusReportModal" tabindex="-1" role="dialog">
 					<div class="modal-dialog modal-lg minw-70" role="document">
 						<div class="modal-content">
-							<div class="modal-body">
+							<div class="modal-body" id="paymentStatusPrintContent">
 								<img src="/img/company_header.png" style="width:100%" class="mb-16" alt="Company Header">
 								<div class="d-flex flex-column" style="padding:0 50px;">
 									<span class="text-center text-block dark-bb pb-10 text-bold font-lg mb-16">PAYMENT STATUS REPORT</span>
@@ -783,7 +783,7 @@
 																					<p class="text-block text-center">&lt; End of file &gt;</p>
 																				</section>
 																				<div class="d-flex flex-row-reverse mb-45">
-																					<a href="#" class="btn btn-default min-w-150">Print</a>
+																					<a @click.prevent="printContent('paymentStatusPrintContent')" href="#" class="btn btn-default min-w-150">Print</a>
 																					<a href="#" class="btn btn-success min-w-150 mr-24">Download Excel</a>
 																				</div>
 																				<div class="d-flex mb-24">
@@ -805,7 +805,7 @@
 		<div class="modal" id="promisoryNoteModal" tabindex="-1" role="dialog">
 			<div class="modal-dialog modal-lg minw-70" role="document">
 			<div class="modal-content">
-				<div class="modal-body font-md" id="voucherPrintContent">
+				<div class="modal-body font-md" id="promissoryPrintContent">
 					<img :src="baseUrl+'/img/company_header.png'" style="width:100%" class="mb-45" alt="Company Header">
 										<div class="d-flex flex-column" style="padding:0 50px;">
 											<div class="d-flex flex-row align-items-center mb-36">
@@ -996,7 +996,7 @@
 											</div>
 											<div class="mb-72"></div>
 											<div class="d-flex flex-row-reverse mb-45 no-print">
-												<a @click.prevent="printContent('promissory-note')" href="#" class="btn btn-default min-w-150">Print</a>
+												<a @click.prevent="printContent('promissoryPrintContent')" href="#" class="btn btn-default min-w-150">Print</a>
 												<a href="#" class="btn btn-success min-w-150 mr-24">Download Excel</a>
 											</div>
 										</div>
@@ -1195,7 +1195,7 @@
 
 						<div class="mb-72"></div>
 						<div class="d-flex flex-row-reverse mb-45 no-print">
-							<a @click="printVoucher()" href="#" class="btn btn-default min-w-150">Print</a>
+							<a @click="printContent('voucherPrintContent')" href="#" class="btn btn-default min-w-150">Print</a>
 							<a href="#" class="btn btn-success min-w-150 mr-24">Download Excel</a>
 							<a href="#" id="cancelVoucherModal" data-dismiss="modal" class="btn btn-danger min-w-150 mr-24 hide">Cancel</a>
 						</div>
@@ -2068,10 +2068,13 @@
 						<p class="text-block text-center">&lt; End of file &gt;</p>
 					</section>
 					<div class="d-flex flex-row-reverse mb-45 no-print">
-						<a href="#" @click="printAmort()" class="btn btn-default min-w-150">Print</a>
+						<a href="#" @click.prevent="printContent('amortPrintContent')" class="btn btn-default min-w-150">Print</a>
 						<a href="#" class="btn btn-success min-w-150 mr-24">Download Excel</a>
 						<a href="#" id="cancelModal" data-dismiss="modal" class="btn btn-danger min-w-150 mr-24 hide">Cancel</a>
 					</div>
+					<div class="d-flex mb-24">
+							<img src="/img/logo-footer.png" class="w-100" alt="">
+						</div>
 				</div>
 			</div>
 		  </div>
@@ -2292,6 +2295,15 @@ export default {
 			.catch(function (error) {
 				console.log(error);
 			}.bind(this));
+		},
+
+		printContent:function(content){
+			var content = document.getElementById(content).innerHTML;
+			var target = document.querySelector('.to-print');
+			var cancel = document.querySelector('#cancelVoucherModal');
+			target.innerHTML = content;
+			cancel.click();
+			window.print();
 		},
 
 		imageCapture:function(img){
