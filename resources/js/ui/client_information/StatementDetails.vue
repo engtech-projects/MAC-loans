@@ -501,7 +501,7 @@
 									<span class="text-20">MOA For SME</span>
 								</div>
 							</div>
-							<div class="flex-5">
+							<div class="flex-5" id="firstLetterPrintContent">
 								<img src="/img/company_header.png" style="width:100%" class="mb-16" alt="Company Header">
 								<div class="d-flex flex-column font-md" style="padding:0 35px;">
 
@@ -548,7 +548,7 @@
 						</div>
 						<div class="mb-72"></div>
 						<div class="d-flex flex-row-reverse mb-45">
-							<a href="#" class="btn btn-default min-w-150">Print</a>
+							<a @click.prevent="printContent('firstLetterPrintContent')" href="#" class="btn btn-default min-w-150">Print</a>
 							<a href="#" class="btn btn-success min-w-150 mr-24">Download Excel</a>
 						</div>
 						<div class="d-flex mb-24">
@@ -1626,7 +1626,7 @@
 		<div class="modal" id="soaModal" tabindex="-1" role="dialog">
 		<div class="modal-dialog modal-lg minw-70" role="document">
 			<div class="modal-content">
-				<div class="modal-body">
+				<div class="modal-body" id="soaPrintContent">
 					<img src="/img/company_header.png" style="width:100%" class="mb-16" alt="Company Header">
 					<div class="d-flex flex-column" style="padding:0 50px;">
 						<span class="text-center text-block dark-bb pb-10 text-bold font-lg mb-16">STATEMENT OF ACCOUNT</span>
@@ -1925,7 +1925,7 @@
 																		</div>
 																	</section>
 																	<div class="d-flex flex-row-reverse mb-45">
-																		<a href="#" class="btn btn-default min-w-150">Print</a>
+																		<a @click.prevent="printContent('soaPrintContent')" href="#" class="btn btn-default min-w-150">Print</a>
 																		<a href="#" class="btn btn-success min-w-150 mr-24">Download Excel</a>
 																	</div>
 																	<div class="d-flex mb-24">
