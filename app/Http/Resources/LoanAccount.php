@@ -63,6 +63,7 @@ class LoanAccount extends JsonResource
             'transaction_date' => $this->transaction_date,
             'last_transaction' => null,
             'document' => $this->documents,
+            'docs' => $this->getDocs($this->borrower_id, $this->loan_account_id),
             'payment_status' => $this->payment_status,
             'loan_status' => $this->loan_status,
             'payments' => $this->payments,

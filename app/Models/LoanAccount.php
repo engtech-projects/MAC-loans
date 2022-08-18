@@ -6,6 +6,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 use DB;
+use Illuminate\Support\Str;
+use Storage;
+use File;
 
 
 class LoanAccount extends Model
@@ -107,6 +110,51 @@ class LoanAccount extends Model
 
    public function documents(){
      return $this->hasOne(Document::class, 'loan_account_id');
+   }
+
+   public function getDocs($borrowerId, $loanAccountId) {
+      
+      $main = 'borrowers/';
+      $identifier = $borrowerId . '/';
+      $folder = $loanAccountId.'/';
+
+      $dir = $main . $identifier . $folder;
+      $files = Storage::files('public/' . $dir);
+      $docs = [];
+
+      if( count($files) > 0 ){
+
+            foreach ($files as $file) {
+                $docs[] = url(Str::replace('public', 'storage', $file));
+            }
+            
+            return $docs;
+         }
+
+      return false;
+   }
+
+   public function setDocs($borrowerId, $loanAccountId, $files) {
+
+      $root = storage_path('app/public/');
+      $main = 'borrowers/';
+      $identifier = $borrowerId . '/';
+      $folder = $loanAccountId.'/';
+
+      $dir = $main . $identifier . $folder;
+
+      // check if folder exists
+      if( !File::isDirectory($root . $dir) ){
+         // create folder
+         File::makeDirectory($root . $dir, 0777, true, true);
+      }
+
+      
+      foreach ($files as $file) {
+         $name = $file->getClientOriginalName();
+         $file->storeAs('public/' . $dir, $name);
+      }
+     
    }
 
    public function cashVoucher() {
@@ -408,6 +456,10 @@ class LoanAccount extends Model
    }
 
    public function getCurrentAmortization(){
+
+      if( $this->status == 'pending' ){
+         return false;
+      }
 
       if( $this->loan_status == 'paid' ){
          // go where?
