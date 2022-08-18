@@ -403,7 +403,9 @@ class LoanAccount extends Model
             }
          }
       }else{
-         LoanAccount::find($loanAccountId)->update(['payment_status' => 'Delinquent']);
+         if( count($ids) ){
+            LoanAccount::find($loanAccountId)->update(['payment_status' => 'Delinquent']);
+         }
       }
       
       return [ 
