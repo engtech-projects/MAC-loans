@@ -73,13 +73,30 @@ class PaymentController extends BaseController
             $payment->status = 'paid';
             $payment->save();
 
+
+            $amortization = Amortization::find($payment->amortization_id);
+            $loanAccount = LoanAccount::find($payment->loan_account_id);
             # update amortization
             if( $payment->total_payable > $payment->amount_applied ){
-                Amortization::find($payment->amortization_id)->update([ 'status' => 'delinquent' ]);
-                LoanAccount::find($payment->loan_account_id)->update(['payment_status' => 'Delinquent']);
+                $amortization->status = 'delinquent';
+                $loanAccount->payment_status = 'delinquent';
+                // Amortization::find($payment->amortization_id)->update([ 'status' => 'delinquent' ]);
+                // LoanAccount::find($payment->loan_account_id)->update(['payment_status' => 'Delinquent']);
             }else{
-                Amortization::find($payment->amortization_id)->update([ 'status' => 'paid' ]);
+                $amortization->status = 'paid';
+                $loanAccount->payment_status = 'Current';
+                // Amortization::find($payment->amortization_id)->update([ 'status' => 'paid' ]);
+                // LoanAccount::find($payment->loan_account_id)->update(['payment_status' => 'Current']);
             }
+
+            $balance = $loanAccount->outstandingBalance($loanAccount->loan_account_id);
+
+            if( $balance <= 0 ){
+                $loanAccount->loan_status = 'Paid';
+            }
+
+            $amortization->save();
+            $loanAccount->save();
         }
 
         return $this->sendResponse('Override', 'Override');

@@ -61,13 +61,15 @@ class LoanAccount extends JsonResource
             // 'branch_code' => $this->branch_code,
             'branch' => $this->branch,
             'transaction_date' => $this->transaction_date,
-            'current_amortization' => $this->getCurrentAmortization(),
             'last_transaction' => null,
             'document' => $this->documents,
-            'cash_voucher' => $this->cashVoucher(),
+            'payment_status' => $this->payment_status,
+            'loan_status' => $this->loan_status,
             'payments' => $this->payments,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
+            'cash_voucher' => $this->cashVoucher(),
+            'current_amortization' => $this->getCurrentAmortization(),
         ];
     }
 }
