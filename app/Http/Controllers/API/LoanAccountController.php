@@ -55,6 +55,11 @@ class LoanAccountController extends BaseController
                     ['loan_account_id' => $account->loan_account_id ],
                 )
             );
+
+
+            if( $request->hasFile('files') ) {
+                $account->setDocs($account->borrower_id, $account->loan_account_id, $request->file('files'));
+            }
         }
 
     	return $this->sendResponse(new LoanAccountResource($account), 'Account fetched.');
@@ -72,6 +77,11 @@ class LoanAccountController extends BaseController
 		$document->promissory_number = ($request->input('documents')['promissory_number']);
 		$document->save();
 
+      
+        if( $request->hasFile('files') ) {
+            $account->setDocs($account->borrower_id, $account->loan_account_id, $request->file('files'));
+        }
+        
         return $this->sendResponse(new LoanAccountResource($account), 'Account Updated.');
     }
 
