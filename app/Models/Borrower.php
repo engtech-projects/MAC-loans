@@ -160,12 +160,16 @@ class Borrower extends Model
         $loanAccount = new LoanAccount();
         $activeAccounts = LoanAccount::where(['borrower_id' => $this->borrower_id, 'status' => 'released'])->get();
 
-        foreach ($activeAccounts as $key => $value) {
-            $value->outstandingBalance = $loanAccount->outstandingBalance($value->loan_account_id);
-			$value->current_amortization = $value->getCurrentAmortization();
-            $value->totalPaid = $value->getTotalPayments($value->loan_account_id);
+        if( count($activeAccounts) > 0 ){
+
+            foreach ($activeAccounts as $key => $value) {
+                $value->outstandingBalance = $loanAccount->outstandingBalance($value->loan_account_id);
+                $value->current_amortization = $value->getCurrentAmortization();
+                $value->totalPaid = $value->getPaymentTotal($value->loan_account_id);
+            }
+            return $activeAccounts;
         }
 
-        return $activeAccounts;
+        return false;
     }
 }

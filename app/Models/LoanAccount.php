@@ -461,6 +461,13 @@ class LoanAccount extends Model
          return false;
       }
 
+      $hasSchedule = Amortization::where('loan_account_id', $this->loan_account_id)->get();
+
+      if( !count($hasSchedule) ){
+         return false;
+      }
+
+
       if( $this->loan_status == 'paid' ){
          // go where?
          return;
