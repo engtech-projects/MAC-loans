@@ -295,8 +295,8 @@ class LoanAccount extends Model
                      ->limit(1)
                      ->first();
 
-
-      if( $amortization->status == 'paid' ){
+    
+      if( (isset($amortization->status) && $amortization->status == 'paid') || $amortization == null ){
 
           $amortization = Amortization::whereDate('amortization_date', '>', Carbon::now()->format('Y-m-d'))
                      ->where('loan_account_id', $loanAccountId)
