@@ -255,11 +255,11 @@
 												<div class="d-flex flex-column mb-24">
 													<div class="d-flex justify-content-between ps-75">
 														<div class="flex-1 text-bold">Principal</div>
-														<div class="flex-1 text-bold">PHP 1,500.00</div>
+														<div class="flex-1 text-bold">PHP {{formatToCurrency(loanDetails.current_amortization.principal_balance)}}</div>
 													</div>
 													<div class="d-flex justify-content-between ps-75">
 														<div class="flex-1 text-bold">Current interest balance</div>
-														<div class="flex-1 text-bold">PHP 1,500.00</div>
+														<div class="flex-1 text-bold">PHP {{formatToCurrency(loanDetails.current_amortization.interest_balance)}}</div>
 													</div>
 													<div class="d-flex justify-content-between ps-75">
 														<div class="flex-1 text-bold">Past due interest</div>
@@ -275,7 +275,7 @@
 													</div>
 													<div class="d-flex justify-content-between ps-75">
 														<div class="flex-1 text-bold">Total Amount Due</div>
-														<div class="flex-1 text-bold">PHP 1,500.00</div>
+														<div class="flex-1 text-bold">PHP {{formatToCurrency(loanDetails.current_amortization.principal_balance + loanDetails.current_amortization.interest_balance)}}</div>
 													</div>
 												</div>
 
@@ -351,7 +351,7 @@
 															</div>
 															<div class="flex-1 text-bold d-flex justify-content-between">
 																<b class="flex-1">P</b>
-																<b class="flex-1 text-right">121,200.00</b>
+																<b class="flex-1 text-right">{{formatToCurrency(loanDetails.current_amortization.principal_balance)}}</b>
 															</div>
 														</div>
 														<div class="d-flex justify-content-between">
@@ -361,7 +361,7 @@
 															</div>
 															<div class="flex-1 text-bold d-flex justify-content-between">
 																<b class="flex-1"></b>
-																<b class="flex-1 text-right">1,500,209.00</b>
+																<b class="flex-1 text-right">{{formatToCurrency(loanDetails.current_amortization.interest_balance)}}</b>
 															</div>
 														</div>
 														<div class="d-flex justify-content-between">
@@ -371,7 +371,7 @@
 															</div>
 															<div class="flex-1 text-bold d-flex justify-content-between">
 																<b class="flex-1"></b>
-																<b class="flex-1 text-right">3.00</b>
+																<b class="flex-1 text-right">{{formatToCurrency(loanDetails.current_amortization.penalty)}}</b>
 															</div>
 														</div>
 														<div class="d-flex justify-content-between">
@@ -381,7 +381,7 @@
 															</div>
 															<div class="flex-1 text-bold d-flex justify-content-between">
 																<b class="flex-1"></b>
-																<b class="flex-1 text-right">500.00</b>
+																<b class="flex-1 text-right">{{formatToCurrency(500)}}</b>
 															</div>
 														</div>
 														<div class="d-flex justify-content-between">
@@ -400,7 +400,7 @@
 															</div>
 															<div class="flex-1 text-bold d-flex justify-content-between">
 																<b class="flex-1"></b>
-																<b class="flex-1 text-right">2,600,031.00</b>
+																<b class="flex-1 text-right">{{formatToCurrency(loanDetails.current_amortization.interest_balance + loanDetails.current_amortization.principal_balance + 500 + loanDetails.current_amortization.penalty)}}</b>
 															</div>
 														</div>
 													</div>
@@ -436,7 +436,7 @@
 											</div>
 											<p>
 												NOTE: Please disregard if you have paid your account.
-     											Ref. No.: 00--003--001 Loan Amount: P    50,000.00 Term:  18 month(s).
+     											Ref. No.: 00--003--001 Loan Amount: P    {{formatToCurrency(loanDetails.loan_amount)}} Term:  {{loanDetails.terms / 30}} month(s).
 											</p>
 											<!-- <div class="d-flex">
 												<span></span>
