@@ -45,7 +45,7 @@
 						<tr @click="loanAccount=account;amortSched();" v-for="account in pborrower.loan_accounts" :key="account.loan_account_id" :class="isActive(account.loan_account_id)">
 							<td>{{account.account_num}}</td>
 							<td>{{dateToYMD(new Date(account.date_release))}}</td>
-							<td>P {{formatToCurrency(account.current_amortization.outstandingBalance.interest_balance + account.current_amortization.outstandingBalance.principal_balance)}}</td>
+							<td>P {{formatToCurrency(0 + account.current_amortization.interest_balance + account.current_amortization.principal_balance)}}</td>
 						</tr>
 					</tbody>
 				</table>
@@ -498,7 +498,8 @@
 														<span class="pl-16">PDI</span>
 														<span>:</span>
 													</div>
-													<span class="flex-1">P {{formatToCurrency(pdi==0?loanAccount.current_amortization.pdi:0)}}</span>
+													<span class="flex-1">P {{formatToCurrency(0)}}</span>
+													<!-- <span class="flex-1">P {{formatToCurrency(pdi==0?loanAccount.current_amortization.pdi:0)}}</span> -->
 												</div>
 												<div class="d-flex flex-row">
 													<div class="d-flex flex-row justify-content-between flex-1 mr-16">
@@ -524,28 +525,28 @@
 												<span>Principal Balance</span>
 												<span>:</span>
 											</div>
-											<span class="flex-1">P {{formatToCurrency(loanAccount.current_amortization.outstandingBalance.principal_balance)}}</span>
+											<span class="flex-1">P {{formatToCurrency(loanAccount.current_amortization.principal_balance)}}</span>
 										</div>
 										<div class="d-flex flex-row mb-5">
 											<div class="d-flex flex-row justify-content-between flex-1 mr-16">
 												<span>Interest Balance</span>
 												<span>:</span>
 											</div>
-											<span class="flex-1">P {{formatToCurrency(loanAccount.current_amortization.outstandingBalance.interest_balance)}}</span>
+											<span class="flex-1">P {{formatToCurrency(loanAccount.current_amortization.interest_balance)}}</span>
 										</div>
 										<div class="d-flex flex-row bb-dashed-2 mb-10">
 											<div class="d-flex flex-row justify-content-between flex-1 mr-16 mb-16">
 												<span>Surcharge</span>
 												<span>:</span>
 											</div>
-											<span class="flex-1">P {{formatToCurrency(loanAccount.outstandingBalance.surcharge)}}</span>
+											<span class="flex-1">P {{formatToCurrency(0)}}</span>
 										</div>
 										<div class="d-flex flex-row mb-5 text-bold">
 											<div class="d-flex flex-row justify-content-between flex-1 mr-16">
 												<span>TOTAL</span>
 												<span>:</span>
 											</div>
-											<span class="flex-1">P {{formatToCurrency(loanAccount.current_amortization.outstandingBalance.interest_balance + loanAccount.current_amortization.outstandingBalance.principal_balance)}}</span>
+											<span class="flex-1">P {{formatToCurrency(loanAccount.current_amortization.interest_balance + loanAccount.current_amortization.principal_balance)}}</span>
 										</div>
 									</div>
 									<div class="flex-2"></div>
@@ -776,13 +777,14 @@ export default {
 			return this.loanAccount.current_amortization.principal;
 		},
 		totalInterest:function(){
-			return this.loanAccount.current_amortization.interest + this.loanAccount.current_amortization.short_interest - this.loanAccount.current_amortization.advance_interest
+			return this.loanAccount.current_amortization.interest + this.loanAccount.current_amortization.short_interest;
 		},
 		totalDue:function(){
 			return this.totalPrincipal + this.totalInterest + this.pdi + this.loanAccount.current_amortization.penalty;
 		},
 		pdi:function(){
-			return this.waive.pdi? 0 : this.loanAccount.current_amortization.pdi;
+			return 0;
+			// return this.waive.pdi? 0 : this.loanAccount.current_amortization.pdi;
 		},
 		penalty:function(){
 			return this.waive.penalty? 0 : this.loanAccount.current_amortization.penalty;
@@ -790,7 +792,7 @@ export default {
 		totalWaive:function(){
 			var val = 0;
 			if(this.pdi == 0){
-				val += this.loanAccount.current_amortization.pdi;
+				// val += this.loanAccount.current_amortization.pdi;
 			}
 			if(this.penalty == 0){
 				val += this.loanAccount.current_amortization.penalty;

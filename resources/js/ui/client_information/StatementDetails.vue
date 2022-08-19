@@ -267,7 +267,7 @@
 						<div class="col-xl-2 col-lg-6">
 							<div class="info-display">
 								<span class="font-blue">Status</span>
-								<span>{{loanDetails.status}}</span>
+								<span>{{loanAccountStatus}}</span>
 							</div>
 						</div>
 						<div class="col-xl-2 col-lg-6">
@@ -460,7 +460,7 @@
 
 
 
-		<div class="modal" id="lettersModal" tabindex="-1" role="dialog">
+		<div class="modal" id="lettersModals" tabindex="-1" role="dialog">
 			<div class="modal-dialog modal-lg minw-70" role="document">
 				<div class="modal-content">
 					<div class="modal-body p-24">
@@ -559,7 +559,7 @@
 			</div>
 		</div>
 
-
+		<print-docs :ploanDetails="loanDetails" :token="token" statement="1"></print-docs>
 
 
 
@@ -625,7 +625,7 @@
 											</div>
 											<div class="d-flex mb-7">
 												<span class="mr-5">A/O: </span>
-												<span class="">025 - Janine C. Escallar</span>
+												<span class="">{{loanDetails.account_officer.name}}</span>
 											</div>
 											<div class=" d-flex mb-7">
 												<span class="mr-5">Due Date: </span>
@@ -876,7 +876,7 @@
 											<span class="bbt-8 py-7 text-center text-20 text-bold mb-16">OTHER CONDITIONS</span>
 											<section class="font-md mb-24" style="font-size:16px!important;line-height:1.3em!important">
 												<p style="line-height:1.8" class="mb-36">
-													In case of default, this note will be due and demandable without further demand, and an additional fee of (2%) per missed payment of the scheduled amortization as penalty, And in case this note be given to hands of an attorney an additional charged of (10%) of the total amount due will be charged as attorney's fee, further, the borrower is liable to litigation expenses, damages, etc. should the failure on the part of the borrower reach the courts. In cases that the borrower/s changes address/ transfer of residence without notice to MICRO ACCESS LOANS CORPORATION in writing, the address indicated in this note shall be the address for purposes of delivery of notices and other matters pertaining to the loan. Shall any issue/case that may arise as a result of this promissory note on any document in relation hereto, venue shall be at the civil courts of Butuan City, Agusan del Norte, to the exclusion of other court or at the option of MICRO ACCESS LOANS CORPORATION The Borrower/s hereby authorized the MICRO ACCESS LOANS CORPORATION to assign, sell or otherwise negotiate this note with any financial institution on its face value. Done this <b>{{nthDay(this.dateToD(new Date))}}</b> day of <b class="allcaps">{{this.dateToFullMonth(new Date)}}  {{this.dateToY(new Date)}}</b>.
+													In case of default, this note will be due and demandable without further demand, and an additional fee of (2%) per missed payment of the scheduled amortization as penalty, And in case this note be given to hands of an attorney an additional charged of (10%) of the total amount due will be charged as attorney's fee, further, the borrower is liable to litigation expenses, damages, etc. should the failure on the part of the borrower reach the courts. In cases that the borrower/s changes address/ transfer of residence without notice to MICRO ACCESS LOANS CORPORATION in writing, the address indicated in this note shall be the address for purposes of delivery of notices and other matters pertaining to the loan. Shall any issue/case that may arise as a result of this promissory note on any document in relation hereto, venue shall be at the civil courts of Butuan City, Agusan del Norte, to the exclusion of other court or at the option of MICRO ACCESS LOANS CORPORATION The Borrower/s hereby authorized the MICRO ACCESS LOANS CORPORATION to assign, sell or otherwise negotiate this note with any financial institution on its face value. Done this <b>{{nthDay(this.dateToD(new Date(loanDetails.date_release)))}}</b> day of <b class="allcaps">{{this.dateToFullMonth(new Date(loanDetails.date_release))}}  {{this.dateToY(new Date(loanDetails.date_release))}}</b>.
 												</p>
 
 												<div class="d-flex flex-row">
@@ -1474,35 +1474,35 @@
 															<span class="text-primary-dark text-bold">001-003-1458752</span>
 														</div>
 														<div class="d-flex mb-7">
-															<span class="mr-5"">A/O: </span>
-								<span class="">025 - Janine C. Escallar</span>
-							</div>
+															<span class="mr-5">A/O: </span>
+																<span class="">{{loanDetails.account_officer.name}}</span>
+														</div>
 							<div class=" d-flex mb-7">
-																<span class="mr-5"">Due Date: </span>
+																<span class="mr-5">Due Date: </span>
 								<span class="">08/08/22</span>
 							</div>
 							<div class=" d-flex mb-7">
-																	<span class="mr-5"">Loan Type: </span>
+																	<span class="mr-5">Loan Type: </span>
 								<span class="">Add-on</span>
 							</div>
 							<div class=" d-flex mb-7">
-																		<span class="mr-5"">Interest: </span>
+																		<span class="mr-5">Interest: </span>
 								<span class="">8,400.00</span>
 							</div>
 							<div class=" d-flex mb-7">
-																			<span class="mr-5"">Int. Rate: </span>
+																			<span class="mr-5">Int. Rate: </span>
 								<span class="">30% p.a. / 2.50% p.m.</span>
 							</div>
 							<div class=" d-flex mb-7">
-																				<span class="mr-5"">Mode: </span>
+																				<span class="mr-5">Mode: </span>
 								<span class="">Monthly</span>
 							</div>
 							<div class=" d-flex mb-7">
-																					<span class="mr-5"">Center: </span>
+																					<span class="mr-5">Center: </span>
 								<span class="">Various Pension</span>
 							</div>
 							<div class=" d-flex mb-7">
-																						<span class="mr-5"">ID #: </span>
+																						<span class="mr-5">ID #: </span>
 								<span class="">08-052415427-4</span>
 							</div>
 						</div>
@@ -1685,7 +1685,7 @@
 							</div>
 							<div class="d-flex mb-7">
 								<span class="mr-5">A/O: </span>
-								<span class="">025 - Janine C. Escallar</span>
+								<span class="">{{loanDetails.account_officer.name}}</span>
 							</div>
 							<div class=" d-flex mb-7">
 								<span class="mr-5">Due Date: </span>
@@ -2001,7 +2001,7 @@
 							</div>
 							<div class="d-flex mb-7">
 								<span class="mr-5">A/O: </span>
-								<!-- <span class="">{{loanDetails.account_officer.name}}</span> -->
+								<span class="">{{loanDetails.account_officer.name}}</span>
 								<span></span>
 							</div>
 							<div class="d-flex mb-7">
@@ -2180,9 +2180,40 @@ export default {
 					card_no:'',
 					promissory_number: '',
 				},
+					borrower:{
+					borrower_id: null,
+					borrower_num:'',
+					firstname:'',
+					lastname:'',
+					middlename:'',
+					suffix :'' ,
+					address :'' ,
+					birthdate :'',
+					gender :'' ,
+					status :'' ,
+					contact_number :'',
+					id_type :'',
+					id_no :'',
+					id_date_issued :'',
+					spouse_firstname:'',
+					spouse_lastname:'',
+					spouse_middlename:'',
+					spouse_address :'',
+					spouse_birthdate :'',
+					spouse_id_type :'',
+					spouse_id_no :'',
+					spouse_id_date_issued :'',
+					employmentInfo : [],
+					businessInfo : [],
+					householdMembers : [],
+					outstandingObligations : [],
+				},
 				current_amortization:{
 					interest:0,
-					principal:0
+					principal:0,
+					delinquent:{
+						ids:[]
+					}
 				},
 				product:{
 					product_name:'',
@@ -2190,6 +2221,9 @@ export default {
 				payments:[],
 				center:{
 					center:''
+				},
+				account_officer:{
+					name:''
 				}
 			},
 			vouchers:[],
@@ -2311,6 +2345,12 @@ export default {
 		}
 	},
 	computed:{
+		loanAccountStatus:function(){
+			if(this.loanDetails.current_amortization.delinquent.ids.length > 0){
+				return "Delinquent";
+			}
+			return "Current";
+		},
 		borrowerPhoto:function(){
 			return this.borrower.photo? this.borrower.photo : this.img;
 		},
