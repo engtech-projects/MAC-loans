@@ -57,8 +57,8 @@ class LoanAccountController extends BaseController
             );
 
 
-            if( $request->hasFile('files') ) {
-                $account->setDocs($account->borrower_id, $account->loan_account_id, $request->file('files'));
+            if( $request->hasFile('loanfiles') ) {
+                $account->setDocs($account->borrower_id, $account->loan_account_id, $request->file('loanfiles'));
             }
         }
 
@@ -67,6 +67,7 @@ class LoanAccountController extends BaseController
     }
 
     public function updateLoanAccount(Request $request, LoanAccount $account) {
+
         $account->fill($request->input());
         $account->save();
 		$document = Document::find($request->input('documents')['id']);
@@ -78,8 +79,8 @@ class LoanAccountController extends BaseController
 		$document->save();
 
       
-        if( $request->hasFile('files') ) {
-            $account->setDocs($account->borrower_id, $account->loan_account_id, $request->file('files'));
+        if( $request->hasFile('loanfiles') ) {
+            $account->setDocs($account->borrower_id, $account->loan_account_id, $request->file('loanfiles'));
         }
         
         return $this->sendResponse(new LoanAccountResource($account), 'Account Updated.');
