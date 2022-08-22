@@ -1131,6 +1131,9 @@ export default {
 				loan_amount:0,
 				documents:{
 					description:'',
+				},
+				current_amortization:{
+					principal_balance:0,
 				}
 			},
 			borrower:{

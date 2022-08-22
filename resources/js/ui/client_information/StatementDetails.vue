@@ -2211,6 +2211,7 @@ export default {
 				current_amortization:{
 					interest:0,
 					principal:0,
+					principal_balance:0,
 					delinquent:{
 						ids:[]
 					}
