@@ -11,6 +11,27 @@
 								<div @click="switchTab('reminder-letter-tab')" class="pxy-25 light-bb hover-light" data-tab="" :class="isActive('reminder-letter-tab',activeTab)">
 									<span class="text-20">Reminder Letter</span>
 								</div>
+								<div v-if="statement" @click="switchTab('first-letter-tab')" class="pxy-25 light-bb hover-light" data-tab="" :class="isActive('first-letter-tab',activeTab)">
+									<span class="text-20">First Letter</span>
+								</div>
+								<div v-if="statement" @click="switchTab('second-letter-tab')" class="pxy-25 light-bb hover-light" data-tab="" :class="isActive('second-letter-tab',activeTab)">
+									<span class="text-20">Second Letter</span>
+								</div>
+								<div v-if="statement" @click="switchTab('final-demand-tab')" class="pxy-25 light-bb hover-light" data-tab="" :class="isActive('final-demand-tab',activeTab)">
+									<span class="text-20">Final Demand</span>
+								</div>
+								<div v-if="statement" @click="switchTab('final-notice-tab')" class="pxy-25 light-bb hover-light" data-tab="" :class="isActive('final-notice-tab',activeTab)">
+									<span class="text-20">Final Notice</span>
+								</div>
+								<div v-if="statement" @click="switchTab('return-check-tab')" class="pxy-25 light-bb hover-light" data-tab="" :class="isActive('return-check-tab',activeTab)">
+									<span class="text-20">Return Check</span>
+								</div>
+								<div v-if="statement" @click="switchTab('bouncing-check-tab')" class="pxy-25 light-bb hover-light" data-tab="" :class="isActive('bouncing-check-tab',activeTab)">
+									<span class="text-20">Bouncing Check</span>
+								</div>
+								<div v-if="statement" @click="switchTab('attorneys-demand-tab')" class="pxy-25 light-bb hover-light" data-tab="" :class="isActive('attorneys-demand-tab',activeTab)">
+									<span class="text-20">Attorney's Demand</span>
+								</div>
 								<div @click="switchTab('dacion-en-pago-tab')" class="pxy-25 light-bb hover-light" :class="isActive('dacion-en-pago-tab',activeTab)" data-tab="dacion-en-pago-tab">
 									<span class="text-20">DACION EN PAGO</span>
 								</div>
@@ -20,10 +41,10 @@
 								<div @click="switchTab('moa-for-sme-tab')" class="pxy-25 light-bb hover-light" :class="isActive('moa-for-sme-tab',activeTab)" data-tab="">
 									<span class="text-20">MOA For SME</span>
 								</div>
-								<div @click="switchTab('sme-schedule-tab')" class="pxy-25 light-bb hover-light" :class="isActive('sme-schedule-tab',activeTab)" data-tab="">
+								<div v-if="!statement" @click="switchTab('sme-schedule-tab')" class="pxy-25 light-bb hover-light" :class="isActive('sme-schedule-tab',activeTab)" data-tab="">
 									<span class="text-20">SME Schedule</span>
 								</div>
-								<div @click="switchTab('promissory-note-tab')" class="pxy-25 hover-light" :class="isActive('promissory-note-tab',activeTab)" data-tab="promissory-note-tab">
+								<div v-if="!statement" @click="switchTab('promissory-note-tab')" class="pxy-25 hover-light" :class="isActive('promissory-note-tab',activeTab)" data-tab="promissory-note-tab">
 									<span class="text-20">Promissory Note</span>
 								</div>
 							</div>
@@ -31,6 +52,18 @@
 								<ul class="nav nav-tabs hide" id="custom-content-below-tab" role="tablist">
 									<li class="nav-item">
 										<a class="nav-link active" id="reminder-letter-tab" data-toggle="pill" href="#reminder-letter" role="tab" aria-controls="custom-content-below-home" aria-selected="true">Reminder Letter</a>
+									</li>
+									<li class="nav-item">
+										<a class="nav-link" id="first-letter-tab" data-toggle="pill" href="#first-letter" role="tab" aria-controls="custom-content-below-home" aria-selected="true">First Letter</a>
+									</li>
+									<li class="nav-item">
+										<a class="nav-link" id="second-letter-tab" data-toggle="pill" href="#second-letter" role="tab" aria-controls="custom-content-below-home" aria-selected="true">Second Letter</a>
+									</li>
+									<li class="nav-item">
+										<a class="nav-link" id="final-demand-tab" data-toggle="pill" href="#final-demand" role="tab" aria-controls="custom-content-below-home" aria-selected="true">Final Demand</a>
+									</li>
+									<li class="nav-item">
+										<a class="nav-link" id="final-notice-tab" data-toggle="pill" href="#final-notice" role="tab" aria-controls="custom-content-below-home" aria-selected="true">Final Demand</a>
 									</li>
 									<li class="nav-item">
 										<a class="nav-link" id="dacion-en-pago-tab" data-toggle="pill" href="#dacion-en-pago" role="tab" aria-controls="custom-content-below-home" aria-selected="true">DACION EN PAGO</a>
@@ -83,6 +116,349 @@
 											<div class="d-flex flex-row-reverse mb-45 no-print">
 												<button @click="printContent('reminder-letter')" class="btn btn-default min-w-150">Print</button>
 												<button data-dismiss="modal" id="excelBtn" class="btn btn-success min-w-150 mr-24">Download Excel</button>
+											</div>
+										</div>
+									</div>
+
+									<div  class="tab-pane fade" id="first-letter" role="tabpanel" aria-labelledby="custom-content-below-home-tab">
+										<img src="/img/company_header.png" style="width:100%" class="mb-16" alt="Company Header">
+										<div class="d-flex flex-column font-md" style="padding:0 35px;">
+
+											<ul class="metadata base-list font-md mb-64">
+												<li class="mb-16">{{dateToMDY(new Date)}}</li>
+												<li>{{borrower.firstname + ' ' + borrower.lastname}}</li>
+												<li>{{loanDetails.co_borrower_name}}</li>
+												<li>{{loanDetails.co_maker_name}}</li>
+												<li>{{borrower.address}}</li>
+											</ul>
+
+											<div class="d-flex flex-column title align-items-center mb-16">
+												<span class="text-lg text-bold">NOTICE OF PAYMENT DELINQUENCY</span>
+												<span class="text-lg">(FIRST NOTICE)</span>
+											</div>
+											<div class="salutation mb-24 d-flex flex-column">
+												<span class="mb-45">Dear Sir/Madam :</span>
+												<span>G r e e t i n g s!</span>
+											</div>
+											<div class="body mb-64">
+												<p>
+													As our valued client, building and preserving good relationship with you is what concerns us most. We want to provide quick access to loans and continuous credit line for your utmost convenience. For the continuation of your credit line and to further our relationship, we are closely monitoring your account.It has then come to our attention that your accunt is in delinquent status. The total delinquent amount has reached to Php 1,530.00. Please take note that one of our agreement stated in your Loan Promissory Note No. {{loanDetails.documents.promissory_number}} dated {{dateToMDY(new Date(loanDetails.documents.date_release))}} that in case of default/delinquent, this promissory note will be due and demandable.
+												</p>
+												<p>
+													We therefore, hope and expect that you will be able to settle your obligation the soonest posssible. Please give this matter your greatest attention to avoid embarassment.
+												</p>
+												<p>
+													Shoud you have any inquiries regarding your loan outstanding balance, we would really appreciate if you can visit our branches located near you or call us at (085)816-3284 Butuan Branch (085) 343-3574 Nasipit Branch.
+												</p>
+											</div>
+											<div class="truly-yours d-flex flex-column mb-64">
+												<span class="mb-36">Very truly yours,</span>
+												<span>JANINE L. DESCALLAR</span>
+												<span>Branch Manager</span>
+											</div>
+											<div class="d-flex flex-row-reverse mb-72">
+												<div class="d-flex flex-column">
+													<span class="pb-36 darker-bb mb-10">Received by:</span>
+													<span class="pr-24">(Signature over printed name)</span>
+												</div>
+											</div>
+											<div class="d-flex flex-row-reverse mb-72 no-print">
+												<a @click.prevent="printContent('first-letter')" href="#" class="btn btn-default min-w-150">Print</a>
+												<a href="#" class="btn btn-success min-w-150 mr-24">Download Excel</a>
+											</div>
+											<div class="d-flex mb-24">
+												<img src="/img/logo-footer.png" class="w-100" alt="">
+											</div>
+										</div>
+									</div>
+
+									<div  class="tab-pane fade" id="second-letter" role="tabpanel" aria-labelledby="custom-content-below-home-tab">
+										<img src="/img/company_header.png" style="width:100%" class="mb-16" alt="Company Header">
+										<div class="d-flex flex-column font-md" style="padding:0 35px;">
+
+											<ul class="metadata base-list font-md mb-64">
+												<li class="mb-16">{{dateToMDY(new Date)}}</li>
+												<li>{{borrower.firstname + ' ' + borrower.lastname}}</li>
+												<li>{{loanDetails.co_borrower_name}}</li>
+												<li>{{loanDetails.co_maker_name}}</li>
+												<li>{{borrower.address}}</li>
+											</ul>
+
+											<div class="d-flex flex-column title align-items-center mb-16">
+												<span class="text-lg text-bold">NOTICE OF PAYMENT DELINQUENCY</span>
+												<span class="text-lg">(SECOND NOTICE)</span>
+											</div>
+											<div class="salutation mb-24 d-flex flex-column">
+												<span class="mb-45">Dear Sir/Madam :</span>
+												<span>G r e e t i n g s!</span>
+											</div>
+											<div class="body mb-64">
+												<p>
+													As our valued client, building and preserving good relationship with you is what concerns us most. We want to provide quick access to loans and continuous credit line for your utmost convenience. For the continuation of your credit line and to further our relationship, we are closely monitoring your account.It has then come to our attention that your accunt is in delinquent status. The total delinquent amount has reached to Php 1,530.00. Please take note that one of our agreement stated in your Loan Promissory Note No. {{loanDetails.documents.promissory_number}} dated {{dateToMDY(new Date(loanDetails.documents.date_release))}} that in case of default/delinquent, this promissory note will be due and demandable.
+												</p>
+												<p>
+													We therefore, hope and expect that you will be able to settle your obligation the soonest posssible. Please give this matter your greatest attention to avoid embarassment.
+												</p>
+												<p>
+													Shoud you have any inquiries regarding your loan outstanding balance, we would really appreciate if you can visit our branches located near you or call us at (085)816-3284 Butuan Branch (085) 343-3574 Nasipit Branch.
+												</p>
+											</div>
+											<div class="truly-yours d-flex flex-column mb-64">
+												<span class="mb-36">Very truly yours,</span>
+												<span>JANINE L. DESCALLAR</span>
+												<span>Branch Manager</span>
+											</div>
+											<div class="d-flex flex-row-reverse mb-72">
+												<div class="d-flex flex-column">
+													<span class="pb-36 darker-bb mb-10">Received by:</span>
+													<span class="pr-24">(Signature over printed name)</span>
+												</div>
+											</div>
+											<div class="d-flex flex-row-reverse mb-72 no-print">
+												<a @click.prevent="printContent('second-letter')" href="#" class="btn btn-default min-w-150">Print</a>
+												<a href="#" class="btn btn-success min-w-150 mr-24">Download Excel</a>
+											</div>
+											<div class="d-flex mb-24">
+												<img src="/img/logo-footer.png" class="w-100" alt="">
+											</div>
+										</div>
+									</div>
+
+
+									<div  class="tab-pane fade" id="final-demand" role="tabpanel" aria-labelledby="custom-content-below-home-tab">
+										<img src="/img/company_header.png" style="width:100%" class="mb-16" alt="Company Header">
+										<div class="d-flex flex-column font-md" style="padding:0 35px;">
+
+											<ul class="metadata base-list font-md mb-64">
+												<li class="mb-16">{{dateToMDY(new Date)}}</li>
+												<li>{{borrower.firstname + ' ' + borrower.lastname}}</li>
+												<li>{{loanDetails.co_borrower_name}}</li>
+											</ul>
+
+											<div class="d-flex flex-column title align-items-center mb-16">
+												<span class="text-lg text-bold">FINAL DEMAND</span>
+											</div>
+											<div class="salutation mb-24 d-flex flex-column">
+												<span class="mb-45">Dear Sir/Madam :</span>
+												<span>G r e e t i n g s!</span>
+											</div>
+											<div class="body mb-64">
+												<p>
+													Despite notice reminding you to settle your obligation in due time, it is very unfortunate that the same fell in deaf ears. Several days have passed and we do not hear movements or arrangements up to this date suggesting that you are willing to settle your loan obligation with this office.
+												</p>
+												<p>
+													This office intends this letter as the last and final notice. We will initiate legal action as soon as possible should you fail to comply the possible terms of paying your loan obligation within Seven (7) days from receipt of this notice.
+												</p>
+
+												<p>Your outstanding loan obligation until of {{dateToMDY(new Date())}} is as follows:</p>
+
+												<div class="d-flex flex-column mb-24">
+													<div class="d-flex justify-content-between ps-75">
+														<div class="flex-1 text-bold">Principal</div>
+														<div class="flex-1 text-bold">PHP {{formatToCurrency(loanDetails.current_amortization.principal_balance)}}</div>
+													</div>
+													<div class="d-flex justify-content-between ps-75">
+														<div class="flex-1 text-bold">Current interest balance</div>
+														<div class="flex-1 text-bold">PHP {{formatToCurrency(loanDetails.current_amortization.interest_balance)}}</div>
+													</div>
+													<div class="d-flex justify-content-between ps-75">
+														<div class="flex-1 text-bold">Past due interest</div>
+														<div class="flex-1 text-bold"></div>
+													</div>
+													<div class="d-flex justify-content-between ps-75">
+														<div class="flex-1 text-bold">Penalties on past due loans</div>
+														<div class="flex-1 text-bold"></div>
+													</div>
+													<div class="d-flex justify-content-between ps-75">
+														<div class="flex-1 text-bold">On late amortization</div>
+														<div class="flex-1 text-bold"></div>
+													</div>
+													<div class="d-flex justify-content-between ps-75">
+														<div class="flex-1 text-bold">Total Amount Due</div>
+														<div class="flex-1 text-bold">PHP {{formatToCurrency(loanDetails.current_amortization.principal_balance + loanDetails.current_amortization.interest_balance)}}</div>
+													</div>
+												</div>
+
+												<p class="mb-16">Please give this letter your utmost concern to avoid complications in the future.
+													Trusting that you will see your way through. Thank you very much. 
+												</p>
+
+												<p>(Disregard this notice if payment/s has been made.)</p>
+												
+											</div>
+											<div class="truly-yours d-flex flex-column mb-64">
+												<span class="mb-36">Very truly yours,</span>
+												<span>Mark Anthony M. Chavez</span>
+												<span>President and CEO</span>
+											</div>
+											<div class="d-flex flex-row-reverse mb-72">
+												<div class="d-flex flex-column">
+													<span class="pb-36 darker-bb mb-10">.</span>
+													<span class="pr-24">(Date)</span>
+												</div>
+												<div class="d-flex flex-column mr-10">
+													<span class="pb-36 darker-bb mb-10">Received by:</span>
+													<span class="pr-24">(Signature over printed name)</span>
+												</div>
+											</div>
+											<div class="d-flex flex-row-reverse mb-72 no-print">
+												<a @click.prevent="printContent('final-demand')" href="#" class="btn btn-default min-w-150">Print</a>
+												<a href="#" class="btn btn-success min-w-150 mr-24">Download Excel</a>
+											</div>
+											<div class="d-flex mb-24">
+												<img src="/img/logo-footer.png" class="w-100" alt="">
+											</div>
+										</div>
+									</div>
+
+
+									<div  class="tab-pane fade" id="final-notice" role="tabpanel" aria-labelledby="custom-content-below-home-tab">
+										<img src="/img/company_header.png" style="width:100%" class="mb-16" alt="Company Header">
+										<div class="d-flex flex-column font-md" style="padding:0 35px;">
+
+											<ul class="metadata base-list font-md mb-64">
+												<li class="mb-16">{{dateToMDY(new Date)}}</li>
+												<li>{{borrower.firstname + ' ' + borrower.lastname}}</li>
+												<li>{{borrower.address}}</li>
+											</ul>
+
+											<div class="d-flex flex-column title align-items-center mb-16">
+												<span class="text-lg text-bold">FINAL NOTICE</span>
+											</div>
+											<div class="salutation mb-24 d-flex flex-column">
+												<span class="mb-45">Dear Sir/Madam :</span>
+											</div>
+											<div class="body mb-64">
+												<p>
+													My client,   MICRO ACCESS LOANS CORPORATION   has referred to me your
+     												long overdue account for legal action.
+												</p>
+												<p>
+													It appears from the records with particular reference to a Promissory
+													Note dated 01/13/21. Since then your  account has  been  place  under
+													past due status  incurring  pastdue  interest,  penalties  and  other
+													charges. As of today your total outstanding liabilities are indicated
+													Below to wit:
+												</p>
+
+												<div class="d-flex">
+													<div class="flex-1"></div>
+													<div class="d-flex flex-column mb-24 flex-3">
+														<div class="d-flex justify-content-between">
+															<div class="flex-1 text-bold d-flex">
+																<b class="flex-2">Principal</b>
+																<b class="flex-1">:</b>
+															</div>
+															<div class="flex-1 text-bold d-flex justify-content-between">
+																<b class="flex-1">P</b>
+																<b class="flex-1 text-right">{{formatToCurrency(loanDetails.current_amortization.principal_balance)}}</b>
+															</div>
+														</div>
+														<div class="d-flex justify-content-between">
+															<div class="flex-1 text-bold d-flex">
+																<b class="flex-2">Interest</b>
+																<b class="flex-1">:</b>
+															</div>
+															<div class="flex-1 text-bold d-flex justify-content-between">
+																<b class="flex-1"></b>
+																<b class="flex-1 text-right">{{formatToCurrency(loanDetails.current_amortization.interest_balance)}}</b>
+															</div>
+														</div>
+														<div class="d-flex justify-content-between">
+															<div class="flex-1 text-bold d-flex">
+																<b class="flex-2">Penalties</b>
+																<b class="flex-1">:</b>
+															</div>
+															<div class="flex-1 text-bold d-flex justify-content-between">
+																<b class="flex-1"></b>
+																<b class="flex-1 text-right">{{formatToCurrency(loanDetails.current_amortization.penalty)}}</b>
+															</div>
+														</div>
+														<div class="d-flex justify-content-between">
+															<div class="flex-1 text-bold d-flex">
+																<b class="flex-2">Attorney's Fee</b>
+																<b class="flex-1">:</b>
+															</div>
+															<div class="flex-1 text-bold d-flex justify-content-between">
+																<b class="flex-1"></b>
+																<b class="flex-1 text-right">{{formatToCurrency(500)}}</b>
+															</div>
+														</div>
+														<div class="d-flex justify-content-between">
+															<div class="flex-1 text-bold d-flex">
+																
+															</div>
+															<div class="flex-1 text-bold d-flex justify-content-between">
+																<b class="flex-1"></b>
+																<b class="flex-1 text-right">---------------------</b>
+															</div>
+														</div>
+														<div class="d-flex justify-content-between">
+															<div class="flex-1 text-bold d-flex">
+																<b class="flex-2">TOTAL</b>
+																<b class="flex-1">:</b>
+															</div>
+															<div class="flex-1 text-bold d-flex justify-content-between">
+																<b class="flex-1"></b>
+																<b class="flex-1 text-right">{{formatToCurrency(loanDetails.current_amortization.interest_balance + loanDetails.current_amortization.principal_balance + 500 + loanDetails.current_amortization.penalty)}}</b>
+															</div>
+														</div>
+													</div>
+													<div class="flex-1"></div>
+												</div>
+												<p class="mb-16">Consider this as our FINAL DEMAND, within FIVE (5) days from receipt.
+													Failure on your part to comply with my advice will constrain me, much
+													to my regret, to proceed to the  filling of appropriate  legal action
+													against  you  and  your co-makers  to  protect  the  interest  of  my
+													client.
+												</p>
+
+												<p>Visit  the undersigned  counsel or to my  client office to effect the payment.</p>
+												
+											</div>
+											<div class="truly-yours d-flex flex-column mb-64">
+												<span class="mb-36">Very truly yours,</span>
+												<span>ATTY. DENIS BACALA</span>
+												<span>Legal Counsel</span>
+											</div>
+											<div class="d-flex mb-45">
+												<span class="mr-5">COPY FURNISHED: </span>
+												<div class="d-flex flex-column">
+													<div class="flex-1 d-flex">
+														<span class="mr-5">Co-Maker1: </span>
+														<div><span class="text-block">{{loanDetails.co_maker_name}}</span><span>{{loanDetails.co_maker_address}}</span></div>
+													</div>
+													<div class="flex-1 d-flex">
+														<span class="mr-5">Co-Maker2: </span>
+														<div></div>
+													</div>
+												</div>
+											</div>
+											<p>
+												NOTE: Please disregard if you have paid your account.
+     											Ref. No.: 00--003--001 Loan Amount: P    {{formatToCurrency(loanDetails.loan_amount)}} Term:  {{loanDetails.terms / 30}} month(s).
+											</p>
+											<!-- <div class="d-flex">
+												<span></span>
+												<span>Co-Maker2:  </span>
+												<span>Cionevive C Lagahit</span>
+											</div> -->
+											<!-- <div class="d-flex flex-row-reverse mb-72">
+												<div class="d-flex flex-column">
+													<span class="pb-36 darker-bb mb-10">.</span>
+													<span class="pr-24">(Date)</span>
+												</div>
+												<div class="d-flex flex-column mr-10">
+													<span class="pb-36 darker-bb mb-10">Received by:</span>
+													<span class="pr-24">(Signature over printed name)</span>
+												</div>
+											</div> -->
+											<div class="d-flex flex-row-reverse mb-72 no-print">
+												<a @click.prevent="printContent('final-notice')" href="#" class="btn btn-default min-w-150">Print</a>
+												<a href="#" class="btn btn-success min-w-150 mr-24">Download Excel</a>
+											</div>
+											<div class="d-flex mb-24">
+												<img src="/img/logo-footer.png" class="w-100" alt="">
 											</div>
 										</div>
 									</div>
@@ -233,7 +609,8 @@
 
 												<div class="d-flex mb-45">
 													<div class="flex-1 d-flex flex-column align-items-center">
-														
+														<b class="text-block">{{loanDetails.co_borrower_name}}</b>
+														<span>Witness</span>
 													</div>
 													<div class="flex-1 d-flex flex-column align-items-center">
 														<b class="text-block">JOCETE ANGELIE J. GASCON</b>
@@ -745,15 +1122,18 @@
 
 <script>
 export default {
-	props:['ploanDetails', 'token'],
+	props:['ploanDetails', 'token', 'statement'],
 	data(){
 		return {
 			activeTab:'reminder-letter-tab',
-			baseUrl: window.location.origin,
+			baseUrl: this.baseURL(),
 			loanDetails:{
 				loan_amount:0,
 				documents:{
 					description:'',
+				},
+				current_amortization:{
+					principal_balance:0,
 				}
 			},
 			borrower:{
@@ -805,7 +1185,7 @@ export default {
 			return text;
 		},
 		amortSched:function(){
-			axios.post(window.location.origin + '/api/account/generate-amortization', this.loanDetails, {
+			axios.post(this.baseURL() + 'api/account/generate-amortization', this.loanDetails, {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
 					'Content-Type': 'application/json',
@@ -823,7 +1203,7 @@ export default {
 			}.bind(this));
 		},
 		fetchProducts: function(){
-			axios.get(window.location.origin + '/api/product', {
+			axios.get(this.baseURL() + 'api/product', {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
 					'Content-Type': 'application/json',
@@ -837,6 +1217,14 @@ export default {
 				console.log(error);
 			}.bind(this));
 		},
+		printContent:function(printcontent){
+			var content = document.getElementById(printcontent).innerHTML;
+			var target = document.querySelector('.to-print');
+			target.innerHTML = content;
+			window.print();
+		}
+	},
+	computed:{
 		productName:function(){
 			var result = '';
 			this.products.map(function(product){
@@ -846,14 +1234,6 @@ export default {
 			}.bind(this));
 			return result;
 		},
-		printContent:function(printcontent){
-			var content = document.getElementById(printcontent).innerHTML;
-			var target = document.querySelector('.to-print');
-			target.innerHTML = content;
-			window.print();
-		}
-	},
-	computed:{
 		amortAmountSingle:function(){
 			return ((parseInt(this.loanDetails.loan_amount) + parseInt(this.loanDetails.interest_amount)) / parseInt(this.numberOfInstallment)).toFixed(1);
 		},

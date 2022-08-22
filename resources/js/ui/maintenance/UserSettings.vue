@@ -10,7 +10,7 @@
 		</div>
 		<table class="table table-stripped" id="clientsList">
 			<thead>
-				<th>Account #</th>
+				<!-- <th>Account #</th> -->
 				<th>Full Name</th>
 				<th>Branch</th>
 				<th>User Name</th>
@@ -18,69 +18,12 @@
 				<th></th>
 			</thead>
 			<tbody>
-				<tr>
-					<td>183</td>
-					<td><a href="#">Jeremae Payot</a></td>
-					<td>Butuan City</td>
-					<td>johndoe</td>
+				<tr v-for="account in accounts" :key="account.id">
+					<td><a href="#">{{account.firstname + ' ' + account.lastname}}</a></td>
+					<td><span v-for="branch in account.branch" :key="branch.branch_id">{{branch.branch_name}}</span></td>
+					<td>{{account.username}}</td>
 					<td>**********************************</td>
-					<td><a href="#" class="text-green text-sm">Active</a></td>
-				</tr>
-				<tr>
-					<td>183</td>
-					<td><a href="#">Jeremae Payot</a></td>
-					<td>Butuan City</td>
-					<td>johndoe</td>
-					<td>**********************************</td>
-					<td><a href="#" class="text-green text-sm">Active</a></td>
-				</tr>
-				<tr>
-					<td>183</td>
-					<td><a href="#">Jeremae Payot</a></td>
-					<td>Butuan City</td>
-					<td>johndoe</td>
-					<td>**********************************</td>
-					<td><a href="#" class="text-green text-sm">Active</a></td>
-				</tr>
-				<tr>
-					<td>183</td>
-					<td><a href="#">Jeremae Payot</a></td>
-					<td>Butuan City</td>
-					<td>johndoe</td>
-					<td>**********************************</td>
-					<td><a href="#" class="text-green text-sm">Active</a></td>
-				</tr>
-				<tr>
-					<td>183</td>
-					<td><a href="#">Jeremae Payot</a></td>
-					<td>Butuan City</td>
-					<td>johndoe</td>
-					<td>**********************************</td>
-					<td><a href="#" class="text-green text-sm">Active</a></td>
-				</tr>
-				<tr>
-					<td>183</td>
-					<td><a href="#">Jeremae Payot</a></td>
-					<td>Butuan City</td>
-					<td>johndoe</td>
-					<td>**********************************</td>
-					<td><a href="#" class="text-green text-sm">Active</a></td>
-				</tr>
-				<tr>
-					<td>183</td>
-					<td><a href="#">Jeremae Payot</a></td>
-					<td>Butuan City</td>
-					<td>johndoe</td>
-					<td>**********************************</td>
-					<td><a href="#" class="text-green text-sm">Active</a></td>
-				</tr>
-				<tr>
-					<td>183</td>
-					<td><a href="#">Jeremae Payot</a></td>
-					<td>Butuan City</td>
-					<td>johndoe</td>
-					<td>**********************************</td>
-					<td><a href="#" class="text-green text-sm">Active</a></td>
+					<td><a href="#" @click.prevent="" class="text-green text-sm">Active</a></td>
 				</tr>
 			</tbody>
 		</table>
@@ -187,3 +130,36 @@
 		</section>
 	  </div>
 </template>
+
+<script>
+export default {
+	props:['token'],
+	data(){
+		return {
+			accounts:[],
+		}
+	},
+	methods:{
+		fetchAccounts: function(){
+			axios.get(this.baseURL() + 'api/user/', {
+				headers: {
+					'Authorization': 'Bearer ' + this.token,
+					'Content-Type': 'application/json',
+					'Accept': 'application/json'
+				}
+			})
+			.then(function (response) {
+				this.accounts = response.data.data;
+			}.bind(this))
+			.catch(function (error) {
+				console.log(error);
+			}.bind(this));
+		},
+	},
+	mounted(){
+		console.log('hello');
+		this.fetchAccounts();
+	}
+
+}
+</script>

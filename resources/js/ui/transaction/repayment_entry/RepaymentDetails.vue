@@ -1,5 +1,6 @@
 <template>
 	<div style="flex:20">
+		<notifications group="foo" />
 		<section class="mb-24" style="flex:21;padding-left:16px;">
 			<span class="section-title mb-24">Details</span>
 			<div class="d-flex mb-12">
@@ -25,7 +26,7 @@
 					</div>
 				</div>
 				<div class="upload-photo d-flex flex-column" style="flex:4;padding-top:36px;">
-					<img src="/img/user.png" alt="">
+					<img :src="borrowerPhoto" alt="" style="max-width:230px;">
 				</div>
 			</div>
 			<div class="sep mb-24"></div>
@@ -43,8 +44,8 @@
 					<tbody>
 						<tr @click="loanAccount=account;amortSched();" v-for="account in pborrower.loan_accounts" :key="account.loan_account_id" :class="isActive(account.loan_account_id)">
 							<td>{{account.account_num}}</td>
-							<td>08/22/21</td>
-							<td>P {{formatToCurrency(account.outstandingBalance.interest_balance + account.outstandingBalance.principal_balance)}}</td>
+							<td>{{dateToYMD(new Date(account.date_release))}}</td>
+							<td>P {{formatToCurrency(0 + account.current_amortization.outstandingBalance)}}</td>
 						</tr>
 					</tbody>
 				</table>
@@ -118,7 +119,7 @@
 							<span class="">Product Name</span>
 							<span>:</span>
 						</div>
-						<span class="flex-2 text-primary-dark">{{loanAccount.product_name}}</span>
+						<span class="flex-2 text-primary-dark">{{loanAccount.product.product_name}}</span>
 					</div>
 
 					<div class="d-flex flex-row mb-12">
@@ -126,7 +127,7 @@
 							<span class="">Missed Payments</span>
 							<span>:</span>
 						</div>
-						<span class="flex-2 text-primary-dark">2</span>
+						<span class="flex-2 text-primary-dark">0</span>
 					</div>
 
 					<div class="d-flex flex-row mb-12">
@@ -142,7 +143,7 @@
 							<span class="">Cycle</span>
 							<span>:</span>
 						</div>
-						<span class="flex-2 text-primary-dark">2</span>
+						<span class="flex-2 text-primary-dark">{{loanAccount.cycle_no}}</span>
 					</div>
 				</div>
 				<div class="d-flex flex-column flex-1">
@@ -151,7 +152,7 @@
 							<span class="">Last Transaction</span>
 							<span>:</span>
 						</div>
-						<span class="flex-2 text-primary-dark">11/12/2021</span>
+						<span class="flex-2 text-primary-dark">{{lastTransactionDate}}</span>
 					</div>
 					<div class="d-flex flex-row mb-12">
 						<div class="d-flex flex-row flex-1 justify-content-between pr-24">
@@ -179,14 +180,14 @@
 							<span class="">Monthly</span>
 							<span>:</span>
 						</div>
-						<span class="flex-2 text-primary-dark">20,000.00</span>
+						<span class="flex-2 text-primary-dark">{{formatToCurrency(loanAccount.current_amortization.interest + loanAccount.current_amortization.principal)}}</span>
 					</div>
 					<div class="d-flex flex-row mb-12">
 						<div class="d-flex flex-row flex-1 justify-content-between pr-24">
 							<span class="">Int. Rate</span>
 							<span>:</span>
 						</div>
-						<span class="flex-2 text-primary-dark">500.00</span>
+						<span class="flex-2 text-primary-dark">{{loanAccount.interest_rate}}%</span>
 					</div>
 					<div class="d-flex flex-row mb-12">
 						<div class="d-flex flex-row flex-1 justify-content-between pr-24">
@@ -214,7 +215,9 @@
 							<span class="">Status</span>
 							<span>:</span>
 						</div>
-						<span class="flex-2 text-primary-dark">Delinquent</span>
+						<span v-if="loanAccount.current_amortization.delinquent.length > 0" class="flex-2 text-danger">Delinquent</span>
+                        <span v-if="loanAccount.current_amortization.delinquent.length == 0" class="flex-2 text-ocean">Current</span>
+						
 					</div>
 				</div>
 			</div>
@@ -328,7 +331,7 @@
 										<input type="checkbox" class="form-check-input" style="margin:0">
 										<span class="ml-18 text-primary-dark text-24 lh-1">Rebates</span>
 									</div>
-									<input :disabled="disabled(waive.rebates)" v-model="payment.rebates" type="text" class="form-control" placeholder="Amount">
+									<input @focusout="distribute()" :disabled="disabled(waive.rebates)" v-model="payment.rebates" type="text" class="form-control" placeholder="Amount">
 								</div>
 								<div class="flex-1 d-flex flex-row-reverse align-items-end"><input type="submit" class="btn btn-bright-blue min-w-150 mb-5" value="Pay"></div>
 							</div>
@@ -365,28 +368,28 @@
 														<span class="">Short Principal</span>
 														<span>:</span>
 													</div>
-													<span class="flex-1">P {{formatToCurrency(loanAccount.current_amortization.lastPayment.short_principal)}}</span>
+													<span class="flex-1">P {{loanAccount.current_amortization.lastPayment? formatToCurrency(loanAccount.current_amortization.lastPayment.short_principal): 0.00}}</span>
 												</div>
 												<div class="d-flex flex-row mb-10">
 													<div class="d-flex flex-row justify-content-between flex-1 mr-16">
 														<span class="">Adv. Principal</span>
 														<span>:</span>
 													</div>
-													<span class="flex-1">P {{formatToCurrency(loanAccount.current_amortization.lastPayment.advance_principal)}}</span>
+													<span class="flex-1">P {{loanAccount.current_amortization.lastPayment? formatToCurrency(loanAccount.current_amortization.lastPayment.advance_principal): 0.00}}</span>
 												</div>
 												<div class="d-flex flex-row">
 													<div class="d-flex flex-row justify-content-between flex-1 mr-16">
 														<span class="">Short Interest</span>
 														<span>:</span>
 													</div>
-													<span class="flex-1">P {{formatToCurrency(loanAccount.current_amortization.lastPayment.short_interest)}}</span>
+													<span class="flex-1">P {{loanAccount.current_amortization.lastPayment? formatToCurrency(loanAccount.current_amortization.lastPayment.short_interest):0.00}}</span>
 												</div>
 												<div class="d-flex flex-row">
 													<div class="d-flex flex-row justify-content-between flex-1 mr-16">
 														<span class="">Adv. Interest</span>
 														<span>:</span>
 													</div>
-													<span class="flex-1">P {{formatToCurrency(loanAccount.current_amortization.lastPayment.advance_interest)}}</span>
+													<span class="flex-1">P {{loanAccount.current_amortization.lastPayment? formatToCurrency(loanAccount.current_amortization.lastPayment.advance_interest):0.00}}</span>
 												</div>
 											</div>
 											
@@ -407,21 +410,21 @@
 													<span>Interest</span>
 													<span>:</span>
 												</div>
-												<span class="flex-1">P {{formatToCurrency(totalInterest)}}</span>
+												<span class="flex-1">P {{formatToCurrency(totalInterest - payment.rebates)}}</span>
 											</div>
 											<div class="d-flex flex-row mb-7">
 												<div class="d-flex flex-row justify-content-between flex-1 mr-16">
 													<span>Penalty</span>
 													<span>:</span>
 												</div>
-												<span class="flex-1">P {{formatToCurrency(loanAccount.current_amortization.penalty)}}</span>
+												<span class="flex-1">P {{formatToCurrency(penalty)}}</span>
 											</div>
 											<div class="d-flex flex-row mb-7">
 												<div class="d-flex flex-row justify-content-between flex-1 mr-16">
 													<span>PDI</span>
 													<span>:</span>
 												</div>
-												<span class="flex-1">P {{formatToCurrency(loanAccount.current_amortization.pdi)}}</span>
+												<span class="flex-1">P {{formatToCurrency(pdi)}}</span>
 											</div>
 											<!-- <div class="d-flex flex-row">
 												<div class="d-flex flex-row justify-content-between flex-1 mr-16">
@@ -495,14 +498,15 @@
 														<span class="pl-16">PDI</span>
 														<span>:</span>
 													</div>
-													<span class="flex-1">P {{formatToCurrency(pdi)}}</span>
+													<span class="flex-1">P {{formatToCurrency(0)}}</span>
+													<!-- <span class="flex-1">P {{formatToCurrency(pdi==0?loanAccount.current_amortization.pdi:0)}}</span> -->
 												</div>
 												<div class="d-flex flex-row">
 													<div class="d-flex flex-row justify-content-between flex-1 mr-16">
 														<span class="pl-16">Penalty</span>
 														<span>:</span>
 													</div>
-													<span class="flex-1">P {{formatToCurrency(penalty)}}</span>
+													<span class="flex-1">P {{formatToCurrency(penalty==0?loanAccount.current_amortization.penalty:0)}}</span>
 												</div>
 												
 											</div>
@@ -521,31 +525,32 @@
 												<span>Principal Balance</span>
 												<span>:</span>
 											</div>
-											<span class="flex-1">P {{formatToCurrency(loanAccount.outstandingBalance.principal_balance)}}</span>
+											<span class="flex-1">P {{formatToCurrency(loanAccount.current_amortization.principal_balance)}}</span>
 										</div>
 										<div class="d-flex flex-row mb-5">
 											<div class="d-flex flex-row justify-content-between flex-1 mr-16">
 												<span>Interest Balance</span>
 												<span>:</span>
 											</div>
-											<span class="flex-1">P {{formatToCurrency(loanAccount.outstandingBalance.interest_balance)}}</span>
+											<span class="flex-1">P {{formatToCurrency(loanAccount.current_amortization.interest_balance)}}</span>
 										</div>
 										<div class="d-flex flex-row bb-dashed-2 mb-10">
 											<div class="d-flex flex-row justify-content-between flex-1 mr-16 mb-16">
 												<span>Surcharge</span>
 												<span>:</span>
 											</div>
-											<span class="flex-1">P {{formatToCurrency(loanAccount.outstandingBalance.surcharge)}}</span>
+											<span class="flex-1">P {{formatToCurrency(0)}}</span>
 										</div>
 										<div class="d-flex flex-row mb-5 text-bold">
 											<div class="d-flex flex-row justify-content-between flex-1 mr-16">
 												<span>TOTAL</span>
 												<span>:</span>
 											</div>
-											<span class="flex-1">P {{formatToCurrency(loanAccount.outstandingBalance.interest_balance + loanAccount.outstandingBalance.principal_balance)}}</span>
+											<span class="flex-1">P {{formatToCurrency(loanAccount.current_amortization.interest_balance + loanAccount.current_amortization.principal_balance)}}</span>
 										</div>
 									</div>
 									<div class="flex-2"></div>
+									<button class="btn btn-danger hide" id="paymentCancelBtn" data-dismiss="modal">Cancel</button>
 								</div>
 							</section>
 						</section>
@@ -564,6 +569,7 @@ export default {
 		return {
 			paymentType:'cash',
 			loanAccount:{
+				loan_account_id:null,
 				cycle_no : 1,
 				ao_id : '',
 				product_id : '',
@@ -617,6 +623,11 @@ export default {
 					advance_interest:'',
 					short_principal:'',
 					advance_principal:'',
+					outstandingBalance:{
+						principal_balance:'',
+						interest_balance:'',
+						surcharge:'',
+					},
 					lastPayment:{
 						principal:'',
 						interest:'',
@@ -663,6 +674,14 @@ export default {
 		}
 	},
 	methods:{
+		notify:function(title, text, type){
+			this.$notify({
+				group: 'foo',
+				title: title,
+				text: text,
+				type: type,
+			});
+		},
 		isActive:function(id){
 			if(id == this.loanAccount.loan_account_id){
 				return 'active'
@@ -670,7 +689,7 @@ export default {
 			return '';
 		},
 		amortSched:function(){
-			axios.post(window.location.origin + '/api/account/generate-amortization', this.loanAccount, {
+			axios.post(this.baseURL() + 'api/account/generate-amortization', this.loanAccount, {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
 					'Content-Type': 'application/json',
@@ -685,7 +704,7 @@ export default {
 			}.bind(this));
 		},
 		distribute:function(){
-			var amount = parseFloat(this.payment.amount_applied) + parseFloat(this.loanAccount.current_amortization.lastPayment.advance_principal);
+			var amount = this.loanAccount.current_amortization.lastPayment?parseFloat(this.payment.amount_applied) + parseFloat(this.loanAccount.current_amortization.lastPayment.advance_principal):parseFloat(this.payment.amount_applied);
 			this.payment.pdi = 0;
 			this.payment.principal = 0;
 			this.payment.interest = 0;
@@ -695,25 +714,31 @@ export default {
 			this.payment.advance_interest = 0;
 			this.payment.advance_principal = 0;
 			if(amount >= this.loanAccount.current_amortization.penalty){
-				amount -= this.loanAccount.current_amortization.penalty;
-				this.payment.penalty = this.loanAccount.current_amortization.penalty;
+				if(!this.waive.penalty){
+					amount -= this.loanAccount.current_amortization.penalty;
+					this.payment.penalty = this.loanAccount.current_amortization.penalty;
+				}		
 				if(amount >= this.pdi){
-					amount -= this.pdi;
-					this.payment.pdi = this.pdi;
+					if(!this.waive.pdi){
+						amount -= this.pdi;
+						this.payment.pdi = this.pdi;
+					}	
 					if(amount >= this.totalInterest){
-						amount -= this.totalInterest;
 						this.payment.interest = this.totalInterest;
+						this.payment.interest = this.payment.interest - this.payment.rebates < 0? 0 : this.payment.interest - this.payment.rebates;
+						amount -= this.payment.interest;
 						if(amount >= this.totalPrincipal){
-							amount -= this.totalInterest;
-							this.payment.principal = this.totalPrincipal;
+							this.payment.principal = amount;
 							this.payment.advance_principal = amount - this.totalPrincipal;
 						}else{
 							this.payment.principal = amount;
-							this.payment.short_principal = this.totalPrincipal - amount
+							this.payment.short_principal = this.totalPrincipal - amount;
 						}
 					}else{
 						this.payment.interest = amount;
-						this.payment.short_interest = this.totalInterest - amount
+						this.payment.short_interest = this.totalInterest - amount;
+						this.payment.short_principal = this.totalPrincipal;
+						this.payment.interest = this.payment.interest - this.payment.rebates < 0? 0 : this.payment.interest - this.payment.rebates;
 					}
 				}else{
 					this.payment.pdi = amount;
@@ -724,8 +749,7 @@ export default {
 		},
 		pay:function(){
 			this.payment.loan_account_id = this.loanAccount.loan_account_id;
-			alert('paying...');
-			axios.post(window.location.origin + '/api/payment', this.payment, {
+			axios.post(this.baseURL() + 'api/payment', this.payment, {
 				headers: {
 						'Authorization': 'Bearer ' + this.token,
 						'Content-Type': 'application/json',
@@ -733,7 +757,9 @@ export default {
 				}
 			})
 			.then(function (response) {
-				console.log(response.data);
+				var btn = document.getElementById('paymentCancelBtn');
+				btn.click();
+				this.notify('','Payment successful.', 'success');
 			}.bind(this))
 			.catch(function (error) {
 				console.log(error);
@@ -745,31 +771,61 @@ export default {
 	},
 	computed:{
 		totalPrincipal:function(){
-			return this.loanAccount.current_amortization.principal + this.loanAccount.current_amortization.lastPayment.short_principal - this.loanAccount.current_amortization.lastPayment.advance_principal
+			if(this.loanAccount.current_amortization.lastPayment){
+				return this.loanAccount.current_amortization.principal + this.loanAccount.current_amortization.lastPayment.short_principal - this.loanAccount.current_amortization.lastPayment.advance_principal
+			}
+			return this.loanAccount.current_amortization.principal;
 		},
 		totalInterest:function(){
-			return this.loanAccount.current_amortization.interest + this.loanAccount.current_amortization.short_interest - this.loanAccount.current_amortization.advance_interest
+			return this.loanAccount.current_amortization.interest + this.loanAccount.current_amortization.short_interest;
 		},
 		totalDue:function(){
 			return this.totalPrincipal + this.totalInterest + this.pdi + this.loanAccount.current_amortization.penalty;
 		},
 		pdi:function(){
-			return this.waive.pdi? 0 : this.loanAccount.current_amortization.pdi;
+			return 0;
+			// return this.waive.pdi? 0 : this.loanAccount.current_amortization.pdi;
 		},
 		penalty:function(){
 			return this.waive.penalty? 0 : this.loanAccount.current_amortization.penalty;
 		},
 		totalWaive:function(){
-			return this.pdi + this.penalty;
+			var val = 0;
+			if(this.pdi == 0){
+				// val += this.loanAccount.current_amortization.pdi;
+			}
+			if(this.penalty == 0){
+				val += this.loanAccount.current_amortization.penalty;
+			}
+			return val;
 		},
 		totalScheduledPayment:function(){
-			return this.loanAccount.current_amortization.interest + this.loanAccount.current_amortization.principal + this.loanAccount.current_amortization.lastPayment.short_principal + this.loanAccount.current_amortization.lastPayment.short_interest;
+			if(this.loanAccount.current_amortization.lastPayment){
+				return this.loanAccount.current_amortization.interest + this.loanAccount.current_amortization.principal + this.loanAccount.current_amortization.lastPayment.short_principal + this.loanAccount.current_amortization.lastPayment.short_interest;
+			}
+			return this.loanAccount.current_amortization.interest + this.loanAccount.current_amortization.principal;
+		},
+		borrowerPhoto:function(){
+			return this.pborrower.photo? this.pborrower.photo : '/img/user.png';
+		},
+		lastTransactionDate:function(){
+			return this.loanAccount.current_amortization.lastPayment? this.dateToMDY2(new Date()) : 'None';
 		}
 	},
 	watch:{
 		'payment.amount_applied':function(newValue){
 			this.distribute();
-		}
+		},
+		'loanAccount.loan_account_id':function(newValue){
+			this.payment.total_payable = this.loanAccount.current_amortization.interest + this.loanAccount.current_amortization.principal;
+			this.payment.amortization_id = this.loanAccount.current_amortization.id;
+		},
+		'waive.pdi':function(newValue){
+			this.distribute();
+		},
+		'waive.penalty':function(newValue){
+			this.distribute();
+		},
 	},
 	mounted(){
 

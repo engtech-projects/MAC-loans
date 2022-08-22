@@ -410,7 +410,7 @@
 				  </div>
 				  <div class="d-flex flex-row">
 					  <div style="flex:2"></div>
-					  <a :href="'/transaction/rejected_release/edit/' + loanAccount.loan_account_id" class="btn btn-lg btn-primary-dark mr-24" style="flex:3">Yes</a>
+					  <a :href="this.baseURL() + 'transaction/rejected_release/edit/' + loanAccount.loan_account_id" class="btn btn-lg btn-primary-dark mr-24" style="flex:3">Yes</a>
 					  <button data-dismiss="modal" class="btn btn-lg btn-bright-blue" style="flex:3">No</button>
 					  <div style="flex:2"></div>
 				  </div>
@@ -482,7 +482,7 @@ export default {
 	},
 	methods: {
 		fetchRejectedAccounts:function(){
-			axios.get(window.location.origin + '/api/account/rejected/', {
+			axios.get(this.baseURL() + 'api/account/rejected/', {
 			headers: {
 				'Authorization': 'Bearer ' + this.token,
 					'Content-Type': 'application/json',

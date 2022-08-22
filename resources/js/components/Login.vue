@@ -61,10 +61,9 @@ export default {
 	},
 	methods: {
 		login:function(){
-			axios.post(window.location.origin + '/api/login', this.data.credentials)
+			axios.post(this.baseURL() + 'api/login', this.data.credentials)
 			.then(function (response) {
 				this.data.token = response.data.data.token;
-				window.location.replace(window.location.origin + '/dashboard');
 				this.makeAuth();
 			}.bind(this))
 			.catch(function (error) {
@@ -72,7 +71,7 @@ export default {
 			}.bind(this));
 		},
 		fetchBranches:function(){
-			axios.get('/branch')
+			axios.get(this.baseURL() + 'branch')
 			.then(function (response) {
 				this.branches = response.data;
 			}.bind(this))
@@ -81,9 +80,9 @@ export default {
 			}.bind(this));
 		}, 
 		makeAuth:function(){
-			axios.post(window.location.origin + '/login', this.data)
+			axios.post(this.baseURL() + 'login', this.data)
 			.then(function (response) {
-				window.location.replace(window.location.origin + '/maintenance/product_setup');
+				window.location.replace(this.baseURL() + 'maintenance/product_setup');
 			}.bind(this))
 			.catch(function (error) {
 				console.log(error);
@@ -92,6 +91,7 @@ export default {
 	},
 	mounted(){
 		this.fetchBranches();
+		console.log(this.baseURL());
 	}
 }
 </script>

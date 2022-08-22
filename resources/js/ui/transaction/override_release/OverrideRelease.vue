@@ -163,7 +163,7 @@ export default {
 			});
 		},
 		fetchAccounts:function(){
-			axios.post(window.location.origin + '/api/account/overrrideaccounts', this.filter, {
+			axios.post(this.baseURL() + 'api/account/overrrideaccounts', this.filter, {
 			headers: {
 				'Authorization': 'Bearer ' + this.token,
 				'Content-Type': 'application/json',
@@ -179,7 +179,7 @@ export default {
 			}.bind(this));
 		}, 
 		todaysRelease:function(){
-			axios.get(window.location.origin + '/transaction/todaysrelease')
+			axios.get(this.baseURL() + 'transaction/todaysrelease')
 			.then(function (response) {
 				this.todaysReleases = response.data;
 			}.bind(this))
@@ -203,7 +203,7 @@ export default {
 			return '' + y + '-' + (m<=9 ? '0' + m : m) + '-' + (d <= 9 ? '0' + d : d);
 		},
 		override:function(){
-			axios.get(window.location.origin + '/api/account/overrrideaccounts', {
+			axios.get(this.baseURL() + 'api/account/overrrideaccounts', {
 			headers: {
 				'Authorization': 'Bearer ' + this.token,
 					'Content-Type': 'application/json',
@@ -223,10 +223,14 @@ export default {
 			var accounts = [];
 			this.loanAccounts.map(function(account){
 				if(account.checked){
+					var dt = new Date();
+					dt.setDate(dt.getDate() + account.terms);
+					account.date_release = this.dateToYMD(new Date);
+					account.due_date = this.dateToYMD(dt);
 					accounts.push(account);
 				}
-			});
-			axios.post(window.location.origin + '/api/account/override', accounts, {
+			}.bind(this));
+			axios.post(this.baseURL() + 'api/account/override', accounts, {
 			headers: {
 				'Authorization': 'Bearer ' + this.token,
 					'Content-Type': 'application/json',
@@ -305,7 +309,7 @@ export default {
 		},
 		reject:function(){
 			this.loanAccount.status = 'rejected';
-			axios.put(window.location.origin + '/api/account/update/' + this.loanAccount.loan_account_id, this.loanAccount, {
+			axios.put(this.baseURL() + 'api/account/update/' + this.loanAccount.loan_account_id, this.loanAccount, {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
 					'Content-Type': 'application/json',
@@ -333,6 +337,14 @@ export default {
 				}
 			}.bind(this));
 			return amount;
+		},
+		dueDate:function(){
+			if(this.loanAccount.loan_account_id){
+				var dt = new Date(this.loanAccount.date_release);
+				dt.setDate(dt.getDate() + this.loanAccount.terms);
+				return dt;
+			}
+			return new Date
 		},
 		unselected:function(){
 			var amount = 0;

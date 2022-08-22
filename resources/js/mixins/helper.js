@@ -143,11 +143,18 @@ Vue.mixin({
 		fullName:function(f,m,l){
 			return m? f+' '+m.charAt(0)+'. '+l:f+' ' +l;
 		},
+		fullNameReverse:function(f,m,l){
+			return m? l+', '+f+' '+m.charAt(0) + '.':f+' ' +l;
+		},
 		isActive:function(a,b){
 			return a==b?'active':'';
 		},
 		replaceAll:function(str, find, replace) {
 			return str.replace(new RegExp(escapeRegExp(find), 'g'), replace);
+		},
+		baseURL:function(){
+			var href = document.getElementById('baseUrl').href;
+			return href.slice(-1)=='/'?href:href+'/';
 		}
 	}
 })

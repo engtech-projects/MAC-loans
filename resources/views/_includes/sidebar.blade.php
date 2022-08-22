@@ -1,7 +1,7 @@
 <!-- Main Sidebar Container -->
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
 <!-- Brand Logo -->
-<a href="#" class="brand-link center-text">     
+<a href="{{asset('')}}" id="baseUrl" class="brand-link center-text">     
   <span class="logo">Micro Access Loan Corporation</span>
 </a>
 
@@ -278,6 +278,9 @@
 				
 			</li>
 		</ul>
+		<div class="d-flex flex-column align-items-center justify-content-center mt-120">
+			<img src="/img/logo-side.png" alt="">
+		</div>
 	</nav>
 	<!-- /.sidebar-menu -->
 </div>

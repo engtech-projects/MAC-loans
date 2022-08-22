@@ -99,7 +99,7 @@
 							<span class="flex-3 text-primary-dark">P 0.00</span>
 						</div>
 					</div>
-					<div class="d-flex flex-column mb-24">
+					<!-- <div class="d-flex flex-column mb-24">
 						<div class="d-flex flex-column mb-5">
 							<span class="text-primary-dark font-20 bb-primary-dark">PRINCIPAL</span>
 							<span class="text-right font-md">P {{formatToCurrency(totalPrincipal)}}</span>
@@ -124,7 +124,7 @@
 							<span class="text-primary-dark font-20 bb-primary-dark">INSURANCE</span>
 							<span class="text-right font-md">P 0.00</span>
 						</div>
-					</div>
+					</div> -->
 					<div class="d-flex flex-column button-text">
 						<span>TOTAL PAYMENT FOR TODAY</span>
 						<div class="d-flex flex-row">
@@ -160,7 +160,7 @@ export default {
 	},
 	methods:{
 		fetchPayments:function(){
-			axios.post(window.location.origin + '/api/payment/list',this.filter,{
+			axios.post(this.baseURL() + 'api/payment/list',this.filter,{
 			headers: {
 				'Authorization': 'Bearer ' + this.token,
 				'Content-Type': 'application/json',
@@ -169,13 +169,14 @@ export default {
 			})
 			.then(function (response) {
 				this.payments = this.setCheckbox(response.data.data);
+				console.log(response.data);
 			}.bind(this))
 			.catch(function (error) {
 				console.log(error);
 			}.bind(this));
 		},
 		overridePaymentDates:function(){
-			axios.get(window.location.origin + '/transaction/overridepaymentdates')
+			axios.get(this.baseURL() + 'transaction/overridepaymentdates')
 			.then(function (response) {
 				this.dates = response.data;
 			}.bind(this))

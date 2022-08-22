@@ -159,7 +159,7 @@
 					<div class="form-group">
 						<label for="dueDate" class="form-label">Release Type</label>
 						<select required v-model="loanDetails.release_type" name="" id="" class="form-control form-input pr-12 text-right mr-16 text-green">
-							<option v-for="(r,p) in releaseType" :key="p" value="r">{{r}}</option>
+							<option v-for="(r,p) in releaseType" :key="p" :value="r">{{r}}</option>
 							<!-- <option value="Cheque Release">Cheque Release</option>
 							<option value="Restructure Release">Restructure Release</option> -->
 						</select>
@@ -203,11 +203,7 @@
 				<span class="text-bold bg-yellow-light mb-10" style="padding:2px 5px;">DOA ATM / PASSBOOK</span>
 				<div class="form-group mb-10">
 					<label for="">Name of Bank</label>
-					<select v-model="loanDetails.documents.bank" name="" id="" class="form-control form-input">
-						<option value="Land Bank">Land Bank</option>
-						<option value="BDO">BDO</option>
-						<option value="BPI">BPI</option>
-					</select>
+					<input type="text" v-model="loanDetails.documents.bank" name="" id="" class="form-control form-input">
 				</div>
 				<div class="form-group mb-10">
 					<label for="">Account No.</label>
@@ -302,7 +298,7 @@ export default {
 	},
 	methods:{
 		fetchProducts: function(){
-			axios.get(window.location.origin + '/api/product', {
+			axios.get(this.baseURL() + 'api/product', {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
 					'Content-Type': 'application/json',
@@ -317,7 +313,7 @@ export default {
 			}.bind(this));
 		},
 		fetchAo: function(){
-			axios.get(window.location.origin + '/api/accountofficer', {
+			axios.get(this.baseURL() + 'api/accountofficer', {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
 					'Content-Type': 'application/json',
@@ -332,7 +328,7 @@ export default {
 			}.bind(this));
 		},
 		fetchCenters: function(){
-			axios.get(window.location.origin + '/api/center/', {
+			axios.get(this.baseURL() + 'api/center/', {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
 					'Content-Type': 'application/json',
@@ -347,7 +343,7 @@ export default {
 			}.bind(this));
 		},
 		fetchPromissoryNo: function(){
-			axios.post(window.location.origin + '/api/account/promissoryno',{'product_id':this.loanDetails.product_id}, {
+			axios.post(this.baseURL() + 'api/account/promissoryno',{'product_id':this.loanDetails.product_id}, {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
 					'Content-Type': 'application/json',
@@ -371,7 +367,7 @@ export default {
 			this.setPrepaidInterest();
 			this.loanDetails.status = 'pending';
 			if(this.loanDetails.loan_account_id){
-					axios.put(window.location.origin + '/api/account/update/' + this.loanDetails.loan_account_id, this.loanDetails, {
+					axios.put(this.baseURL() + 'api/account/update/' + this.loanDetails.loan_account_id, this.loanDetails, {
 						headers: {
 							'Authorization': 'Bearer ' + this.token,
 							'Content-Type': 'application/json',
@@ -386,7 +382,7 @@ export default {
 						console.log(error);
 					}.bind(this));
 			}else {
-				axios.post(window.location.origin + '/api/account/create/' + this.loanDetails.borrower_id, this.loanDetails, {
+				axios.post(this.baseURL() + 'api/account/create/' + this.loanDetails.borrower_id, this.loanDetails, {
 					headers: {
 						'Authorization': 'Bearer ' + this.token,
 						'Content-Type': 'application/json',

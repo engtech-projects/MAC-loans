@@ -470,196 +470,196 @@
 			</div>
 		</div>
 		<div class="modal" id="cashVoucherModal" tabindex="-1" role="dialog">
-		<div class="modal-dialog modal-lg minw-70" role="document">
-		  <div class="modal-content">
-			<div class="modal-body font-md" id="voucherPrintContent">
-			  	<img src="/img/company_header.png" style="width:100%" class="mb-24" alt="Company Header">
-				<div class="d-flex flex-column" style="padding:0 50px;">
-					<div class="d-flex flex-row align-items-center mb-24 darker-bb pb-10">
-						<div class="flex-1">
-							<span class="text-primary-dark font-26">Butuan Branch (001)</span>
-						</div>
-						<div class="d-flex flex-column">
-							<span class="font-26 text-bold text-primary-dark lh-1">CASH VOUCHER</span>
-						</div>
-						<div class="flex-1 d-flex justify-content-end pr-10">
-							<span class=" mr-10">{{dateFullDay(new Date())}} {{dateToYMD(new Date()).split('-').join('/')}}</span>
-							<span class="">Time: {{todayTime(new Date())}} {{(new Date()).getHours() > 12? 'PM':'AM'}}</span>
-						</div>
-					</div>
-					<section class="mb-16">
-						<div class="d-flex flex-row">
-							<div class="d-flex flex-column flex-2">
-								<div class="d-flex flex-row mb-10">
-									<span class="flex-1 mw-150">Pay to</span>
-									<div class="d-flex flex-1">
-										<span class="mr-5">: </span>
-										<span> {{loanaccount.account_officer.name}}</span>
-									</div>
-								</div>
-								<div class="d-flex flex-row">
-									<span class="flex-1 mw-150">Voucher No.</span>
-									<div class="d-flex flex-1">
-										<span class="mr-5">: </span>
-										<span> 001-002-0010215</span>
-									</div>
-								</div>
+			<div class="modal-dialog modal-lg minw-70" role="document">
+			<div class="modal-content">
+				<div class="modal-body font-md" id="voucherPrintContent">
+					<img src="/img/company_header.png" style="width:100%" class="mb-24" alt="Company Header">
+					<div class="d-flex flex-column" style="padding:0 50px;">
+						<div class="d-flex flex-row align-items-center mb-24 darker-bb pb-10">
+							<div class="flex-1">
+								<span class="text-primary-dark font-26">Butuan Branch (001)</span>
 							</div>
-							<div class="flex-1"></div>
-							<div class="d-flex flex-column-reverse flex-2">
-								<div class="d-flex flex-row">
-									<span class="flex-1 text-right">Voucher Date</span>
-									<div class="d-flex flex-1">
-										<span class="mr-5">: </span>
-										<span> __________________</span>
-									</div>
-								</div>
-							</div>
-							<div class="flex-1"></div>
-						</div>
-					</section>
-
-					<div class="sep-dark mb-16"></div>
-
-					<section class="mb-24">
-						<div class="d-flex flex-row mb-24">
-							<div class="d-flex flex-column flex-2">
-								<div class="d-flex flex-row mb-10">
-									<span class="flex-1 mw-150">Particular</span>
-									<div class="d-flex flex-2">
-										<span class="mr-5">: </span>
-										<span> Loan Granted P {{formatToCurrency(loanaccount.loan_amount)}} for {{loanaccount.terms / 30}} month(s) / weekly payment. With interest of {{loanaccount.interest_rate}}% per month</span>
-									</div>
-								</div>
-								<div class="d-flex flex-row">
-									<span class="flex-1 mw-150">Net Amount</span>
-									<div class="d-flex flex-2">
-										<span class="mr-5">: </span>
-										<span> P {{formatToCurrency(loanaccount.net_proceeds)}}</span>
-									</div>
-								</div>
-							</div>
-						</div>
-						<p class="mb-45">
-							Received payment from MICRO ACCESS LOANS CORPORATION - BUTUAN BRANCH (001) The sum of <span class="allcaps">{{numToWords(parseFloat(loanaccount.net_proceeds))}}</span> Pesos only.
-						</p>
-						<div class="d-flex flex-row">
-							<span class="flex-1">Received By: _________________________________</span>
-							<span class="flex-1">Disbursed By: _________________________________</span>
-						</div>
-					</section>
-
-					<div class="sep-dark mb-16"></div>
-
-					<section>
-						<div class="d-flex flex-row justify-content-center mb-16 darker-bb pb-10">
 							<div class="d-flex flex-column">
-								<span class="font-26 text-bold text-primary-dark lh-1 text-center text-block">DISCLOSURE STATEMENT OF LOAN</span>
+								<span class="font-26 text-bold text-primary-dark lh-1">CASH VOUCHER</span>
+							</div>
+							<div class="flex-1 d-flex justify-content-end pr-10">
+								<span class=" mr-10">{{dateFullDay(new Date())}} {{dateToYMD(new Date()).split('-').join('/')}}</span>
+								<span class="">Time: {{todayTime(new Date())}} {{(new Date()).getHours() > 12? 'PM':'AM'}}</span>
 							</div>
 						</div>
-
-						<div class="d-flex flex-row mb-24 bb-dashed pb-16">
-							<div class="d-flex flex-column flex-2">
-								<div class="d-flex flex-row mb-10">
-									<span class="flex-1 mw-150">Installment</span>
-									<div class="d-flex flex-2">
-										<span class="mr-5">: </span>
-										<span> {{loanaccount.terms/30}} Monthly</span>
+						<section class="mb-16">
+							<div class="d-flex flex-row">
+								<div class="d-flex flex-column flex-2">
+									<div class="d-flex flex-row mb-10">
+										<span class="flex-1 mw-150">Pay to</span>
+										<div class="d-flex flex-1">
+											<span class="mr-5">: </span>
+											<span> {{loanaccount.borrower.lastname + ', ' + loanaccount.borrower.firstname + ' ' + loanaccount.borrower.middlename.charAt(0).toUpperCase() + '.'}}</span>
+										</div>
+									</div>
+									<div class="d-flex flex-row">
+										<span class="flex-1 mw-150">Voucher No.</span>
+										<div class="d-flex flex-1">
+											<span class="mr-5">: </span>
+											<span>{{loanaccount.account_num}}</span>
+										</div>
 									</div>
 								</div>
-								<div class="d-flex flex-row">
-									<span class="flex-1 mw-150">Amortization</span>
-									<div class="d-flex flex-2">
-										<span class="mr-5">: </span>
-										<span> P {{amortAmount}}</span>
+								<div class="flex-1"></div>
+								<div class="d-flex flex-column-reverse flex-2">
+									<div class="d-flex flex-row">
+										<span class="flex-1 text-right">Voucher Date</span>
+										<div class="d-flex flex-1">
+											<span class="mr-5">: </span>
+											<span> __________________</span>
+										</div>
+									</div>
+								</div>
+								<div class="flex-1"></div>
+							</div>
+						</section>
+
+						<div class="sep-dark mb-16"></div>
+
+						<section class="mb-24">
+							<div class="d-flex flex-row mb-24">
+								<div class="d-flex flex-column flex-2">
+									<div class="d-flex flex-row mb-10">
+										<span class="flex-1 mw-150">Particular</span>
+										<div class="d-flex flex-2">
+											<span class="mr-5">: </span>
+											<span> Loan Granted P {{formatToCurrency(loanaccount.loan_amount)}} for {{loanaccount.no_of_installment}} {{loanaccount.payment_mode}} payment. With interest of {{loanaccount.interest_rate}}% per month</span>
+										</div>
+									</div>
+									<div class="d-flex flex-row">
+										<span class="flex-1 mw-150">Net Amount</span>
+										<div class="d-flex flex-2">
+											<span class="mr-5">: </span>
+											<span> P {{formatToCurrency(loanaccount.net_proceeds)}}</span>
+										</div>
 									</div>
 								</div>
 							</div>
-						</div>
-
-						<table class="table dark-border th-nb th-bb-dark mb-24">
-							<thead>
-								<th >Acct</th>
-								<th >Title</th>
-								<th >S/L</th>
-								<th >Debit</th>
-								<th >Credit</th>
-							</thead>
-							<tbody>
-								<tr>
-									<td>1205</td>
-									<td>Loans Receivable - Current</td>
-									<td></td>
-									<td>5,000.00</td>
-									<td>0.00</td>
-								</tr>
-								<tr>
-									<td>1205</td>
-									<td>Loans Receivable - Current</td>
-									<td></td>
-									<td>5,000.00</td>
-									<td>0.00</td>
-								</tr>
-								<tr>
-									<td>1205</td>
-									<td>Loans Receivable - Current</td>
-									<td></td>
-									<td>5,000.00</td>
-									<td>0.00</td>
-								</tr>
-								<tr>
-									<td>1205</td>
-									<td>Loans Receivable - Current</td>
-									<td></td>
-									<td>5,000.00</td>
-									<td>0.00</td>
-								</tr>
-								<tr>
-									<td>1205</td>
-									<td>Loans Receivable - Current</td>
-									<td></td>
-									<td>5,000.00</td>
-									<td>0.00</td>
-								</tr>
-								<tr class="bg-black">
-									<td>TOTAL</td>
-									<td></td>
-									<td></td>
-									<td>5,000.00</td>
-									<td>5,000.00</td>
-								</tr>
-							</tbody>
-						</table>
-
-						<p class="mb-72">
-							I/We acknowledge and understand the statement above prior to the signing and consummation of the credit transaction and that I/We fully agree to the to the terms and conditions stated on promissory note.
-						</p>
-
-						<div class="d-flex flex-row px-45">
-							<div class="d-flex flex-column flex-1">
-								<span class="text-center bt-dark-2 py-12 mb-45">Borrow Sign / Printed Name</span>
-								<span class="text-center bt-dark-2 py-12 mb-45">Date Disbursed / Ackknowledged</span>
+							<p class="mb-45">
+								Received payment from MICRO ACCESS LOANS CORPORATION - BUTUAN BRANCH (001) The sum of <span class="allcaps">{{numToWords(parseFloat(loanaccount.net_proceeds))}}</span> Pesos only.
+							</p>
+							<div class="d-flex flex-row">
+								<span class="flex-1">Received By: _________________________________</span>
+								<span class="flex-1">Disbursed By: _________________________________</span>
 							</div>
-							<div class="flex-1"></div>
-							<div class="d-flex flex-column flex-1">
-								<span class="text-center bt-dark-2 py-12 mb-45">Co-Borrow Sign / Printed Name</span>
-								<span class="text-center bt-dark-2 py-12 mb-45">MAC Representative Signature</span>
+						</section>
+
+						<div class="sep-dark mb-16"></div>
+
+						<section>
+							<div class="d-flex flex-row justify-content-center mb-16 darker-bb pb-10">
+								<div class="d-flex flex-column">
+									<span class="font-26 text-bold text-primary-dark lh-1 text-center text-block">DISCLOSURE STATEMENT OF LOAN</span>
+								</div>
 							</div>
+
+							<div class="d-flex flex-row mb-24 bb-dashed pb-16">
+								<div class="d-flex flex-column flex-2">
+									<div class="d-flex flex-row mb-10">
+										<span class="flex-1 mw-150">Installment</span>
+										<div class="d-flex flex-2">
+											<span class="mr-5">: </span>
+											<span> {{loanaccount.no_of_installment}} {{loanaccount.payment_mode}}</span>
+										</div>
+									</div>
+									<div class="d-flex flex-row">
+										<span class="flex-1 mw-150">Amortization</span>
+										<div class="d-flex flex-2">
+											<span class="mr-5">: </span>
+											<span> P {{amortAmount}}</span>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<table class="table dark-border th-nb th-bb-dark mb-24">
+								<thead>
+									<th >Acct</th>
+									<th >Title</th>
+									<th >S/L</th>
+									<th >Debit</th>
+									<th >Credit</th>
+								</thead>
+								<tbody>
+									<tr v-for="(voucher, i) in vouchers" v-if="voucher.debit != 0 || voucher.credit != 0" :key="i">
+										<td>{{voucher.acct}}</td>
+										<td>{{voucher.title}}</td>
+										<td>{{voucher.sl}}</td>
+										<td>{{formatToCurrency(voucher.debit)}}</td>
+										<td>{{formatToCurrency(voucher.credit)}}</td>
+									</tr>
+									<!-- <tr>
+										<td>1205</td>
+										<td>Loans Receivable - Current</td>
+										<td></td>
+										<td>5,000.00</td>
+										<td>0.00</td>
+									</tr>
+									<tr>
+										<td>1205</td>
+										<td>Loans Receivable - Current</td>
+										<td></td>
+										<td>5,000.00</td>
+										<td>0.00</td>
+									</tr>
+									<tr>
+										<td>1205</td>
+										<td>Loans Receivable - Current</td>
+										<td></td>
+										<td>5,000.00</td>
+										<td>0.00</td>
+									</tr>
+									<tr>
+										<td>1205</td>
+										<td>Loans Receivable - Current</td>
+										<td></td>
+										<td>5,000.00</td>
+										<td>0.00</td>
+									</tr>-->
+									<tr class="bg-black">
+										<td>TOTAL</td>
+										<td></td>
+										<td></td>
+										<td>{{formatToCurrency(totalDebit)}}</td>
+										<td>{{formatToCurrency(totalCredit)}}</td>
+									</tr> 
+								</tbody>
+							</table>
+
+							<p class="mb-72">
+								I/We acknowledge and understand the statement above prior to the signing and consummation of the credit transaction and that I/We fully agree to the to the terms and conditions stated on promissory note.
+							</p>
+
+							<div class="d-flex flex-row px-45">
+								<div class="d-flex flex-column flex-1">
+									<span class="text-center bt-dark-2 py-12 mb-45">Borrow Sign / Printed Name</span>
+									<span class="text-center bt-dark-2 py-12 mb-45">Date Disbursed / Acknowledged</span>
+								</div>
+								<div class="flex-1"></div>
+								<div class="d-flex flex-column flex-1">
+									<span class="text-center bt-dark-2 py-12 mb-45">Co-Borrow Sign / Printed Name</span>
+									<span class="text-center bt-dark-2 py-12 mb-45">MAC Representative Signature</span>
+								</div>
+							</div>
+
+						</section>
+
+						<div class="mb-72"></div>
+						<div class="d-flex flex-row-reverse mb-45 no-print">
+							<a @click="printVoucher()" href="#" class="btn btn-default min-w-150">Print</a>
+							<a href="#" class="btn btn-success min-w-150 mr-24">Download Excel</a>
+							<a href="#" id="cancelVoucherModal" data-dismiss="modal" class="btn btn-danger min-w-150 mr-24 hide">Cancel</a>
 						</div>
-
-					</section>
-
-					<div class="mb-72"></div>
-					<div class="d-flex flex-row-reverse mb-45 no-print">
-						<a @click="printVoucher()" href="#" class="btn btn-default min-w-150">Print</a>
-						<a href="#" class="btn btn-success min-w-150 mr-24">Download Excel</a>
-						<a href="#" id="cancelVoucherModal" data-dismiss="modal" class="btn btn-danger min-w-150 mr-24 hide">Cancel</a>
 					</div>
 				</div>
 			</div>
-		  </div>
+			</div>
 		</div>
-	</div>
 		</div>
 </template>
 
@@ -672,6 +672,7 @@ export default {
 			borrower:'',
 			loanDetails:'',
 			loanaccount:{
+				account_num:'',
 				borrower:{
 					borrower_num:'',
 					firstname:'',
@@ -692,9 +693,26 @@ export default {
 			productName:'',
 			filteredOverrides:[],
 			amortAmount:0,
+			vouchers:[],
 		}
 	},
 	methods:{
+		fetchCashVoucher:function(){
+			axios.get(this.baseURL() + 'api/account/cashvoucher/' + this.loanaccount.loan_account_id, {
+				headers: {
+					'Authorization': 'Bearer ' + this.token,
+					'Content-Type': 'application/json',
+					'Accept': 'application/json'
+				}
+			})
+			.then(function (response) {
+				console.log(response.data.data);
+				this.vouchers = response.data.data.cash_voucher;
+			}.bind(this))
+			.catch(function (error) {
+				console.log(error);
+			}.bind(this));
+		},
 		notify:function(title, text, type){
 			this.$notify({
 				group: 'foo',
@@ -704,7 +722,7 @@ export default {
 			});
 		},
 		amortSched:function(){
-			axios.post(window.location.origin + '/api/account/generate-amortization', this.loanaccount, {
+			axios.post(this.baseURL() + 'api/account/generate-amortization', this.loanaccount, {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
 					'Content-Type': 'application/json',
@@ -721,7 +739,7 @@ export default {
 			}.bind(this));
 		},
 		fetchCenters:function(){
-			axios.get(window.location.origin + '/api/center', {
+			axios.get(this.baseURL() + 'api/center', {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
 					'Content-Type': 'application/json',
@@ -736,7 +754,7 @@ export default {
 			}.bind(this));
 		},
 		fetchProducts: function(){
-			axios.get(window.location.origin + '/api/product/', {
+			axios.get(this.baseURL() + 'api/product/', {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
 					'Content-Type': 'application/json',
@@ -751,7 +769,7 @@ export default {
 			}.bind(this));
 		},
 		fetchAo: function(){
-			axios.get(window.location.origin + '/api/accountofficer/', {
+			axios.get(this.baseURL() + 'api/accountofficer/', {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
 					'Content-Type': 'application/json',
@@ -768,7 +786,7 @@ export default {
 		fetchFilteredOverride: function(){
 			console.log(this.filter);
 			this.filter.created_at = this.pdate;
-			axios.post(window.location.origin + '/api/account/overrrideaccounts', this.filter, {
+			axios.post(this.baseURL() + 'api/account/overrrideaccounts', this.filter, {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
 					'Content-Type': 'application/json',
@@ -784,7 +802,7 @@ export default {
 		},
 		override: function(){
 			this.loanaccount.date_release = this.dateToYMD(new Date);
-			axios.post(window.location.origin + '/api/account/override', [this.loanaccount], {
+			axios.post(this.baseURL() + 'api/account/override', [this.loanaccount], {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
 					'Content-Type': 'application/json',
@@ -802,7 +820,7 @@ export default {
 		},
 		createAmortization: function(){
 			// this.loanaccount.date_release = this.dateToYMD(new Date);
-			axios.get(window.location.origin + '/api/account/create-amortization/' + this.loanaccount.loan_account_id + '/', this.loanaccount, {
+			axios.get(this.baseURL() + 'api/account/create-amortization/' + this.loanaccount.loan_account_id + '/', {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
 					'Content-Type': 'application/json',
@@ -810,6 +828,7 @@ export default {
 				}
 			})
 			.then(function (response) {
+				console.log('amortization generated');
 				console.log(response.data);
 			}.bind(this))
 			.catch(function (error) {
@@ -818,7 +837,7 @@ export default {
 		},
 		
 		reject: function(){
-			axios.put(window.location.origin + '/api/account/reject/' + this.loanaccount.loan_account_id, this.loanaccount, {
+			axios.put(this.baseURL() + 'api/account/reject/' + this.loanaccount.loan_account_id, this.loanaccount, {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
 					'Content-Type': 'application/json',
@@ -913,6 +932,20 @@ export default {
 		},
 		borrowerPhoto:function(){
 			return this.loanaccount.borrower_photo? this.loanaccount.borrower_photo : '/img/user.png';
+		},
+		totalDebit:function(){
+			var amount = 0;
+			this.vouchers.map(function(val){
+				amount+=val.debit;
+			}.bind(this));
+			return amount;
+		},
+		totalCredit:function(){
+			var amount = 0;
+			this.vouchers.map(function(val){
+				amount+=val.credit;
+			}.bind(this));
+			return amount;
 		}
 	},
 	watch:{
@@ -920,6 +953,10 @@ export default {
 			this.loanaccount = newData;
 			this.loanaccount.date_release = this.dateToYMD(new Date());
 			this.loanaccount.loan_account_id?this.amortSched():null;
+			if(this.loanaccount.account_num){
+				this.fetchCashVoucher();
+			}
+			
 		},
 	},
 	mounted(){
