@@ -45,7 +45,7 @@
 						<tr @click="loanAccount=account;amortSched();" v-for="account in pborrower.loan_accounts" :key="account.loan_account_id" :class="isActive(account.loan_account_id)">
 							<td>{{account.account_num}}</td>
 							<td>{{dateToYMD(new Date(account.date_release))}}</td>
-							<td>P {{formatToCurrency(0 + account.current_amortization.interest_balance + account.current_amortization.principal_balance)}}</td>
+							<td>P {{formatToCurrency(0 + account.current_amortization.outstandingBalance)}}</td>
 						</tr>
 					</tbody>
 				</table>
