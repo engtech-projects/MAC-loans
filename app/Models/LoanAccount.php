@@ -478,7 +478,7 @@ class LoanAccount extends Model
       }
 
       $amortization = $this->currentAmortization($this->loan_account_id);
-      return $amortization;
+      
       // check if past due
       $isPastDue = $this->checkPastDue($this->due_date);
 
