@@ -12,7 +12,7 @@
 			<div class="d-flex flex-row align-items-start">
 				@include('_includes/reportsnav')
 
-				<reports-release-ao></reports-release-ao>
+				<reports-release-ao token="{{Session::get('token')}}"></reports-release-ao>
 
 			</div>
 		</div>

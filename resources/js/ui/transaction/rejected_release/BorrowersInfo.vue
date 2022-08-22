@@ -413,7 +413,7 @@
 		props:['token','pborrower', 'psave','clear', 'idType'],
 		data(){
 			return {
-				baseUrl: window.location.origin,
+				baseUrl: this.baseURL(),
 				borrower: {
 					borrower_id: null,
 					date_registered:'',
@@ -488,7 +488,7 @@
 		methods: {
 			save: function(){
 				if(this.borrower.borrower_id){
-						axios.put(window.location.origin + '/api/borrower/' + this.borrower.borrower_id, this.borrower, {
+						axios.put(this.baseURL() + 'api/borrower/' + this.borrower.borrower_id, this.borrower, {
 							headers: {
 								'Authorization': 'Bearer ' + this.token,
 								'Content-Type': 'application/json',
@@ -504,7 +504,7 @@
 							console.log(error);
 						}.bind(this));
 				}else {
-					axios.post(window.location.origin + '/api/borrower', this.borrower, {
+					axios.post(this.baseURL() + 'api/borrower', this.borrower, {
 						headers: {
 							'Authorization': 'Bearer ' + this.token,
 							'Content-Type': 'application/json',

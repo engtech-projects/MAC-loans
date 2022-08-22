@@ -13,24 +13,23 @@
 			<div class="d-flex flex-row align-items-center mr-24" style="flex:2">
 				<span class="mr-10">Type: </span>
 				<select v-model="filter.type" name="" id="selectProductClient" class="form-control">
-					<option value="0">All Records</option>
-					<option value="new_accounts">New Accounts</option>
-					<option value="by_center">By Center</option>
-					<option value="by_product">By Product</option>
-					<option value="by_ao">By Account Officer</option>
+					<option value="all">All Records</option>
+					<option value="new">New Accounts</option>
+					<option value="center">By Center</option>
+					<option value="product">By Product</option>
+					<option value="account_officer">By Account Officer</option>
 				</select>
 			</div>
-			<div class="d-flex flex-row align-items-center" style="flex:2">
+			<div v-if="filter.type!='all'&&filter.type!='new'" class="d-flex flex-row align-items-center" style="flex:2">
 				<span class="mr-10">Spec: </span>
 				<select v-model="filter.spec" name="" id="selectProductClient" class="form-control">
 					<option v-for="(s, i) in spec" :key="i" :value="s.id">{{s.name}}</option>
-					<!-- <option value="0">All Records</option>
-					<option value="aloan">Allotment Loan</option>
-					<option value="micro group">Micro Group</option>
-					<option value="micro individual">Micro Individual</option>
-					<option value="pension emergency">Pension Emergency</option>
-					<option value="pension loan">Pension Loan</option>
-					<option value="sme loan">SME Loan</option> -->
+				</select>
+			</div>
+			<div v-if="filter.type=='all'|| filter.type=='new'" class="d-flex flex-row align-items-center" style="flex:2">
+				<span class="mr-10">Spec: </span>
+				<select disabled v-model="filter.spec" name="" id="selectProductClient" class="form-control">
+					<option v-for="(s, i) in spec" :key="i" :value="s.id">{{s.name}}</option>
 				</select>
 			</div>
 		</div>
@@ -54,60 +53,65 @@
 						<span class="mr-5">To:</span><span>{{dateToMDY2(new Date(filter.date_to)).split('-').join('/')}}</span>
 					</div>
 				</div>
-				<section class="d-flex flex-column mb-72">
+				<section class="d-flex flex-column mb-72" style="min-height:500px!important">
 					<span class="text-bold bg-yellow-light" style="padding:2px 5px;">RELEASES SUMMARY</span>
-					<table class="table td-nb table-thin">
-						<thead>
-							<th>Account #</th>
-							<th>Account Name</th>
-							<th>Date Loan</th>
-							<th>Terms</th>
-							<th>Amount Loan</th>
-							<th>Fil. Fee</th>
-							<th>D.S</th>
-							<th>Ins.</th>
-							<th>Noti</th>
-							<th>Affidavit</th>
-							<th>Ded. Bal</th>
-							<th>Prep.</th>
-							<th>Net. Prcds</th>
-							<th>Type</th>
-						</thead>
-						<tbody>
-							<tr v-for="(a, b) in accounts" :key="b">
-								<td>{{a.account_num}}</td>
-								<td>{{a.borrower}}</td>
-								<td>{{a.date_loan}}</td>
-								<td>{{a.term}}</td>
-								<td>{{formatToCurrency(a.amount_loan)}}</td>
-								<td>{{formatToCurrency(a.filing_fee)}}</td>
-								<td>{{formatToCurrency(a.document_stamp)}}</td>
-								<td>{{formatToCurrency(a.insurance)}}</td>
-								<td>{{formatToCurrency(a.notarial_fee)}}</td>
-								<td>{{formatToCurrency(a.affidavit_fee)}}</td>
-								<td>{{formatToCurrency(0)}}</td>
-								<td>{{formatToCurrency(a.prepaid_interest)}}</td>
-								<td>{{formatToCurrency(a.net_proceeds)}}</td>
-								<td>{{a.type}}</td>
-							</tr>
-							<!-- <tr>
-								<td>0063 - Pension Loan</td>
-								<td>8,500.00</td>
-								<td>2,435.00</td>
-								<td>121.00</td>
-								<td>41.66</td>
-								<td>500.00</td>
-								<td>200.00</td>
-								<td>0.00</td>
-								<td>1,484.00</td>
-								<td>0.00</td>
-								<td>6,347.00</td>
-								<td></td>
-								<td></td>
-								<td></td>
-							</tr> -->
-						</tbody>
-					</table>
+					<div style="min-height:100px;">
+						<table class="table td-nb table-thin table-hover">
+							<thead>
+								<th>Account #</th>
+								<th>Account Name</th>
+								<th>Date Loan</th>
+								<th>Terms</th>
+								<th>Amount Loan</th>
+								<th>Fil. Fee</th>
+								<th>D.S</th>
+								<th>Ins.</th>
+								<th>Noti</th>
+								<th>Affidavit</th>
+								<th>Ded. Bal</th>
+								<th>Prep.</th>
+								<th>Net. Prcds</th>
+								<th>Type</th>
+							</thead>
+							<tbody>
+								<tr v-for="(a, b) in accounts" :key="b">
+									<td>{{a.account_num}}</td>
+									<td>{{a.borrower}}</td>
+									<td>{{a.date_loan}}</td>
+									<td>{{a.term}}</td>
+									<td>{{formatToCurrency(a.amount_loan)}}</td>
+									<td>{{formatToCurrency(a.filing_fee)}}</td>
+									<td>{{formatToCurrency(a.document_stamp)}}</td>
+									<td>{{formatToCurrency(a.insurance)}}</td>
+									<td>{{formatToCurrency(a.notarial_fee)}}</td>
+									<td>{{formatToCurrency(a.affidavit_fee)}}</td>
+									<td>{{formatToCurrency(0)}}</td>
+									<td>{{formatToCurrency(a.prepaid_interest)}}</td>
+									<td>{{formatToCurrency(a.net_proceeds)}}</td>
+									<td>{{a.type}}</td>
+								</tr>
+								<tr v-if="totalRelease < 1">
+									<td colspan="14"><i>No records found.</i></td>
+								</tr>
+								<!-- <tr>
+									<td>0063 - Pension Loan</td>
+									<td>8,500.00</td>
+									<td>2,435.00</td>
+									<td>121.00</td>
+									<td>41.66</td>
+									<td>500.00</td>
+									<td>200.00</td>
+									<td>0.00</td>
+									<td>1,484.00</td>
+									<td>0.00</td>
+									<td>6,347.00</td>
+									<td></td>
+									<td></td>
+									<td></td>
+								</tr> -->
+							</tbody>
+						</table>
+					</div>
 					<div class="d-flex flex-row bg-yellow-pale p-5 align-items-center">
 						<div class="d-flex flex-column flex-1 mr-64">
 							<div class="d-flex flex-row flex-1 mb-5">
@@ -178,7 +182,7 @@ export default {
 	},
 	methods:{
 		fetchAccounts:function(){
-			axios.post('/api/report/release', this.filter, {
+			axios.post(this.baseURL() + 'api/report/release', this.filter, {
 			headers: {
 				'Authorization': 'Bearer ' + this.token,
 				'Content-Type': 'application/json',
@@ -186,15 +190,15 @@ export default {
 				}
 			})
 			.then(function (response) {
+				this.accounts = [];
 				this.accounts = response.data.data.summary;
-				console.log(response.data);
 			}.bind(this))
 			.catch(function (error) {
 				console.log(error);
 			}.bind(this));
 		}, 
 		fetchProducts: function(){
-			axios.get(window.location.origin + '/api/product/', {
+			axios.get(this.baseURL() + 'api/product/', {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
 					'Content-Type': 'application/json',
@@ -210,7 +214,7 @@ export default {
 			}.bind(this));
 		},
 		fetchCenters:function(){
-			axios.get(window.location.origin + '/api/center', {
+			axios.get(this.baseURL() + 'api/center', {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
 					'Content-Type': 'application/json',
@@ -226,7 +230,7 @@ export default {
 			}.bind(this));
 		},
 		fetchOfficers:function(){
-			axios.get(window.location.origin + '/api/accountofficer', {
+			axios.get(this.baseURL() + 'api/accountofficer', {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
 					'Content-Type': 'application/json',
@@ -249,11 +253,11 @@ export default {
 	},
 	computed:{
 		spec:function(){
-			if(this.filter.type == 'by_product'){
+			if(this.filter.type == 'product'){
 				return this.productSet;
-			}else if(this.filter.type == 'by_center'){
+			}else if(this.filter.type == 'center'){
 				return this.centerSet;
-			}else if(this.filter.type == 'by_ao'){
+			}else if(this.filter.type == 'account_officer'){
 				return this.aoSet;
 			}else{
 				return [];
@@ -282,9 +286,11 @@ export default {
 		},
 		totalRelease:function(){
 			var amount = 0;
-			this.accounts.map(function(item){
-				amount += parseFloat(item.net_proceeds)
-			}.bind(this));
+			if(this.accounts){
+				this.accounts.map(function(item){
+					amount += parseFloat(item.net_proceeds)
+				}.bind(this));
+			}
 			return amount;
 		}
 	},

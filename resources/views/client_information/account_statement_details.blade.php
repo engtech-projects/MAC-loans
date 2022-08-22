@@ -3,7 +3,7 @@
 @section('content')
     <!-- Main content -->
     <section class="content mb-45 app" id="app">
-		<client-list token="{{Session::get('token')}}" title="Statement of Account List" url="{{route('client_information.account_statement_details', ['id'=>':id'])}}"></client-list>
+		<statement-details borrower_id="{{$id}}" token="{{Session::get('token')}}"></statement-details>
     </section>
     <!-- /.content -->
 	<!-- MODALS  -->

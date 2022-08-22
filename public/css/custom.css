@@ -189,6 +189,10 @@
 	color: #FFF;
 }
 
+.text-ocean {
+	color: #168bff;
+}
+
 .ml-18 {
 	margin-left: 18px;
 }
@@ -293,6 +297,10 @@
 	margin-top: 10px;
 }
 
+.mt-120 {
+	margin-top: 120px;
+}
+
 .pl-10 {
 	padding-left: 10px;
 }
@@ -374,6 +382,10 @@
 
 .p-24 {
 	padding: 24px!important;
+}
+
+.ps-75 {
+	padding:0 75px;
 }
 
 .pxy-15 {
@@ -930,6 +942,21 @@
 .btn-orange:active {
 	background-color: #ff9326!important;
 	color:#293f54;
+}
+
+.btn-darkorange {
+	background-color: #d93600!important;
+	color:#FFF;
+}
+
+.btn-darkorange:hover {
+	background-color: #f9551f!important;
+	color:#FFF;
+}
+
+.btn-darkorange:active {
+	background-color: #d93600!important;
+	color:#FFF;
 }
 
 .btn-brown {

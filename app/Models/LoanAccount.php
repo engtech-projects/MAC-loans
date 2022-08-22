@@ -213,7 +213,7 @@ class LoanAccount extends Model
 
       foreach ($cashVoucher as $key => $value) {      
 
-         if( $value['reference'] == 'Loan Receivable' ){
+         if( $value['reference'] == 'Amount Loan' ){
              $cashVoucher[$key]['debit'] = $this->loan_amount;
          }
 
@@ -407,7 +407,6 @@ class LoanAccount extends Model
          if( count($ids) ){
             LoanAccount::find($loanAccountId)->update(['payment_status' => 'Delinquent']);
          }
-
       }
       
       return [ 
