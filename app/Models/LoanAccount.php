@@ -300,7 +300,7 @@ class LoanAccount extends Model
 
           $amortization = Amortization::whereDate('amortization_date', '>', Carbon::now()->format('Y-m-d'))
                      ->where('loan_account_id', $loanAccountId)
-                     ->whereIn('status', ['open'])
+                     ->whereIn('status', ['open', 'delinquent'])
                      ->orderBy('amortization_date', 'ASC')
                      ->limit(1)
                      ->first();
@@ -397,12 +397,13 @@ class LoanAccount extends Model
                   $pos = array_search($missedAmortization->id, $missed);
                   unset($missed[$pos]);
                }else{
-                  LoanAccount::find($loanAccountId)->update(['payment_status' => 'Delinquent']);
+                  // LoanAccount::find($loanAccountId)->update(['payment_status' => 'Delinquent']);
                   break;
                }
             }
          }
       }else{
+
          if( count($ids) ){
             LoanAccount::find($loanAccountId)->update(['payment_status' => 'Delinquent']);
          }
@@ -476,6 +477,7 @@ class LoanAccount extends Model
       }
 
       $amortization = $this->currentAmortization($this->loan_account_id);
+      return $amortization;
       // check if past due
       $isPastDue = $this->checkPastDue($this->due_date);
 
@@ -488,6 +490,7 @@ class LoanAccount extends Model
 
          $amortization->pdi = $this->getPDI($this->loan_amount, $this->interest_rate, $isPastDue);
       }
+
 
       // check and set previous schedule to delinquent if unpaid (missed)
       $this->setDelinquent($this->loan_account_id, $amortization->id);
