@@ -490,15 +490,15 @@ class LoanAccount extends Model
          $amortization->pdi = $this->getPDI($this->loan_amount, $this->interest_rate, $isPastDue);
       }
 
-
-      // check and set previous schedule to delinquent if unpaid (missed)
-      $this->setDelinquent($this->loan_account_id, $amortization->id);
-      // return $this->getMissedPayments($this->loan_account_id, $amortization->id);
-
       # compute for total payables
       # compute for total payments
       # get last payment
    	if ( $amortization ) {
+           
+        // check and set previous schedule to delinquent if unpaid (missed)
+        $this->setDelinquent($this->loan_account_id, $amortization->id);
+        // return $this->getMissedPayments($this->loan_account_id, $amortization->id);
+        
          // check if current amortization is paid partially.
          $isPaid = $this->getPayment($this->loan_account_id, $amortization->id);
 
