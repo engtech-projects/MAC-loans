@@ -2,6 +2,12 @@ import Vue from 'vue';
 
 Vue.mixin({
 	methods: {
+		concatW:function(str){
+			if(str.length > 15){
+				return str.substring(0,15) + '...';
+			}
+			return str;
+		},
 		dateToYMD:function(date) {
 			var d = date.getDate();
 			var m = date.getMonth() + 1;
