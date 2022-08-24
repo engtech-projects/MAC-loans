@@ -53,7 +53,7 @@
 						  <p>Statement of Accounts</p>
 						</a>
 					  </li>
-					  <li class="nav-item pick {{isset($nav) && isActive($nav[1], 'statement of accounts list')? 'active menu-open' : ''}}">
+					  <li class="nav-item pick {{isset($nav) && isActive($nav[1], 'balance inquiry')? 'active menu-open' : ''}}">
 						  <div class="flex navicon">
 							<div class="top-line"></div>
 							<div class="mid-circle"></div>
