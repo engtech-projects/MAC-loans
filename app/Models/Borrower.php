@@ -5,12 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 use Storage;
 use File;
 
-class Borrower extends Model
+class Borrower extends Authenticatable
 {
-    use HasFactory;
+    use HasApiTokens, HasFactory, Notifiable;
 
     protected $table = 'borrower_info';
     protected $primaryKey = 'borrower_id';
@@ -41,6 +44,8 @@ class Borrower extends Model
 		'spouse_id_type',
 		'spouse_id_no',
 		'spouse_id_date_issued',
+		'username',
+		'password',
     ];
 
     public function generateBorrowerNum() {
