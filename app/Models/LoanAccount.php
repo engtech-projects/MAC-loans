@@ -432,7 +432,6 @@ class LoanAccount extends Model
 
          }
 
-
          foreach ($delinquents as $delinquent) {
             
             $ids[] = $delinquent->id;
@@ -505,7 +504,7 @@ class LoanAccount extends Model
                continue;
             }
 
-            if( !$currentDay->lt($schedDate) ){
+            if( !$currentDay->lessThanOrEqualTo($schedDate) ){
                $amortization->status = 'delinquent';
                $amortization->save();   
             }
