@@ -135,11 +135,9 @@ class TestDataSeeder extends Seeder
             [
                 'account_num' => '001-001-0000001',
                 'date_release' => '2022-07-27',
-                'transaction_date' => '',
                 'cycle_no' => '1',
                 'ao_id' => '1',
                 'product_id' => '1',
-                'center_id' => '',
                 'type' => 'Add-On',
                 'payment_mode' => 'Monthly',
                 'terms' => '180',
@@ -173,10 +171,8 @@ class TestDataSeeder extends Seeder
                 'release_type' => 'Cash',
                 'status' => 'pending',
                 'branch_code' => '001',
-                'loan_status' => '',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
-                'payment_status' => '',
             ]
         ]);
 
