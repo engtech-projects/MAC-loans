@@ -48,6 +48,14 @@ class Borrower extends Authenticatable
 		'password',
     ];
 
+    public function generateDefaultUsername() {
+        return $this->firstname.$this->lastname;
+    }
+
+    public function generateDefaultPassword() {
+        return '$2y$10$BrOxloCXFGB4PyCPe7.leefLeosAh9zpS1DCdGlfz8XRyNIkgeHlO';
+    }
+
     public function generateBorrowerNum() {
         return str_pad($this->borrower_id, 7, '0', STR_PAD_LEFT);
     }
