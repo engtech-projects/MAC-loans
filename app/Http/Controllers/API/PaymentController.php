@@ -78,7 +78,15 @@ class PaymentController extends BaseController
             $loanAccount = LoanAccount::find($payment->loan_account_id);
             # update amortization
             if( $payment->total_payable > $payment->amount_applied ){
-                $amortization->status = 'delinquent';
+
+                $curretDay =  $currentDay = Carbon::createFromFormat('Y-m-d', Carbon::now()->format('Y-m-d'));
+                $schedDate = Carbon::createFromFormat('Y-m-d', $amortization->amortization_date);
+
+                if( $currentDay->lt($schedDate) ){
+                    $amortization->status = 'open';
+                }else{
+                    $amortization->status = 'delinquent';    
+                }
                 // $loanAccount->payment_status = 'delinquent';
                 // Amortization::find($payment->amortization_id)->update([ 'status' => 'delinquent' ]);
                 // LoanAccount::find($payment->loan_account_id)->update(['payment_status' => 'Delinquent']);
