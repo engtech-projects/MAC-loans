@@ -28,6 +28,7 @@
 				<div class="col-4">
 					<button type="submit" class="btn btn-primary btn-block btn-flat">Sign In</button>
 				</div>
+				<p style="color:red;">{{errorMessage}}</p>
 				<!-- /.col -->
 				</div>
 			</form>
@@ -49,6 +50,7 @@ export default {
 				},
 				token:''
 			},
+			errorMessage:'',
 			branches:[],
 		}
 	},
@@ -56,9 +58,13 @@ export default {
 		login:function(){
 			axios.post(this.baseURL() + 'api/borrower_login', this.data)
 			.then(function (response) {
+				if(response.data.success){
+					this.data.token = response.data.data.token;
+					this.makeAuth();
+				}else{
+					this.errorMessage = response.data.message
+				}
 				console.log(response)
-				this.data.token = response.data.data.token;
-				this.makeAuth();
 			}.bind(this))
 			.catch(function (error) {
 				console.log(error);

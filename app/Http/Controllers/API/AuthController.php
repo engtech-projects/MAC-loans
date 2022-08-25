@@ -44,7 +44,7 @@ class AuthController extends BaseController
             }
         }
         
-        return $this->sendError('Invalid Credentials / Cannot access specified branch', ['error' => 'Unauthorised']);
+        return $this->sendError('Invalid Credentials / Cannot access specified branch', ['error' => 'Unauthorised'], 200);
         
     }
 
@@ -57,7 +57,7 @@ class AuthController extends BaseController
             $success['name'] =  Auth::guard('borrowers')->user()->username;
             return $this->sendResponse($success, 'User signed in');
         }
-        return $this->sendError('Invalid Credentials', ['error' => 'Unauthorised']);
+        return $this->sendError('Invalid Credentials', ['error' => 'Unauthorised'], 200);
     }
 
     public function logout() {
