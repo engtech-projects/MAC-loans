@@ -79,7 +79,7 @@ class PaymentController extends BaseController
             # update amortization
             if( $payment->total_payable > $payment->amount_applied ){
                 $amortization->status = 'delinquent';
-                $loanAccount->payment_status = 'delinquent';
+                // $loanAccount->payment_status = 'delinquent';
                 // Amortization::find($payment->amortization_id)->update([ 'status' => 'delinquent' ]);
                 // LoanAccount::find($payment->loan_account_id)->update(['payment_status' => 'Delinquent']);
             }else{
