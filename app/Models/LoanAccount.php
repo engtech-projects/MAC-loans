@@ -383,7 +383,7 @@ class LoanAccount extends Model
 
       $amortizations = Amortization::where('loan_account_id', $loanAccountId)
                         ->whereIn('status', $status)
-                        ->where('id', '<=', $amortizationId);
+                        ->where('id', '<', $amortizationId);
 
       if( $refId ) {
 
