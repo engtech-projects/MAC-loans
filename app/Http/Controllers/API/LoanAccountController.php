@@ -67,6 +67,7 @@ class LoanAccountController extends BaseController
     }
 
     public function updateLoanAccount(Request $request, LoanAccount $account) {
+
         $account->fill($request->input());
         $account->save();
 		$document = Document::find($request->input('documents')['id']);
