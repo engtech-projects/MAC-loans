@@ -176,8 +176,19 @@ class TestDataSeeder extends Seeder
             ]
         ]);
 
-
-
+        DB::table('documents')->insert([
+            [
+                'loan_account_id' => '1',
+                'date_release' => '2022-07-27',
+                'description' => 'Land Title',
+                'bank' => 'Metro Bank',
+                'account_no' => '123-123',
+                'card_no' => '182654',
+                'promissory_number' => '001-002-0000001',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ]
+        ]);
 
     }
 }
