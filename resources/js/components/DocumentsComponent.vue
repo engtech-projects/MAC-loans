@@ -66,6 +66,15 @@
 										<a class="nav-link" id="final-notice-tab" data-toggle="pill" href="#final-notice" role="tab" aria-controls="custom-content-below-home" aria-selected="true">Final Demand</a>
 									</li>
 									<li class="nav-item">
+										<a class="nav-link" id="return-check-tab" data-toggle="pill" href="#return-check" role="tab" aria-controls="custom-content-below-home" aria-selected="true">Final Demand</a>
+									</li>
+									<li class="nav-item">
+										<a class="nav-link" id="bouncing-check-tab" data-toggle="pill" href="#bouncing-check" role="tab" aria-controls="custom-content-below-home" aria-selected="true">Final Demand</a>
+									</li>
+									<li class="nav-item">
+										<a class="nav-link" id="attorneys-demand-tab" data-toggle="pill" href="#attorneys-demand" role="tab" aria-controls="custom-content-below-home" aria-selected="true">Final Demand</a>
+									</li>
+									<li class="nav-item">
 										<a class="nav-link" id="dacion-en-pago-tab" data-toggle="pill" href="#dacion-en-pago" role="tab" aria-controls="custom-content-below-home" aria-selected="true">DACION EN PAGO</a>
 									</li>
 									<li class="nav-item">
@@ -462,8 +471,241 @@
 											</div>
 										</div>
 									</div>
+
+
+									<div  class="tab-pane fade" id="return-check" role="tabpanel" aria-labelledby="custom-content-below-home-tab">
+										<img src="/img/company_header.png" style="width:100%" class="mb-16" alt="Company Header">
+										<div class="d-flex flex-column font-md" style="padding:0 35px;">
+
+											<ul class="metadata base-list font-md mb-64">
+												<li class="mb-16">{{dateToMDY(new Date)}}</li>
+												<li>{{borrower.firstname + ' ' + borrower.lastname}}</li>
+												<li>{{borrower.address}}</li>
+											</ul>
+
+											<div class="d-flex flex-column title align-items-center mb-16">
+												<span class="text-lg text-bold">RETURN CHECK NOTICE</span>
+											</div>
+											<div class="salutation mb-24 d-flex flex-column">
+												<span class="mb-45">Dear Mr./Mrs. {{borrower.lastname}} :</span>
+											</div>
+											<div class="body mb-64">
+												<p>
+													Please take notice that the  following check(s) which you negotiated
+													with  us was  returned unpaid  for the following reason(s) indicated
+													below to wit:
+												</p>
+												<div class="d-flex mb-24">
+													<div class="d-flex flex-column mr-24"><span>Check Date</span><span>/ /</span></div>
+													<span class="mr-24">Check Number</span>
+													<div class="d-flex flex-column mr-24"><span>Amount</span><span>0.00</span></div>
+													<span class="mr-24">Reason</span>
+												</div>
+
+												
+												<p class="mb-16">
+													Kindly make good or redeem the said  returned check(s) with its Cash
+													equivalent winthin  FIVE (5)  banking days from your receipt hereof,
+													otherwise, we shall be shall constrained to refer this matter to our
+													legal counsel for collection.
+												</p>
+
+												<p>
+													To avoid  unnecessary  additional  expenses  and  dire consequences,
+     												please give this matter your preferential attention
+												</p>
+												
+											</div>
+											<div class="truly-yours d-flex flex-column mb-64">
+												<span class="mb-36">Very truly yours,</span>
+												<span>ATTY. DENIS BACALA</span>
+												<span>Legal Counsel</span>
+											</div>
+											<div class="d-flex mb-45">
+												<span class="mr-5">COPY FURNISHED: </span>
+												<div class="d-flex flex-column">
+													<div class="flex-1 d-flex">
+														<span class="mr-5">Co-Maker1: </span>
+														<div><span class="text-block">{{loanDetails.co_maker_name}}</span><span>{{loanDetails.co_maker_address}}</span></div>
+													</div>
+													<div class="flex-1 d-flex">
+														<span class="mr-5">Co-Maker2: </span>
+														<div></div>
+													</div>
+												</div>
+											</div>
+											<div class="d-flex flex-row-reverse mb-72">
+												<div class="d-flex flex-column">
+													<span class="pb-36 darker-bb mb-10">Received by:</span>
+													<span class="pr-24">(Signature over printed name)</span>
+												</div>
+											</div>
+											<p>
+												NOTE: Please disregard if you have paid your account.
+     											Ref. No.: 00--003--001 Loan Amount: P    {{formatToCurrency(loanDetails.loan_amount)}} Term:  {{loanDetails.terms / 30}} month(s).
+											</p>
+											<div class="d-flex flex-row-reverse mb-72 no-print">
+												<a @click.prevent="printContent('return-check')" href="#" class="btn btn-default min-w-150">Print</a>
+												<a href="#" class="btn btn-success min-w-150 mr-24">Download Excel</a>
+											</div>
+											<div class="d-flex mb-24">
+												<img src="/img/logo-footer.png" class="w-100" alt="">
+											</div>
+										</div>
+									</div>
+
+
+									<div  class="tab-pane fade" id="attorneys-demand" role="tabpanel" aria-labelledby="custom-content-below-home-tab">
+										<div class="d-flex flex-column font-md" style="padding:0 35px;">
+											<div class="d-flex letter-head align-items-center mb-24">
+												<img :src="baseURL() + 'img/lamigo_logo.png'" class="mr-16" style="max-height:140px" alt="">
+												<div class="d-flex flex-column">
+													<span style="font-weight:bold;font-size:48px;font-family:'Bookman Old Style';line-height:1">LAMIGO LAW OFFICE</span>
+													<span style="font-size:24px">J. Satorre Street (City Hall Rotunda) Butuan City 8600</span>
+													<span style="font-size:24px">Tel. No. (085) 817-13-74</span>
+												</div>
+											</div>
+											<div class="d-flex bb-dashed-2 mb-3"></div>
+											<div class="d-flex bb-dashed-2 mb-16"></div>
+
+											<div class="d-flex flex-column mb-45">
+												<span style="font-size:24px;font-weight:bold;">Attorney:</span>
+												<span style="margin-left:75px;font-size:20px;">Atty: Kahlil L. Lamigo</span>
+											</div>
+
+											<div class="d-flex flex-column mb-45">
+												<span style="text-decoration:underline;font-style:italic;" class="mb-24">{{dateToMDY(new Date)}}</span>
+												<b>{{borrower.firstname + ' ' + borrower.lastname}}</b>
+												<b>{{loanDetails.co_borrower_name}}</b>
+												<b>{{loanDetails.co_maker_name}}</b>
+												<b>{{borrower.address}}</b>
+											</div>
+
+											<b style="text-decoration:underline" class="mb-36">Dear <i>Sir/Madam</i></b>
+
+											<p>
+												Please be informed that our client,  Micro Access Loans Corporation has endorsed to us for appropriate legal action for your accountability amounting to <i class="text-underlined"><b>{{numToWords(loanDetails.current_amortization.outstandingBalance)}} ( Php {{formatToCurrency(loanDetails.current_amortization.outstandingBalance)}})</b></i> representing your total unpaid obligation to our said client as of 
+												<i class="text-underlined"><b>{{dateToMDY(new Date(loanDetails.current_amortization.amortization_date))}}</b></i>. 
+											</p>
+
+											<p>
+												According to our client, you have not settled the above-mentioned accountability despite the fact that it has been long overdue and despite repeated demands to fully settle it.
+											</p>
+
+											<p>
+												Hence, it is hereby demanded that you fully pay your above accountability with cash at the office of our client Micro Access Loans Corporation T. Calo St., Limaha, Butuan City within seven (7) days from your receipt of this letter. Your failure to comply with this demand shall compel us to file the appropriate legal action against you with ten percent (10%) thereof as attorney’s fees plus penalties, damages and other expenses that may incurred.
+											</p>
+
+											<p class="mb-45">
+												We hope you will give this matter your preferential attention to avoid the inconvenience, humiliation, embarrassment and expenses appurtenant thereto.
+											</p>
+
+											<p class="mb-72">
+												Very truly yours,
+											</p>
+
+											<div class="d-flex flex-column mb-72">
+												<span class="text-bold font-20 text-underlined">ATTY. KAHLIL L. LAMIGO</span>
+												<i>Counsel for Micro Access Loans Corp</i>
+											</div>
+
+											<div class="d-flex flex-column mb-64">
+												<span>Cc:</span>
+												<span>Co-Borrower</span>
+												<span>File for court action</span>
+											</div>
+
+											<div class="d-flex flex-row-reverse mb-72 no-print">
+												<a @click.prevent="printContent('attorneys-demand')" href="#" class="btn btn-default min-w-150">Print</a>
+												<a href="#" class="btn btn-success min-w-150 mr-24">Download Excel</a>
+											</div>
+										</div>
+									</div>
 									
 
+									<div  class="tab-pane fade" id="bouncing-check" role="tabpanel" aria-labelledby="custom-content-below-home-tab">
+										<img src="/img/company_header.png" style="width:100%" class="mb-16" alt="Company Header">
+										<div class="d-flex flex-column font-md" style="padding:0 35px;">
+
+											<ul class="metadata base-list font-md mb-64">
+												<li class="mb-16">{{dateToMDY(new Date)}}</li>
+												<li>{{borrower.firstname + ' ' + borrower.lastname}}</li>
+												<li>{{borrower.address}}</li>
+											</ul>
+
+											<div class="d-flex flex-column title align-items-center mb-16">
+												<span class="text-lg text-bold">FINAL NOTICE</span>
+											</div>
+											<div class="salutation mb-24 d-flex flex-column">
+												<span class="mb-45">Dear Mr./Mrs. {{borrower.lastname}} :</span>
+											</div>
+											<div class="body mb-64">
+												<p>
+													Consider this as our FINAL DEMAND, within  FIVE (5)  days from receipt
+													hereof. Make good the check(s) you issued  with its cash equivalent in
+													favor of   MICRO ACCESS LOANS CORPORATION   for following  transaction
+													indicated below to wit:
+												</p>
+												<div class="d-flex mb-24">
+													<div class="d-flex flex-column mr-24"><span>Check Date</span><span>/ /</span></div>
+													<span class="mr-24">Check Number</span>
+													<div class="d-flex flex-column mr-24"><span>Amount</span><span>0.00</span></div>
+													<span class="mr-24">Reason</span>
+												</div>
+												
+												<p class="mb-16">
+													Otherwise,  we will commence and persistently  pursue, to its ultimate
+													conclusion, the appropriate criminal cases with claim for damages, and
+													forty (40) percent as Attorney's  fee.
+												</p>
+
+												<p>
+													Cases  of these  nature  are  entirely  defenseless, Thus,  before the
+													courts impose the corresponding penal sanctions and civil liabilities,
+													it would  be wise to redeem the  worthless check(S) within  the period
+													given.
+												</p>
+
+												<p>
+													Visit  the undersigned  counsel or to my  client office to  effect the
+     												payment.
+												</p>
+												
+											</div>
+											<div class="truly-yours d-flex flex-column mb-64">
+												<span class="mb-36">Very truly yours,</span>
+												<span>ATTY. DENIS BACALA</span>
+												<span>Legal Counsel</span>
+											</div>
+											<div class="d-flex mb-45">
+												<span class="mr-5">COPY FURNISHED: </span>
+												<div class="d-flex flex-column">
+													<div class="flex-1 d-flex">
+														<span class="mr-5">Co-Maker1: </span>
+														<div><span class="text-block">{{loanDetails.co_maker_name}}</span><span>{{loanDetails.co_maker_address}}</span></div>
+													</div>
+													<div class="flex-1 d-flex">
+														<span class="mr-5">Co-Maker2: </span>
+														<div></div>
+													</div>
+												</div>
+											</div>
+											<p>
+												NOTE: Please disregard if you have paid your account.
+     											Ref. No.: 00--003--001 Loan Amount: P    {{formatToCurrency(loanDetails.loan_amount)}} Term:  {{loanDetails.terms / 30}} month(s).
+											</p>
+											<div class="d-flex flex-row-reverse mb-72 no-print">
+												<a @click.prevent="printContent('bouncing-check')" href="#" class="btn btn-default min-w-150">Print</a>
+												<a href="#" class="btn btn-success min-w-150 mr-24">Download Excel</a>
+											</div>
+											<div class="d-flex mb-24">
+												<img src="/img/logo-footer.png" class="w-100" alt="">
+											</div>
+										</div>
+									</div>
+
+
+									
 									<div  class="tab-pane fade" id="dacion-en-pago" role="tabpanel" aria-labelledby="custom-content-below-home-tab">
 										<img :src="baseUrl+'/img/company_header.png'" style="width:100%" class="mb-16" alt="Company Header">
 										<div class="d-flex flex-column font-md" style="padding:0 35px;">

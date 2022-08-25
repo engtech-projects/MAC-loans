@@ -2,6 +2,12 @@ import Vue from 'vue';
 
 Vue.mixin({
 	methods: {
+		concatW:function(str){
+			if(str.length > 15){
+				return str.substring(0,15) + '...';
+			}
+			return str;
+		},
 		dateToYMD:function(date) {
 			var d = date.getDate();
 			var m = date.getMonth() + 1;
@@ -86,6 +92,7 @@ Vue.mixin({
 		// 	return outputText;
 		// },
 		numToWords:function(s){
+			s = s + '';
 			var th = ['','thousand','million', 'billion','trillion'];
 			var dg = ['zero','one','two','three','four', 'five','six','seven','eight','nine'];
 			var tn = ['ten','eleven','twelve','thirteen', 'fourteen','fifteen','sixteen', 'seventeen','eighteen','nineteen'];
@@ -129,7 +136,10 @@ Vue.mixin({
 				for (var i=x+1; i<y; i++)
 					str += dg[n[i]] +' ';
 			}
-			return str.replace(/\s+/g,' ');
+			return this.upperFirst(str.replace(/\s+/g,' '))
+		},
+		upperFirst:function(string) {
+			return string.charAt(0).toUpperCase() + string.slice(1);
 		},
 		nthDay:function(d){
 			if (d > 3 && d < 21) return d + 'th';

@@ -4,28 +4,30 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Auth;
-use App\Models\User;
+use App\Models\Borrower;
 use Session;
 
-class LoginController extends Controller
+class BorrowerLoginController extends Controller
 {
     public function login(Request $request){
-		$user = User::where('username', $request->credentials['username'])->first();
+		// echo $request;
+		$user = Borrower::where('username', $request->credentials['username'])->first();
 		$credentials = ['username'=>$request->credentials['username'], 'password'=>$request->credentials['password']];
-		if(Auth::attempt($credentials)) {
-			Auth::user()->token = $request->token;
+		if(Auth::guard("borrowers")->attempt($credentials)) {
+			Auth::guard("borrowers")->user()->token = $request->token;
+			Session::put("id", $user->borrower_id);
 			Session::put('token', $request->token);
 			Session::put('fullname', $user->firstname.' '.$user->middlename.' '.$user->lastname);
-			return Auth::user();
+			return Auth::guard("borrowers")->user();
 		}
 	}
 
 	public function index(){
-		return view('auth.login');
+		return view('auth.borrower_login');
 	}
 
 	public function logout(){
 		Auth::logout();
- 		return redirect('/login');
+ 		return redirect('/borrower_login');
 	}
 }

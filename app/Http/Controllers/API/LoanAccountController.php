@@ -77,9 +77,9 @@ class LoanAccountController extends BaseController
 		$document->card_no = ($request->input('documents')['card_no']);
 		$document->promissory_number = ($request->input('documents')['promissory_number']);
 		$document->save();
-
-      
+		dd($request->loanfiles);
         if( $request->hasFile('loanfiles') ) {
+			dd($request->loanfiles);
             $account->setDocs($account->borrower_id, $account->loan_account_id, $request->file('loanfiles'));
         }
         

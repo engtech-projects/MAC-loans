@@ -1,6 +1,5 @@
 <template>
 	<div class="px-16">
-		<notifications group="foo" />
 		<div class="container-fluid">
 			<div class="mb-16"></div>
 			<div class="d-flex justify-content-between mb-24 bb-primary-dark pb-7 text-block">
@@ -2089,32 +2088,9 @@
 
 		<div class="modal" id="uploadedFilesModal" tabindex="-1" role="dialog">
 			<div class="modal-dialog modal-lg minw-70" role="document">
-				<div class="modal-content" style="padding-bottom:50px;">
+				<div class="modal-content">
 					<div class="modal-body font-md pxy-25">
-						<div class="d-flex justify-content-between bb-dark-8">
-							<span class="text-block text-bold pb-10">Uploaded Documents</span>
-							<form method="post" enctype="multipart/form-data">
-								<input @change="fileChange($event)" type="file" class="hide" id="fileUpload">
-							</form>
-							<i data-dismiss="modal" class="fa fa-times"></i>
-						</div>
-						<div class="d-flex" style="padding-top:32px;">
-							<div class="d-flex flex-column mr-24">
-								<div @mouseenter="activeBrowse=true" @mouseleave="activeBrowse=false" style="position:relative;" class="mb-16">
-									<div @click="browseFile()" v-if="activeBrowse" class="d-flex justify-content-center align-items-center" style="position:absolute;z-index:999;width:175px;height:100%;background-color:rgba(0,0,0,.7);border-radius:25px;cursor:pointer">
-										<span style="color:#FFF">Browse Files</span>
-									</div>
-									<div class="d-flex flex-column">
-										<img @click="browseFile()" :src="baseURL() + 'img/file_temp.png'" style="max-width:175px;cursor:pointer" alt="">
-										<span class="text-center text-sm">{{concatW(fileName)}}</span>
-									</div>
-								</div>
-								<button :disabled="fileName==''" @click="uploadFile()" id="fileUploadBtn" class="btn btn-yellow">Upload File</button>
-							</div>
-							<div class="d-flex flex-1 bg-very-light justify-content-center align-items-center" style="min-height:500px;padding:16px">
-								<span v-if="!loanDetails.docs">No uploaded files yet.</span>
-							</div>
-						</div>
+						<span class="bb-dark-8 text-block text-bold pb-10">Uploaded Documents</span>
 					</div>
 				</div>
 			</div>
@@ -2130,8 +2106,6 @@ export default {
 	props:['borrower_id','token'],
 	data(){
 		return {
-			activeBrowse:false,
-			fileName:'',
 			baseUrl: this.baseURL(),
 			selected:null,
 			borrower:{
@@ -2198,8 +2172,6 @@ export default {
 				total_deduction : 0.00,
 				net_proceeds : 0.00,
 				release_type : '',
-				loanfiles:[],
-				docs:false,
 				documents: {
 					date_release: this.dateToYMD(new Date),
 					description: '',
@@ -2239,7 +2211,6 @@ export default {
 				current_amortization:{
 					interest:0,
 					principal:0,
-					principal_balance:0,
 					delinquent:{
 						ids:[]
 					}
@@ -2261,43 +2232,6 @@ export default {
 		}
 	},
 	methods:{
-		notify:function(title, text, type){
-			this.$notify({
-				group: 'foo',
-				title: title,
-				text: text,
-				type: type,
-			});
-		},
-		async uploadFile(){
-			await axios.put(this.baseURL() + 'api/account/update/' + this.loanDetails.loan_account_id, this.loanDetails, {
-					headers: {
-						'Authorization': 'Bearer ' + this.token,
-						'Content-Type': 'application/json',
-						'Accept': 'application/json'
-					}
-				})
-				.then(function (response) {
-					console.log(response.data);
-					this.notify('','File has been successfully uploaded', 'success');
-				}.bind(this))
-				.catch(function (error) {
-					console.log(error);
-				}.bind(this));
-		},
-		fileChange:function(e){
-			if(e.target.files.length){
-				let file = e.target.files[0];
-				let formData = new FormData();
-				formData.append('loanfiles', file);
-				this.loanDetails.loanfiles = formData;
-				// this.loanDetails.loanfiles = e.target.files;
-				// this.loanDetails.loanfiles.push(e.target.files[0]);
-				this.fileName = e.target.files[0].name;
-				console.log(this.loanDetails.loanfiles);
-			}
-			return
-		},
 		amortSched:function(){
 			axios.post(this.baseURL() + 'api/account/generate-amortization', this.loanDetails, {
 				headers: {
@@ -2408,10 +2342,6 @@ export default {
 
 		imageCapture:function(img){
 			this.img = img;
-		},
-
-		browseFile(){
-			document.getElementById('fileUpload').click();
 		}
 	},
 	computed:{
