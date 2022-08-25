@@ -14,6 +14,7 @@
  Vue.use(Notifications);
  
  Vue.component('login', require('./components/Login.vue').default);
+ Vue.component('borrower-login', require('./components/BorrowerLogin.vue').default);
  Vue.component('client-list', require('./ui/client_information/ClientList.vue').default);
  Vue.component('personal-information', require('./ui/client_information/PersonalInformation.vue').default);
  Vue.component('branch', require('./components/Branch.vue').default);

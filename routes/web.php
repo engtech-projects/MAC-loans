@@ -7,8 +7,10 @@ use App\Http\Controllers\API\DashboardController;
 use App\Http\Controllers\MaintenanceController;
 use App\Http\Controllers\ClientInformationController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\BorrowerLoginController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\ReportsController;
+use App\Http\Controllers\ClientPortalInformationController;
 use Illuminate\Routing\RouteGroup;
 
 /*
@@ -23,12 +25,20 @@ use Illuminate\Routing\RouteGroup;
 */
 Route::get('/login', [LoginController::class, 'index'])->name('login');
 Route::post('/login', [LoginController::class, 'login']);
+Route::get('/borrower_login', [BorrowerLoginController::class, 'index'])->name('login');
+Route::post('/borrower_login', [BorrowerLoginController::class, 'login']);
 
 Route::get('/', function () {
     return redirect('/dashboard');
 });
 Route::get('/branch', function(){
 	return \App\Models\Branch::all();
+});
+Route::group(['middleware' => 'auth:borrowers'], function(){
+	Route::get('borrower_logout', [BorrowerLoginController::class, 'logout']);
+	Route::get('/borrower/personal_information', [ClientPortalInformationController::class, 'personalInformationDetails'])->name('borrower.personal_information');
+	Route::get('/borrower/account_statement', [ClientPortalInformationController::class, 'accountStatementDetails'])->name('borrower.account_statement');
+	Route::get('/borrower/balance_inquiry', [ClientPortalInformationController::class, 'personalInformationList'])->name('borrower.balance_inquiry');
 });
 Route::group(['middleware' => 'auth'], function (){
 	Route::get('logout', [LoginController::class, 'logout']);
