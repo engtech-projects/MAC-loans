@@ -131,6 +131,55 @@ class TestDataSeeder extends Seeder
             ]
         ]);
 
+        DB::table('loan_account')->insert([
+            [
+                'account_num' => '001-001-0000001',
+                'date_release' => '2022-07-27',
+                'transaction_date' => '',
+                'cycle_no' => '1',
+                'ao_id' => '1',
+                'product_id' => '1',
+                'center_id' => '',
+                'type' => 'Add-On',
+                'payment_mode' => 'Monthly',
+                'terms' => '180',
+                'loan_amount' => '20000',
+                'interest_rate' => '4',
+                'interest_amount' => '4800',
+                'no_of_installment' => '6',
+                'due_date' => '2023-01-23',
+                'day_schedule' => '1',
+                'borrower_num' => '0000001',
+                'borrower_id' => '1',
+                'co_borrower_name' => 'Maria Padilla',
+                'co_borrower_address' => 'Butuan City',
+                'co_borrower_id_type' => 'GSIS',
+                'co_borrower_id_number' => '89-8712398',
+                'co_borrower_id_date_issued' => '2020-10-02',
+                'co_maker_name' => 'Toni Gonzaga',
+                'co_maker_address' => 'Butuan',
+                'co_maker_id_type' => 'TIN',
+                'co_maker_id_number' => '1234',
+                'co_maker_id_date_issued' => '2020-05-01',
+                'document_stamp' => '73.97',
+                'filing_fee' => '200',
+                'insurance' => '120',
+                'notarial_fee' => '100',
+                'prepaid_interest' => '0',
+                'affidavit_fee' => '0',
+                'memo' => '0',
+                'total_deduction' => '493.97',
+                'net_proceeds' => '19506.03',
+                'release_type' => 'Cash',
+                'status' => 'pending',
+                'branch_code' => '001',
+                'loan_status' => '',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+                'payment_status' => '',
+            ]
+        ]);
+
 
 
 
