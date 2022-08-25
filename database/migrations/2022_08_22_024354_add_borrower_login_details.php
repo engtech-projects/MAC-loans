@@ -14,8 +14,8 @@ class AddBorrowerLoginDetails extends Migration
     public function up()
     {
         Schema::table('borrower_info', function (Blueprint $table) {
-            $table->string('username')->unique();
-            $table->string('password');
+            $table->string('username')->unique()->nullable();
+            $table->string('password')->nullable();
             //
         });
     }

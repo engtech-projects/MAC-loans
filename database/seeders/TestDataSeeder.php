@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Carbon\Carbon;
 
 class TestDataSeeder extends Seeder
@@ -30,6 +31,20 @@ class TestDataSeeder extends Seeder
                 'branch_manager' => "Jomel T. Gallanero",
                 'branch_address' => "Nasipit",
                 'status' => "active",
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(), 
+            ]
+        ]);
+
+        DB::table('user_branch')->insert([
+            [
+                'id' => "1",
+                'branch_id' => "1",
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(), 
+            ],[
+                'id' => "2",
+                'branch_id' => "2",
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(), 
             ]
@@ -111,6 +126,8 @@ class TestDataSeeder extends Seeder
                 'spouse_id_date_issued' => '2015-04-11',  
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(), 
+                'username' => 'VincentPadilla',
+                'password' => Hash::make("admin"),
             ]
         ]);
 

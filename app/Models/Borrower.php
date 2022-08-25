@@ -10,6 +10,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Storage;
 use File;
+use Illuminate\Support\Facades\Hash;
 
 class Borrower extends Authenticatable
 {
@@ -53,7 +54,7 @@ class Borrower extends Authenticatable
     }
 
     public function generateDefaultPassword() {
-        return '$2y$10$BrOxloCXFGB4PyCPe7.leefLeosAh9zpS1DCdGlfz8XRyNIkgeHlO';
+        return Hash::make($this->lastname.$this->firstname);
     }
 
     public function generateBorrowerNum() {
