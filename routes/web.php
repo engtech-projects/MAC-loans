@@ -25,7 +25,7 @@ use Illuminate\Routing\RouteGroup;
 */
 Route::get('/login', [LoginController::class, 'index'])->name('login');
 Route::post('/login', [LoginController::class, 'login']);
-Route::get('/borrower_login', [BorrowerLoginController::class, 'index'])->name('login');
+Route::get('/borrower_login', [BorrowerLoginController::class, 'index'])->name('borrowerlogin');
 Route::post('/borrower_login', [BorrowerLoginController::class, 'login']);
 
 Route::get('/', function () {
