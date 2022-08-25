@@ -362,9 +362,11 @@ class LoanAccount extends Model
             $amortization->total = $amortization->total - ($amortization->principal + $amortization->interest);
             $amortization->principal = 0;
             $amortization->interest = 0;
-            $amortization->short_principal += $isPaid->short_principal;
-            $amortization->short_interest += $isPaid->short_interest;
 
+            if( $amortization->status != 'delinquent' ){
+               $amortization->short_principal += $isPaid->short_principal;
+               $amortization->short_interest += $isPaid->short_interest;
+            }
          }
 
          $amortization->penalty = $this->getPenalty($amortization->delinquent['missed'], ($amortization->principal + $amortization->interest));
