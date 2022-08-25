@@ -17,6 +17,7 @@ class BorrowerLoginController extends Controller
 			Auth::guard("borrowers")->user()->token = $request->token;
 			Session::put("id", $user->borrower_id);
 			Session::put('token', $request->token);
+			Session::put('fullname', $user->firstname.' '.$user->middlename.' '.$user->lastname);
 			return Auth::guard("borrowers")->user();
 		}
 	}

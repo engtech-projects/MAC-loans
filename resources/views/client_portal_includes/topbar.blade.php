@@ -108,7 +108,7 @@
     <li class="nav-item">
       <div class="flex right-profile flex-center-y">
 		<img src="{{ asset('img/user2-160x160.jpg')}}" class="img-circle elevation-2" alt="User Image">
-		<span>Jeremae G. Payot</span>
+		<span>{{Session::get('fullname')}}</span>
 		<i class="fas fa-caret-down"></i>
 	</div>
     </li>

@@ -15,6 +15,7 @@ class LoginController extends Controller
 		if(Auth::attempt($credentials)) {
 			Auth::user()->token = $request->token;
 			Session::put('token', $request->token);
+			Session::put('fullname', $user->firstname.' '.$user->middlename.' '.$user->lastname);
 			return Auth::user();
 		}
 	}

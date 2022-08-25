@@ -15,8 +15,8 @@
 	<div class="info">
 	  <div class="flex-col">
 		  <span class="top">Welcome</span>
-		  <span class="mid">Jeremae G. Payot</span>
-		  <span class="bot">Loan Clerk</span>
+		  <span class="mid">{{Session::get('fullname')}}</span>
+		  <span class="bot">Client</span>
 	  </div>
 	</div>
 	</div>
