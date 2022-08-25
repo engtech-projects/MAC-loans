@@ -131,7 +131,7 @@ class TestDataSeeder extends Seeder
             ]
         ]);
 
-        DB::table('loan_account')->insert([
+        DB::table('loan_accounts')->insert([
             [
                 'account_num' => '001-001-0000001',
                 'date_release' => '2022-07-27',
