@@ -56,7 +56,7 @@ Route::middleware(['auth:sanctum'])->group( function () {
     // loan account
     Route::get('account/show/{account}', [LoanAccountController::class, 'showLoanAccount']);
     Route::post('account/create/{borrower}', [LoanAccountController::class, 'createLoanAccount']);
-    Route::put('account/update/{account}', [LoanAccountController::class, 'updateLoanAccount']);
+    Route::post('account/update/{account}', [LoanAccountController::class, 'updateLoanAccount']);
     Route::get('account/statement/{borrower}', [LoanAccountController::class, 'statement']);
 
     // override release
@@ -79,8 +79,9 @@ Route::middleware(['auth:sanctum'])->group( function () {
     Route::post('report/transaction/', [ReportsController::class, 'transactionReports']);
     Route::post('report/release/', [ReportsController::class, 'releaseReports']);
     // Route::post('report/repayment/', [ReportsController::class, 'repaymentReports']);
-
+	Route::post('uploadfile/{id}', [LoanAccountController::class, 'uploadFile']);
 });
+
 Route::resource('borrower', BorrowerController::class);
 // Route::resource('products', ProductController::class);
 // Route::resource('centers', CenterController::class);

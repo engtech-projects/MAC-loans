@@ -297,7 +297,7 @@
 									<div class="d-flex flex-column flex-lg-row align-items-center justify-content-between">
 										<div class="d-flex align-items-center">
 											<span class="text-bold mr-10" style="font-size:60px;color:#263f52;line-height:1;">P</span>
-											<input required v-model="payment.amount_applied" type="number" class="form-control form-input mw-250" id="transactionDate">
+											<input @blur="payment.amount_applied=payment.amount_applied==''?0:payment.amount_applied;distribute()" required v-model="payment.amount_applied" type="number" class="form-control form-input mw-250" id="transactionDate">
 										</div>
 									</div>
 								</div>
@@ -713,38 +713,40 @@ export default {
 			this.payment.short_principal = 0;
 			this.payment.advance_interest = 0;
 			this.payment.advance_principal = 0;
-			if(amount >= this.loanAccount.current_amortization.penalty){
-				if(!this.waive.penalty){
-					amount -= this.loanAccount.current_amortization.penalty;
-					this.payment.penalty = this.loanAccount.current_amortization.penalty;
-				}		
-				if(amount >= this.pdi){
-					if(!this.waive.pdi){
-						amount -= this.pdi;
-						this.payment.pdi = this.pdi;
-					}	
-					if(amount >= this.totalInterest){
-						this.payment.interest = this.totalInterest;
-						this.payment.interest = this.payment.interest - this.payment.rebates < 0? 0 : this.payment.interest - this.payment.rebates;
-						amount -= this.payment.interest;
-						if(amount >= this.totalPrincipal){
-							this.payment.principal = amount;
-							this.payment.advance_principal = amount - this.totalPrincipal;
+			if(this.payment.payment_applied != ''){
+				if(amount >= this.loanAccount.current_amortization.penalty){
+					if(!this.waive.penalty){
+						amount -= this.loanAccount.current_amortization.penalty;
+						this.payment.penalty = this.loanAccount.current_amortization.penalty;
+					}		
+					if(amount >= this.pdi){
+						if(!this.waive.pdi){
+							amount -= this.pdi;
+							this.payment.pdi = this.pdi;
+						}	
+						if(amount >= this.totalInterest){
+							this.payment.interest = this.totalInterest;
+							this.payment.interest = this.payment.interest - this.payment.rebates < 0? 0 : this.payment.interest - this.payment.rebates;
+							amount -= this.payment.interest;
+							if(amount >= this.totalPrincipal){
+								this.payment.principal = amount;
+								this.payment.advance_principal = amount - this.totalPrincipal;
+							}else{
+								this.payment.principal = amount;
+								this.payment.short_principal = this.totalPrincipal - amount;
+							}
 						}else{
-							this.payment.principal = amount;
-							this.payment.short_principal = this.totalPrincipal - amount;
+							this.payment.interest = amount;
+							this.payment.short_interest = this.totalInterest - amount;
+							this.payment.short_principal = this.totalPrincipal;
+							this.payment.interest = this.payment.interest - this.payment.rebates < 0? 0 : this.payment.interest - this.payment.rebates;
 						}
 					}else{
-						this.payment.interest = amount;
-						this.payment.short_interest = this.totalInterest - amount;
-						this.payment.short_principal = this.totalPrincipal;
-						this.payment.interest = this.payment.interest - this.payment.rebates < 0? 0 : this.payment.interest - this.payment.rebates;
+						this.payment.pdi = amount;
 					}
 				}else{
-					this.payment.pdi = amount;
+					this.payment.penalty = amount + 0;
 				}
-			}else{
-				this.payment.penalty = amount;
 			}
 		},
 		pay:function(){
@@ -814,7 +816,9 @@ export default {
 	},
 	watch:{
 		'payment.amount_applied':function(newValue){
-			this.distribute();
+			if(newValue != ''){
+				this.distribute();
+			}
 		},
 		'loanAccount.loan_account_id':function(newValue){
 			this.payment.total_payable = this.loanAccount.current_amortization.interest + this.loanAccount.current_amortization.principal;
