@@ -165,6 +165,9 @@ Vue.mixin({
 		baseURL:function(){
 			var href = document.getElementById('baseUrl').href;
 			return href.slice(-1)=='/'?href:href+'/';
+		},
+		extractFileName:function(str){
+			return str.split('\\').pop().split('/').pop();
 		}
 	}
 })

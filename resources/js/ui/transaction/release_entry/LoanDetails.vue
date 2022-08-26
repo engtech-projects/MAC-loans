@@ -367,7 +367,7 @@ export default {
 			this.setPrepaidInterest();
 			this.loanDetails.status = 'pending';
 			if(this.loanDetails.loan_account_id){
-					axios.put(this.baseURL() + 'api/account/update/' + this.loanDetails.loan_account_id, this.loanDetails, {
+					axios.post(this.baseURL() + 'api/account/update/' + this.loanDetails.loan_account_id, this.loanDetails, {
 						headers: {
 							'Authorization': 'Bearer ' + this.token,
 							'Content-Type': 'application/json',

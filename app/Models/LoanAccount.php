@@ -135,7 +135,7 @@ class LoanAccount extends Model
    }
 
    public function setDocs($borrowerId, $loanAccountId, $files) {
-
+	
       $root = storage_path('app/public/');
       $main = 'borrowers/';
       $identifier = $borrowerId . '/';
@@ -148,8 +148,7 @@ class LoanAccount extends Model
          // create folder
          File::makeDirectory($root . $dir, 0777, true, true);
       }
-
-      
+	  
       foreach ($files as $file) {
          $name = $file->getClientOriginalName();
          $file->storeAs('public/' . $dir, $name);
