@@ -422,7 +422,7 @@ class LoanAccount extends Model
          $delinquents = $this->getPrevAmortization($loanAccountId, $amortizationId, ['delinquent'], $lastPaidAmort->id, false, 'DESC');
 
       } else {
-         $delinquents = $this->getPrevAmortization($loanAccountId, $amortizationId, ['delinquent']);
+         $delinquents = $this->getPrevAmortization($loanAccountId, $amortizationId, ['delinquent'], null, false, 'DESC');
       }
 
       $ids = [];
