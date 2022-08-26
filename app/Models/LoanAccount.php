@@ -617,4 +617,3 @@ class LoanAccount extends Model
 }
 
 
-

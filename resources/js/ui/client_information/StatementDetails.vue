@@ -2094,7 +2094,7 @@
 						<div class="d-flex justify-content-between bb-dark-8">
 							<span class="text-block text-bold pb-10">Uploaded Documents</span>
 							<form method="post" enctype="multipart/form-data">
-								<input @change="fileChange($event)" type="file" class="hide" id="fileUpload">
+								<input @change="fileChange($event)" type="file" class="hide" id="fileUploadDocs">
 							</form>
 							<i data-dismiss="modal" class="fa fa-times"></i>
 						</div>
@@ -2109,10 +2109,19 @@
 										<span class="text-center text-sm">{{concatW(fileName)}}</span>
 									</div>
 								</div>
-								<button :disabled="fileName==''" @click="uploadFile()" id="fileUploadBtn" class="btn btn-yellow">Upload File</button>
+								<button :disabled="fileName==''" @click="uploadFile()" id="fileUploadDocsBtn" class="btn btn-yellow">Upload File</button>
 							</div>
-							<div class="d-flex flex-1 bg-very-light justify-content-center align-items-center" style="min-height:500px;padding:16px">
-								<span v-if="!loanDetails.docs">No uploaded files yet.</span>
+							<div class="d-flex flex-1 bg-very-light" style="min-height:500px;padding:16px">
+								<div v-if="!loanDetails.docs" class="d-flex justify-content-center align-items-center" style="width:100%">
+									<span >No uploaded files yet.</span>
+								</div>
+								
+								<div class="d-flex flex-wrap">
+									<div v-for="(doc, dc) in loanDetails.docs" :key="dc" class="d-flex flex-column align-items-center" style="padding:16px;background-color:#f2f2f2;">
+										<a :href="doc"><img :src="baseURL() + '/img/fileicon.png'" alt="" style="max-width:95px;" class="mb-5"></a>
+										<b style="font-size:12px;"><i>{{extractFileName(doc)}}</i></b>
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -2130,6 +2139,7 @@ export default {
 	props:['borrower_id','token'],
 	data(){
 		return {
+			loanAccount:{},
 			activeBrowse:false,
 			fileName:'',
 			baseUrl: this.baseURL(),
@@ -2270,16 +2280,18 @@ export default {
 			});
 		},
 		async uploadFile(){
-			await axios.put(this.baseURL() + 'api/account/update/' + this.loanDetails.loan_account_id, this.loanDetails, {
+			await axios.post(this.baseURL() + 'api/account/update/' + this.loanDetails.loan_account_id, this.loanAccount, {
 					headers: {
 						'Authorization': 'Bearer ' + this.token,
-						'Content-Type': 'application/json',
-						'Accept': 'application/json'
+						'contentType': "multipart/form-data"
 					}
 				})
 				.then(function (response) {
 					console.log(response.data);
 					this.notify('','File has been successfully uploaded', 'success');
+					var file = document.getElementById('fileUploadDocs');
+					file.value = '';
+					this.fetchAccount(this.loanDetails.loan_account_id);
 				}.bind(this))
 				.catch(function (error) {
 					console.log(error);
@@ -2287,14 +2299,12 @@ export default {
 		},
 		fileChange:function(e){
 			if(e.target.files.length){
-				let file = e.target.files[0];
+				this.loanDetails.loanfiles = [];
 				let formData = new FormData();
-				formData.append('loanfiles', file);
-				this.loanDetails.loanfiles = formData;
-				// this.loanDetails.loanfiles = e.target.files;
-				// this.loanDetails.loanfiles.push(e.target.files[0]);
+				formData.append('loanfiles', e.target.files[0]);
+				formData.append('data',JSON.stringify(this.loanDetails));
+				this.loanAccount = formData;
 				this.fileName = e.target.files[0].name;
-				console.log(this.loanDetails.loanfiles);
 			}
 			return
 		},
@@ -2411,7 +2421,7 @@ export default {
 		},
 
 		browseFile(){
-			document.getElementById('fileUpload').click();
+			document.getElementById('fileUploadDocs').click();
 		}
 	},
 	computed:{
@@ -2480,6 +2490,7 @@ export default {
 		}
 	},
 	mounted(){
+		console.log(this.extractFileName("http://mac-loans.test/storage/borrowers/1/12/hello.pdf"));
 		this.fetchBorrower();
 	}
 }
