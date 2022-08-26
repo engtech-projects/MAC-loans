@@ -297,7 +297,7 @@
 									<div class="d-flex flex-column flex-lg-row align-items-center justify-content-between">
 										<div class="d-flex align-items-center">
 											<span class="text-bold mr-10" style="font-size:60px;color:#263f52;line-height:1;">P</span>
-											<input @blur="payment.amount_applied=payment.amount_applied==''?0:payment.amount_applied;distribute()" required v-model="payment.amount_applied" type="number" class="form-control form-input mw-250" id="transactionDate">
+											<input @blur="payment.amount_applied=payment.amount_applied==''?0:payment.amount_applied;distribute()" required v-model="payment.amount_applied" type="number" class="form-control form-input mw-250" id="transactionDate" step=".01">
 										</div>
 									</div>
 								</div>
