@@ -368,8 +368,18 @@ class LoanAccount extends Model
                $amortization->short_interest += $isPaid->short_interest;
             }
          }
+         
+         $currentDay = Carbon::createFromFormat('Y-m-d', Carbon::now()->format('Y-m-d'));
+         $dateSched = Carbon::createFromFormat('Y-m-d', $amortization->amortization_date);
+         $dayDiff = $dateSched->diffInDays($currentDay, false);
+         $penaltyMissed = $amortization->delinquent['missed'];
+         if($dayDiff > 10){
+            $penaltyMissed = array_merge($amortization->delinquent['missed'], [$amortization->id]);
+            
+         }
+         $amortization->penalty = $this->getPenalty($penaltyMissed, ($amortization->principal + $amortization->interest));
 
-         $amortization->penalty = $this->getPenalty($amortization->delinquent['missed'], ($amortization->principal + $amortization->interest));
+         // $amortization->penalty = $this->getPenalty($amortization->delinquent['missed'], ($amortization->principal + $amortization->interest));
          $amortization->total = ($amortization->principal + $amortization->interest) + ( $amortization->short_principal + $amortization->short_interest);
          $amortization->totalPaid = $this->getPaymentTotal($this->loan_account_id);
          $amortization->outstandingBalance = $this->outstandingBalance($this->loan_account_id);
@@ -412,7 +422,7 @@ class LoanAccount extends Model
          $delinquents = $this->getPrevAmortization($loanAccountId, $amortizationId, ['delinquent'], $lastPaidAmort->id, false, 'DESC');
 
       } else {
-         $delinquents = $this->getPrevAmortization($loanAccountId, $amortizationId, ['delinquent']);
+         $delinquents = $this->getPrevAmortization($loanAccountId, $amortizationId, ['delinquent'], null, false, 'DESC');
       }
 
       $ids = [];

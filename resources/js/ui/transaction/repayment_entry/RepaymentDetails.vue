@@ -782,7 +782,7 @@ export default {
 			return this.loanAccount.current_amortization.interest + this.loanAccount.current_amortization.short_interest;
 		},
 		totalDue:function(){
-			return this.totalPrincipal + this.totalInterest + this.pdi + this.loanAccount.current_amortization.penalty;
+			return this.totalPrincipal + this.totalInterest + this.pdi + this.penalty;
 		},
 		pdi:function(){
 			return 0;
@@ -821,7 +821,7 @@ export default {
 			}
 		},
 		'loanAccount.loan_account_id':function(newValue){
-			this.payment.total_payable = this.loanAccount.current_amortization.interest + this.loanAccount.current_amortization.principal;
+			this.payment.total_payable = this.totalDue;
 			this.payment.amortization_id = this.loanAccount.current_amortization.id;
 		},
 		'waive.pdi':function(newValue){
