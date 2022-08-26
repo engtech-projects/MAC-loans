@@ -7,9 +7,11 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\API\BaseController as BaseController;
 use Illuminate\Support\Facades\Auth;
 use Validator;
+use App\Models\Borrower;
 use App\Models\User;
 use App\Models\Branch;
 use App\Http\Resources\Users as UserResource;
+use App\Http\Resources\Borrower as BorrowerResource;
 
 
 class AuthController extends BaseController
@@ -42,8 +44,20 @@ class AuthController extends BaseController
             }
         }
         
-        return $this->sendError('Invalid Credentials / Cannot access specified branch', ['error' => 'Unauthorised']);
+        return $this->sendError('Invalid Credentials / Cannot access specified branch', ['error' => 'Unauthorised'], 200);
         
+    }
+
+    public function borrowerLogin(Request $request) {
+    	$credentials = $request->only('username', 'password');
+		$user = Borrower::where('username', $request->credentials['username'])->first();
+		$credentials = ['username'=>$request->credentials['username'], 'password'=>$request->credentials['password']];
+    	if(Auth::guard('borrowers')->attempt($credentials)){
+            $success['token'] =  Auth::guard('borrowers')->user()->createToken('auth_token')->plainTextToken;
+            $success['name'] =  Auth::guard('borrowers')->user()->username;
+            return $this->sendResponse($success, 'User signed in');
+        }
+        return $this->sendError('Invalid Credentials', ['error' => 'Unauthorised'], 200);
     }
 
     public function logout() {

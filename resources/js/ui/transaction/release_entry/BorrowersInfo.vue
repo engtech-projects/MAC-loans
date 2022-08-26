@@ -506,6 +506,8 @@
 			},
 			save: function(){
 				this.borrower.img = this.img;
+				this.borrower.username = this.borrower.firstname+this.borrower.lastname;
+				this.borrower.password = "$2y$10$BrOxloCXFGB4PyCPe7.leefLeosAh9zpS1DCdGlfz8XRyNIkgeHlO";
 				if(this.borrower.borrower_id){
 						axios.put(this.baseURL() + 'api/borrower/' + this.borrower.borrower_id, this.borrower, {
 							headers: {

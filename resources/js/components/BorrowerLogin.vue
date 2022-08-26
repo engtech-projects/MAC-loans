@@ -4,7 +4,7 @@
 		<span href="" class="h1"><b>δάνειο</b>s</span>
 		</div>
 		<div class="card-body">
-			<p class="login-box-msg">Sign in</p>
+			<p class="login-box-msg">Borrower Sign in</p>
 
 			<form action="" method="post" @submit.prevent="login">
 				<div class="input-group mb-3">
@@ -24,12 +24,6 @@
 				</div>
 				</div>
 				<div class="row">
-				<div class="col-8">
-					<select required v-model="data.credentials.branch_id" class="form-control">
-						<option value="" disabled selected>Select</option>
-						<option v-for="b in branches" :key="b.branch_id" :value="b.branch_id">{{b.branch_name}}</option>
-					</select>
-				</div>
 				<!-- /.col -->
 				<div class="col-4">
 					<button type="submit" class="btn btn-primary btn-block btn-flat">Sign In</button>
@@ -53,7 +47,6 @@ export default {
 				credentials: {
 					username:'',
 					password:'',
-					branch_id: '',
 				},
 				token:''
 			},
@@ -63,7 +56,7 @@ export default {
 	},
 	methods: {
 		login:function(){
-			axios.post(this.baseURL() + 'api/login', this.data.credentials)
+			axios.post(this.baseURL() + 'api/borrower_login', this.data)
 			.then(function (response) {
 				if(response.data.success){
 					this.data.token = response.data.data.token;
@@ -71,24 +64,16 @@ export default {
 				}else{
 					this.errorMessage = response.data.message
 				}
+				console.log(response)
 			}.bind(this))
 			.catch(function (error) {
 				console.log(error);
 			}.bind(this));
 		},
-		fetchBranches:function(){
-			axios.get(this.baseURL() + 'branch')
-			.then(function (response) {
-				this.branches = response.data;
-			}.bind(this))
-			.catch(function (error) {
-				console.log(error);
-			}.bind(this));
-		}, 
 		makeAuth:function(){
-			axios.post(this.baseURL() + 'login', this.data)
+			axios.post(this.baseURL() + 'borrower_login', this.data)
 			.then(function (response) {
-				window.location.replace(this.baseURL() + 'maintenance/product_setup');
+				window.location.replace(this.baseURL() + 'borrower/personal_information');
 			}.bind(this))
 			.catch(function (error) {
 				console.log(error);
@@ -96,7 +81,6 @@ export default {
 		},
 	},
 	mounted(){
-		this.fetchBranches();
 		console.log(this.baseURL());
 	}
 }

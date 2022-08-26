@@ -17,6 +17,7 @@ use App\Http\Controllers\API\ReportsController;
 use App\Http\Controllers\API\AccessibilityController;
 use App\Http\Controllers\API\ChartOfAccountsController;
 use App\Http\Controllers\API\GLController;
+use App\Http\Controllers\BorrowerLoginController;
 
 
 /*
@@ -32,6 +33,7 @@ use App\Http\Controllers\API\GLController;
 
 # authentication
 Route::post('login', [AuthController::class, 'login'])->name('api.login');
+Route::post('borrower_login', [AuthController::class, 'borrowerLogin'])->name('api.borrowerLogin');
 
 
 Route::middleware(['auth:sanctum'])->group( function () {
