@@ -66,10 +66,8 @@ class LoanAccountController extends BaseController
         
     }
 
-	public function updateLoanAccount(Request $request, LoanAccount $account) {
-		if($request->input('data')){
-			$request->request->add(objToArray(json_decode($request->input('data'))));
-		}
+    public function updateLoanAccount(Request $request, LoanAccount $account) {
+
         $account->fill($request->input());
         $account->save();
 		$document = Document::find($request->input('documents')['id']);
@@ -79,10 +77,12 @@ class LoanAccountController extends BaseController
 		$document->card_no = ($request->input('documents')['card_no']);
 		$document->promissory_number = ($request->input('documents')['promissory_number']);
 		$document->save();
+		dd($request->loanfiles);
         if( $request->hasFile('loanfiles') ) {
-			$files[] = $request->file('loanfiles');
-            $account->setDocs($account->borrower_id, $account->loan_account_id, $files);
+			dd($request->loanfiles);
+            $account->setDocs($account->borrower_id, $account->loan_account_id, $request->file('loanfiles'));
         }
+        
         return $this->sendResponse(new LoanAccountResource($account), 'Account Updated.');
     }
 
