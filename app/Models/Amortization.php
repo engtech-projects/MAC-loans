@@ -35,8 +35,8 @@ class Amortization extends Model
             $amortizationDateStart = Carbon::createFromFormat('Y-m-d', $account->date_release);
         }
 
-        $principal = round($account->loan_amount / $installments);
-        $interest = round($interestAmount / $installments);
+        $principal = ceil($account->loan_amount / $installments);
+        $interest = ceil($interestAmount / $installments);
         $principalBalance = $account->loan_amount;
         $interestBalance = $interestAmount;
         $totalAmount = $account->loan_amount + $interestAmount;
