@@ -168,10 +168,20 @@ export default {
 			})
 			.then(function (response) {
 				console.log(response.data);
+				this.notify('',response.data.message, 'success');
+				this.$emit('reloadPayments');
 			}.bind(this))
 			.catch(function (error) {
 				console.log(error);
 			}.bind(this));
+		},
+		notify:function(title, text, type){
+			this.$notify({
+				group: 'foo',
+				title: title,
+				text: text,
+				type: type,
+			});
 		},
 	}
 	
