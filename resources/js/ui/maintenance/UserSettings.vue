@@ -8,7 +8,7 @@
 			<input type="text" class="form-control" id="searchBar" placeholder="Search">
 			<div><i class="fa fa-search"></i></div>
 		</div>
-		<table class="table table-stripped" id="clientsList">
+		<table class="table table-stripped table-hover" id="clientsList">
 			<thead>
 				<!-- <th>Account #</th> -->
 				<th>Full Name</th>
@@ -19,7 +19,7 @@
 			</thead>
 			<tbody>
 				<tr v-for="account in accounts" :key="account.id">
-					<td><a href="#">{{account.firstname + ' ' + account.lastname}}</a></td>
+					<td><a @click.prevent="" href="#">{{account.firstname + ' ' + account.lastname}}</a></td>
 					<td><span v-for="branch in account.branch" :key="branch.branch_id">{{branch.branch_name}}</span></td>
 					<td>{{account.username}}</td>
 					<td>**********************************</td>
@@ -137,6 +137,7 @@ export default {
 	data(){
 		return {
 			accounts:[],
+			account:{},
 		}
 	},
 	methods:{
