@@ -38,7 +38,7 @@
 							<td><input v-model="b.checked" type="checkbox" class="form-control form-box"></td>
 							<td>{{b.account_num}}</td>
 							<td><a href="#">{{b.borrower.firstname + ' ' + b.borrower.lastname}}</a></td>
-							<td><span @click="loanAccount=b" class="text-green c-pointer">Select</span></td>
+							<td><span @click="setLoanAccount(b)" class="text-green c-pointer">Select</span></td>
 						</tr>
 					</tbody>
 				</table>
@@ -147,6 +147,9 @@ export default {
 				},
 				account_officer:{
 					name:'',
+				},
+				current_amortization:{
+					principal_balance:0,
 				}
 			},
 			dates:[],
@@ -154,6 +157,15 @@ export default {
 		}
 	},
 	methods:{
+		setLoanAccount:function(account){
+			if(!account.current_amortization){
+				account.current_amortization = {
+					vouchers:[],
+					principal_balance:0,
+				}
+			}
+			this.loanAccount = account;
+		},
 		notify:function(title, text, type){
 			this.$notify({
 				group: 'foo',
@@ -189,6 +201,12 @@ export default {
 		},   
 		setCheckbox:function(data){
 			for(let i in data){
+				if(!data[i].current_amortization){
+					data[i].current_amortization = {
+						vouchers:[],
+						principal_balance:0,
+					}
+				}
 				data[i].checked = false;
 			}
 			return data;
@@ -298,6 +316,9 @@ export default {
 				},
 				account_officer:{
 					name:'',
+				},
+				current_amortization:{
+					principal_balance:0,
 				}
 			};				
 		},

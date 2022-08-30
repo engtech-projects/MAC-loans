@@ -707,7 +707,7 @@ export default {
 			})
 			.then(function (response) {
 				console.log(response.data.data);
-				this.vouchers = response.data.data.cash_voucher;
+				this.vouchers = !response.data.data.cash_voucher?[]:response.data.data.cash_voucher;
 			}.bind(this))
 			.catch(function (error) {
 				console.log(error);
