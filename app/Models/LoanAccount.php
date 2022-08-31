@@ -394,7 +394,7 @@ class LoanAccount extends Model
 
       $amortizations = Amortization::where('loan_account_id', $loanAccountId)
                         ->whereIn('status', $status)
-                        ->where('id', '<', $amortizationId);
+                        ->where('id', '<=', $amortizationId);
 
       if( $refId ) {
 
@@ -559,19 +559,11 @@ class LoanAccount extends Model
    }
 
    public function getAdvancePrincipal($loanAccountId, $amortizationId) {
-      // get last paid amortization
-      $lastPaidAmort = $this->getPrevAmortization($loanAccountId, $amortizationId, ['paid'], null, true, 'DESC');
       $principal = 0;
-      if ( $lastPaidAmort ){
-         // get payment info
-         $paymentInfo = Payment::where([ 'loan_account_id' => $loanAccountId, 'amortization_id' => $lastPaidAmort->id ])
-                                 ->orderBy('payment_id', 'DESC')
-                                 ->first();
-
-         $principal = (isset($paymentInfo->advance_principal) ? $paymentInfo->advance_principal : 0);
-      }
-
-      return $principal;
+      $paymentInfo = Payment::where([ 'loan_account_id' => $loanAccountId, 'amortization_id' => $lastPaidAmort->id ])
+                              ->orderBy('payment_id', 'DESC')
+                              ->first();
+      return $paymentInfo ? $paymentInfo->advance_principal : 0;
    }
 
    public function getPDI($amount, $rate, $days) {
