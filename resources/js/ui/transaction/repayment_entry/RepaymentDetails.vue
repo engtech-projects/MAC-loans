@@ -704,7 +704,7 @@ export default {
 			}.bind(this));
 		},
 		distribute:function(){
-			var amount = this.loanAccount.current_amortization?parseFloat(this.payment.amount_applied) + parseFloat(this.loanAccount.current_amortization.advance_principal):parseFloat(this.payment.amount_applied);
+			var amount = parseFloat(this.payment.amount_applied);
 			this.payment.pdi = 0;
 			this.payment.principal = 0;
 			this.payment.interest = 0;
@@ -747,6 +747,8 @@ export default {
 				}else{
 					this.payment.penalty = amount + 0;
 				}
+				this.payment.principal += this.previousAdvPrincipal;
+				this.payment.advance_principal += this.previousAdvPrincipal;
 			}
 		},
 		pay:function(){
@@ -774,7 +776,7 @@ export default {
 	computed:{
 		totalPrincipal:function(){
 			if(this.loanAccount.current_amortization){
-				return this.loanAccount.current_amortization.principal + this.loanAccount.current_amortization.short_principal;
+				return this.loanAccount.current_amortization.principal + this.loanAccount.current_amortization.short_principal - this.loanAccount.current_amortization.advance_principal < 0 ? 0 : this.loanAccount.current_amortization.principal + this.loanAccount.current_amortization.short_principal - this.loanAccount.current_amortization.advance_principal;
 			}
 			return this.loanAccount.current_amortization.principal;
 		},
@@ -812,6 +814,9 @@ export default {
 		},
 		lastTransactionDate:function(){
 			return this.loanAccount.current_amortization.lastPayment? this.dateToMDY2(new Date()) : 'None';
+		},
+		previousAdvPrincipal:function(){
+			return Math.abs(this.loanAccount.current_amortization.principal + this.loanAccount.current_amortization.short_principal - this.loanAccount.current_amortization.advance_principal < 0 ? this.loanAccount.current_amortization.principal + this.loanAccount.current_amortization.short_principal - this.loanAccount.current_amortization.advance_principal : 0);
 		}
 	},
 	watch:{
