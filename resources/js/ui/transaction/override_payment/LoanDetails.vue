@@ -107,21 +107,21 @@
 						<span class="font-20 lh-1">P {{formatToCurrency(ppayment.interest)}}</span>
 					</div>
 					<div class="d-flex flex-column flex-1 mr-24">
-						<span class="font-20 lh-1 pb-5 mb-5" style="border-bottom:1px solid #555;">PENALTY / PDI</span>
+						<span class="font-20 lh-1 pb-5 mb-5" style="border-bottom:1px solid #555;">PENALTY</span>
+						<span class="font-20 lh-1">P {{formatToCurrency(ppayment.penalty)}}</span>
+					</div>
+					<div class="d-flex flex-column flex-1 mr-24">
+						<span class="font-20 lh-1 pb-5 mb-5" style="border-bottom:1px solid #555;">PDI</span>
 						<span class="font-20 lh-1">P {{formatToCurrency(ppayment.pdi)}}</span>
 					</div>
 					<div class="d-flex flex-column flex-1 mr-24">
-						<span class="font-20 lh-1 pb-5 mb-5" style="border-bottom:1px solid #555;">OTHERS</span>
-						<span class="font-20 lh-1">P 0.00</span>
+						<span class="font-20 lh-1 pb-5 mb-5" style="border-bottom:1px solid #555;">OVERPAYMENT</span>
+						<span class="font-20 lh-1">P {{formatToCurrency(0)}}</span>
 					</div>
-					<div class="d-flex flex-column flex-1 mr-24">
-						<span class="font-20 lh-1 pb-5 mb-5" style="border-bottom:1px solid #555;">DISCOUNT</span>
-						<span class="font-20 lh-1">P {{formatToCurrency(ppayment.rebates)}}</span>
-					</div>
-					<div class="d-flex flex-column flex-1">
+					<!-- <div class="d-flex flex-column flex-1">
 						<span class="font-20 lh-1 pb-5 mb-5" style="border-bottom:1px solid #555;">INSURANCE</span>
 						<span class="font-20 lh-1">P 0.00</span>
-					</div>
+					</div> -->
 				</div>
 				<div class="p-16 bg-yellow d-flex">
 					<div class="d-flex flex-column flex-1 mr-24">
@@ -132,17 +132,17 @@
 						<span class="font-20 text-primary-dark">Rebates</span>
 						<span>P {{formatToCurrency(ppayment.rebates)}}</span>
 					</div>
-					<div class="d-flex flex-column flex-1 mr-16">
+					<!-- <div class="d-flex flex-column flex-1 mr-16">
 						<span class="font-20 text-primary-dark">Discount</span>
 						<span>P 0.00</span>
-					</div>
+					</div> -->
 					<div class="d-flex flex-column flex-1 mr-16">
-						<span class="font-20 text-primary-dark">Wave: PDI</span>
-						<span>P 0.00</span>
+						<span class="font-20 text-primary-dark">Waive: PDI</span>
+						<span>P {{formatToCurrency(ppayment.pdi_approval_no ? ppayment.pdi : 0 )}}</span>
 					</div>
 					<div class="d-flex flex-column flex-1">
-						<span class="font-20 text-primary-dark">Prepd</span>
-						<span>P 0.00</span>
+						<span class="font-20 text-primary-dark">Waive: Penalty</span>
+						<span>P {{formatToCurrency(ppayment.penalty_approval_no ? ppayment.penalty : 0 )}}</span>
 					</div>
 				</div>
 			</div>
