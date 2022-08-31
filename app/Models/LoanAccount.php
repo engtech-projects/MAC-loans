@@ -431,6 +431,7 @@ class LoanAccount extends Model
       $totalPrincipal = 0;
       $totalInterest = 0;
       $missed = [];
+      $advancePrincipal = 0;
 
 
       // identify missed payments
@@ -452,6 +453,7 @@ class LoanAccount extends Model
                      
                      $totalPrincipal += $payment->short_principal;
                      $totalInterest += $payment->short_interest;
+                     $advancePrincipal += $payment->advance_principal;
 
                  break;
                }
