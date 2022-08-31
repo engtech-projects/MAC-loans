@@ -748,6 +748,7 @@ export default {
 					this.payment.penalty = amount + 0;
 				}
 				this.payment.principal += this.previousAdvPrincipal;
+				this.payment.advance_principal += this.previousAdvPrincipal;
 			}
 		},
 		pay:function(){
