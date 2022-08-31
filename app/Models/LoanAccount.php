@@ -392,9 +392,14 @@ class LoanAccount extends Model
 
    public function getPrevAmortization($loanAccountId, $amortizationId, $status = ['open'], $refId = null, $single = false, $order = 'ASC') {
 
+      $cond = '<';
+      $current = Amortization::find($amortizationId);
+      if($current->status === 'delinquent'){
+         $cond = '<=';
+      }
       $amortizations = Amortization::where('loan_account_id', $loanAccountId)
                         ->whereIn('status', $status)
-                        ->where('id', '<=', $amortizationId);
+                        ->where('id', $cond, $amortizationId);
 
       if( $refId ) {
 
@@ -560,7 +565,7 @@ class LoanAccount extends Model
 
    public function getAdvancePrincipal($loanAccountId, $amortizationId) {
       $principal = 0;
-      $paymentInfo = Payment::where([ 'loan_account_id' => $loanAccountId, 'amortization_id' => $lastPaidAmort->id ])
+      $paymentInfo = Payment::where([ 'loan_account_id' => $loanAccountId, 'status' => 'paid'])
                               ->orderBy('payment_id', 'DESC')
                               ->first();
       return $paymentInfo ? $paymentInfo->advance_principal : 0;
