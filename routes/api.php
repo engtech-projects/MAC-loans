@@ -18,6 +18,7 @@ use App\Http\Controllers\API\AccessibilityController;
 use App\Http\Controllers\API\ChartOfAccountsController;
 use App\Http\Controllers\API\GLController;
 use App\Http\Controllers\BorrowerLoginController;
+use App\Http\Controllers\API\EODController;
 
 
 /*
@@ -80,6 +81,9 @@ Route::middleware(['auth:sanctum'])->group( function () {
     Route::post('report/release/', [ReportsController::class, 'releaseReports']);
     // Route::post('report/repayment/', [ReportsController::class, 'repaymentReports']);
 	Route::post('uploadfile/{id}', [LoanAccountController::class, 'uploadFile']);
+
+    Route::get('eod/eodtransaction/{branch_id}', [EODController::class, 'endOfTransaction']);
+
 });
 
 Route::resource('borrower', BorrowerController::class);
