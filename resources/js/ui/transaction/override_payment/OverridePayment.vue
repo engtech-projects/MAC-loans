@@ -39,7 +39,7 @@
 					</tbody>
 				</table>
 				<div class="d-flex flex-row-reverse sep-thin pb-10 mb-16" style="border-bottom-color:#CCC!important;">
-					<a href="#" class="btn btn-success">Batch Override</a>
+					<a href="#" @click="batchOverride()" class="btn btn-success">Batch Override</a>
 					<a href="#" data-toggle="modal" data-target="#overrideDetailsModal" class="btn btn-primary min-w-150 mr-16">View</a>
 				</div>
 				<section class="light-bb mb-16">
@@ -134,7 +134,7 @@
 					</div>
 				</section>
 			</div>
-			<overridepayment-details :ppayment="payment" :token="token"></overridepayment-details>
+			<overridepayment-details :ppayment="payment" :token="token" @reloadPayments="fetchPayments();resetPayment()"></overridepayment-details>
 		</div>
 	</div>
 </template>
@@ -159,6 +159,16 @@ export default {
 		}
 	},
 	methods:{
+		resetPayment:function(){
+			
+			this.payment = {
+				payment_id:null,
+				borrower_num:'##############',
+				firstname:'',
+				lastname:'',
+				address:'',
+			};
+		},
 		fetchPayments:function(){
 			axios.post(this.baseURL() + 'api/payment/list',this.filter,{
 			headers: {
@@ -189,6 +199,37 @@ export default {
 				data[i].checked = false;
 			}
 			return data;
+		},
+		batchOverride:function(){
+			let checkedPayments = [];
+			this.payments.map(function(payment){
+				if(payment.checked){
+					checkedPayments.push(payment);
+				}
+			}.bind(this))
+			axios.post(this.baseURL() + 'api/payment/override',checkedPayments,{
+			headers: {
+				'Authorization': 'Bearer ' + this.token,
+				'Content-Type': 'application/json',
+				'Accept': 'application/json'
+				}
+			})
+			.then(function (response) {
+				console.log(response.data);
+				this.notify('',response.data.message, 'success');
+				this.fetchPayments();
+			}.bind(this))
+			.catch(function (error) {
+				console.log(error);
+			}.bind(this));
+		},
+		notify:function(title, text, type){
+			this.$notify({
+				group: 'foo',
+				title: title,
+				text: text,
+				type: type,
+			});
 		},
 	},
 	computed:{

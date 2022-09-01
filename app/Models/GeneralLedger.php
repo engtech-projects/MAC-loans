@@ -18,4 +18,27 @@ class GeneralLedger extends Model
 		'accounting',
 		'type',
     ];
+
+
+    public function ledger($type) {
+
+    	$glAccounts = GeneralLedger::where(['type' => $type])->get();
+
+    	$ledger = [];
+    	foreach ($glAccounts as $gl) {
+
+			$ledger[] = array(
+				'id' => ChartOfAccounts::where(['account_number' => $gl->code])->first()->account_id,
+				'acct' => $gl->code,
+				'title' => $gl->accounting,
+				'reference' => $gl->loans,
+				'sl' => '',
+				'debit' => 0,
+				'credit' => 0
+			);
+	    }
+
+    	return $ledger;
+    }
 }
+

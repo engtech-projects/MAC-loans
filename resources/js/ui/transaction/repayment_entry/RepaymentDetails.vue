@@ -297,7 +297,7 @@
 									<div class="d-flex flex-column flex-lg-row align-items-center justify-content-between">
 										<div class="d-flex align-items-center">
 											<span class="text-bold mr-10" style="font-size:60px;color:#263f52;line-height:1;">P</span>
-											<input @blur="payment.amount_applied=payment.amount_applied==''?0:payment.amount_applied;distribute()" required v-model="payment.amount_applied" type="number" class="form-control form-input mw-250" id="transactionDate">
+											<input @blur="payment.amount_applied=payment.amount_applied==''?0:payment.amount_applied;distribute()" required v-model="payment.amount_applied" type="number" class="form-control form-input mw-250" id="transactionDate" step=".01">
 										</div>
 									</div>
 								</div>
@@ -389,7 +389,7 @@
 														<span class="">Adv. Interest</span>
 														<span>:</span>
 													</div>
-													<span class="flex-1">P {{formatToCurrency(loanAccount.current_amortization.advance_interest)}}</span>
+													<span class="flex-1">P {{formatToCurrency(0)}}</span>
 												</div>
 											</div>
 											
@@ -498,15 +498,14 @@
 														<span class="pl-16">PDI</span>
 														<span>:</span>
 													</div>
-													<span class="flex-1">P {{formatToCurrency(0)}}</span>
-													<!-- <span class="flex-1">P {{formatToCurrency(pdi==0?loanAccount.current_amortization.pdi:0)}}</span> -->
+													<span class="flex-1">P {{formatToCurrency(this.waive.pdi?loanAccount.current_amortization.pdi:0)}}</span>
 												</div>
 												<div class="d-flex flex-row">
 													<div class="d-flex flex-row justify-content-between flex-1 mr-16">
 														<span class="pl-16">Penalty</span>
 														<span>:</span>
 													</div>
-													<span class="flex-1">P {{formatToCurrency(penalty==0?loanAccount.current_amortization.penalty:0)}}</span>
+													<span class="flex-1">P {{formatToCurrency(this.waive.penalty?loanAccount.current_amortization.penalty:0)}}</span>
 												</div>
 												
 											</div>
@@ -704,7 +703,7 @@ export default {
 			}.bind(this));
 		},
 		distribute:function(){
-			var amount = this.loanAccount.current_amortization.lastPayment?parseFloat(this.payment.amount_applied) + parseFloat(this.loanAccount.current_amortization.lastPayment.advance_principal):parseFloat(this.payment.amount_applied);
+			var amount = parseFloat(this.payment.amount_applied);
 			this.payment.pdi = 0;
 			this.payment.principal = 0;
 			this.payment.interest = 0;
@@ -747,6 +746,8 @@ export default {
 				}else{
 					this.payment.penalty = amount + 0;
 				}
+				this.payment.principal += this.previousAdvPrincipal;
+				this.payment.advance_principal += this.previousAdvPrincipal;
 			}
 		},
 		pay:function(){
@@ -774,7 +775,7 @@ export default {
 	computed:{
 		totalPrincipal:function(){
 			if(this.loanAccount.current_amortization){
-				return this.loanAccount.current_amortization.principal + this.loanAccount.current_amortization.short_principal - this.loanAccount.current_amortization.advance_principal
+				return this.loanAccount.current_amortization.principal + this.loanAccount.current_amortization.short_principal - this.loanAccount.current_amortization.advance_principal < 0 ? 0 : this.loanAccount.current_amortization.principal + this.loanAccount.current_amortization.short_principal - this.loanAccount.current_amortization.advance_principal;
 			}
 			return this.loanAccount.current_amortization.principal;
 		},
@@ -782,21 +783,20 @@ export default {
 			return this.loanAccount.current_amortization.interest + this.loanAccount.current_amortization.short_interest;
 		},
 		totalDue:function(){
-			return this.totalPrincipal + this.totalInterest + this.pdi + this.loanAccount.current_amortization.penalty;
+			return this.totalPrincipal + this.totalInterest + this.pdi + this.penalty;
 		},
 		pdi:function(){
-			return 0;
-			// return this.waive.pdi? 0 : this.loanAccount.current_amortization.pdi;
+			return this.waive.pdi? 0 : this.loanAccount.current_amortization.pdi;
 		},
 		penalty:function(){
 			return this.waive.penalty? 0 : this.loanAccount.current_amortization.penalty;
 		},
 		totalWaive:function(){
 			var val = 0;
-			if(this.pdi == 0){
-				// val += this.loanAccount.current_amortization.pdi;
+			if(this.waive.pdi){
+				val += this.loanAccount.current_amortization.pdi;
 			}
-			if(this.penalty == 0){
+			if(this.waive.penalty){
 				val += this.loanAccount.current_amortization.penalty;
 			}
 			return val;
@@ -812,6 +812,9 @@ export default {
 		},
 		lastTransactionDate:function(){
 			return this.loanAccount.current_amortization.lastPayment? this.dateToMDY2(new Date()) : 'None';
+		},
+		previousAdvPrincipal:function(){
+			return Math.abs(this.loanAccount.current_amortization.principal + this.loanAccount.current_amortization.short_principal - this.loanAccount.current_amortization.advance_principal < 0 ? this.loanAccount.current_amortization.principal + this.loanAccount.current_amortization.short_principal - this.loanAccount.current_amortization.advance_principal : 0);
 		}
 	},
 	watch:{
@@ -821,7 +824,7 @@ export default {
 			}
 		},
 		'loanAccount.loan_account_id':function(newValue){
-			this.payment.total_payable = this.loanAccount.current_amortization.interest + this.loanAccount.current_amortization.principal;
+			this.payment.total_payable = this.totalDue;
 			this.payment.amortization_id = this.loanAccount.current_amortization.id;
 		},
 		'waive.pdi':function(newValue){
