@@ -757,6 +757,7 @@ export default {
 					this.payment.short_principal = this.totalPrincipal - amount;
 					amount = 0;
 				}
+				this.payment.over_payment = this.overPayment;
 			}
 		},
 		pay:function(){
