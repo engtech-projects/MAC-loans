@@ -352,8 +352,8 @@ class LoanAccount extends Model
          $amortization->advance_principal = $this->getAdvancePrincipal($this->loan_account_id, $amortization->id);
          // get delinquents
          $amortization->delinquent = $this->getDelinquent($this->loan_account_id, $amortization->id, $amortization->advance_principal);
-         $amortization->short_principal = $amortization->delinquent['principal'];
-         $amortization->short_interest = $amortization->delinquent['interest'];
+         $amortization->short_principal = $amortization->delinquent['principal'] - (in_array($amortization->id, $amortization->delinquent['ids']) ? $amortization->principal : 0);
+         $amortization->short_interest = $amortization->delinquent['interest'] - (in_array($amortization->id, $amortization->delinquent['ids']) ? $amortization->principal : 0);
 
          // check if current amortization is paid partially.
          $isPaid = $this->getPayment($this->loan_account_id, $amortization->id)->last();
