@@ -356,18 +356,14 @@ class LoanAccount extends Model
          $amortization->short_interest = $amortization->delinquent['interest'];
 
          // check if current amortization is paid partially.
-         $isPaid = $this->getPayment($this->loan_account_id, $amortization->id)->first();
-
+         $isPaid = $this->getPayment($this->loan_account_id, $amortization->id)->last();
          if( $isPaid ){
 
             $amortization->total = $amortization->total - ($amortization->principal + $amortization->interest);
             $amortization->principal = 0;
             $amortization->interest = 0;
-
-            if( $amortization->status != 'delinquent' ){
-               $amortization->short_principal += $isPaid->short_principal;
-               $amortization->short_interest += $isPaid->short_interest;
-            }
+            $amortization->short_principal = $isPaid->short_principal;
+            $amortization->short_interest = $isPaid->short_interest;
          }
          
          $currentDay = Carbon::createFromFormat('Y-m-d', Carbon::now()->format('Y-m-d'));
@@ -489,11 +485,10 @@ class LoanAccount extends Model
                }
             }
          }
-      }else{
+      }
 
-         if( count($ids) ){
-            LoanAccount::find($loanAccountId)->update(['payment_status' => 'Delinquent']);
-         }
+      if( count($ids) ){
+         LoanAccount::find($loanAccountId)->update(['payment_status' => 'Delinquent']);
       }
       
       return [ 
