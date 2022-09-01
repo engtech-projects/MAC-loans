@@ -353,8 +353,8 @@ class LoanAccount extends Model
          // get delinquents
          $amortization->delinquent = $this->getDelinquent($this->loan_account_id, $amortization->id, $amortization->advance_principal);
          $amortization->short_principal = $amortization->delinquent['principal'] - (in_array($amortization->id, $amortization->delinquent['ids']) ? $amortization->principal : 0);
-         $amortization->short_interest = $amortization->delinquent['interest'] - (in_array($amortization->id, $amortization->delinquent['ids']) ? $amortization->principal : 0);
-
+         $amortization->short_interest = $amortization->delinquent['interest'] - (in_array($amortization->id, $amortization->delinquent['ids']) ? $amortization->interest : 0);
+         
          // check if current amortization is paid partially.
          $isPaid = $this->getPayment($this->loan_account_id, $amortization->id)->last();
          if( $isPaid ){
@@ -370,6 +370,9 @@ class LoanAccount extends Model
          $dateSched = Carbon::createFromFormat('Y-m-d', $amortization->amortization_date);
          $dayDiff = $dateSched->diffInDays($currentDay, false);
          $penaltyMissed = $amortization->delinquent['missed'];
+         if($dayDiff > 0){
+            Amortization::find($amortization->id)->update(['status' => 'delinquent']);
+         }
          if($dayDiff > 10){
             $penaltyMissed = array_merge($amortization->delinquent['missed'], [$amortization->id]);
             
