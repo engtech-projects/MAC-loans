@@ -498,15 +498,14 @@
 														<span class="pl-16">PDI</span>
 														<span>:</span>
 													</div>
-													<span class="flex-1">P {{formatToCurrency(0)}}</span>
-													<!-- <span class="flex-1">P {{formatToCurrency(pdi==0?loanAccount.current_amortization.pdi:0)}}</span> -->
+													<span class="flex-1">P {{formatToCurrency(this.waive.pdi?loanAccount.current_amortization.pdi:0)}}</span>
 												</div>
 												<div class="d-flex flex-row">
 													<div class="d-flex flex-row justify-content-between flex-1 mr-16">
 														<span class="pl-16">Penalty</span>
 														<span>:</span>
 													</div>
-													<span class="flex-1">P {{formatToCurrency(penalty==0?loanAccount.current_amortization.penalty:0)}}</span>
+													<span class="flex-1">P {{formatToCurrency(this.waive.penalty?loanAccount.current_amortization.penalty:0)}}</span>
 												</div>
 												
 											</div>
@@ -787,18 +786,17 @@ export default {
 			return this.totalPrincipal + this.totalInterest + this.pdi + this.penalty;
 		},
 		pdi:function(){
-			return 0;
-			// return this.waive.pdi? 0 : this.loanAccount.current_amortization.pdi;
+			return this.waive.pdi? 0 : this.loanAccount.current_amortization.pdi;
 		},
 		penalty:function(){
 			return this.waive.penalty? 0 : this.loanAccount.current_amortization.penalty;
 		},
 		totalWaive:function(){
 			var val = 0;
-			if(this.pdi == 0){
-				// val += this.loanAccount.current_amortization.pdi;
+			if(this.waive.pdi){
+				val += this.loanAccount.current_amortization.pdi;
 			}
-			if(this.penalty == 0){
+			if(this.waive.penalty){
 				val += this.loanAccount.current_amortization.penalty;
 			}
 			return val;
