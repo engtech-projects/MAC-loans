@@ -768,10 +768,6 @@ export default {
 					this.payment.pdi = this.pdi;
 				}else{
 					this.payment.pdi = amount;
-					this.payment.short_pdi = this.pdi - amount;
-					this.payment.short_penalty = this.penalty;
-					this.payment.short_interest = this.totalInterest;
-					this.payment.short_principal = this.totalPrincipal;
 					amount = 0;
 				}
 				if(amount >= this.penalty){
@@ -779,9 +775,6 @@ export default {
 					this.payment.penalty = this.loanAccount.current_amortization.penalty;
 				}else{
 					this.payment.penalty = amount;
-					this.payment.short_penalty = this.penalty - amount;
-					this.payment.short_interest = this.totalInterest;
-					this.payment.short_principal = this.totalPrincipal;
 					amount = 0;
 				}
 				// maybe add rebates here?
@@ -792,8 +785,6 @@ export default {
 					amount -= this.payment.interest;
 				}else{
 					this.payment.interest = amount;
-					this.payment.short_interest = this.totalInterest - amount;
-					this.payment.short_principal = this.totalPrincipal;
 					// this.payment.interest = this.payment.interest - this.payment.rebates < 0? 0 : this.payment.interest - this.payment.rebates;
 					amount = 0;
 				}
@@ -805,10 +796,13 @@ export default {
 					}
 				}else{
 					this.payment.principal = amount;
-					this.payment.short_principal = this.totalPrincipal - amount;
 					amount = 0;
 				}
 				this.payment.over_payment = this.overPayment;
+				this.payment.short_pdi = this.pdi - this.payment.pdi;
+				this.payment.short_penalty = this.penalty - this.payment.penalty;
+				this.payment.short_interest = this.totalInterest - this.payment.interest;
+				this.payment.short_principal = this.totalPrincipal - this.payment.principal;
 			}
 		},
 		pay:function(){
