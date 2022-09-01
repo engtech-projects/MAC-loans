@@ -328,7 +328,6 @@ class LoanAccount extends Model
       
       // check if past due
       $isPastDue = $this->checkPastDue($this->due_date);
-
       if( $isPastDue && $amortization){
          // update loan status.
          // set current amortization status to delinquent/
@@ -336,9 +335,10 @@ class LoanAccount extends Model
          LoanAccount::where(['loan_account_id' => $this->loan_account_id])->update(['loan_status' => 'Past Due']);
          $amortization->status = 'delinquent';
          $amortization->save();
-
+         
          $amortization->pdi = $this->getPDI($this->loan_amount, $this->interest_rate, $isPastDue);
       }
+      $amortization->pdi = $amortization->pdi ? $amortization->pdi : 0;
 
       # compute for total payables
       # compute for total payments
