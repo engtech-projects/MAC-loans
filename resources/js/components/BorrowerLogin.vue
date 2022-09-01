@@ -67,6 +67,7 @@ export default {
 				console.log(response)
 			}.bind(this))
 			.catch(function (error) {
+				window.location.reload();
 				console.log(error);
 			}.bind(this));
 		},
