@@ -223,7 +223,7 @@
 			</div>
 		</section>
 		<div class="flex-1 d-flex flex-row-reverse align-items-end">
-			<button v-if="loanAccount.loan_account_id" data-toggle="modal" data-target="#paymentModal" class="btn btn-bright-blue min-w-150 mb-5">Pay</button>
+			<button @click="distribute()" v-if="loanAccount.loan_account_id" data-toggle="modal" data-target="#paymentModal" class="btn btn-bright-blue min-w-150 mb-5">Pay</button>
 		</div>
 
 
@@ -344,7 +344,7 @@
 											<span class="mb-5 text-bold">Amortization Scheduled Payment</span>
 											<div class="d-flex flex-row mb-7 font-md">
 												<div class="d-flex flex-row justify-content-between flex-1 mr-16">
-													<span>Amort. Principal</span>
+													<span>Principal</span>
 													<span>:</span>
 												</div>
 												<span class="flex-1">P {{formatToCurrency(loanAccount.current_amortization.principal)}}</span>
@@ -383,13 +383,6 @@
 														<span>:</span>
 													</div>
 													<span class="flex-1">P {{formatToCurrency(loanAccount.current_amortization.short_interest)}}</span>
-												</div>
-												<div class="d-flex flex-row">
-													<div class="d-flex flex-row justify-content-between flex-1 mr-16">
-														<span class="">Adv. Interest</span>
-														<span>:</span>
-													</div>
-													<span class="flex-1">P {{formatToCurrency(0)}}</span>
 												</div>
 											</div>
 
@@ -478,13 +471,13 @@
 												</div>
 												<span class="flex-1">P {{formatToCurrency(totalWaive)}}</span>
 											</div>
-											<div v-if="overPayment > 0" class="d-flex flex-row">
+											<!-- <div v-if="overPayment > 0" class="d-flex flex-row">
 												<div class="d-flex flex-row justify-content-between flex-1 mr-16">
 													<span>Overpayment</span>
 													<span>:</span>
 												</div>
 												<span class="flex-1">P {{formatToCurrency(overPayment)}}</span>
-											</div>
+											</div> -->
 										</div>
 										<div class="d-flex flex-column mb-10">
 											<span class="text-20 text-primary-dark">TOTAL</span>
@@ -509,7 +502,58 @@
 												</div>
 
 											</div>
-
+											<div v-if="dueExcess">
+												<span>Excess:</span>
+												<div class="d-flex flex-column mb-12">
+													<div class="d-flex flex-row">
+														<div class="d-flex flex-row justify-content-between flex-1 mr-16">
+															<span class="pl-16">Adv. Principal</span>
+															<span>:</span>
+														</div>
+														<span class="flex-1">P {{formatToCurrency(this.payment.advance_principal)}}</span>
+													</div>
+													<div class="d-flex flex-row">
+														<div class="d-flex flex-row justify-content-between flex-1 mr-16">
+															<span class="pl-16">Over Payment</span>
+															<span>:</span>
+														</div>
+														<span class="flex-1">P {{formatToCurrency(this.payment.over_payment)}}</span>
+													</div>
+												</div>
+											</div>
+											<div v-if="totalShort">
+												<span>Short:</span>
+												<div class="d-flex flex-column mb-12">
+													<div class="d-flex flex-row">
+														<div class="d-flex flex-row justify-content-between flex-1 mr-16">
+															<span class="pl-16">Principal</span>
+															<span>:</span>
+														</div>
+														<span class="flex-1">P {{formatToCurrency(this.payment.short_principal)}}</span>
+													</div>
+													<div class="d-flex flex-row">
+														<div class="d-flex flex-row justify-content-between flex-1 mr-16">
+															<span class="pl-16">Interest</span>
+															<span>:</span>
+														</div>
+														<span class="flex-1">P {{formatToCurrency(this.payment.short_interest)}}</span>
+													</div>
+													<div class="d-flex flex-row">
+														<div class="d-flex flex-row justify-content-between flex-1 mr-16">
+															<span class="pl-16">Penalty</span>
+															<span>:</span>
+														</div>
+														<span class="flex-1">P {{formatToCurrency(this.payment.short_penalty)}}</span>
+													</div>
+													<div class="d-flex flex-row">
+														<div class="d-flex flex-row justify-content-between flex-1 mr-16">
+															<span class="pl-16">PDI</span>
+															<span>:</span>
+														</div>
+														<span class="flex-1">P {{formatToCurrency(this.payment.short_pdi)}}</span>
+													</div>
+												</div>
+											</div>
 										</div>
 									</div>
 								</div>
@@ -714,44 +758,51 @@ export default {
 			this.payment.principal = 0;
 			this.payment.short_pdi = 0;
 			this.payment.short_penalty = 0;
-			this.payment.short_interest = this.totalInterest;
-			this.payment.short_principal = this.totalPrincipal;
+			this.payment.short_interest = 0;
+			this.payment.short_principal = 0;
 			this.payment.advance_interest = 0;
 			this.payment.advance_principal = 0;
 			if(this.payment.payment_applied != ''){
-				if(!this.waive.pdi){
-					if(amount >= this.pdi){
-						amount -= this.pdi;
-						this.payment.pdi = this.pdi;
-					}else{
-						this.payment.pdi = amount;
-						amount = 0;
-					}
+				if(amount >= this.pdi){
+					amount -= this.pdi;
+					this.payment.pdi = this.pdi;
+				}else{
+					this.payment.pdi = amount;
+					this.payment.short_pdi = this.pdi - amount;
+					this.payment.short_penalty = this.penalty;
+					this.payment.short_interest = this.totalInterest;
+					this.payment.short_principal = this.totalPrincipal;
+					amount = 0;
 				}
-				if(!this.waive.penalty){
-					if(amount >= this.loanAccount.current_amortization.penalty){
-						amount -= this.loanAccount.current_amortization.penalty;
-						this.payment.penalty = this.loanAccount.current_amortization.penalty;
-					}else{
-						this.payment.penalty = amount + 0;
-						amount = 0;
-					}
+				if(amount >= this.penalty){
+					amount -= this.loanAccount.current_amortization.penalty;
+					this.payment.penalty = this.loanAccount.current_amortization.penalty;
+				}else{
+					this.payment.penalty = amount;
+					this.payment.short_penalty = this.penalty - amount;
+					this.payment.short_interest = this.totalInterest;
+					this.payment.short_principal = this.totalPrincipal;
+					amount = 0;
 				}
-				if(amount >= this.totalInterest){
+				// maybe add rebates here?
+				// amount += this.payment.rebates;
+				if(amount + this.payment.rebates >= this.totalInterest){
 					this.payment.interest = this.totalInterest;
-					this.payment.interest = this.payment.interest - this.payment.rebates < 0 ? 0 : this.payment.interest - this.payment.rebates;
+					// this.payment.interest = this.payment.interest - this.payment.rebates < 0 ? 0 : this.payment.interest - this.payment.rebates;
 					amount -= this.payment.interest;
 				}else{
 					this.payment.interest = amount;
 					this.payment.short_interest = this.totalInterest - amount;
 					this.payment.short_principal = this.totalPrincipal;
-					this.payment.interest = this.payment.interest - this.payment.rebates < 0? 0 : this.payment.interest - this.payment.rebates;
+					// this.payment.interest = this.payment.interest - this.payment.rebates < 0? 0 : this.payment.interest - this.payment.rebates;
 					amount = 0;
 				}
 				amount += this.loanAccount.current_amortization.advance_principal;
 				if(amount >= this.totalPrincipal){
 					this.payment.principal = this.totalPrincipal;
-					this.payment.advance_principal = amount - this.totalPrincipal;
+					if(this.overPayment <= 0){
+						this.payment.advance_principal = amount - this.totalPrincipal;
+					}
 				}else{
 					this.payment.principal = amount;
 					this.payment.short_principal = this.totalPrincipal - amount;
@@ -825,6 +876,13 @@ export default {
 		},
 		amountDistributed:function(){ // just for overpayment calculation
 			return parseFloat(this.payment.amount_applied) + parseFloat(this.loanAccount.current_amortization.advance_principal)
+			// maybe add rebates?
+		},
+		totalShort:function(){
+			return this.payment.short_pdi + this.payment.short_penalty + this.payment.short_interest + this.payment.short_principal;
+		},
+		dueExcess:function(){
+			return this.payment.advance_principal + this.payment.over_payment;
 		},
 		overPayment:function(){
 			if(this.totalBalance < this.amountDistributed){
