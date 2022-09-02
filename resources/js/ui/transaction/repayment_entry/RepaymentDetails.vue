@@ -801,6 +801,7 @@ export default {
 						this.payment.over_payment = (this.payment.principal + this.payment.advance_principal) - this.outstandingPrincipal;
 					}
 					this.payment.advance_principal -= this.overPayment;
+					this.payment.advance_principal = this.payment.advance_principal < 0 ? 0 : this.payment.advance_principal;
 				}else{
 					this.payment.principal = amount;
 					amount = 0;
