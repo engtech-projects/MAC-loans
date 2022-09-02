@@ -397,7 +397,7 @@
 													<span>Principal</span>
 													<span>:</span>
 												</div>
-												<span class="flex-1">P {{formatToCurrency(viewPrincipal)}}</span>
+												<span class="flex-1">P {{formatToCurrency(duePrincipal)}}</span>
 											</div>
 											<div class="d-flex flex-row mb-7">
 												<div class="d-flex flex-row justify-content-between flex-1 mr-16">
@@ -430,7 +430,7 @@
 										</div>
 										<div class="d-flex flex-column mb-auto">
 											<span class="text-20 text-primary-dark">TOTAL</span>
-											<span class="bg-primary-dark text-white font-30 pxy-25 lh-1">P {{formatToCurrency(totalDueView)}}</span>
+											<span class="bg-primary-dark text-white font-30 pxy-25 lh-1">P {{formatToCurrency(totalDue)}}</span>
 										</div>
 
 									</div>
@@ -792,17 +792,17 @@ export default {
 					amount = 0;
 				}
 				let amountBeforeAdvance = amount;
-				amount += this.loanAccount.current_amortization.advance_principal;
-				if(amount >= this.totalPrincipal){
-					this.payment.principal = this.totalPrincipal;
-					this.payment.advance_principal = amount - this.totalPrincipal;
-					if(this.totalPrincipal + this.loanAccount.current_amortization.principal_balance > (this.payment.principal + this.payment.advance_principal)){
+				if(amount >= this.duePrincipal){
+					this.payment.principal = this.duePrincipal;
+					this.payment.advance_principal = amount - this.duePrincipal;
+					if(this.duePrincipal + this.loanAccount.current_amortization.principal_balance > (this.payment.principal + this.payment.advance_principal)){
 						this.payment.over_payment = 0;
 					}else{
-						this.payment.over_payment = (this.payment.principal + this.payment.advance_principal) - (this.totalPrincipal + this.loanAccount.current_amortization.principal_balance);
+						this.payment.over_payment = (this.payment.principal + this.payment.advance_principal) - (this.duePrincipal + this.loanAccount.current_amortization.principal_balance);
 					}
 					this.payment.advance_principal -= this.overPayment;
 					this.payment.advance_principal = this.payment.advance_principal < 0 ? 0 : this.payment.advance_principal;
+					this.payment.principal += this.payment.advance_principal;
 				}else{
 					this.payment.principal = amount;
 					amount = 0;
@@ -810,8 +810,8 @@ export default {
 				this.payment.short_pdi = this.pdi - this.payment.pdi;
 				this.payment.short_penalty = this.penalty - this.payment.penalty;
 				this.payment.short_interest = this.totalInterest - this.payment.interest;
-				this.payment.short_principal = this.totalPrincipal - this.payment.principal;
-
+				this.payment.short_principal = this.duePrincipal - this.payment.principal;
+				this.payment.short_principal = this.payment.short_principal < 0 ? 0 : this.payment.short_principal;
 				this.payment.total_payable = this.totalDue; // Verify if change payable if waived fees
 				this.payment.amount_applied = this.payment.pdi + this.payment.penalty + this.payment.interest + this.payment.principal;
 			}
@@ -842,17 +842,14 @@ export default {
 		totalPrincipal:function(){
 			return this.loanAccount.current_amortization.principal + this.loanAccount.current_amortization.short_principal;
 		},
-		viewPrincipal:function(){
+		duePrincipal:function(){
 			return this.totalPrincipal > this.loanAccount.current_amortization.advance_principal ? this.totalPrincipal - this.loanAccount.current_amortization.advance_principal : 0;
 		},
 		totalInterest:function(){
 			return this.loanAccount.current_amortization.interest + this.loanAccount.current_amortization.short_interest;
 		},
 		totalDue:function(){
-			return this.totalPrincipal + this.totalInterest + this.pdi + this.penalty;
-		},
-		totalDueView:function(){
-			return this.viewPrincipal + this.totalInterest + this.pdi + this.penalty;
+			return this.duePrincipal + this.totalInterest + this.pdi + this.penalty;
 		},
 		pdi:function(){
 			this.loanAccount.current_amortization.short_pdi = 0;
@@ -900,7 +897,7 @@ export default {
 			return this.payment.over_payment;
 		},
 		outstandingPrincipal:function(){
-			return this.loanAccount.current_amortization.principal_balance + this.totalPrincipal - (this.payment.principal + this.payment.advance_principal);
+			return this.loanAccount.current_amortization.principal_balance + this.duePrincipal;
 		},
 		outstandingInterest:function(){
 			return this.loanAccount.current_amortization.interest_balance + this.totalInterest - this.payment.interest;
