@@ -791,14 +791,16 @@ export default {
 					// this.payment.interest = this.payment.interest - this.payment.rebates < 0? 0 : this.payment.interest - this.payment.rebates;
 					amount = 0;
 				}
+				amountBeforeAdvance = amount;
 				amount += this.loanAccount.current_amortization.advance_principal;
 				if(amount >= this.totalPrincipal){
 					this.payment.principal = this.totalPrincipal;
 					this.payment.advance_principal = amount - this.totalPrincipal;
-					if((this.current_amortization.principal + this.totalPrincipal) > (this.payment.principal + this.payment.advance_principal)){
+					addon = this.payment.principal - this.loanAccount.current_amortization.advance_principal
+					if(this.outstandingPrincipal > (this.payment.principal + this.payment.advance_principal - addon)){
 						this.payment.over_payment = 0;
 					}else{
-						this.payment.over_payment = (this.payment.principal + this.payment.advance_principal) - (this.current_amortization.principal + this.totalPrincipal);
+						this.payment.over_payment = (this.payment.principal + this.payment.advance_principal - addon) - this.outstandingPrincipal;
 					}
 					this.payment.advance_principal -= this.overPayment;
 					this.payment.advance_principal = this.payment.advance_principal < 0 ? 0 : this.payment.advance_principal;
