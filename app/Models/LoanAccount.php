@@ -354,7 +354,8 @@ class LoanAccount extends Model
          $amortization->delinquent = $this->getDelinquent($this->loan_account_id, $amortization->id, $amortization->advance_principal);
          $amortization->short_principal = $amortization->delinquent['principal'] - (in_array($amortization->id, $amortization->delinquent['ids']) ? $amortization->principal : 0);
          $amortization->short_interest = $amortization->delinquent['interest'] - (in_array($amortization->id, $amortization->delinquent['ids']) ? $amortization->interest : 0);
-
+         $amortization->schedule_principal = $amortization->principal;
+         $amortization->schedule_interest = $amortization->interest;
          // check if current amortization is paid partially.
          $isPaid = $this->getPayment($this->loan_account_id, $amortization->id)->last();
          if( $isPaid ){
@@ -364,6 +365,8 @@ class LoanAccount extends Model
             $amortization->interest = 0;
             $amortization->short_principal = $isPaid->short_principal;
             $amortization->short_interest = $isPaid->short_interest;
+
+            //add formula for short penalty and short
          }
 
          $currentDay = Carbon::createFromFormat('Y-m-d', Carbon::now()->format('Y-m-d'));
@@ -372,12 +375,13 @@ class LoanAccount extends Model
          $penaltyMissed = $amortization->delinquent['missed'];
          if($dayDiff > 0){
             Amortization::find($amortization->id)->update(['status' => 'delinquent']);
+            array_merge($amortization->delinquent['ids'],[$amortization->id]);
          }
          if($dayDiff > 10){
             $penaltyMissed = array_merge($amortization->delinquent['missed'], [$amortization->id]);
 
          }
-         $amortization->penalty = $this->getPenalty($penaltyMissed, ($amortization->principal + $amortization->interest));
+         $amortization->penalty = $this->getPenalty($penaltyMissed, ($amortization->schedule_principal + $amortization->schedule_interest));
 
          // $amortization->penalty = $this->getPenalty($amortization->delinquent['missed'], ($amortization->principal + $amortization->interest));
          $amortization->total = ($amortization->principal + $amortization->interest) + ( $amortization->short_principal + $amortization->short_interest);
@@ -458,9 +462,6 @@ class LoanAccount extends Model
                      $totalInterest += $payment->short_interest;
 
                  break;
-               }
-               if($delinquent->status != 'paid'){
-                  $missed[] = $delinquent->id;
                }
                break;
             }else{
