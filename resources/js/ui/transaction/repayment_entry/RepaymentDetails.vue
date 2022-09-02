@@ -583,7 +583,7 @@
 												<span>Surcharge</span>
 												<span>:</span>
 											</div>
-											<span class="flex-1">P {{formatToCurrency(pdi + penalty)}}</span>
+											<span class="flex-1">P {{formatToCurrency(outstandingSurcharge)}}</span>
 										</div>
 										<div class="d-flex flex-row mb-5 text-bold">
 											<div class="d-flex flex-row justify-content-between flex-1 mr-16">
@@ -791,26 +791,18 @@ export default {
 					// this.payment.interest = this.payment.interest - this.payment.rebates < 0? 0 : this.payment.interest - this.payment.rebates;
 					amount = 0;
 				}
+				let amountBeforeAdvance = amount;
 				amount += this.loanAccount.current_amortization.advance_principal;
 				if(amount >= this.totalPrincipal){
 					this.payment.principal = this.totalPrincipal;
 					this.payment.advance_principal = amount - this.totalPrincipal;
-					// let possibleAdvance = this.outstandingPrincipal - this.totalPrincipal - this.loanAccount.current_amortization.principal_balance;
-					// console.log(possibleAdvance);
-					// if(possibleAdvance > this.payment.advance_principal){
-					// 	this.payment.over_payment = 0;
-					// }else{
-					// 	this.payment.over_payment = this.payment.advance_principal - possibleAdvance;
-					// }
-					// this.payment.advance_principal = possibleAdvance;
-					// let addon = this.payment.principal - this.loanAccount.current_amortization.advance_principal
-					// if(this.outstandingPrincipal > (this.payment.principal + this.payment.advance_principal)){
-					// 	this.payment.over_payment = 0;
-					// }else{
-					// 	this.payment.over_payment = (this.payment.principal + this.payment.advance_principal - addon) - this.outstandingPrincipal;
-					// }
-					// this.payment.advance_principal -= this.overPayment;
-					// this.payment.advance_principal = this.payment.advance_principal < 0 ? 0 : this.payment.advance_principal;
+					if(this.totalPrincipal + this.loanAccount.current_amortization.principal_balance > (this.payment.principal + this.payment.advance_principal)){
+						this.payment.over_payment = 0;
+					}else{
+						this.payment.over_payment = (this.payment.principal + this.payment.advance_principal) - (this.totalPrincipal + this.loanAccount.current_amortization.principal_balance);
+					}
+					this.payment.advance_principal -= this.overPayment;
+					this.payment.advance_principal = this.payment.advance_principal < 0 ? 0 : this.payment.advance_principal;
 				}else{
 					this.payment.principal = amount;
 					amount = 0;
@@ -902,13 +894,16 @@ export default {
 			return this.payment.over_payment;
 		},
 		outstandingPrincipal:function(){
-			return this.loanAccount.current_amortization.principal_balance + this.totalPrincipal - this.loanAccount.current_amortization.advance_principal
+			return this.loanAccount.current_amortization.principal_balance + this.totalPrincipal - (this.payment.principal + this.payment.advance_principal);
 		},
 		outstandingInterest:function(){
-			return this.loanAccount.current_amortization.interest_balance + this.totalInterest
+			return this.loanAccount.current_amortization.interest_balance + this.totalInterest - this.payment.interest;
+		},
+		outstandingSurcharge: function(){
+			return this.pdi + this.penalty - this.payment.penalty - this.payment.pdi;
 		},
 		outstandingTotal:function(){
-			return this.outstandingPrincipal + this.outstandingInterest + this.pdi + this.penalty
+			return this.outstandingPrincipal + this.outstandingInterest + this.pdi + this.penalty;
 		},
 	},
 	watch:{
