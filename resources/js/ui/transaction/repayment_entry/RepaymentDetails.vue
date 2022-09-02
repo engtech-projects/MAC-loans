@@ -795,14 +795,22 @@ export default {
 				if(amount >= this.totalPrincipal){
 					this.payment.principal = this.totalPrincipal;
 					this.payment.advance_principal = amount - this.totalPrincipal;
-					let addon = this.payment.principal - this.loanAccount.current_amortization.advance_principal
-					if(this.outstandingPrincipal > (this.payment.principal + this.payment.advance_principal - addon)){
-						this.payment.over_payment = 0;
-					}else{
-						this.payment.over_payment = (this.payment.principal + this.payment.advance_principal) - this.outstandingPrincipal;
-					}
-					this.payment.advance_principal -= this.overPayment;
-					this.payment.advance_principal = this.payment.advance_principal < 0 ? 0 : this.payment.advance_principal;
+					// let possibleAdvance = this.outstandingPrincipal - this.totalPrincipal - this.loanAccount.current_amortization.principal_balance;
+					// console.log(possibleAdvance);
+					// if(possibleAdvance > this.payment.advance_principal){
+					// 	this.payment.over_payment = 0;
+					// }else{
+					// 	this.payment.over_payment = this.payment.advance_principal - possibleAdvance;
+					// }
+					// this.payment.advance_principal = possibleAdvance;
+					// let addon = this.payment.principal - this.loanAccount.current_amortization.advance_principal
+					// if(this.outstandingPrincipal > (this.payment.principal + this.payment.advance_principal)){
+					// 	this.payment.over_payment = 0;
+					// }else{
+					// 	this.payment.over_payment = (this.payment.principal + this.payment.advance_principal - addon) - this.outstandingPrincipal;
+					// }
+					// this.payment.advance_principal -= this.overPayment;
+					// this.payment.advance_principal = this.payment.advance_principal < 0 ? 0 : this.payment.advance_principal;
 				}else{
 					this.payment.principal = amount;
 					amount = 0;
