@@ -568,14 +568,14 @@
 												<span>Principal Balance</span>
 												<span>:</span>
 											</div>
-											<span class="flex-1">P {{formatToCurrency(loanAccount.current_amortization.principal_balance + totalPrincipal )}}</span>
+											<span class="flex-1">P {{formatToCurrency(outstandingPrincipal)}}</span>
 										</div>
 										<div class="d-flex flex-row mb-5">
 											<div class="d-flex flex-row justify-content-between flex-1 mr-16">
 												<span>Interest Balance</span>
 												<span>:</span>
 											</div>
-											<span class="flex-1">P {{formatToCurrency(loanAccount.current_amortization.interest_balance + totalInterest)}}</span>
+											<span class="flex-1">P {{formatToCurrency(outstandingInterest)}}</span>
 										</div>
 										<div class="d-flex flex-row bb-dashed-2 mb-10">
 											<div class="d-flex flex-row justify-content-between flex-1 mr-16 mb-16">
@@ -589,7 +589,7 @@
 												<span>TOTAL</span>
 												<span>:</span>
 											</div>
-											<span class="flex-1">P {{formatToCurrency(loanAccount.current_amortization.interest_balance + loanAccount.current_amortization.principal_balance + totalDue)}}</span>
+											<span class="flex-1">P {{formatToCurrency(outstandingTotal)}}</span>
 										</div>
 									</div>
 									<div class="flex-2"></div>
@@ -771,8 +771,8 @@ export default {
 					amount = 0;
 				}
 				if(amount >= this.penalty){
-					amount -= this.loanAccount.current_amortization.penalty;
-					this.payment.penalty = this.loanAccount.current_amortization.penalty;
+					amount -= this.penalty;
+					this.payment.penalty = this.penalty;
 				}else{
 					this.payment.penalty = amount;
 					amount = 0;
@@ -803,6 +803,8 @@ export default {
 				this.payment.short_penalty = this.penalty - this.payment.penalty;
 				this.payment.short_interest = this.totalInterest - this.payment.interest;
 				this.payment.short_principal = this.totalPrincipal - this.payment.principal;
+
+				this.payment.total_payable = this.totalDue; // Verify if change payable if waived fees
 			}
 		},
 		pay:function(){
@@ -838,20 +840,19 @@ export default {
 			return this.totalPrincipal + this.totalInterest + this.pdi + this.penalty;
 		},
 		pdi:function(){
-			return this.waive.pdi? 0 : this.loanAccount.current_amortization.pdi;
+			return this.waive.pdi ? 0 : this.loanAccount.current_amortization.pdi + this.loanAccount.current_amortization.short_pdi;
 		},
 		penalty:function(){
-			return this.waive.penalty? 0 : this.loanAccount.current_amortization.penalty;
+			return this.waive.penalty ? 0 : this.loanAccount.current_amortization.penalty + this.loanAccount.current_amortization.short_penalty;
+		},
+		pdiWaive:function(){
+			return this.waive.pdi ? this.loanAccount.current_amortization.pdi + this.loanAccount.current_amortization.short_pdi : 0;
+		},
+		penaltyWaive:function(){
+			return this.waive.penalty ? this.loanAccount.current_amortization.penalty + this.loanAccount.current_amortization.short_penalty : 0;
 		},
 		totalWaive:function(){
-			var val = 0;
-			if(this.waive.pdi){
-				val += this.loanAccount.current_amortization.pdi;
-			}
-			if(this.waive.penalty){
-				val += this.loanAccount.current_amortization.penalty;
-			}
-			return val;
+			return this.penaltyWaive + this.pdiWaive;
 		},
 		totalScheduledPayment:function(){
 			if(this.loanAccount.current_amortization.lastPayment){
@@ -883,6 +884,15 @@ export default {
 				return Math.abs(this.totalBalance - this.amountDistributed )
 			}
 			return 0;
+		},
+		outstandingPrincipal:function(){
+			return this.loanAccount.current_amortization.principal_balance + this.totalPrincipal - this.loanAccount.current_amortization.advance_principal
+		},
+		outstandingInterest:function(){
+			return this.loanAccount.current_amortization.interest_balance + this.totalInterest
+		},
+		outstandingTotal:function(){
+			return this.outstandingPrincipal + this.outstandingInterest + this.pdi + this.penalty
 		},
 	},
 	watch:{
