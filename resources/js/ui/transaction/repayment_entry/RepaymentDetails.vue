@@ -397,7 +397,7 @@
 													<span>Principal</span>
 													<span>:</span>
 												</div>
-												<span class="flex-1">P {{formatToCurrency(totalPrincipal)}}</span>
+												<span class="flex-1">P {{formatToCurrency(totalPrincipal > loanAccount.current_amortization.advance_principal ? totalPrincipal - loanAccount.current_amortization.advance_principal : 0)}}</span>
 											</div>
 											<div class="d-flex flex-row mb-7">
 												<div class="d-flex flex-row justify-content-between flex-1 mr-16">
@@ -903,7 +903,7 @@ export default {
 			return this.pdi + this.penalty - this.payment.penalty - this.payment.pdi;
 		},
 		outstandingTotal:function(){
-			return this.outstandingPrincipal + this.outstandingInterest + this.pdi + this.penalty;
+			return this.outstandingPrincipal + this.outstandingInterest + this.outstandingSurcharge;
 		},
 	},
 	watch:{
