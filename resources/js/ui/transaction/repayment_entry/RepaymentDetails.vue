@@ -298,7 +298,7 @@
 									<div class="d-flex flex-column flex-lg-row align-items-center justify-content-between">
 										<div class="d-flex align-items-center">
 											<span class="text-bold mr-10" style="font-size:60px;color:#263f52;line-height:1;">P</span>
-											<input @blur="payment.amount_applied=payment.amount_applied==''?0:payment.amount_applied;distribute()" required v-model="payment.amount_applied" type="number" class="form-control form-input mw-250" id="transactionDate" step=".01">
+											<input @blur="payment.amount_paid=payment.amount_paid==''?0:payment.amount_paid;distribute()" required v-model="payment.amount_paid" type="number" class="form-control form-input mw-250" id="transactionDate" step=".01">
 										</div>
 									</div>
 								</div>
@@ -482,10 +482,10 @@
 										</div>
 										<div class="d-flex flex-column mb-10">
 											<span class="text-20 text-primary-dark">TOTAL</span>
-											<span class="bg-darkgreen text-white font-30 pxy-25 lh-1">P {{formatToCurrency(payment.amount_applied)}}</span>
+											<span class="bg-darkgreen text-white font-30 pxy-25 lh-1">P {{formatToCurrency(payment.amount_paid)}}</span>
 										</div>
 										<div class="d-flex flex-column bg-peach p-16">
-											<span>Waive</span>
+											<span>Waive:</span>
 											<div class="d-flex flex-column mb-12">
 												<div class="d-flex flex-row">
 													<div class="d-flex flex-row justify-content-between flex-1 mr-16">
@@ -710,6 +710,7 @@ export default {
 				rebates_approval_no:null,
 				total_payable:0,
 				amount_applied:0,
+				amount_paid:0,
 				over_payment:0,
 				status:null,
 			},
@@ -752,7 +753,7 @@ export default {
 			}.bind(this));
 		},
 		distribute:function(){
-			var amount = parseFloat(this.payment.amount_applied);
+			var amount = parseFloat(this.payment.amount_paid);
 			this.payment.pdi = 0;
 			this.payment.penalty = 0;
 			this.payment.interest = 0;
@@ -763,6 +764,7 @@ export default {
 			this.payment.short_principal = 0;
 			this.payment.advance_interest = 0;
 			this.payment.advance_principal = 0;
+			this.payment.over_payment = 0;
 			if(this.payment.payment_applied != ''){
 				if(amount >= this.pdi){
 					amount -= this.pdi;
@@ -792,20 +794,24 @@ export default {
 				amount += this.loanAccount.current_amortization.advance_principal;
 				if(amount >= this.totalPrincipal){
 					this.payment.principal = this.totalPrincipal;
-					if(this.overPayment <= 0){
-						this.payment.advance_principal = amount - this.totalPrincipal;
+					this.payment.advance_principal = amount - this.totalPrincipal;
+					if(this.outstandingPrincipal > (this.payment.principal + this.payment.advance_principal)){
+						this.payment.over_payment = 0;
+					}else{
+						this.payment.over_payment = (this.payment.principal + this.payment.advance_principal) - this.outstandingPrincipal;
 					}
+					this.payment.advance_principal -= this.overPayment;
 				}else{
 					this.payment.principal = amount;
 					amount = 0;
 				}
-				this.payment.over_payment = this.overPayment;
 				this.payment.short_pdi = this.pdi - this.payment.pdi;
 				this.payment.short_penalty = this.penalty - this.payment.penalty;
 				this.payment.short_interest = this.totalInterest - this.payment.interest;
 				this.payment.short_principal = this.totalPrincipal - this.payment.principal;
 
 				this.payment.total_payable = this.totalDue; // Verify if change payable if waived fees
+				this.payment.amount_applied = this.payment.pdi + this.payment.penalty + this.payment.interest + this.payment.principal;
 			}
 		},
 		pay:function(){
@@ -873,7 +879,7 @@ export default {
 			return this.totalDue + parseFloat(this.loanAccount.current_amortization.principal_balance) + parseFloat(this.loanAccount.current_amortization.interest_balance)
 		},
 		amountDistributed:function(){ // just for overpayment calculation
-			return parseFloat(this.payment.amount_applied) + parseFloat(this.loanAccount.current_amortization.advance_principal)
+			return parseFloat(this.payment.amount_paid) + parseFloat(this.loanAccount.current_amortization.advance_principal)
 			// maybe add rebates?
 		},
 		totalShort:function(){
@@ -883,10 +889,7 @@ export default {
 			return this.payment.advance_principal + this.payment.over_payment;
 		},
 		overPayment:function(){
-			if(this.totalBalance < this.amountDistributed){
-				return Math.abs(this.totalBalance - this.amountDistributed )
-			}
-			return 0;
+			return this.payment.over_payment;
 		},
 		outstandingPrincipal:function(){
 			return this.loanAccount.current_amortization.principal_balance + this.totalPrincipal - this.loanAccount.current_amortization.advance_principal
@@ -899,7 +902,7 @@ export default {
 		},
 	},
 	watch:{
-		'payment.amount_applied':function(newValue){
+		'payment.amount_paid':function(newValue){
 			if(newValue != ''){
 				this.distribute();
 			}
