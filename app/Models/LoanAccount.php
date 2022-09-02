@@ -456,14 +456,15 @@ class LoanAccount extends Model
             $ids[] = $delinquent->id;
 
             if( isset($delinquent->payments) && count($delinquent->payments) > 0 ) {
+               $delPenalty = 0;
                foreach ($delinquent->payments as $payment) {
+                  $totalPrincipal += $payment->short_principal;
+                  $totalInterest += $payment->short_interest;
 
-                     $totalPrincipal += $payment->short_principal;
-                     $totalInterest += $payment->short_interest;
-
+                  $delPenalty += $payment->penalty;
                  break;
                }
-               if($delinquent->status != 'paid'){
+               if($delinquent->status != 'paid' && $delinquent->id != $loanAccountId && $delPenalty){
                   $missed[] = $delinquent->id;
                }
                break;

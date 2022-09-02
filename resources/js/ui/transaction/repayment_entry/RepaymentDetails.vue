@@ -799,7 +799,7 @@ export default {
 					if(this.outstandingPrincipal > (this.payment.principal + this.payment.advance_principal - addon)){
 						this.payment.over_payment = 0;
 					}else{
-						this.payment.over_payment = (this.payment.principal + this.payment.advance_principal - addon) - this.outstandingPrincipal;
+						this.payment.over_payment = (this.payment.principal + this.payment.advance_principal) - this.outstandingPrincipal;
 					}
 					this.payment.advance_principal -= this.overPayment;
 					this.payment.advance_principal = this.payment.advance_principal < 0 ? 0 : this.payment.advance_principal;
