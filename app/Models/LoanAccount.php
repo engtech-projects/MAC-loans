@@ -463,6 +463,9 @@ class LoanAccount extends Model
 
                  break;
                }
+               if($delinquent->status != 'paid'){
+                  $missed[] = $delinquent->id;
+               }
                break;
             }else{
                $missed[] = $delinquent->id;
