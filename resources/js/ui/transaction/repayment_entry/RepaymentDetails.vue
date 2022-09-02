@@ -215,8 +215,8 @@
 							<span class="">Status</span>
 							<span>:</span>
 						</div>
-						<span v-if="loanAccount.current_amortization.delinquent.length > 0" class="flex-2 text-danger">Delinquent</span>
-                        <span v-if="loanAccount.current_amortization.delinquent.length == 0" class="flex-2 text-ocean">Current</span>
+						<span v-if="loanAccount.current_amortization.delinquent.ids.length > 0" class="flex-2 text-danger">Delinquent</span>
+                        <span v-if="loanAccount.current_amortization.delinquent.ids.length == 0" class="flex-2 text-ocean">Current</span>
 
 					</div>
 				</div>
@@ -840,9 +840,11 @@ export default {
 			return this.totalPrincipal + this.totalInterest + this.pdi + this.penalty;
 		},
 		pdi:function(){
+			this.loanAccount.current_amortization.short_pdi = 0;
 			return this.waive.pdi ? 0 : this.loanAccount.current_amortization.pdi + this.loanAccount.current_amortization.short_pdi;
 		},
 		penalty:function(){
+			this.loanAccount.current_amortization.short_penalty = 0;
 			return this.waive.penalty ? 0 : this.loanAccount.current_amortization.penalty + this.loanAccount.current_amortization.short_penalty;
 		},
 		pdiWaive:function(){
