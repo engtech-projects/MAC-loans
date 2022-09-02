@@ -216,7 +216,8 @@
 							<span>:</span>
 						</div>
 						<span v-if="loanAccount.current_amortization.delinquent.ids.length > 0" class="flex-2 text-danger">Delinquent</span>
-                        <span v-if="loanAccount.current_amortization.delinquent.ids.length == 0" class="flex-2 text-ocean">Current</span>
+                        <span v-else-if="pdi > 0" class="flex-2 text-danger">Past Due</span>
+                        <span v-else class="flex-2 text-ocean">Current</span>
 
 					</div>
 				</div>
