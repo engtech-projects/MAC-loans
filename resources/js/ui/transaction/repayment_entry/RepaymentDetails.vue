@@ -897,7 +897,7 @@ export default {
 			return this.payment.over_payment;
 		},
 		outstandingPrincipal:function(){
-			return this.loanAccount.current_amortization.principal_balance + this.duePrincipal;
+			return this.loanAccount.current_amortization.principal_balance + this.duePrincipal - this.payment.principal;
 		},
 		outstandingInterest:function(){
 			return this.loanAccount.current_amortization.interest_balance + this.totalInterest - this.payment.interest;
