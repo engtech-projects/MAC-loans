@@ -795,10 +795,10 @@ export default {
 				if(amount >= this.totalPrincipal){
 					this.payment.principal = this.totalPrincipal;
 					this.payment.advance_principal = amount - this.totalPrincipal;
-					if(this.outstandingPrincipal > (this.payment.principal + this.payment.advance_principal)){
+					if((this.current_amortization.principal + this.totalPrincipal) > (this.payment.principal + this.payment.advance_principal)){
 						this.payment.over_payment = 0;
 					}else{
-						this.payment.over_payment = (this.payment.principal + this.payment.advance_principal) - this.outstandingPrincipal;
+						this.payment.over_payment = (this.payment.principal + this.payment.advance_principal) - (this.current_amortization.principal + this.totalPrincipal);
 					}
 					this.payment.advance_principal -= this.overPayment;
 					this.payment.advance_principal = this.payment.advance_principal < 0 ? 0 : this.payment.advance_principal;
