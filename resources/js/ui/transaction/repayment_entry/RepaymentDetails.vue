@@ -397,7 +397,7 @@
 													<span>Principal</span>
 													<span>:</span>
 												</div>
-												<span class="flex-1">P {{formatToCurrency(totalPrincipal > loanAccount.current_amortization.advance_principal ? totalPrincipal - loanAccount.current_amortization.advance_principal : 0)}}</span>
+												<span class="flex-1">P {{formatToCurrency(viewPrincipal)}}</span>
 											</div>
 											<div class="d-flex flex-row mb-7">
 												<div class="d-flex flex-row justify-content-between flex-1 mr-16">
@@ -430,7 +430,7 @@
 										</div>
 										<div class="d-flex flex-column mb-auto">
 											<span class="text-20 text-primary-dark">TOTAL</span>
-											<span class="bg-primary-dark text-white font-30 pxy-25 lh-1">P {{formatToCurrency(totalDue)}}</span>
+											<span class="bg-primary-dark text-white font-30 pxy-25 lh-1">P {{formatToCurrency(totalDueView)}}</span>
 										</div>
 
 									</div>
@@ -842,11 +842,17 @@ export default {
 		totalPrincipal:function(){
 			return this.loanAccount.current_amortization.principal + this.loanAccount.current_amortization.short_principal;
 		},
+		viewPrincipal:function(){
+			return this.totalPrincipal > this.loanAccount.current_amortization.advance_principal ? this.totalPrincipal - this.loanAccount.current_amortization.advance_principal : 0;
+		},
 		totalInterest:function(){
 			return this.loanAccount.current_amortization.interest + this.loanAccount.current_amortization.short_interest;
 		},
 		totalDue:function(){
 			return this.totalPrincipal + this.totalInterest + this.pdi + this.penalty;
+		},
+		totalDueView:function(){
+			return this.viewPrincipal + this.totalInterest + this.pdi + this.penalty;
 		},
 		pdi:function(){
 			this.loanAccount.current_amortization.short_pdi = 0;
