@@ -61,4 +61,8 @@ class TransactionController extends Controller
 	public function todaysRelease(){
 		return \App\Models\LoanAccount::whereDate('date_release', Carbon::today())->get();
 	}
+
+	public function paidPayments(){
+		$payments = \App\Models\Payment::where('status','paid')->whereDate('updated_at', Carbon::today())->get();
+	}
 }

@@ -18,7 +18,7 @@
 					</div>
 					<div class="form-group mb-5" style="flex: 5">
 						<label for="client" class="form-label mb-3">Client</label>
-						<input :value="pborrower.firstname + ' ' + pborrower.lastname + ' ' + pborrower.suffix" type="text" class="form-control form-input " id="client">
+						<input :value="pborrower.firstname + ' ' + pborrower.lastname + ' ' + pborrower.middlename.charAt(0) + '.'" type="text" class="form-control form-input " id="client">
 					</div>
 					<div class="form-group mb-10" style="flex: 5">
 						<label for="address" class="form-label mb-3">Address</label>
@@ -603,6 +603,7 @@
 				</div>
 			</div>
 		</div>
+		
 	</div>
 </template>
 
@@ -737,6 +738,7 @@ export default {
 			}
 			return '';
 		},
+		
 		amortSched:function(){
 			axios.post(this.baseURL() + 'api/account/generate-amortization', this.loanAccount, {
 				headers: {
@@ -875,6 +877,7 @@ export default {
 			return this.loanAccount.current_amortization.interest + this.loanAccount.current_amortization.principal;
 		},
 		borrowerPhoto:function(){
+			console.log(this.pborrower.photo);
 			return this.pborrower.photo? this.pborrower.photo : '/img/user.png';
 		},
 		lastTransactionDate:function(){
