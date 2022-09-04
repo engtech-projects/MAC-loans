@@ -33,7 +33,7 @@
 							<td style="vertical-align:middle;"><input v-model="p.checked" type="checkbox" class="form-control form-box"></td>
 							<td>{{p.account_num}}</td>
 							<td><a href="#">{{p.firstname + ' ' + p.lastname}}</a></td>
-							<td @click="payment=p"><span class="text-green c-pointer">select</span></td>
+							<td @click="payment=p;todaysPayments()"><span class="text-green c-pointer">select</span></td>
 						</tr>
 					
 					</tbody>
@@ -79,13 +79,6 @@
 						</div>
 						<div class="d-flex flex-row mb-12">
 							<div class="d-flex flex-row flex-2 justify-content-between pr-24">
-								<span class="">Total Memo</span>
-								<span>:</span>
-							</div>
-							<span class="flex-3 text-primary-dark">P {{formatToCurrency(totalMemo)}}</span>
-						</div>
-						<div class="d-flex flex-row mb-12">
-							<div class="d-flex flex-row flex-2 justify-content-between pr-24">
 								<span class="">Total Check</span>
 								<span>:</span>
 							</div>
@@ -94,6 +87,34 @@
 						<div class="d-flex flex-row mb-12">
 							<div class="d-flex flex-row flex-2 justify-content-between pr-24">
 								<span class="">Total Memo Payment</span>
+								<span>:</span>
+							</div>
+							<span class="flex-3 text-primary-dark">P {{formatToCurrency(totalMemo)}}</span>
+						</div>
+						<div class="d-flex flex-row mb-12">
+							<div class="d-flex flex-row flex-2 justify-content-between pr-24">
+								<span class="pl-24">Interbranch</span>
+								<span>:</span>
+							</div>
+							<span class="flex-3 text-primary-dark">P 0.00</span>
+						</div>
+						<div class="d-flex flex-row mb-12">
+							<div class="d-flex flex-row flex-2 justify-content-between pr-24">
+								<span class="pl-24">Offset P.F</span>
+								<span>:</span>
+							</div>
+							<span class="flex-3 text-primary-dark">P 0.00</span>
+						</div>
+						<div class="d-flex flex-row mb-12">
+							<div class="d-flex flex-row flex-2 justify-content-between pr-24">
+								<span class="pl-24">Rebates & Disc</span>
+								<span>:</span>
+							</div>
+							<span class="flex-3 text-primary-dark">P 0.00</span>
+						</div>
+						<div class="d-flex flex-row mb-12">
+							<div class="d-flex flex-row flex-2 justify-content-between pr-24">
+								<span class="">Total POS</span>
 								<span>:</span>
 							</div>
 							<span class="flex-3 text-primary-dark">P 0.00</span>
@@ -136,6 +157,7 @@
 			</div>
 			<overridepayment-details :ppayment="payment" :token="token" @reloadPayments="fetchPayments();resetPayment()"></overridepayment-details>
 		</div>
+		<overridepayment-view :ppayments="payments"></overridepayment-view>
 	</div>
 </template>
 
@@ -159,6 +181,21 @@ export default {
 		}
 	},
 	methods:{
+		async todaysPayments(){
+			await axios.post(this.baseURL() + 'transaction/payments/paid/', this.loanAccount, {
+				headers: {
+					'Authorization': 'Bearer ' + this.token,
+					'Content-Type': 'application/json',
+					'Accept': 'application/json'
+				}
+			})
+			.then(function (response) {
+				console.log(response.data);
+			}.bind(this))
+			.catch(function (error) {
+				console.log(error);
+			}.bind(this));
+		},
 		resetPayment:function(){
 			
 			this.payment = {
