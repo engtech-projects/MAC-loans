@@ -464,7 +464,7 @@ class LoanAccount extends Model
                   $delPenalty += $payment->penalty;
                  break;
                }
-               if($delinquent->status != 'paid' && $delinquent->id != $loanAccountId && $delPenalty){
+               if($delinquent->status != 'paid' && $delinquent->id != $loanAccountId && !$delPenalty){
                   $missed[] = $delinquent->id;
                }
                break;
