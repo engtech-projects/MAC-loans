@@ -810,6 +810,7 @@ export default {
 					this.payment.principal = amount;
 					amount = 0;
 				}
+				this.payment.advance_principal += this.excessAdvance;
 				this.payment.short_pdi = this.pdi - this.payment.pdi;
 				this.payment.short_penalty = this.penalty - this.payment.penalty;
 				this.payment.short_interest = this.dueInterest - this.payment.interest;
@@ -902,6 +903,9 @@ export default {
 		},
 		dueExcess:function(){
 			return this.payment.advance_principal + this.payment.over_payment;
+		},
+		excessAdvance:function(){
+			return this.loanAccount.current_amortization.advance_principal < this.totalPrincipal ? 0 : this.loanAccount.current_amortization.advance_principal - this.totalPrincipal;
 		},
 		overPayment:function(){
 			return this.payment.over_payment;
