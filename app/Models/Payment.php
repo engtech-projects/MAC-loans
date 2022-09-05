@@ -40,6 +40,10 @@ class Payment extends Model
         'status'
     ];
 
+	public function loanDetails(){
+		return $this->belongsTo(LoanAccount::class, 'loan_account_id');
+	}
+
 
     public function getTotalPayment() {
         

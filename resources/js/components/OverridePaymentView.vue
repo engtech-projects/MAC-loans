@@ -16,20 +16,23 @@
 						</div>
 						<div class="d-flex flex-row align-items-center mr-24">
 							<span class="mr-10 flex-1">Account Officer : </span>
-							<select class="form-control flex-1 min-w-200" name="" id="">
-								<option value="">All</option>
+							<select v-model="filter.ao" class="form-control flex-1 min-w-200" name="" id="">
+								<option value="all">All</option>
+								<option v-for="aao in setAo" :key="aao.ao_id" :value="aao.ao_id">{{aao.name}}</option>
 							</select>
 						</div>
 						<div class="d-flex flex-row align-items-center mr-24">
 							<span class="mr-10 flex-1">Center : </span>
-							<select class="form-control min-w-200 flex-1" name="" id="">
-								<option value="">Albatros</option>
+							<select v-model="filter.center" class="form-control min-w-200 flex-1" name="" id="">
+								<option value="all">All</option>
+								<option v-for="cc in setCenter" :key="cc.center_id" :value="cc.center_id">{{cc.center}}</option>
 							</select>
 						</div>
 						<div class="d-flex flex-row align-items-center">
 							<span class="mr-10 flex-1">Product Name : </span>
-							<select class="form-control min-w-200 flex-1" name="" id="">
-								<option value="">Allotment Loan</option>
+							<select v-model="filter.product" class="form-control min-w-200 flex-1" name="" id="">
+								<option value="all">All</option>
+								<option v-for="pp in setProduct" :key="pp.product_id" :value="pp.product_id">{{pp.product_name}}</option>
 							</select>
 						</div>
 					</div>
@@ -49,9 +52,9 @@
 						<th>Life Ins.</th>
 					</thead>
 					<tbody>
-						<tr v-for="p in ppayments" :key="p.payment_id">
-							<td>{{p.account_num}}</td>
-							<td>{{p.firstname + ' ' + p.lastname}}</td>
+						<tr v-for="p in filteredPayments" :key="p.payment_id">
+							<td>{{p.loan_details.account_num}}</td>
+							<td>{{p.loan_details.borrower.firstname + ' ' + p.loan_details.borrower.lastname}}</td>
 							<td>{{p.or_no}}</td>
 							<td>{{formatToCurrency(p.amount_applied)}}</td>
 							<td>{{p.payment_type}}</td>
@@ -278,7 +281,12 @@ export default {
 	props:['ppayments'],
 	data(){
 		return {
-
+			filter:{
+				ao:'all',
+				center:'all',
+				product:'all'
+			},
+			aofficers:[],
 		}
 	},
 	computed:{
@@ -302,10 +310,83 @@ export default {
 		},
 		totalPos:function(){
 			return this.totalCash + this.totalCheck;
+		},
+		setAo:function(){
+			let aos = [];
+			let aofficers = [];
+			this.filteredPayments.map(function(data){
+				if(data.loan_details.account_officer){
+					let ao = data.loan_details.account_officer.ao_id;
+					if(!aos.includes(ao)){
+						aos.push(ao);
+						aofficers.push(data.loan_details.account_officer);
+					}
+				}
+			}.bind(this));
+			return aofficers;
+		},
+		setCenter:function(){
+			let centers = [];
+			let ccenters = [];
+			this.filteredPayments.map(function(data){
+				if(data.loan_details.center){
+					let center = data.loan_details.center.center_id;
+					if(!ccenters.includes(center)){
+						ccenters.push(center);
+						centers.push(data.loan_details.center);
+					}
+				}
+			}.bind(this));
+			return centers;
+		},
+		setProduct:function(){
+			let products = [];
+			let pproducts = [];
+			this.filteredPayments.map(function(data){
+				if(data.loan_details.product){
+					let product = data.loan_details.product.product_id;
+					if(!pproducts.includes(product)){
+						pproducts.push(product);
+						products.push(data.loan_details.product);
+					}
+				}
+			}.bind(this));
+			return products;
+		},
+		filteredPayments:function(){
+			var payments = [];
+			if(this.filter.ao == 'all' && this.filter.center == 'all' && this.filter.product == 'all'){				
+				return this.ppayments;
+			}else{
+				this.ppayments.map(function(data){
+					if(this.filter.ao != 'all' && this.filter.center != 'all' && this.filter.product != 'all'){
+						if(data.loan_details.account_officer.ao_id == this.filter.ao && data.loan_details.center.center_id == data.filter.center && data.loan_details.product.product_id == data.filter.product){
+							payments.push(data);
+						}
+					}
+					if(this.filter.ao != 'all' && this.filter.center != 'all' && this.filter.product == 'all'){
+						if(data.loan_details.account_officer.ao_id == this.filter.ao && data.loan_details.center.center_id == data.filter.center){
+							payments.push(data);
+						}
+					}
+					if(this.filter.ao != 'all' && this.filter.center == 'all' && this.filter.product != 'all'){
+						if(data.loan_details.account_officer.ao_id == this.filter.ao && data.loan_details.product.product_id == data.filter.product){
+							payments.push(data);
+						}
+					}
+					if(this.filter.ao != 'all' && this.filter.center == 'all' && this.filter.product == 'all'){
+						if(data.loan_details.account_officer.ao_id == this.filter.ao){
+							payments.push(data);
+						}
+					}
+					
+				}.bind(this));
+			}
+			return payments
 		}
 	},
 	mounted(){
-		
+		this.setAo;
 	}
 }
 </script>
