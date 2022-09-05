@@ -332,7 +332,7 @@
 										<input type="checkbox" class="form-check-input" style="margin:0">
 										<span class="ml-18 text-primary-dark text-24 lh-1">Rebates</span>
 									</div>
-									<input @focusout="distribute()" :disabled="disabled(waive.rebates)" v-model="payment.rebates" type="text" class="form-control" placeholder="Amount">
+									<input @focusout="distribute()" :disabled="disabled(waive.rebates)" v-model="payment.rebatesInputted" type="number" :max="totalInterest" class="form-control" placeholder="Amount">
 								</div>
 								<div class="flex-1 d-flex flex-row-reverse align-items-end"><input type="submit" class="btn btn-bright-blue min-w-150 mb-5" value="Pay"></div>
 							</div>
@@ -404,7 +404,7 @@
 													<span>Interest</span>
 													<span>:</span>
 												</div>
-												<span class="flex-1">P {{formatToCurrency(totalInterest - payment.rebates)}}</span>
+												<span class="flex-1">P {{formatToCurrency(dueInterest)}}</span>
 											</div>
 											<div class="d-flex flex-row mb-7">
 												<div class="d-flex flex-row justify-content-between flex-1 mr-16">
@@ -603,7 +603,7 @@
 				</div>
 			</div>
 		</div>
-		
+
 	</div>
 </template>
 
@@ -708,6 +708,7 @@ export default {
 				short_penalty:0,
 				vat:0,
 				rebates:0,
+				rebatesInputted:0,
 				rebates_approval_no:null,
 				total_payable:0,
 				amount_applied:0,
@@ -738,7 +739,6 @@ export default {
 			}
 			return '';
 		},
-		
 		amortSched:function(){
 			axios.post(this.baseURL() + 'api/account/generate-amortization', this.loanAccount, {
 				headers: {
@@ -767,6 +767,7 @@ export default {
 			this.payment.advance_interest = 0;
 			this.payment.advance_principal = 0;
 			this.payment.over_payment = 0;
+			this.payment.rebates = this.rebatesApplied;
 			if(this.payment.payment_applied != ''){
 				if(amount >= this.pdi){
 					amount -= this.pdi;
@@ -784,10 +785,10 @@ export default {
 				}
 				// maybe add rebates here?
 				// amount += this.payment.rebates;
-				if(amount + this.payment.rebates >= this.totalInterest){
-					this.payment.interest = this.totalInterest;
+				if(amount + this.rebatesApplied >= this.totalInterest){
+					this.payment.interest = this.dueInterest;
 					// this.payment.interest = this.payment.interest - this.payment.rebates < 0 ? 0 : this.payment.interest - this.payment.rebates;
-					amount -= this.payment.interest;
+					amount -= this.dueInterest;
 				}else{
 					this.payment.interest = amount;
 					// this.payment.interest = this.payment.interest - this.payment.rebates < 0? 0 : this.payment.interest - this.payment.rebates;
@@ -811,7 +812,7 @@ export default {
 				}
 				this.payment.short_pdi = this.pdi - this.payment.pdi;
 				this.payment.short_penalty = this.penalty - this.payment.penalty;
-				this.payment.short_interest = this.totalInterest - this.payment.interest;
+				this.payment.short_interest = this.dueInterest - this.payment.interest;
 				this.payment.short_principal = this.duePrincipal - this.payment.principal;
 				this.payment.short_principal = this.payment.short_principal < 0 ? 0 : this.payment.short_principal;
 				this.payment.total_payable = this.totalDue; // Verify if change payable if waived fees
@@ -850,15 +851,21 @@ export default {
 		totalInterest:function(){
 			return this.loanAccount.current_amortization.interest + this.loanAccount.current_amortization.short_interest;
 		},
+		dueInterest:function(){
+			return this.loanAccount.current_amortization.interest + this.loanAccount.current_amortization.short_interest - this.rebatesApplied;
+		},
 		totalDue:function(){
-			return this.duePrincipal + this.totalInterest + this.pdi + this.penalty;
+			return this.duePrincipal + this.dueInterest + this.pdi + this.penalty;
+		},
+		rebatesApplied:function(){
+			return this.waive.rebates ? this.payment.rebatesInputted : 0;
 		},
 		pdi:function(){
-			this.loanAccount.current_amortization.short_pdi = 0;
+			this.loanAccount.current_amortization.short_pdi = 0; // fix when short pdi is fixed backend
 			return this.waive.pdi ? 0 : this.loanAccount.current_amortization.pdi + this.loanAccount.current_amortization.short_pdi;
 		},
 		penalty:function(){
-			this.loanAccount.current_amortization.short_penalty = 0;
+			this.loanAccount.current_amortization.short_penalty = 0; // fix when short penalty is fixed backend
 			return this.waive.penalty ? 0 : this.loanAccount.current_amortization.penalty + this.loanAccount.current_amortization.short_penalty;
 		},
 		pdiWaive:function(){
@@ -903,7 +910,7 @@ export default {
 			return this.loanAccount.current_amortization.principal_balance + this.duePrincipal - this.payment.principal;
 		},
 		outstandingInterest:function(){
-			return this.loanAccount.current_amortization.interest_balance + this.totalInterest - this.payment.interest;
+			return this.loanAccount.current_amortization.interest_balance + this.dueInterest - this.payment.interest;
 		},
 		outstandingSurcharge: function(){
 			return this.pdi + this.penalty - this.payment.penalty - this.payment.pdi;
@@ -927,6 +934,14 @@ export default {
 		},
 		'waive.penalty':function(newValue){
 			this.distribute();
+		},
+		'waive.rebates':function(newValue){
+			this.distribute();
+		},
+		'payment.rebatesInputted':function(newValue){
+			if(this.totalInterest < this.payment.rebatesInputted){
+				this.payment.rebatesInputted = this.totalInterest;
+			}
 		},
 	},
 	mounted(){
