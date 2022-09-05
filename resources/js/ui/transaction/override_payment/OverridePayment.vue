@@ -31,9 +31,9 @@
 					<tbody>
 						<tr v-for="p in payments" :key="p.payment_id" class="client-item" :class="payment.payment_id==p.payment_id?'active':''">
 							<td style="vertical-align:middle;"><input v-model="p.checked" type="checkbox" class="form-control form-box"></td>
-							<td>{{p.account_num}}</td>
-							<td><a href="#">{{p.firstname + ' ' + p.lastname}}</a></td>
-							<td @click="payment=p;todaysPayments()"><span class="text-green c-pointer">select</span></td>
+							<td>{{p.loan_details.account_num}}</td>
+							<td><a href="#">{{p.loan_details.borrower.firstname + ' ' + p.loan_details.borrower.lastname}}</a></td>
+							<td @click="payment=p;openPayments(filter)"><span class="text-green c-pointer">select</span></td>
 						</tr>
 					
 					</tbody>
@@ -166,6 +166,7 @@ export default {
 	props:['token'],
 	data(){
 		return {
+			paidPayments:[],
 			payments:[],
 			filter:{
 				created_at: this.dateToYMD(new Date()),
@@ -177,19 +178,45 @@ export default {
 				firstname:'',
 				lastname:'',
 				address:'',
+				loan_details:{
+					borrower:{
+						borrower_num:'##############',
+						firstname:'',
+						lastname:'',
+						address:'',
+					}
+				}
 			}
 		}
 	},
 	methods:{
-		async todaysPayments(){
-			await axios.post(this.baseURL() + 'transaction/payments/paid/', this.loanAccount, {
-				headers: {
-					'Authorization': 'Bearer ' + this.token,
-					'Content-Type': 'application/json',
-					'Accept': 'application/json'
+
+		async openPayments(){
+			await axios.post(this.baseURL() + 'transaction/payments/open', this.filter ,{
+			headers: {
+				'Authorization': 'Bearer ' + this.token,
+				'Content-Type': 'application/json',
+				'Accept': 'application/json'
 				}
 			})
 			.then(function (response) {
+				this.payments = this.setCheckbox(response.data);
+				// console.log(response.data);
+			}.bind(this))
+			.catch(function (error) {
+				console.log(error);
+			}.bind(this));
+		},
+		async todaysPaidPayments(){
+			await axios.post(this.baseURL() + 'transaction/payments/paidtoday', this.filter ,{
+			headers: {
+				'Authorization': 'Bearer ' + this.token,
+				'Content-Type': 'application/json',
+				'Accept': 'application/json'
+				}
+			})
+			.then(function (response) {
+				this.paidPayments = response.data;
 				console.log(response.data);
 			}.bind(this))
 			.catch(function (error) {
@@ -204,6 +231,14 @@ export default {
 				firstname:'',
 				lastname:'',
 				address:'',
+				loan_details:{
+					borrower:{
+						borrower_num:'##############',
+						firstname:'',
+						lastname:'',
+						address:'',
+					}
+				}
 			};
 		},
 		fetchPayments:function(){
@@ -215,8 +250,8 @@ export default {
 				}
 			})
 			.then(function (response) {
-				this.payments = this.setCheckbox(response.data.data);
-				console.log(response.data);
+				// this.payments = this.setCheckbox(response.data.data);
+				// console.log(response.data);
 			}.bind(this))
 			.catch(function (error) {
 				console.log(error);
@@ -353,11 +388,14 @@ export default {
 	watch:{
 		'filter.created_at':function(newValue){
 			this.fetchPayments();
+			this.openPayments(this.filter);
 		}
 	},
 	mounted(){
 		this.fetchPayments();
 		this.overridePaymentDates();
+		this.openPayments(this.filter);
+		this.todaysPaidPayments();
 	}
 }
 </script>

@@ -62,7 +62,16 @@ class TransactionController extends Controller
 		return \App\Models\LoanAccount::whereDate('date_release', Carbon::today())->get();
 	}
 
-	public function paidPayments(){
-		$payments = \App\Models\Payment::where('status','paid')->whereDate('updated_at', Carbon::today())->get();
+	public function openPayments(Request $request){
+		$payments = \App\Models\Payment::with('loanDetails')->where('status','open')->whereDate('created_at', '=', date($request->created_at))->get();
+		foreach ($payments as $key => $value) {
+			$payments[$key]->photo = $value->loanDetails->borrowerPhoto();
+		}
+		return $payments;
+	}
+
+	public function paidTodayPayments(Request $request){
+		$payments = \App\Models\Payment::with('loanDetails')->where('status','paid')->whereDate('updated_at', '=', Carbon::now())->get();
+		return $payments;
 	}
 }

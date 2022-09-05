@@ -7,7 +7,7 @@
 					<div class="d-flex flex-row">
 						<div class="borrower-number d-flex flex-column" style="flex: 5">
 							<span>Borrower's Number</span>
-							<span class="text-center">{{ppayment.borrower_num}}</span>
+							<span class="text-center">{{ppayment.loan_details.borrower.borrower_num}}</span>
 						</div>
 						<div style="flex:4"></div>
 						<div class="form-group mb-10" style="flex: 5">
@@ -17,15 +17,15 @@
 					</div>
 					<div class="form-group mb-5" style="flex: 5">
 						<label for="client" class="form-label mb-3">Client</label>
-						<input :value="ppayment.firstname + ' ' + ppayment.lastname" type="text" class="form-control form-input " id="client">
+						<input :value="ppayment.loan_details.borrower.firstname + ' ' + ppayment.loan_details.borrower.lastname" type="text" class="form-control form-input " id="client">
 					</div>
 					<div class="form-group mb-10" style="flex: 5">
 						<label for="address" class="form-label mb-3">Address</label>
-						<input :value="ppayment.address" type="text" class="form-control form-input " id="address">
+						<input :value="ppayment.loan_details.borrower.address" type="text" class="form-control form-input " id="address">
 					</div>
 				</div>
 				<div class="upload-photo d-flex flex-column" style="flex:4;padding-top:36px;">
-					<img src="/img/user.png" alt="">
+					<img :src="borrowerPhoto" alt="">
 				</div>
 			</div>
 			<div class="sep mb-24"></div>
@@ -182,6 +182,11 @@ export default {
 				text: text,
 				type: type,
 			});
+		},
+	},
+	computed:{
+		borrowerPhoto:function(){
+			return this.ppayment.photo? this.ppayment.photo : '/img/user.png';
 		},
 	}
 	
