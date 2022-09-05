@@ -377,9 +377,8 @@ class LoanAccount extends Model
             Amortization::find($amortization->id)->update(['status' => 'delinquent']);
             $amortization->delinquent = $this->getDelinquent($this->loan_account_id, $amortization->id, $amortization->advance_principal);
          }
-         if($dayDiff > 10 && $isPaid->penalty > 0){ // change to if no short penalty
+         if($dayDiff > 10 && (($isPaid && $isPaid->penalty > 0) || !$isPaid)){ // change to if no short penalty
             $penaltyMissed = array_merge($amortization->delinquent['missed'], [$amortization->id]);
-
          }
          $amortization->penalty = $this->getPenalty($penaltyMissed, ($amortization->schedule_principal + $amortization->schedule_interest));
 
