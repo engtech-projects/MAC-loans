@@ -87,44 +87,16 @@ class Payment extends Model
 
     public function overridePaymentAccounts($filters = array()) {
 
-        $payments = Payment::join('loan_accounts', 'loan_accounts.loan_account_id', '=', 'payment.loan_account_id')
-                            ->join('borrower_info', 'borrower_info.borrower_id', '=', 'loan_accounts.borrower_id');
-
-        if( isset($filters['created_at']) && $filters['created_at'] ){
-            $payments->whereDate('payment.created_at', '=', $filters['created_at']);
-        }
-
-        if( isset($filters['ao_id']) && $filters['ao_id'] != 'all' ){
-            $payments->where('loan_accounts.ao_id', '=', $filters['ao_id']);
-        }
-
-        if( isset($filters['center_id']) && $filters['center_id'] != 'all' ){
-            $payments->where('loan_accounts.center_id', '=', $filters['center_id']);
-        }
-
-        if( isset($filters['product_id']) && $filters['product_id'] != 'all' ){
-            $payments->where('loan_accounts.product_id', '=', $filters['product_id']);          
-        }
-
-        if( isset($filters['branch_id']) ){
-            $payments->where('payment.branch_id', '=', $filters['branch_id']);
-        }
-
-        $payments->where('payment.status', '=', 'open');
-                
-        return $payments->get(['payment.*', 'loan_accounts.*', 'borrower_info.*']);
-    
+        return Payment::join('loan_accounts', 'loan_accounts.loan_account_id', '=', 'payment.loan_account_id')
+                            ->join('borrower_info', 'borrower_info.borrower_id', '=', 'loan_accounts.borrower_id')
+                            ->whereDate('payment.created_at', '=', $filters['created_at'])
+                            ->where('payment.status', '=', 'open')
+                            ->get(['payment.*', 'loan_accounts.*', 'borrower_info.*']);
     }
 
     public function delete() {}
 
-    public function paymentList($transDate, $branchId) {
-
-        return Payment::whereDate('payment.updated_at', '=', $transDate)
-                        ->where([ 'branch_id' => $branchId ])
-                        ->get();
-
-    }
+    public function overridePayment() {}
     
     public function cancelPayment() {}
 
