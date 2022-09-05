@@ -365,10 +365,8 @@ class LoanAccount extends Model
             $amortization->interest = 0;
             $amortization->short_principal = $isPaid->short_principal;
             $amortization->short_interest = $isPaid->short_interest;
-
-            //add formula for short penalty and short
+            //add formula for short penalty and short pdi
          }
-
          $currentDay = Carbon::createFromFormat('Y-m-d', Carbon::now()->format('Y-m-d'));
          $dateSched = Carbon::createFromFormat('Y-m-d', $amortization->amortization_date);
          $dayDiff = $dateSched->diffInDays($currentDay, false);
@@ -377,7 +375,7 @@ class LoanAccount extends Model
             Amortization::find($amortization->id)->update(['status' => 'delinquent']);
             $amortization->delinquent = $this->getDelinquent($this->loan_account_id, $amortization->id, $amortization->advance_principal);
          }
-         if($dayDiff > 10 && (($isPaid && $isPaid->penalty <= 0) || !$isPaid)){ // change to if no short penalty
+         if($dayDiff > 10 && !$isPaid){
             $penaltyMissed = array_merge($amortization->delinquent['missed'], [$amortization->id]);
          }
          $amortization->penalty = $this->getPenalty($penaltyMissed, ($amortization->schedule_principal + $amortization->schedule_interest));
@@ -462,9 +460,6 @@ class LoanAccount extends Model
 
                   $delPenalty += $payment->penalty;
                  break;
-               }
-               if($delinquent->status != 'paid' && $delinquent->id != $amortizationId && !$delPenalty){
-                  $missed[] = $delinquent->id;
                }
                break;
             }else{
