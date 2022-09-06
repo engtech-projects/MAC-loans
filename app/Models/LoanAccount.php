@@ -309,7 +309,7 @@ class LoanAccount extends Model
 
    public function getCurrentAmortization(){
 
-      if( $this->status == 'pending' ){
+      if( strtolower($this->status) == 'pending' ){
          return false;
       }
 
@@ -320,7 +320,7 @@ class LoanAccount extends Model
       }
 
 
-      if( $this->loan_status == 'paid' ){
+      if( strtolower($this->loan_status) == 'paid' ){
          return;
       }
 
@@ -550,6 +550,19 @@ class LoanAccount extends Model
       return $paymentTotal;
    }
 
+   public function getPaymentTotalPrincipalInterest($loanAccountId){
+
+      $paymentTotal = 0;
+      $payments = $this->getPayment($loanAccountId);
+
+      foreach ($payments as $payment) {
+         $paymentTotal += $payment->principal;
+         $paymentTotal += $payment->interest;
+      }
+
+      return $paymentTotal;
+   }
+
    public function checkPastDue($dueDate) {
 
       $currentDay = Carbon::createFromFormat('Y-m-d', Carbon::now()->format('Y-m-d'));
@@ -606,7 +619,7 @@ class LoanAccount extends Model
    public function outstandingBalance($loanAccountId) {
 
       $account = LoanAccount::where(['loan_account_id' => $loanAccountId])->first();
-      $payment = $this->getPaymentTotal($loanAccountId);
+      $payment = $this->getPaymentTotalPrincipalInterest($loanAccountId);
 
       return ($account->loan_amount + $account->interest_amount) - $payment;
 
