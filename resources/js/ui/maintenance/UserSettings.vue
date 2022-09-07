@@ -64,15 +64,15 @@
 
 					<div class="form-group mb-10">
 						<label for="firstName" class="form-label">Username</label>
-						<input v-model="account.username" type="text" class="form-control form-input " id="firstName" required>
+						<input v-model="account.username" type="text" class="form-control form-input " id="username" required>
 					</div>
 					<div class="form-group mb-24">
 						<label for="middleName" class="form-label">Password</label>
-						<input v-model="account.password" type="password" class="form-control form-input " id="middleName" required>
+						<input v-model="account.password" type="password" class="form-control form-input " id="password" required>
 					</div>
 					<div class="form-group mb-10">
 						<label for="firstName" class="form-label">Status</label>
-						<input v-model="account.status" type="text" class="form-control form-input " id="firstName" disabled>
+						<input v-model="account.status" type="text" class="form-control form-input " id="status" disabled>
 					</div>
 					<div class="d-flex justify-content-between mb-72">
 						<a @click.prevent="account.status=='active'?account.status='inactive':account.status='active'" href="#" class="btn btn-lg btn-yellow-light min-w-150">Activate / Deactivate</a>
@@ -84,54 +84,82 @@
 			<div class="flex-2">
 				<span class="text-20 py-7 mid-light-bb text-block text-primary-dark text-bold mb-12">Access</span>
 				<div class="d-flex flex-column light-border px-16">
-					<div class="d-flex flex-row justify-content-between light-bb align-items-center">
+					<!-- <div class="d-flex flex-row justify-content-between light-bb align-items-center">
 						<span class="flex-1 py-10">Client Information</span>
 						<input type="checkbox">
 					</div>
 					<div class="d-flex flex-row justify-content-between light-bb align-items-center">
 						<span class="flex-1 py-10">Transaction</span>
 						<input type="checkbox">
-					</div>
+					</div> -->
 					<div class="d-flex flex-column">
 						<div class="d-flex justify-content-between light-bb align-items-center">
-							<span class="flex-1 py-10">Maintenance</span>
+							<span class="flex-1 py-10 text-bold">Client Information</span>
 							<input type="checkbox">
 						</div>
 						<div class="px-45">
-							<div class="d-flex flex-row justify-content-between light-bb align-items-center">
-								<span class="flex-1 py-10">Cancel Payments</span>
-								<input type="checkbox">
-							</div>
-							<div class="d-flex flex-row justify-content-between light-bb align-items-center">
-								<span class="flex-1 py-10">Product Setup</span>
-								<input type="checkbox">
-							</div>
-							<div class="d-flex flex-row justify-content-between light-bb align-items-center">
-								<span class="flex-1 py-10">Center - Group Setup</span>
-								<input type="checkbox">
-							</div>
-							<div class="d-flex flex-row justify-content-between light-bb align-items-center">
-								<span class="flex-1 py-10">User Settings</span>
-								<input type="checkbox">
-							</div>
-							<div class="d-flex flex-row justify-content-between light-bb align-items-center">
-								<span class="flex-1 py-10">Account Officer</span>
-								<input type="checkbox">
-							</div>
-							<div class="d-flex flex-row justify-content-between align-items-center">
-								<span class="flex-1 py-10">Account Re-Tagging</span>
-								<input type="checkbox">
+							<div v-for="cinfo in permissionList('Client Information')" :key="cinfo.access_id" class="d-flex flex-row justify-content-between light-bb align-items-center">
+								<span class="flex-1 py-10">{{cinfo.label}}</span>
+								<input @change="togglePermission(cinfo.access_id, $event)" type="checkbox" :checked="isChecked(cinfo.access_id)">
 							</div>
 						</div>
 					</div>
-					<div class="d-flex flex-row justify-content-between light-bt light-bb align-items-center">
+					<div class="d-flex flex-column">
+						<div class="d-flex justify-content-between light-bb align-items-center">
+							<span class="flex-1 py-10 text-bold">Transaction</span>
+							<input type="checkbox">
+						</div>
+						<div class="px-45">
+							<div v-for="cinfo in permissionList('Transaction')" :key="cinfo.access_id" class="d-flex flex-row justify-content-between light-bb align-items-center">
+								<span class="flex-1 py-10">{{cinfo.label}}</span>
+								<input @change="togglePermission(cinfo.access_id, $event)" type="checkbox">
+							</div>
+						</div>
+					</div>
+					<div class="d-flex flex-column">
+						<div class="d-flex justify-content-between light-bb align-items-center">
+							<span class="flex-1 py-10 text-bold">Maintenance</span>
+							<input type="checkbox">
+						</div>
+						<div class="px-45">
+							<div v-for="cinfo in permissionList('Maintenance')" :key="cinfo.access_id" class="d-flex flex-row justify-content-between light-bb align-items-center">
+								<span class="flex-1 py-10">{{cinfo.label}}</span>
+								<input @change="togglePermission(cinfo.access_id, $event)" type="checkbox">
+							</div>
+						</div>
+					</div>
+					<div class="d-flex flex-column">
+						<div class="d-flex justify-content-between light-bb align-items-center">
+							<span class="flex-1 py-10 text-bold">Reports</span>
+							<input type="checkbox">
+						</div>
+						<div class="px-45">
+							<div v-for="cinfo in permissionList('Reports')" :key="cinfo.access_id" class="d-flex flex-row justify-content-between light-bb align-items-center">
+								<span class="flex-1 py-10">{{cinfo.label}}</span>
+								<input @change="togglePermission(cinfo.access_id, $event)" type="checkbox">
+							</div>
+						</div>
+					</div>
+					<div class="d-flex flex-column">
+						<div class="d-flex justify-content-between light-bb align-items-center">
+							<span class="flex-1 py-10 text-bold">End of Day</span>
+							<input type="checkbox">
+						</div>
+						<div class="px-45">
+							<div v-for="cinfo in permissionList('End of Day')" :key="cinfo.access_id" class="d-flex flex-row justify-content-between light-bb align-items-center">
+								<span class="flex-1 py-10">{{cinfo.label}}</span>
+								<input @change="togglePermission(cinfo.access_id, $event)" type="checkbox">
+							</div>
+						</div>
+					</div>
+					<!-- <div class="d-flex flex-row justify-content-between light-bt light-bb align-items-center">
 						<span class="flex-1 py-10">Report</span>
 						<input type="checkbox">
 					</div>
 					<div class="d-flex flex-row justify-content-between light-bb align-items-center">
 						<span class="flex-1 py-10">End of Day</span>
 						<input type="checkbox">
-					</div>
+					</div> -->
 				</div>
 			</div>
 		</section>
@@ -153,12 +181,14 @@ export default {
 				lastname:'',
 				status:'active',
 				branch:[],
-				accessibility:[]
+				accessibility:[],
+				permissions:[],
 			},
 			branches:[],
 			selected:{
 				branch:null,
-			}
+			},
+			permissions:[],
 		}
 	},
 	methods:{
@@ -186,6 +216,21 @@ export default {
 				console.log(error);
 			}.bind(this));
 		}, 
+		fetchPermissions: function(){
+			axios.get(this.baseURL() + 'api/accessibility/', {
+				headers: {
+					'Authorization': 'Bearer ' + this.token,
+					'Content-Type': 'application/json',
+					'Accept': 'application/json'
+				}
+			})
+			.then(function (response) {
+				this.permissions = response.data.data;
+			}.bind(this))
+			.catch(function (error) {
+				console.log(error);
+			}.bind(this));
+		},
 		setAccount:function(account){
 			this.account = account;
 		},
@@ -198,7 +243,8 @@ export default {
 				lastname:'',
 				status:'active',
 				branch:[],
-				accessibility:[]
+				accessibility:[],
+				permissions:[],
 			};
 		},
 		addBranch:function(){
@@ -221,6 +267,7 @@ export default {
 			}
 		},
 		async save(){
+			this.account.permissions = this.account.accessibility;
 			await 	axios.post(this.baseURL() + 'api/user', this.account, {
 						headers: {
 							'Authorization': 'Bearer ' + this.token,
@@ -262,10 +309,35 @@ export default {
 				type: type,
 			});
 		},
+		permissionList:function(permission){
+			if(this.permissions[permission]){
+				return this.permissions[permission]? this.permissions[permission]:[];
+			}
+		},
+		togglePermission:function(permission, e){
+			if(!e.target.checked){
+				this.account.accessibility = this.account.accessibility.filter(data => data != permission);
+			}else{
+				this.account.accessibility.push(permission);
+			}
+		},
+		isChecked:function(permission){
+			var checked = false;
+			this.account.accessibility.map(function(data){
+				if(data == permission){
+					checked = true;
+				}
+			}.bind(this));
+			return checked;
+		}
+	},
+	computed:{
+		
 	},
 	mounted(){
 		this.fetchAccounts();
 		this.fetchBranches();
+		this.fetchPermissions();
 	}
 
 }

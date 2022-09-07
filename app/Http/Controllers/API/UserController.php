@@ -55,7 +55,7 @@ class UserController extends BaseController
 
             foreach ($permissions as $permission) {
                 
-                UserAccessibility::create([
+                \App\Models\UserAccessibility::create([
                     'id' => $user->id,
                     'access_id' => $permission,
                 ]);
