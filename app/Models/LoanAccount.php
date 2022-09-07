@@ -558,6 +558,7 @@ class LoanAccount extends Model
       foreach ($payments as $payment) {
          $paymentTotal += $payment->principal;
          $paymentTotal += $payment->interest;
+         $paymentTotal += $payment->rebates;
       }
 
       return $paymentTotal;

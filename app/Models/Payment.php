@@ -14,9 +14,9 @@ class Payment extends Model
     protected $primaryKey = 'payment_id';
 
     protected $fillable = [
-    	'loan_account_id', 
+    	'loan_account_id',
     	'branch_id',
-    	'payment_type', 
+    	'payment_type',
     	'or_no',
         'cheque_no',
         'bank_name',
@@ -31,10 +31,13 @@ class Payment extends Model
         'advance_interest',
     	'pdi',
         'pdi_approval_no',
+        'short_pdi',
 		'penalty',
         'penalty_approval_no',
+        'short_penalty',
 		'rebates',
         'rebates_approval_no',
+        'vat',
 		'total_payable',
 		'amount_applied',
         'status'
@@ -46,7 +49,7 @@ class Payment extends Model
 
 
     public function getTotalPayment() {
-        
+
     }
 
     public function addPayment(Request $request){
@@ -79,7 +82,7 @@ class Payment extends Model
 
         // $amortization = Amortization::find( $payment->amortization_id );
         // $amortization->status = 'paid';
-        
+
         // if( $payment->short_principal > 0 ){
         //     $amortization->status = 'delinquent';
         // }
@@ -107,7 +110,7 @@ class Payment extends Model
         }
 
         if( isset($filters['product_id']) && $filters['product_id'] != 'all' ){
-            $payments->where('loan_accounts.product_id', '=', $filters['product_id']);          
+            $payments->where('loan_accounts.product_id', '=', $filters['product_id']);
         }
 
         if( isset($filters['branch_id']) ){
@@ -115,9 +118,9 @@ class Payment extends Model
         }
 
         $payments->where('payment.status', '=', 'open');
-                
+
         return $payments->get(['payment.*', 'loan_accounts.*', 'borrower_info.*']);
-    
+
     }
 
     public function delete() {}
@@ -129,7 +132,7 @@ class Payment extends Model
                         ->get();
 
     }
-    
+
     public function cancelPayment() {}
 
 }
