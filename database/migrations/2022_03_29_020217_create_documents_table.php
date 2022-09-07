@@ -17,7 +17,7 @@ class CreateDocumentsTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('loan_account_id');
             $table->date('date_release');
-            $table->tinyText('description');
+            $table->tinyText('description')->nullable();
             $table->string('bank')->nullable();
             $table->string('account_no')->nullable();
             $table->string('card_no')->nullable();
