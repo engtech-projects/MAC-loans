@@ -24,7 +24,7 @@ class TestDataSeeder extends Seeder
                 'branch_address' => "Butuan City",
                 'status' => "active",
                 'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(), 
+                'updated_at' => Carbon::now(),
             ],[
                 'branch_code' => "002",
                 'branch_name' => "Nasipit",
@@ -32,7 +32,7 @@ class TestDataSeeder extends Seeder
                 'branch_address' => "Nasipit",
                 'status' => "active",
                 'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(), 
+                'updated_at' => Carbon::now(),
             ]
         ]);
 
@@ -41,12 +41,12 @@ class TestDataSeeder extends Seeder
                 'id' => "1",
                 'branch_id' => "1",
                 'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(), 
+                'updated_at' => Carbon::now(),
             ],[
                 'id' => "2",
                 'branch_id' => "2",
                 'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(), 
+                'updated_at' => Carbon::now(),
             ]
         ]);
 
@@ -56,49 +56,49 @@ class TestDataSeeder extends Seeder
                 'product_name' => 'Salary Loan',
                 'interest_rate' => '2',
                 'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(), 
+                'updated_at' => Carbon::now(),
             ],
             [
                 'product_code' => '002',
                 'product_name' => 'Micro Group',
                 'interest_rate' => '4',
                 'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(), 
+                'updated_at' => Carbon::now(),
             ]
         ]);
-        
+
         DB::table('account_officer')->insert([
             [
                 'name' => 'Jomel T. Gallanero',
                 'branch_id' => '001',
                 'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(), 
-                
+                'updated_at' => Carbon::now(),
+
             ],
             [
                 'name' => 'Janine L. Descallar',
                 'branch_id' => '002',
                 'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(), 
+                'updated_at' => Carbon::now(),
             ]
         ]);
-        
+
         DB::table('center')->insert([
             [
                 'center' => 'Acasia',
                 'day_sched' => 'Monday',
                 'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(), 
-                
+                'updated_at' => Carbon::now(),
+
             ],
             [
                 'center' => 'Pineapple',
                 'day_sched' => 'Tuesday',
                 'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(), 
+                'updated_at' => Carbon::now(),
             ]
         ]);
-        
+
         DB::table('borrower_info')->insert([
             [
                 'borrower_num' => '0000001',
@@ -123,9 +123,9 @@ class TestDataSeeder extends Seeder
                 'spouse_contact_number' => '',
                 'spouse_id_type' => 'SSS',
                 'spouse_id_no' => '233-456-456',
-                'spouse_id_date_issued' => '2015-04-11',  
+                'spouse_id_date_issued' => '2015-04-11',
                 'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(), 
+                'updated_at' => Carbon::now(),
                 'username' => 'VincentPadilla',
                 'password' => Hash::make("admin"),
             ]
@@ -151,7 +151,7 @@ class TestDataSeeder extends Seeder
                 'borrower_id' => '1',
                 'co_borrower_name' => 'Maria Padilla',
                 'co_borrower_address' => 'Butuan City',
-                'co_borrower_id_type' => 'GSIS',
+                'co_borrower_id_type' => 'SSS',
                 'co_borrower_id_number' => '89-8712398',
                 'co_borrower_id_date_issued' => '2020-10-02',
                 'co_maker_name' => 'Toni Gonzaga',
@@ -179,12 +179,12 @@ class TestDataSeeder extends Seeder
         DB::table('documents')->insert([
             [
                 'loan_account_id' => '1',
-                'date_release' => '2022-07-27',
+                'date_release' => Carbon::now(),
                 'description' => 'Land Title',
                 'bank' => 'Metro Bank',
-                'account_no' => '123-123',
+                'account_no' => 'ACC NUMBER',
                 'card_no' => '182654',
-                'promissory_number' => '001-002-0000001',
+                'promissory_number' => '001-001-0000001',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ]
