@@ -40,7 +40,7 @@ class UserController extends BaseController
             foreach ($branches as $branch) {
 
                  UserBranch::create([
-                    'user_id' => $user->id,
+                    'id' => $user->id,
                     'branch_id' => $branch['branch_id'],
                 ]);
 
