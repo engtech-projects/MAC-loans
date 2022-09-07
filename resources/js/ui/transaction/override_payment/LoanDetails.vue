@@ -25,7 +25,7 @@
 					</div>
 				</div>
 				<div class="upload-photo d-flex flex-column" style="flex:4;padding-top:36px;">
-					<img :src="borrowerPhoto" alt="">
+					<img :src="borrowerPhoto" alt="" style="max-width:200px">
 				</div>
 			</div>
 			<div class="sep mb-24"></div>
