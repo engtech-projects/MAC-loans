@@ -73,8 +73,14 @@ class Payment extends Model
         $payment->short_interest = $request->input('short_interest');
         $payment->advance_interest = $request->input('advance_interest');
         $payment->pdi = $request->input('pdi');
+        $payment->pdi_approval_no = $request->input('pdi_approval_no');
+        $payment->short_pdi = $request->input('short_pdi');
         $payment->penalty = $request->input('penalty');
+        $payment->penalty_approval_no = $request->input('penalty_approval_no');
+        $payment->short_penalty = $request->input('short_penalty');
         $payment->rebates = $request->input('rebates');
+        $payment->rebates_approval_no = $request->input('rebates_approval_no');
+        $payment->vat = $request->input('vat');
         $payment->total_payable = $request->input('total_payable');
         $payment->amount_applied = $request->input('amount_applied');
         // $payment->status = 'paid';

@@ -356,6 +356,8 @@ class LoanAccount extends Model
          $amortization->short_interest = $amortization->delinquent['interest'] - (in_array($amortization->id, $amortization->delinquent['ids']) ? $amortization->interest : 0);
          $amortization->schedule_principal = $amortization->principal;
          $amortization->schedule_interest = $amortization->interest;
+         $amortization->short_pdi = $amortization->delinquent['pdi'];
+         $amortization->short_penalty = $amortization->delinquent['penalty'];
          // check if current amortization is paid partially.
          $isPaid = $this->getPayment($this->loan_account_id, $amortization->id)->last();
          if( $isPaid ){
@@ -365,6 +367,8 @@ class LoanAccount extends Model
             $amortization->interest = 0;
             $amortization->short_principal = $isPaid->short_principal;
             $amortization->short_interest = $isPaid->short_interest;
+            $amortization->short_pdi = $isPaid->short_pdi;
+            $amortization->short_penalty = $isPaid->short_penalty;
             //add formula for short penalty and short pdi
          }
          $currentDay = Carbon::createFromFormat('Y-m-d', Carbon::now()->format('Y-m-d'));
@@ -436,6 +440,8 @@ class LoanAccount extends Model
       $totalPrincipal = 0;
       $totalInterest = 0;
       $missed = [];
+      $totalPdi = 0;
+      $totalPenalty = 0;
 
 
       // identify missed payments
@@ -453,12 +459,11 @@ class LoanAccount extends Model
             $ids[] = $delinquent->id;
 
             if( isset($delinquent->payments) && count($delinquent->payments) > 0 ) {
-               $delPenalty = 0;
                foreach ($delinquent->payments as $payment) {
                   $totalPrincipal += $payment->short_principal;
                   $totalInterest += $payment->short_interest;
-
-                  $delPenalty += $payment->penalty;
+                  $totalPdi += $payment->short_pdi;
+                  $totalPenalty += $payment->short_penalty;
                  break;
                }
                break;
@@ -500,6 +505,8 @@ class LoanAccount extends Model
          'ids' => $ids,
          'principal' => $totalPrincipal,
          'interest' => $totalInterest,
+         'penalty' => $totalPenalty,
+         'pdi' => $totalPdi,
          'advance' => $advancePrincipal,
          'missed' => $missed
       ];

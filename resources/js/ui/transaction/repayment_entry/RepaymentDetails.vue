@@ -862,11 +862,9 @@ export default {
 			return this.waive.rebates ? this.payment.rebatesInputted : 0;
 		},
 		pdi:function(){
-			this.loanAccount.current_amortization.short_pdi = 0; // fix when short pdi is fixed backend
 			return this.waive.pdi ? 0 : this.loanAccount.current_amortization.pdi + this.loanAccount.current_amortization.short_pdi;
 		},
 		penalty:function(){
-			this.loanAccount.current_amortization.short_penalty = 0; // fix when short penalty is fixed backend
 			return this.waive.penalty ? 0 : this.loanAccount.current_amortization.penalty + this.loanAccount.current_amortization.short_penalty;
 		},
 		pdiWaive:function(){
