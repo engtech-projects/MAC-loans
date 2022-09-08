@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 use DB;
+use Illuminate\Support\Str;
+
 class Reports extends Model
 {
     use HasFactory;
@@ -299,6 +301,191 @@ class Reports extends Model
             }
         }
         return $officers;
+    }
+
+    public function releaseByProduct($filters = []){
+
+        $products = Product::where([ 'status' => 'active' ])->get(['product_id', 'product_code', 'product_name', 'interest_rate']);
+
+
+        $data = [];
+
+        foreach ($products as $key => $product) {
+        
+            $filters['product_id'] = $product->product_id;
+            $accounts = $this->getLoanAccounts($filters);
+
+            if( count($accounts) > 0 ){
+
+                $data[$key]['reference'] = $value['product_code'] . '-' . $value['product_name'];
+                $product->reference = $product->product_code . ' - ' . $product->product_name;
+
+                foreach ($accounts as $account) {
+                    
+                    $product->principal += $account->loan_amount;
+                    $product->interest += $account->interest_amount;
+                    $product->document_stamp += $account->document_stamp;
+                    $product->filing_fee += $account->filing_fee;
+                    $product->insurance += $account->insurance;
+                    $product->notarial_fee += $account->notarial_fee;
+                    $product->prepaid_interest += $account->prepaid_interest;
+                    $product->affidavit_fee += $account->affidavit_fee;
+                    $product->total_deduction += $account->total_deduction;
+                    $product->net_proceeds += $account->net_proceeds;
+
+                    if( str_contains(strtolower($account->release_type), 'cash')  ){
+                         $product->cash += $account->net_proceeds;
+                    }
+
+                    if( str_contains(strtolower($account->release_type), 'check') ){
+                         $product->check += $account->net_proceeds;
+                    }
+
+                    if( count($account->payments) ){
+
+                        foreach ($account->payments as $payment) {
+
+                            foreach ($paymentTypes as $type) {
+                                
+                                if( $payment->payment_type == $type ){
+
+                                    if( !isset($payments[$type]) ){
+                                        $payments[$type]['principal'] = 0;
+                                        $payments[$type]['interest'] = 0;
+                                        $payments[$type]['pdi'] = 0;
+                                        $payments[$type]['over'] = 0;
+                                        $payments[$type]['discount'] = 0;
+                                        $payments[$type]['total_payment'] = 0;
+                                        $payments[$type]['net_int'] = 0;
+                                        $payments[$type]['vat'] = 0;
+                                    }
+
+                                    $payments[$type]['principal'] += $payment->principal;
+                                    $payments[$type]['interest'] += $payment->interest;
+                                    $payments[$type]['pdi'] += $payment->pdi;
+                                    $payments[$type]['over'] += null;
+                                    $payments[$type]['discount'] += null;
+                                    $payments[$type]['total_payment'] += $payment->amount_applied;
+                                    $payments[$type]['net_int'] += null;
+                                    $payments[$type]['vat'] += null;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                $product->payments = $payments;
+            }else{
+                unset($products[$key]);
+            }       
+        }
+    }
+
+    public function releaseByClient($filters = []){}
+
+    public function releaseByAccountOfficer($filters = []){}
+
+    public function repaymentByProduct($filters = []) {
+
+        $products = Product::where([ 'status' => 'active' ])->get(['product_id', 'product_code', 'product_name', 'interest_rate']);
+
+
+        $data = [];
+
+        foreach ($products as $key => $value) {
+            
+            $data[$key]['reference'] = $value['product_code'] . '-' . $value['product_name'];
+
+            $payments = Payment::join('loan_accounts', 'payment.loan_account_id', '=', 'loan_accounts.loan_account_id')
+                    ->where(['loan_accounts.product_id' => $value['product_id'], 'payment.branch_id' => $filters['branch_id']])
+                    ->whereDate('payment.updated_at', '>=', $filters['date_from'])
+                    ->whereDate('payment.updated_at', '<=', $filters['date_to'])
+                    ->get([
+                        'payment.*',
+                    ]);
+
+            if( count($payments) > 0 ) {
+
+                foreach ($payments as $payment) {
+                        
+                    $type = null;
+
+                    if( Str::contains(Str::lower($payment->payment_type), 'cash') ){ $type = 'cash'; }
+                    if( Str::contains(Str::lower($payment->payment_type), 'cheque') ){ $type = 'cheque'; }
+                    if( Str::contains(Str::lower($payment->payment_type), 'pos') ){ $type = 'pos'; }
+                    if( Str::contains(Str::lower($payment->payment_type), 'memo') ){ $type = 'memo'; }
+
+                    if( !isset($data[$key][$type]) ){
+                        $data[$key][$type] = [
+                            'principal' => 0,
+                            'interest' => 0,
+                            'pdi' => 0,
+                            'overpayment' => 0,
+                            'rebates' => 0,
+                            'total' => 0,
+                            'net_interest' => 0,
+                            'vat' => 0
+                        ];
+                    }
+
+
+                    if( !$type ) continue;
+
+                    $data[$key][$type]['principal'] += $payment->principal;
+                    $data[$key][$type]['interest'] += $payment->interest;
+                    $data[$key][$type]['pdi'] = 0;
+                    $data[$key][$type]['overpayment'] = 0;
+                    $data[$key][$type]['rebates'] += $payment->rebates;
+                    $data[$key][$type]['total'] = 0;
+                    $data[$key][$type]['net_interest'] = 0;
+                    $data[$key][$type]['vat'] = 0;
+
+                }
+
+            }
+
+        }
+
+        return $data;
+    }
+
+    public function repaymentByClient($filters = []) {
+
+        $payments = Payment::join('loan_accounts', 'payment.loan_account_id', '=', 'loan_accounts.loan_account_id')
+                        ->where(['payment.branch_id' => $filters['branch_id'], 'payment.status' => 'paid'])
+                        ->whereDate('payment.updated_at', '>=', $filters['date_from'])
+                        ->whereDate('payment.updated_at', '<=', $filters['date_to'])
+                        ->orderBy('payment.updated_at', 'ASC')
+                        ->get([
+                            'payment.*', 'loan_accounts.borrower_id',
+                        ]);
+
+        $data = [];
+
+        foreach ($payments as $payment) {
+
+            $data[] = [
+                'borrower' => Borrower::find($payment->borrower_id)->fullname(),
+                'payment_date' => $payment->updated_at,
+                'or' => $payment->or_no,
+                'principal' => $payment->principal,
+                'interest' => $payment->interest,
+                'pdi' => ($payment->pdi_approval_no) ? $payment->pdi : 0,
+                'overpayment' => 0,
+                'rebates' => $payment->rebates,
+                'total' => $payment->amount_applied,
+                'net_interest' => 0,
+                'vat' => 0,
+                'payment_type' => $payment->payment_type
+            ];
+
+        }
+
+        return $data;
+    }
+
+    public function repaymentByAccountOfficer($filters = []) {
+
     }
 
 }
