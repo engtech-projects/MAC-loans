@@ -72,7 +72,7 @@ class EndTransaction extends Model
 						$ledger[$key]['credit'] += $account->notarial_fee;
 						break;
 					case 'Prepaid':
-						 $ledger[$key]['credit'] = $account->prepaid_interest;
+						 $ledger[$key]['credit'] += $account->prepaid_interest;
 						break;
 					case 'Others':
 						$ledger[$key]['credit'] = $account->affidavit_fee;
