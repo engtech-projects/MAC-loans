@@ -53,6 +53,7 @@ Route::middleware(['auth:sanctum'])->group( function () {
     // override payment list
     Route::post('payment/list/', [PaymentController::class, 'overridePaymentList']);
     Route::post('payment/override/', [PaymentController::class, 'overridePayment']);
+    Route::get('payment/summary/{branch}', [PaymentController::class, 'paymentSummary']);
 
     // loan account
     Route::get('account/show/{account}', [LoanAccountController::class, 'showLoanAccount']);
@@ -79,7 +80,7 @@ Route::middleware(['auth:sanctum'])->group( function () {
     // reports
     Route::post('report/transaction/', [ReportsController::class, 'transactionReports']);
     Route::post('report/release/', [ReportsController::class, 'releaseReports']);
-    // Route::post('report/repayment/', [ReportsController::class, 'repaymentReports']);
+    Route::post('report/repayment/', [ReportsController::class, 'repaymentReports']);
 	Route::post('uploadfile/{id}', [LoanAccountController::class, 'uploadFile']);
 
     Route::get('eod/eodtransaction/{branch_id}', [EODController::class, 'endOfTransaction']);

@@ -22,16 +22,19 @@ class EODController extends BaseController
 
 	public function endOfTransaction($branchId) {
 
-
 		$endTransaction = new EndTransaction();
 
+		// get 
 		$dateEnd = $endTransaction->getTransactionDate($branchId);
 
 		$endTransaction->releasing($dateEnd, $branchId);
 		$endTransaction->repayment($dateEnd, $branchId);
+
+		$endTransaction->branch_id = $branchId;
+		$endTransaction->date_end = $dateEnd;
+		$endTransaction->save();
 		
 		return $this->sendResponse('End of day Transaction', 'The End');
-
 	}
 
 }

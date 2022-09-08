@@ -54,6 +54,8 @@ class PaymentController extends BaseController
         ];
 
         $payment = new Payment();
+
+      
         
         return $this->sendResponse( 
             PaymentLoanAccountResource::collection($payment->overridePaymentAccounts($filters)), 
