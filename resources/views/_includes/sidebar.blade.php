@@ -268,11 +268,10 @@
 				</a>
 			</li>
 
-			<li class="nav-item">
-				<a href="#" class="nav-link main-link">
+			<li class="nav-item pick {{isset($nav) && isActive($nav[0], 'end of day')? 'active menu-open' : ''}}">
+				<a href="{{route('endofday')}}" class="nav-link main-link">
 				  <p>
 					End of Day
-					<i class="right fas fa-caret-right"></i>
 				  </p>
 				</a>
 				

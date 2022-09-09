@@ -155,7 +155,7 @@
 					</div>
 				</section>
 			</div>
-			<overridepayment-details :ppayment="payment" :token="token" @reloadPayments="fetchPayments();resetPayment()"></overridepayment-details>
+			<overridepayment-details :ppayment="payment" :token="token" @reloadPayments="openPayments();resetPayment()"></overridepayment-details>
 		</div>
 		<overridepayment-view :ppayments="payments"></overridepayment-view>
 	</div>
@@ -289,7 +289,7 @@ export default {
 			.then(function (response) {
 				console.log(response.data);
 				this.notify('',response.data.message, 'success');
-				this.fetchPayments();
+				this.openPayments();
 			}.bind(this))
 			.catch(function (error) {
 				console.log(error);

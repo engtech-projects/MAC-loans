@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Auth;
 use App\Models\User;
+use App\Models\Branch;
 use Session;
 
 class LoginController extends Controller
@@ -16,6 +17,7 @@ class LoginController extends Controller
 			Auth::user()->token = $request->token;
 			Session::put('token', $request->token);
 			Session::put('fullname', $user->firstname.' '.$user->middlename.' '.$user->lastname);
+			Session::put('branch', Branch::find($request->credentials['branch_id']));
 			return Auth::user();
 		}
 	}

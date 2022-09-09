@@ -58,6 +58,7 @@
  Vue.component('reports-collection-product', require('./ui/reports/collection/Product.vue').default);
  Vue.component('reports-collection-client', require('./ui/reports/collection/Client.vue').default);
  Vue.component('reports-collection-ao', require('./ui/reports/collection/Ao.vue').default);
+ Vue.component('endof-day', require('./ui/endofday/Endofday.vue').default);
 
  // Vue.config.devtools = false;
  const app = new Vue({
