@@ -81,6 +81,7 @@ class Payment extends Model
         $payment->rebates = $request->input('rebates');
         $payment->rebates_approval_no = $request->input('rebates_approval_no');
         $payment->vat = $request->input('vat');
+        $payment->over_payment = $request->input('over_payment');
         $payment->total_payable = $request->input('total_payable');
         $payment->amount_applied = $request->input('amount_applied');
         // $payment->status = 'paid';

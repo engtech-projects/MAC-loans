@@ -798,10 +798,10 @@ export default {
 				if(amount >= this.duePrincipal){
 					this.payment.principal = this.duePrincipal;
 					this.payment.advance_principal = amount - this.duePrincipal;
-					if(this.duePrincipal + this.loanAccount.current_amortization.principal_balance > (this.payment.principal + this.payment.advance_principal)){
+					if(this.duePrincipal + this.loanAccount.current_amortization.principal_balance > (this.payment.principal + this.payment.advance_principal + this.excessAdvance)){
 						this.payment.over_payment = 0;
 					}else{
-						this.payment.over_payment = (this.payment.principal + this.payment.advance_principal) - (this.duePrincipal + this.loanAccount.current_amortization.principal_balance);
+						this.payment.over_payment = (this.payment.principal + this.payment.advance_principal + this.excessAdvance) - (this.duePrincipal + this.loanAccount.current_amortization.principal_balance);
 					}
 					this.payment.advance_principal -= this.overPayment;
 					this.payment.advance_principal = this.payment.advance_principal < 0 ? 0 : this.payment.advance_principal;
@@ -892,9 +892,8 @@ export default {
 		totalBalance:function(){
 			return this.totalDue + parseFloat(this.loanAccount.current_amortization.principal_balance) + parseFloat(this.loanAccount.current_amortization.interest_balance)
 		},
-		amountDistributed:function(){ // just for overpayment calculation
+		amountDistributed:function(){
 			return parseFloat(this.payment.amount_paid) + parseFloat(this.loanAccount.current_amortization.advance_principal)
-			// maybe add rebates?
 		},
 		totalShort:function(){
 			return this.payment.short_pdi + this.payment.short_penalty + this.payment.short_interest + this.payment.short_principal;
