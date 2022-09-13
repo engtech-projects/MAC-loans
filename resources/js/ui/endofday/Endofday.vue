@@ -7,12 +7,16 @@
 			</div>
 			<span class="font-lg" style="color:#ddd">Please wait until the process is complete</span>
 		</div>
+		<div v-if="success" class="black-screen d-flex flex-column align-items-center justify-content-center" style="padding-left:0px;">
+			<span class="mb-24" style="color:#ddd;font-size:36px;">Process complete...</span>
+			<!-- <button class="btn btn-success" style="padding-left:35px;padding-right:35px">OK</button> -->
+		</div>
 		<notifications group="foo" />
 		<div class="mb-16"></div>
 		<div class="ml-16 mb-24 bb-primary-dark pb-7 text-block d-flex justify-content-between">
 			<h1 class="m-0 font-35">End of Day</h1>
 		</div><!-- /.col -->
-		<div v-if="!failed" class="d-flex flex-column align-items-center p-16 " style="padding-top:65px">
+		<div v-if="!failed && !success" class="d-flex flex-column align-items-center p-16 " style="padding-top:65px">
 			<p class="font-lg text-center lh-1">You are about to end the transaction dated <span class="text-green">{{dateToMDY(new Date())}}</span></p>
 			<p class="font-lg text-center lh-1 mb-45">Would you like to auto post the transaction?</p>
 			<div class="d-flex">
@@ -28,7 +32,6 @@
 			<button @click="endOfDay()" class="btn btn-primary-dark px-35">Retry</button>
 		</div>
 
-
 		
 	</div>
 </template>
@@ -43,6 +46,7 @@ export default {
 			},
 			failed:false,
 			loading:false,
+			success:false,
 		}
 	},
 	methods:{
@@ -59,6 +63,7 @@ export default {
 				this.failed = false;
 				console.log(response.data);
 				this.loading = false;
+				this.success = true;
 			}.bind(this))
 			.catch(function (error) {
 				this.failed = true;
