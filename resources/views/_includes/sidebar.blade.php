@@ -189,10 +189,20 @@
 						<div class="flex navicon">
 							  <div class="top-line"></div>
 							  <div class="mid-circle"></div>
-							  <div class="bottom-line invis"></div>
+							  <div class="bottom-line"></div>
 						  </div>
 					  <a href="{{route('maintenance.account_retagging')}}" class="nav-link">
 						<p>Account Re-Tagging</p>
+					  </a>
+					</li>
+					<li class="nav-item pick {{isset($nav) && isActive($nav[1], 'deduction rates')? 'active' : ''}}">
+						<div class="flex navicon">
+							  <div class="top-line"></div>
+							  <div class="mid-circle"></div>
+							  <div class="bottom-line invis"></div>
+						  </div>
+					  <a href="{{route('maintenance.deductions')}}" class="nav-link">
+						<p>Deduction Rate</p>
 					  </a>
 					</li>
 				</ul>

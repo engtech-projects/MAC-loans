@@ -1364,3 +1364,18 @@
 	background-color: rgba(0,0,0,.8);
 	z-index: 9999999;
 }
+
+.logoutDD {
+	display:none;
+	position:absolute;
+	left:0;top:35px;
+	width:100%;
+	z-index:99999;
+	background-color:#fafafa;
+	padding:7px 15px;
+	box-shadow:1px 1px 2px #ccc;
+}
+
+.logoutContainer:hover .logoutDD {
+	display:flex;
+}

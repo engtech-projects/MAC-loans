@@ -48,4 +48,11 @@ class MaintenanceController extends Controller
 			'title' => 'Account Retagging',
 		]);
 	}
+
+	public function deductionRates(){
+		return view('maintenance.deductions')->with([
+			'nav' => ['maintenance', 'deduction rates'],
+			'title' => 'Deduction Rate',
+		]);
+	}
 }
