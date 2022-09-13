@@ -106,10 +106,13 @@
       </a>
     </li>
     <li class="nav-item">
-      <div class="flex right-profile flex-center-y">
+      <div class="flex right-profile flex-center-y logoutContainer" style="position:relative;">
 		<img src="{{ asset('img/user2-160x160.jpg')}}" class="img-circle elevation-2" alt="User Image">
 		<span>{{Session::get('fullname')}}</span>
 		<i class="fas fa-caret-down"></i>
+		<div class="logoutDD" style="">
+			<a href="{{route('logout')}}">Sign Out</a>
+		</div>
 	</div>
     </li>
   </ul>

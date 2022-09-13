@@ -3,67 +3,29 @@
 		<notifications group="foo" />
 		<div class="mb-16"></div>
 		<div class="ml-16 mb-24 bb-primary-dark pb-7 text-block">
-			<h1 class="m-0 font-35">Product Setup</h1>
+			<h1 class="m-0 font-35">Deduction Rate</h1>
 		</div><!-- /.col -->
 		<div class="d-flex flex-column flex-xl-row ml-16">
 			<div style="flex:9;">
 				<section class="mb-24" style="flex:21;padding-left:16px;">
 					<span class="section-title section-subtitle mb-12">Inputs</span>
 
-					<div class="d-flex flex-column p-16 light-border" v-if="product.product_id==null">
+					<div class="d-flex flex-column p-16 light-border">
 						<div class="form-group mb-10" style="flex:1">
-							<label for="productName" class="form-label">Product Name</label>
-							<input type="text" v-model="product.product_name" class="form-control form-input " id="productName">
+							<label for="insurance" class="form-label">Insurance</label>
+							<input type="text" class="form-control form-input " id="insurance">
 						</div>
 						<div class="form-group mb-10" style="flex:1">
-							<label for="filingFee" class="form-label">Filing Fee</label>
-							<input type="number"  class="form-control form-input " id="filingFee">
+							<label for="documentStamp" class="form-label">Document Stamp</label>
+							<input type="text" class="form-control form-input " id="documentStamp">
 						</div>
-						<div class="d-flex flex-row mb-24">
-							<div class="form-group mb-10 mr-24" style="flex:1">
-								<label for="productName" class="form-label">Product Code</label>
-								<input type="text" v-model="product.product_code" class="form-control form-input " id="productName">
-							</div>
-							<div class="form-group mb-10" style="flex:1">
-								<label for="productName" class="form-label">Percentage</label>
-								<input type="text" v-model="product.interest_rate" class="form-control form-input " id="productName">
-							</div>
+						<div class="form-group mb-10" style="flex:1">
+							<label for="notarialFee" class="form-label">Notarial Fee</label>
+							<input type="text" class="form-control form-input " id="notarialFee">
 						</div>
 						<div class="d-flex justify-content-end">
 							<a href="#" @click="save()" class="btn btn-lg btn-success min-w-150">Save</a>
 						</div>
-					</div>
-					<div class="d-flex flex-column light-border" v-if="product.product_id">
-						<div class="d-flex justify-content-between mb-16 bg-primary-dark text-white px-16 py-7">
-							<span class="text-bold font-md">Edit {{product.product_name}}</span>
-							<a href="" @click="resetProduct()" class="text-white"><i class="fa fa-times"></i></a>
-						</div>
-						<div class="px-16 mb-16">
-							<div class="form-group mb-10" style="flex:1">
-								<label for="productName" class="form-label">Product Name</label>
-								<input type="text" v-model="product.product_name" class="form-control form-input " id="productName">
-							</div>
-							<div class="form-group mb-10" style="flex:1">
-								<label for="filingFee" class="form-label">Filing Fee</label>
-								<input type="number"  class="form-control form-input " id="filingFee">
-							</div>
-							<div class="d-flex flex-row mb-24">
-								<div class="form-group mb-10 mr-24" style="flex:1">
-									<label for="productName" class="form-label">Product Code</label>
-									<input type="text" v-model="product.product_code" class="form-control form-input " id="productName">
-								</div>
-								<div class="form-group mb-10" style="flex:1">
-									<label for="productName" class="form-label">Percentage</label>
-									<input type="text" v-model="product.interest_rate" class="form-control form-input " id="productName">
-								</div>
-							</div>
-							<div class="d-flex justify-content-between">
-								<a @click="product.status='active'" v-if="product.status!='active'" href="#" class="btn btn-lg btn-yellow-light min-w-150">Activate</a>
-								<a @click="product.status='inactive'" v-if="product.status=='active'" href="#" class="btn btn-lg btn-danger min-w-150">Deactivate</a>
-								<a href="#" @click="save()" class="btn btn-lg btn-success min-w-150">Save</a>
-							</div>
-						</div>
-						
 					</div>
 				</section>
 			</div>
@@ -73,29 +35,17 @@
 					<div class="p-16 light-border">
 						<table class="table table-stripped th-nbt table-hover">
 							<thead>
-								<th>Product Name</th>
-								<th>Product Code</th>
-								<th>Percentage</th>
-								<th>Filing Fee</th>
-								<th>Status</th>
-								<th></th>
+								<th>Insurance</th>
+								<th>Document Stamp</th>
+								<th>Notarial Fee</th>
 							</thead>
 							<tbody>
-								<tr v-if="products.length==0">
-									<td>No products found.</td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
+								<tr>
+									<td>100</td>
+									<td>200</td>
+									<td>300</td>
 								</tr>
-								<tr v-for="product in products" :key="product.product_id">
-									<td>{{product.product_name}}</td>
-									<td>{{product.product_code}}</td>
-									<td>{{product.interest_rate}}%</td>
-									<td></td>
-									<td class="text-green text-sm"><a href="#" class="text-green">{{product.status}}</a></td>
-									<td><a @click.prevent="setEdit(product)" href="#"><i class="fa fa-edit"></i></a></td>
-								</tr>
+								
 							</tbody>
 						</table>
 					</div>

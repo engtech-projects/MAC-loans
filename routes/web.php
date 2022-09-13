@@ -36,7 +36,7 @@ Route::get('/branch', function(){
 	return \App\Models\Branch::all();
 });
 Route::group(['middleware' => 'auth:borrowers'], function(){
-	Route::get('borrower_logout', [BorrowerLoginController::class, 'logout']);
+	Route::get('borrower_logout', [BorrowerLoginController::class, 'logout'])->name('logout');
 	Route::get('/borrower/personal_information', [ClientPortalInformationController::class, 'personalInformationDetails'])->name('borrower.personal_information');
 	Route::get('/borrower/account_statement', [ClientPortalInformationController::class, 'accountStatementDetails'])->name('borrower.account_statement');
 	Route::get('/borrower/balance_inquiry', [ClientPortalInformationController::class, 'personalInformationList'])->name('borrower.balance_inquiry');
@@ -58,6 +58,7 @@ Route::group(['middleware' => 'auth'], function (){
 	Route::get('/maintenance/user_settings', [MaintenanceController::class, 'userSettings'])->name('maintenance.user_settings');
 	Route::get('/maintenance/gl_setup', [MaintenanceController::class, 'glSetup'])->name('maintenance.gl_setup');
 	Route::get('/maintenance/account_retagging', [MaintenanceController::class, 'accountRetagging'])->name('maintenance.account_retagging');
+	Route::get('/maintenance/deductions', [MaintenanceController::class, 'deductionRates'])->name('maintenance.deductions');
 
 	Route::get('/transaction/release_entry', [TransactionController::class, 'releaseEntry'])->name('transaction.release_entry');
 	Route::get('/transaction/override_release', [TransactionController::class, 'overrideRelease'])->name('transaction.override_release');

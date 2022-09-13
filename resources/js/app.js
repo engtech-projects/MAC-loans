@@ -26,6 +26,7 @@
  
  Vue.component('cancel-payments', require('./ui/maintenance/CancelPayments.vue').default);
  Vue.component('product-setup', require('./ui/maintenance/ProductSetup.vue').default);
+ Vue.component('deduction-rate', require('./ui/maintenance/DeductionRate.vue').default);
  Vue.component('center-ao', require('./ui/maintenance/CenterAccount.vue').default);
  Vue.component('user-settings', require('./ui/maintenance/UserSettings.vue').default);
  Vue.component('gl-setup', require('./ui/maintenance/GlSetup.vue').default);
