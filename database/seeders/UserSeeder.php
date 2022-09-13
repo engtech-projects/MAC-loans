@@ -17,16 +17,29 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-       DB::table('users')->insert([
-            'username' => 'admin',
-            'password' => Hash::make('admin'),
-            'firstname' => 'Jeremae',
-            'middlename' => 'G',
-            'lastname' => 'Payot',
-			'status' => 'active',
-			// 'branch_id' => 1,
-            'created_at' => Carbon::now(),
-            'updated_at' => Carbon::now(),
+        DB::table('users')->insert([
+            [
+                'username' => 'admin',
+                'password' => Hash::make('admin'),
+                'firstname' => 'Jeremae',
+                'middlename' => 'G',
+                'lastname' => 'Payot',
+                'status' => 'active',
+                // 'branch_id' => 1,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'username' => 'adminn',
+                'password' => Hash::make('admin'),
+                'firstname' => 'Janine',
+                'middlename' => 'L',
+                'lastname' => 'Descalar',
+                'status' => 'active',
+                // 'branch_id' => 1,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ]
         ]);
     }
 }
