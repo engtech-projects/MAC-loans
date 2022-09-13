@@ -110,7 +110,7 @@
 							<span>{{borrower.suffix}}</span>
 						</div>
 					</div>
-					
+
 				</div>
 				<div class="row info-container">
 					<div class="col-xl-3 col-lg-6">
@@ -201,7 +201,7 @@
 								<div class="col-xl-3 col-lg-6">
 									<div class="info-display">
 										<span class="font-blue">Amortization</span>
-										<span>P {{formatToCurrency(loanDetails.current_amortization.principal + loanDetails.current_amortization.interest)}}</span>
+										<span>P {{formatToCurrency((loanDetails.loan_amount/loanDetails.no_of_installment) + (loanDetails.interest_amount/loanDetails.no_of_installment))}}</span>
 									</div>
 								</div>
 								<div class="col-xl-3 col-lg-6">
@@ -428,7 +428,7 @@
 			<!-- <div class="card collapsed-card mb-12">
 				<div class="card-header" style="background-color:#dfdfd0!important;">
 				<h3 class="card-title" style="color: #283f53;">Account Number: 1001-3429-15248</h3>
-		
+
 				<div class="card-tools">
 					<button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
 					<i class="fas fa-plus"></i>
@@ -436,7 +436,7 @@
 				</div>
 				</div>
 				<div class="card-body p-0">
-				
+
 
 				</div>
 			</div> -->
@@ -454,7 +454,7 @@
 			<a href="#" data-toggle="modal" data-target="#soaModal" class="btn btn-primary-dark min-w-150">Print SOA</a>
 		</div>
 	</div>
-		
+
 		</div>
 		<upload-file @imageCapture="imageCapture"/>
 
@@ -595,7 +595,7 @@
 											</div>
 											<div class="d-flex mb-7">
 												<span class="mr-5">Amort: </span>
-												<span>{{formatToCurrency(loanDetails.current_amortization.principal + loanDetails.current_amortization.interest)}}</span>
+												<span>{{formatToCurrency((loanDetails.loan_amount/loanDetails.no_of_installment) + (loanDetails.interest_amount/loanDetails.no_of_installment))}}</span>
 											</div>
 											<!-- <div class="d-flex mb-7">
 												<span class="mr-5">Group: </span>
@@ -799,7 +799,7 @@
 
 
 
-		
+
 
 
 		<div class="modal" id="promisoryNoteModal" tabindex="-1" role="dialog">
@@ -926,7 +926,7 @@
 																<span>{{dateToYMD(new Date(loanDetails.co_borrower_id_date_issued)).split('-').join('/')}}</span>
 															</div>
 															</div>
-														
+
 													</div>
 													<div class="flex-1"></div>
 												</div>
@@ -1115,7 +1115,7 @@
 										<span class="flex-1 mw-150">Amortization</span>
 										<div class="d-flex flex-2">
 											<span class="mr-5">: </span>
-											<span> P {{formatToCurrency(loanDetails.current_amortization.principal + loanDetails.current_amortization.interest)}}</span>
+											<span> P {{formatToCurrency((loanDetails.loan_amount/loanDetails.no_of_installment) + (loanDetails.interest_amount/loanDetails.no_of_installment))}}</span>
 										</div>
 									</div>
 								</div>
@@ -1171,7 +1171,7 @@
 										<td></td>
 										<td>{{formatToCurrency(totalDebit)}}</td>
 										<td>{{formatToCurrency(totalCredit)}}</td>
-									</tr> 
+									</tr>
 								</tbody>
 							</table>
 
@@ -1506,7 +1506,7 @@
 								<span class="">08-052415427-4</span>
 							</div>
 						</div>
-					</div>			
+					</div>
 
 					<section class=" mb-24 d-flex flex-column">
 																							<span class="text-bold bg-gray" style="padding:0 5px;">Schedules</span>
@@ -1617,7 +1617,7 @@
 										</div>
 
 
-		
+
 
 
 
@@ -1655,7 +1655,7 @@
 							</div>
 							<div class="d-flex mb-7">
 								<span class="mr-5">Amort: </span>
-								<span>{{formatToCurrency(loanDetails.current_amortization.principal + loanDetails.current_amortization.interest)}}</span>
+								<span>{{formatToCurrency((loanDetails.loan_amount/loanDetails.no_of_installment) + (loanDetails.interest_amount/loanDetails.no_of_installment))}}</span>
 							</div>
 							<!-- <div class="d-flex mb-7">
 								<span class="mr-5">Group: </span>
@@ -1974,7 +1974,7 @@
 							</div>
 							<div class="d-flex mb-7">
 								<span class="mr-5">Amort: </span>
-								<span>{{formatToCurrency(loanDetails.current_amortization.principal + loanDetails.current_amortization.interest)}}</span>
+								<span>{{formatToCurrency((loanDetails.loan_amount/loanDetails.no_of_installment) + (loanDetails.interest_amount/loanDetails.no_of_installment))}}</span>
 							</div>
 							<div class="d-flex mb-7">
 								<span class="mr-5">Co-Borrower: </span>
@@ -2033,7 +2033,7 @@
 								<span class="">08-052415427-4</span>
 							</div>
 						</div>
-					</div>			
+					</div>
 
 					<section class="mb-24 d-flex flex-column">
 						<span class="text-bold bg-gray" style="padding:0 5px;">Schedules</span>
@@ -2060,10 +2060,10 @@
 									</tr>
 								</tbody>
 							</table>
-							
+
 						</div>
-						<div class="mb-45"></div>	
-						<div class="mb-45"></div>			
+						<div class="mb-45"></div>
+						<div class="mb-45"></div>
 						<p class="text-block text-center" style="line-height:0!important;">This statement is a system generated copy!</p>
 						<p class="text-block text-center">&lt; End of file &gt;</p>
 					</section>
@@ -2098,7 +2098,7 @@
 
 
 	</div>
-	
+
 </template>
 
 <script>
@@ -2157,7 +2157,7 @@ export default {
 				co_borrower_id_type : '',
 				co_borrower_id_number : '',
 				co_borrower_id_date_issued : '',
-				co_maker_name : '',  
+				co_maker_name : '',
 				co_maker_address : '',
 				co_maker_id_type : '',
 				co_maker_id_number : '',
@@ -2346,8 +2346,10 @@ export default {
 	},
 	computed:{
 		loanAccountStatus:function(){
-			if(this.loanDetails.current_amortization.delinquent.ids.length > 0){
-				return "Delinquent";
+			if(this.loanDetails.current_amortization){
+				if(this.loanDetails.current_amortization.delinquent.ids.length > 0){
+					return "Delinquent";
+				}
 			}
 			return "Current";
 		},
