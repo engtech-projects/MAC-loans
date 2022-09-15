@@ -20,6 +20,11 @@ class ProductController extends BaseController
         return $this->sendResponse(ProductResource::collection($products), 'Products fetched.');
     }
 
+    public function activeProduct(){
+        $products = Product::where(["status" => "active"])->get();
+        return $this->sendResponse(ProductResource::collection($products), 'Active Products fetched.');
+    }
+
     /**
      * Show the form for creating a new resource.
      */
@@ -59,7 +64,7 @@ class ProductController extends BaseController
         $input = $request->all();
         # add validator na pd dri
         $product->product_code = $input['product_code'];
-        $product->product_name = $input['product_name']; 
+        $product->product_name = $input['product_name'];
         $product->interest_rate = $input['interest_rate'];
         $product->status = $input['status'];
         $product->deleted = $input['deleted'];

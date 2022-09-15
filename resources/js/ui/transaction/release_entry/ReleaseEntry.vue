@@ -135,7 +135,7 @@
 									<div  class="tab-pane fade show active" id="reminder-letter" role="tabpanel" aria-labelledby="custom-content-below-home-tab">
 										<img :src="baseUrl+'/img/company_header.png'" style="width:100%" class="mb-45" alt="Company Header">
 										<div class="d-flex flex-column font-md" style="padding:0 35px;">
-											
+
 											<div class="d-flex flex-column title align-items-start mb-24">
 												<span class="font-26 lh-1">MGA PAHINUMDOM</span>
 											</div>
@@ -168,12 +168,12 @@
 											</div>
 										</div>
 									</div>
-									
+
 
 									<div  class="tab-pane fade" id="dacion-en-pago" role="tabpanel" aria-labelledby="custom-content-below-home-tab">
 										<img :src="baseUrl+'/img/company_header.png'" style="width:100%" class="mb-16" alt="Company Header">
 										<div class="d-flex flex-column font-md" style="padding:0 35px;">
-											
+
 											<div class="d-flex flex-column title align-items-center mb-24">
 												<span class="font-26 text-bold text-primary-dark lh-1">DACION EN PAGO</span>
 											</div>
@@ -187,7 +187,7 @@
 												</p>
 												<p>WITNESSETH:</p>
 												<p>
-													That the <b>FIRST PARTY</b> hereby acknowledges to have been indebted to the SECOND PARTY in the sum of <span class="text-underlined allcaps text-bold">{{numToWords(loanDetails.loan_amount)}}</span> <b>(P{{formatToCurrency(loanDetails.loan_amount)}})</b>. Philippines currency, as of this date, since, he/she could no longer paid it in full by way of cash, hence, by presents the <b>FIRST PARTY</b>, voluntarily assign, transfer convey and set over unto the <b>SECOND PARTY</b> that certain PERSONAL property particularly describe as follows: 
+													That the <b>FIRST PARTY</b> hereby acknowledges to have been indebted to the SECOND PARTY in the sum of <span class="text-underlined allcaps text-bold">{{numToWords(loanDetails.loan_amount)}}</span> <b>(P{{formatToCurrency(loanDetails.loan_amount)}})</b>. Philippines currency, as of this date, since, he/she could no longer paid it in full by way of cash, hence, by presents the <b>FIRST PARTY</b>, voluntarily assign, transfer convey and set over unto the <b>SECOND PARTY</b> that certain PERSONAL property particularly describe as follows:
 												</p>
 												<p>
 													<span class="text-block">Description:</span> <b>{{loanDetails.documents.description}}</b>
@@ -200,7 +200,7 @@
 													That the SECOND PARTY does hereby accept this assignment in payment of the total/partial obligation owing to him/her by the <b>FIRST PARTY</b> as above stated, (giving to the Second Party, however, the option to repurchase the above-describe property from the <b>FIRST PARTY</b> for the sum of and after the date hereof, which right shall automatically be deemed cancelled, it not exercised within 15 days from the date hereof).
 												</p>
 												<p>
-													That by virtue of this presents, the indebtedness of <b>FIRST PARTY</b> as cited above is hereby paid and extinguished. 
+													That by virtue of this presents, the indebtedness of <b>FIRST PARTY</b> as cited above is hereby paid and extinguished.
 												</p>
 												<p>
 													IN WITNESS WHEREOF, the parties hereto have hereunto set their hands this {{dacionDate()}} at Butuan City, Philippines.
@@ -222,7 +222,7 @@
 												</div>
 
 												<p class="mb-24 text-bold">
-													WITH MY MARITAL CONSENT: 
+													WITH MY MARITAL CONSENT:
 												</p>
 
 												<div class="d-flex flex-row align-items-end mb-36">
@@ -267,14 +267,14 @@
 									<div  class="tab-pane fade" id="doa-for-atm" role="tabpanel" aria-labelledby="custom-content-below-home-tab">
 										<img :src="baseUrl+'/img/company_header.png'" style="width:100%" class="mb-16" alt="Company Header">
 										<div class="d-flex flex-column font-md" style="padding:0 35px;">
-											
+
 											<div class="d-flex flex-column title align-items-center mb-24">
 												<span class="font-26 text-bold text-primary-dark lh-1">DEED OF ASSIGNMENT</span>
 											</div>
 											<section style="font-size:16px!important;line-height:1.4em">
 												<span class="text-block mb-24 text-bold">KNOW ALL MEN BY THESE PRESENTS:</span>
 												<p>
-													That I, <b><u> {{fullName(borrower.firstname, borrower.middlename,borrower.lastname)}} </u></b> Filipino, of legal age, married/single and a resident of <b> <u> {{borrower.address}}</u> </b> herein known as the <b>ASSIGNOR;</b> 
+													That I, <b><u> {{fullName(borrower.firstname, borrower.middlename,borrower.lastname)}} </u></b> Filipino, of legal age, married/single and a resident of <b> <u> {{borrower.address}}</u> </b> herein known as the <b>ASSIGNOR;</b>
 												</p>
 												<b class="text-center text-block allcaps mb-24">-AND-</b>
 												<p>
@@ -316,7 +316,7 @@
 
 												<div class="d-flex mb-45">
 													<div class="flex-1 d-flex flex-column align-items-center">
-														
+
 													</div>
 													<div class="flex-1 d-flex flex-column align-items-center">
 														<b class="text-block">JOCETE ANGELIE J. GASCON</b>
@@ -358,7 +358,7 @@
 												<p class="mb-24">
 													<center>IN WITNESS WHEREOF, I have set my hand and affixed my Notarial Seal on date place above written.</center>
 												</p>
-												
+
 												<div class="d-flex align-items-end mb-36">
 													<div class="d-flex flex-column mb-24 flex-3">
 														<span>Doc. No.___________</span>
@@ -389,15 +389,15 @@
 									<div  class="tab-pane fade" id="moa-for-sme" role="tabpanel" aria-labelledby="custom-content-below-home-tab">
 										<img :src="baseUrl+'/img/company_header.png'" style="width:100%" class="mb-16" alt="Company Header">
 										<div class="d-flex flex-column font-md" style="padding:0 35px;">
-											
+
 											<div class="d-flex flex-column title align-items-center mb-24">
 												<span class="font-26 text-bold text-primary-dark lh-1">MEMORANDUM AGREEMENT</span>
 											</div>
 											<section style="font-size:16px!important;line-height:1.3em!important">
 												<span class="text-block mb-24">KNOW ALL MEN BY THESE PRESENTS:</span>
-												
+
 												<p class="mb-24">
-													This AGREEMENT made and entered into this      th day of          at MICRO ACCESS LOANS CORPORATION Butuan City, Philippines by and among the undersigned borrowers under the loan program of  Micro Access Loans Corporation. 
+													This AGREEMENT made and entered into this      th day of          at MICRO ACCESS LOANS CORPORATION Butuan City, Philippines by and among the undersigned borrowers under the loan program of  Micro Access Loans Corporation.
 
 												</p>
 
@@ -540,7 +540,7 @@
 												<p class="mb-24">
 													WITNESS MY HAND AND SEAL on this  ________ day of ___________ at the place first written above.
 												</p>
-												
+
 												<div class="d-flex align-items-end mb-24">
 													<div class="d-flex flex-column mb-24 flex-3">
 														<span>Doc. No.___________</span>
@@ -568,7 +568,7 @@
 									<div  class="tab-pane fade" id="sme-schedule" role="tabpanel" aria-labelledby="custom-content-below-home-tab">
 										<img :src="baseUrl+'/img/company_header.png'" style="width:100%" class="mb-16" alt="Company Header">
 										<div class="d-flex flex-column font-md" style="padding:0 35px;">
-											
+
 											<div class="d-flex flex-column title align-items-center mb-24">
 												<span class="font-26 text-bold text-primary-dark lh-1">SME SCHEDULE</span>
 											</div>
@@ -743,7 +743,7 @@
 																<span>{{dateToYMD(new Date(loanDetails.co_borrower_id_date_issued)).split('-').join('/')}}</span>
 															</div>
 															</div>
-														
+
 													</div>
 													<div class="flex-1"></div>
 												</div>
@@ -923,7 +923,7 @@
 					co_borrower_id_type : '',
 					co_borrower_id_number : '',
 					co_borrower_id_date_issued : '',
-					co_maker_name : '',  
+					co_maker_name : '',
 					co_maker_address : '',
 					co_maker_id_type : '',
 					co_maker_id_number : '',
@@ -1028,7 +1028,7 @@
 				}.bind(this));
 			},
 			fetchProducts: function(){
-				axios.get(this.baseURL() + 'api/product', {
+				axios.get(this.baseURL() + 'api/products/activeProducts', {
 					headers: {
 						'Authorization': 'Bearer ' + this.token,
 						'Content-Type': 'application/json',
@@ -1098,13 +1098,13 @@
 					outstandingObligations : [],
 					loanAccounts:[],
 					created_at: this.dateToYMD(new Date()),
-				};				
+				};
 			},
-		
+
 			navigate:function(tab){
 				document.getElementById(tab).click();
 			},
-			
+
 			updateLoanDetails:function(data){
 				this.loanDetails = data;
 			},
@@ -1123,7 +1123,7 @@
 				}
 				return '';
 			},
-		
+
 			resetLoanDetails:function(){
 				this.loanDetails = {
 					loan_account_id:null,
@@ -1143,7 +1143,7 @@
 					co_borrower_id_type : '',
 					co_borrower_id_number : '',
 					co_borrower_id_date_issued : '',
-					co_maker_name : '',  
+					co_maker_name : '',
 					co_maker_address : '',
 					co_maker_id_type : '',
 					co_maker_id_number : '',
@@ -1182,7 +1182,7 @@
 					}
 				}.bind(this));
 			},
-			
+
 			print:function(){
 				var content = document.getElementById('dacion-en-pago').innerHTML;
 				var target = document.querySelector('.to-print');
@@ -1321,7 +1321,7 @@
 				newValue? this.amortSched():[];
 			}
 		},
-        mounted() {	
+        mounted() {
 			this.fetchBorrowers();
 			this.resetBorrower();
 			this.resetLoanDetails();

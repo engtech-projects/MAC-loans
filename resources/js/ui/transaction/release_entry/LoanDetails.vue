@@ -361,7 +361,7 @@ export default {
 	},
 	methods:{
 		fetchProducts: function(){
-			axios.get(this.baseURL() + 'api/product', {
+			axios.get(this.baseURL() + 'api/products/activeProducts', {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
 					'Content-Type': 'application/json',
