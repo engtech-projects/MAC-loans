@@ -1261,11 +1261,13 @@
 			},
 			pendingLoanAccounts:function(){
 				var accounts = [];
-				this.borrower.loan_accounts.map(function(account){
-					if(account.status == 'released'){
-						accounts.push(account);
-					}
-				}.bind(this));
+				if(this.borrower.loan_accounts){
+					this.borrower.loan_accounts.map(function(account){
+						if(account.status == 'released'){
+							accounts.push(account);
+						}
+					}.bind(this));
+				}
 				return accounts;
 			},
 			amortAmount:function(){
@@ -1328,7 +1330,7 @@
 				this.fetchRejectedAccounts();
 				this.fetchRejectedAccount();
 			}
-			// this.navigate('custom-content-below-loandetails-tab');
+			//this.navigate('custom-content-below-loandetails-tab');
 			// this.navigate('custom-content-below-coborrowerinfo-tab');
         }
     }

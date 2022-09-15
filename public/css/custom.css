@@ -1,6 +1,14 @@
 
 /* UTILITIES */
-
+.no-border {
+	border: none!important;
+}
+.no-margin {
+	margin:0!important;
+}
+.no-padding {
+	padding:0!important;
+}
 .allcaps {
 	text-transform: uppercase!important;
 }
@@ -984,6 +992,11 @@
 .btn-orange:active {
 	background-color: #8c4600!important;
 	color:#293f54;
+}
+
+.btn-wide {
+	padding-left: 35px;
+	padding-right: 35px;
 }
 
 /* NAVIGATION  */
