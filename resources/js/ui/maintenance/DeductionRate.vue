@@ -12,19 +12,53 @@
 
 					<div class="d-flex flex-column p-16 light-border">
 						<div class="form-group mb-10" style="flex:1">
-							<label for="insurance" class="form-label">Insurance</label>
-							<input type="text" class="form-control form-input " id="insurance">
+							<label for="insurance" class="form-label">Deduction Name</label>
+							<select name="" id="" class="form-control form-input">
+								<option value="Insurance">Insurance</option>
+								<option value="Insurance">Document Stamp</option>
+								<option value="Insurance">Notarial Fee</option>
+								<option value="Insurance">Filing Fee</option>
+							</select>
 						</div>
 						<div class="form-group mb-10" style="flex:1">
-							<label for="documentStamp" class="form-label">Document Stamp</label>
+							<label for="documentStamp" class="form-label">Rate</label>
 							<input type="text" class="form-control form-input " id="documentStamp">
 						</div>
 						<div class="form-group mb-10" style="flex:1">
-							<label for="notarialFee" class="form-label">Notarial Fee</label>
-							<input type="text" class="form-control form-input " id="notarialFee">
+							<label for="notarialFee" class="form-label">Product</label>
+							<select name="" id="" class="form-control form-input">
+								<option v-for="p in products" :key="p.product_id" :value="p.product_id">{{p.product_name}}</option>
+							</select>
 						</div>
-						<div class="d-flex justify-content-end">
-							<a href="#" @click="save()" class="btn btn-lg btn-success min-w-150">Save</a>
+						<div class="mb-10">
+							<span class="font-lg">Term Bracket</span>
+							<div class="d-flex">
+								<div class="d-flex flex-column flex-1 mr-24">
+									<span>Start</span>
+									<input type="text" class="form-control form-input " id="termStart">
+								</div>
+								<div class="d-flex flex-column flex-1">
+									<span>End</span>
+									<input type="text" class="form-control form-input " id="termStart">
+								</div>
+							</div>
+						</div>
+						<div class="mb-24">
+							<span class="font-lg">Age Bracket</span>
+							<div class="d-flex">
+								<div class="d-flex flex-column flex-1 mr-24">
+									<span>Start</span>
+									<input type="text" class="form-control form-input " id="termStart">
+								</div>
+								<div class="d-flex flex-column flex-1">
+									<span>End</span>
+									<input type="text" class="form-control form-input " id="termStart">
+								</div>
+							</div>
+						</div>
+						<div class="d-flex justify-content-between">
+							<a href="#" @click.prevent="" class="btn btn-yellow-light">Activate / Deactivate</a>
+							<a href="#" @click.prevent="save()" class="btn btn-lg btn-success min-w-150">Save</a>
 						</div>
 					</div>
 				</section>
@@ -35,15 +69,23 @@
 					<div class="p-16 light-border">
 						<table class="table table-stripped th-nbt table-hover">
 							<thead>
-								<th>Insurance</th>
-								<th>Document Stamp</th>
-								<th>Notarial Fee</th>
+								<th>Deduction Name</th>
+								<th>Rate</th>
+								<th>Product</th>
+								<th>Term Start</th>
+								<th>Term End</th>
+								<th>Age Start</th>
+								<th>Age End</th>
 							</thead>
 							<tbody>
 								<tr>
 									<td>100</td>
 									<td>200</td>
 									<td>300</td>
+									<td></td>
+									<td></td>
+									<td></td>
+									<td>  </td>
 								</tr>
 								
 							</tbody>
@@ -62,15 +104,8 @@
 			return {
 				csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
 				products:[],
-				product:{
-					product_id:null,
-					product_code:'',
-					product_name:'',
-					product_description:'',
-					interest_rate:'',
-					status:'active',
-					deleted:0
-				}
+				deductions:[],
+				deduction:{}
 			}
 		},
 		methods: {
@@ -89,18 +124,10 @@
 					console.log(error);
 				}.bind(this));
 			},
-			setEdit: function(data){
-					this.product.product_id = data.product_id;
-					this.product.product_code = data.product_code;
-					this.product.product_name = data.product_name;
-					this.product.product_description = data.product_description;
-					this.product.interest_rate = data.interest_rate;
-					this.product.status = data.status;
-					this.product.deleted = data.deleted;
-			},
-			save: function(){
+			
+			async save(){
 				if(this.product.product_id){
-						axios.put(this.baseURL() + 'api/product/' + this.product.product_id, this.product, {
+					await axios.put(this.baseURL() + 'api/product/' + this.product.product_id, this.product, {
 						headers: {
 								'Authorization': 'Bearer ' + this.token,
 								'Content-Type': 'application/json',
@@ -115,7 +142,7 @@
 							console.log(error);
 						}.bind(this));
 				}else {
-					axios.post(this.baseURL() + 'api/product', this.product, {
+					await axios.post(this.baseURL() + 'api/product', this.product, {
 						headers: {
 								'Authorization': 'Bearer ' + this.token,
 								'Content-Type': 'application/json',
@@ -140,17 +167,6 @@
 					type: type,
 				});
 			},
-			resetProduct: function(){
-				this.product = {
-									product_id:null,
-									product_code:'',
-									product_name:'',
-									product_description:'',
-									interest_rate:'',
-									status:'active',
-									deleted:0
-								}
-			}
 		},
         mounted() {
            	this.fetchProducts();

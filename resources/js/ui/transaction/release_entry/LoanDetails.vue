@@ -103,7 +103,10 @@
 		</section>
 
 		<section class="mb-24 pb-45" style="flex:21;padding-left:16px;">
-			<span class="section-title mb-24">Deduction Fees</span>
+			<div class="d-flex justify-content-between align-items-center section-title mb-24 no-padding">
+				<span class="section-title no-border no-padding">Deduction Fees</span>
+				<button @click.prevent="compute()" class="btn btn-success btn-sm btn-wide mb-10">Compute</button>
+			</div>
 			<div class="d-flex flex-row">
 				<div class="d-flex flex-column mr-45" style="flex:3;">
 					<div class="d-flex flex-row mb-16">
@@ -167,23 +170,83 @@
 				</div>
 				<div class="flex-1"></div>
 			</div>
-			<div class="d-flex align-items-center" v-if="memoChecked">
-				<span class="mr-16 font-20" style="margin-top:10px">Memo - Deduct to Balance</span>
-				<div class="d-flex align-items-end flex-1">
+			<div v-if="memoChecked" class="d-flex flex-column" style="padding-top:24px">
+				<div class="d-flex align-items-end">
+					<div class="d-flex flex-2 align-items-center">
+						<span class="mr-16 font-20 flex-2">Account # and Balance</span>
+						<select name="" id="" class="form-control form-input pr-12 mr-24 text-green flex-3">
+							<option value="">123456 - 5000</option>
+						</select>
+					</div>
+					<div class="d-flex flex-column flex-1">
+						<label for="dueDate" class="form-label">Memo Reference No.</label>
+						<input type="text" class="form-control form-input">
+					</div>
+					<div class="flex-1"></div>
+				</div>
+				<div class="d-flex align-items-end mb-36">
+					<div class="d-flex flex-2 align-items-center">
+						<span class="mr-16 font-20 flex-2">Outstanding Principal</span>
+						<input type="number" class="form-control form-input flex-3 mr-24" disabled>
+					</div>
+					<div class="d-flex flex-column flex-1">
+						<label for="dueDate" class="form-label">Rebate Amount</label>
+						<input type="text" class="form-control form-input">
+					</div>
+					<div class="flex-1"></div>
+				</div>
+				<div class="d-flex align-items-end">
+					<div class="d-flex flex-2 align-items-center">
+						<span class="mr-16 font-20 flex-2">Outstanding Interest</span>
+						<input type="number" class="form-control form-input flex-3 mr-24" disabled>
+					</div>
+					<div class="d-flex flex-column flex-1">
+						
+					</div>
+					<div class="flex-1"></div>
+				</div>
+			</div>
+			<!-- <div class="d-flex align-items-center" v-if="memoChecked">
+				<span class="mr-16 font-20" style="margin-top:10px">Account # and Balance</span>
+				<div class="d-flex align-items-end flex-2">
 					<div class="form-group mr-16 flex-1">
 						<select name="" id="" class="form-control form-input pr-12 mr-16 text-green">
 							<option value="">5000</option>
 						</select>
 					</div>
-					<div class="form-group flex-2">
-						<label for="dueDate" class="form-label">Account # and Balance</label>
-						<select name="" id="" class="form-control form-input pr-12 mr-16 text-green">
-							<option value="">1232542154 - P 5000.00</option>
-						</select>
+					<div class="form-group flex-1">
+						<label for="dueDate" class="form-label">Memo Reference No.</label>
+						<input type="text" class="form-control form-input">
+					</div>
+					<div class="flex-1"></div>
+				</div>
+			</div> -->
+			<!-- <div class="d-flex align-items-center" v-if="memoChecked">
+				<span class="mr-16 font-20" style="margin-top:10px">Outstanding Principal</span>
+				<div class="d-flex align-items-end flex-2">
+					<div class="form-group mr-16 flex-1">
+						<input type="number" class="form-control form-input" disabled>
+					</div>
+					<div class="form-group flex-1">
+						<label for="dueDate" class="form-label">Rebate Amount</label>
+						<input type="text" class="form-control form-input">
 					</div>
 					<div class="flex-1"></div>
 				</div>
 			</div>
+			<div class="d-flex align-items-center" v-if="memoChecked">
+				<span class="mr-16 font-20" style="margin-top:10px">Outstanding Interest</span>
+				<div class="d-flex align-items-end flex-2">
+					<div class="form-group mr-16 flex-1">
+						<input type="number" class="form-control form-input" disabled>
+					</div>
+					<div class="form-group flex-1">
+						<label for="dueDate" class="form-label">Rebate Amount</label>
+						<input type="text" class="form-control form-input">
+					</div>
+					<div class="flex-1"></div>
+				</div>
+			</div> -->
 		</section>
 
 		<section class="mb-24 pb-45" style="flex:21;border-bottom:1px solid #AAA">
@@ -247,7 +310,7 @@ export default {
 			products:[],
 			accountOfficers:[],
 			centers:[],
-			memoChecked:false,
+			memoChecked:true,
 			currentProduct:{
 				product_name:null,
 			},
@@ -425,11 +488,15 @@ export default {
 			if(this.loanDetails.type == 'Add-On'){
 				this.loanDetails.prepaid_interest = 0.00;
 			}
+		},
+		compute:function(){
+			this.calculateInsurance;
 		}
 	},
 	watch: {
 		'loandetails'(newValue) {
 			this.loanDetails = newValue;
+			this.calculateInsurance
 			// this.numberOfInstallment;
 		},
 		'borrower'(newValue) {
@@ -515,7 +582,7 @@ export default {
 			if(this.age > 65){
 				rate = 2.8;
 			}
-			// this.loanDetails.insurance =  ((this.loanDetails.loan_amount / 1000) * rate * (Math.ceil(this.loanDetails.terms / 30))).toFixed(2);
+			this.loanDetails.insurance =  ((this.loanDetails.loan_amount / 1000) * rate * (Math.ceil(this.loanDetails.terms / 30))).toFixed(2);
 			return this.loanDetails.insurance;
 		},
 		totalDeductions:function(){
