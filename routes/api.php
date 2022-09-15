@@ -50,6 +50,9 @@ Route::middleware(['auth:sanctum'])->group( function () {
     Route::resource('chart', ChartOfAccountsController::class);
     Route::resource('gl', GLController::class);
 
+    Route::get('accountofficers/getActivesInBranch/', [AccountOfficerController::class, "getActiveInBranch"]);
+    Route::get('centers/activeCenters/', [CenterController::class, 'activeCenter']);
+
     // override payment list
     Route::post('payment/list/', [PaymentController::class, 'overridePaymentList']);
     Route::post('payment/override/', [PaymentController::class, 'overridePayment']);

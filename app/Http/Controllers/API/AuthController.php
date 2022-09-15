@@ -20,18 +20,20 @@ class AuthController extends BaseController
     public function loginForm() {}
 
     public function login(Request $request) {
-    	
+
     	$credentials = $request->only('username', 'password');
         $branch_id = $request->branch_id;
     	if(Auth::attempt($credentials)){
 
             $isAllowed = false;
+            if(Auth::user()->status === 'active'){
+                foreach (Auth::user()->branch as $branch) {
 
-            foreach (Auth::user()->branch as $branch) {
-                
-                if( $branch->branch_id == $branch_id ){
-                    $isAllowed = true;
-                    break;
+                    if( $branch->branch_id == $branch_id ){
+                        $isAllowed = true;
+                        $request->session()->put('currentBranch', $branch_id);
+                        break;
+                    }
                 }
             }
 
@@ -43,9 +45,9 @@ class AuthController extends BaseController
                 return $this->sendResponse($success, 'User signed in');
             }
         }
-        
+
         return $this->sendError('Invalid Credentials / Cannot access specified branch', ['error' => 'Unauthorised'], 200);
-        
+
     }
 
     public function borrowerLogin(Request $request) {
