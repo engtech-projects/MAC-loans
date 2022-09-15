@@ -15,9 +15,14 @@
 						</select>
 						<!-- <input v-model="preference.date" type="date" class="form-control" placeholder="Pick a date"> -->
 					</div>
-					<div class="form-group flex-2">
+					<div class="form-group flex-2 mr-7">
 						<input v-model="preference.specification" type="text" class="form-control" placeholder="Specifications">
 					</div>
+					<select v-model="preference.filter" name="" id="" class="flex-1 form-control input-sm">
+						<option value="client">Client</option>
+						<option value="ao">Account Officer</option>
+						<option value="product">Product</option>
+					</select>
 				</div>
 				
 				<table class="table table-stripped table-hover" id="clientsList">
@@ -127,7 +132,7 @@ export default {
 	data(){
 		return {
 			loanAccounts:[],
-			preference:{date:'',specification:''},
+			preference:{date:'',specification:'',filter:'client'},
 			borrowers:[],
 			todaysReleases:[],
 			loanAccount:{
@@ -428,9 +433,23 @@ export default {
 							result.push(val);
 							return
 						}else{
-							if(val.product.product_name.toLowerCase().includes(this.preference.specification.toLowerCase()) || (val.center && val.center.center.toLowerCase().includes(this.preference.specification.toLowerCase())) || val.account_num.toLowerCase().includes(this.preference.specification.toLowerCase()) || val.borrower.firstname.toLowerCase().includes(this.preference.specification.toLowerCase()) || val.borrower.lastname.toLowerCase().includes(this.preference.specification.toLowerCase()) || (val.borrower.firstname + ' ' + val.borrower.lastname).toLowerCase().includes(this.preference.specification.toLowerCase()) || (val.borrower.lastname + ' ' + val.borrower.firstname).toLowerCase().includes(this.preference.specification.toLowerCase())){
-								result.push(val);
-								return
+							if(this.preference.filter == 'client'){
+								if(val.product.product_name.toLowerCase().includes(this.preference.specification.toLowerCase()) || (val.center && val.center.center.toLowerCase().includes(this.preference.specification.toLowerCase())) || val.account_num.toLowerCase().includes(this.preference.specification.toLowerCase()) || val.borrower.firstname.toLowerCase().includes(this.preference.specification.toLowerCase()) || val.borrower.lastname.toLowerCase().includes(this.preference.specification.toLowerCase()) || (val.borrower.firstname + ' ' + val.borrower.lastname).toLowerCase().includes(this.preference.specification.toLowerCase()) || (val.borrower.lastname + ' ' + val.borrower.firstname).toLowerCase().includes(this.preference.specification.toLowerCase())){
+									result.push(val);
+									return
+								}
+							}
+							if(this.preference.filter == 'ao' && val.account_officer){
+								if(val.account_officer.name.toLowerCase().includes(this.preference.specification.toLowerCase())){
+									result.push(val);
+									return
+								}
+							}
+							if(this.preference.filter == 'product' && val.product){
+								if(val.product.product_name.toLowerCase().includes(this.preference.specification.toLowerCase())){
+									result.push(val);
+									return
+								}
 							}
 						}
 					}

@@ -1177,7 +1177,8 @@
 				this.borrowers.map(function(data){
 					if(borrower == data.borrower_id){
 						this.borrower = data;
-						// this.fetchLoanAccounts();
+						this.resetLoanDetails();
+						this.navigate('custom-content-below-borrowerinfo-tab');
 						this.setCycle();
 					}
 				}.bind(this));
