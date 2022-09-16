@@ -14,7 +14,7 @@ class DeductionController extends BaseController {
      * Display a listing of the resource.
      */
     public function index() {
-        $deduction = Deduction::where([ 'status' => 'active' ]);
+        $deduction = Deduction::all();
         return $this->sendResponse(DeductionResource::collection($deduction), 'Deductions fetched.');
     }
 
