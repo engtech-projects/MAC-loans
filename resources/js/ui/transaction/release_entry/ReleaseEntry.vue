@@ -257,7 +257,7 @@
 											<div class="d-flex flex-row-reverse mb-45 no-print">
 												<button id="cancelDacionModal" data-dismiss="modal" class="btn btn-danger min-w-150 mr-24 hide">Cancel</button>
 												<button @click="print()" class="btn btn-default min-w-150">Print</button>
-												<button data-dismiss="modal" id="excelBtn" class="btn btn-success min-w-150 mr-24">Download Excel</button>
+												<button @click.prevent="export2Word('dacion-en-pago', 'dacion_en_pago')" data-dismiss="modal" id="excelBtn" class="btn btn-success min-w-150 mr-24">Download Document</button>
 											</div>
 										</div>
 									</div>
@@ -377,7 +377,7 @@
 											<div class="d-flex flex-row-reverse mb-45 no-print">
 												<button id="cancelDacionModal" data-dismiss="modal" class="btn btn-danger min-w-150 mr-24 hide">Cancel</button>
 												<button @click="printDoa()" class="btn btn-default min-w-150">Print</button>
-												<button data-dismiss="modal" id="excelBtn" class="btn btn-success min-w-150 mr-24">Download Excel</button>
+												<button @click.prevent="export2Word('doa-for-atm', 'doa')" data-dismiss="modal" id="excelBtn" class="btn btn-success min-w-150 mr-24">Download Document</button>
 											</div>
 										</div>
 									</div>
@@ -558,7 +558,7 @@
 											<div class="d-flex flex-row-reverse mb-45 no-print">
 												<button id="cancelDacionModal" data-dismiss="modal" class="btn btn-danger min-w-150 mr-24 hide">Cancel</button>
 												<button @click="printMoa()" class="btn btn-default min-w-150">Print</button>
-												<button data-dismiss="modal" id="excelBtn" class="btn btn-success min-w-150 mr-24">Download Excel</button>
+												<button  @click.prevent="export2Word('moa-for-sme', 'memorandum_of_agreement')" data-dismiss="modal" id="excelBtn" class="btn btn-success min-w-150 mr-24">Download Document</button>
 											</div>
 										</div>
 									</div>
@@ -615,7 +615,7 @@
 											<div class="d-flex flex-row-reverse mb-45 no-print">
 												<button id="cancelDacionModal" data-dismiss="modal" class="btn btn-danger min-w-150 mr-24 hide">Cancel</button>
 												<button @click="printSchedule()" class="btn btn-default min-w-150">Print</button>
-												<button data-dismiss="modal" id="excelBtn" class="btn btn-success min-w-150 mr-24">Download Excel</button>
+												<button @click.prevent="export2Word('sme-schedule', 'sme_schedule')" data-dismiss="modal" id="excelBtn" class="btn btn-success min-w-150 mr-24">Download Document</button>
 											</div>
 										</div>
 									</div>
@@ -814,7 +814,7 @@
 											<div class="mb-72"></div>
 											<div class="d-flex flex-row-reverse mb-45 no-print">
 												<a @click.prevent="printPromissory()" href="#" class="btn btn-default min-w-150">Print</a>
-												<a href="#" class="btn btn-success min-w-150 mr-24">Download Excel</a>
+												<a href="#" @click.prevent="export2Word('promissory-note', 'promissory_note')" class="btn btn-success min-w-150 mr-24">Download Document</a>
 											</div>
 										</div>
 									</div>
