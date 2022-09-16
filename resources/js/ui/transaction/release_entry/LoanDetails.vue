@@ -116,7 +116,7 @@
 					</div>
 					<div class="d-flex flex-row mb-16">
 						<label for="dueDate" class="form-label" style="flex:3">Doc. Stamp</label>
-						<input :value="formatToCurrency(docStamp)" requried disabled type="text" class="form-control form-input text-right mr-16" style="flex:4" id="dueDate">
+						<input :value="formatToCurrency(docStamp)" requried type="text" class="form-control form-input text-right mr-16" style="flex:4" id="dueDate">
 						<span class="flex-1" style="padding:7px 15px"></span>
 					</div>
 					<div class="d-flex flex-row mb-16">
@@ -126,12 +126,12 @@
 					</div>
 					<div class="d-flex flex-row mb-16">
 						<label for="dueDate" class="form-label" style="flex:3">Notarial Fee</label>
-						<input :value="formatToCurrency(loanDetails.notarial_fee)" required disabled type="text" class="form-control form-input text-right mr-16" style="flex:4" id="dueDate">
+						<input :value="formatToCurrency(loanDetails.notarial_fee)" required type="text" class="form-control form-input text-right mr-16" style="flex:4" id="dueDate">
 						<span class="flex-1" style="padding:7px 15px"></span>
 					</div>
 					<div v-if="loanDetails.type=='Prepaid'" class="d-flex flex-row mb-16">
 						<label for="dueDate" class="form-label" style="flex:3">Prepaid Interest</label>
-						<input :value="loanDetails.prepaid_interest" disabled required type="text" class="form-control form-input text-right mr-16" style="flex:4" id="dueDate">
+						<input :value="loanDetails.prepaid_interest" required type="text" class="form-control form-input text-right mr-16" style="flex:4" id="dueDate">
 						<span class="flex-1" style="padding:7px 15px"></span>
 					</div>
 					<div class="d-flex flex-row mb-16">
@@ -292,7 +292,7 @@
 			<div class="d-flex">
 				<a @click.prevent="navigate('custom-content-below-coborrowerinfo-tab')" href="#" data-tab="custom-content-below-coborrowerinfo-tab" class="btn btn-primary-dark mr-24 tab-navigate min-w-150">Back</a>
 				<a href="#" data-toggle="modal" data-target="#warningModal" class="btn btn-success tab-navigate min-w-150 hide" id="warningBtn"></a>
-				<button class="btn btn-success tab-navigate min-w-150">Next</button>
+				<button v-if="!loandetails.loan_account_id" class="btn btn-success tab-navigate min-w-150">Next</button>
 			</div>
 			<a href="#" data-toggle="modal" data-target="#lettersModal" class="btn btn-yellow-light">Print Document</a>
 			<!-- <div style="flex:22"></div> -->
