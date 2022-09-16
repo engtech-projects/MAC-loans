@@ -164,7 +164,7 @@
 											<div class="d-flex flex-row-reverse mb-45 no-print">
 												<button id="cancelDacionModal" data-dismiss="modal" class="btn btn-danger min-w-150 mr-24 hide">Cancel</button>
 												<button @click="printReminder()" class="btn btn-default min-w-150">Print</button>
-												<button data-dismiss="modal" id="excelBtn" class="btn btn-success min-w-150 mr-24">Download Excel</button>
+												<button @click.prevent="export2Word('reminder-letter', 'reminder_letter')" data-dismiss="modal" id="excelBtn" class="btn btn-success min-w-150 mr-24">Download Document</button>
 											</div>
 										</div>
 									</div>
@@ -1208,6 +1208,10 @@
 				cancelButton.click();
 				window.print();
 			},
+			downloadReminder:function(){
+				var content = document.getElementById('reminder-letter').innerHTML;
+				this.export2Word('reminder-letter');
+			},
 			printDoa:function(){
 				var content = document.getElementById('doa-for-atm').innerHTML;
 				var target = document.querySelector('.to-print');
@@ -1245,6 +1249,41 @@
 			switchTab:function(tab){
 				this.activeTab = tab;
 				document.getElementById(tab).click();
+			},
+			export2Word:function(element, filename = ''){
+				var preHtml = "<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'><head><meta charset='utf-8'><title>Export HTML To Doc</title></head><body>";
+				var postHtml = "</body></html>";
+				var html = preHtml+document.getElementById(element).innerHTML+postHtml;
+
+				var blob = new Blob(['\ufeff', html], {
+					type: 'application/msword'
+				});
+				
+				// Specify link url
+				var url = 'data:application/vnd.ms-word;charset=utf-8,' + encodeURIComponent(html);
+				
+				// Specify file name
+				filename = filename?filename+'.doc':'document.doc';
+				
+				// Create download link element
+				var downloadLink = document.createElement("a");
+
+				document.body.appendChild(downloadLink);
+				
+				if(navigator.msSaveOrOpenBlob ){
+					navigator.msSaveOrOpenBlob(blob, filename);
+				}else{
+					// Create a link to the file
+					downloadLink.href = url;
+					
+					// Setting the file name
+					downloadLink.download = filename;
+					
+					//triggering the function
+					downloadLink.click();
+				}
+				
+				document.body.removeChild(downloadLink);
 			}
 		},
 		computed:{
