@@ -356,7 +356,7 @@ class LoanAccount extends Model
          $amortization->short_interest = $amortization->delinquent['interest'] - (in_array($amortization->id, $amortization->delinquent['ids']) ? $amortization->interest : 0);
          $amortization->schedule_principal = $amortization->principal;
          $amortization->schedule_interest = $amortization->interest;
-         $amortization->short_pdi = $amortization->delinquent['pdi'];
+         $amortization->short_pdi = 0;
          $amortization->short_penalty = $amortization->delinquent['penalty'];
          // check if current amortization is paid partially.
          $isPaid = $this->getPayment($this->loan_account_id, $amortization->id)->last();
@@ -367,10 +367,9 @@ class LoanAccount extends Model
             $amortization->interest = 0;
             $amortization->short_principal = $isPaid->short_principal;
             $amortization->short_interest = $isPaid->short_interest;
-            $amortization->short_pdi = $isPaid->short_pdi;
+            $amortization->pdi -= $isPaid->pdi;
             $amortization->short_penalty = $isPaid->short_penalty;
             $amortization->over_payment = $isPaid->over_payment;
-            //add formula for short penalty and short pdi
          }
          $currentDay = Carbon::createFromFormat('Y-m-d', Carbon::now()->format('Y-m-d'));
          $dateSched = Carbon::createFromFormat('Y-m-d', $amortization->amortization_date);
