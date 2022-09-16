@@ -19,7 +19,7 @@ use App\Http\Controllers\API\ChartOfAccountsController;
 use App\Http\Controllers\API\GLController;
 use App\Http\Controllers\BorrowerLoginController;
 use App\Http\Controllers\API\EODController;
-
+use App\Http\Controllers\API\DeductionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -49,6 +49,7 @@ Route::middleware(['auth:sanctum'])->group( function () {
     Route::resource('accessibility', AccessibilityController::class);
     Route::resource('chart', ChartOfAccountsController::class);
     Route::resource('gl', GLController::class);
+    Route::resource('deduction', DeductionController::class);
 
     // override payment list
     Route::post('payment/list/', [PaymentController::class, 'overridePaymentList']);
