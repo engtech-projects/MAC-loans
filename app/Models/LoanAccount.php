@@ -376,6 +376,7 @@ class LoanAccount extends Model
          $dateSched = Carbon::createFromFormat('Y-m-d', $amortization->amortization_date);
          $dayDiff = $dateSched->diffInDays($currentDay, false);
          $penaltyMissed = $amortization->delinquent['missed'];
+         $amortization->day_late = $dayDiff;
          if($dayDiff > 0 && !$isPaid && $amortization->advance_principal < $amortization->schedule_principal){
             Amortization::find($amortization->id)->update(['status' => 'delinquent']);
             $amortization->delinquent = $this->getDelinquent($this->loan_account_id, $amortization->id, $amortization->advance_principal);

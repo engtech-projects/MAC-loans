@@ -843,10 +843,9 @@ export default {
 	computed:{
 		loanAccountStatus:function(){
 			if(this.loanAccount.current_amortization){
-				let dateDiff = (new Date().getTime() - new Date(this.loanAccount.current_amortization.amortization_date).getTime()) / (1000 * 60 * 60 * 24);
 				if(this.loanAccount.current_amortization.pdi > 0){
 					return "Past Due";
-				}else if((this.loanAccount.current_amortization.short_principal > 0 && this.duePrincipal > 0) || (this.duePrincipal > 0 && dateDiff >= 1)){
+				}else if((this.loanAccount.current_amortization.short_principal > 0 && this.duePrincipal > 0) || (this.duePrincipal > 0 && this.loanAccount.current_amortization.day_late >= 1)){
 					return "Delinquent";
 				}
 			}
