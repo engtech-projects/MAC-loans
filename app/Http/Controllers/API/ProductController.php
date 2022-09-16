@@ -66,7 +66,6 @@ class ProductController extends BaseController
         $product->product_code = $input['product_code'];
         $product->product_name = $input['product_name'];
         $product->interest_rate = $input['interest_rate'];
-        $product->filing_fee = $input['filing_fee'];
         $product->status = $input['status'];
         $product->deleted = $input['deleted'];
         $product->save();
