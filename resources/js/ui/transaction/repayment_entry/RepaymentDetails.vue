@@ -845,7 +845,7 @@ export default {
 			if(this.loanAccount.current_amortization){
 				if(this.loanAccount.current_amortization.pdi > 0){
 					return "Past Due";
-				}else if((this.loanAccount.current_amortization.short_principal > 0 && this.duePrincipal > 0) || (this.duePrincipal > 0 && this.loanAccount.current_amortization.day_late >= 1)){
+				}else if((this.loanAccount.current_amortization.principal > 0 && this.loanAccount.current_amortization.short_principal > 0 && this.duePrincipal > 0) || (this.duePrincipal > 0 && this.loanAccount.current_amortization.day_late >= 1)){
 					return "Delinquent";
 				}
 			}
