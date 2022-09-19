@@ -12,7 +12,7 @@ use App\Models\User;
 use App\Models\Branch;
 use App\Http\Resources\Users as UserResource;
 use App\Http\Resources\Borrower as BorrowerResource;
-
+use Session;
 
 class AuthController extends BaseController
 {
@@ -20,18 +20,19 @@ class AuthController extends BaseController
     public function loginForm() {}
 
     public function login(Request $request) {
-    	
+
     	$credentials = $request->only('username', 'password');
         $branch_id = $request->branch_id;
     	if(Auth::attempt($credentials)){
-
+            Session::regenerate();
             $isAllowed = false;
-
-            foreach (Auth::user()->branch as $branch) {
-                
-                if( $branch->branch_id == $branch_id ){
-                    $isAllowed = true;
-                    break;
+            if(Auth::user()->status === 'active'){
+                foreach (Auth::user()->branch as $branch) {
+                    if( $branch->branch_id == $branch_id ){
+                        $isAllowed = true;
+                        Session::put('currentBranch', $branch_id);
+                        break;
+                    }
                 }
             }
 
@@ -43,9 +44,9 @@ class AuthController extends BaseController
                 return $this->sendResponse($success, 'User signed in');
             }
         }
-        
+
         return $this->sendError('Invalid Credentials / Cannot access specified branch', ['error' => 'Unauthorised'], 200);
-        
+
     }
 
     public function borrowerLogin(Request $request) {

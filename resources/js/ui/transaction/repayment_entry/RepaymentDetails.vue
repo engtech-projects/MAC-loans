@@ -215,9 +215,7 @@
 							<span class="">Status</span>
 							<span>:</span>
 						</div>
-                        <span v-if="loanAccount.current_amortization.pdi > 0" class="flex-2 text-danger">Past Due</span>
-						<span v-else-if="loanAccount.current_amortization.delinquent.ids.length > 0" class="flex-2 text-danger">Delinquent</span>
-                        <span v-else class="flex-2 text-ocean">Current</span>
+						<span class="flex-2" :class="loanAccountStatusColor">{{loanAccountStatus}}</span>
 
 					</div>
 				</div>
@@ -843,6 +841,25 @@ export default {
 		}
 	},
 	computed:{
+		loanAccountStatus:function(){
+			if(this.loanAccount.current_amortization){
+				if(this.loanAccount.current_amortization.pdi > 0){
+					return "Past Due";
+				}else if((this.loanAccount.current_amortization.principal > 0 && this.loanAccount.current_amortization.short_principal > 0 && this.duePrincipal > 0) || (this.duePrincipal > 0 && this.loanAccount.current_amortization.day_late >= 1)){
+					return "Delinquent";
+				}
+			}
+			return "Current";
+		},
+		loanAccountStatusColor:function(){
+			if(this.loanAccountStatus == "Past Due"){
+				return "text-danger";
+			}else if(this.loanAccountStatus == "Delinquent"){
+				return "text-danger";
+			}
+			return "text-ocean";
+
+		},
 		totalPrincipal:function(){
 			return this.loanAccount.current_amortization.principal + this.loanAccount.current_amortization.short_principal;
 		},

@@ -17,6 +17,10 @@ class CenterController extends BaseController
         $centers = Center::all();
         return $this->sendResponse(CenterResource::collection($centers), 'Centers fetched.');
     }
+    public function activeCenter() {
+        $centers = Center::where(["status" => "active"])->get();
+        return $this->sendResponse(CenterResource::collection($centers), 'Centers fetched.');
+    }
     /**
      * Show the form for creating a new resource.
      */
@@ -58,7 +62,7 @@ class CenterController extends BaseController
         $center->center = $input['center'];
         $center->day_sched = $input['day_sched'];
         $center->status = $input['status'];
-        $center->save(); 
+        $center->save();
 
         return $this->sendResponse(new CenterResource($center), 'Center Updated.');
     }

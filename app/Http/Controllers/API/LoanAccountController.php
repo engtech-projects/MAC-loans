@@ -32,7 +32,7 @@ class LoanAccountController extends BaseController
     public function createLoanAccount(Request $request, Borrower $borrower) {
         // $branchCode = Branch::find(session()->get('branch_id'))->branch_code;
         # to be replaced when branch is fetched through session.
-        $branch = Branch::find(1);
+        $branch = Branch::find($request->session()->get("currentBranch"));
         $product = Product::find($request->input('product_id'));
 
         $request->merge([
@@ -51,7 +51,7 @@ class LoanAccountController extends BaseController
         if( $account->loan_account_id ) {
             Document::create(
                 array_merge(
-                    $request->input('documents'), 
+                    $request->input('documents'),
                     ['loan_account_id' => $account->loan_account_id ],
                 )
             );
@@ -63,7 +63,7 @@ class LoanAccountController extends BaseController
         }
 
     	return $this->sendResponse(new LoanAccountResource($account), 'Account fetched.');
-        
+
     }
 
 	public function updateLoanAccount(Request $request, LoanAccount $account) {
@@ -105,7 +105,7 @@ class LoanAccountController extends BaseController
     // yyyy-mm-dd format
     // get rejected release accounts
     public function rejectedAccountList() {
-        
+
         $rejectedAccounts = LoanAccount::where('status', 'rejected')->get();
         return $this->sendResponse(LoanAccountResource::collection($rejectedAccounts), 'List.');
     }
@@ -113,7 +113,7 @@ class LoanAccountController extends BaseController
     public function override(Request $request) {
 
         foreach ($request->input() as $key => $value) {
-            
+
             $account = LoanAccount::find($value['loan_account_id']);
 
             $account->transaction_date = $value['transaction_date'];
