@@ -7,6 +7,7 @@ use App\Http\Controllers\API\BaseController as BaseController;
 use Illuminate\Http\Request;
 use App\Http\Resources\Deduction as DeductionResource;
 use App\Models\Deduction;
+use Carbon\Carbon;
 
 class DeductionController extends BaseController {
    
@@ -54,6 +55,28 @@ class DeductionController extends BaseController {
 		$deduction->status = isset($input['status']) ? $input['status'] : $dedcution->status;
 
         return $this->sendResponse(new DeductionResource($deduction), 'Deduction Updated.');
+    }
+
+    public function calculateDeductions(Request $request) {
+
+    	$loanAmount = $request->loan_amount;
+    	$productId = $request->product_id;
+    	$terms = $request->terms;
+    	$age = null;
+    
+    	if( $request->birthdate ){
+    		$age = Carbon::parse($request->birthdate)->diff(Carbon::now())->format('%y');
+    	}
+    	
+    	$deduction = new Deduction();
+
+    	return $this->sendResponse($deduction->deductions([
+    		'loan_amount' => $loanAmount, 
+    		'terms' => $terms, 
+    		'product_id' => $productId, 
+    		'age' =>  $age 
+    	]), 'Deductions.');
+    	
     }
 
 }

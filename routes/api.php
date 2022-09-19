@@ -90,6 +90,10 @@ Route::middleware(['auth:sanctum'])->group( function () {
 
     Route::get('eod/eodtransaction/{branch_id}', [EODController::class, 'endOfTransaction']);
 
+    Route::post('deduction/calculate', [DeductionController::class, 'calculateDeductions']);
+
+
+
 });
 
 Route::resource('borrower', BorrowerController::class);
