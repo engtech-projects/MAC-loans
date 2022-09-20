@@ -71,6 +71,7 @@ class LoanAccount extends JsonResource
             'updated_at' => $this->updated_at,
             'cash_voucher' => $this->cashVoucher(),
             'current_amortization' => $this->getCurrentAmortization(),
+            'remaining_balance' => $this->remainingBalance(),
         ];
     }
 }

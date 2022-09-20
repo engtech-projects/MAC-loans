@@ -566,7 +566,7 @@ class LoanAccount extends Model
       foreach ($payments as $payment) {
          $paymentTotal += $payment->principal;
          $paymentTotal += $payment->interest;
-         $paymentTotal += $payment->rebates;
+         // $paymentTotal += $payment->rebates;
       }
 
       return $paymentTotal;
@@ -631,6 +631,47 @@ class LoanAccount extends Model
       $payment = $this->getPaymentTotalPrincipalInterest($loanAccountId);
 
       return ($account->loan_amount + $account->interest_amount) - $payment;
+   }
+
+   public function remainingBalance() {
+
+      $account = LoanAccount::where(['loan_account_id' => $this->loan_account_id])->first();
+      $payments = $this->getPayment($this->loan_account_id);
+
+      $balance = $this->outstandingBalance($this->loan_account_id);
+      $penalty = 0;
+      $pdi = 0;
+      $rebates 0;
+
+      if( count($payments) > 0 ){
+
+         foreach ($payments as $payment) {
+
+            if( $payment->pdi && !$payment->pdi_approval_no ){
+               $pdi += $payment->pdi;   
+            }            
+
+            if( $payment->penalty && !$payment->penalty_approval_no ){
+               $penalty += $payment->penalty;   
+            }            
+            
+            if( $payment->rebates && $payment->rebates_approval_no ){
+               $rebates += $payment->rebates;
+            }
+
+         }
+
+
+      }
+
+
+
+      return [
+         'balance' => $balance,
+         'penalty' => $penalty,
+         'pdi' => $pdi,
+         'rebates' => $rebates,
+      ];
 
    }
 
