@@ -135,7 +135,7 @@
 									<div  class="tab-pane fade show active" id="reminder-letter" role="tabpanel" aria-labelledby="custom-content-below-home-tab">
 										<img :src="baseUrl+'/img/company_header.png'" style="width:100%" class="mb-45" alt="Company Header">
 										<div class="d-flex flex-column font-md" style="padding:0 35px;">
-											
+
 											<div class="d-flex flex-column title align-items-start mb-24">
 												<span class="font-26 lh-1">MGA PAHINUMDOM</span>
 											</div>
@@ -158,22 +158,22 @@
 												</div>
 											</section>
 											<div class="d-flex mb-24">
-												<img src="/img/logo-footer.png" class="w-100" alt="">
+												<img :src="baseURL() + 'img/logo-footer.png'" class="w-100" alt="">
 											</div>
 											<div class="mb-72"></div>
 											<div class="d-flex flex-row-reverse mb-45 no-print">
 												<button id="cancelDacionModal" data-dismiss="modal" class="btn btn-danger min-w-150 mr-24 hide">Cancel</button>
 												<button @click="printReminder()" class="btn btn-default min-w-150">Print</button>
-												<button data-dismiss="modal" id="excelBtn" class="btn btn-success min-w-150 mr-24">Download Excel</button>
+												<button @click.prevent="export2Word('reminder-letter', 'reminder_letter')" id="excelBtn" class="btn btn-success min-w-150 mr-24">Download Document</button>
 											</div>
 										</div>
 									</div>
-									
+
 
 									<div  class="tab-pane fade" id="dacion-en-pago" role="tabpanel" aria-labelledby="custom-content-below-home-tab">
 										<img :src="baseUrl+'/img/company_header.png'" style="width:100%" class="mb-16" alt="Company Header">
 										<div class="d-flex flex-column font-md" style="padding:0 35px;">
-											
+
 											<div class="d-flex flex-column title align-items-center mb-24">
 												<span class="font-26 text-bold text-primary-dark lh-1">DACION EN PAGO</span>
 											</div>
@@ -187,7 +187,7 @@
 												</p>
 												<p>WITNESSETH:</p>
 												<p>
-													That the <b>FIRST PARTY</b> hereby acknowledges to have been indebted to the SECOND PARTY in the sum of <span class="text-underlined allcaps text-bold">{{numToWords(loanDetails.loan_amount)}}</span> <b>(P{{formatToCurrency(loanDetails.loan_amount)}})</b>. Philippines currency, as of this date, since, he/she could no longer paid it in full by way of cash, hence, by presents the <b>FIRST PARTY</b>, voluntarily assign, transfer convey and set over unto the <b>SECOND PARTY</b> that certain PERSONAL property particularly describe as follows: 
+													That the <b>FIRST PARTY</b> hereby acknowledges to have been indebted to the SECOND PARTY in the sum of <span class="text-underlined allcaps text-bold">{{numToWords(loanDetails.loan_amount)}}</span> <b>(P{{formatToCurrency(loanDetails.loan_amount)}})</b>. Philippines currency, as of this date, since, he/she could no longer paid it in full by way of cash, hence, by presents the <b>FIRST PARTY</b>, voluntarily assign, transfer convey and set over unto the <b>SECOND PARTY</b> that certain PERSONAL property particularly describe as follows:
 												</p>
 												<p>
 													<span class="text-block">Description:</span> <b>{{loanDetails.documents.description}}</b>
@@ -200,7 +200,7 @@
 													That the SECOND PARTY does hereby accept this assignment in payment of the total/partial obligation owing to him/her by the <b>FIRST PARTY</b> as above stated, (giving to the Second Party, however, the option to repurchase the above-describe property from the <b>FIRST PARTY</b> for the sum of and after the date hereof, which right shall automatically be deemed cancelled, it not exercised within 15 days from the date hereof).
 												</p>
 												<p>
-													That by virtue of this presents, the indebtedness of <b>FIRST PARTY</b> as cited above is hereby paid and extinguished. 
+													That by virtue of this presents, the indebtedness of <b>FIRST PARTY</b> as cited above is hereby paid and extinguished.
 												</p>
 												<p>
 													IN WITNESS WHEREOF, the parties hereto have hereunto set their hands this {{dacionDate()}} at Butuan City, Philippines.
@@ -222,7 +222,7 @@
 												</div>
 
 												<p class="mb-24 text-bold">
-													WITH MY MARITAL CONSENT: 
+													WITH MY MARITAL CONSENT:
 												</p>
 
 												<div class="d-flex flex-row align-items-end mb-36">
@@ -251,13 +251,13 @@
 												</div>
 											</section>
 											<div class="d-flex mb-24">
-												<img src="/img/logo-footer.png" class="w-100" alt="">
+												<img :src="baseURL() + 'img/logo-footer.png'" class="w-100" alt="">
 											</div>
 											<div class="mb-72"></div>
 											<div class="d-flex flex-row-reverse mb-45 no-print">
 												<button id="cancelDacionModal" data-dismiss="modal" class="btn btn-danger min-w-150 mr-24 hide">Cancel</button>
 												<button @click="print()" class="btn btn-default min-w-150">Print</button>
-												<button data-dismiss="modal" id="excelBtn" class="btn btn-success min-w-150 mr-24">Download Excel</button>
+												<button @click.prevent="export2Word('dacion-en-pago', 'dacion_en_pago')" id="excelBtn" class="btn btn-success min-w-150 mr-24">Download Document</button>
 											</div>
 										</div>
 									</div>
@@ -267,14 +267,14 @@
 									<div  class="tab-pane fade" id="doa-for-atm" role="tabpanel" aria-labelledby="custom-content-below-home-tab">
 										<img :src="baseUrl+'/img/company_header.png'" style="width:100%" class="mb-16" alt="Company Header">
 										<div class="d-flex flex-column font-md" style="padding:0 35px;">
-											
+
 											<div class="d-flex flex-column title align-items-center mb-24">
 												<span class="font-26 text-bold text-primary-dark lh-1">DEED OF ASSIGNMENT</span>
 											</div>
 											<section style="font-size:16px!important;line-height:1.4em">
 												<span class="text-block mb-24 text-bold">KNOW ALL MEN BY THESE PRESENTS:</span>
 												<p>
-													That I, <b><u> {{fullName(borrower.firstname, borrower.middlename,borrower.lastname)}} </u></b> Filipino, of legal age, married/single and a resident of <b> <u> {{borrower.address}}</u> </b> herein known as the <b>ASSIGNOR;</b> 
+													That I, <b><u> {{fullName(borrower.firstname, borrower.middlename,borrower.lastname)}} </u></b> Filipino, of legal age, married/single and a resident of <b> <u> {{borrower.address}}</u> </b> herein known as the <b>ASSIGNOR;</b>
 												</p>
 												<b class="text-center text-block allcaps mb-24">-AND-</b>
 												<p>
@@ -316,7 +316,7 @@
 
 												<div class="d-flex mb-45">
 													<div class="flex-1 d-flex flex-column align-items-center">
-														
+
 													</div>
 													<div class="flex-1 d-flex flex-column align-items-center">
 														<b class="text-block">JOCETE ANGELIE J. GASCON</b>
@@ -358,7 +358,7 @@
 												<p class="mb-24">
 													<center>IN WITNESS WHEREOF, I have set my hand and affixed my Notarial Seal on date place above written.</center>
 												</p>
-												
+
 												<div class="d-flex align-items-end mb-36">
 													<div class="d-flex flex-column mb-24 flex-3">
 														<span>Doc. No.___________</span>
@@ -371,13 +371,13 @@
 
 											</section>
 											<div class="d-flex mb-24">
-												<img src="/img/logo-footer.png" class="w-100" alt="">
+												<img :src="baseURL() + 'img/logo-footer.png'" class="w-100" alt="">
 											</div>
 											<div class="mb-72"></div>
 											<div class="d-flex flex-row-reverse mb-45 no-print">
 												<button id="cancelDacionModal" data-dismiss="modal" class="btn btn-danger min-w-150 mr-24 hide">Cancel</button>
 												<button @click="printDoa()" class="btn btn-default min-w-150">Print</button>
-												<button data-dismiss="modal" id="excelBtn" class="btn btn-success min-w-150 mr-24">Download Excel</button>
+												<button @click.prevent="export2Word('doa-for-atm', 'doa')" id="excelBtn" class="btn btn-success min-w-150 mr-24">Download Document</button>
 											</div>
 										</div>
 									</div>
@@ -389,15 +389,15 @@
 									<div  class="tab-pane fade" id="moa-for-sme" role="tabpanel" aria-labelledby="custom-content-below-home-tab">
 										<img :src="baseUrl+'/img/company_header.png'" style="width:100%" class="mb-16" alt="Company Header">
 										<div class="d-flex flex-column font-md" style="padding:0 35px;">
-											
+
 											<div class="d-flex flex-column title align-items-center mb-24">
 												<span class="font-26 text-bold text-primary-dark lh-1">MEMORANDUM AGREEMENT</span>
 											</div>
 											<section style="font-size:16px!important;line-height:1.3em!important">
 												<span class="text-block mb-24">KNOW ALL MEN BY THESE PRESENTS:</span>
-												
+
 												<p class="mb-24">
-													This AGREEMENT made and entered into this      th day of          at MICRO ACCESS LOANS CORPORATION Butuan City, Philippines by and among the undersigned borrowers under the loan program of  Micro Access Loans Corporation. 
+													This AGREEMENT made and entered into this      th day of          at MICRO ACCESS LOANS CORPORATION Butuan City, Philippines by and among the undersigned borrowers under the loan program of  Micro Access Loans Corporation.
 
 												</p>
 
@@ -540,7 +540,7 @@
 												<p class="mb-24">
 													WITNESS MY HAND AND SEAL on this  ________ day of ___________ at the place first written above.
 												</p>
-												
+
 												<div class="d-flex align-items-end mb-24">
 													<div class="d-flex flex-column mb-24 flex-3">
 														<span>Doc. No.___________</span>
@@ -552,13 +552,13 @@
 
 											</section>
 											<div class="d-flex mb-24">
-												<img src="/img/logo-footer.png" class="w-100" alt="">
+												<img :src="baseURL() + 'img/logo-footer.png'" class="w-100" alt="">
 											</div>
 											<div class="mb-72"></div>
 											<div class="d-flex flex-row-reverse mb-45 no-print">
 												<button id="cancelDacionModal" data-dismiss="modal" class="btn btn-danger min-w-150 mr-24 hide">Cancel</button>
 												<button @click="printMoa()" class="btn btn-default min-w-150">Print</button>
-												<button data-dismiss="modal" id="excelBtn" class="btn btn-success min-w-150 mr-24">Download Excel</button>
+												<button  @click.prevent="export2Word('moa-for-sme', 'memorandum_of_agreement')" id="excelBtn" class="btn btn-success min-w-150 mr-24">Download Document</button>
 											</div>
 										</div>
 									</div>
@@ -568,7 +568,7 @@
 									<div  class="tab-pane fade" id="sme-schedule" role="tabpanel" aria-labelledby="custom-content-below-home-tab">
 										<img :src="baseUrl+'/img/company_header.png'" style="width:100%" class="mb-16" alt="Company Header">
 										<div class="d-flex flex-column font-md" style="padding:0 35px;">
-											
+
 											<div class="d-flex flex-column title align-items-center mb-24">
 												<span class="font-26 text-bold text-primary-dark lh-1">SME SCHEDULE</span>
 											</div>
@@ -609,13 +609,13 @@
 												</table>
 											</section>
 											<div class="d-flex mb-24">
-												<img src="/img/logo-footer.png" class="w-100" alt="">
+												<img :src="baseURL() + 'img/logo-footer.png'" class="w-100" alt="">
 											</div>
 											<div class="mb-72"></div>
 											<div class="d-flex flex-row-reverse mb-45 no-print">
 												<button id="cancelDacionModal" data-dismiss="modal" class="btn btn-danger min-w-150 mr-24 hide">Cancel</button>
 												<button @click="printSchedule()" class="btn btn-default min-w-150">Print</button>
-												<button data-dismiss="modal" id="excelBtn" class="btn btn-success min-w-150 mr-24">Download Excel</button>
+												<button @click.prevent="export2Word('sme-schedule', 'sme_schedule')" id="excelBtn" class="btn btn-success min-w-150 mr-24">Download Document</button>
 											</div>
 										</div>
 									</div>
@@ -743,7 +743,7 @@
 																<span>{{dateToYMD(new Date(loanDetails.co_borrower_id_date_issued)).split('-').join('/')}}</span>
 															</div>
 															</div>
-														
+
 													</div>
 													<div class="flex-1"></div>
 												</div>
@@ -809,12 +809,12 @@
 												</div>
 											</section>
 											<div class="d-flex mb-24">
-												<img src="/img/logo-footer.png" class="w-100" alt="">
+												<img :src="baseURL() + 'img/logo-footer.png'" class="w-100" alt="">
 											</div>
 											<div class="mb-72"></div>
 											<div class="d-flex flex-row-reverse mb-45 no-print">
 												<a @click.prevent="printPromissory()" href="#" class="btn btn-default min-w-150">Print</a>
-												<a href="#" class="btn btn-success min-w-150 mr-24">Download Excel</a>
+												<a href="#" @click.prevent="export2Word('promissory-note', 'promissory_note')" class="btn btn-success min-w-150 mr-24">Download Document</a>
 											</div>
 										</div>
 									</div>
@@ -923,7 +923,7 @@
 					co_borrower_id_type : '',
 					co_borrower_id_number : '',
 					co_borrower_id_date_issued : '',
-					co_maker_name : '',  
+					co_maker_name : '',
 					co_maker_address : '',
 					co_maker_id_type : '',
 					co_maker_id_number : '',
@@ -1028,7 +1028,7 @@
 				}.bind(this));
 			},
 			fetchProducts: function(){
-				axios.get(this.baseURL() + 'api/product', {
+				axios.get(this.baseURL() + 'api/products/activeProducts', {
 					headers: {
 						'Authorization': 'Bearer ' + this.token,
 						'Content-Type': 'application/json',
@@ -1098,13 +1098,13 @@
 					outstandingObligations : [],
 					loanAccounts:[],
 					created_at: this.dateToYMD(new Date()),
-				};				
+				};
 			},
-		
+
 			navigate:function(tab){
 				document.getElementById(tab).click();
 			},
-			
+
 			updateLoanDetails:function(data){
 				this.loanDetails = data;
 			},
@@ -1123,7 +1123,7 @@
 				}
 				return '';
 			},
-		
+
 			resetLoanDetails:function(){
 				this.loanDetails = {
 					loan_account_id:null,
@@ -1143,7 +1143,7 @@
 					co_borrower_id_type : '',
 					co_borrower_id_number : '',
 					co_borrower_id_date_issued : '',
-					co_maker_name : '',  
+					co_maker_name : '',
 					co_maker_address : '',
 					co_maker_id_type : '',
 					co_maker_id_number : '',
@@ -1183,7 +1183,7 @@
 					}
 				}.bind(this));
 			},
-			
+
 			print:function(){
 				var content = document.getElementById('dacion-en-pago').innerHTML;
 				var target = document.querySelector('.to-print');
@@ -1207,6 +1207,10 @@
 				var cancelButton = document.getElementById('cancelDacionModal');
 				cancelButton.click();
 				window.print();
+			},
+			downloadReminder:function(){
+				var content = document.getElementById('reminder-letter').innerHTML;
+				this.export2Word('reminder-letter');
 			},
 			printDoa:function(){
 				var content = document.getElementById('doa-for-atm').innerHTML;
@@ -1245,6 +1249,41 @@
 			switchTab:function(tab){
 				this.activeTab = tab;
 				document.getElementById(tab).click();
+			},
+			export2Word:function(element, filename = ''){
+				var preHtml = "<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'><head><meta charset='utf-8'><title>Export HTML To Doc</title></head><body>";
+				var postHtml = "</body></html>";
+				var html = preHtml+document.getElementById(element).innerHTML+postHtml;
+
+				var blob = new Blob(['\ufeff', html], {
+					type: 'application/msword'
+				});
+				
+				// Specify link url
+				var url = 'data:application/vnd.ms-word;charset=utf-8,' + encodeURIComponent(html);
+				
+				// Specify file name
+				filename = filename?filename+'.doc':'document.doc';
+				
+				// Create download link element
+				var downloadLink = document.createElement("a");
+
+				document.body.appendChild(downloadLink);
+				
+				if(navigator.msSaveOrOpenBlob ){
+					navigator.msSaveOrOpenBlob(blob, filename);
+				}else{
+					// Create a link to the file
+					downloadLink.href = url;
+					
+					// Setting the file name
+					downloadLink.download = filename;
+					
+					//triggering the function
+					downloadLink.click();
+				}
+				
+				document.body.removeChild(downloadLink);
 			}
 		},
 		computed:{
@@ -1322,7 +1361,7 @@
 				newValue? this.amortSched():[];
 			}
 		},
-        mounted() {	
+        mounted() {
 			this.fetchBorrowers();
 			this.resetBorrower();
 			this.resetLoanDetails();

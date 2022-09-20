@@ -72,7 +72,7 @@
 				<div class="form-group mb-10 mr-16" style="flex:5">
 					<label for="type" class="form-label">Day Schedule</label>
 					<select v-if="!productEnable" disabled required v-model="loanDetails.day_schedule" class="form-control form-input " id="type">
-						
+
 					</select>
 					<select v-if="productEnable" required v-model="loanDetails.day_schedule" class="form-control form-input " id="type">
 						<option value="daily">Daily</option>
@@ -116,7 +116,7 @@
 					</div>
 					<div class="d-flex flex-row mb-16">
 						<label for="dueDate" class="form-label" style="flex:3">Doc. Stamp</label>
-						<input :value="formatToCurrency(docStamp)" requried disabled type="text" class="form-control form-input text-right mr-16" style="flex:4" id="dueDate">
+						<input :value="formatToCurrency(docStamp)" requried type="text" class="form-control form-input text-right mr-16" style="flex:4" id="dueDate">
 						<span class="flex-1" style="padding:7px 15px"></span>
 					</div>
 					<div class="d-flex flex-row mb-16">
@@ -126,12 +126,12 @@
 					</div>
 					<div class="d-flex flex-row mb-16">
 						<label for="dueDate" class="form-label" style="flex:3">Notarial Fee</label>
-						<input :value="formatToCurrency(loanDetails.notarial_fee)" required disabled type="text" class="form-control form-input text-right mr-16" style="flex:4" id="dueDate">
+						<input :value="formatToCurrency(loanDetails.notarial_fee)" required type="text" class="form-control form-input text-right mr-16" style="flex:4" id="dueDate">
 						<span class="flex-1" style="padding:7px 15px"></span>
 					</div>
 					<div v-if="loanDetails.type=='Prepaid'" class="d-flex flex-row mb-16">
 						<label for="dueDate" class="form-label" style="flex:3">Prepaid Interest</label>
-						<input :value="loanDetails.prepaid_interest" disabled required type="text" class="form-control form-input text-right mr-16" style="flex:4" id="dueDate">
+						<input :value="loanDetails.prepaid_interest" required type="text" class="form-control form-input text-right mr-16" style="flex:4" id="dueDate">
 						<span class="flex-1" style="padding:7px 15px"></span>
 					</div>
 					<div class="d-flex flex-row mb-16">
@@ -141,7 +141,7 @@
 					</div>
 					<div class="d-flex flex-row mb-16">
 						<div style="flex:3;align-items:center" class="d-flex">
-							<input v-model="memoChecked" type="checkbox" class="" style="margin-right:10px;width:25px;height:25px;"> 
+							<input v-model="memoChecked" type="checkbox" class="" style="margin-right:10px;width:25px;height:25px;">
 							<label for="dueDate" class="form-label" style="margin-bottom:0;">Memo</label>
 						</div>
 						<input v-model="loanDetails.memo" type="text" class="form-control form-input text-right mr-16" style="flex:4" id="dueDate">
@@ -201,7 +201,7 @@
 						<input type="number" class="form-control form-input flex-3 mr-24" disabled>
 					</div>
 					<div class="d-flex flex-column flex-1">
-						
+
 					</div>
 					<div class="flex-1"></div>
 				</div>
@@ -292,7 +292,7 @@
 			<div class="d-flex">
 				<a @click.prevent="navigate('custom-content-below-coborrowerinfo-tab')" href="#" data-tab="custom-content-below-coborrowerinfo-tab" class="btn btn-primary-dark mr-24 tab-navigate min-w-150">Back</a>
 				<a href="#" data-toggle="modal" data-target="#warningModal" class="btn btn-success tab-navigate min-w-150 hide" id="warningBtn"></a>
-				<button class="btn btn-success tab-navigate min-w-150">Next</button>
+				<button v-if="!loandetails.loan_account_id" class="btn btn-success tab-navigate min-w-150">Next</button>
 			</div>
 			<a href="#" data-toggle="modal" data-target="#lettersModal" class="btn btn-yellow-light">Print Document</a>
 			<!-- <div style="flex:22"></div> -->
@@ -331,7 +331,7 @@ export default {
 				co_borrower_id_type : '',
 				co_borrower_id_number : '',
 				co_borrower_id_date_issued : '',
-				co_maker_name : '',  
+				co_maker_name : '',
 				co_maker_address : '',
 				co_maker_id_type : '',
 				co_maker_id_number : '',
@@ -361,7 +361,7 @@ export default {
 	},
 	methods:{
 		fetchProducts: function(){
-			axios.get(this.baseURL() + 'api/product', {
+			axios.get(this.baseURL() + 'api/products/activeProducts', {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
 					'Content-Type': 'application/json',
@@ -376,7 +376,7 @@ export default {
 			}.bind(this));
 		},
 		fetchAo: function(){
-			axios.get(this.baseURL() + 'api/accountofficer', {
+			axios.get(this.baseURL() + 'api/accountofficers/getActivesInBranch', {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
 					'Content-Type': 'application/json',
@@ -391,7 +391,7 @@ export default {
 			}.bind(this));
 		},
 		fetchCenters: function(){
-			axios.get(this.baseURL() + 'api/center/', {
+			axios.get(this.baseURL() + 'api/centers/activeCenters', {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
 					'Content-Type': 'application/json',
@@ -460,7 +460,7 @@ export default {
 					console.log(error);
 				}.bind(this));
 			}
-			
+
 		},
 		notify:function(title, text, type){
 			this.$notify({

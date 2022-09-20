@@ -85,7 +85,7 @@ export default {
 			.catch(function (error) {
 				console.log(error);
 			}.bind(this));
-		}, 
+		},
 		makeAuth:function(){
 			axios.post(this.baseURL() + 'login', this.data)
 			.then(function (response) {
