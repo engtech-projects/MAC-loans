@@ -16,9 +16,9 @@
 							<label for="insurance" class="form-label">Deduction Name</label>
 							<select v-model="deduction.name" name="" id="" class="form-control form-input" required>
 								<option value="Insurance">Insurance</option>
-								<option value="Insurance">Document Stamp</option>
-								<option value="Insurance">Notarial Fee</option>
-								<option value="Insurance">Filing Fee</option>
+								<option value="Document Stamp">Document Stamp</option>
+								<option value="Notarial Fee">Notarial Fee</option>
+								<option value="Filing Fee">Filing Fee</option>
 							</select>
 						</div>
 						<div class="form-group mb-10" style="flex:1">
@@ -44,7 +44,7 @@
 								</div>
 							</div>
 						</div>
-						<div class="mb-24">
+						<div class="mb-12">
 							<span class="font-lg">Age Bracket</span>
 							<div class="d-flex">
 								<div class="d-flex flex-column flex-1 mr-24">
@@ -57,8 +57,12 @@
 								</div>
 							</div>
 						</div>
+						<div class="form-group mb-24" style="flex:1">
+							<label for="documentStamp" class="form-label">Status</label>
+							<input v-model="deduction.status" type="text" disabled class="form-control form-input " id="Rate">
+						</div>
 						<div class="d-flex justify-content-between">
-							<a href="#" @click.prevent="" class="btn btn-yellow-light">Activate / Deactivate</a>
+							<a href="#" @click.prevent="setDeductionStatus()" class="btn btn-yellow-light">Activate / Deactivate</a>
 							<input type="submit" class="btn btn-lg btn-success min-w-150" value="Save">
 						</div>
 					</div>
@@ -235,6 +239,9 @@
 					}
 				}.bind(this));
 				return pname;
+			},
+			setDeductionStatus:function(){
+				this.deduction.status = this.deduction.status=='active'?'inactive':'active';
 			}
 		},
         mounted() {
