@@ -94,7 +94,7 @@
 				</div>
 				<div class="form-group mb-10 mr-16" style="flex:6">
 					<label for="interestAmount" class="form-label">Interest Amount</label>
-					<input required :value="interestAmount" type="text" class="form-control form-input " id="group">
+					<input required :value="interestAmount" type="text" disabled class="form-control form-input " id="group">
 				</div>
 				<div class="form-group mb-10 mr-16" style="flex:6">
 					<label for="numberOfInstallment" class="form-label">Number of Installment</label>
@@ -538,7 +538,6 @@ export default {
 			}
 		},
 		compute:function(){
-			this.calculateInsurance;
 			this.computeDeduction();
 		}
 	},
