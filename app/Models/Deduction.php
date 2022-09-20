@@ -34,7 +34,7 @@ class Deduction extends Model
 		'notarial_fee' => [ 'label' => 'notarial', 'rate' => 0 ],
 		'prepaid_interest' => [ 'label' => 'prepaid', 'rate' => 0 ],
 		'affidavit' => [ 'label' => 'affidavit', 'rate' => 0 ],
-		'memo' => [ 'label' => 'memo', 'rate' => 0 ]
+		// 'memo' => [ 'label' => 'memo', 'rate' => 0 ]
     ];
 
 
@@ -61,9 +61,9 @@ class Deduction extends Model
     			case 'affidavit':
     				$this->deductions[$key]['rate'] = $this->affidavit($value['label']);
     				break;
-    			case 'memo':
-    				$this->deductions[$key]['rate'] = $this->memo($value['label']);
-    				break;
+    			// case 'memo':
+    			// 	$this->deductions[$key]['rate'] = $this->memo($value['label']);
+    			// 	break;
 
     		}
 
@@ -78,18 +78,20 @@ class Deduction extends Model
     					->where(['product_id' => $constraints['product_id']])
     					->get();
 
-    	
-    	foreach ($data as $d) {
+		
+    	if( count($data) > 0 ){
+    		foreach ($data as $d) {
     		
-    		if( $d->term_start ){
+	    		if( $d->term_start ){
 
-    			if( $d->term_start <= $constraints['terms'] && $d->term_end >= $constraints['terms'] ) {
-    				return $constraints['loan_amount'] * ((float)$d->rate/100);
-    			}
+	    			if( $d->term_start <= $constraints['terms'] && $d->term_end >= $constraints['terms'] ) {
+	    				return $constraints['loan_amount'] * ((float)$d->rate/100);
+	    			}
 
-    		}else{
-    			return $d->rate;
-    		}
+	    		}else{
+	    			return $d->rate;
+	    		}
+	    	}
     	}
 
     	return 0;
@@ -102,6 +104,10 @@ class Deduction extends Model
     					->where('term_start', '<=', $constraints['terms'])
     					->where('term_end', '>=', $constraints['terms'])
     					->first();
+
+    	if( !$data ) {
+    		return 0;
+    	}
 
     	$months = $constraints['terms'] / 30;
     	$amount = ($constraints['loan_amount']/1000) * $data->rate * $months;
@@ -117,8 +123,13 @@ class Deduction extends Model
     						->first();
 
 
+    	if( !$data ) {
+    		return 0;
+    	}
+
 		$terms = (int)$constraints['terms'] / 30;
 		$amount = 0;
+
     	if( $terms <= 12 ){
     		$amount = $constraints['loan_amount'] / $data->rate * $constraints['terms'] / 365;
     	}else{
@@ -130,21 +141,36 @@ class Deduction extends Model
 
     public function notarial($ref) {
 		$data = Deduction::where('name', 'LIKE', '%'.$ref.'%')->first();
+
+		if( !$data ){
+			return 0;
+		}
+
 		return $data->rate;
     }
 
     public function prepaid($ref) {
 		$data = Deduction::where('name', 'LIKE', '%'.$ref.'%')->first();
+
+		if( !$data ){
+			return 0;
+		}
+
 		return $data->rate;
     }
 
     public function affidavit($ref) {
 		$data = Deduction::where('name', 'LIKE', '%'.$ref.'%')->first();
+
+		if( !$data ){
+			return 0;
+		}
+
 		return $data->rate;
     }
 
-    public function memo($ref) {
-		return 0;
-    }
+  //   public function memo($ref) {
+		// return 0;
+  //   }
 
 }
