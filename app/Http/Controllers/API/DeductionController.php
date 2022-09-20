@@ -63,7 +63,6 @@ class DeductionController extends BaseController {
     	$productId = $request->product_id;
     	$terms = $request->terms;
     	$age = null;
-    
     	if( $request->birthdate ){
     		$age = Carbon::parse($request->birthdate)->diff(Carbon::now())->format('%y');
     	}

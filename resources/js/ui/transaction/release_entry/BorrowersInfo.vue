@@ -29,7 +29,7 @@
 				</div>
 				<div class="upload-photo d-flex flex-column" style="flex:4">
 					<img :src="borrowerPhoto" alt="" style="max-width:250px;">
-					<a href="#" data-toggle="modal" data-target="#uploadModal" class="btn btn-primary" style="padding:10px!important">Upload or Take a Photo</a>
+					<a v-if="!loan_id" href="#" data-toggle="modal" data-target="#uploadModal" class="btn btn-primary" style="padding:10px!important">Upload or Take a Photo</a>
 				</div>
 			</div>
 			<div class="d-flex flex-row">
@@ -412,7 +412,7 @@
 
 <script>
     export default {
-		props:['token','pborrower', 'psave','clear','pclient','borrower_id', 'idtype'],
+		props:['token','pborrower', 'psave','clear','pclient','borrower_id', 'idtype', 'loan_id'],
 		data(){
 			return {
 				baseUrl: this.baseURL(),
