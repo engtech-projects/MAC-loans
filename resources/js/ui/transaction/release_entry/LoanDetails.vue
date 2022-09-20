@@ -63,7 +63,8 @@
 			<div class="d-flex flex-row pb-45 mb-24" style="border-bottom:1px solid #dfdfd0">
 				<div class="form-group mb-10 mr-16" style="flex:7">
 					<label for="center" class="form-label">Loan Amount</label>
-					<input required v-model="loanDetails.loan_amount" type="number" class="form-control form-input " id="center">
+					<input @blur="inputs.loanAmount=false" v-if="inputs.loanAmount" required v-model="loanDetails.loan_amount" type="number" class="form-control form-input " id="center">
+					<input @focus="inputs.loanAmount=true" v-if="!inputs.loanAmount" required :value="formatToCurrency(loanDetails.loan_amount)" type="text" class="form-control form-input " id="center">
 				</div>
 				<div class="form-group mb-10 mr-16" style="flex:4">
 					<label for="group" class="form-label">Terms/Days</label>
@@ -111,32 +112,38 @@
 				<div class="d-flex flex-column mr-45" style="flex:3;">
 					<div class="d-flex flex-row mb-16">
 						<label for="dueDate" class="form-label" style="flex:3">Filling Fee</label>
-						<input v-model="loanDetails.filing_fee" required type="text" class="form-control form-input text-right mr-16" style="flex:4" id="dueDate">
+						<input @blur="inputs.filingFee=false" v-if="inputs.filingFee" v-model="loanDetails.filing_fee" required type="number" class="form-control form-input text-right mr-16" style="flex:4" id="filingFee">
+						<input @focus="inputs.filingFee=true" v-if="!inputs.filingFee" :value="formatToCurrency(loanDetails.filing_fee)" required type="text" class="form-control form-input text-right mr-16" style="flex:4" id="filingFee">
 						<span class="flex-1" style="padding:7px 15px"></span>
 					</div>
 					<div class="d-flex flex-row mb-16">
 						<label for="dueDate" class="form-label" style="flex:3">Doc. Stamp</label>
-						<input :value="formatToCurrency(docStamp)" requried type="text" class="form-control form-input text-right mr-16" style="flex:4" id="dueDate">
+						<input @blur="inputs.docStamp=false" v-if="inputs.docStamp" v-model="loanDetails.document_stamp" requried type="number" class="form-control form-input text-right mr-16" style="flex:4" id="docStamp">
+						<input @focus="inputs.docStamp=true" v-if="!inputs.docStamp" :value="formatToCurrency(loanDetails.document_stamp)" requried type="text" class="form-control form-input text-right mr-16" style="flex:4" id="docStamp2">
 						<span class="flex-1" style="padding:7px 15px"></span>
 					</div>
 					<div class="d-flex flex-row mb-16">
 						<label for="dueDate" class="form-label" style="flex:3">Insurance</label>
-						<input v-model="loanDetails.insurance" required type="text" class="form-control form-input text-right mr-16" style="flex:4" id="dueDate">
+						<input @blur="inputs.insurance=false" v-if="inputs.insurance" v-model="loanDetails.insurance" required type="number" class="form-control form-input text-right mr-16" style="flex:4" id="insurance">
+						<input @focus="inputs.insurance=true" v-if="!inputs.insurance" :value="formatToCurrency(loanDetails.insurance)" required type="text" class="form-control form-input text-right mr-16" style="flex:4" id="insurance">
 						<span class="flex-1" style="padding:7px 15px"></span>
 					</div>
 					<div class="d-flex flex-row mb-16">
 						<label for="dueDate" class="form-label" style="flex:3">Notarial Fee</label>
-						<input :value="formatToCurrency(loanDetails.notarial_fee)" required type="text" class="form-control form-input text-right mr-16" style="flex:4" id="dueDate">
+						<input @blur="inputs.notarialFee=false" v-if="inputs.notarialFee" v-model="loanDetails.notarial_fee" required type="number" class="form-control form-input text-right mr-16" style="flex:4" id="notrialFee">
+						<input @focus="inputs.notarialFee=true" v-if="!inputs.notarialFee" :value="formatToCurrency(loanDetails.notarial_fee)" required type="text" class="form-control form-input text-right mr-16" style="flex:4" id="notrialFee">
 						<span class="flex-1" style="padding:7px 15px"></span>
 					</div>
 					<div v-if="loanDetails.type=='Prepaid'" class="d-flex flex-row mb-16">
 						<label for="dueDate" class="form-label" style="flex:3">Prepaid Interest</label>
-						<input :value="loanDetails.prepaid_interest" required type="text" class="form-control form-input text-right mr-16" style="flex:4" id="dueDate">
+						<input @blur="inputs.prepaidInterest=false" v-if="inputs.prepaidInterest" v-model="loanDetails.prepaid_interest" required type="number" class="form-control form-input text-right mr-16" style="flex:4" id="prepaidInterest">
+						<input @focus="inputs.prepaidInterest=true" v-if="!inputs.prepaidInterest" :value="formatToCurrency(loanDetails.prepaid_interest)" required type="text" class="form-control form-input text-right mr-16" style="flex:4" id="prepaidInterest">
 						<span class="flex-1" style="padding:7px 15px"></span>
 					</div>
 					<div class="d-flex flex-row mb-16">
 						<label for="dueDate" class="form-label" style="flex:3">Affidavit</label>
-						<input v-model="loanDetails.affidavit_fee" type="text" class="form-control form-input text-right mr-16" style="flex:4" id="dueDate">
+						<input @blur="inputs.affidavit=false" v-if="inputs.affidavit" v-model="loanDetails.affidavit_fee" type="number" class="form-control form-input text-right mr-16" style="flex:4" id="affidavit">
+						<input @focus="inputs.affidavit=true" v-if="!inputs.affidavit" :value="formatToCurrency(loanDetails.affidavit_fee)" type="text" class="form-control form-input text-right mr-16" style="flex:4" id="affidavit">
 						<span class="flex-1" style="padding:7px 15px"></span>
 					</div>
 					<div class="d-flex flex-row mb-16">
@@ -144,7 +151,8 @@
 							<input v-model="memoChecked" type="checkbox" class="" style="margin-right:10px;width:25px;height:25px;">
 							<label for="dueDate" class="form-label" style="margin-bottom:0;">Memo</label>
 						</div>
-						<input v-model="loanDetails.memo" type="text" class="form-control form-input text-right mr-16" style="flex:4" id="dueDate">
+						<input @blur="inputs.memo=false" v-if="inputs.memo" v-model="loanDetails.memo" type="number" class="form-control form-input text-right mr-16" style="flex:4" id="memo">
+						<input @focus="inputs.memo=true" v-if="!inputs.memo" :value="formatToCurrency(loanDetails.memo)" type="text" class="form-control form-input text-right mr-16" style="flex:4" id="memo">
 						<span class="flex-1" style="padding:7px 15px"></span>
 					</div>
 				</div>
@@ -306,6 +314,17 @@ export default {
 	props:['token', 'loandetails', 'borrower', 'borrowerbday', 'saveloandetails', 'idtype', 'releasetype'],
 	data(){
 		return {
+			inputs:{
+				loanAmount:false,
+				interestAmount:false,
+				filingFee:false,
+				docStamp:false,
+				insurance:false,
+				notarialFee:false,
+				prepaidInterest:false,
+				affidavit:false,
+				memo:false,
+			},
 			age:null,
 			products:[],
 			accountOfficers:[],
@@ -360,6 +379,35 @@ export default {
 		}
 	},
 	methods:{
+		async computeDeduction(){
+			var data = {
+				loan_amount: this.loanDetails.loan_amount,
+				terms: this.loanDetails.terms,
+				product_id: this.loanDetails.product_id,
+				birthdate: this.borrowerbday
+			}
+			await axios.post(this.baseURL() + 'api/deduction/calculate', data, {
+				headers: {
+					'Authorization': 'Bearer ' + this.token,
+					'Content-Type': 'application/json',
+					'Accept': 'application/json'
+				}
+			})
+			.then(function (response) {
+				var result = response.data.data;
+				this.loanDetails.filing_fee = result.filing_fee.rate;
+				this.loanDetails.document_stamp = result.doc_stamp.rate;
+				this.loanDetails.insurance = result.insurance.rate;
+				this.loanDetails.notarial_fee = result.notarial_fee.rate;
+				this.loanDetails.affidavit_fee = result.affidavit.rate;
+				this.loanDetails.memo = result.memo.rate;
+				this.loanDetails.prepaid_interest = result.prepaid_interest.rate;
+				// console.log(result);
+			}.bind(this))
+			.catch(function (error) {
+				console.log(error);
+			}.bind(this));
+		},
 		fetchProducts: function(){
 			axios.get(this.baseURL() + 'api/products/activeProducts', {
 				headers: {
@@ -491,12 +539,13 @@ export default {
 		},
 		compute:function(){
 			this.calculateInsurance;
+			this.computeDeduction();
 		}
 	},
 	watch: {
 		'loandetails'(newValue) {
 			this.loanDetails = newValue;
-			this.calculateInsurance
+			// this.calculateInsurance
 			// this.numberOfInstallment;
 		},
 		'borrower'(newValue) {
@@ -570,21 +619,21 @@ export default {
 			this.loanDetails.no_of_installment = result;
 			return result;
 		},
-		docStamp:function(){
-			this.loanDetails.document_stamp =  (this.loanDetails.loan_amount / 200 * 1.5 * this.loanDetails.terms / 365).toFixed(2);
-			if(this.loanDetails.terms / 30 > 12){
-				this.loanDetails.document_stamp =  (this.loanDetails.loan_amount / 200 * 1.5).toFixed(2);
-			}
-			return this.loanDetails.document_stamp;
-		},
-		calculateInsurance:function(){
-			let rate = 1;
-			if(this.age > 65){
-				rate = 2.8;
-			}
-			this.loanDetails.insurance =  ((this.loanDetails.loan_amount / 1000) * rate * (Math.ceil(this.loanDetails.terms / 30))).toFixed(2);
-			return this.loanDetails.insurance;
-		},
+		// docStamp:function(){
+		// 	this.loanDetails.document_stamp =  (this.loanDetails.loan_amount / 200 * 1.5 * this.loanDetails.terms / 365).toFixed(2);
+		// 	if(this.loanDetails.terms / 30 > 12){
+		// 		this.loanDetails.document_stamp =  (this.loanDetails.loan_amount / 200 * 1.5).toFixed(2);
+		// 	}
+		// 	return this.loanDetails.document_stamp;
+		// },
+		// calculateInsurance:function(){
+		// 	let rate = 1;
+		// 	if(this.age > 65){
+		// 		rate = 2.8;
+		// 	}
+		// 	this.loanDetails.insurance =  ((this.loanDetails.loan_amount / 1000) * rate * (Math.ceil(this.loanDetails.terms / 30))).toFixed(2);
+		// 	return this.loanDetails.insurance;
+		// },
 		totalDeductions:function(){
 			this.loanDetails.total_deduction = (parseFloat(this.loanDetails.memo) + parseFloat(this.loanDetails.filing_fee) + parseFloat(this.loanDetails.affidavit_fee) + parseFloat(this.loanDetails.notarial_fee) + parseFloat(this.loanDetails.document_stamp) + parseFloat(this.loanDetails.insurance)).toFixed(2);
 			return this.loanDetails.total_deduction;
