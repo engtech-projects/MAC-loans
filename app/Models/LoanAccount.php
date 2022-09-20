@@ -641,7 +641,7 @@ class LoanAccount extends Model
       $balance = $this->outstandingBalance($this->loan_account_id);
       $penalty = 0;
       $pdi = 0;
-      $rebates 0;
+      $rebates = 0;
 
       if( count($payments) > 0 ){
 
