@@ -19,6 +19,16 @@ class DeductionFeesSeeder extends Seeder
             [
                 "name" => "Documentary Stamp",
                 "rate" => 300,
+                "term_start" => 0,
+                "term_end" => 365,
+				'created_at' => Carbon::now(),
+				'updated_at' => Carbon::now(),
+            ],
+            [
+                "name" => "Documentary Stamp",
+                "rate" => 300,
+                "term_start" => 366,
+                "term_end" => 9999,
 				'created_at' => Carbon::now(),
 				'updated_at' => Carbon::now(),
             ],
@@ -63,7 +73,7 @@ class DeductionFeesSeeder extends Seeder
         $filingFeeSalary = [
             [
                 "name" => "Filing Fee",
-                "rate" => 100,
+                "rate" => "1%",
                 "product_id" => 3,
                 "term_start" => 0,
                 "term_end" => 365,
@@ -72,7 +82,7 @@ class DeductionFeesSeeder extends Seeder
             ],
             [
                 "name" => "Filing Fee",
-                "rate" => 100,
+                "rate" => "2%",
                 "product_id" => 3,
                 "term_start" => 366,
                 "term_end" => 9999,
