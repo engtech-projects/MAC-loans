@@ -311,7 +311,16 @@
 
 <script>
 export default {
-	props:['token', 'loandetails', 'borrower', 'borrowerbday', 'saveloandetails', 'idtype', 'releasetype'],
+	props:[
+		'token',
+		'loandetails',
+		'borrower',
+		'borrowerbday',
+		'saveloandetails',
+		'idtype',
+		'releasetype',
+		'pbranch'
+	],
 	data(){
 		return {
 			inputs:{
@@ -375,7 +384,10 @@ export default {
 					card_no:'',
 					promissory_number: '',
 				}
-			}
+			},
+			branch:{
+				branch_id:null,
+			},
 		}
 	},
 	methods:{
@@ -424,7 +436,7 @@ export default {
 			}.bind(this));
 		},
 		fetchAo: function(){
-			axios.get(this.baseURL() + 'api/accountofficers/getActivesInBranch', {
+			axios.get(this.baseURL() + 'api/accountofficer/getActivesInBranch/' + this.branch.branch_id , {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
 					'Content-Type': 'application/json',
@@ -564,6 +576,9 @@ export default {
 			if(!this.loanDetails.documents.promissory_number || this.loanDetails.documents.promissory_number == ''){
 				this.fetchPromissoryNo();
 			}
+		},
+		'pbranch':function(newValue){
+			this.branch = JSON.parse(newValue);
 		}
 		// 'saveloandetails'(newValue) {
 		// 	if(newValue){
@@ -643,6 +658,7 @@ export default {
 		}
 	},
 	mounted(){
+		this.branch = JSON.parse(this.pbranch);
 		this.fetchProducts();
 		this.fetchAo();
 		this.fetchCenters();

@@ -12,7 +12,6 @@ use App\Models\User;
 use App\Models\Branch;
 use App\Http\Resources\Users as UserResource;
 use App\Http\Resources\Borrower as BorrowerResource;
-use Session;
 
 class AuthController extends BaseController
 {
@@ -24,13 +23,11 @@ class AuthController extends BaseController
     	$credentials = $request->only('username', 'password');
         $branch_id = $request->branch_id;
     	if(Auth::attempt($credentials)){
-            Session::regenerate();
             $isAllowed = false;
             if(Auth::user()->status === 'active'){
                 foreach (Auth::user()->branch as $branch) {
                     if( $branch->branch_id == $branch_id ){
                         $isAllowed = true;
-                        Session::put('currentBranch', $branch_id);
                         break;
                     }
                 }

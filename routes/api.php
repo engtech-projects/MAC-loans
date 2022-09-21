@@ -51,7 +51,7 @@ Route::middleware(['auth:sanctum'])->group( function () {
     Route::resource('gl', GLController::class);
     Route::resource('deduction', DeductionController::class);
 
-    Route::get('accountofficers/getActivesInBranch/', [AccountOfficerController::class, "getActiveInBranch"]);
+    Route::get('accountofficer/getActivesInBranch/{branch_id}', [AccountOfficerController::class, "getActiveInBranch"]);
     Route::get('centers/activeCenters/', [CenterController::class, 'activeCenter']);
     Route::get('products/activeProducts/', [ProductController::class, 'activeProduct']);
 
