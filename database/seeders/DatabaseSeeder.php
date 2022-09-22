@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
             TestDataSeeder::class,
             AccessibilitySeeder::class,
             GLSeeder::class,
+            DeductionFeesSeeder::class,
         ]);
     }
 }
