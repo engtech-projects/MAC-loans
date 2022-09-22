@@ -636,35 +636,16 @@ class LoanAccount extends Model
    public function remainingBalance() {
 
       $account = LoanAccount::where(['loan_account_id' => $this->loan_account_id])->first();
-      $payments = $this->getPayment($this->loan_account_id);
+      $payment = Payment::where(['loan_account_id' => $this->loan_account_id, 'status' => 'paid'])->orderBy('payment_id', 'DESC')->first();
 
       $balance = $this->outstandingBalance($this->loan_account_id);
       $penalty = 0;
       $pdi = 0;
-      $rebates 0;
+      $rebates = 0;
 
-      if( count($payments) > 0 ){
-
-         foreach ($payments as $payment) {
-
-            if( $payment->pdi && !$payment->pdi_approval_no ){
-               $pdi += $payment->pdi;   
-            }            
-
-            if( $payment->penalty && !$payment->penalty_approval_no ){
-               $penalty += $payment->penalty;   
-            }            
-            
-            if( $payment->rebates && $payment->rebates_approval_no ){
-               $rebates += $payment->rebates;
-            }
-
-         }
-
-
+      if( $payment ){
+         $penalty = $payment->short_penalty;
       }
-
-
 
       return [
          'balance' => $balance,
