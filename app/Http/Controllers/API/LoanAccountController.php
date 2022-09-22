@@ -32,7 +32,7 @@ class LoanAccountController extends BaseController
     public function createLoanAccount(Request $request, Borrower $borrower) {
         // $branchCode = Branch::find(session()->get('branch_id'))->branch_code;
         # to be replaced when branch is fetched through session.
-        $branch = Branch::find($request->input(['branch_id']));
+        $branch = Branch::find($request->input('branch_id'));
         $product = Product::find($request->input('product_id'));
 
         $request->merge([
