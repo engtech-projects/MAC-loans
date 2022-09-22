@@ -37,6 +37,7 @@ class BorrowerController extends BaseController
         $borrowers = Borrower::join('loan_accounts','loan_accounts.borrower_id', '=', 'borrower_info.borrower_id')
                             ->select('borrower_info.*')
                             ->where([ 'loan_accounts.branch_code' => $branch->branch_code ])
+                            ->groupBy('borrower_info.borrower_id')
                             ->get();
 
         return $this->sendResponse(BorrowerResource::collection($borrowers), 'Borrowers');
