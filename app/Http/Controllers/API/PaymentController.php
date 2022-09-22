@@ -35,7 +35,7 @@ class PaymentController extends BaseController
         # create payment instance.
         $payment = new Payment();
     	# get branch id and add to request data
-    	$request->merge(['branch_id' => 2]);
+    	// $request->merge(['branch_id' => 2]);
 
         // $payment->addPayment($request);
     	return $this->sendResponse(new PaymentResource($payment->addPayment($request)), 'Payment');
@@ -55,8 +55,6 @@ class PaymentController extends BaseController
 
         $payment = new Payment();
 
-      
-        
         return $this->sendResponse( 
             PaymentLoanAccountResource::collection($payment->overridePaymentAccounts($filters)), 
             'Payments'

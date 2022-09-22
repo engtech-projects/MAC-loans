@@ -10,6 +10,7 @@ use Carbon\Carbon;
 use Storage;
 use File;
 use App\Models\Borrower;
+use App\Models\Branch;
 use App\Models\EmploymentInfo;
 use App\Models\BusinessInfo;
 use App\Models\HouseholdMembers;
@@ -28,6 +29,19 @@ class BorrowerController extends BaseController
     	$borrowers = Borrower::all();
     	return $this->sendResponse(BorrowerResource::collection($borrowers), 'Borrowers');
     }
+
+    public function borrowerList($branchId) {
+
+        $branch = Branch::find($branchId);
+
+        $borrowers = Borrower::join('loan_accounts','loan_accounts.borrower_id', '=', 'borrower_info.borrower_id')
+                            ->select('borrower_info.*')
+                            ->where([ 'loan_accounts.branch_code' => $branch->branch_code ])
+                            ->get();
+
+        return $this->sendResponse(BorrowerResource::collection($borrowers), 'Borrowers');
+    }
+
      /**
      * Show the form for creating a new resource.
      */
