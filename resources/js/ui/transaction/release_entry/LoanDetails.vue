@@ -466,7 +466,7 @@ export default {
 			}.bind(this));
 		},
 		fetchPromissoryNo: function(){
-			axios.post(this.baseURL() + 'api/account/promissoryno',{'product_id':this.loanDetails.product_id, branch_id:this.loanDetails.branch.branch_id}, {
+			axios.post(this.baseURL() + 'api/account/promissoryno',{'product_id':this.loanDetails.product_id, branch_id:this.branch.branch_id}, {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
 					'Content-Type': 'application/json',
@@ -489,6 +489,7 @@ export default {
 		save: function(){
 			this.setPrepaidInterest();
 			this.loanDetails.status = 'pending';
+			this.loanDetails.branch_id = this.branch.branch_id
 			if(this.loanDetails.loan_account_id){
 					axios.post(this.baseURL() + 'api/account/update/' + this.loanDetails.loan_account_id, this.loanDetails, {
 						headers: {
