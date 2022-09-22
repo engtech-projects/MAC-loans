@@ -135,14 +135,21 @@ export default {
 			}
 			return false;
 		},
-		setCoborrower:function(borrower){
-			this.loanDetails.co_borrower_name = borrower.firstname + ' ' + borrower.lastname;
-			this.loanDetails.co_borrower_address = borrower.address;
-			this.loanDetails.co_borrower_id_type = borrower.id_type;
-			this.loanDetails.co_borrower_id_number = borrower.id_no;
-			this.loanDetails.co_borrower_id_date_issued = borrower.id_date_issued;
-			this.searchMode = false;
-		},
+		// setCoborrower:function(borrower){
+		// 	this.loanDetails.co_borrower_name = borrower.firstname + ' ' + borrower.lastname;
+		// 	this.loanDetails.co_borrower_address = borrower.address;
+		// 	this.loanDetails.co_borrower_id_type = borrower.id_type;
+		// 	this.loanDetails.co_borrower_id_number = borrower.id_no;
+		// 	this.loanDetails.co_borrower_id_date_issued = borrower.id_date_issued;
+		// 	this.searchMode = false;
+		// },
+		setCoBorrower:function(){
+			this.loanDetails.co_borrower_name = this.pborrower.spouse_firstname + ' ' + this.pborrower.spouse_middlename.charAt(0) + '. ' + this.pborrower.spouse_lastname;
+			this.loanDetails.co_borrower_address = this.pborrower.spouse_address;
+			this.loanDetails.co_borrower_id_type = this.pborrower.spouse_id_type;
+			this.loanDetails.co_borrower_id_number = this.pborrower.spouse_id_no;
+			this.loanDetails.co_borrower_id_date_issued = this.pborrower.spouse_id_date_issued;
+		}
 	},
 	watch: {
 		'loandetails'(newValue) {
@@ -150,11 +157,12 @@ export default {
 		},
 		'pborrower.status'(newValue){
 			if(newValue == 'married'){
-				this.loanDetails.co_borrower_name = this.pborrower.spouse_firstname + ' ' + this.pborrower.spouse_middlename.charAt(0) + '. ' + this.pborrower.spouse_lastname;
-				this.loanDetails.co_borrower_address = this.pborrower.spouse_address;
-				this.loanDetails.co_borrower_id_type = this.pborrower.spouse_id_type;
-				this.loanDetails.co_borrower_id_number = this.pborrower.spouse_id_no;
-				this.loanDetails.co_borrower_id_date_issued = this.pborrower.spouse_id_date_issued;
+				this.setCoBorrower();
+			}
+		},
+		'pborrower.borrower_id'(newValue){
+			if(this.pborrower.status == 'married'){
+				this.setCoBorrower();
 			}
 		}
 	},
