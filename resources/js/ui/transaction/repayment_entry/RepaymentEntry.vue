@@ -10,7 +10,7 @@
 			<div style="flex:9;">
 				<client-list-side :pborrowers="borrowers" :id="{}" @selectBorrower="selectBorrower"></client-list-side>
 			</div>
-			<repayment-details :pborrower="borrower" :token="token"></repayment-details>
+			<repayment-details :pbranch="pbranch" :pborrower="borrower" :token="token"></repayment-details>
 		</div>
 
 
@@ -20,7 +20,7 @@
 
 <script>
 export default {
-	props:['token'],
+	props:['token', 'pbranch'],
 	data(){
 		return {
 			paymentType:'cash',

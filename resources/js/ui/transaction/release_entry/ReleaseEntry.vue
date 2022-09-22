@@ -53,7 +53,7 @@
 						</div>
 
 
-						<co-borrower :idtype="idType" :borrowers="borrowers" :loandetails="loanDetails" @update-loan-details="updateLoanDetails"></co-borrower>
+						<co-borrower :idtype="idType" :borrowers="borrowers" :loandetails="loanDetails" @update-loan-details="updateLoanDetails" :pborrower="borrower"></co-borrower>
 
 
 
@@ -945,6 +945,9 @@
 						account_no: '',
 						card_no:'',
 						promissory_number: '',
+					},
+					branch:{
+						branch_id:null
 					}
 				},
 				products:[],
@@ -1046,7 +1049,7 @@
 				}.bind(this));
 			},
 			fetchBorrowers:function(){
-				axios.get(this.baseURL() + 'api/borrower', {
+				axios.get(this.baseURL() + 'api/borrower/list/' + this.pbranch, {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
 						'Content-Type': 'application/json',
@@ -1170,7 +1173,11 @@
 						account_no: '',
 						card_no:'',
 						promissory_number: '',
+					},
+					branch:{
+						branch_id:this.pbranch,
 					}
+
 				}
 			},
 			setCycle:function(){

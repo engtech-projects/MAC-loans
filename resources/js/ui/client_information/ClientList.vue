@@ -16,7 +16,7 @@
 				<th>Address</th>
 			</thead>
 			<tbody>
-				<tr v-for="borrower in borrowers" :key="borrower.borrower_id">
+				<tr v-for="(borrower, i) in borrowers" :key="i">
 					<td>{{borrower.borrower_num}}</td>
 					<td><a :href="url.replace(':id', borrower.borrower_id)">{{borrower.firstname + ' ' + borrower.lastname}}</a></td>
 					<td>{{borrower.contact_number}}</td>
@@ -29,7 +29,7 @@
 
 <script>
 export default {
-	props:['title', 'url', 'token'],
+	props:['title', 'url', 'token', 'pbranch'],
 	data(){
 		return {
 			borrowers:[],
@@ -37,7 +37,7 @@ export default {
 	},
 	methods:{
 		fetchBorrowers:function(){
-			axios.get(this.baseURL() + 'api/borrower', {
+			axios.get(this.baseURL() + 'api/borrower/list/' + this.pbranch, {
 			headers: {
 				'Authorization': 'Bearer ' + this.token,
 					'Content-Type': 'application/json',
