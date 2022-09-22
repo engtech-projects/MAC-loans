@@ -111,10 +111,9 @@ class PaymentController extends BaseController
     public function destroy($id) {
 
         $payment = Payment::find($id);
-        $payment->status = 'deleted';
-        $payment->save();
-
-        return $this->sendResponse($payment, 'Deleted');
+        $payment->delete();
+    
+        return $this->sendResponse(['status' => 'Payment deleted'], 'Deleted');
     }
 
     public function show($branchId) {

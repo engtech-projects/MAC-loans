@@ -636,23 +636,71 @@ class LoanAccount extends Model
    public function remainingBalance() {
 
       $account = LoanAccount::where(['loan_account_id' => $this->loan_account_id])->first();
-      $payment = Payment::where(['loan_account_id' => $this->loan_account_id, 'status' => 'paid'])->orderBy('payment_id', 'DESC')->first();
+      $payments = Payment::where(['loan_account_id' => $this->loan_account_id, 'status' => 'paid'])->orderBy('payment_id', 'DESC')->get();
 
-      $balance = $this->outstandingBalance($this->loan_account_id);
-      $penalty = 0;
-      $pdi = 0;
-      $rebates = 0;
+      $accountSummary = [
+         'principal' => [
+            'debit' => $account->loan_amount,
+            'credit' => 0,
+            'balance' => 0,
+         ],
+         'interest' => [
+            'debit' => $account->interest_amount,
+            'credit' => 0,
+            'balance' => 0,
+         ],
+         'rebates' => [
+            'debit' => 0,
+            'credit' => 0,
+            'balance' => 0,
+         ],
+         'penalty' => [
+            'debit' => 0,
+            'credit' => 0,
+            'balance' => 0,
+         ],
+         'pdi' => [
+            'debit' => 0,
+            'credit' => 0,
+            'balance' => 0,
+         ]
+      ];
 
-      if( $payment ){
-         $penalty = $payment->short_penalty;
+      $currentAmortization = $account->getCurrentAmortization();
+
+      if( $currentAmortization ) {
+         $accountSummary['penalty']['debit'] = $currentAmortization->penalty + $currentAmortization->short_penalty;
       }
 
-      return [
-         'balance' => $balance,
-         'penalty' => $penalty,
-         'pdi' => $pdi,
-         'rebates' => $rebates,
-      ];
+      if( count($payments) ) {
+
+         foreach ($payments as $payment) {
+            
+            $accountSummary['principal']['credit'] += $payment->principal;
+            $accountSummary['interest']['credit'] += $payment->interest;
+
+             if( !$payment->penalty_approval_no ) {
+                $accountSummary['penalty']['credit'] += $payment->penalty;
+            }
+
+            if( $payment->rebates->approval_no ) {
+                $accountSummary['rebates']['credit'] += $payment->rebates;
+            }
+
+         }
+
+      }
+
+      $accountSummary['penalty']['debit'] += $accountSummary['penalty']['credit'];
+      // calculate balance
+      $accountSummary['principal']['balance'] = $accountSummary['principal']['debit'] - $accountSummary['principal']['credit'];
+      $accountSummary['interest']['balance'] =  $accountSummary['interest']['debit'] - $accountSummary['interest']['credit'];
+      $accountSummary['penalty']['balance'] =  $accountSummary['penalty']['debit'] - $accountSummary['penalty']['credit'];
+      $accountSummary['pdi']['balance'] =  $accountSummary['pdi']['debit'] - $accountSummary['pdi']['credit'];
+
+
+
+      return $accountSummary;
 
    }
 
