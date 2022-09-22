@@ -124,7 +124,7 @@
 				</div>
 				<div class="form-group mb-10" style="flex:2">
 					<label for="spouseContactNumber" class="form-label">Contact Number</label>
-					<input type="text" required class="form-control form-input " id="spouseContactNumber">
+					<input v-model="borrower.spouse_contact_number" type="text" required class="form-control form-input " id="spouseContactNumber">
 				</div>
 			</div>
 		</section>
