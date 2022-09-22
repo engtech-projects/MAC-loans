@@ -670,6 +670,7 @@ class LoanAccount extends Model
 
       if( $currentAmortization ) {
          $accountSummary['penalty']['debit'] = $currentAmortization->penalty + $currentAmortization->short_penalty;
+         $accountSummary['pdi']['debit'] = $currentAmortization->delinquent['pdi'] + $currentAmortization->short_pdi;
       }
 
       if( count($payments) ) {
@@ -679,8 +680,12 @@ class LoanAccount extends Model
             $accountSummary['principal']['credit'] += $payment->principal;
             $accountSummary['interest']['credit'] += $payment->interest;
 
-             if( !$payment->penalty_approval_no ) {
+            if( !$payment->penalty_approval_no ) {
                 $accountSummary['penalty']['credit'] += $payment->penalty;
+            }
+
+            if( !$payment->pdi_approval_no ) {
+                $accountSummary['pdi']['credit'] += $payment->pdi;
             }
 
             if( $payment->rebates_approval_no ) {
