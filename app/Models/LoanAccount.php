@@ -683,7 +683,7 @@ class LoanAccount extends Model
                 $accountSummary['penalty']['credit'] += $payment->penalty;
             }
 
-            if( $payment->rebates->approval_no ) {
+            if( $payment->rebates_approval_no ) {
                 $accountSummary['rebates']['credit'] += $payment->rebates;
             }
 

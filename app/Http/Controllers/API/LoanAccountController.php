@@ -166,7 +166,7 @@ class LoanAccountController extends BaseController
 
     public function getPromissoryNo(Request $request) {
 
-        $branch = Branch::find(1);
+        $branch = Branch::find($request->input('branch_id'));
         $product = Product::find($request->input('product_id'));
 
         $document = new Document();
