@@ -16,7 +16,7 @@
 					<td></td>
 					<td></td>
 				</tr>
-				<tr class="client-item" :class="isActive(b)" v-for="(b) in filterClient" :key="b.borrower_id">
+				<tr class="client-item" :class="isActive(b)" v-for="(b, i) in filterClient" :key="i">
 					<td>{{b.borrower_num}}</td>
 					<td><a href="#">{{b.firstname + ' ' + b.lastname}}</a></td>
 					<td><span @click="$emit('selectBorrower',b.borrower_id);borrower=b" class="text-green c-pointer">select</span></td>
@@ -35,7 +35,7 @@
 					<td></td>
 					<td></td>
 				</tr>
-				<tr class="client-item" :class="isActiveAccount(b)" v-for="(b) in filterAccount" :key="b.loan_account_id">
+				<tr class="client-item" :class="isActiveAccount(b )" v-for="(b,i) in filterAccount" :key="i">
 					<td>{{b.borrower.borrower_num}}</td>
 					<td><a href="#">{{b.borrower.firstname + ' ' + b.borrower.lastname}}</a></td>
 					<td><span @click="$emit('selectAccount',b)" class="text-green c-pointer">select</span></td>

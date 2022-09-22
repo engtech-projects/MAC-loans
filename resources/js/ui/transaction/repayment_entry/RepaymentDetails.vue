@@ -607,7 +607,7 @@
 
 <script>
 export default {
-	props:['pborrower','token'],
+	props:['pborrower','token', 'pbranch'],
 	data(){
 		return {
 			paymentType:'cash',
@@ -963,7 +963,7 @@ export default {
 		},
 	},
 	mounted(){
-
+		this.payment.branch_id = this.pbranch;
 	}
 }
 </script>

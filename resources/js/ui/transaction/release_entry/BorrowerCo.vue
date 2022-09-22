@@ -83,7 +83,7 @@
 </template>
 <script>
 export default {
-	props:['loandetails', 'borrowers', 'idtype'],
+	props:['loandetails', 'borrowers', 'idtype','pborrower'],
 	data(){
 		return {
 			searchMode:true,
@@ -148,6 +148,15 @@ export default {
 		'loandetails'(newValue) {
 			this.loanDetails = newValue;
 		},
+		'pborrower.status'(newValue){
+			if(newValue == 'married'){
+				this.loanDetails.co_borrower_name = this.pborrower.spouse_firstname + ' ' + this.pborrower.spouse_middlename.charAt(0) + '. ' + this.pborrower.spouse_lastname;
+				this.loanDetails.co_borrower_address = this.pborrower.spouse_address;
+				this.loanDetails.co_borrower_id_type = this.pborrower.spouse_id_type;
+				this.loanDetails.co_borrower_id_number = this.pborrower.spouse_id_no;
+				this.loanDetails.co_borrower_id_date_issued = this.pborrower.spouse_id_date_issued;
+			}
+		}
 	},
 	computed:{
 		searchBorrower: function () {

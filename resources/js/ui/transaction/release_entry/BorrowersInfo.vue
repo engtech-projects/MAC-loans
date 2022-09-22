@@ -96,56 +96,56 @@
 			</div>
 		</section>
 
-		<section class="mb-24" style="flex:21;padding-left:16px;">
+		<section v-if="borrower.status=='married'" class="mb-24" style="flex:21;padding-left:16px;">
 			<span class="section-title mb-24">Borrower's Spouse Information</span>
 
 			<div class="d-flex flex-row">
 				<div class="form-group mb-10 mr-16" style="flex: 3">
 					<label for="spouseFirstName" class="form-label">First Name</label>
-					<input v-model="borrower.spouse_firstname" type="text" class="form-control form-input " id="spouseFirstName">
+					<input v-model="borrower.spouse_firstname" type="text" required class="form-control form-input " id="spouseFirstName">
 				</div>
 				<div class="form-group mb-10 mr-16" style="flex: 3">
 					<label for="spouseMiddleName" class="form-label">Middle Name</label>
-					<input v-model="borrower.spouse_middlename" type="text" class="form-control form-input " id="spouseMiddleName">
+					<input v-model="borrower.spouse_middlename" type="text" required class="form-control form-input " id="spouseMiddleName">
 				</div>
 				<div class="form-group mb-10 mr-16" style="flex: 3">
 					<label for="spouseLastName" class="form-label">Last Name</label>
-					<input v-model="borrower.spouse_lastname" type="text" class="form-control form-input " id="spouseLastName">
+					<input v-model="borrower.spouse_lastname" type="text" required class="form-control form-input " id="spouseLastName">
 				</div>
 			</div>
 			<div class="form-group mb-10" style="flex: 3">
 				<label for="spouseAddress  " class="form-label">Address</label>
-				<input v-model="borrower.spouse_address" type="text" class="form-control form-input " id="spouseAddress  ">
+				<input v-model="borrower.spouse_address" type="text" required class="form-control form-input " id="spouseAddress  ">
 			</div>
 			<div class="d-flex flex-row">
 				<div class="form-group mb-10 mr-16" style="flex: 2">
 					<label for="spouseBirthdate" class="form-label">Birth Date</label>
-					<input v-model="borrower.spouse_birthdate" type="date" class="form-control form-input " id="spouseBirthdate">
+					<input v-model="borrower.spouse_birthdate" type="date" required class="form-control form-input " id="spouseBirthdate">
 				</div>
 				<div class="form-group mb-10" style="flex:2">
 					<label for="spouseContactNumber" class="form-label">Contact Number</label>
-					<input type="text" class="form-control form-input " id="spouseContactNumber">
+					<input type="text" required class="form-control form-input " id="spouseContactNumber">
 				</div>
 			</div>
 		</section>
 
-		<section class="mb-24" style="flex:21;padding-left:16px;">
+		<section v-if="borrower.status=='married'" class="mb-24" style="flex:21;padding-left:16px;">
 			<span class="section-title mb-24">Borrower's Spouse Identification Details</span>
 
 			<div class="d-flex flex-row">
 				<div class="form-group mb-10 mr-16" style="flex: 3">
 					<label for="spouseIdType" class="form-label">ID Type</label>
-					<select v-model="borrower.spouse_id_type" name="" id="" class="form-control form-input">
+					<select v-model="borrower.spouse_id_type" name="" id="" required class="form-control form-input">
 						<option v-for="i in idtype" :key="i" :value="i">{{i}}</option>
 					</select>
 				</div>
 				<div class="form-group mb-10 mr-16" style="flex: 3">
 					<label for="spouseIdNumber" class="form-label">ID Number</label>
-					<input v-model="borrower.spouse_id_no" type="text" class="form-control form-input " id="spouseIdNumber">
+					<input v-model="borrower.spouse_id_no" type="text" required class="form-control form-input " id="spouseIdNumber">
 				</div>
 				<div class="form-group mb-10 mr-16" style="flex: 3">
 					<label for="spouseIdDate" class="form-label">ID Date Issued</label>
-					<input v-model="borrower.spouse_id_date_issued" type="date" class="form-control form-input " id="spouseIdDate">
+					<input v-model="borrower.spouse_id_date_issued" type="date" required class="form-control form-input " id="spouseIdDate">
 				</div>
 				<div style="flex: 3"></div>
 			</div>
