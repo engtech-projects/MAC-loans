@@ -1184,14 +1184,16 @@
 				this.loanDetails.cycle_no = parseInt(this.borrower.loan_accounts.length + 1);
 			},
 			selectBorrower:function(borrower){
-				this.borrowers.map(function(data){
-					if(borrower == data.borrower_id){
-						this.borrower = data;
-						this.resetLoanDetails();
-						this.navigate('custom-content-below-borrowerinfo-tab');
-						this.setCycle();
-					}
-				}.bind(this));
+				if(this.borrower.borrower_id != borrower){
+					this.borrowers.map(function(data){
+						if(borrower == data.borrower_id){
+							this.borrower = data;
+							this.resetLoanDetails();
+							this.navigate('custom-content-below-borrowerinfo-tab');
+							this.setCycle();
+						}
+					}.bind(this));
+				}
 			},
 
 			print:function(){
