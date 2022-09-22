@@ -18,8 +18,8 @@ class AccountOfficerController extends BaseController
         return $this->sendResponse(AccountOfficerResource::collection($accountOfficer), 'AO fetched.');
     }
 
-    public function getActiveInBranch(Request $request) {
-        $accountOfficer = AccountOfficer::where(["status" => "active", "branch_id" => $request->session()->get("currentBranch")])->get();
+    public function getActiveInBranch($branch_id) {
+        $accountOfficer = AccountOfficer::where(["status" => "active", "branch_id" => $branch_id])->get();
         return $this->sendResponse(AccountOfficerResource::collection($accountOfficer), 'AO fetched.');
     }
     /**

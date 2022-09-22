@@ -43,17 +43,16 @@ class DeductionController extends BaseController {
      */
     public function update(Request $request, Deduction $deduction) {
         $input = $request->all();
-
-  		$deduction->name = isset($input['name']) ? $input['name'] : $dedcution->name;
-		$deduction->rate = isset($input['rate']) ? $input['rate'] : $dedcution->rate;
-		$deduction->product_id = isset($input['product_id']) ? $input['product_id'] : $dedcution->product_id;
-		$deduction->term_start = isset($input['term_start']) ? $input['term_start'] : $dedcution->term_start;
-		$deduction->term_end = isset($input['term_end']) ? $input['term_end'] : $dedcution->term_end;
-		$deduction->age_start = isset($input['age_start']) ? $input['age_start'] : $dedcution->age_start;
-		$deduction->age_end = isset($input['age_end']) ? $input['age_end'] : $dedcution->age_end;
-		$deduction->deleted = isset($input['deleted']) ? $input['deleted'] : $dedcution->deleted;
-		$deduction->status = isset($input['status']) ? $input['status'] : $dedcution->status;
-
+  		$deduction->name = isset($input['name']) ? $input['name'] : $deduction->name;
+		$deduction->rate = isset($input['rate']) ? $input['rate'] : $deduction->rate;
+		$deduction->product_id = isset($input['product_id']) ? $input['product_id'] : $deduction->product_id;
+		$deduction->term_start = isset($input['term_start']) ? $input['term_start'] : $deduction->term_start;
+		$deduction->term_end = isset($input['term_end']) ? $input['term_end'] : $deduction->term_end;
+		$deduction->age_start = isset($input['age_start']) ? $input['age_start'] : $deduction->age_start;
+		$deduction->age_end = isset($input['age_end']) ? $input['age_end'] : $deduction->age_end;
+		$deduction->deleted = isset($input['deleted']) ? $input['deleted'] : $deduction->deleted;
+		$deduction->status = isset($input['status']) ? $input['status'] : $deduction->status;
+		$deduction->save();
         return $this->sendResponse(new DeductionResource($deduction), 'Deduction Updated.');
     }
 
