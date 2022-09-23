@@ -1049,7 +1049,7 @@
 				}.bind(this));
 			},
 			fetchBorrowers:function(){
-				axios.get(this.baseURL() + 'api/borrower/list/' + this.branch.branch_id, {
+				axios.get(this.baseURL() + 'api/borrower/list/' + this.branch, {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
 						'Content-Type': 'application/json',
