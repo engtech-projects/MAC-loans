@@ -59,7 +59,6 @@ class PaymentController extends BaseController
             PaymentLoanAccountResource::collection($payment->overridePaymentAccounts($filters)), 
             'Payments'
         );
-
     }
 
     public function overridePayment(Request $request) {
@@ -160,7 +159,6 @@ class PaymentController extends BaseController
         }
 
         return $summary;
-
     }
 
 }
