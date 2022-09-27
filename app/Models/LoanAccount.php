@@ -212,43 +212,43 @@ class LoanAccount extends Model
       foreach ($cashVoucher as $key => $value) {
 
          if( $value['reference'] == 'Amount Loan' ){
-             $cashVoucher[$key]['debit'] = $this->loan_amount;
+            $cashVoucher[$key]['debit'] = $this->loan_amount;
          }
 
          if( $value['reference'] == 'Check' ){
-             $cashVoucher[$key]['credit'] = $this->net_proceeds;
+            $cashVoucher[$key]['credit'] = $this->net_proceeds;
          }
 
          if( $value['reference'] == 'Cash' ){
-             $cashVoucher[$key]['credit'] = $this->net_proceeds;
+            $cashVoucher[$key]['credit'] = $this->net_proceeds;
          }
 
          if( $value['reference'] == 'Filing Fee' ){
-             $cashVoucher[$key]['credit'] = $this->filing_fee;
+            $cashVoucher[$key]['credit'] = $this->filing_fee;
          }
 
          if( $value['reference'] == 'Documentary Stamp' ){
-             $cashVoucher[$key]['credit'] = $this->document_stamp;
+            $cashVoucher[$key]['credit'] = $this->document_stamp;
          }
 
          if( $value['reference'] == 'Insurance' ){
-             $cashVoucher[$key]['credit'] = $this->insurance;
+            $cashVoucher[$key]['credit'] = $this->insurance;
          }
 
          if( $value['reference'] == 'Notarial' ){
-             $cashVoucher[$key]['credit'] = $this->notarial_fee;
+            $cashVoucher[$key]['credit'] = $this->notarial_fee;
          }
 
          if( $value['reference'] == 'Prepaid' ){
-             $cashVoucher[$key]['credit'] = $this->prepaid_interest;
+            $cashVoucher[$key]['credit'] = $this->prepaid_interest;
          }
 
          if( $value['reference'] == 'Others' ){
-             $cashVoucher[$key]['credit'] = $this->affidavit_fee;
+            $cashVoucher[$key]['credit'] = $this->affidavit_fee;
          }
 
          if( $value['reference'] == 'Memo' ){
-             $cashVoucher[$key]['credit'] = $this->memo;
+            $cashVoucher[$key]['credit'] = $this->memo;
          }
 
       }
@@ -639,6 +639,10 @@ class LoanAccount extends Model
       $payments = Payment::where(['loan_account_id' => $this->loan_account_id, 'status' => 'paid'])->orderBy('payment_id', 'DESC')->get();
 
       $accountSummary = [
+         'memo' => [
+            'account' => '',
+            'balance' => 0,
+         ],
          'principal' => [
             'debit' => $account->loan_amount,
             'credit' => 0,
@@ -691,9 +695,7 @@ class LoanAccount extends Model
             if( $payment->rebates_approval_no ) {
                 $accountSummary['rebates']['credit'] += $payment->rebates;
             }
-
          }
-
       }
 
       $accountSummary['penalty']['debit'] += $accountSummary['penalty']['credit'];
@@ -703,7 +705,8 @@ class LoanAccount extends Model
       $accountSummary['penalty']['balance'] =  $accountSummary['penalty']['debit'] - $accountSummary['penalty']['credit'];
       $accountSummary['pdi']['balance'] =  $accountSummary['pdi']['debit'] - $accountSummary['pdi']['credit'];
 
-
+      $accountSummary['memo']['account'] = $account->account_num;
+      $accountSummary['memo']['balance'] = $accountSummary['principal']['balance'] + $accountSummary['interest']['balance'] + $accountSummary['penalty']['balance'] + $accountSummary['pdi']['balance'];
 
       return $accountSummary;
 
