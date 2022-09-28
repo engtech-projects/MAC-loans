@@ -163,13 +163,13 @@ class EndTransaction extends Model
 						 $ledger[$key]['credit'] += $payment->interest;
 						break;
 					case 'Penalty Income':
-						// $ledger[$key]['credit'] += $payment->;
+						$ledger[$key]['credit'] += $payment->penalty;
 						break;
 					case 'Others':
 						// $ledger[$key]['credit'] += $payment->;
 						break;
 					case 'Pastdue Interest':
-						 // $ledger[$key]['credit'] = $payment->;
+						 $ledger[$key]['credit'] = $payment->pdi;
 						break;
 					case 'Prepaid Interest':
 						// $ledger[$key]['credit'] = $payment->;
