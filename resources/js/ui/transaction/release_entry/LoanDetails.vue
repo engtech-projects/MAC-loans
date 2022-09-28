@@ -182,34 +182,39 @@
 				<div class="d-flex align-items-end">
 					<div class="d-flex flex-2 align-items-center">
 						<span class="mr-16 font-20 flex-2">Account # and Balance</span>
-						<select name="" id="" class="form-control form-input pr-12 mr-24 text-green flex-3">
-							<option value="">123456 - 5000</option>
+						<select v-if="memoRefNo.length" v-model="selectedLoanAccount" name="" id="" class="form-control form-input pr-12 mr-24 text-green flex-3">
+							<option v-for="(la, z) in loanaccounts" :key="z" :value="la.loan_account_id">{{la.account_num + ' - ' + formatToCurrency(la.remainingBalance.memo.balance)}}</option>
+						</select>
+						<select disabled v-if="!memoRefNo.length" v-model="selectedLoanAccount" name="" id="" class="form-control form-input pr-12 mr-24 text-green flex-3">
+							<option value=""></option>
 						</select>
 					</div>
 					<div class="d-flex flex-column flex-1">
 						<label for="dueDate" class="form-label">Memo Reference No.</label>
-						<input type="text" class="form-control form-input">
+						<input v-model="memoRefNo" type="text" class="form-control form-input">
 					</div>
 					<div class="flex-1"></div>
 				</div>
 				<div class="d-flex align-items-end mb-36">
 					<div class="d-flex flex-2 align-items-center">
 						<span class="mr-16 font-20 flex-2">Outstanding Principal</span>
-						<input type="number" class="form-control form-input flex-3 mr-24" disabled>
+						<input type="text" :value="formatToCurrency(loanaccount.remainingBalance.principal.balance)" class="form-control form-input flex-3 mr-24" disabled>
 					</div>
 					<div class="d-flex flex-column flex-1">
 						<label for="dueDate" class="form-label">Rebate Amount</label>
-						<input type="text" class="form-control form-input">
+						<input v-model="loanaccount.remainingBalance.rebates.balance" v-if="rebatesRefNo.length" type="number" class="form-control form-input">
+						<input v-if="!rebatesRefNo.length" type="number" :value="formatToCurrency(baseAmount)" class="form-control form-input" disabled>
 					</div>
 					<div class="flex-1"></div>
 				</div>
 				<div class="d-flex align-items-end">
 					<div class="d-flex flex-2 align-items-center">
 						<span class="mr-16 font-20 flex-2">Outstanding Interest</span>
-						<input type="number" class="form-control form-input flex-3 mr-24" disabled>
+						<input :value="formatToCurrency(loanaccount.remainingBalance.interest.balance)" type="text" class="form-control form-input flex-3 mr-24" disabled>
 					</div>
 					<div class="d-flex flex-column flex-1">
-
+						<span class="mr-16 font-20 flex-2">Rebate Reference No.</span>
+						<input v-model="rebatesRefNo" type="text" class="form-control form-input flex-3 mr-24">
 					</div>
 					<div class="flex-1"></div>
 				</div>
@@ -319,7 +324,8 @@ export default {
 		'saveloandetails',
 		'idtype',
 		'releasetype',
-		'pbranch'
+		'pbranch',
+		'loanaccounts'
 	],
 	data(){
 		return {
@@ -370,7 +376,7 @@ export default {
 				notarial_fee : '100.00',
 				prepaid_interest : '',
 				affidavit_fee : '',
-				memo : '',
+				memo : 0,
 				total_deduction : '',
 				net_proceeds : '',
 				release_type : '',
@@ -388,6 +394,27 @@ export default {
 			branch:{
 				branch_id:null,
 			},
+			selectedLoanAccount:null,
+			loanaccount:{
+				loan_account_id:null,
+				remainingBalance:{
+					memo:{
+						balance:0,
+					},
+					principal:{
+						balance:0
+					},
+					interest:{
+						balance:0
+					},
+					rebates:{
+						balance:0,
+					}
+				}
+			},
+			baseAmount:0.00,
+			rebatesRefNo:'',
+			memoRefNo:'',
 		}
 	},
 	methods:{
@@ -515,6 +542,7 @@ export default {
 				})
 				.then(function (response) {
 					this.notify('',response.data.message, 'success');
+					this.pay();
 					this.$emit('savedInfo', response.data.data)
 				}.bind(this))
 				.catch(function (error) {
@@ -552,7 +580,40 @@ export default {
 		},
 		compute:function(){
 			this.computeDeduction();
-		}
+		},
+		pay:function(){
+			if(this.loanaccount.loan_account_id){
+				let payment = {
+					loan_account_id: this.loanaccount.loan_account_id,
+					branch_id: this.pbranch,
+					payment_type: 'memo',
+					reference_no: this.memoRefNo,
+					memo_type: 'deduct to balance',
+					amortization_id: null,
+					principal: this.loanaccount.remainingBalance.principal.balance,
+					interest: this.loanaccount.remainingBalance.interest.balance,
+					rebates: this.loanaccount.remainingBalance.rebates.balance,
+					rebates_approval_no: this.rebatesRefNo,
+					total_payable: 0,
+					amount_applied: this.loanaccount.remainingBalance.memo.balance
+				}
+				console.log(payment);
+				axios.post(this.baseURL() + 'api/payment', payment, {
+				headers: {
+						'Authorization': 'Bearer ' + this.token,
+						'Content-Type': 'application/json',
+						'Accept': 'application/json'
+				}
+				})
+				.then(function (response) {
+					this.notify('','Payment successful.', 'success');
+				}.bind(this))
+				.catch(function (error) {
+					console.log(error);
+				}.bind(this));
+			}
+		},
+
 	},
 	watch: {
 		'loandetails'(newValue) {
@@ -569,9 +630,27 @@ export default {
 			this.age = this.calculateAge(newValue);
 		},
 		'memoChecked'(newValue){
-			// if(!newValue){
-			// 	this.loanDetails.memo = 0;
-			// }
+			if(!newValue){
+				this.loanaccount = {
+					loan_account_id:null,
+					remainingBalance:{
+						memo:{
+							balance:0,
+						},
+						principal:{
+							balance:0
+						},
+						interest:{
+							balance:0
+						},
+						rebates:{
+							balance:0,
+						}
+					}
+				}
+				this.memoRefNo = '';
+				this.rebatesRefNo = '';
+			}
 		},
 		'loanDetails.product_id'(newValue){
 			if(!this.loanDetails.documents.promissory_number || this.loanDetails.documents.promissory_number == ''){
@@ -580,7 +659,49 @@ export default {
 		},
 		'pbranch':function(newValue){
 			this.branch = newValue
-		}
+		},
+		'selectedLoanAccount':function(newValue){
+			if(newValue){
+				this.loanaccounts.map(function(data){
+					if(newValue == data.loan_account_id){
+						this.loanaccount = data;
+					}
+				}.bind(this));
+			}
+		},
+		'rebatesRefNo':function(newValue){
+			if(!newValue.length){
+				this.loanaccount.remainingBalance.rebates.balance = 0;
+			}
+		},
+		'memoRefNo':function(newValue){
+			if(!newValue.length){
+				this.loanaccount = {
+					loan_account_id:null,
+					remainingBalance:{
+						memo:{
+							balance:0,
+						},
+						principal:{
+							balance:0
+						},
+						interest:{
+							balance:0
+						},
+						rebates:{
+							balance:0,
+						}
+					}
+				}
+				this.memoRefNo = '';
+				this.rebatesRefNo = '';
+			}
+		},
+		// 'loanaccount.loan_account_id':function(newValue){
+		// 	if(newValue.length){
+		// 		this.calculateMemo
+		// 	}
+		// },
 		// 'saveloandetails'(newValue) {
 		// 	if(newValue){
 		// 		this.save();
@@ -656,6 +777,10 @@ export default {
 		netProceeds:function(){
 			this.loanDetails.net_proceeds = (parseFloat(this.loanDetails.loan_amount) - parseFloat(this.loanDetails.total_deduction));
 			return this.loanDetails.net_proceeds;
+		},
+		calculateMemo:function(){
+			let rebates = (this.loanaccount.remainingBalance.interest.balance - this.loanaccount.remainingBalance.rebates.balance) > 0? this.loanaccount.remainingBalance.rebates.balance : this.loanaccount.remainingBalance.interest.balance;
+			this.loanDetails.memo = this.loanaccount.remainingBalance.memo.balance - rebates;
 		}
 	},
 	mounted(){

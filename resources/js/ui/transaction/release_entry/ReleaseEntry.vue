@@ -25,8 +25,8 @@
 								<tr @click="loanDetails=bl;setCycle()" class="existing-loans" :class="selected(bl.loan_account_id)" v-for="bl in pendingLoanAccounts" :key="bl.loan_account_id">
 									<td>{{bl.account_num}}</td>
 									<td>{{bl.loan_amount}}</td>
-									<td>5,000.00</td>
-									<td>12/12/2021</td>
+									<td>{{formatToCurrency(bl.loan_amount)}}</td>
+									<td>{{dateToMDY(new Date(bl.date_release))}}</td>
 								</tr>
 							</tbody>
 						</table>
@@ -58,7 +58,7 @@
 
 
 						<div class="tab-pane fade" id="custom-content-below-loaddetails" role="tabpanel" aria-labelledby="custom-content-below-messages-tab">
-							<loan-details :releasetype="releasetype" :idtype="idtype" :saveloandetails="saveLoanDetails" :borrowerbday="borrowerBirthdate" :borrower="bborrower" :token="token" :loandetails="loanDetails" :pbranch="pbranch"></loan-details>
+							<loan-details :loanaccounts="borrower.loan_accounts" :releasetype="releasetype" :idtype="idtype" :saveloandetails="saveLoanDetails" :borrowerbday="borrowerBirthdate" :borrower="bborrower" :token="token" :loandetails="loanDetails" :pbranch="pbranch"></loan-details>
 						</div>
 
 
@@ -956,6 +956,7 @@
 				branch:{
 					branch_id:null
 				}
+
 			}
 		},
 		methods: {
@@ -1057,7 +1058,6 @@
 					}
 				})
 				.then(function (response) {
-					// console.log(response.data);
 					this.borrowers = response.data.data;
 				}.bind(this))
 				.catch(function (error) {
@@ -1386,7 +1386,7 @@
 				this.fetchRejectedAccounts();
 				this.fetchRejectedAccount();
 			}
-			//this.navigate('custom-content-below-loandetails-tab');
+			this.navigate('custom-content-below-loandetails-tab');
 			// this.navigate('custom-content-below-coborrowerinfo-tab');
         }
     }
