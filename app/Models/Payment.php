@@ -84,6 +84,12 @@ class Payment extends Model
         $payment->over_payment = $request->input('over_payment');
         $payment->total_payable = $request->input('total_payable');
         $payment->amount_applied = $request->input('amount_applied');
+        $payment->vat = 0.00;
+        if( $payment->interest > 0 ) {
+            $vat = $payment->interest / 1.2 * .12;
+            $payment->vat = round($vat);
+        }
+
         // $payment->status = 'paid';
         $payment->save();
 
