@@ -63,6 +63,7 @@
 					<select v-model="borrower.status" required name="" id="" class="form-control form-input">
 						<option value="single">Single</option>
 						<option value="married">Married</option>
+						<option value="married">Live-In</option>
 						<option value="widowed">Widowed</option>
 						<option value="separated">Separated</option>
 					</select>
@@ -80,7 +81,8 @@
 			<div class="d-flex flex-row">
 				<div class="form-group mb-10 mr-16" style="flex: 3">
 					<label for="idType" class="form-label">ID Type</label>
-					<select v-model="borrower.id_type" required name="" id="" class="form-control form-input">
+					<input v-model="borrower.id_type" required type="text" class="form-control form-input " id="borrowerIdType">
+					<select v-if="1==2" v-model="borrower.id_type" required name="" id="" class="form-control form-input">
 						<option v-for="i in idtype" :key="i" :value="i">{{i}}</option>
 					</select>
 				</div>
@@ -135,7 +137,8 @@
 			<div class="d-flex flex-row">
 				<div class="form-group mb-10 mr-16" style="flex: 3">
 					<label for="spouseIdType" class="form-label">ID Type</label>
-					<select v-model="borrower.spouse_id_type" name="" id="" required class="form-control form-input">
+					<input v-model="borrower.spouse_id_type" required type="text" class="form-control form-input " id="spouseIdType">
+					<select v-if="1==2" v-model="borrower.spouse_id_type" name="" id="" required class="form-control form-input">
 						<option v-for="i in idtype" :key="i" :value="i">{{i}}</option>
 					</select>
 				</div>

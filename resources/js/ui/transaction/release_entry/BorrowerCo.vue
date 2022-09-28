@@ -20,7 +20,8 @@
 				<div class="d-flex flex-row">
 					<div class="form-group mb-10 mr-16" style="flex: 3">
 						<label for="coIdType" class="form-label">ID Type</label>
-						<select v-model="loanDetails.co_borrower_id_type" required name="" id="" class="form-control form-input">
+						<input v-model="loanDetails.co_borrower_id_type" required type="text" class="form-control form-input " id="coborrowerIdType">
+						<select v-if="1==2" v-model="loanDetails.co_borrower_id_type" required name="" id="" class="form-control form-input">
 							<option v-for="i in idtype" :key="i" :value="i">{{i}}</option>
 							<!-- <option value="UMID">GSIS/UMID</option>
 							<option value="Driver's License">Driver's License</option>
@@ -55,7 +56,8 @@
 				<div class="d-flex flex-row">
 					<div class="form-group mb-10 mr-16" style="flex: 3">
 						<label for="coIdType" class="form-label">ID Type</label>
-						<select v-model="loanDetails.co_maker_id_type" required name="" id="" class="form-control form-input">
+						<input v-model="loanDetails.co_maker_id_type" required type="text" class="form-control form-input " id="coMakerIdType">
+						<select v-if="1==2" v-model="loanDetails.co_maker_id_type" required name="" id="" class="form-control form-input">
 							<option v-for="i in idtype" :key="i" :value="i">{{i}}</option>
 						</select>
 					</div>

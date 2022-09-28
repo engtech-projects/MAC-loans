@@ -97,7 +97,7 @@ Route::middleware(['auth:sanctum'])->group( function () {
 
 });
 
-Route::resource('borrower', BorrowerController::class);
+// Route::resource('borrower', BorrowerController::class);
 // Route::resource('products', ProductController::class);
 // Route::resource('centers', CenterController::class);
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
