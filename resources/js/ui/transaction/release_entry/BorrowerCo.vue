@@ -85,7 +85,7 @@
 </template>
 <script>
 export default {
-	props:['loandetails', 'borrowers', 'idtype','pborrower'],
+	props:['loandetails', 'borrowers', 'idtype','pborrower', 'copycb'],
 	data(){
 		return {
 			searchMode:true,
@@ -157,16 +157,22 @@ export default {
 		'loandetails'(newValue) {
 			this.loanDetails = newValue;
 		},
-		'pborrower.status'(newValue){
-			if(newValue == 'married'){
+		// 'pborrower.status'(newValue){
+		// 	if(newValue == 'married'){
+		// 		this.setCoBorrower();
+		// 	}
+		// },
+		// 'pborrower.borrower_id'(newValue){
+		// 	if(this.pborrower.status == 'married'){
+		// 		this.setCoBorrower();
+		// 	}
+		// },
+		'copycb'(newValue){
+			if(newValue){
 				this.setCoBorrower();
+				this.$emit('cbcopy');
 			}
 		},
-		'pborrower.borrower_id'(newValue){
-			if(this.pborrower.status == 'married'){
-				this.setCoBorrower();
-			}
-		}
 	},
 	computed:{
 		searchBorrower: function () {
