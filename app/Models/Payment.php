@@ -86,7 +86,7 @@ class Payment extends Model
         $payment->amount_applied = $request->input('amount_applied');
         $payment->vat = 0.00;
         if( $payment->interest > 0 ) {
-            $vat = $payment->interest / 1.2 * .12;
+            $vat = $payment->interest / 1.2 * 0.12;
             $payment->vat = round($vat);
         }
 
