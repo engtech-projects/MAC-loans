@@ -179,7 +179,7 @@ class Borrower extends Authenticatable
             foreach ($activeAccounts as $account) {
                 $account->remainingBalance = $account->remainingBalance();
                 // $value->outstandingBalance = $loanAccount->outstandingBalance($value->loan_account_id);
-                $value->current_amortization = $value->getCurrentAmortization();
+                $account->current_amortization = $account->getCurrentAmortization();
                 // $value->totalPaid = $value->getPaymentTotal($value->loan_account_id);
             }
             return $activeAccounts;
