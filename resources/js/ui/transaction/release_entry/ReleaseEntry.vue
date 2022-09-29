@@ -1386,7 +1386,7 @@
 				this.fetchRejectedAccounts();
 				this.fetchRejectedAccount();
 			}
-			this.navigate('custom-content-below-loandetails-tab');
+			// this.navigate('custom-content-below-loandetails-tab');
 			// this.navigate('custom-content-below-coborrowerinfo-tab');
         }
     }
