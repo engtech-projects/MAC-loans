@@ -439,9 +439,8 @@ export default {
 				this.loanDetails.insurance = result.insurance.rate;
 				this.loanDetails.notarial_fee = result.notarial_fee.rate;
 				this.loanDetails.affidavit_fee = result.affidavit.rate;
-				this.loanDetails.memo = result.memo.rate;
 				this.loanDetails.prepaid_interest = result.prepaid_interest.rate;
-				// console.log(result);
+				
 			}.bind(this))
 			.catch(function (error) {
 				console.log(error);
@@ -733,7 +732,7 @@ export default {
 		},
 		interestAmount:function(){
 			this.loanDetails.interest_amount = (this.loanDetails.loan_amount * (this.interestRate * 0.01) * (this.loanDetails.terms / 30)).toFixed(2);
-			this.loanDetails.prepaid_interest = (this.loanDetails.loan_amount * (this.interestRate * 0.01) * (this.loanDetails.terms / 30)).toFixed(2);
+			// this.loanDetails.prepaid_interest = (this.loanDetails.loan_amount * (this.interestRate * 0.01) * (this.loanDetails.terms / 30)).toFixed(2);
 			return (this.loanDetails.loan_amount * (this.interestRate * 0.01) * (this.loanDetails.terms / 30)).toFixed(2);
 		},
 		numberOfInstallment:function(){
@@ -771,7 +770,7 @@ export default {
 		// 	return this.loanDetails.insurance;
 		// },
 		totalDeductions:function(){
-			this.loanDetails.total_deduction = (parseFloat(this.loanDetails.memo) + parseFloat(this.loanDetails.filing_fee) + parseFloat(this.loanDetails.affidavit_fee) + parseFloat(this.loanDetails.notarial_fee) + parseFloat(this.loanDetails.document_stamp) + parseFloat(this.loanDetails.insurance)).toFixed(2);
+			this.loanDetails.total_deduction = (parseFloat(this.loanDetails.memo) + parseFloat(this.loanDetails.prepaid_interest) + parseFloat(this.loanDetails.filing_fee) + parseFloat(this.loanDetails.affidavit_fee) + parseFloat(this.loanDetails.notarial_fee) + parseFloat(this.loanDetails.document_stamp) + parseFloat(this.loanDetails.insurance)).toFixed(2);
 			return this.loanDetails.total_deduction;
 		},
 		netProceeds:function(){

@@ -53,7 +53,7 @@
 						</div>
 
 
-						<co-borrower :idtype="idType" :borrowers="borrowers" :loandetails="loanDetails" @update-loan-details="updateLoanDetails" :pborrower="borrower"></co-borrower>
+						<co-borrower @cbcopy="copyCB=false" :copycb="copyCB" :idtype="idType" :borrowers="borrowers" :loandetails="loanDetails" @update-loan-details="updateLoanDetails" :pborrower="borrower"></co-borrower>
 
 
 
@@ -955,8 +955,8 @@
 				dueDate:'',
 				branch:{
 					branch_id:null
-				}
-
+				},
+				copyCB:false,
 			}
 		},
 		methods: {
@@ -1122,6 +1122,9 @@
 			},
 			nextBorrower:function(data){
 				this.borrowerBirthdate = data;
+				if(this.borrower.status == 'married'){
+					this.copyCB = true;
+				}
 			},
 			selected:function(id){
 				if(id==this.loanDetails.loan_account_id){
