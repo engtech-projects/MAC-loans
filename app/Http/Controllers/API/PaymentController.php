@@ -97,6 +97,7 @@ class PaymentController extends BaseController
             $balance = $loanAccount->outstandingBalance($loanAccount->loan_account_id);
 
             if( $balance <= 0 ){
+                $loanAccount->payment_status = 'Paid';
                 $loanAccount->loan_status = 'Paid';
             }
 
