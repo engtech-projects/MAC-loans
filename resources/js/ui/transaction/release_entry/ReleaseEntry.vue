@@ -183,7 +183,7 @@
 													This INSTURMENT made and executed this _________ day of ___________  at Butuan City, Philippines, by and between: <span class="text-underlined allcaps text-bold">{{fullName(borrower.firstname, borrower.middlename,borrower.lastname)}}</span> single/married to <span class="text-underlined allcaps text-bold">{{fullName(borrower.spouse_firstname,borrower.spouse_middlename,borrower.spouse_lastname)}}</span> of legal age, Filipino citizen, and resident of <span class="text-underlined allcaps text-bold">{{borrower.address}}</span>  herein after called the <b>FIRST PARTY</b>;
 												</p>
 												<p>
-													MAC LENDING a lending institution, duly registered under the laws of the Republic of the Philippines and with postal address at T. Calo Extension, Butuan City represented by its Branch Manager <b>JANINE L. DESCALLAR</b> herein after called as the <b>SECOND PARTY</b>;
+													MAC LENDING a lending institution, duly registered under the laws of the Republic of the Philippines and with postal address at T. Calo Extension, Butuan City represented by its Branch Manager <b class="allcaps">{{branch_mgr}}</b> herein after called as the <b>SECOND PARTY</b>;
 												</p>
 												<p>WITNESSETH:</p>
 												<p>
@@ -278,7 +278,7 @@
 												</p>
 												<b class="text-center text-block allcaps mb-24">-AND-</b>
 												<p>
-													<b> Micro Access Loans Corporation </b> a lending institution, duly registered under the laws of the Republic of the Philippines and with postal address at T. Calo St. Limaha , Butuan City represented by the Branch Manager <b> <u>JANINE L. DESCALLAR  </u></b> hereinafter known as the <b> ASSIGNEE;</b>
+													<b> Micro Access Loans Corporation </b> a lending institution, duly registered under the laws of the Republic of the Philippines and with postal address at T. Calo St. Limaha , Butuan City represented by the Branch Manager <b> <u class="allcaps">{{branch_mgr}}  </u></b> hereinafter known as the <b> ASSIGNEE;</b>
 												</p>
 												<p>
 													That for an in consideration of the Loan obtained by the ASSIGNOR from the ASSIGNEE the sum of <span class="allcaps text-bold">{{numToWords(loanDetails.loan_amount)}}</span>  <span class="text-bold text-underline">(P{{formatToCurrency(loanDetails.loan_amount)}})</span>. ASSIGNOR, by these presents, assign his/her Pension/Salary  through ATM Card to ASSIGNEE, with the following ATM Card details to wit;
@@ -306,7 +306,7 @@
 														<span>ASSIGNOR</span>
 													</div>
 													<div class="flex-1 d-flex flex-column align-items-center">
-														<b class="text-block">JANINE L. DESCALLAR</b>
+														<b class="allcaps text-block">{{branch_mgr}}</b>
 														<span>ASSIGNEE</span>
 													</div>
 												</div>
@@ -316,10 +316,11 @@
 
 												<div class="d-flex mb-45">
 													<div class="flex-1 d-flex flex-column align-items-center">
-
+														<b class="allcaps text-block">{{loanDetails.co_borrower_name}}</b>
+														<span>Witness</span>
 													</div>
 													<div class="flex-1 d-flex flex-column align-items-center">
-														<b class="text-block">JOCETE ANGELIE J. GASCON</b>
+														<b class="allcaps text-block">{{staff}}</b>
 														<span>Witness</span>
 													</div>
 												</div>
@@ -483,11 +484,11 @@
 												<center class="mb-16">SIGNED IN THE PRESENCE OF:</center>
 
 												<div class="d-flex justify-content-center mb-24">
-													<!-- <div class="flex-1 text-center">
-														<b class="allcaps text-block">YRRA SECRETARIA</b>
-													</div> -->
 													<div class="flex-1 text-center">
-														<b class="allcaps text-block">JANINE L. DESCALLAR</b>
+														<b class="allcaps text-block">{{staff}}</b>
+													</div>
+													<div class="flex-1 text-center">
+														<b class="allcaps text-block">{{branch_mgr}}</b>
 													</div>
 												</div>
 
@@ -850,7 +851,7 @@
 
 <script>
     export default {
-		props:['token', 'idtype','rejectid','title', 'releasetype', 'pbranch'],
+		props:['token', 'idtype','rejectid','title', 'releasetype', 'pbranch', 'staff', 'branch_mgr'],
 		data(){
 			return {
 				rejectedAccounts:[],
@@ -1184,7 +1185,7 @@
 				}
 			},
 			setCycle:function(){
-				this.loanDetails.cycle_no = parseInt(this.borrower.loan_accounts.length + 1);
+				this.loanDetails.cycle_no = this.loanDetails.loan_account_id ? this.loanDetails.cycle_no : parseInt(this.borrower.loan_accounts.length + 1);
 			},
 			selectBorrower:function(borrower){
 				if(this.borrower.borrower_id != borrower){
