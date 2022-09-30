@@ -182,7 +182,7 @@
 				<div class="d-flex align-items-end">
 					<div class="d-flex flex-2 align-items-center">
 						<span class="mr-16 font-20 flex-2">Account # and Balance</span>
-						<select v-if="memoRefNo.length" v-model="selectedLoanAccount" name="" id="" class="form-control form-input pr-12 mr-24 text-green flex-3">
+						<select  v-if="memoRefNo.length" v-model="selectedLoanAccount" name="" id="" class="form-control form-input pr-12 mr-24 text-green flex-3">
 							<option v-for="(la, z) in loanaccounts" :key="z" :value="la.loan_account_id">{{la.account_num + ' - ' + formatToCurrency(la.remainingBalance.memo.balance)}}</option>
 						</select>
 						<select disabled v-if="!memoRefNo.length" v-model="selectedLoanAccount" name="" id="" class="form-control form-input pr-12 mr-24 text-green flex-3">
@@ -210,7 +210,7 @@
 				<div class="d-flex align-items-end">
 					<div class="d-flex flex-2 align-items-center">
 						<span class="mr-16 font-20 flex-2">Outstanding Interest</span>
-						<input :value="formatToCurrency(loanaccount.remainingBalance.interest.balance)" type="text" class="form-control form-input flex-3 mr-24" disabled>
+						<input :value="formatToCurrency((loanaccount.remainingBalance.interest.balance - loanaccount.remainingBalance.rebates.balance) > 0? loanaccount.remainingBalance.interest.balance - loanaccount.remainingBalance.rebates.balance:0)" type="text" class="form-control form-input flex-3 mr-24" disabled>
 					</div>
 					<div class="d-flex flex-column flex-1">
 						<span class="mr-16 font-20 flex-2">Rebate Reference No.</span>
@@ -696,11 +696,11 @@ export default {
 				this.rebatesRefNo = '';
 			}
 		},
-		// 'loanaccount.loan_account_id':function(newValue){
-		// 	if(newValue.length){
-		// 		this.calculateMemo
-		// 	}
-		// },
+		'loanaccount.loan_account_id':function(newValue){
+			if(newValue.length){
+				this.calculateMemo
+			}
+		},
 		// 'saveloandetails'(newValue) {
 		// 	if(newValue){
 		// 		this.save();
