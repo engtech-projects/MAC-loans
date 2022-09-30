@@ -25,7 +25,7 @@
 								<tr @click="loanDetails=bl;setCycle()" class="existing-loans" :class="selected(bl.loan_account_id)" v-for="bl in pendingLoanAccounts" :key="bl.loan_account_id">
 									<td>{{bl.account_num}}</td>
 									<td>{{bl.loan_amount}}</td>
-									<td>{{formatToCurrency(bl.loan_amount)}}</td>
+									<td>{{formatToCurrency(bl.remainingBalance.memo.balance)}}</td>
 									<td>{{dateToMDY(new Date(bl.date_release))}}</td>
 								</tr>
 							</tbody>
@@ -58,7 +58,7 @@
 
 
 						<div class="tab-pane fade" id="custom-content-below-loaddetails" role="tabpanel" aria-labelledby="custom-content-below-messages-tab">
-							<loan-details :loanaccounts="borrower.loan_accounts" :releasetype="releasetype" :idtype="idtype" :saveloandetails="saveLoanDetails" :borrowerbday="borrowerBirthdate" :borrower="bborrower" :token="token" :loandetails="loanDetails" :pbranch="pbranch"></loan-details>
+							<loan-details :loanaccounts="pendingLoanAccounts" :releasetype="releasetype" :idtype="idtype" :saveloandetails="saveLoanDetails" :borrowerbday="borrowerBirthdate" :borrower="bborrower" :token="token" :loandetails="loanDetails" :pbranch="pbranch"></loan-details>
 						</div>
 
 
@@ -483,9 +483,9 @@
 												<center class="mb-16">SIGNED IN THE PRESENCE OF:</center>
 
 												<div class="d-flex justify-content-center mb-24">
-													<div class="flex-1 text-center">
+													<!-- <div class="flex-1 text-center">
 														<b class="allcaps text-block">YRRA SECRETARIA</b>
-													</div>
+													</div> -->
 													<div class="flex-1 text-center">
 														<b class="allcaps text-block">JANINE L. DESCALLAR</b>
 													</div>
@@ -1318,7 +1318,7 @@
 				var accounts = [];
 				if(this.borrower.loan_accounts){
 					this.borrower.loan_accounts.map(function(account){
-						if(account.status == 'released'){
+						if(account.status == 'released' && account.remainingBalance.memo.balance > 0){
 							accounts.push(account);
 						}
 					}.bind(this));

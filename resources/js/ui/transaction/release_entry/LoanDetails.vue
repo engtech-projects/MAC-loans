@@ -344,7 +344,7 @@ export default {
 			products:[],
 			accountOfficers:[],
 			centers:[],
-			memoChecked:true,
+			memoChecked:false,
 			currentProduct:{
 				product_name:null,
 			},
@@ -439,8 +439,8 @@ export default {
 				this.loanDetails.insurance = result.insurance.rate;
 				this.loanDetails.notarial_fee = result.notarial_fee.rate;
 				this.loanDetails.affidavit_fee = result.affidavit.rate;
-				this.loanDetails.prepaid_interest = result.prepaid_interest.rate;
-				
+				this.loanDetails.prepaid_interest = this.loanDetails.type=="Add-On"?0:this.loanDetails.interest_amount;
+
 			}.bind(this))
 			.catch(function (error) {
 				console.log(error);
@@ -588,7 +588,7 @@ export default {
 					payment_type: 'memo',
 					reference_no: this.memoRefNo,
 					memo_type: 'deduct to balance',
-					amortization_id: null,
+					amortization_id: this.loanaccount.amortization_id,
 					principal: this.loanaccount.remainingBalance.principal.balance,
 					interest: this.loanaccount.remainingBalance.interest.balance,
 					rebates: this.loanaccount.remainingBalance.rebates.balance,
@@ -700,7 +700,8 @@ export default {
 		'loanaccount.loan_account_id':function(newValue){
 			this.calculateMemo
 		},
-		'loanaccount.remainingBalance.rebates.balance':function(newValue){
+		'loanaccount.remainingBalance.rebates.balance':function(){
+			this.loanaccount.remainingBalance.rebates.balance = this.loanaccount.remainingBalance.rebates.balance < this.loanaccount.remainingBalance.interest.balance ? this.loanaccount.remainingBalance.rebates.balance : this.loanaccount.remainingBalance.interest.balance;
 			this.calculateMemo
 		},
 		// 'saveloandetails'(newValue) {
