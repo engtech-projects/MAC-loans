@@ -594,7 +594,8 @@ export default {
 					rebates: this.loanaccount.remainingBalance.rebates.balance,
 					rebates_approval_no: this.rebatesRefNo,
 					total_payable: 0,
-					amount_applied: this.loanaccount.remainingBalance.memo.balance
+					amount_applied: this.loanaccount.remainingBalance.memo.balance,
+					amortization_id: this.loanaccount.amortization_id
 				}
 				console.log(payment);
 				axios.post(this.baseURL() + 'api/payment', payment, {
