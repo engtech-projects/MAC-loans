@@ -152,7 +152,7 @@
 							<label for="dueDate" class="form-label" style="margin-bottom:0;">Memo</label>
 						</div>
 						<input @blur="inputs.memo=false" v-if="inputs.memo" v-model="loanDetails.memo" type="number" class="form-control form-input text-right mr-16" style="flex:4" id="memo">
-						<input @focus="inputs.memo=true" v-if="!inputs.memo" :value="formatToCurrency(loanDetails.memo)" type="text" class="form-control form-input text-right mr-16" style="flex:4" id="memo">
+						<input disabled @focus="inputs.memo=true" v-if="!inputs.memo" :value="formatToCurrency(loanDetails.memo)" type="text" class="form-control form-input text-right mr-16" style="flex:4" id="memo">
 						<span class="flex-1" style="padding:7px 15px"></span>
 					</div>
 				</div>
