@@ -207,7 +207,7 @@ class LoanAccount extends Model
 
       foreach ($cashVoucher as $key => $value) {
 
-         if( $value['reference'] == 'Amount Loan' ){
+         if( $value['reference'] == 'Loan Receivable' ){
             $cashVoucher[$key]['debit'] = $this->loan_amount;
          }
 
@@ -676,7 +676,7 @@ class LoanAccount extends Model
       if( count($payments) ) {
 
          foreach ($payments as $payment) {
-            
+
             $accountSummary['principal']['credit'] += $payment->principal;
             $accountSummary['interest']['credit'] += $payment->interest;
 
