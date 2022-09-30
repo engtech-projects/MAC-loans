@@ -24,17 +24,18 @@ class EODController extends BaseController
 
 		$endTransaction = new EndTransaction();
 
-		// get 
-		$dateEnd = $endTransaction->getTransactionDate($branchId);
-		// dd($branchId);
-		$endTransaction->releasing($dateEnd, $branchId);
-		$endTransaction->repayment($dateEnd, $branchId);
+		// // get 
+		// $dateEnd = $endTransaction->getTransactionDate($branchId);
+		$dateEnd = '2022-09-01';
+		// // dd($branchId);
+		return $endTransaction->releasing($dateEnd, $branchId);
+		// $endTransaction->repayment($dateEnd, $branchId);
 
-		$endTransaction->branch_id = $branchId;
-		$endTransaction->date_end = $dateEnd;
-		$endTransaction->save();
+		// $endTransaction->branch_id = $branchId;
+		// $endTransaction->date_end = $dateEnd;
+		// $endTransaction->save();
 		
-		return $this->sendResponse('End of day Transaction', 'The End');
+		// return $this->sendResponse('End of day Transaction', 'The End');
 	}
 
 }
