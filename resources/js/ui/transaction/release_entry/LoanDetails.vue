@@ -213,7 +213,7 @@
 						<input :value="formatToCurrency((loanaccount.remainingBalance.interest.balance - loanaccount.remainingBalance.rebates.balance) > 0? loanaccount.remainingBalance.interest.balance - loanaccount.remainingBalance.rebates.balance:0)" type="text" class="form-control form-input flex-3 mr-24" disabled>
 					</div>
 					<div class="d-flex flex-column flex-1">
-						<span class="mr-16 font-20 flex-2">Rebate Reference No.</span>
+						<span class="mr-16 font-20 flex-2">Rebate Approval No.</span>
 						<input v-model="rebatesRefNo" type="text" class="form-control form-input flex-3 mr-24">
 					</div>
 					<div class="flex-1"></div>
@@ -697,9 +697,10 @@ export default {
 			}
 		},
 		'loanaccount.loan_account_id':function(newValue){
-			if(newValue.length){
-				this.calculateMemo
-			}
+			this.calculateMemo
+		},
+		'loanaccount.remainingBalance.rebates.balance':function(newValue){
+			this.calculateMemo
 		},
 		// 'saveloandetails'(newValue) {
 		// 	if(newValue){
