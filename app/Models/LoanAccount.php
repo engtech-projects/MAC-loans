@@ -157,10 +157,6 @@ class LoanAccount extends Model
 
    public function cashVoucher() {
 
-      if( $this->status != 'released' ){
-         return false;
-      }
-
       $glAccounts = GeneralLedger::where(['type' => 'releasing'])->get();
 
       $cashVoucher = [];
