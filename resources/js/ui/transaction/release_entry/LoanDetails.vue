@@ -657,6 +657,13 @@ export default {
 				this.fetchPromissoryNo();
 			}
 		},
+		'loanDetails.center_id':function(){
+			this.centers.map(function(data){
+				if(this.loanDetails.center_id == data.center_id){
+					this.loanDetails.day_schedule = data.day_sched.toLowerCase()
+				}
+			}.bind(this));
+		},
 		'pbranch':function(newValue){
 			this.branch = newValue
 		},
