@@ -483,9 +483,9 @@
 												<center class="mb-16">SIGNED IN THE PRESENCE OF:</center>
 
 												<div class="d-flex justify-content-center mb-24">
-													<div class="flex-1 text-center">
+													<!-- <div class="flex-1 text-center">
 														<b class="allcaps text-block">YRRA SECRETARIA</b>
-													</div>
+													</div> -->
 													<div class="flex-1 text-center">
 														<b class="allcaps text-block">JANINE L. DESCALLAR</b>
 													</div>

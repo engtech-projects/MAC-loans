@@ -666,7 +666,6 @@ export default {
 						this.loanaccount = data;
 					}
 				}.bind(this));
-				this.calculateMemo
 			}
 		},
 		'rebatesRefNo':function(newValue){
@@ -698,9 +697,6 @@ export default {
 			}
 		},
 		'loanaccount.loan_account_id':function(newValue){
-			this.calculateMemo
-		},
-		'loanaccount.remainingBalance.rebates.balance':function(newValue){
 			this.calculateMemo
 		},
 		'loanaccount.remainingBalance.rebates.balance':function(){
