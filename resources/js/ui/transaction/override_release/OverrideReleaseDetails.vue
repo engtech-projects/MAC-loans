@@ -349,19 +349,25 @@
 						<div class="d-flex flex-row align-items-center mr-24">
 							<span class="mr-10 flex-1">Account Officer : </span>
 							<select @change="overrideFilter" v-model="filter.ao_id" class="form-control flex-1 min-w-200" name="" id="">
+								<option value="all">All</option>
 								<option v-for="ao in aofficers" :key="ao.ao_id" :value="ao.ao_id">{{ao.name}}</option>
 							</select>
 						</div>
 						<div class="d-flex flex-row align-items-center mr-24">
 							<span class="mr-10 flex-1">Center : </span>
-							<select @change="overrideFilter" v-model="filter.center_id" class="form-control min-w-200 flex-1" name="" id="">
-								<option v-for="center in centers" :key="center.center_id" :value="center.center_id">{{center.center}}</option>
+							<select v-if="filteredCenters.length" @change="overrideFilter" v-model="filter.center_id" class="form-control min-w-200 flex-1" name="" id="">
+								<option value="all">All</option>
+								<option v-for="center in filteredCenters" :key="center.center_id" :value="center.center_id">{{center.center}}</option>
+							</select>
+							<select v-if="!filteredCenters.length" disabled class="form-control min-w-200 flex-1" name="" id="">
+								<option value="all">All</option>
 							</select>
 						</div>
 						<div class="d-flex flex-row align-items-center">
 							<span class="mr-10 flex-1">Product Name : </span>
 							<select @change="overrideFilter" v-model="filter.product_id" class="form-control min-w-200 flex-1" name="" id="">
-								<option v-for="product in products" :key="product.product_id" :value="product.product_id">{{product.product_name}}</option>
+								<option value="all">All</option>
+								<option v-for="product in filteredProducts" :key="product.product_id" :value="product.product_id">{{product.product_name}}</option>
 							</select>
 						</div>
 					</div>
@@ -668,7 +674,7 @@ export default {
 	props:['ploanaccount', 'pdate', 'token', 'csrf'],
 	data(){
 		return {
-			filter:{ao_id:null,center_id:null,product_id:null, created_at:null},
+			filter:{ao_id:'all',center_id:'all',product_id:'all', created_at:''},
 			borrower:'',
 			loanDetails:'',
 			loanaccount:{
@@ -783,9 +789,13 @@ export default {
 			}.bind(this));
 		},
 		fetchFilteredOverride: function(){
-			console.log(this.filter);
-			this.filter.created_at = this.pdate;
-			axios.post(this.baseURL() + 'api/account/overrrideaccounts', this.filter, {
+			let filter = {
+				created_at:this.padate,
+				ao_id:this.filter.ao_id=='all'?null:this.filter.ao_id,
+				center_id:this.filter.center_id=='all'?null:this.filter.center_id,
+				product_id:this.filter.product_id=='all'?null:this.filter.product_id,
+			}
+			axios.post(this.baseURL() + 'api/account/overrrideaccounts', filter, {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
 					'Content-Type': 'application/json',
@@ -901,7 +911,7 @@ export default {
 		totalCash:function(){
 			var amount = 0;
 			this.filteredOverrides.map(function(fo){
-				if(fo.release_type == 'Cash Release'){
+				if(fo.release_type == 'Cash'){
 					amount += parseFloat(fo.loan_amount);
 				}
 			});
@@ -945,6 +955,44 @@ export default {
 				amount+=val.credit;
 			}.bind(this));
 			return amount;
+		},
+		filteredCenters:function(){
+			var centers = [];
+			this.filteredOverrides.map(function(ov){
+				if(ov.center){
+					var count = 0;
+					centers.map(function(cc){
+						if(ov.center.center_id == cc.center_id)
+						count++;
+					}.bind(this));
+					if(count == 0){
+						centers.push(ov.center);
+					}
+				}
+			}.bind(this));
+			if(!centers.length){
+				this.filter.center_id = 'all';
+			}
+			return centers;
+		},
+		filteredProducts:function(){
+			var products = [];
+			this.filteredOverrides.map(function(ov){
+				if(ov.product){
+					var count = 0;
+					products.map(function(pp){
+						if(ov.product.product_id == pp.product_id)
+						count++;
+					}.bind(this));
+					if(count == 0){
+						products.push(ov.product);
+					}
+				}
+			}.bind(this));
+			if(!products.length){
+				this.filter.product_id = 'all';
+			}
+			return products;
 		}
 	},
 	watch:{
@@ -956,7 +1004,12 @@ export default {
 				this.fetchCashVoucher();
 			}
 			
+		},'pdate'(newData){
+			if(newData){
+				this.fetchFilteredOverride();
+			}
 		},
+
 	},
 	mounted(){
 		this.fetchCenters();
