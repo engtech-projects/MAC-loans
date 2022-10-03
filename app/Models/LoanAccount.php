@@ -694,7 +694,7 @@ class LoanAccount extends Model
       }
 
       $accountSummary['penalty']['debit'] += $accountSummary['penalty']['credit'];
-      $accountSummary['pdi']['debit'] += $accountSummary['pdi']['debit'] ? $accountSummary['pdi']['credit'] : 0;
+      $accountSummary['pdi']['debit'] += $accountSummary['pdi']['debit'] ? 0 : $accountSummary['pdi']['credit'];
       // calculate balance
       $accountSummary['principal']['balance'] = $accountSummary['principal']['debit'] - $accountSummary['principal']['credit'];
       $accountSummary['interest']['balance'] =  $accountSummary['interest']['debit'] - $accountSummary['interest']['credit'];
