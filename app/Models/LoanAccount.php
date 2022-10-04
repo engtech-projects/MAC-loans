@@ -346,6 +346,7 @@ class LoanAccount extends Model
 
          // get advance principal
          $amortization->advance_principal = $this->getAdvancePrincipal($this->loan_account_id, $amortization->id);
+         $amortization->advance_interest = $this->getAdvanceInterest($this->loan_account_id, $amortization->id);
          // get delinquents
          $amortization->delinquent = $this->getDelinquent($this->loan_account_id, $amortization->id, $amortization->advance_principal);
          $amortization->short_principal = $amortization->delinquent['principal'] - (in_array($amortization->id, $amortization->delinquent['ids']) ? $amortization->principal : 0);
@@ -586,6 +587,14 @@ class LoanAccount extends Model
                               ->orderBy('payment_id', 'DESC')
                               ->first();
       return $paymentInfo ? $paymentInfo->advance_principal : 0;
+   }
+
+   public function getAdvanceInterest($loanAccountId, $amortizationId) {
+      $principal = 0;
+      $paymentInfo = Payment::where([ 'loan_account_id' => $loanAccountId, 'status' => 'paid'])
+                              ->orderBy('payment_id', 'DESC')
+                              ->first();
+      return $paymentInfo ? $paymentInfo->advance_interest : 0;
    }
 
    public function getPDI($amount, $rate, $days) {
