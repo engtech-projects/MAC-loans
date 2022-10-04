@@ -13,16 +13,16 @@
 						<div style="flex:4"></div>
 						<div class="form-group mb-10" style="flex: 5">
 							<label for="transactionDate" class="form-label">Transaction Date</label>
-							<input :value="dateToYMD(new Date)" type="date" class="form-control form-input text-right" id="transactionDate">
+							<input disabled :value="dateToYMD(new Date)" type="date" class="form-control form-input text-right" id="transactionDate">
 						</div>
 					</div>
 					<div class="form-group mb-5" style="flex: 5">
 						<label for="client" class="form-label mb-3">Client</label>
-						<input :value="loanaccount.borrower.firstname + ' ' + loanaccount.borrower.lastname" type="text" class="form-control form-input " id="client">
+						<input disabled :value="loanaccount.borrower.firstname + ' ' + loanaccount.borrower.lastname" type="text" class="form-control form-input " id="client">
 					</div>
 					<div class="form-group mb-10" style="flex: 5">
 						<label for="address" class="form-label mb-3">Address</label>
-						<input :value="loanaccount.borrower.address" type="text" class="form-control form-input " id="address">
+						<input disabled :value="loanaccount.borrower.address" type="text" class="form-control form-input " id="address">
 					</div>
 				</div>
 				<div class="upload-photo d-flex flex-column" style="flex:4;padding-top:36px;">
@@ -100,6 +100,13 @@
 							<span>:</span>
 						</div>
 						<span class="flex-1 text-primary-dark">{{loanaccount.release_type}}</span>
+					</div>
+					<div class="d-flex flex-row mb-12">
+						<div class="d-flex flex-row flex-1 justify-content-between pr-24">
+							<span class="">Affidavit</span>
+							<span>:</span>
+						</div>
+						<span class="flex-1 text-primary-dark">{{formatToCurrency(loanaccount.affidavit_fee)}}</span>
 					</div>
 				</div>
 				<div class="d-flex flex-column flex-1">
@@ -229,6 +236,48 @@
 								<span class="mr-5">Amort: </span>
 								<span>{{amortAmount}}</span>
 							</div>
+
+
+
+							<div class="d-flex mb-7">
+								<span class="mr-5"></span>
+								<span></span>
+							</div>
+							<div class="d-flex mb-7">
+								<span class="mr-5"></span>
+								<span></span>
+							</div>
+								<div class="d-flex mb-7">
+								<span class="mr-5"></span>
+								<span></span>
+							</div>
+								<div class="d-flex mb-7">
+								<span class="mr-5"></span>
+								<span></span>
+							</div>
+							<div class="d-flex mb-7">
+								<span class="mr-5"></span>
+								<span></span>
+							</div>
+								<div class="d-flex mb-7">
+								<span class="mr-5"></span>
+								<span></span>
+							</div>
+							<div class="d-flex mb-7">
+								<span class="mr-5"></span>
+								<span></span>
+							</div>
+							<div class="d-flex mb-7">
+								<span class="mr-5"></span>
+								<span></span>
+							</div>
+							<div class="d-flex mb-7">
+								<span class="mr-5"></span>
+								<span></span>
+							</div>
+
+
+
 							<div class="d-flex mb-7">
 								<span class="mr-5">Co-Borrower: </span>
 								<span>{{loanaccount.co_borrower_name}}</span>
@@ -282,7 +331,19 @@
 							</div>
 							<div class="d-flex mb-7">
 								<span class="mr-5">ID #: </span>
-								<span class="">08-052415427-4</span>
+								<span class="">{{loanaccount.co_borrower_id_number}}</span>
+							</div>
+							<div class="d-flex mb-7">
+								<span class="mr-5">ID Type: </span>
+								<span class="">{{loanaccount.co_borrower_id_type}}</span>
+							</div>
+							<div class="d-flex mb-7">
+								<span class="mr-5">ID #: </span>
+								<span class="">{{loanaccount.co_maker_id_number}}</span>
+							</div>
+							<div class="d-flex mb-7">
+								<span class="mr-5">ID Type: </span>
+								<span class="">{{loanaccount.co_maker_id_type}}</span>
 							</div>
 						</div>
 					</div>			
@@ -321,7 +382,7 @@
 					</section>
 					<div class="d-flex flex-row-reverse mb-45 no-print">
 						<a href="#" @click="printAmort()" class="btn btn-default min-w-150">Print</a>
-						<a href="#" class="btn btn-success min-w-150 mr-24">Download Excel</a>
+						<a href="#" @click.prevent="export2Word('amortPrintContent', 'amortization_schedule')" class="btn btn-success min-w-150 mr-24">Download Document</a>
 						<a href="#" id="cancelModal" data-dismiss="modal" class="btn btn-danger min-w-150 mr-24 hide">Cancel</a>
 					</div>
 				</div>
@@ -350,7 +411,7 @@
 							<span class="mr-10 flex-1">Account Officer : </span>
 							<select @change="overrideFilter" v-model="filter.ao_id" class="form-control flex-1 min-w-200" name="" id="">
 								<option value="all">All</option>
-								<option v-for="ao in aofficers" :key="ao.ao_id" :value="ao.ao_id">{{ao.name}}</option>
+								<option v-for="ao in filteredAos" :key="ao.ao_id" :value="ao.ao_id">{{ao.name}}</option>
 							</select>
 						</div>
 						<div class="d-flex flex-row align-items-center mr-24">
@@ -423,7 +484,7 @@
 								</div>
 								<div class="d-flex flex-row bb-dark-5 pb-7">
 									<div class="d-flex flex-row justify-content-between flex-1 mr-16">
-										<span>Total Cheque</span>
+										<span>Total Check</span>
 										<span>:</span>
 									</div>
 									<span class="flex-1">{{formatToCurrency(totalCheque)}}</span>
@@ -658,7 +719,7 @@
 						<div class="mb-72"></div>
 						<div class="d-flex flex-row-reverse mb-45 no-print">
 							<a @click="printVoucher()" href="#" class="btn btn-default min-w-150">Print</a>
-							<a href="#" class="btn btn-success min-w-150 mr-24">Download Excel</a>
+							<a href="#" @click.prevent="export2Word('voucherPrintContent', 'Voucher')" class="btn btn-success min-w-150 mr-24">Download Document</a>
 							<a href="#" id="cancelVoucherModal" data-dismiss="modal" class="btn btn-danger min-w-150 mr-24 hide">Cancel</a>
 						</div>
 					</div>
@@ -698,12 +759,14 @@ export default {
 			aofficers:[],
 			productName:'',
 			filteredOverrides:[],
+			filteredOverridesBase:[],
 			amortAmount:0,
 			vouchers:[],
 		}
 	},
 	methods:{
 		fetchCashVoucher:function(){
+			this.vouchers = [];
 			axios.get(this.baseURL() + 'api/account/cashvoucher/' + this.loanaccount.loan_account_id, {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
@@ -788,9 +851,9 @@ export default {
 				console.log(error);
 			}.bind(this));
 		},
-		fetchFilteredOverride: function(){
+		fetchFilteredOverride: function(base){
 			let filter = {
-				created_at:this.padate,
+				created_at:this.pdate,
 				ao_id:this.filter.ao_id=='all'?null:this.filter.ao_id,
 				center_id:this.filter.center_id=='all'?null:this.filter.center_id,
 				product_id:this.filter.product_id=='all'?null:this.filter.product_id,
@@ -804,6 +867,7 @@ export default {
 			})
 			.then(function (response) {
 				this.filteredOverrides = response.data.data;
+				this.filteredOverridesBase = base?response.data.data:this.filteredOverridesBase;
 			}.bind(this))
 			.catch(function (error) {
 				console.log(error);
@@ -889,6 +953,41 @@ export default {
 			cancel.click();
 			window.print();
 		},
+		export2Word:function(element, filename = ''){
+			var preHtml = "<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'><head><meta charset='utf-8'><title>Export HTML To Doc</title></head><body>";
+			var postHtml = "</body></html>";
+			var html = preHtml+document.getElementById(element).innerHTML+postHtml;
+
+			var blob = new Blob(['\ufeff', html], {
+				type: 'application/msword'
+			});
+
+			// Specify link url
+			var url = 'data:application/vnd.ms-word;charset=utf-8,' + encodeURIComponent(html);
+
+			// Specify file name
+			filename = filename?filename+'.doc':'document.doc';
+
+			// Create download link element
+			var downloadLink = document.createElement("a");
+
+			document.body.appendChild(downloadLink);
+
+			if(navigator.msSaveOrOpenBlob ){
+				navigator.msSaveOrOpenBlob(blob, filename);
+			}else{
+				// Create a link to the file
+				downloadLink.href = url;
+
+				// Setting the file name
+				downloadLink.download = filename;
+
+				//triggering the function
+				downloadLink.click();
+			}
+
+			document.body.removeChild(downloadLink);
+		}
 	},
 	computed:{
 		prepaidInterest:function(){
@@ -920,9 +1019,7 @@ export default {
 		totalMemo:function(){
 			var amount = 0;
 			this.filteredOverrides.map(function(fo){
-				if(fo.release_type == 'Memo Release'){
-					amount += parseFloat(fo.loan_amount);
-				}
+				amount += parseFloat(fo.memo);
 			});
 			return amount;
 		},
@@ -958,7 +1055,7 @@ export default {
 		},
 		filteredCenters:function(){
 			var centers = [];
-			this.filteredOverrides.map(function(ov){
+			this.filteredOverridesBase.map(function(ov){
 				if(ov.center){
 					var count = 0;
 					centers.map(function(cc){
@@ -977,7 +1074,7 @@ export default {
 		},
 		filteredProducts:function(){
 			var products = [];
-			this.filteredOverrides.map(function(ov){
+			this.filteredOverridesBase.map(function(ov){
 				if(ov.product){
 					var count = 0;
 					products.map(function(pp){
@@ -993,6 +1090,25 @@ export default {
 				this.filter.product_id = 'all';
 			}
 			return products;
+		},
+		filteredAos:function(){
+			var aofficers = [];
+			this.filteredOverridesBase.map(function(ov){
+				if(ov.account_officer){
+					var count = 0;
+					aofficers.map(function(pp){
+						if(ov.account_officer.ao_id == pp.ao_id)
+						count++;
+					}.bind(this));
+					if(count == 0){
+						aofficers.push(ov.account_officer);
+					}
+				}
+			}.bind(this));
+			if(!aofficers.length){
+				this.filter.ao_id = 'all';
+			}
+			return aofficers;
 		}
 	},
 	watch:{
@@ -1004,9 +1120,10 @@ export default {
 				this.fetchCashVoucher();
 			}
 			
-		},'pdate'(newData){
+		},
+		'pdate'(newData){
 			if(newData){
-				this.fetchFilteredOverride();
+				this.fetchFilteredOverride(true);
 			}
 		},
 
