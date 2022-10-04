@@ -39,7 +39,7 @@
 							<td></td>
 							<td></td>
 						</tr>
-						<tr v-for="b in filterClient" :key="b.borrower.borrower_id" class="loan-item" :class="isActive(b)">
+						<tr v-for="(b, i) in filterClient" :key="i" class="loan-item" :class="isActive(b)">
 							<td><input v-model="b.checked" type="checkbox" class="form-control form-box"></td>
 							<td>{{b.account_num}}</td>
 							<td><a href="#">{{b.borrower.firstname + ' ' + b.borrower.lastname}}</a></td>
@@ -48,7 +48,7 @@
 					</tbody>
 				</table>
 				<div class="d-flex flex-row-reverse sep-thin pb-10 mb-16" style="border-bottom-color:#CCC!important;">
-					<a href="#" @click="batchOverride()" class="btn btn-success">Batch Override</a>
+					<a v-if="enableBatchOverride > 1" href="#" data-toggle="modal" data-target="#warningModal" class="btn btn-success">Batch Override</a>
 					<a href="#" data-toggle="modal" data-target="#overrideReleaseModal" class="btn btn-primary min-w-150 mr-16">View</a>
 				</div>
 				<section class="mb-16" style="border-bottom:1px solid #CCC!important;">
@@ -122,9 +122,29 @@
 			</div>
 		</div>
 		<print-docs :ploanDetails="loanAccount" :token="token"></print-docs>
+
+		<div class="modal" id="warningModal" tabindex="-1" role="dialog">
+			<div class="modal-dialog modal-md" role="document">
+			<div class="modal-content">
+				<div class="modal-body p-24">
+					<div class="d-flex align-items-center">
+						<img :src="baseURL()+'/img/warning.png'" style="width:120px;height:auto;" class="mr-24" alt="warning icon">
+						<div class="d-flex flex-column">
+							<span class="text-primary-dark text-bold mb-24">
+								Are you sure you want to override these accounts??
+							</span>
+							<div class="d-flex mt-auto justify-content-between">
+								<a href="#" data-dismiss="modal" class="btn btn-danger min-w-120">Cancel</a>
+								<a @click.prevent="batchOverride()" href="#" data-dismiss="modal" class="btn btn-primary-dark min-w-120">Proceed</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			</div>
+		</div>
 	</div>
 </template>
-
 <script>
 
 export default {
@@ -353,6 +373,17 @@ export default {
 		}
 	},
 	computed:{
+		enableBatchOverride:function(){
+			var ov = 0;
+			if(this.filterClient.length){
+				this.filterClient.map(function(data){
+					if(data.checked){
+						ov ++;
+					}
+				})
+			}
+			return ov;
+		},
 		selected:function(){
 			var amount = 0;
 			this.loanAccounts.map(function(account){
