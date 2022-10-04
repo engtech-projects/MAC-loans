@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use Illuminate\Support\Str;
 
 class EndTransaction extends Model
 {
@@ -176,14 +177,14 @@ class EndTransaction extends Model
 						// $ledger[$key]['credit'] = $payment->;
 						break;
 					case 'Memo':
-
-						if( $payment->payment_type == 'Memo' ){
+			
+						if( Str::contains($payment->payment_type, 'memo') ){
 							$ledger[$key]['debit'] += $payment->amount_applied;
 						}
 
 						break;
 					case 'VAT Payable':
-						// $ledger[$key]['credit'] = $payment->;
+						$ledger[$key]['credit'] += $payment->vat;
 						break;
 				}
 			}
