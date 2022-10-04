@@ -363,7 +363,6 @@ class LoanAccount extends Model
             $amortization->interest = 0;
             $amortization->short_principal = $isPaid->short_principal;
             $amortization->short_interest = $isPaid->short_interest;
-            $amortization->pdi -= $isPaid->pdi;
             $amortization->short_penalty = $isPaid->short_penalty;
             $amortization->over_payment = $isPaid->over_payment;
          }
@@ -670,7 +669,7 @@ class LoanAccount extends Model
 
       if( $currentAmortization ) {
          $accountSummary['penalty']['debit'] = $currentAmortization->penalty + $currentAmortization->short_penalty;
-         $accountSummary['pdi']['debit'] = $currentAmortization->delinquent['pdi'] + $currentAmortization->short_pdi;
+         $accountSummary['pdi']['debit'] = $currentAmortization->pdi;
       }
 
       if( count($payments) ) {
@@ -695,6 +694,7 @@ class LoanAccount extends Model
       }
 
       $accountSummary['penalty']['debit'] += $accountSummary['penalty']['credit'];
+      $accountSummary['pdi']['debit'] += $accountSummary['pdi']['debit'] ? 0 : $accountSummary['pdi']['credit'];
       // calculate balance
       $accountSummary['principal']['balance'] = $accountSummary['principal']['debit'] - $accountSummary['principal']['credit'];
       $accountSummary['interest']['balance'] =  $accountSummary['interest']['debit'] - $accountSummary['interest']['credit'];

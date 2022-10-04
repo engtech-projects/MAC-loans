@@ -490,14 +490,14 @@
 														<span class="pl-16">PDI</span>
 														<span>:</span>
 													</div>
-													<span class="flex-1">P {{formatToCurrency(this.waive.pdi?loanAccount.current_amortization.pdi:0)}}</span>
+													<span class="flex-1">P {{formatToCurrency(pdiWaive)}}</span>
 												</div>
 												<div class="d-flex flex-row">
 													<div class="d-flex flex-row justify-content-between flex-1 mr-16">
 														<span class="pl-16">Penalty</span>
 														<span>:</span>
 													</div>
-													<span class="flex-1">P {{formatToCurrency(this.waive.penalty?loanAccount.current_amortization.penalty:0)}}</span>
+													<span class="flex-1">P {{formatToCurrency(penaltyWaive)}}</span>
 												</div>
 
 											</div>
@@ -843,7 +843,7 @@ export default {
 	computed:{
 		loanAccountStatus:function(){
 			if(this.loanAccount.current_amortization){
-				if(this.loanAccount.current_amortization.pdi > 0){
+				if(this.pdi > 0){
 					return "Past Due";
 				}else if((this.loanAccount.current_amortization.principal > 0 && this.loanAccount.current_amortization.short_principal > 0 && this.duePrincipal > 0) || (this.duePrincipal > 0 && this.loanAccount.current_amortization.day_late >= 1)){
 					return "Delinquent";
@@ -879,13 +879,17 @@ export default {
 			return this.waive.rebates ? this.payment.rebatesInputted : 0;
 		},
 		pdi:function(){
-			return this.waive.pdi ? 0 : this.loanAccount.current_amortization.pdi + this.loanAccount.current_amortization.short_pdi;
+			if(this.loanAccount.remainingBalance){
+				return this.waive.pdi ? 0 : this.loanAccount.remainingBalance.pdi.balance;
+			}
 		},
 		penalty:function(){
 			return this.waive.penalty ? 0 : this.loanAccount.current_amortization.penalty + this.loanAccount.current_amortization.short_penalty;
 		},
 		pdiWaive:function(){
-			return this.waive.pdi ? this.loanAccount.current_amortization.pdi + this.loanAccount.current_amortization.short_pdi : 0;
+			if(this.loanAccount.remainingBalance){
+				return this.waive.pdi ? this.loanAccount.remainingBalance.pdi.balance : 0;
+			}
 		},
 		penaltyWaive:function(){
 			return this.waive.penalty ? this.loanAccount.current_amortization.penalty + this.loanAccount.current_amortization.short_penalty : 0;
