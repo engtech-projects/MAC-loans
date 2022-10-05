@@ -210,6 +210,7 @@ export default {
 			.then(function (response) {
 				this.loanAccounts = this.setCheckbox(response.data.data);
 				this.setDates;
+				this.todaysRelease();
 			}.bind(this))
 			.catch(function (error) {
 				console.log(error);
@@ -426,7 +427,7 @@ export default {
 		totalCash:function(){
 			var amount = 0;
 			this.todaysReleases.map(function(account){
-				if(account.release_type == 'Cash Release'){
+				if(account.release_type == 'Cash'){
 					amount += account.net_proceeds;
 				}
 			}.bind(this));
@@ -435,7 +436,7 @@ export default {
 		totalCheck:function(){
 			var amount = 0;
 			this.todaysReleases.map(function(account){
-				if(account.release_type == 'Cheque Release'){
+				if(account.release_type == 'Check'){
 					amount += account.net_proceeds;
 				}
 			}.bind(this));
