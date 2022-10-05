@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\UserBranch;
+use App\Models\UserAccessibility;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Resources\Users as UserResource;
 
@@ -17,7 +18,7 @@ class UserController extends BaseController
      * Display a listing of the resource.
      */
     public function index() {
-        $users = User::all();
+        $users = User::where([ 'deleted' => 0 ])->get();
         return $this->sendResponse(UserResource::collection($users), 'Users fetched.');
     }
     /**
@@ -39,7 +40,7 @@ class UserController extends BaseController
 
             foreach ($branches as $branch) {
 
-                 UserBranch::create([
+                UserBranch::create([
                     'id' => $user->id,
                     'branch_id' => $branch['branch_id'],
                 ]);
@@ -55,7 +56,7 @@ class UserController extends BaseController
 
             foreach ($permissions as $permission) {
                 
-                \App\Models\UserAccessibility::create([
+                UserAccessibility::create([
                     'id' => $user->id,
                     'access_id' => $permission,
                 ]);
@@ -84,21 +85,49 @@ class UserController extends BaseController
      */
     public function update(Request $request, User $user) {
 
-        // $input = $request->all();
-        // # add validator na pd dri
-        // $user->username = $request->input('username');
-        // $user->password = Hash::make($request->input('password'));
+        $user->username = ($request->input('username') != null );
+        $user->password = ($request->input('password') != null ) ? Hash::make($request->input('password')) : $user->password;
         $user->firstname = $request->input('firstname');
         $user->middlename = $request->input('middlename');
         $user->lastname = $request->input('lastname');
-        $user->status = $request->input('status');
+        $user->status = ($request->input('status') != null) ? $request->input('status') : $user->status;
+        $user->deleted = ($request->input('deleted') != null) ? $request->input('deleted') : $user->deleted;
         $user->update();
-        // $branch->branch_code = isset($input['branch_code']) ? $input['branch_code'] : $branch->branch_code;
-        // $branch->branch_name = isset($input['branch_name']) ? $input['branch_name'] : $branch->branch_name;
-        // $branch->branch_address = isset($input['branch_address']) ? $input['branch_address'] : $branch->branch_address;
-        // $branch->status = isset($input['status']) ? $input['status'] : $branch->status;
-        // $branch->deleted = isset($input['deleted']) ? $input['deleted'] : $branch->deleted;
-        // $branch->save(); 
+
+        $branches = $request->input('branch');
+        $permissions = $request->input('permissions');
+
+        if( is_array($branches) && count($branches) > 0 ) {
+
+            UserBranch::where(['id' => $user->id])->delete();
+
+            foreach ($branches as $branch) {
+
+                UserBranch::create([
+                    'id' => $user->id,
+                    'branch_id' => $branch['branch_id'],
+                ]);
+
+            }
+
+        }
+
+        if( is_array($permissions) && count($permissions) > 0  ) {
+
+            UserAccessibility::where(['id' => $user->id])->delete();
+
+            foreach ($permissions as $permission) {
+                
+                UserAccessibility::create([
+                    'id' => $user->id,
+                    'access_id' => $permission,
+                ]);
+            }
+
+
+        }
+
+        $user = User::find($user->id);
 
         return $this->sendResponse(new UserResource($user), 'User Updated.');
     }
