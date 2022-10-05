@@ -562,7 +562,7 @@ class LoanAccount extends Model
       foreach ($payments as $payment) {
          $paymentTotal += $payment->principal;
          $paymentTotal += $payment->interest;
-         // $paymentTotal += $payment->rebates;
+         $paymentTotal += $payment->rebates;
       }
 
       return $paymentTotal;
@@ -697,7 +697,7 @@ class LoanAccount extends Model
             }
 
             if( $payment->rebates_approval_no ) {
-                $accountSummary['rebates']['credit'] += $payment->rebates;
+                $accountSummary['rebates']['debit'] += $payment->rebates;
             }
          }
       }

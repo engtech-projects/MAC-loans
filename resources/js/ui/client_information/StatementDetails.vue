@@ -1858,21 +1858,21 @@
 																						<tbody>
 																							<tr>
 																								<td>Principal</td>
-																								<td>{{formatToCurrency(loanDetails.loan_amount)}}</td>
-																								<td>{{formatToCurrency(totalPrincipalPaid)}}</td>
-																								<td>{{formatToCurrency(totalAmountBalance)}}</td>
+																								<td>{{formatToCurrency(loanDetails.remaining_balance.principal.debit)}}</td>
+																								<td>{{formatToCurrency(loanDetails.remaining_balance.principal.credit)}}</td>
+																								<td>{{formatToCurrency(loanDetails.remaining_balance.principal.balance)}}</td>
 																							</tr>
 																							<tr>
 																								<td>Interest</td>
-																								<td>{{formatToCurrency(loanDetails.interest_amount)}}</td>
-																								<td>{{formatToCurrency(totalInterestPaid)}}</td>
-																								<td>{{formatToCurrency(totalInterestBalance)}}</td>
+																								<td>{{formatToCurrency(loanDetails.remaining_balance.interest.debit)}}</td>
+																								<td>{{formatToCurrency(loanDetails.remaining_balance.interest.credit)}}</td>
+																								<td>{{formatToCurrency(loanDetails.remaining_balance.interest.balance)}}</td>
 																							</tr>
 																							<tr>
 																								<td>Int. Rebates</td>
-																								<td>00.00</td>
-																								<td>00.00</td>
-																								<td>00.00</td>
+																								<td>{{formatToCurrency(loanDetails.remaining_balance.rebates.debit)}}</td>
+																								<td>{{formatToCurrency(loanDetails.remaining_balance.rebates.credit)}}</td>
+																								<td>{{formatToCurrency(loanDetails.remaining_balance.rebates.balance)}}</td>
 																							</tr>
 																							<tr>
 																								<td style="border-bottom: 2px solid #aaa!important;"></td>
@@ -1882,9 +1882,9 @@
 																							</tr>
 																							<tr>
 																								<td class="text-bold">Total Balance</td>
-																								<td>{{formatToCurrency(loanDetails.loan_amount + loanDetails.interest_amount)}}</td>
-																								<td>{{formatToCurrency(totalPrincipalPaid + totalInterestPaid)}}</td>
-																								<td>{{formatToCurrency(totalAmountBalance + totalInterestBalance)}}</td>
+																								<td>{{formatToCurrency(loanDetails.remaining_balance.principal.debit + loanDetails.remaining_balance.interest.debit)}}</td>
+																								<td>{{formatToCurrency(loanDetails.remaining_balance.principal.credit + loanDetails.remaining_balance.interest.credit)}}</td>
+																								<td>{{formatToCurrency(loanDetails.remaining_balance.principal.balance + loanDetails.remaining_balance.interest.balance)}}</td>
 																							</tr>
 																							<tr>
 																								<td class="text-bold" style="padding-top:24px;padding-bottom:5px;">CURRENT CHARGES</td>
@@ -1894,15 +1894,15 @@
 																							</tr>
 																							<tr>
 																								<td>Penalty</td>
-																								<td>00.00</td>
-																								<td>00.00</td>
-																								<td>00.00</td>
+																								<td>{{formatToCurrency(loanDetails.remaining_balance.penalty.debit)}}</td>
+																								<td>{{formatToCurrency(loanDetails.remaining_balance.penalty.credit)}}</td>
+																								<td>{{formatToCurrency(loanDetails.remaining_balance.penalty.balance)}}</td>
 																							</tr>
 																							<tr>
 																								<td>PD Int.</td>
-																								<td>00.00</td>
-																								<td>00.00</td>
-																								<td>00.00</td>
+																								<td>{{formatToCurrency(loanDetails.remaining_balance.pdi.debit)}}</td>
+																								<td>{{formatToCurrency(loanDetails.remaining_balance.pdi.credit)}}</td>
+																								<td>{{formatToCurrency(loanDetails.remaining_balance.pdi.balance)}}</td>
 																							</tr>
 																							<tr>
 																								<td style="border-bottom: 2px solid #aaa!important;"></td>
@@ -1912,9 +1912,9 @@
 																							</tr>
 																							<tr>
 																								<td class="text-bold">Current Balance</td>
-																								<td>36,400.00</td>
-																								<td>12,132.00</td>
-																								<td>24,266.00</td>
+																								<td>{{formatToCurrency(loanDetails.remaining_balance.penalty.debit + loanDetails.remaining_balance.pdi.debit)}}</td>
+																								<td>{{formatToCurrency(loanDetails.remaining_balance.penalty.credit + loanDetails.remaining_balance.pdi.credit)}}</td>
+																								<td>{{formatToCurrency(loanDetails.remaining_balance.penalty.balance + loanDetails.remaining_balance.pdi.balance)}}</td>
 																							</tr>
 																						</tbody>
 																					</table>
@@ -2210,6 +2210,38 @@ export default {
 				release_type : '',
 				loanfiles:[],
 				docs:false,
+				remaining_balance:{
+					memo:{
+						debit:0,
+						credit:0,
+						balance:0,
+					},
+					rebates:{
+						debit:0,
+						credit:0,
+						balance:0,
+					},
+					pdi:{
+						debit:0,
+						credit:0,
+						balance:0,
+					},
+					penalty:{
+						debit:0,
+						credit:0,
+						balance:0,
+					},
+					interest:{
+						debit:0,
+						credit:0,
+						balance:0,
+					},
+					principal:{
+						debit:0,
+						credit:0,
+						balance:0,
+					},
+				},
 				documents: {
 					date_release: this.dateToYMD(new Date),
 					description: '',
