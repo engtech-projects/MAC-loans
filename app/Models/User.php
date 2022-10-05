@@ -53,7 +53,10 @@ class User extends Authenticatable
     ];
 
     public function branch() {
-        return $this->hasManyThrough(Branch::class, UserBranch::class, 'id', 'branch_id', 'id', 'branch_id');
+        return $this->hasManyThrough(
+            Branch::class, 
+            UserBranch::class, 'id', 'branch_id', 'id', 'branch_id'
+        );
     }
 
     public function giveAccess() {}
@@ -74,29 +77,7 @@ class User extends Authenticatable
     public function accessibility() {
         return $this->hasManyThrough(
             Accessibility::class, 
-            UserAccessibility::class, 
-            'id', 
-            'access_id', 
-            'id', 
-            'access_id');
+            UserAccessibility::class, 'id', 'access_id', 'id', 'access_id'
+        );
     }
-
-
-    // public function getBranches() {
-      
-    //     $branches = User::rightJoin('user_branch', 'user_branch.user_id', '=', 'users.id')
-    //                     ->rightJoin('branch', 'branch.branch_id', '=', 'user_branch.branch_id')
-    //                     ->where('users.id', $this->id)
-    //                     ->get(['branch.*']);
-
-    //     return $branches;
-    // }
-
-// $users = User::join('posts', 'posts.user_id', '=', 'users.id')
-//               ->join('comments', 'comments.post_id', '=', 'posts.id')
-//               ->get(['users.*', 'posts.descrption']);
-
-    // public static function checkBranch(User $user) {
-    //     return $user;
-    // }
 }
