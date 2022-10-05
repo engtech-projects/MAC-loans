@@ -969,7 +969,7 @@ export default {
 			return this.loanAccount.current_amortization.principal_balance + this.duePrincipal - this.payment.principal - this.excessAdvancePrincipal;
 		},
 		outstandingInterestRemaining:function(){
-			return this.outstandingInterest - this.payment.interest;
+			return this.outstandingInterest - this.payment.interest - this.rebatesApplied;
 		},
 		outstandingSurchargeRemaining: function(){
 			return this.duePdi + this.duePenalty - this.payment.penalty - this.payment.pdi;
