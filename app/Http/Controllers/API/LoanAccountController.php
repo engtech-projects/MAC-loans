@@ -45,7 +45,7 @@ class LoanAccountController extends BaseController
         ]);
 
         $account = LoanAccount::create($request->input());
-        $account->account_num = LoanAccount::generateAccountNum($branch->branch_code, $product->product_code, $account->loan_account_id);
+        $account->account_num = LoanAccount::generateAccountNum($branch->branch_code, $product->product_code);
         $account->save();
 
         if( $account->loan_account_id ) {
