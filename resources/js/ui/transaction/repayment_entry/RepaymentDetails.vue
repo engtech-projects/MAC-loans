@@ -826,6 +826,7 @@ export default {
 					amount = 0;
 				}
 				this.payment.interest -= this.rebatesApplied;
+				this.payment.advance_interest -= this.excessDueRebates;
 				// overpayment
 				this.payment.over_payment = amount;
 				this.payment.total_payable = this.totalDue; // Verify if change payable if waived fees
