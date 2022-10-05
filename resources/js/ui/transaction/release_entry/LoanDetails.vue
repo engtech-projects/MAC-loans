@@ -305,12 +305,14 @@
 			<div class="d-flex">
 				<a @click.prevent="navigate('custom-content-below-coborrowerinfo-tab')" href="#" data-tab="custom-content-below-coborrowerinfo-tab" class="btn btn-primary-dark mr-24 tab-navigate min-w-150">Back</a>
 				<a href="#" data-toggle="modal" data-target="#warningModal" class="btn btn-success tab-navigate min-w-150 hide" id="warningBtn"></a>
+				<a href="#" data-toggle="modal" data-target="#zeroModal" class="btn btn-success tab-navigate min-w-150 hide" id="zeroBtn"></a>
 				<button v-if="!loandetails.loan_account_id" class="btn btn-success tab-navigate min-w-150">Next</button>
 			</div>
 			<a href="#" data-toggle="modal" data-target="#lettersModal" class="btn btn-yellow-light">Print Document</a>
 			<!-- <div style="flex:22"></div> -->
 		</div>
 	</div>
+	
 	</form>
 </template>
 
@@ -510,7 +512,12 @@ export default {
 			document.getElementById(tab).click();
 		},
 		submit:function(){
-			document.getElementById('warningBtn').click();
+			if(this.netProceeds >= 0){
+				document.getElementById('warningBtn').click();
+			}else{
+				document.getElementById('zeroBtn').click();
+			}
+
 		},
 		save: function(){
 			this.setPrepaidInterest();
@@ -711,11 +718,6 @@ export default {
 			this.loanaccount.remainingBalance.rebates.balance = this.loanaccount.remainingBalance.rebates.balance < this.loanaccount.remainingBalance.interest.balance ? this.loanaccount.remainingBalance.rebates.balance : this.loanaccount.remainingBalance.interest.balance;
 			this.calculateMemo
 		},
-		// 'saveloandetails'(newValue) {
-		// 	if(newValue){
-		// 		this.save();
-		// 	}
-		// },
 	},
 	computed: {
 		releaseType:function(){

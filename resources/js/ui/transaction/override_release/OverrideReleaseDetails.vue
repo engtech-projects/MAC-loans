@@ -1011,7 +1011,7 @@ export default {
 			var amount = 0;
 			this.filteredOverrides.map(function(fo){
 				if(fo.release_type == 'Cash'){
-					amount += parseFloat(fo.loan_amount);
+					amount += parseFloat(fo.net_proceeds);
 				}
 			});
 			return amount;
