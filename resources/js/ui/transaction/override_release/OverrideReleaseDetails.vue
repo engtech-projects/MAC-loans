@@ -1026,7 +1026,7 @@ export default {
 		totalCheque:function(){
 			var amount = 0;
 			this.filteredOverrides.map(function(fo){
-				if(fo.release_type == 'Cheque Release'){
+				if(fo.release_type == 'Check'){
 					amount += parseFloat(fo.loan_amount);
 				}
 			});
