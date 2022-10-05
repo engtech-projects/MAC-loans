@@ -454,7 +454,7 @@ export default {
 			this.todaysReleases.map(function(account){
 				amount += account.net_proceeds;
 			}.bind(this));
-			return amount - this.totalDeduction;
+			return amount;
 		},
 		filterClient:function(){
 			var result = [];
