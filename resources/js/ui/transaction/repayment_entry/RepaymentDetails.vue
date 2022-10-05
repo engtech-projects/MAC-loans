@@ -330,7 +330,7 @@
 										<input type="checkbox" class="form-check-input" style="margin:0">
 										<span class="ml-18 text-primary-dark text-24 lh-1">Rebates</span>
 									</div>
-									<input @focusout="distribute()" :disabled="disabled(waive.rebates)" v-model="payment.rebatesInputted" type="number" :max="totalInterest" class="form-control" placeholder="Amount">
+									<input @focusout="distribute()" :disabled="disabled(waive.rebates)" v-model="payment.rebatesInputted" type="number" class="form-control" placeholder="Amount">
 								</div>
 								<div class="flex-1 d-flex flex-row-reverse align-items-end"><input type="submit" class="btn btn-bright-blue min-w-150 mb-5" value="Pay"></div>
 							</div>
