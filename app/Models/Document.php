@@ -17,11 +17,20 @@ class Document extends Model
     ];
 
 
-    public function getPromissoryNo($branchCode, $productCode) {
+    public function getPromissoryNo($branchCode, $productCode, $identifier = 1) {
 
-    	$id = Document::max('id');
-    	$series = str_pad($id, 7, '0', STR_PAD_LEFT);
-    	return $branchCode . '-' . $productCode . '-' . $series;
+        $num = Document::where('promissory_number', 'LIKE', '%'.$branchCode . '-' .$productCode.'%')->get()->pluck('promissory_number')->last();
+
+        if( $num ) {
+         $series = explode('-', $num);
+         $identifier = (int)$series[2] + 1;
+        }
+      
+        return $branchCode . '-' .$productCode . '-' . str_pad($identifier, 7, '0', STR_PAD_LEFT);
+
+    	// $id = Document::max('id');
+    	// $series = str_pad($id, 7, '0', STR_PAD_LEFT);
+    	// return $branchCode . '-' . $productCode . '-' . $series;
 
     }
 }
