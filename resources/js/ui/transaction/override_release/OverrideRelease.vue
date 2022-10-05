@@ -445,9 +445,9 @@ export default {
 		totalDeduction:function(){
 			var amount = 0;
 			this.todaysReleases.map(function(account){
-				amount += account.total_deduction;
+				amount += account.memo;
 			}.bind(this));
-			return 0;
+			return amount;
 		},
 		totalRelease:function(){
 			var amount = 0;
