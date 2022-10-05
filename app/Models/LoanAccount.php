@@ -64,10 +64,18 @@ class LoanAccount extends Model
    ];
 
 
-   public static function generateAccountNum($branchCode, $productCode, $identifier) {
+   public static function generateAccountNum($branchCode, $productCode, $identifier = 1) {
       // compute for the document transaction
-      $accountNum = $branchCode . '-' .$productCode . '-' . str_pad($identifier, 7, '0', STR_PAD_LEFT);
-      return $accountNum;
+      $accounNum = NULL;
+
+      $num = LoanAccount::where('account_num', 'LIKE', '%'.$branchCode . '-' .$productCode.'%')->get()->pluck('account_num')->last();
+
+      if( $num ){
+         $series = explode('-', $num);
+         $identifier = (int)$series[2] + 1;
+      }
+      
+      return $branchCode . '-' .$productCode . '-' . str_pad($identifier, 7, '0', STR_PAD_LEFT);
    }
 
    public static function getCycleNo($id) {
