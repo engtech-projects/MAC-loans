@@ -1882,9 +1882,9 @@
 																							</tr>
 																							<tr>
 																								<td class="text-bold">Total Balance</td>
-																								<td>{{formatToCurrency(loanDetails.remaining_balance.principal.debit + loanDetails.remaining_balance.interest.debit)}}</td>
-																								<td>{{formatToCurrency(loanDetails.remaining_balance.principal.credit + loanDetails.remaining_balance.interest.credit)}}</td>
-																								<td>{{formatToCurrency(loanDetails.remaining_balance.principal.balance + loanDetails.remaining_balance.interest.balance)}}</td>
+																								<td>{{formatToCurrency(loanDetails.remaining_balance.principal.debit + loanDetails.remaining_balance.interest.debit + loanDetails.remaining_balance.rebates.debit)}}</td>
+																								<td>{{formatToCurrency(loanDetails.remaining_balance.principal.credit + loanDetails.remaining_balance.interest.credit + loanDetails.remaining_balance.rebates.credit)}}</td>
+																								<td>{{formatToCurrency(loanDetails.remaining_balance.principal.balance + loanDetails.remaining_balance.interest.balance + loanDetails.remaining_balance.rebates.balance)}}</td>
 																							</tr>
 																							<tr>
 																								<td class="text-bold" style="padding-top:24px;padding-bottom:5px;">CURRENT CHARGES</td>
