@@ -706,7 +706,7 @@ class LoanAccount extends Model
             }
 
             if( $payment->rebates_approval_no ) {
-                $accountSummary['rebates']['debit'] += $payment->rebates;
+                $accountSummary['rebates']['credit'] += $payment->rebates;
             }
          }
       }
