@@ -640,6 +640,7 @@ export default {
 		},
 		'memoChecked'(newValue){
 			if(!newValue){
+				this.selectedLoanAccount = null;
 				this.loanaccount = {
 					loan_account_id:null,
 					remainingBalance:{
@@ -692,6 +693,7 @@ export default {
 		},
 		'memoRefNo':function(newValue){
 			if(!newValue.length){
+				this.selectedLoanAccount = null;
 				this.loanaccount = {
 					loan_account_id:null,
 					remainingBalance:{
