@@ -122,7 +122,7 @@
 				</section>
 			</div>
 			<div style="flex:20">
-				<override-release-details @updateLoanAccounts="fetchAccounts();resetLoanAccount();" :csrf="csrf" :token="token" :ploanaccount="loanAccount" :pdate="preference.date"></override-release-details>
+				<override-release-details :pbranch="pbranch" @updateLoanAccounts="fetchAccounts();resetLoanAccount();" :csrf="csrf" :token="token" :ploanaccount="loanAccount" :pdate="preference.date"></override-release-details>
 			</div>
 		</div>
 		<print-docs :ploanDetails="loanAccount" :token="token"></print-docs>
@@ -152,7 +152,7 @@
 <script>
 
 export default {
-	props:['token', 'csrf'],
+	props:['token', 'csrf', 'pbranch'],
 	data(){
 		return {
 			loanAccounts:[],
@@ -182,7 +182,7 @@ export default {
 				}
 			},
 			dates:[],
-			filter:{ao_id:null,product_id:null,center_id:null,date:null}
+			filter:{ao_id:null,product_id:null,center_id:null,date:null,branch_id:null}
 		}
 	},
 	methods:{
@@ -204,6 +204,8 @@ export default {
 			});
 		},
 		fetchAccounts:function(){
+			this.filter.branch_id = this.pbranch;
+			console.log(this.filter);
 			axios.post(this.baseURL() + 'api/account/overrrideaccounts', this.filter, {
 			headers: {
 				'Authorization': 'Bearer ' + this.token,
