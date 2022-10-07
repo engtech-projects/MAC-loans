@@ -266,7 +266,8 @@ class LoanAccount extends Model
 
    public function overrideReleaseAccounts($filters = array()) {
 
-      $accounts = LoanAccount::where('status', '=', 'pending');
+      $branch = Branch::find($filters['branch_id']);
+      $accounts = LoanAccount::where('status', '=', 'pending')->where(['branch_code' => $branch->branch_code]);
 
       if( isset($filters['created_at']) && $filters['created_at'] ){
          $accounts->whereDate('loan_accounts.created_at', '=', $filters['created_at'] );

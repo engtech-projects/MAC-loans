@@ -95,6 +95,7 @@ class LoanAccountController extends BaseController
             'ao_id' => ($request->has('ao_id')) ? $request->input('ao_id') : false,
             'center_id' => ($request->has('center_id')) ? $request->input('center_id') : false,
             'product_id' => ($request->has('product_id')) ? $request->input('product_id') : false,
+            'branch_id' => ($request->has('branch_id')) ? $request->input('branch_id') : false,
         ];
 
         $accounts = new LoanAccount();

@@ -85,7 +85,7 @@ class UserController extends BaseController
      */
     public function update(Request $request, User $user) {
 
-        $user->username = ($request->input('username') != null );
+        $user->username = ($request->input('username') != null ) ? $request->input('username') : $user->username;
         $user->password = ($request->input('password') != null ) ? Hash::make($request->input('password')) : $user->password;
         $user->firstname = $request->input('firstname');
         $user->middlename = $request->input('middlename');
