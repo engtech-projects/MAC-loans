@@ -24,11 +24,11 @@ class BorrowerController extends BaseController
 	/**
      * Display a listing of the resource.
      */
-    public function index() {
+    // public function index() {
 
-    	$borrowers = Borrower::all();
-    	return $this->sendResponse(BorrowerResource::collection($borrowers), 'Borrowers');
-    }
+    // 	$borrowers = Borrower::all();
+    // 	return $this->sendResponse(BorrowerResource::collection($borrowers), 'Borrowers');
+    // }
 
     public function borrowerList($branchId) {
 
