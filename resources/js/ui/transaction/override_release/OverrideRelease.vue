@@ -122,7 +122,7 @@
 				</section>
 			</div>
 			<div style="flex:20">
-				<override-release-details :pbranch="pbranch" @updateLoanAccounts="fetchAccounts();resetLoanAccount();" :csrf="csrf" :token="token" :ploanaccount="loanAccount" :pdate="preference.date"></override-release-details>
+				<override-release-details @doneOverride="pbatchoverride=0" :pboverride="pbatchoverride" :pbranch="pbranch" @updateLoanAccounts="fetchAccounts();resetLoanAccount();" :csrf="csrf" :token="token" :ploanaccount="loanAccount" :pdate="preference.date"></override-release-details>
 			</div>
 		</div>
 		<print-docs :ploanDetails="loanAccount" :token="token"></print-docs>
@@ -182,7 +182,8 @@ export default {
 				}
 			},
 			dates:[],
-			filter:{ao_id:null,product_id:null,center_id:null,date:null,branch_id:null}
+			filter:{ao_id:null,product_id:null,center_id:null,date:null,branch_id:null},
+			pbatchoverride:0
 		}
 	},
 	methods:{
@@ -263,6 +264,8 @@ export default {
 			.then(function (response) {
 				this.loanAccounts = this.setCheckbox(response.data.data);
 				this.setDates;
+				this.pbatchoverride = 1;
+				this.fetchAccounts();
 				this.todaysRelease();
 			}.bind(this))
 			.catch(function (error) {
@@ -290,6 +293,7 @@ export default {
 			.then(function (response) {
 				this.notify('',response.data.message, 'success');
 				this.fetchAccounts();
+				this.pbatchoverride = 1;
 			}.bind(this))
 			.catch(function (error) {
 				console.log(error);

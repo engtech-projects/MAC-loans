@@ -732,7 +732,7 @@
 
 <script>
 export default {
-	props:['ploanaccount', 'pdate', 'token', 'csrf', 'pbranch'],
+	props:['ploanaccount', 'pdate', 'token', 'csrf', 'pbranch','pboverride'],
 	data(){
 		return {
 			filter:{ao_id:'all',center_id:'all',product_id:'all', created_at:''},
@@ -886,6 +886,7 @@ export default {
 			.then(function (response) {
 				this.notify('',response.data.message, 'success');
 				this.$emit('updateLoanAccounts');
+				this.fetchFilteredOverride(true);
 				this.createAmortization();
 			}.bind(this))
 			.catch(function (error) {
@@ -1121,6 +1122,12 @@ export default {
 				this.fetchCashVoucher();
 			}
 			
+		},
+		'pboverride'(newData){
+			if(newData==1){
+				this.fetchFilteredOverride(true);
+				this.$emit('doneOverride');
+			}
 		},
 		'pdate'(newData){
 			if(newData){
