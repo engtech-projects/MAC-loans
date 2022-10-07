@@ -21,7 +21,7 @@
 								<th>Date Rel.</th>
 							</thead>
 							<tbody>
-								<tr v-if="pendingLoanAccounts.length < 1"><td>No released accounts yet.</td></tr>
+								<tr v-if="pendingLoanAccounts.length < 1"><td>No existing current account.</td></tr>
 								<tr @click="loanDetails=bl;setCycle()" class="existing-loans" :class="selected(bl.loan_account_id)" v-for="bl in pendingLoanAccounts" :key="bl.loan_account_id">
 									<td>{{bl.account_num}}</td>
 									<td>{{bl.loan_amount}}</td>
