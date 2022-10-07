@@ -64,7 +64,7 @@
 				<div class="form-group mb-10 mr-16" style="flex:7">
 					<label for="center" class="form-label">Loan Amount</label>
 					<input @blur="inputs.loanAmount=false" v-if="inputs.loanAmount" required v-model="loanDetails.loan_amount" type="number" class="form-control form-input " id="center">
-					<input @focus="inputs.loanAmount=true" v-if="!inputs.loanAmount" required :value="formatToCurrency(loanDetails.loan_amount)" type="number" class="form-control form-input " id="center">
+					<input @focus="inputs.loanAmount=true" v-if="!inputs.loanAmount" required :value="formatToCurrency(loanDetails.loan_amount)" type="text" class="form-control form-input " id="center">
 				</div>
 				<div class="form-group mb-10 mr-16" style="flex:4">
 					<label for="group" class="form-label">Terms/Days</label>
