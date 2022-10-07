@@ -597,7 +597,7 @@ export default {
 					memo_type: 'deduct to balance',
 					amortization_id: this.loanaccount.amortization_id,
 					principal: this.loanaccount.remainingBalance.principal.balance,
-					interest: this.loanaccount.remainingBalance.interest.balance,
+					interest: this.loanaccount.remainingBalance.interest.balance - this.loanaccount.remainingBalance.rebates.balance,
 					rebates: this.loanaccount.remainingBalance.rebates.balance,
 					rebates_approval_no: this.rebatesRefNo,
 					total_payable: 0,
