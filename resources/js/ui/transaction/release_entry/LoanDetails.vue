@@ -600,6 +600,8 @@ export default {
 					interest: this.loanaccount.remainingBalance.interest.balance - this.loanaccount.remainingBalance.rebates.balance,
 					rebates: this.loanaccount.remainingBalance.rebates.balance,
 					rebates_approval_no: this.rebatesRefNo,
+					pdi:0,
+					penalty:0,
 					total_payable: 0,
 					amount_applied: this.loanaccount.remainingBalance.memo.balance,
 					amortization_id: this.loanaccount.amortization_id
