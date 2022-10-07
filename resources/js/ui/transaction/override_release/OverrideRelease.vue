@@ -102,10 +102,14 @@
 						</div>
 						<div class="d-flex flex-row mb-12">
 							<div class="d-flex flex-row flex-2 justify-content-between pr-24">
-								<span class="">Total Deduct to Balance</span>
-								<span>:</span>
+								<span class="">Total Memo</span>
+								<span class="">:</span>
 							</div>
-							<span class="flex-3 text-primary-dark">P {{formatToCurrency(totalDeduction)}}</span>
+							<div class="flex-3 d-flex">
+								<span class="flex-1"></span>
+								<span class="text-primary-dark flex-1">P {{formatToCurrency(totalDeduction)}}</span>
+								<span class="flex-1"></span>
+							</div>
 						</div>
 					</div>
 					<div class="d-flex flex-column button-text">
@@ -454,7 +458,7 @@ export default {
 			this.todaysReleases.map(function(account){
 				amount += account.net_proceeds;
 			}.bind(this));
-			return amount;
+			return amount + this.totalDeduction;
 		},
 		filterClient:function(){
 			var result = [];
