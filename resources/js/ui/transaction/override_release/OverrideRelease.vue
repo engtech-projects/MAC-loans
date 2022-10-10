@@ -294,6 +294,7 @@ export default {
 				this.notify('',response.data.message, 'success');
 				this.fetchAccounts();
 				this.pbatchoverride = 1;
+				this.resetLoanAccount();
 			}.bind(this))
 			.catch(function (error) {
 				console.log(error);
