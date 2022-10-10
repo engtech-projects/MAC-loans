@@ -452,15 +452,28 @@
 						<tbody>
 							<tr v-for="fo in filteredOverrides" :key="fo.loan_account_id">
 								<td>{{fo.borrower.lastname + ', ' + fo.borrower.firstname}}</td>
-								<td>{{fo.loan_amount}}</td>
-								<td>{{fo.filing_fee}}</td>
-								<td>{{fo.document_stamp}}</td>
-								<td>{{fo.insurance}}</td>
-								<td>{{fo.notarial_fee}}</td>
-								<td>{{fo.prepaid_interest}}</td>
-								<td>{{fo.memo}}</td>
-								<td>{{fo.net_proceeds}}</td>
+								<td>{{formatToCurrency(fo.loan_amount)}}</td>
+								<td>{{formatToCurrency(fo.filing_fee)}}</td>
+								<td>{{formatToCurrency(fo.document_stamp)}}</td>
+								<td>{{formatToCurrency(fo.insurance)}}</td>
+								<td>{{formatToCurrency(fo.notarial_fee)}}</td>
+								<td>{{formatToCurrency(fo.prepaid_interest)}}</td>
+								<td>{{formatToCurrency(fo.memo)}}</td>
+								<td>{{formatToCurrency(fo.net_proceeds)}}</td>
 								<td>{{fo.release_type}}</td>
+							</tr>
+							<tr class="text-bold">
+								<td>TOTAL</td>
+								<td>{{formatToCurrency(totalLoanAmount)}}</td>
+								<td>{{formatToCurrency(totalFilingFee)}}</td>
+								<td>{{formatToCurrency(totalDocStamp)}}</td>
+								<td>{{formatToCurrency(totalInsurance)}}</td>
+								<td>{{formatToCurrency(totalNotarialFee)}}</td>
+								<td>{{formatToCurrency(totalPrepaidInterest)}}</td>
+								<td>{{formatToCurrency(totalMemoView)}}</td>
+								<td>{{formatToCurrency(totalNetProceeds)}}</td>
+								<td></td>
+								<td></td>
 							</tr>
 						</tbody>
 					</table>
@@ -1111,7 +1124,63 @@ export default {
 				this.filter.ao_id = 'all';
 			}
 			return aofficers;
-		}
+		},
+		totalLoanAmount:function(){
+			var amount = 0;
+			this.filteredOverrides.map(function(fo){
+				amount += parseFloat(fo.loan_amount);
+			});
+			return amount;
+		},
+		totalFilingFee:function(){
+			var amount = 0;
+			this.filteredOverrides.map(function(fo){
+				amount += parseFloat(fo.filing_fee);
+			});
+			return amount;
+		},
+		totalDocStamp:function(){
+			var amount = 0;
+			this.filteredOverrides.map(function(fo){
+				amount += parseFloat(fo.document_stamp);
+			});
+			return amount;
+		},
+		totalInsurance:function(){
+			var amount = 0;
+			this.filteredOverrides.map(function(fo){
+				amount += parseFloat(fo.insurance);
+			});
+			return amount;
+		},
+		totalNotarialFee:function(){
+			var amount = 0;
+			this.filteredOverrides.map(function(fo){
+				amount += parseFloat(fo.notarial_fee);
+			});
+			return amount;
+		},
+		totalPrepaidInterest:function(){
+			var amount = 0;
+			this.filteredOverrides.map(function(fo){
+				amount += parseFloat(fo.prepaid_interest);
+			});
+			return amount;
+		},
+		totalMemoView:function(){
+			var amount = 0;
+			this.filteredOverrides.map(function(fo){
+				amount += parseFloat(fo.memo);
+			});
+			return amount;
+		},
+		totalNetProceeds:function(){
+			var amount = 0;
+			this.filteredOverrides.map(function(fo){
+				amount += parseFloat(fo.net_proceeds);
+			});
+			return amount;
+		},
 	},
 	watch:{
 		'ploanaccount'(newData){
