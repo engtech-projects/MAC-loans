@@ -865,6 +865,8 @@ export default {
 			}.bind(this));
 		},
 		fetchFilteredOverride: function(base){
+			this.filteredOverrides = [];
+			this.filteredOverridesBase = [];
 			let filter = {
 				created_at:this.pdate,
 				ao_id:this.filter.ao_id=='all'?null:this.filter.ao_id,
