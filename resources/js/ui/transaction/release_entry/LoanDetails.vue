@@ -307,6 +307,7 @@
 				<a href="#" data-toggle="modal" data-target="#warningModal" class="btn btn-success tab-navigate min-w-150 hide" id="warningBtn"></a>
 				<a href="#" data-toggle="modal" data-target="#zeroModal" class="btn btn-success tab-navigate min-w-150 hide" id="zeroBtn"></a>
 				<button v-if="!loandetails.loan_account_id" class="btn btn-success tab-navigate min-w-150">Next</button>
+				<button v-if="prejected" class="btn btn-success tab-navigate min-w-150">Next</button>
 			</div>
 			<a href="#" data-toggle="modal" data-target="#lettersModal" class="btn btn-yellow-light">Print Document</a>
 			<!-- <div style="flex:22"></div> -->
@@ -327,7 +328,8 @@ export default {
 		'idtype',
 		'releasetype',
 		'pbranch',
-		'loanaccounts'
+		'loanaccounts',
+		'prejected'
 	],
 	data(){
 		return {

@@ -58,7 +58,7 @@
 
 
 						<div class="tab-pane fade" id="custom-content-below-loaddetails" role="tabpanel" aria-labelledby="custom-content-below-messages-tab">
-							<loan-details :loanaccounts="pendingLoanAccounts" :releasetype="releasetype" :idtype="idtype" :saveloandetails="saveLoanDetails" :borrowerbday="borrowerBirthdate" :borrower="bborrower" :token="token" :loandetails="loanDetails" :pbranch="pbranch"></loan-details>
+							<loan-details :prejected="rejectid" :loanaccounts="pendingLoanAccounts" :releasetype="releasetype" :idtype="idtype" :saveloandetails="saveLoanDetails" :borrowerbday="borrowerBirthdate" :borrower="bborrower" :token="token" :loandetails="loanDetails" :pbranch="pbranch"></loan-details>
 						</div>
 
 

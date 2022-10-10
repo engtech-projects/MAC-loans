@@ -4,7 +4,7 @@
 		<div class="mb-16"></div>
 			<div class="ml-16 mb-24 bb-primary-dark pb-7 text-block d-flex justify-content-between">
 				<h1 class="m-0 font-35">Override Release</h1>
-				<a href="#" class="btn btn-primary-dark min-w-150">New Client</a>
+				<!-- <a href="#" class="btn btn-primary-dark min-w-150">New Client</a> -->
 			</div>
 		<div class="d-flex flex-column flex-xl-row p-16">
 			<div style="flex:9;">
