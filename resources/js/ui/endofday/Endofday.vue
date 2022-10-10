@@ -66,9 +66,9 @@ export default {
 				this.success = true;
 			}.bind(this))
 			.catch(function (error) {
-				this.failed = true;
+				// this.failed = true;
 				console.log(error);
-				this.loading = false;
+				// this.loading = false;
 			}.bind(this));
 		}
 	},
