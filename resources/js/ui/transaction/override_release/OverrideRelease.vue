@@ -135,7 +135,7 @@
 						<img :src="baseURL()+'/img/warning.png'" style="width:120px;height:auto;" class="mr-24" alt="warning icon">
 						<div class="d-flex flex-column">
 							<span class="text-primary-dark text-bold mb-24">
-								Are you sure you want to override these accounts??
+								Are you sure you want to override these accounts?
 							</span>
 							<div class="d-flex mt-auto justify-content-between">
 								<a href="#" data-dismiss="modal" class="btn btn-danger min-w-120">Cancel</a>
