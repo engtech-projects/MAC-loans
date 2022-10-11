@@ -125,7 +125,7 @@
 				<override-release-details @doneOverride="pbatchoverride=0" :pboverride="pbatchoverride" :pbranch="pbranch" @updateLoanAccounts="fetchAccounts();resetLoanAccount();" :csrf="csrf" :token="token" :ploanaccount="loanAccount" :pdate="preference.date"></override-release-details>
 			</div>
 		</div>
-		<print-docs :ploanDetails="loanAccount" :token="token"></print-docs>
+		<print-docs :ploanDetails="loanAccount" :token="token" :staff='staff' :branch_mgr='branch_mgr'></print-docs>
 
 		<div class="modal" id="warningModal" tabindex="-1" role="dialog">
 			<div class="modal-dialog modal-md" role="document">
@@ -152,7 +152,7 @@
 <script>
 
 export default {
-	props:['token', 'csrf', 'pbranch'],
+	props:['token', 'csrf', 'pbranch', 'staff', 'branch_mgr'],
 	data(){
 		return {
 			loanAccounts:[],
