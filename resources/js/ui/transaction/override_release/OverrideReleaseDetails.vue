@@ -96,17 +96,17 @@
 
 					<div class="d-flex flex-row mb-12">
 						<div class="d-flex flex-row flex-1 justify-content-between pr-24">
-							<span class="">Release Type</span>
-							<span>:</span>
-						</div>
-						<span class="flex-1 text-primary-dark">{{loanaccount.release_type}}</span>
-					</div>
-					<div class="d-flex flex-row mb-12">
-						<div class="d-flex flex-row flex-1 justify-content-between pr-24">
 							<span class="">Affidavit</span>
 							<span>:</span>
 						</div>
 						<span class="flex-1 text-primary-dark">{{formatToCurrency(loanaccount.affidavit_fee)}}</span>
+					</div>
+					<div class="d-flex flex-row mb-12">
+						<div class="d-flex flex-row flex-1 justify-content-between pr-24">
+							<span class="">Release Type</span>
+							<span>:</span>
+						</div>
+						<span class="flex-1 text-primary-dark">{{loanaccount.release_type}}</span>
 					</div>
 				</div>
 				<div class="d-flex flex-column flex-1">
