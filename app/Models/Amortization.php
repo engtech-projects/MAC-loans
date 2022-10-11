@@ -166,7 +166,6 @@ class Amortization extends Model
         }
 
         return $amortization;
-        
     }
 
     public function getSpecialSched(Carbon $dateRelease) {
@@ -222,10 +221,9 @@ class Amortization extends Model
         $schedDate->day = $initialDay;
 
         return $schedDate->toDateString();
-
     }
 
-   function cmp($a, $b){
+    function cmp($a, $b){
         $ad = strtotime($a);
         $bd = strtotime($b);
         return ($ad-$bd);

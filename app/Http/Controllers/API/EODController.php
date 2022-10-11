@@ -28,8 +28,8 @@ class EODController extends BaseController
 		$dateEnd = $endTransaction->getTransactionDate($branchId);
 		$dateEnd = '2022-10-03';
 		// // dd($branchId);
-		// $endTransaction->releasing($dateEnd, $branchId);
-		// $endTransaction->repayment($dateEnd, $branchId);
+		$endTransaction->releasing($dateEnd, $branchId);
+		$endTransaction->repayment($dateEnd, $branchId);
 
 		// $endTransaction->branch_id = $branchId;
 		// $endTransaction->date_end = $dateEnd;
