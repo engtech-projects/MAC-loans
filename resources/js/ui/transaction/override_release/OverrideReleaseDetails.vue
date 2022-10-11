@@ -825,12 +825,30 @@ export default {
 			})
 			.then(function (response) {
 				this.$emit('deleteAccount');
+				this.resetLoanAccount();
 				this.notify('',response.data.message, 'success');
 				this.fetchFilteredOverride(true);
 			}.bind(this))
 			.catch(function (error) {
 				console.log(error);
 			}.bind(this));
+		},
+		resetLoanAccount:function(){
+			this.loanaccount = {
+				account_num:'',
+				borrower:{
+					borrower_num:'################',
+					firstname:'',
+					middlename:'',
+					lastname:''
+				},
+				center:{
+					center:''
+				},
+				account_officer:{
+					name:'',
+				}
+			}
 		},
 		notify:function(title, text, type){
 			this.$notify({
