@@ -1427,6 +1427,7 @@ export default {
 			return text;
 		},
 		amortSched:function(){
+			this.amortizationSched = [];
 			axios.post(this.baseURL() + 'api/account/generate-amortization', this.loanDetails, {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,

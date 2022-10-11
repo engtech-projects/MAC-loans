@@ -803,6 +803,7 @@ export default {
 			});
 		},
 		amortSched:function(){
+			this.amortizationSched = [];
 			axios.post(this.baseURL() + 'api/account/generate-amortization', this.loanaccount, {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
@@ -866,7 +867,6 @@ export default {
 		},
 		fetchFilteredOverride: function(base){
 			this.filteredOverrides = [];
-			this.filteredOverridesBase = [];
 			let filter = {
 				created_at:this.pdate,
 				ao_id:this.filter.ao_id=='all'?null:this.filter.ao_id,
@@ -918,8 +918,7 @@ export default {
 				}
 			})
 			.then(function (response) {
-				console.log('amortization generated');
-				console.log(response.data);
+				
 			}.bind(this))
 			.catch(function (error) {
 				console.log(error);
