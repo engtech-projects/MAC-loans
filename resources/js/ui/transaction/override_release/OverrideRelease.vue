@@ -122,7 +122,7 @@
 				</section>
 			</div>
 			<div style="flex:20">
-				<override-release-details @doneOverride="pbatchoverride=0" :pboverride="pbatchoverride" :pbranch="pbranch" @updateLoanAccounts="fetchAccounts();resetLoanAccount();" :csrf="csrf" :token="token" :ploanaccount="loanAccount" :pdate="preference.date"></override-release-details>
+				<override-release-details @deleteAccount="fetchAccounts" @doneOverride="pbatchoverride=0" :pboverride="pbatchoverride" :pbranch="pbranch" @updateLoanAccounts="fetchAccounts();resetLoanAccount();" :csrf="csrf" :token="token" :ploanaccount="loanAccount" :pdate="preference.date"></override-release-details>
 			</div>
 		</div>
 		<print-docs :ploanDetails="loanAccount" :token="token" :staff='staff' :branch_mgr='branch_mgr'></print-docs>

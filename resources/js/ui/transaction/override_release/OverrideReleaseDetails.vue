@@ -197,7 +197,7 @@
 					<a href="#" @click.prevent="amortSched" data-toggle="modal" data-target="#schedulesModal" class="mr-16 flex-1 btn btn-orange">Print Amort. Sched.</a>
 					<a href="#" data-toggle="modal" data-target="#cashVoucherModal" class="mr-16 flex-1 btn btn-brown">Print Voucher</a>
 					<a href="#" data-toggle="modal" data-target="#rejectModal" class="mr-16 flex-1 btn btn-primary-dark">Reject</a>
-					<a href="#" class="mr-16 flex-1 btn btn-primary">Delete</a>
+					<a href="#" data-toggle="modal" data-target="#warningDeleteModal" class="mr-16 flex-1 btn btn-primary">Delete</a>
 					<a href="#" @click="override()" data-toggle="modal" data-target="" class="flex-1 btn btn-success">Override</a>
 				</div>
 			</div>
@@ -740,6 +740,27 @@
 			</div>
 			</div>
 		</div>
+
+		<div class="modal" id="warningDeleteModal" tabindex="-1" role="dialog">
+			<div class="modal-dialog modal-md" role="document">
+			<div class="modal-content">
+				<div class="modal-body p-24">
+					<div class="d-flex align-items-center">
+						<img :src="baseURL()+'/img/warning.png'" style="width:120px;height:auto;" class="mr-24" alt="warning icon">
+						<div class="d-flex flex-column">
+							<span class="text-primary-dark text-bold mb-24">
+								Are you sure you want to delete this account?
+							</span>
+							<div class="d-flex mt-auto justify-content-between">
+								<a href="#" data-dismiss="modal" class="btn btn-danger min-w-120">Cancel</a>
+								<a @click.prevent="deleteAccount()" href="#" data-dismiss="modal" class="btn btn-primary-dark min-w-120">Proceed</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			</div>
+		</div>
 		</div>
 </template>
 
@@ -789,6 +810,23 @@ export default {
 			})
 			.then(function (response) {
 				this.vouchers = !response.data.data.cash_voucher?[]:response.data.data.cash_voucher;
+			}.bind(this))
+			.catch(function (error) {
+				console.log(error);
+			}.bind(this));
+		},
+		async deleteAccount(){
+			await axios.delete(this.baseURL() + 'api/account/delete/' + this.loanaccount.loan_account_id, {
+				headers: {
+					'Authorization': 'Bearer ' + this.token,
+					'Content-Type': 'application/json',
+					'Accept': 'application/json'
+				}
+			})
+			.then(function (response) {
+				this.$emit('deleteAccount');
+				this.notify('',response.data.message, 'success');
+				this.fetchFilteredOverride(true);
 			}.bind(this))
 			.catch(function (error) {
 				console.log(error);
