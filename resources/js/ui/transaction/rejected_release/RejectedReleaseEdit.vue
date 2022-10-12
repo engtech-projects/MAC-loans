@@ -401,7 +401,7 @@
 		},
 		methods: {
 			fetchRejectedAccounts:function(){
-				axios.get(this.baseURL() + 'api/account/rejected', {
+				axios.get(this.baseURL() + 'api/account/rejected/' + pbranch, {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
 						'Content-Type': 'application/json',
@@ -410,6 +410,9 @@
 				})
 				.then(function (response) {
 					this.rejectedAccounts = response.data.data;
+					this.reponse.data.data.map(function(){
+
+					}.bind(this));
 					// console.log(response.data.data);
 					// this.setAccount;
 				}.bind(this))

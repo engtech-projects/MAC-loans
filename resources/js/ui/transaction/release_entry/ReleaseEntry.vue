@@ -1006,7 +1006,8 @@
 				}.bind(this));
 			},
 			fetchRejectedAccounts:function(){
-				axios.get(this.baseURL() + 'api/account/rejected', {
+				
+				axios.get(this.baseURL() + 'api/account/rejected/' + this.pbranch, {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
 						'Content-Type': 'application/json',
@@ -1014,7 +1015,13 @@
 					}
 				})
 				.then(function (response) {
-					this.rejectedAccounts = response.data.data;
+					// this.rejectedAccounts = response.data.data;
+					response.data.data.map(function(data){
+						if(data.loan_account_id == this.rejectid){
+							console.log(data.loan_account_id);
+							this.rejectedAccounts.push(data);
+						}
+					}.bind(this));  
 					// console.log(response.data.data);
 					// this.setAccount;
 				}.bind(this))

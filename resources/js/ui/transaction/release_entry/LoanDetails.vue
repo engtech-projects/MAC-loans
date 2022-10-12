@@ -536,6 +536,9 @@ export default {
 					.then(function (response) {
 						this.notify('',response.data.message, 'success');
 						this.$emit('savedInfo', response.data.data)
+						if(this.prejected){
+							window.location.href = this.baseURL() + 'transaction/rejected_release';
+						}
 					}.bind(this))
 					.catch(function (error) {
 						console.log(error);
