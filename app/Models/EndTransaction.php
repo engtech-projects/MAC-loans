@@ -13,18 +13,41 @@ class EndTransaction extends Model
     use HasFactory;
     protected $table = 'end_transaction';
     protected $primaryKey = 'id';
+    protected $fillable = [
+    	'branch_id',
+    	'date_end',
+    	'status'
+    ];
 
+    /*
+    	fetch transaction date by branch that has an open status
+    	open status means an End of day transaction has not been performed yet
+    */
     public function getTransactionDate($branchId) {
 
-    	$transactionDate = EndTransaction::where([ 'branch_id' => $branchId ])->get()->last();
+    	# get current date
+    	$currentDate = Carbon::now()->format('Y-m-d');
+    	$transactionDate = EndTransaction::where([ 'branch_id' => $branchId, 'status' => 'open' ])->get()->last();
 
     	if( !$transactionDate ){
-    		return Carbon::now()->format('Y-m-d');
+
+    		$hasCurrentDate = EndTransaction::where([ 'branch_id' => $branchId, 'status' => 'closed' ])->get()->last();
+
+
+    		if( $hasCurrentDate && ($hasCurrentDate->date_end == $currentDate)) {
+    			return $hasCurrentDate;
+    		}
+
+    		# create transaction date based on current date.
+    		return EndTransaction::create(array(
+    			'branch_id' => $branchId,
+    			'date_end' => Carbon::now()->format('Y-m-d'),
+    			'status' => 'open',
+    		));
+    		
     	}
 
-    	$endDay = Carbon::createFromFormat('Y-m-d', $transactionDate->date_end);
-
-    	return $endDay->addDay()->format('Y-m-d');
+    	return $transactionDate;
     }
 
 	public function releasing($dateEnd, $branchId) {
