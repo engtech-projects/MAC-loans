@@ -105,9 +105,11 @@ class LoanAccountController extends BaseController
 
     // yyyy-mm-dd format
     // get rejected release accounts
-    public function rejectedAccountList() {
+    public function rejectedAccountList($branchId) {
 
-        $rejectedAccounts = LoanAccount::where('status', 'rejected')->get();
+        $branch = Branch::find($branchId);
+
+        $rejectedAccounts = LoanAccount::where(['status' => 'rejected', 'branch_code' => $branch->])->get();
         return $this->sendResponse(LoanAccountResource::collection($rejectedAccounts), 'List.');
     }
 
