@@ -4,7 +4,6 @@
 		<div class="mb-16"></div>
 		<div class="ml-16 mb-24 bb-primary-dark pb-7 text-block d-flex justify-content-between">
 			<h1 class="m-0 font-35">Rejected Release</h1>
-			<a href="#" class="btn btn-primary-dark min-w-150">New Client</a>
 		</div>
 		<div class="d-flex flex-column flex-xl-row p-16">
 			<div style="flex:9;">
@@ -45,20 +44,20 @@
 								<div style="flex:3"></div>
 								<div class="form-group mb-10 mr-16" style="flex: 5">
 									<label for="transactionDate" class="form-label">Loan Account #</label>
-									<input :value="loanAccount.account_num" type="text" class="form-control form-input text-right" id="loanAccountNumber">
+									<input disabled :value="loanAccount.account_num" type="text" class="form-control form-input text-right" id="loanAccountNumber">
 								</div>
 								<div class="form-group mb-10" style="flex: 4">
 									<label for="transactionDate" class="form-label">Transaction Date</label>
-									<input :value="dateToYMD(new Date)" type="date" class="form-control form-input text-right" id="transactionDate">
+									<input disabled :value="dateToYMD(new Date)" type="date" class="form-control form-input text-right" id="transactionDate">
 								</div>
 							</div>
 							<div class="form-group mb-5" style="flex: 5">
 								<label for="client" class="form-label mb-3">Client</label>
-								<input :value="loanAccount.borrower.firstname + ' ' + loanAccount.borrower.lastname" type="text" class="form-control form-input " id="client">
+								<input disabled :value="loanAccount.borrower.firstname + ' ' + loanAccount.borrower.lastname" type="text" class="form-control form-input " id="client">
 							</div>
 							<div class="form-group mb-10" style="flex: 5">
 								<label for="address" class="form-label mb-3">Address</label>
-								<input :value="loanAccount.borrower.address" type="text" class="form-control form-input " id="address">
+								<input disabled :value="loanAccount.borrower.address" type="text" class="form-control form-input " id="address">
 							</div>
 						</div>
 						<div class="upload-photo d-flex flex-column" style="flex:4;padding-top:36px;">
@@ -393,7 +392,7 @@
 					<div class="d-flex flex-row">
 						<div style="flex:2"></div>
 						<div v-if="loanAccount.loan_account_id" class="d-flex flex-row-reverse" style="flex:3">
-							<a href="#" class="flex-1 btn btn-black mw-150">Cancel</a>
+							<!-- <a href="#" class="flex-1 btn btn-black mw-150">Cancel</a> -->
 							<a href="#" data-toggle="modal" data-target="#editModal" class="mr-16 flex-1 btn btn-bright-blue mw-150">Edit</a>
 						</div>
 					</div>
@@ -424,7 +423,7 @@
 
 <script>
 export default {
-	props:['token','rejectid'],
+	props:['token','rejectid','pbranch'],
 	data(){
 		return {
 			loanAccounts:[],
@@ -482,7 +481,7 @@ export default {
 	},
 	methods: {
 		fetchRejectedAccounts:function(){
-			axios.get(this.baseURL() + 'api/account/rejected/', {
+			axios.get(this.baseURL() + 'api/account/rejected/' + this.pbranch, {
 			headers: {
 				'Authorization': 'Bearer ' + this.token,
 					'Content-Type': 'application/json',
@@ -533,7 +532,7 @@ export default {
 			return new Date
 		},
 		numOfInstallment:function(){
-			return this.loanAccount.terms / 30;
+			return Math.ceil(this.loanAccount.terms / 30);
 		},
 		totalDeductions:function(){
 			return this.loanAccount.filing_fee + this.loanAccount.document_stamp + this.loanAccount.insurance + this.loanAccount.notarial_fee + this.loanAccount.prepaid_interest + this.loanAccount.affidavit_fee + this.loanAccount.memo;
