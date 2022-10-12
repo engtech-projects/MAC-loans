@@ -991,6 +991,7 @@ export default {
 			})
 			.then(function (response) {
 				this.$emit('updateLoanAccounts');
+				this.fetchFilteredOverride(true);
 			}.bind(this))
 			.catch(function (error) {
 				console.log(error);
