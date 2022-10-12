@@ -109,7 +109,7 @@ class LoanAccountController extends BaseController
 
         $branch = Branch::find($branchId);
 
-        $rejectedAccounts = LoanAccount::where(['status' => 'rejected', 'branch_code' => $branch->])->get();
+        $rejectedAccounts = LoanAccount::where(['status' => 'rejected', 'branch_code' => $branch->branch_code])->get();
         return $this->sendResponse(LoanAccountResource::collection($rejectedAccounts), 'List.');
     }
 
