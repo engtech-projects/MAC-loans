@@ -18,24 +18,38 @@ use App\Http\Resources\GL as GLResource;
 
 class EODController extends BaseController
 {
-    
 
 	public function endOfTransaction($branchId) {
 
 		$endTransaction = new EndTransaction();
+		$account = new LoanAccount();
+		$payment = new Payment();
+		# get transaction date
+		$dateEnd = $endTransaction->getTransactionDate($branchId)->date_end;
 
-		// // get 
-		$dateEnd = $endTransaction->getTransactionDate($branchId);
-		$dateEnd = '2022-10-03';
-		// // dd($branchId);
-		$endTransaction->releasing($dateEnd, $branchId);
-		$endTransaction->repayment($dateEnd, $branchId);
+		$accounts = $account->overrideReleaseAccounts([ 'branch_id' => $branchId, 'created_at' => $dateEnd ]);
+		$payments = $payment->overridePaymentAccounts([ 'branch_id' => $branchId, 'created_at' => $dateEnd ]);
 
-		// $endTransaction->branch_id = $branchId;
-		// $endTransaction->date_end = $dateEnd;
-		// $endTransaction->save();
+
+		$accountsToOverrideCount = count($accounts);
+		$paymentToOverrideCount = count($payments);
 		
-		return $this->sendResponse('End of day Transaction', 'The End');
+		$msg = null;
+		$msg .= "{$accountsToOverrideCount} pending Loan Account/s";
+		$msg .= " & ";
+		$msg .= "{$paymentToOverrideCount} pending Repayment/s";
+
+		return $this->sendResponse(($accountsToOverrideCount + $paymentToOverrideCount), 
+			"You have {$msg} to Override"
+		);
+
+		// $dateEnd = '2022-10-03';
+		// return $dateEnd;
+		// // // dd($branchId);
+		// $endTransaction->releasing($dateEnd, $branchId);
+		// $endTransaction->repayment($dateEnd, $branchId);
+		
+		// return $this->sendResponse('End of day Transaction', 'The End');
 	}
 
 }
