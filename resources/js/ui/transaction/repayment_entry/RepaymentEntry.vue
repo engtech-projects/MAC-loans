@@ -4,7 +4,6 @@
 		<div class="mb-16"></div>
 		<div class="ml-16 mb-24 bb-primary-dark pb-7 text-block d-flex justify-content-between">
 			<h1 class="m-0 font-35">Repayment Entry</h1>
-			<a href="#" @click.prevent="clearData.borrower=1;resetLoanDetails()" class="btn btn-primary-dark min-w-150">New Client</a>
 		</div><!-- /.col -->
 		<div class="d-flex flex-column flex-xl-row p-16">
 			<div style="flex:9;">
@@ -55,6 +54,7 @@ export default {
 					outstandingObligations : [],
 					created_at: this.dateToYMD(new Date()),
 					loanAccounts:[],
+					loan_accounts:[],
 				},				
 		}
 	},

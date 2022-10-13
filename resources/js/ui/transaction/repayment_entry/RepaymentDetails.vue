@@ -18,11 +18,11 @@
 					</div>
 					<div class="form-group mb-5" style="flex: 5">
 						<label for="client" class="form-label mb-3">Client</label>
-						<input :value="pborrower.firstname + ' ' + pborrower.lastname + ' ' + pborrower.middlename.charAt(0) + '.'" type="text" class="form-control form-input " id="client">
+						<input disabled :value="pborrower.borrower_id?pborrower.firstname + ' ' + pborrower.lastname + ' ' + pborrower.middlename.charAt(0) + '.':''" type="text" class="form-control form-input " id="client">
 					</div>
 					<div class="form-group mb-10" style="flex: 5">
 						<label for="address" class="form-label mb-3">Address</label>
-						<input :value="pborrower.address" type="text" class="form-control form-input " id="address">
+						<input disabled :value="pborrower.address" type="text" class="form-control form-input " id="address">
 					</div>
 				</div>
 				<div class="upload-photo d-flex flex-column" style="flex:4;padding-top:36px;">
@@ -723,6 +723,41 @@ export default {
 		}
 	},
 	methods:{
+		resetPayment:function(){
+			this.payment = {
+				payment_id:null,
+				loan_account_id:null,
+				branch_id:null,
+				payment_type:'cash',
+				or_no:null,
+				cheque_no:null,
+				bank_name:null,
+				reference_no:null,
+				memo_type:null,
+				amortization_id:0,
+				principal:0,
+				interest:0,
+				short_principal:0,
+				advance_principal:0,
+				short_interest:0,
+				advance_interest:0,
+				pdi:0,
+				pdi_approval_no:null,
+				short_pdi:0,
+				penalty:0,
+				penalty_approval_no:null,
+				short_penalty:0,
+				vat:0,
+				rebates:0,
+				rebatesInputted:0,
+				rebates_approval_no:null,
+				total_payable:0,
+				amount_applied:0,
+				amount_paid:0,
+				over_payment:0,
+				status:null,
+			}
+		},
 		notify:function(title, text, type){
 			this.$notify({
 				group: 'foo',
@@ -844,6 +879,7 @@ export default {
 				}
 			})
 			.then(function (response) {
+				this.resetPayment();
 				var btn = document.getElementById('paymentCancelBtn');
 				btn.click();
 				this.notify('','Payment successful.', 'success');
@@ -979,6 +1015,12 @@ export default {
 		},
 	},
 	watch:{
+		'pborrower.borrower_id':function(newValue){
+			if(this.pborrower.loan_accounts.length){
+				this.loanAccount = this.pborrower.loan_accounts[0];
+				this.amortSched();
+			}
+		},
 		'payment.amount_paid':function(newValue){
 			if(newValue != ''){
 				this.distribute();
