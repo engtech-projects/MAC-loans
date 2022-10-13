@@ -371,7 +371,7 @@ class LoanAccount extends Model
          
          $currentDay = Carbon::createFromFormat('Y-m-d', Carbon::now()->format('Y-m-d'));
          $dateSched = Carbon::createFromFormat('Y-m-d', $amortization->amortization_date);
-         $dayDiff = $currentDay->diffInDays($dateSched, false);
+         $dayDiff = $dateSched->diffInDays($currentDay, false);
          $penaltyMissed = $amortization->delinquent['missed'];
          if($dayDiff > 10){
             $penaltyMissed = array_merge($amortization->delinquent['missed'], [$amortization->id]);
