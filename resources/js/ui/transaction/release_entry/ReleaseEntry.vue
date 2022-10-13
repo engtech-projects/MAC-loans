@@ -971,6 +971,9 @@
 					},
 					branch:{
 						branch_id:null
+					},
+					product:{
+						product_name:'',
 					}
 				},
 				products:[],
@@ -1209,6 +1212,9 @@
 					},
 					branch:{
 						branch_id:this.pbranch,
+					},
+					product:{
+						product_name:'',
 					}
 
 				}
