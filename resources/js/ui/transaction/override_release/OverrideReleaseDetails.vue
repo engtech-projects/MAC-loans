@@ -317,10 +317,10 @@
 								<span class="mr-5">Interest: </span>
 								<span class="">{{loanInterest}}</span>
 							</div>
-							<div class="d-flex mb-7">
+							<!-- <div class="d-flex mb-7">
 								<span class="mr-5">Int. Rate: </span>
 								<span class="">{{loanaccount.interest_rate + '%'}}</span>
-							</div>
+							</div> -->
 							<div class="d-flex mb-7">
 								<span class="mr-5">Mode: </span>
 								<span class="">{{loanaccount.payment_mode}}</span>
@@ -530,7 +530,7 @@
 			</div>
 			</div>
 		</div>
-			<div class="modal" id="rejectModal" tabindex="-1" role="dialog">
+		<div class="modal" id="rejectModal" tabindex="-1" role="dialog">
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
 				<div class="modal-body">
