@@ -897,7 +897,6 @@ export default {
 			return this.loanAccount.current_amortization.interest + this.loanAccount.current_amortization.principal;
 		},
 		borrowerPhoto:function(){
-			console.log(this.pborrower.photo);
 			return this.pborrower.photo? this.pborrower.photo : '/img/user.png';
 		},
 		lastTransactionDate:function(){

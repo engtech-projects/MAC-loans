@@ -24,7 +24,7 @@
 				</div>
 				<div class="form-group mb-10 mr-16" style="flex:7">
 					<label for="product" class="form-label">Product</label>
-					<select @change="setInterestRate()" required v-model="loanDetails.product_id" name="" id="" class="form-control form-input ">
+					<select @change="setInterestRate();setCenterSched();" required v-model="loanDetails.product_id" name="" id="" class="form-control form-input ">
 						<option v-for="prod in products" :key="prod.product_id" :value="prod.product_id">{{prod.product_name}}</option>
 					</select>
 				</div>
@@ -393,6 +393,9 @@ export default {
 					account_no: '',
 					card_no:'',
 					promissory_number: '',
+				},
+				product:{
+					product_name:'',
 				}
 			},
 			branch:{
@@ -578,6 +581,10 @@ export default {
 				}
 			}.bind(this));
 		},
+		setCenterSched:function(){
+			this.loanDetails.center_id = null;
+			this.loanDetails.day_schedule = null;
+		},
 		isEnabled:function(data){
 			if(data){
 				return true;
@@ -668,6 +675,7 @@ export default {
 			}
 		},
 		'loanDetails.product_id'(newValue){
+			this.setInterestRate();
 			if(!this.loanDetails.documents.promissory_number || this.loanDetails.documents.promissory_number == ''){
 				this.fetchPromissoryNo();
 			}
