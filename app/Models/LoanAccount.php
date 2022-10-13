@@ -377,7 +377,7 @@ class LoanAccount extends Model
             $penaltyMissed = array_merge($amortization->delinquent['missed'], [$amortization->id]);
             
          }
-         $amortization->penalty = $this->getPenalty($amortization->delinquent['missed'], ($amortization->principal + $amortization->interest));
+         $amortization->penalty = $this->getPenalty($penaltyMissed, ($amortization->principal + $amortization->interest));
 
          // $amortization->penalty = $this->getPenalty($amortization->delinquent['missed'], ($amortization->principal + $amortization->interest));
          $amortization->total = ($amortization->principal + $amortization->interest) + ( $amortization->short_principal + $amortization->short_interest);
