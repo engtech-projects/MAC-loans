@@ -131,9 +131,9 @@ class Deduction extends Model
 		$amount = 0;
 
     	if( $terms <= 12 ){
-    		$amount = $constraints['loan_amount'] / $data->rate * $constraints['terms'] / 365;
+    		$amount = $constraints['loan_amount'] / $data->rate * 1.50 * $constraints['terms'] / 365;
     	}else{
-    		$amount = $constraints['loan_amount'] / $data->rate;
+    		$amount = $constraints['loan_amount'] / $data->rate * 1.50;
     	}
 
     	return $amount;
