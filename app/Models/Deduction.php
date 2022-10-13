@@ -112,7 +112,7 @@ class Deduction extends Model
     	$months = $constraints['terms'] / 30;
     	$amount = ($constraints['loan_amount']/1000) * $data->rate * $months;
 
-    	return $amount;
+    	return round($amount);
     }
 
     public function documentary($constraints = [], $ref) {
@@ -136,7 +136,7 @@ class Deduction extends Model
     		$amount = $constraints['loan_amount'] / $data->rate * 1.50;
     	}
 
-    	return $amount;
+    	return round($amount);
     }
 
     public function notarial($ref) {
