@@ -127,7 +127,7 @@
 							<span class="">Missed Payments</span>
 							<span>:</span>
 						</div>
-						<span class="flex-2 text-primary-dark">0</span>
+						<span class="flex-2 text-primary-dark">{{loanAccount.current_amortization.delinquent.missed.length}}</span>
 					</div>
 
 					<div class="d-flex flex-row mb-12">
