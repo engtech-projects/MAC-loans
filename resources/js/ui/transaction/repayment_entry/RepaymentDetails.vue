@@ -1027,6 +1027,7 @@ export default {
 	},
 	watch:{
 		'pborrower.borrower_id':function(newValue){
+			this.resetPayment();
 			if(this.pborrower.loan_accounts.length){
 				this.loanAccount = this.pborrower.loan_accounts[0];
 				this.amortSched();
