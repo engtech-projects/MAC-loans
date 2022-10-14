@@ -284,7 +284,9 @@
 									<label for="transactionDate" class="form-label">Type</label>
 									<div class="form-group">
 										<select required v-model="payment.memo_type" class="form-control form-input">
-											<option value="Deduct to Balance">Deduct to Balance</option>
+											<option value="Interbranch">Interbranch</option>
+											<option value="Offset PF">Offset PF</option>
+											<option value="Rebates and Discount">Rebates and Discount</option>
 										</select>
 									</div>
 								</div>
@@ -306,7 +308,7 @@
 										<input v-model="waive.pdi" type="checkbox" class="form-check-input" style="margin:0">
 										<span class="ml-18 text-primary-dark text-24 lh-1">PDI</span>
 									</div>
-									<input :disabled="disabled(waive.pdi)" v-model="payment.pdi_approval_no" type="text" class="form-control" placeholder="Approval #">
+									<input :disabled="disabled(waive.pdi)" :required="required(waive.pdi)" v-model="payment.pdi_approval_no" type="text" class="form-control" placeholder="Approval #">
 								</div>
 								<div class="d-flex flex-column flex-1 mr-16">
 									<span class="font-20 text-primary-dark lh-1 invis mb-3">l</span>
@@ -314,7 +316,7 @@
 										<input v-model="waive.penalty" type="checkbox" class="form-check-input" style="margin:0">
 										<span class="ml-18 text-primary-dark text-24 lh-1">Penalty</span>
 									</div>
-									<input :disabled="disabled(waive.penalty)" v-model="payment.penalty_approval_no" type="text" class="form-control" placeholder="Approval #">
+									<input :disabled="disabled(waive.penalty)" :required="required(waive.penalty)" v-model="payment.penalty_approval_no" type="text" class="form-control" placeholder="Approval #">
 								</div>
 								<div class="d-flex flex-column flex-1 mr-16">
 									<span class="font-20 text-primary-dark lh-1 invis mb-3">l</span>
@@ -684,7 +686,7 @@ export default {
 			payment:{
 				payment_id:null,
 				loan_account_id:null,
-				branch_id:null,
+				branch_id:this.pbranch,
 				payment_type:'cash',
 				or_no:null,
 				cheque_no:null,
@@ -727,7 +729,7 @@ export default {
 			this.payment = {
 				payment_id:null,
 				loan_account_id:null,
-				branch_id:null,
+				branch_id:this.pbranch,
 				payment_type:'cash',
 				or_no:null,
 				cheque_no:null,
@@ -871,25 +873,34 @@ export default {
 		},
 		pay:function(){
 			this.payment.loan_account_id = this.loanAccount.loan_account_id;
-			axios.post(this.baseURL() + 'api/payment', this.payment, {
-				headers: {
-						'Authorization': 'Bearer ' + this.token,
-						'Content-Type': 'application/json',
-						'Accept': 'application/json'
-				}
-			})
-			.then(function (response) {
-				this.resetPayment();
-				var btn = document.getElementById('paymentCancelBtn');
-				btn.click();
-				this.notify('','Payment successful.', 'success');
-			}.bind(this))
-			.catch(function (error) {
-				console.log(error);
-			}.bind(this));
+			this.payment.pdi = this.loanAccount.remainingBalance.pdi.balance;
+			this.payment.penalty = this.loanAccount.current_amortization.penalty + this.loanAccount.current_amortization.short_penalty;
+			if(this.amount_paid> 0){
+				axios.post(this.baseURL() + 'api/payment', this.payment, {
+					headers: {
+							'Authorization': 'Bearer ' + this.token,
+							'Content-Type': 'application/json',
+							'Accept': 'application/json'
+					}
+				})
+				.then(function (response) {
+					this.resetPayment();
+					var btn = document.getElementById('paymentCancelBtn');
+					btn.click();
+					this.notify('','Payment successful.', 'success');
+				}.bind(this))
+				.catch(function (error) {
+					console.log(error);
+				}.bind(this));
+			}else{
+				this.notify('','Amount paid must not be zero.', 'error');
+			}
 		},
 		disabled:function(element){
 			return !element? true : false;
+		},
+		required:function(element){
+			return !element? false : true;
 		}
 	},
 	computed:{
