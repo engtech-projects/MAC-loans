@@ -324,7 +324,7 @@
 										<input v-model="waive.rebates" type="checkbox" class="form-check-input" style="margin:0">
 										<span class="ml-18 text-primary-dark text-24 lh-1">Rebates</span>
 									</div>
-									<input :disabled="disabled(waive.rebates)" v-model="payment.rebates_approval_no" type="text" class="form-control" placeholder="Approval #">
+									<input :disabled="disabled(waive.rebates)" :required="required(waive.rebates)" v-model="payment.rebates_approval_no" type="text" class="form-control" placeholder="Approval #">
 								</div>
 								<div class="d-flex flex-column flex-1 mr-24">
 									<span class="font-20 text-primary-dark lh-1 invis mb-3">l</span>
@@ -332,7 +332,7 @@
 										<input type="checkbox" class="form-check-input" style="margin:0">
 										<span class="ml-18 text-primary-dark text-24 lh-1">Rebates</span>
 									</div>
-									<input @focusout="distribute()" :disabled="disabled(waive.rebates)" v-model="payment.rebatesInputted" type="number" class="form-control" placeholder="Amount">
+									<input @focusout="distribute()" :disabled="disabled(waive.rebates)" :required="required(waive.rebates)" v-model="payment.rebatesInputted" type="number" class="form-control" placeholder="Amount">
 								</div>
 								<div class="flex-1 d-flex flex-row-reverse align-items-end"><input type="submit" class="btn btn-bright-blue min-w-150 mb-5" value="Pay"></div>
 							</div>
@@ -759,6 +759,11 @@ export default {
 				over_payment:0,
 				status:null,
 			}
+			this.waive = {
+				pdi:false,
+				penalty:false,
+				rebates:false,
+			}
 		},
 		notify:function(title, text, type){
 			this.$notify({
@@ -871,11 +876,17 @@ export default {
 				// this.payment.amount_applied =  parseFloat(this.payment.amount_paid);
 			}
 		},
+		checkRebates:function(){
+			if(this.waive.rebates){
+				return this.payment.rebatesInputted > 0;
+			}
+			return true;
+		},
 		pay:function(){
 			this.payment.loan_account_id = this.loanAccount.loan_account_id;
 			this.payment.pdi = this.loanAccount.remainingBalance.pdi.balance;
 			this.payment.penalty = this.loanAccount.current_amortization.penalty + this.loanAccount.current_amortization.short_penalty;
-			if(parseFloat(this.payment.amount_paid) > 0){
+			if(parseFloat(this.payment.amount_paid) > 0 && this.checkRebates()){
 				axios.post(this.baseURL() + 'api/payment', this.payment, {
 					headers: {
 							'Authorization': 'Bearer ' + this.token,
@@ -892,6 +903,8 @@ export default {
 				.catch(function (error) {
 					console.log(error);
 				}.bind(this));
+			}else if(!this.checkRebates()){
+				this.notify('','Rebates amount must not be zero or below.', 'error');
 			}else{
 				this.notify('','Amount paid must not be zero or below.', 'error');
 			}
