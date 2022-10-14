@@ -529,23 +529,24 @@ export default {
 			this.loanDetails.status = 'pending';
 			this.loanDetails.branch_id = this.branch
 			if(this.loanDetails.loan_account_id){
-					axios.post(this.baseURL() + 'api/account/update/' + this.loanDetails.loan_account_id, this.loanDetails, {
-						headers: {
-							'Authorization': 'Bearer ' + this.token,
-							'Content-Type': 'application/json',
-							'Accept': 'application/json'
-						}
-					})
-					.then(function (response) {
-						this.notify('',response.data.message, 'success');
-						this.$emit('savedInfo', response.data.data)
-						if(this.prejected){
-							window.location.href = this.baseURL() + 'transaction/rejected_release';
-						}
-					}.bind(this))
-					.catch(function (error) {
-						console.log(error);
-					}.bind(this));
+				axios.post(this.baseURL() + 'api/account/update/' + this.loanDetails.loan_account_id, this.loanDetails, {
+					headers: {
+						'Authorization': 'Bearer ' + this.token,
+						'Content-Type': 'application/json',
+						'Accept': 'application/json'
+					}
+				})
+				.then(function (response) {
+					this.notify('',response.data.message, 'success');
+					this.$emit('savedInfo', response.data.data)
+					this.pay();
+					if(this.prejected){
+						window.location.href = this.baseURL() + 'transaction/rejected_release';
+					}
+				}.bind(this))
+				.catch(function (error) {
+					console.log(error);
+				}.bind(this));
 			}else {
 				axios.post(this.baseURL() + 'api/account/create/' + this.loanDetails.borrower_id, this.loanDetails, {
 					headers: {
@@ -601,6 +602,7 @@ export default {
 		},
 		pay:function(){
 			if(this.loanaccount.loan_account_id){
+				alert('paying..');
 				let payment = {
 					loan_account_id: this.loanaccount.loan_account_id,
 					branch_id: this.pbranch,
