@@ -83,7 +83,7 @@
 							<span class="">Other / Mem</span>
 							<span>:</span>
 						</div>
-						<span class="flex-1 text-primary-dark">{{loanaccount.memo}}</span>
+						<span class="flex-1 text-primary-dark">{{formatToCurrency(loanaccount.memo)}}</span>
 					</div>
 
 					<div class="d-flex flex-row mb-12">
