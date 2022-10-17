@@ -151,6 +151,28 @@
 				<a href="#" data-toggle="modal" data-target="#cancelModal" class="btn btn-bright-blue min-w-150 mr-16">Delete</a>
 			</div>
 		</section>
+
+		<div class="modal" id="cancelModal" tabindex="-1" role="dialog">
+			<div class="modal-dialog modal-md" role="document">
+				<div class="modal-content">
+					<div class="modal-body p-24">
+						<div class="d-flex align-items-center">
+							<img :src="baseURL()+'/img/warning.png'" style="width:120px;height:auto;" class="mr-24" alt="warning icon">
+							<div class="d-flex flex-column">
+								<span class="text-primary-dark text-bold mb-24">
+									Are you sure you want to delete this payment?
+								</span>
+								<div class="d-flex mt-auto justify-content-between">
+									<a href="#" data-dismiss="modal" class="btn btn-danger min-w-120">Cancel</a>
+									<a @click.prevent="deletePayment()" href="#" data-dismiss="modal" class="btn btn-primary-dark min-w-120">Proceed</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
 	</div>
 </template>
 
@@ -182,6 +204,22 @@ export default {
 				text: text,
 				type: type,
 			});
+		},
+		deletePayment:function(){
+			axios.delete(this.baseURL() + 'api/payment/delete/' + this.ppayment.payment_id, {
+				headers: {
+					'Authorization': 'Bearer ' + this.token,
+					'Content-Type': 'application/json',
+					'Accept': 'application/json'
+				}
+			})
+			.then(function (response) {
+				this.$emit('reloadPayments');
+				this.notify('',response.data.message, 'success');
+			}.bind(this))
+			.catch(function (error) {
+				console.log(error);
+			}.bind(this));
 		},
 	},
 	computed:{
