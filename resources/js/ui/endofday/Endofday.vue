@@ -17,7 +17,7 @@
 			<h1 class="m-0 font-35">End of Day</h1>
 		</div><!-- /.col -->
 		<div v-if="!failed && !success && !loading" class="d-flex flex-column align-items-center p-16 " style="padding-top:65px">
-			<p class="text-center lh-1 text-lg">You are about to end the transaction dated <span class="text-green">{{dateToMDY(new Date())}}</span></p>
+			<p class="text-center lh-1 text-lg">You are about to end the transaction dated <span class="text-green">{{dateToMDY(new Date(transactionDate))}}</span></p>
 			<p class="text-red text-xl text-center mb-24" style="max-width:575px">You will not be able to do any transactions after End of Day.</p>
 			<p class="font-lg text-center lh-1 mb-45">How would you like to end the transaction?</p>
 			<div class="d-flex">
@@ -39,8 +39,8 @@
 				<div class="modal-body">
 					<div class="d-flex flex-column" style="min-height:200px;padding:16px;">
 						<div class="d-flex flex-1 justify-content-center align-items-center">
-						<p v-if="posted" class="text-24 text-center">Are you sure you want to end {{dateToMDY(new Date())}} Transactions as Posted?</p>
-						<p v-if="!posted" class="text-24 text-center">Are you sure you want to end {{dateToMDY(new Date())}} Transactions as Unposted?</p>
+						<p v-if="posted" class="text-24 text-center">Are you sure you want to end {{dateToMDY(new Date(transactionDate))}} Transactions as Posted?</p>
+						<p v-if="!posted" class="text-24 text-center">Are you sure you want to end {{dateToMDY(new Date(transactionDate))}} Transactions as Unposted?</p>
 						</div>
 						<div class="d-flex flex-row">
 							<div style="flex:2"></div>
@@ -68,12 +68,29 @@ export default {
 			failed:false,
 			loading:false,
 			success:false,
+			transactionDate:this.dateToYMD(new Date),
 		}
 	},
 	methods:{
+		async fetchTransactionDate(){
+			await axios.get(this.baseURL() + 'api/eod/eodtransaction/' + this.branch.branch_id,{
+			headers: {
+				'Authorization': 'Bearer ' + this.token,
+				'Content-Type': 'application/json',
+				'Accept': 'application/json'
+				}
+			})
+			.then(function (response) {
+				// console.log(response.data.data);
+				this.transactionDate = response.data.data;
+			}.bind(this))
+			.catch(function (error) {
+				console.log(error);
+			}.bind(this));
+		},
 		async endOfDay(){
 			this.loading = true;
-			await axios.get(this.baseURL() + 'api/eod/eodtransaction/' + this.branch.branch_id,{status:this.posted?'posted':'unposted'},{
+			await axios.post(this.baseURL() + 'api/eod/eodtransaction/exec',{status:this.posted?'posted':'unposted'},{
 			headers: {
 				'Authorization': 'Bearer ' + this.token,
 				'Content-Type': 'application/json',
@@ -100,6 +117,7 @@ export default {
 	},
 	mounted(){
 		this.branch = JSON.parse(this.pbranch);
+		this.fetchTransactionDate();
 	}
 }
 </script>
