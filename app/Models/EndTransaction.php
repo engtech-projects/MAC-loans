@@ -50,6 +50,10 @@ class EndTransaction extends Model
     	return $transactionDate;
     }
 
+    public function closeTransactionDate() {
+    	
+    }
+
 	public function releasing($dateEnd, $branchId) {
 
 		$releaseLedger = new GeneralLedger();

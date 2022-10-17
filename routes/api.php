@@ -88,7 +88,9 @@ Route::middleware(['auth:sanctum'])->group( function () {
     Route::post('report/repayment/', [ReportsController::class, 'repaymentReports']);
 	Route::post('uploadfile/{id}', [LoanAccountController::class, 'uploadFile']);
 
-    Route::get('eod/eodtransaction/{branch_id}', [EODController::class, 'endOfTransaction']);
+    Route::get('eod/eodtransaction/{branch_id}', [EODController::class, 'getTransactionDate']);
+    Route::post('eod/eodtransaction/check', [EODController::class, 'checkPendingTransctions']);
+    Route::post('eod/eodtransaction/exec', [EODController::class, 'endOfTransaction']);
 
     Route::post('deduction/calculate', [DeductionController::class, 'calculateDeductions']);
 
