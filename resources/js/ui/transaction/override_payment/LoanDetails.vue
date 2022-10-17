@@ -206,7 +206,7 @@ export default {
 			});
 		},
 		deletePayment:function(){
-			axios.delete(this.baseURL() + 'api/payment/delete/' + this.ppayment.payment_id, {
+			axios.delete(this.baseURL() + 'api/payment/' + this.ppayment.payment_id, {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
 					'Content-Type': 'application/json',
