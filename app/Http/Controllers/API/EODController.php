@@ -19,7 +19,7 @@ use App\Http\Resources\GL as GLResource;
 class EODController extends BaseController
 {
 
-	public function endOfTransaction() {
+	public function endOfTransaction(Request $request) {
 
 		$branchId = $request->input('branch_id');
 		$status = $request->input('status');
@@ -32,7 +32,7 @@ class EODController extends BaseController
 		return $this->sendResponse('End of day Transaction', 'The End');
 	}
 
-	public function checkPendingTransctions() {
+	public function checkPendingTransctions(Request $request) {
 
 		$branchId = $request->input('branch_id');
 
