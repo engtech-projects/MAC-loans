@@ -151,7 +151,7 @@
 											</div>
 											<div class="body mb-64">
 												<p>
-													As our valued client, building and preserving good relationship with you is what concerns us most. We want to provide quick access to loans and continuous credit line for your utmost convenience. For the continuation of your credit line and to further our relationship, we are closely monitoring your account.It has then come to our attention that your accunt is in delinquent status. The total delinquent amount has reached to Php 1,530.00. Please take note that one of our agreement stated in your Loan Promissory Note No. {{loanDetails.documents.promissory_number}} dated {{dateToMDY(new Date(loanDetails.documents.date_release))}} that in case of default/delinquent, this promissory note will be due and demandable.
+													As our valued client, building and preserving good relationship with you is what concerns us most. We want to provide quick access to loans and continuous credit line for your utmost convenience. For the continuation of your credit line and to further our relationship, we are closely monitoring your account.It has then come to our attention that your accunt is in delinquent status. The total delinquent amount has reached to Php {{formatToCurrency(loanDetails.remaining_balance.memo.balance)}}. Please take note that one of our agreement stated in your Loan Promissory Note No. {{loanDetails.documents.promissory_number}} dated {{dateToMDY(new Date(loanDetails.documents.date_release))}} that in case of default/delinquent, this promissory note will be due and demandable.
 												</p>
 												<p>
 													We therefore, hope and expect that you will be able to settle your obligation the soonest posssible. Please give this matter your greatest attention to avoid embarassment.
@@ -203,7 +203,7 @@
 											</div>
 											<div class="body mb-64">
 												<p>
-													As our valued client, building and preserving good relationship with you is what concerns us most. We want to provide quick access to loans and continuous credit line for your utmost convenience. For the continuation of your credit line and to further our relationship, we are closely monitoring your account.It has then come to our attention that your accunt is in delinquent status. The total delinquent amount has reached to Php 1,530.00. Please take note that one of our agreement stated in your Loan Promissory Note No. {{loanDetails.documents.promissory_number}} dated {{dateToMDY(new Date(loanDetails.documents.date_release))}} that in case of default/delinquent, this promissory note will be due and demandable.
+													As our valued client, building and preserving good relationship with you is what concerns us most. We want to provide quick access to loans and continuous credit line for your utmost convenience. For the continuation of your credit line and to further our relationship, we are closely monitoring your account.It has then come to our attention that your accunt is in delinquent status. The total delinquent amount has reached to Php {{formatToCurrency(loanDetails.remaining_balance.memo.balance)}}. Please take note that one of our agreement stated in your Loan Promissory Note No. {{loanDetails.documents.promissory_number}} dated {{dateToMDY(new Date(loanDetails.documents.date_release))}} that in case of default/delinquent, this promissory note will be due and demandable.
 												</p>
 												<p>
 													We therefore, hope and expect that you will be able to settle your obligation the soonest posssible. Please give this matter your greatest attention to avoid embarassment.
@@ -264,27 +264,31 @@
 												<div class="d-flex flex-column mb-24">
 													<div class="d-flex justify-content-between ps-75">
 														<div class="flex-1 text-bold">Principal</div>
-														<div class="flex-1 text-bold">PHP {{formatToCurrency(loanDetails.current_amortization.principal_balance)}}</div>
+														<div class="flex-1 text-bold">PHP {{formatToCurrency(loanDetails.remaining_balance.principal.balance)}}</div>
 													</div>
 													<div class="d-flex justify-content-between ps-75">
 														<div class="flex-1 text-bold">Current interest balance</div>
-														<div class="flex-1 text-bold">PHP {{formatToCurrency(loanDetails.current_amortization.interest_balance)}}</div>
+														<div class="flex-1 text-bold">PHP {{formatToCurrency(loanDetails.remaining_balance.interest.balance)}}</div>
 													</div>
 													<div class="d-flex justify-content-between ps-75">
 														<div class="flex-1 text-bold">Past due interest</div>
-														<div class="flex-1 text-bold"></div>
+														<div class="flex-1 text-bold">PHP {{formatToCurrency(loanDetails.remaining_balance.pdi.balance)}}</div>
 													</div>
 													<div class="d-flex justify-content-between ps-75">
 														<div class="flex-1 text-bold">Penalties on past due loans</div>
-														<div class="flex-1 text-bold"></div>
+														<div class="flex-1 text-bold">PHP {{formatToCurrency(0)}}</div>
 													</div>
 													<div class="d-flex justify-content-between ps-75">
 														<div class="flex-1 text-bold">On late amortization</div>
+														<div class="flex-1 text-bold">PHP {{formatToCurrency(loanDetails.remaining_balance.penalty.balance)}}</div>
+													</div>
+													<div class="d-flex justify-content-between ps-75">
 														<div class="flex-1 text-bold"></div>
+														<div class="flex-1 text-bold">-----------------------------</div>
 													</div>
 													<div class="d-flex justify-content-between ps-75">
 														<div class="flex-1 text-bold">Total Amount Due</div>
-														<div class="flex-1 text-bold">PHP {{formatToCurrency(loanDetails.current_amortization.principal_balance + loanDetails.current_amortization.interest_balance)}}</div>
+														<div class="flex-1 text-bold">PHP {{formatToCurrency(loanDetails.remaining_balance.principal.balance + loanDetails.remaining_balance.interest.balance + loanDetails.remaining_balance.pdi.balance + loanDetails.remaining_balance.penalty.balance )}}</div>
 													</div>
 												</div>
 
@@ -344,7 +348,7 @@
 												</p>
 												<p>
 													It appears from the records with particular reference to a Promissory
-													Note dated 01/13/21. Since then your  account has  been  place  under
+													Note dated {{dateToMDY(new Date(loanDetails.documents.date_release))}}. Since then your  account has  been  place  under
 													past due status  incurring  pastdue  interest,  penalties  and  other
 													charges. As of today your total outstanding liabilities are indicated
 													Below to wit:
@@ -360,7 +364,7 @@
 															</div>
 															<div class="flex-1 text-bold d-flex justify-content-between">
 																<b class="flex-1">P</b>
-																<b class="flex-1 text-right">{{formatToCurrency(loanDetails.current_amortization.principal_balance)}}</b>
+																<b class="flex-1 text-right">{{formatToCurrency(loanDetails.remaining_balance.principal.balance)}}</b>
 															</div>
 														</div>
 														<div class="d-flex justify-content-between">
@@ -369,8 +373,8 @@
 																<b class="flex-1">:</b>
 															</div>
 															<div class="flex-1 text-bold d-flex justify-content-between">
-																<b class="flex-1"></b>
-																<b class="flex-1 text-right">{{formatToCurrency(loanDetails.current_amortization.interest_balance)}}</b>
+																<b class="flex-1">P</b>
+																<b class="flex-1 text-right">{{formatToCurrency(loanDetails.remaining_balance.interest.balance)}}</b>
 															</div>
 														</div>
 														<div class="d-flex justify-content-between">
@@ -379,8 +383,8 @@
 																<b class="flex-1">:</b>
 															</div>
 															<div class="flex-1 text-bold d-flex justify-content-between">
-																<b class="flex-1"></b>
-																<b class="flex-1 text-right">{{formatToCurrency(loanDetails.current_amortization.penalty)}}</b>
+																<b class="flex-1">P</b>
+																<b class="flex-1 text-right">{{formatToCurrency(loanDetails.remaining_balance.penalty.balance + loanDetails.remaining_balance.pdi.balance)}}</b>
 															</div>
 														</div>
 														<div class="d-flex justify-content-between">
@@ -389,8 +393,8 @@
 																<b class="flex-1">:</b>
 															</div>
 															<div class="flex-1 text-bold d-flex justify-content-between">
-																<b class="flex-1"></b>
-																<b class="flex-1 text-right">{{formatToCurrency(500)}}</b>
+																<b class="flex-1">P</b>
+																<b class="flex-1 text-right">{{formatToCurrency(loanDetails.remaining_balance.memo.balance*.1)}}</b>
 															</div>
 														</div>
 														<div class="d-flex justify-content-between">
@@ -408,8 +412,8 @@
 																<b class="flex-1">:</b>
 															</div>
 															<div class="flex-1 text-bold d-flex justify-content-between">
-																<b class="flex-1"></b>
-																<b class="flex-1 text-right">{{formatToCurrency(loanDetails.current_amortization.interest_balance + loanDetails.current_amortization.principal_balance + 500 + loanDetails.current_amortization.penalty)}}</b>
+																<b class="flex-1">P</b>
+																<b class="flex-1 text-right">{{formatToCurrency(loanDetails.remaining_balance.principal.balance + loanDetails.remaining_balance.interest.balance + loanDetails.remaining_balance.penalty.balance + loanDetails.remaining_balance.pdi.balance + (loanDetails.remaining_balance.memo.balance * 0.1) )}}</b>
 															</div>
 														</div>
 													</div>
@@ -444,8 +448,8 @@
 												</div>
 											</div>
 											<p>
-												NOTE: Please disregard if you have paid your account.
-     											Ref. No.: 00--003--001 Loan Amount: P    {{formatToCurrency(loanDetails.loan_amount)}} Term:  {{loanDetails.terms / 30}} month(s).
+												NOTE: Please disregard if you have paid your account.<br>
+     											Ref. No.: {{loanDetails.account_num}} Loan Amount: P    {{formatToCurrency(loanDetails.loan_amount)}} Term:  {{loanDetails.terms / 30}} month(s).
 											</p>
 											<!-- <div class="d-flex">
 												<span></span>
@@ -542,7 +546,7 @@
 											</div>
 											<p>
 												NOTE: Please disregard if you have paid your account.
-     											Ref. No.: 00--003--001 Loan Amount: P    {{formatToCurrency(loanDetails.loan_amount)}} Term:  {{loanDetails.terms / 30}} month(s).
+     											Ref. No.: {{loanDetails.account_num}} Loan Amount: P    {{formatToCurrency(loanDetails.loan_amount)}} Term:  {{loanDetails.terms / 30}} month(s).
 											</p>
 											<div class="d-flex flex-row-reverse mb-72 no-print">
 												<a @click.prevent="printContent('return-check')" href="#" class="btn btn-default min-w-150">Print</a>
@@ -584,8 +588,8 @@
 											<b style="text-decoration:underline" class="mb-36">Dear <i>Sir/Madam</i></b>
 
 											<p>
-												Please be informed that our client,  Micro Access Loans Corporation has endorsed to us for appropriate legal action for your accountability amounting to <i class="text-underlined"><b>{{numToWords(loanDetails.current_amortization.outstandingBalance)}} ( Php {{formatToCurrency(loanDetails.current_amortization.outstandingBalance)}})</b></i> representing your total unpaid obligation to our said client as of 
-												<i class="text-underlined"><b>{{dateToMDY(new Date(loanDetails.current_amortization.amortization_date))}}</b></i>. 
+												Please be informed that our client,  Micro Access Loans Corporation has endorsed to us for appropriate legal action for your accountability amounting to <i class="text-underlined"><b>{{numToWords(loanDetails.remaining_balance.memo.balance)}} ( Php {{formatToCurrency(loanDetails.remaining_balance.memo.balance)}})</b></i> representing your total unpaid obligation to our said client as of 
+												<i class="text-underlined"><b>{{dateToMDY(new Date)}}</b></i>. 
 											</p>
 
 											<p>
@@ -692,7 +696,7 @@
 											</div>
 											<p>
 												NOTE: Please disregard if you have paid your account.
-     											Ref. No.: 00--003--001 Loan Amount: P    {{formatToCurrency(loanDetails.loan_amount)}} Term:  {{loanDetails.terms / 30}} month(s).
+     											Ref. No.: {{loanDetails.account_num}} Loan Amount: P    {{formatToCurrency(loanDetails.loan_amount)}} Term:  {{loanDetails.terms / 30}} month(s).
 											</p>
 											<div class="d-flex flex-row-reverse mb-72 no-print">
 												<a @click.prevent="printContent('bouncing-check')" href="#" class="btn btn-default min-w-150">Print</a>
@@ -1376,7 +1380,39 @@ export default {
 				},
 				current_amortization:{
 					principal_balance:0,
-				}
+				},
+				remaining_balance:{
+					memo:{
+						debit:0,
+						credit:0,
+						balance:0,
+					},
+					rebates:{
+						debit:0,
+						credit:0,
+						balance:0,
+					},
+					pdi:{
+						debit:0,
+						credit:0,
+						balance:0,
+					},
+					penalty:{
+						debit:0,
+						credit:0,
+						balance:0,
+					},
+					interest:{
+						debit:0,
+						credit:0,
+						balance:0,
+					},
+					principal:{
+						debit:0,
+						credit:0,
+						balance:0,
+					},
+				},
 			},
 			borrower:{
 				borrower_id: null,
