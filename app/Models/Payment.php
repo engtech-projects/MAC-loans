@@ -136,7 +136,6 @@ class Payment extends Model
 
     }
 
-
     public function paymentList($transDate, $branchId) {
 
         return Payment::whereDate('payment.updated_at', '=', $transDate)

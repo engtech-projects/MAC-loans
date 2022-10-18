@@ -13,16 +13,16 @@
 						<div style="flex:4"></div>
 						<div class="form-group mb-10" style="flex: 5">
 							<label for="transactionDate" class="form-label">Transaction Date</label>
-							<input :value="dateToYMD(new Date)" type="date" class="form-control form-input text-right" id="transactionDate">
+							<input disabled :value="dateToYMD(new Date)" type="date" class="form-control form-input text-right" id="transactionDate">
 						</div>
 					</div>
 					<div class="form-group mb-5" style="flex: 5">
 						<label for="client" class="form-label mb-3">Client</label>
-						<input :value="loanaccount.borrower.firstname + ' ' + loanaccount.borrower.lastname" type="text" class="form-control form-input " id="client">
+						<input disabled :value="loanaccount.borrower.firstname + ' ' + loanaccount.borrower.lastname" type="text" class="form-control form-input " id="client">
 					</div>
 					<div class="form-group mb-10" style="flex: 5">
 						<label for="address" class="form-label mb-3">Address</label>
-						<input :value="loanaccount.borrower.address" type="text" class="form-control form-input " id="address">
+						<input disabled :value="loanaccount.borrower.address" type="text" class="form-control form-input " id="address">
 					</div>
 				</div>
 				<div class="upload-photo d-flex flex-column" style="flex:4;padding-top:36px;">
@@ -83,7 +83,7 @@
 							<span class="">Other / Mem</span>
 							<span>:</span>
 						</div>
-						<span class="flex-1 text-primary-dark">{{loanaccount.memo}}</span>
+						<span class="flex-1 text-primary-dark">{{formatToCurrency(loanaccount.memo)}}</span>
 					</div>
 
 					<div class="d-flex flex-row mb-12">
@@ -94,6 +94,13 @@
 						<span class="flex-1 text-primary-dark">{{loanaccount.net_proceeds}}</span>
 					</div>
 
+					<div class="d-flex flex-row mb-12">
+						<div class="d-flex flex-row flex-1 justify-content-between pr-24">
+							<span class="">Affidavit</span>
+							<span>:</span>
+						</div>
+						<span class="flex-1 text-primary-dark">{{formatToCurrency(loanaccount.affidavit_fee)}}</span>
+					</div>
 					<div class="d-flex flex-row mb-12">
 						<div class="d-flex flex-row flex-1 justify-content-between pr-24">
 							<span class="">Release Type</span>
@@ -190,7 +197,7 @@
 					<a href="#" @click.prevent="amortSched" data-toggle="modal" data-target="#schedulesModal" class="mr-16 flex-1 btn btn-orange">Print Amort. Sched.</a>
 					<a href="#" data-toggle="modal" data-target="#cashVoucherModal" class="mr-16 flex-1 btn btn-brown">Print Voucher</a>
 					<a href="#" data-toggle="modal" data-target="#rejectModal" class="mr-16 flex-1 btn btn-primary-dark">Reject</a>
-					<a href="#" class="mr-16 flex-1 btn btn-primary">Delete</a>
+					<a href="#" data-toggle="modal" data-target="#warningDeleteModal" class="mr-16 flex-1 btn btn-primary">Delete</a>
 					<a href="#" @click="override()" data-toggle="modal" data-target="" class="flex-1 btn btn-success">Override</a>
 				</div>
 			</div>
@@ -229,6 +236,48 @@
 								<span class="mr-5">Amort: </span>
 								<span>{{amortAmount}}</span>
 							</div>
+
+
+
+							<div class="d-flex mb-7">
+								<span class="mr-5"></span>
+								<span></span>
+							</div>
+							<div class="d-flex mb-7">
+								<span class="mr-5"></span>
+								<span></span>
+							</div>
+								<div class="d-flex mb-7">
+								<span class="mr-5"></span>
+								<span></span>
+							</div>
+								<div class="d-flex mb-7">
+								<span class="mr-5"></span>
+								<span></span>
+							</div>
+							<div class="d-flex mb-7">
+								<span class="mr-5"></span>
+								<span></span>
+							</div>
+								<div class="d-flex mb-7">
+								<span class="mr-5"></span>
+								<span></span>
+							</div>
+							<div class="d-flex mb-7">
+								<span class="mr-5"></span>
+								<span></span>
+							</div>
+							<div class="d-flex mb-7">
+								<span class="mr-5"></span>
+								<span></span>
+							</div>
+							<div class="d-flex mb-7">
+								<span class="mr-5"></span>
+								<span></span>
+							</div>
+
+
+
 							<div class="d-flex mb-7">
 								<span class="mr-5">Co-Borrower: </span>
 								<span>{{loanaccount.co_borrower_name}}</span>
@@ -268,10 +317,10 @@
 								<span class="mr-5">Interest: </span>
 								<span class="">{{loanInterest}}</span>
 							</div>
-							<div class="d-flex mb-7">
+							<!-- <div class="d-flex mb-7">
 								<span class="mr-5">Int. Rate: </span>
 								<span class="">{{loanaccount.interest_rate + '%'}}</span>
-							</div>
+							</div> -->
 							<div class="d-flex mb-7">
 								<span class="mr-5">Mode: </span>
 								<span class="">{{loanaccount.payment_mode}}</span>
@@ -282,7 +331,19 @@
 							</div>
 							<div class="d-flex mb-7">
 								<span class="mr-5">ID #: </span>
-								<span class="">08-052415427-4</span>
+								<span class="">{{loanaccount.co_borrower_id_number}}</span>
+							</div>
+							<div class="d-flex mb-7">
+								<span class="mr-5">ID Type: </span>
+								<span class="">{{loanaccount.co_borrower_id_type}}</span>
+							</div>
+							<div class="d-flex mb-7">
+								<span class="mr-5">ID #: </span>
+								<span class="">{{loanaccount.co_maker_id_number}}</span>
+							</div>
+							<div class="d-flex mb-7">
+								<span class="mr-5">ID Type: </span>
+								<span class="">{{loanaccount.co_maker_id_type}}</span>
 							</div>
 						</div>
 					</div>			
@@ -321,7 +382,7 @@
 					</section>
 					<div class="d-flex flex-row-reverse mb-45 no-print">
 						<a href="#" @click="printAmort()" class="btn btn-default min-w-150">Print</a>
-						<a href="#" class="btn btn-success min-w-150 mr-24">Download Excel</a>
+						<a href="#" @click.prevent="export2Word('amortPrintContent', 'amortization_schedule')" class="btn btn-success min-w-150 mr-24">Download Document</a>
 						<a href="#" id="cancelModal" data-dismiss="modal" class="btn btn-danger min-w-150 mr-24 hide">Cancel</a>
 					</div>
 				</div>
@@ -350,7 +411,7 @@
 							<span class="mr-10 flex-1">Account Officer : </span>
 							<select @change="overrideFilter" v-model="filter.ao_id" class="form-control flex-1 min-w-200" name="" id="">
 								<option value="all">All</option>
-								<option v-for="ao in aofficers" :key="ao.ao_id" :value="ao.ao_id">{{ao.name}}</option>
+								<option v-for="ao in filteredAos" :key="ao.ao_id" :value="ao.ao_id">{{ao.name}}</option>
 							</select>
 						</div>
 						<div class="d-flex flex-row align-items-center mr-24">
@@ -391,15 +452,28 @@
 						<tbody>
 							<tr v-for="fo in filteredOverrides" :key="fo.loan_account_id">
 								<td>{{fo.borrower.lastname + ', ' + fo.borrower.firstname}}</td>
-								<td>{{fo.loan_amount}}</td>
-								<td>{{fo.filing_fee}}</td>
-								<td>{{fo.document_stamp}}</td>
-								<td>{{fo.insurance}}</td>
-								<td>{{fo.notarial_fee}}</td>
-								<td>{{fo.prepaid_interest}}</td>
-								<td>{{fo.memo}}</td>
-								<td>{{fo.net_proceeds}}</td>
+								<td>{{formatToCurrency(fo.loan_amount)}}</td>
+								<td>{{formatToCurrency(fo.filing_fee)}}</td>
+								<td>{{formatToCurrency(fo.document_stamp)}}</td>
+								<td>{{formatToCurrency(fo.insurance)}}</td>
+								<td>{{formatToCurrency(fo.notarial_fee)}}</td>
+								<td>{{formatToCurrency(fo.prepaid_interest)}}</td>
+								<td>{{formatToCurrency(fo.memo)}}</td>
+								<td>{{formatToCurrency(fo.net_proceeds)}}</td>
 								<td>{{fo.release_type}}</td>
+							</tr>
+							<tr class="text-bold">
+								<td>TOTAL</td>
+								<td>{{formatToCurrency(totalLoanAmount)}}</td>
+								<td>{{formatToCurrency(totalFilingFee)}}</td>
+								<td>{{formatToCurrency(totalDocStamp)}}</td>
+								<td>{{formatToCurrency(totalInsurance)}}</td>
+								<td>{{formatToCurrency(totalNotarialFee)}}</td>
+								<td>{{formatToCurrency(totalPrepaidInterest)}}</td>
+								<td>{{formatToCurrency(totalMemoView)}}</td>
+								<td>{{formatToCurrency(totalNetProceeds)}}</td>
+								<td></td>
+								<td></td>
 							</tr>
 						</tbody>
 					</table>
@@ -423,7 +497,7 @@
 								</div>
 								<div class="d-flex flex-row bb-dark-5 pb-7">
 									<div class="d-flex flex-row justify-content-between flex-1 mr-16">
-										<span>Total Cheque</span>
+										<span>Total Check</span>
 										<span>:</span>
 									</div>
 									<span class="flex-1">{{formatToCurrency(totalCheque)}}</span>
@@ -456,7 +530,7 @@
 			</div>
 			</div>
 		</div>
-			<div class="modal" id="rejectModal" tabindex="-1" role="dialog">
+		<div class="modal" id="rejectModal" tabindex="-1" role="dialog">
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
 				<div class="modal-body">
@@ -658,8 +732,29 @@
 						<div class="mb-72"></div>
 						<div class="d-flex flex-row-reverse mb-45 no-print">
 							<a @click="printVoucher()" href="#" class="btn btn-default min-w-150">Print</a>
-							<a href="#" class="btn btn-success min-w-150 mr-24">Download Excel</a>
+							<a href="#" @click.prevent="export2Word('voucherPrintContent', 'Voucher')" class="btn btn-success min-w-150 mr-24">Download Document</a>
 							<a href="#" id="cancelVoucherModal" data-dismiss="modal" class="btn btn-danger min-w-150 mr-24 hide">Cancel</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			</div>
+		</div>
+
+		<div class="modal" id="warningDeleteModal" tabindex="-1" role="dialog">
+			<div class="modal-dialog modal-md" role="document">
+			<div class="modal-content">
+				<div class="modal-body p-24">
+					<div class="d-flex align-items-center">
+						<img :src="baseURL()+'/img/warning.png'" style="width:120px;height:auto;" class="mr-24" alt="warning icon">
+						<div class="d-flex flex-column">
+							<span class="text-primary-dark text-bold mb-24">
+								Are you sure you want to delete this account?
+							</span>
+							<div class="d-flex mt-auto justify-content-between">
+								<a href="#" data-dismiss="modal" class="btn btn-danger min-w-120">Cancel</a>
+								<a @click.prevent="deleteAccount()" href="#" data-dismiss="modal" class="btn btn-primary-dark min-w-120">Proceed</a>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -671,7 +766,7 @@
 
 <script>
 export default {
-	props:['ploanaccount', 'pdate', 'token', 'csrf'],
+	props:['ploanaccount', 'pdate', 'token', 'csrf', 'pbranch','pboverride'],
 	data(){
 		return {
 			filter:{ao_id:'all',center_id:'all',product_id:'all', created_at:''},
@@ -698,12 +793,14 @@ export default {
 			aofficers:[],
 			productName:'',
 			filteredOverrides:[],
+			filteredOverridesBase:[],
 			amortAmount:0,
 			vouchers:[],
 		}
 	},
 	methods:{
 		fetchCashVoucher:function(){
+			this.vouchers = [];
 			axios.get(this.baseURL() + 'api/account/cashvoucher/' + this.loanaccount.loan_account_id, {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
@@ -718,6 +815,41 @@ export default {
 				console.log(error);
 			}.bind(this));
 		},
+		async deleteAccount(){
+			await axios.delete(this.baseURL() + 'api/account/delete/' + this.loanaccount.loan_account_id, {
+				headers: {
+					'Authorization': 'Bearer ' + this.token,
+					'Content-Type': 'application/json',
+					'Accept': 'application/json'
+				}
+			})
+			.then(function (response) {
+				this.$emit('deleteAccount');
+				this.resetLoanAccount();
+				this.notify('',response.data.message, 'success');
+				this.fetchFilteredOverride(true);
+			}.bind(this))
+			.catch(function (error) {
+				console.log(error);
+			}.bind(this));
+		},
+		resetLoanAccount:function(){
+			this.loanaccount = {
+				account_num:'',
+				borrower:{
+					borrower_num:'################',
+					firstname:'',
+					middlename:'',
+					lastname:''
+				},
+				center:{
+					center:''
+				},
+				account_officer:{
+					name:'',
+				}
+			}
+		},
 		notify:function(title, text, type){
 			this.$notify({
 				group: 'foo',
@@ -727,6 +859,7 @@ export default {
 			});
 		},
 		amortSched:function(){
+			this.amortizationSched = [];
 			axios.post(this.baseURL() + 'api/account/generate-amortization', this.loanaccount, {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
@@ -788,12 +921,14 @@ export default {
 				console.log(error);
 			}.bind(this));
 		},
-		fetchFilteredOverride: function(){
+		fetchFilteredOverride: function(base){
+			this.filteredOverrides = [];
 			let filter = {
-				created_at:this.padate,
+				created_at:this.pdate,
 				ao_id:this.filter.ao_id=='all'?null:this.filter.ao_id,
 				center_id:this.filter.center_id=='all'?null:this.filter.center_id,
 				product_id:this.filter.product_id=='all'?null:this.filter.product_id,
+				branch_id:this.pbranch
 			}
 			axios.post(this.baseURL() + 'api/account/overrrideaccounts', filter, {
 				headers: {
@@ -804,6 +939,7 @@ export default {
 			})
 			.then(function (response) {
 				this.filteredOverrides = response.data.data;
+				this.filteredOverridesBase = base?response.data.data:this.filteredOverridesBase;
 			}.bind(this))
 			.catch(function (error) {
 				console.log(error);
@@ -821,6 +957,7 @@ export default {
 			.then(function (response) {
 				this.notify('',response.data.message, 'success');
 				this.$emit('updateLoanAccounts');
+				this.fetchFilteredOverride(true);
 				this.createAmortization();
 			}.bind(this))
 			.catch(function (error) {
@@ -837,8 +974,7 @@ export default {
 				}
 			})
 			.then(function (response) {
-				console.log('amortization generated');
-				console.log(response.data);
+				
 			}.bind(this))
 			.catch(function (error) {
 				console.log(error);
@@ -855,6 +991,7 @@ export default {
 			})
 			.then(function (response) {
 				this.$emit('updateLoanAccounts');
+				this.fetchFilteredOverride(true);
 			}.bind(this))
 			.catch(function (error) {
 				console.log(error);
@@ -889,6 +1026,41 @@ export default {
 			cancel.click();
 			window.print();
 		},
+		export2Word:function(element, filename = ''){
+			var preHtml = "<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'><head><meta charset='utf-8'><title>Export HTML To Doc</title></head><body>";
+			var postHtml = "</body></html>";
+			var html = preHtml+document.getElementById(element).innerHTML+postHtml;
+
+			var blob = new Blob(['\ufeff', html], {
+				type: 'application/msword'
+			});
+
+			// Specify link url
+			var url = 'data:application/vnd.ms-word;charset=utf-8,' + encodeURIComponent(html);
+
+			// Specify file name
+			filename = filename?filename+'.doc':'document.doc';
+
+			// Create download link element
+			var downloadLink = document.createElement("a");
+
+			document.body.appendChild(downloadLink);
+
+			if(navigator.msSaveOrOpenBlob ){
+				navigator.msSaveOrOpenBlob(blob, filename);
+			}else{
+				// Create a link to the file
+				downloadLink.href = url;
+
+				// Setting the file name
+				downloadLink.download = filename;
+
+				//triggering the function
+				downloadLink.click();
+			}
+
+			document.body.removeChild(downloadLink);
+		}
 	},
 	computed:{
 		prepaidInterest:function(){
@@ -912,7 +1084,7 @@ export default {
 			var amount = 0;
 			this.filteredOverrides.map(function(fo){
 				if(fo.release_type == 'Cash'){
-					amount += parseFloat(fo.loan_amount);
+					amount += parseFloat(fo.net_proceeds);
 				}
 			});
 			return amount;
@@ -920,17 +1092,15 @@ export default {
 		totalMemo:function(){
 			var amount = 0;
 			this.filteredOverrides.map(function(fo){
-				if(fo.release_type == 'Memo Release'){
-					amount += parseFloat(fo.loan_amount);
-				}
+				amount += parseFloat(fo.memo);
 			});
 			return amount;
 		},
 		totalCheque:function(){
 			var amount = 0;
 			this.filteredOverrides.map(function(fo){
-				if(fo.release_type == 'Cheque Release'){
-					amount += parseFloat(fo.loan_amount);
+				if(fo.release_type == 'Check'){
+					amount += parseFloat(fo.net_proceeds);
 				}
 			});
 			return amount;
@@ -958,7 +1128,7 @@ export default {
 		},
 		filteredCenters:function(){
 			var centers = [];
-			this.filteredOverrides.map(function(ov){
+			this.filteredOverridesBase.map(function(ov){
 				if(ov.center){
 					var count = 0;
 					centers.map(function(cc){
@@ -977,7 +1147,7 @@ export default {
 		},
 		filteredProducts:function(){
 			var products = [];
-			this.filteredOverrides.map(function(ov){
+			this.filteredOverridesBase.map(function(ov){
 				if(ov.product){
 					var count = 0;
 					products.map(function(pp){
@@ -993,7 +1163,82 @@ export default {
 				this.filter.product_id = 'all';
 			}
 			return products;
-		}
+		},
+		filteredAos:function(){
+			var aofficers = [];
+			this.filteredOverridesBase.map(function(ov){
+				if(ov.account_officer){
+					var count = 0;
+					aofficers.map(function(pp){
+						if(ov.account_officer.ao_id == pp.ao_id)
+						count++;
+					}.bind(this));
+					if(count == 0){
+						aofficers.push(ov.account_officer);
+					}
+				}
+			}.bind(this));
+			if(!aofficers.length){
+				this.filter.ao_id = 'all';
+			}
+			return aofficers;
+		},
+		totalLoanAmount:function(){
+			var amount = 0;
+			this.filteredOverrides.map(function(fo){
+				amount += parseFloat(fo.loan_amount);
+			});
+			return amount;
+		},
+		totalFilingFee:function(){
+			var amount = 0;
+			this.filteredOverrides.map(function(fo){
+				amount += parseFloat(fo.filing_fee);
+			});
+			return amount;
+		},
+		totalDocStamp:function(){
+			var amount = 0;
+			this.filteredOverrides.map(function(fo){
+				amount += parseFloat(fo.document_stamp);
+			});
+			return amount;
+		},
+		totalInsurance:function(){
+			var amount = 0;
+			this.filteredOverrides.map(function(fo){
+				amount += parseFloat(fo.insurance);
+			});
+			return amount;
+		},
+		totalNotarialFee:function(){
+			var amount = 0;
+			this.filteredOverrides.map(function(fo){
+				amount += parseFloat(fo.notarial_fee);
+			});
+			return amount;
+		},
+		totalPrepaidInterest:function(){
+			var amount = 0;
+			this.filteredOverrides.map(function(fo){
+				amount += parseFloat(fo.prepaid_interest);
+			});
+			return amount;
+		},
+		totalMemoView:function(){
+			var amount = 0;
+			this.filteredOverrides.map(function(fo){
+				amount += parseFloat(fo.memo);
+			});
+			return amount;
+		},
+		totalNetProceeds:function(){
+			var amount = 0;
+			this.filteredOverrides.map(function(fo){
+				amount += parseFloat(fo.net_proceeds);
+			});
+			return amount;
+		},
 	},
 	watch:{
 		'ploanaccount'(newData){
@@ -1004,9 +1249,16 @@ export default {
 				this.fetchCashVoucher();
 			}
 			
-		},'pdate'(newData){
+		},
+		'pboverride'(newData){
+			if(newData==1){
+				this.fetchFilteredOverride(true);
+				this.$emit('doneOverride');
+			}
+		},
+		'pdate'(newData){
 			if(newData){
-				this.fetchFilteredOverride();
+				this.fetchFilteredOverride(true);
 			}
 		},
 

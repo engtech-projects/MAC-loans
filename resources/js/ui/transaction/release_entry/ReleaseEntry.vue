@@ -4,7 +4,7 @@
 		<div class="mb-16"></div>
 		<div class="ml-16 mb-24 bb-primary-dark pb-7 text-block d-flex justify-content-between">
 			<h1 class="m-0 font-35">{{title}}</h1>
-			<a href="#" @click.prevent="clearData.borrower=1;resetLoanDetails()" class="btn btn-primary-dark min-w-150">New Client</a>
+			<a v-if="!rejectid" href="#" @click.prevent="clearData.borrower=1;resetLoanDetails()" class="btn btn-primary-dark min-w-150">New Client</a>
 		</div><!-- /.col -->
 		<div class="d-flex flex-column flex-xl-row p-16">
 				<div style="flex:9;">
@@ -21,7 +21,7 @@
 								<th>Date Rel.</th>
 							</thead>
 							<tbody>
-								<tr v-if="pendingLoanAccounts.length < 1"><td>No released accounts yet.</td></tr>
+								<tr v-if="pendingLoanAccounts.length < 1"><td>No existing current account.</td></tr>
 								<tr @click="loanDetails=bl;setCycle()" class="existing-loans" :class="selected(bl.loan_account_id)" v-for="bl in pendingLoanAccounts" :key="bl.loan_account_id">
 									<td>{{bl.account_num}}</td>
 									<td>{{bl.loan_amount}}</td>
@@ -58,7 +58,7 @@
 
 
 						<div class="tab-pane fade" id="custom-content-below-loaddetails" role="tabpanel" aria-labelledby="custom-content-below-messages-tab">
-							<loan-details :loanaccounts="pendingLoanAccounts" :releasetype="releasetype" :idtype="idtype" :saveloandetails="saveLoanDetails" :borrowerbday="borrowerBirthdate" :borrower="bborrower" :token="token" :loandetails="loanDetails" :pbranch="pbranch"></loan-details>
+							<loan-details :prejected="rejectid" :loanaccounts="pendingLoanAccounts" :releasetype="releasetype" :idtype="idtype" :saveloandetails="saveLoanDetails" :borrowerbday="borrowerBirthdate" :borrower="bborrower" :token="token" :loandetails="loanDetails" :pbranch="pbranch"></loan-details>
 						</div>
 
 
@@ -826,6 +826,28 @@
 				</div>
 			</div>
 		</div>
+
+		<div class="modal" id="zeroModal" tabindex="-1" role="dialog">
+			<div class="modal-dialog modal-md" role="document">
+				<div class="modal-content">
+					<div class="modal-body p-24">
+						<div class="d-flex align-items-center">
+							<img :src="baseURL()+'/img/warning.png'" style="width:120px;height:auto;" class="mr-24" alt="warning icon">
+							<div class="d-flex flex-column">
+								<span class="text-primary-dark text-bold mb-24">
+									Cannot proceed if the net amount is less than zero.
+								</span>
+								<div class="d-flex mt-auto justify-content-end">
+									<a href="#" data-dismiss="modal" class="btn btn-danger min-w-120 pull-right">Close</a>
+									<!-- <a @click.prevent="saveInfo=1" href="#" data-dismiss="modal" class="btn btn-primary-dark min-w-120">OK</a> -->
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
 		<div class="modal" id="warningModal" tabindex="-1" role="dialog">
 			<div class="modal-dialog modal-md" role="document">
 			<div class="modal-content">
@@ -915,7 +937,7 @@
 					type : '',
 					payment_mode : '',
 					terms : 0,
-					loan_amount : '',
+					loan_amount : 0,
 					no_of_installment : '',
 					day_schedule : '',
 					borrower_num : '',
@@ -949,6 +971,9 @@
 					},
 					branch:{
 						branch_id:null
+					},
+					product:{
+						product_name:'',
 					}
 				},
 				products:[],
@@ -984,7 +1009,8 @@
 				}.bind(this));
 			},
 			fetchRejectedAccounts:function(){
-				axios.get(this.baseURL() + 'api/account/rejected', {
+				
+				axios.get(this.baseURL() + 'api/account/rejected/' + this.pbranch, {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
 						'Content-Type': 'application/json',
@@ -992,7 +1018,13 @@
 					}
 				})
 				.then(function (response) {
-					this.rejectedAccounts = response.data.data;
+					// this.rejectedAccounts = response.data.data;
+					response.data.data.map(function(data){
+						if(data.loan_account_id == this.rejectid){
+							console.log(data.loan_account_id);
+							this.rejectedAccounts.push(data);
+						}
+					}.bind(this));  
 					// console.log(response.data.data);
 					// this.setAccount;
 				}.bind(this))
@@ -1144,7 +1176,7 @@
 					type : '',
 					payment_mode : '',
 					terms : 0,
-					loan_amount : '',
+					loan_amount : 0,
 					no_of_installment : '',
 					day_schedule : '',
 					borrower_num : '',
@@ -1180,6 +1212,9 @@
 					},
 					branch:{
 						branch_id:this.pbranch,
+					},
+					product:{
+						product_name:'',
 					}
 
 				}
@@ -1300,7 +1335,7 @@
 				}
 
 				document.body.removeChild(downloadLink);
-			}
+			},
 		},
 		computed:{
 			idType:function(){

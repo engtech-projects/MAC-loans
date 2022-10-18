@@ -4,7 +4,6 @@
 		<div class="mb-16"></div>
 		<div class="ml-16 mb-24 bb-primary-dark pb-7 text-block d-flex justify-content-between">
 			<h1 class="m-0 font-35">{{title}}</h1>
-			<a href="#" @click.prevent="clearData.borrower=1;resetLoanDetails()" class="btn btn-primary-dark min-w-150">New Client</a>
 		</div><!-- /.col -->
 		<div class="d-flex flex-column flex-xl-row p-16">
 				<div style="flex:9;">
@@ -401,7 +400,7 @@
 		},
 		methods: {
 			fetchRejectedAccounts:function(){
-				axios.get(this.baseURL() + 'api/account/rejected', {
+				axios.get(this.baseURL() + 'api/account/rejected/' + pbranch, {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
 						'Content-Type': 'application/json',
@@ -410,6 +409,7 @@
 				})
 				.then(function (response) {
 					this.rejectedAccounts = response.data.data;
+					
 					// console.log(response.data.data);
 					// this.setAccount;
 				}.bind(this))

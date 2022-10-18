@@ -59,6 +59,7 @@ Route::middleware(['auth:sanctum'])->group( function () {
     Route::post('payment/list/', [PaymentController::class, 'overridePaymentList']);
     Route::post('payment/override/', [PaymentController::class, 'overridePayment']);
     Route::get('payment/summary/{branch}', [PaymentController::class, 'paymentSummary']);
+    Route::delete('payment/delete/{id}', [PaymentController::class, 'destroy']);
 
     // loan account
     Route::get('account/show/{account}', [LoanAccountController::class, 'showLoanAccount']);
