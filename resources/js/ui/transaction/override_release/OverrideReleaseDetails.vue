@@ -206,7 +206,7 @@
 		<div class="modal-dialog modal-lg minw-70" role="document">
 		  <div class="modal-content">
 			<div class="modal-body" id="amortPrintContent">
-			  	<img src="/img/company_header.png" style="width:100%" class="mb-16" alt="Company Header">
+			  	<img :src="this.baseURL()+'/img/company_header.png'" style="width:100%" class="mb-16" alt="Company Header">
 				<div class="d-flex flex-column" style="padding:0 50px;">
 					<span class="text-center text-block dark-bb pb-10 text-bold font-lg mb-16">AMORTIZATION SCHEDULE</span>
 
@@ -435,7 +435,7 @@
 				</div>
 				<span v-if="filteredOverrides.length == 0" class="py-12">No data available.</span>
 				<div id="overridePrintContent">
-					<img src="/img/company_header.png" style="width:100%" class="mb-16 to-print" alt="Company Header">
+					<img :src="this.baseURL()+'/img/company_header.png'" style="width:100%" class="mb-16 to-print" alt="Company Header">
 					<table v-if="filteredOverrides.length > 0" class="table table-stripped light-bb darker-bb" style="border-top:7px solid #999;">
 						<thead>
 							<th>Name</th>
@@ -553,7 +553,7 @@
 			<div class="modal-dialog modal-lg minw-70" role="document">
 			<div class="modal-content">
 				<div class="modal-body font-md" id="voucherPrintContent">
-					<img src="/img/company_header.png" style="width:100%" class="mb-24" alt="Company Header">
+					<img :src="this.baseURL()+'/img/company_header.png'" style="width:100%" class="mb-24" alt="Company Header">
 					<div class="d-flex flex-column" style="padding:0 50px;">
 						<div class="d-flex flex-row align-items-center mb-24 darker-bb pb-10">
 							<div class="flex-1">

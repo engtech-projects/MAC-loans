@@ -119,7 +119,7 @@
 												</div>
 											</section>
 											<div class="d-flex mb-24">
-												<img src="/img/logo-footer.png" class="w-100" alt="">
+												<img :src="this.baseURL()+'/img/logo-footer.png'" class="w-100" alt="">
 											</div>
 											<div class="mb-72"></div>
 											<div class="d-flex flex-row-reverse mb-45 no-print">
@@ -130,7 +130,7 @@
 									</div>
 
 									<div  class="tab-pane fade" id="first-letter" role="tabpanel" aria-labelledby="custom-content-below-home-tab">
-										<img src="/img/company_header.png" style="width:100%" class="mb-16" alt="Company Header">
+										<img :src="this.baseURL()+'/img/company_header.png'" style="width:100%" class="mb-16" alt="Company Header">
 										<div class="d-flex flex-column font-md" style="padding:0 35px;">
 
 											<ul class="metadata base-list font-md mb-64">
@@ -176,13 +176,13 @@
 												<a href="#" class="btn btn-success min-w-150 mr-24">Download Excel</a>
 											</div>
 											<div class="d-flex mb-24">
-												<img src="/img/logo-footer.png" class="w-100" alt="">
+												<img :src="this.baseURL()+'/img/logo-footer.png'" class="w-100" alt="">
 											</div>
 										</div>
 									</div>
 
 									<div  class="tab-pane fade" id="second-letter" role="tabpanel" aria-labelledby="custom-content-below-home-tab">
-										<img src="/img/company_header.png" style="width:100%" class="mb-16" alt="Company Header">
+										<img :src="this.baseURL()+'/img/company_header.png'" style="width:100%" class="mb-16" alt="Company Header">
 										<div class="d-flex flex-column font-md" style="padding:0 35px;">
 
 											<ul class="metadata base-list font-md mb-64">
@@ -228,14 +228,14 @@
 												<a href="#" class="btn btn-success min-w-150 mr-24">Download Excel</a>
 											</div>
 											<div class="d-flex mb-24">
-												<img src="/img/logo-footer.png" class="w-100" alt="">
+												<img :src="this.baseURL()+'/img/logo-footer.png'" class="w-100" alt="">
 											</div>
 										</div>
 									</div>
 
 
 									<div  class="tab-pane fade" id="final-demand" role="tabpanel" aria-labelledby="custom-content-below-home-tab">
-										<img src="/img/company_header.png" style="width:100%" class="mb-16" alt="Company Header">
+										<img :src="this.baseURL()+'/img/company_header.png'" style="width:100%" class="mb-16" alt="Company Header">
 										<div class="d-flex flex-column font-md" style="padding:0 35px;">
 
 											<ul class="metadata base-list font-md mb-64">
@@ -315,14 +315,14 @@
 												<a href="#" class="btn btn-success min-w-150 mr-24">Download Excel</a>
 											</div>
 											<div class="d-flex mb-24">
-												<img src="/img/logo-footer.png" class="w-100" alt="">
+												<img :src="this.baseURL()+'/img/logo-footer.png'" class="w-100" alt="">
 											</div>
 										</div>
 									</div>
 
 
 									<div  class="tab-pane fade" id="final-notice" role="tabpanel" aria-labelledby="custom-content-below-home-tab">
-										<img src="/img/company_header.png" style="width:100%" class="mb-16" alt="Company Header">
+										<img :src="this.baseURL()+'/img/company_header.png'" style="width:100%" class="mb-16" alt="Company Header">
 										<div class="d-flex flex-column font-md" style="padding:0 35px;">
 
 											<ul class="metadata base-list font-md mb-64">
@@ -467,14 +467,14 @@
 												<a href="#" class="btn btn-success min-w-150 mr-24">Download Excel</a>
 											</div>
 											<div class="d-flex mb-24">
-												<img src="/img/logo-footer.png" class="w-100" alt="">
+												<img :src="this.baseURL()+'/img/logo-footer.png'" class="w-100" alt="">
 											</div>
 										</div>
 									</div>
 
 
 									<div  class="tab-pane fade" id="return-check" role="tabpanel" aria-labelledby="custom-content-below-home-tab">
-										<img src="/img/company_header.png" style="width:100%" class="mb-16" alt="Company Header">
+										<img :src="this.baseURL()+'/img/company_header.png'" style="width:100%" class="mb-16" alt="Company Header">
 										<div class="d-flex flex-column font-md" style="padding:0 35px;">
 
 											<ul class="metadata base-list font-md mb-64">
@@ -549,7 +549,7 @@
 												<a href="#" class="btn btn-success min-w-150 mr-24">Download Excel</a>
 											</div>
 											<div class="d-flex mb-24">
-												<img src="/img/logo-footer.png" class="w-100" alt="">
+												<img :src="this.baseURL()+'/img/logo-footer.png'" class="w-100" alt="">
 											</div>
 										</div>
 									</div>
@@ -624,7 +624,7 @@
 									
 
 									<div  class="tab-pane fade" id="bouncing-check" role="tabpanel" aria-labelledby="custom-content-below-home-tab">
-										<img src="/img/company_header.png" style="width:100%" class="mb-16" alt="Company Header">
+										<img :src="this.baseURL()+'/img/company_header.png'" style="width:100%" class="mb-16" alt="Company Header">
 										<div class="d-flex flex-column font-md" style="padding:0 35px;">
 
 											<ul class="metadata base-list font-md mb-64">
@@ -699,7 +699,7 @@
 												<a href="#" class="btn btn-success min-w-150 mr-24">Download Excel</a>
 											</div>
 											<div class="d-flex mb-24">
-												<img src="/img/logo-footer.png" class="w-100" alt="">
+												<img :src="this.baseURL()+'/img/logo-footer.png'" class="w-100" alt="">
 											</div>
 										</div>
 									</div>
@@ -787,7 +787,7 @@
 												</div>
 											</section>
 											<div class="d-flex mb-24">
-												<img src="/img/logo-footer.png" class="w-100" alt="">
+												<img :src="this.baseURL()+'/img/logo-footer.png'" class="w-100" alt="">
 											</div>
 											<div class="mb-72"></div>
 											<div class="d-flex flex-row-reverse mb-45 no-print">
@@ -907,7 +907,7 @@
 
 											</section>
 											<div class="d-flex mb-24">
-												<img src="/img/logo-footer.png" class="w-100" alt="">
+												<img :src="this.baseURL()+'/img/logo-footer.png'" class="w-100" alt="">
 											</div>
 											<div class="mb-72"></div>
 											<div class="d-flex flex-row-reverse mb-45 no-print">
@@ -1087,7 +1087,7 @@
 
 											</section>
 											<div class="d-flex mb-24">
-												<img src="/img/logo-footer.png" class="w-100" alt="">
+												<img :src="this.baseURL()+'/img/logo-footer.png'" class="w-100" alt="">
 											</div>
 											<div class="mb-72"></div>
 											<div class="d-flex flex-row-reverse mb-45 no-print">
@@ -1143,7 +1143,7 @@
 												</table>
 											</section>
 											<div class="d-flex mb-24">
-												<img src="/img/logo-footer.png" class="w-100" alt="">
+												<img :src="this.baseURL()+'/img/logo-footer.png'" class="w-100" alt="">
 											</div>
 											<div class="mb-72"></div>
 											<div class="d-flex flex-row-reverse mb-45 no-print">
@@ -1343,7 +1343,7 @@
 												</div>
 											</section>
 											<div class="d-flex mb-24">
-												<img src="/img/logo-footer.png" class="w-100" alt="">
+												<img :src="this.baseURL()+'/img/logo-footer.png'" class="w-100" alt="">
 											</div>
 											<div class="mb-72"></div>
 											<div class="d-flex flex-row-reverse mb-45 no-print">

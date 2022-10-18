@@ -34,7 +34,7 @@
 		</div>
 		<div class="sep mb-45"></div>
 		<div id="printContent">
-			<img src="/img/company_header_fit.png" class="mb-24" alt="">
+			<img :src="this.baseURL()+'/img/company_header_fit.png'" class="mb-24" alt="">
 			<section class="" id="clientSection">
 				<div class="d-flex flex-column mb-16">
 					<div class="d-flex flex-row align-items-center">
@@ -344,7 +344,7 @@
 				<img src="dist/img/logo-footer.png" class="w-100" alt="">
 			</div>
 			<div class="d-flex mb-64" style="margin-top:auto">
-				<img src="/img/logo-footer.png" class="w-100" alt="">
+				<img :src="this.baseURL()+'/img/logo-footer.png'" class="w-100" alt="">
 			</div>
 		</div>
 		
@@ -361,7 +361,7 @@
 		  <div class="modal-content">
 			<div class="modal-body p-24">
 				<div class="d-flex flex-column">
-				<img src="/img/company_header_fit.png" class="mb-24" alt="">
+				<img :src="this.baseURL()+'/img/company_header_fit.png'" class="mb-24" alt="">
 
 
 				<section class="" id="clientSection">

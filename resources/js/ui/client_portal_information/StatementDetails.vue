@@ -502,7 +502,7 @@
 								</div>
 							</div>
 							<div class="flex-5" id="firstLetterPrintContent">
-								<img src="/img/company_header.png" style="width:100%" class="mb-16" alt="Company Header">
+								<img :src="this.baseURL()+'/img/company_header.png'" style="width:100%" class="mb-16" alt="Company Header">
 								<div class="d-flex flex-column font-md" style="padding:0 35px;">
 
 									<ul class="metadata base-list font-md mb-64">
@@ -552,7 +552,7 @@
 							<a href="#" class="btn btn-success min-w-150 mr-24">Download Excel</a>
 						</div>
 						<div class="d-flex mb-24">
-							<img src="/img/logo-footer.png" class="w-100" alt="">
+							<img :src="this.baseURL()+'/img/logo-footer.png'" class="w-100" alt="">
 						</div>
 					</div>
 				</div>
@@ -567,7 +567,7 @@
 					<div class="modal-dialog modal-lg minw-70" role="document">
 						<div class="modal-content">
 							<div class="modal-body" id="paymentStatusPrintContent">
-								<img src="/img/company_header.png" style="width:100%" class="mb-16" alt="Company Header">
+								<img :src="this.baseURL()+'/img/company_header.png'" style="width:100%" class="mb-16" alt="Company Header">
 								<div class="d-flex flex-column" style="padding:0 50px;">
 									<span class="text-center text-block dark-bb pb-10 text-bold font-lg mb-16">PAYMENT STATUS REPORT</span>
 
@@ -787,7 +787,7 @@
 																					<a href="#" class="btn btn-success min-w-150 mr-24">Download Excel</a>
 																				</div>
 																				<div class="d-flex mb-24">
-																					<img src="/img/logo-footer.png" class="w-100" alt="">
+																					<img :src="this.baseURL()+'/img/logo-footer.png'" class="w-100" alt="">
 																				</div>
 											</div>
 										</div>
@@ -992,7 +992,7 @@
 												</div>
 											</section>
 											<div class="d-flex mb-24">
-												<img src="/img/logo-footer.png" class="w-100" alt="">
+												<img :src="this.baseURL()+'/img/logo-footer.png'" class="w-100" alt="">
 											</div>
 											<div class="mb-72"></div>
 											<div class="d-flex flex-row-reverse mb-45 no-print">
@@ -1017,7 +1017,7 @@
 			<div class="modal-dialog modal-lg minw-70" role="document">
 			<div class="modal-content">
 				<div class="modal-body font-md" id="voucherPrintContent">
-					<img src="/img/company_header.png" style="width:100%" class="mb-24" alt="Company Header">
+					<img :src="this.baseURL()+'/img/company_header.png'" style="width:100%" class="mb-24" alt="Company Header">
 					<div class="d-flex flex-column" style="padding:0 50px;">
 						<div class="d-flex flex-row align-items-center mb-24 darker-bb pb-10">
 							<div class="flex-1">
@@ -1200,7 +1200,7 @@
 							<a href="#" id="cancelVoucherModal" data-dismiss="modal" class="btn btn-danger min-w-150 mr-24 hide">Cancel</a>
 						</div>
 						<div class="d-flex mb-24">
-						<img src="/img/logo-footer.png" class="w-100" alt="">
+						<img :src="this.baseURL()+'/img/logo-footer.png'" class="w-100" alt="">
 					</div>
 					</div>
 				</div>
@@ -1219,7 +1219,7 @@
 											<div class="modal-dialog modal-lg minw-70" role="document">
 												<div class="modal-content">
 													<div class="modal-body">
-														<img src="/img/company_header.png" style="width:100%" class="mb-45" alt="Company Header">
+														<img :src="this.baseURL()+'/img/company_header.png'" style="width:100%" class="mb-45" alt="Company Header">
 														<div class="d-flex flex-column" style="padding:0 50px;">
 															<div class="d-flex flex-row align-items-center mb-36">
 																<div class="flex-1">
@@ -1402,7 +1402,7 @@
 																<a href="#" class="btn btn-success min-w-150 mr-24">Download Excel</a>
 															</div>
 															<div class="d-flex mb-24">
-																<img src="/img/logo-footer.png" class="w-100" alt="">
+																<img :src="this.baseURL()+'/img/logo-footer.png'" class="w-100" alt="">
 															</div>
 														</div>
 													</div>
@@ -1417,7 +1417,7 @@
 								<div class="modal-dialog modal-lg minw-70" role="document">
 									<div class="modal-content">
 										<div class="modal-body">
-											<img src="/img/company_header.png" style="width:100%" class="mb-16" alt="Company Header">
+											<img :src="this.baseURL()+'/img/company_header.png'" style="width:100%" class="mb-16" alt="Company Header">
 											<div class="d-flex flex-column" style="padding:0 50px;">
 												<span class="text-center text-block dark-bb pb-10 text-bold font-lg mb-16">AMORTIZATION SCHEDULES</span>
 
@@ -1608,7 +1608,7 @@
 																								<a href="#" class="btn btn-success min-w-150 mr-24">Download Excel</a>
 																							</div>
 																							<div class="d-flex mb-24">
-																								<img src="/img/logo-footer.png" class="w-100" alt="">
+																								<img :src="this.baseURL()+'/img/logo-footer.png'" class="w-100" alt="">
 																							</div>
 														</div>
 													</div>
@@ -1627,7 +1627,7 @@
 		<div class="modal-dialog modal-lg minw-70" role="document">
 			<div class="modal-content">
 				<div class="modal-body" id="soaPrintContent">
-					<img src="/img/company_header.png" style="width:100%" class="mb-16" alt="Company Header">
+					<img :src="this.baseURL()+'/img/company_header.png'" style="width:100%" class="mb-16" alt="Company Header">
 					<div class="d-flex flex-column" style="padding:0 50px;">
 						<span class="text-center text-block dark-bb pb-10 text-bold font-lg mb-16">STATEMENT OF ACCOUNT</span>
 
@@ -1929,7 +1929,7 @@
 																		<a href="#" class="btn btn-success min-w-150 mr-24">Download Excel</a>
 																	</div>
 																	<div class="d-flex mb-24">
-																		<img src="/img/logo-footer.png" class="w-100" alt="">
+																		<img :src="this.baseURL()+'/img/logo-footer.png'" class="w-100" alt="">
 																	</div>
 								</div>
 							</div>
@@ -1946,7 +1946,7 @@
 		<div class="modal-dialog modal-lg minw-70" role="document">
 		  <div class="modal-content">
 			<div class="modal-body" id="amortPrintContent">
-			  	<img src="/img/company_header.png" style="width:100%" class="mb-16" alt="Company Header">
+			  	<img :src="this.baseURL()+'/img/company_header.png'" style="width:100%" class="mb-16" alt="Company Header">
 				<div class="d-flex flex-column" style="padding:0 50px;">
 					<span class="text-center text-block dark-bb pb-10 text-bold font-lg mb-16">AMORTIZATION SCHEDULE</span>
 
@@ -2073,7 +2073,7 @@
 						<a href="#" id="cancelModal" data-dismiss="modal" class="btn btn-danger min-w-150 mr-24 hide">Cancel</a>
 					</div>
 					<div class="d-flex mb-24">
-							<img src="/img/logo-footer.png" class="w-100" alt="">
+							<img :src="this.baseURL()+'/img/logo-footer.png'" class="w-100" alt="">
 						</div>
 				</div>
 			</div>
