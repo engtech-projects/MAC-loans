@@ -14,4 +14,7 @@ class EndOfDayController extends Controller
 			'title' => 'End of Day',
 		]);
 	}
+	public function eodCheck(Request $request){
+		return \App\Models\EndTransaction::where('date_end', date('Y-m-d'))->first()? 1:0;
+	}
 }

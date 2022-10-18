@@ -85,6 +85,7 @@ Route::group(['middleware' => 'auth'], function (){
 	Route::get('/reports/collection/client', [ReportsController::class, 'collectionClient'])->name('reports.collection.client');
 	Route::get('/reports/collection/ao', [ReportsController::class, 'collectionAo'])->name('reports.collection.ao');
 	Route::get('/endofday/', [EndOfDayController::class, 'index'])->name('endofday');
+	Route::get('/eod/check', [EndOfDayController::class, 'eodCheck']);
 
 });
 
