@@ -850,7 +850,7 @@ export default {
 				if(amount + this.excessAdvancePrincipal > this.loanAccount.current_amortization.principal_balance){
 					this.payment.principal += this.loanAccount.current_amortization.principal_balance - this.excessAdvancePrincipal;
 					this.payment.advance_principal = this.loanAccount.current_amortization.principal_balance;
-					amount -= this.loanAccount.current_amortization.principal_balance;
+					amount -= this.loanAccount.current_amortization.principal_balance - this.excessAdvancePrincipal;
 				}else{
 					this.payment.principal += amount;
 					this.payment.advance_principal = amount + this.excessAdvancePrincipal;
