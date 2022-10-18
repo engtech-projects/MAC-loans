@@ -7,7 +7,7 @@
 			</div>
 			<span class="font-lg" style="color:#ddd">Please wait until the process is complete</span>
 		</div>
-		<div v-if="success" class="black-screen d-flex flex-column align-items-center justify-content-center" style="padding-left:0px;">
+		<div v-if="1==11" class="black-screen d-flex flex-column align-items-center justify-content-center" style="padding-left:0px;">
 			<span class="mb-24" style="color:#ddd;font-size:36px;">Process complete...</span>
 			<!-- <button class="btn btn-success" style="padding-left:35px;padding-right:35px">OK</button> -->
 		</div>
@@ -25,12 +25,15 @@
 				<button @click="posted=false" data-toggle="modal" data-target="#postedModal" class="btn btn-success px-35">Unposted</button>
 			</div>
 		</div>
+		<div v-if="success" class="d-flex flex-column align-items-center justify-content-center p-16 " style="padding-top:150px">
+			<span class="text-red text-xl text-center" style="max-width:575px">Transactions for today</span>
+			<span class="text-red text-xl text-center" style="max-width:575px">has already ended.</span>
+		</div>
 
 		<div v-if="failed" class="d-flex flex-column align-items-center p-16" style="padding-top:65px">
 			<p class="font-lg text-center lh-1">End of Day Stopped</p>
-			<p class="font-lg text-center lh-1">Due to Incomplete Override Release / Repayment</p>
-			<p class="font-lg text-center lh-1 mb-45">Transaction</p>
-			<button @click="endOfDay()" class="btn btn-primary-dark px-35">Retry</button>
+			<p class="font-lg text-center lh-1">{{pendingResponse}}</p>
+			<button @click="checkPendingTransactions()" class="btn btn-primary-dark px-35">Retry</button>
 		</div>
 
 		<div class="modal" id="postedModal" tabindex="-1" role="dialog">
@@ -44,7 +47,7 @@
 						</div>
 						<div class="d-flex flex-row">
 							<div style="flex:2"></div>
-							<button @click="endOfDay()" data-dismiss="modal" class="btn btn-lg btn-success mr-24" style="flex:3">Yes</button>
+							<button @click="checkPendingTransactions()" data-dismiss="modal" class="btn btn-lg btn-success mr-24" style="flex:3">Yes</button>
 							<button data-dismiss="modal" class="btn btn-lg btn-success" style="flex:3">No</button>
 							<div style="flex:2"></div>
 						</div>
@@ -53,6 +56,19 @@
 				</div>
 			</div>
 		</div>
+		<div class="modal" id="eodModal" tabindex="-1" role="dialog">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+				<div class="modal-body">
+					<div class="d-flex flex-column justify-content-center align-items-center" style="min-height:200px;padding:16px;">
+						<span class="text-lg">End of day Completed.</span>
+						<span class="text-lg">Today's transactions is now closed.</span>
+					</div>
+				</div>
+				</div>
+			</div>
+		</div>
+		<button class="hide" id="eodModalBtn" data-toggle="modal" data-target="#eodModal">eod</button>
 	</div>
 </template>
 
@@ -69,6 +85,7 @@ export default {
 			loading:false,
 			success:false,
 			transactionDate:this.dateToYMD(new Date),
+			pendingResponse:'',
 		}
 	},
 	methods:{
@@ -88,9 +105,10 @@ export default {
 				console.log(error);
 			}.bind(this));
 		},
-		async endOfDay(){
+		async checkPendingTransactions(){
 			this.loading = true;
-			await axios.post(this.baseURL() + 'api/eod/eodtransaction/exec',{status:this.posted?'posted':'unposted'},{
+			this.failed = false;
+			await axios.post(this.baseURL() + 'api/eod/eodtransaction/check', {branch_id:this.branch.branch_id},{
 			headers: {
 				'Authorization': 'Bearer ' + this.token,
 				'Content-Type': 'application/json',
@@ -98,15 +116,55 @@ export default {
 				}
 			})
 			.then(function (response) {
-				this.failed = false;
-				console.log(response.data);
+				if(response.data.data == 0){
+					this.loading = false;
+					this.endOfDay();
+				}else{
+					this.pendingResponse = response.data.message;
+					this.failed = true;
+				}
+			}.bind(this))
+			.catch(function (error) {
 				this.loading = false;
+				console.log(error);
+			}.bind(this));
+		},
+		async endOfDay(){
+			this.loading = true;
+			await axios.post(this.baseURL() + 'api/eod/eodtransaction/exec',{status:this.posted?'posted':'unposted', branch_id:this.branch.branch_id},{
+			headers: {
+				'Authorization': 'Bearer ' + this.token,
+				'Content-Type': 'application/json',
+				'Accept': 'application/json'
+				}
+			})
+			.then(function (response) {
+				this.loading = false;
+				document.getElementById('eodModalBtn').click();
 				this.success = true;
 			}.bind(this))
 			.catch(function (error) {
-				this.failed = true;
 				console.log(error);
 				this.loading = false;
+			}.bind(this));
+		},
+		async checkEOD(){
+			this.loading = true;
+			await axios.get(this.baseURL() + 'eod/check', {
+			headers: {
+				'Content-Type': 'application/json',
+				'Accept': 'application/json'
+				}
+			})
+			.then(function (response) {
+				this.loading = false;
+				if(response.data == 1){
+					this.success = true;
+				}
+			}.bind(this))
+			.catch(function (error) {
+				this.loading = false;
+				console.log(error);
 			}.bind(this));
 		}
 	},
@@ -116,6 +174,7 @@ export default {
 		}
 	},
 	mounted(){
+		this.checkEOD();
 		this.branch = JSON.parse(this.pbranch);
 		this.fetchTransactionDate();
 	}
