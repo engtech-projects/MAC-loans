@@ -1068,6 +1068,7 @@ export default {
 			if(this.outstandingInterest < this.payment.rebatesInputted){
 				this.payment.rebatesInputted = this.outstandingInterest;
 			}
+			this.distribute();
 		},
 	},
 	mounted(){
