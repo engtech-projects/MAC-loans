@@ -18,21 +18,21 @@
 							<span class="mr-10 flex-1">Account Officer : </span>
 							<select v-model="filter.ao" class="form-control flex-1 min-w-200" name="" id="">
 								<option value="all">All</option>
-								<option v-for="aao in setAo" :key="aao.ao_id" :value="aao.ao_id">{{aao.name}}</option>
+								<option v-for="aao in filteredAos" :key="aao.ao_id" :value="aao.ao_id">{{aao.name}}</option>
 							</select>
 						</div>
 						<div class="d-flex flex-row align-items-center mr-24">
 							<span class="mr-10 flex-1">Center : </span>
 							<select v-model="filter.center" class="form-control min-w-200 flex-1" name="" id="">
 								<option value="all">All</option>
-								<option v-for="cc in setCenter" :key="cc.center_id" :value="cc.center_id">{{cc.center}}</option>
+								<option v-for="cc in filteredCenters" :key="cc.center_id" :value="cc.center_id">{{cc.center}}</option>
 							</select>
 						</div>
 						<div class="d-flex flex-row align-items-center">
 							<span class="mr-10 flex-1">Product Name : </span>
 							<select v-model="filter.product" class="form-control min-w-200 flex-1" name="" id="">
 								<option value="all">All</option>
-								<option v-for="pp in setProduct" :key="pp.product_id" :value="pp.product_id">{{pp.product_name}}</option>
+								<option v-for="pp in filteredProducts" :key="pp.product_id" :value="pp.product_id">{{pp.product_name}}</option>
 							</select>
 						</div>
 					</div>
@@ -46,10 +46,12 @@
 						<th>Type</th>
 						<th>Principal</th>
 						<th>Interest</th>
-						<th>Pnlty / PDI</th>
-						<th>Others</th>
-						<th>Discount</th>
-						<th>Life Ins.</th>
+						<th>Penalty</th>
+						<th>PDI</th>
+						<th>Overpayment</th>
+						<th>Rebates</th>
+						<th>L.Disc</th>
+						<th>L.Waive</th>
 					</thead>
 					<tbody>
 						<tr v-for="p in filteredPayments" :key="p.payment_id">
@@ -60,10 +62,27 @@
 							<td>{{p.payment_type}}</td>
 							<td>{{formatToCurrency(p.principal)}}</td>
 							<td>{{formatToCurrency(p.interest)}}</td>
-							<td>{{formatToCurrency(p.pdi + p.penalty)}}</td>
-							<td>0.00</td>
+							<td>{{formatToCurrency(p.penalty)}}</td>
+							<td>{{formatToCurrency(p.pdi)}}</td>
+							<td>{{formatToCurrency(p.advance_interest + p.advance_principal)}}</td>
 							<td>{{formatToCurrency(p.rebates)}}</td>
-							<td>{{p.ao_id}}</td>
+							<td>0.00</td>
+							<td>0.00</td>
+						</tr>
+						<tr class="text-bold">
+							<td>TOTAL</td>
+							<td></td>
+							<td></td>
+							<td>{{formatToCurrency(totalPayment)}}</td>
+							<td></td>
+							<td>{{formatToCurrency(totalPrincipal)}}</td>
+							<td>{{formatToCurrency(totalInterest)}}</td>
+							<td>{{formatToCurrency(totalPenalty)}}</td>
+							<td>{{formatToCurrency(totalPdi)}}</td>
+							<td>{{formatToCurrency(overPayment)}}</td>
+							<td>{{formatToCurrency(totalRebates)}}</td>
+							<td>0.00</td>
+							<td>0.00</td>
 						</tr>
 						<!-- <tr>
 							<td>0212154265</td>
@@ -197,7 +216,7 @@
 							</div>
 							<div class="d-flex flex-row">
 								<div class="d-flex flex-row flex-2 justify-content-between pr-24">
-									<span class="">Total Cheque</span>
+									<span class="">Total Check</span>
 									<span>:</span>
 								</div>
 								<span class="flex-3 text-primary-dark">P {{formatToCurrency(totalCheck)}}</span>
@@ -258,7 +277,7 @@
 						   <span>TOTAL PAYMENT</span>
 						   <div class="d-flex flex-row">
 							   <span>P</span>
-							   <span>{{formatToCurrency(totalPos + totalCash + totalCheck)}}</span>
+							   <span>{{formatToCurrency(totalPos)}}</span>
 						   </div>
 					   </div>
 					   <span class="flex-1 bb-primary-dark pb-24 mr-24">Prepared by:</span>
@@ -266,7 +285,7 @@
 					   <span class="flex-1 bb-primary-dark pb-24">Approved by:</span>
 					</section>
 					<section class="d-flex flex-1 justify-content-end">
-						<a href="#" data-dismiss="modal" class="btn btn-success mr-16">Download to Excel</a>
+						<!-- <a href="#" data-dismiss="modal" class="btn btn-success mr-16">Download to Excel</a> -->
 						<a href="#" data-dismiss="modal" class="btn btn-default min-w-150">Print</a>
 					</section>
 				</div>
@@ -278,7 +297,7 @@
 
 <script>
 export default {
-	props:['ppayments'],
+	props:['ppayments', 'pbranch'],
 	data(){
 		return {
 			filter:{
@@ -287,6 +306,26 @@ export default {
 				product:'all'
 			},
 			aofficers:[],
+		}
+	},
+	methods:{
+		async pendingPayments(){
+			await axios.get(this.baseURL() + 'transaction/payments/pending', {
+			headers: {
+				'Authorization': 'Bearer ' + this.token,
+				'Content-Type': 'application/json',
+				'Accept': 'application/json'
+				}
+			})
+			.then(function (response) {
+				console.log(response.data);
+			}.bind(this))
+			.catch(function (error) {
+				console.log(error);
+			}.bind(this));
+		},
+		hasCenter:function(loan){
+			return loan.center?loan.center.center_id:false;
 		}
 	},
 	computed:{
@@ -310,6 +349,55 @@ export default {
 		},
 		totalPos:function(){
 			return this.totalCash + this.totalCheck;
+		},
+		totalPayment:function(){
+			var amount = 0;
+			this.filteredPayments.map(function(payment){
+				amount += payment.amount_applied;
+			});
+			return amount;
+		},
+		totalPrincipal:function(){
+			var amount = 0;
+			this.filteredPayments.map(function(payment){
+				amount += payment.principal;
+			});
+			return amount;
+		},
+		totalInterest:function(){
+			var amount = 0;
+			this.filteredPayments.map(function(payment){
+				amount += payment.interest;
+			});
+			return amount;
+		},
+		totalPenalty:function(){
+			var amount = 0;
+			this.filteredPayments.map(function(payment){
+				amount += payment.penalty;
+			});
+			return amount;
+		},
+		totalPdi:function(){
+			var amount = 0;
+			this.filteredPayments.map(function(payment){
+				amount += payment.pdi;
+			});
+			return amount;
+		},
+		totalRebates:function(){
+			var amount = 0;
+			this.filteredPayments.map(function(payment){
+				amount += payment.rebates;
+			});
+			return amount;
+		},
+		overPayment:function(){
+			var amount = 0;
+			this.filteredPayments.map(function(payment){
+				amount += (payment.advance_principal + payment.advance_interest);
+			});
+			return amount;
 		},
 		setAo:function(){
 			let aos = [];
@@ -360,17 +448,22 @@ export default {
 			}else{
 				this.ppayments.map(function(data){
 					if(this.filter.ao != 'all' && this.filter.center != 'all' && this.filter.product != 'all'){
-						if(data.loan_details.account_officer.ao_id == this.filter.ao && data.loan_details.center.center_id == data.filter.center && data.loan_details.product.product_id == data.filter.product){
+						if(data.loan_details.account_officer.ao_id == this.filter.ao && this.hasCenter(data.loan_details) == this.filter.center && data.loan_details.product.product_id == this.filter.product){
 							payments.push(data);
 						}
 					}
 					if(this.filter.ao != 'all' && this.filter.center != 'all' && this.filter.product == 'all'){
-						if(data.loan_details.account_officer.ao_id == this.filter.ao && data.loan_details.center.center_id == data.filter.center){
+						if(data.loan_details.account_officer.ao_id == this.filter.ao && this.hasCenter(data.loan_details) == this.filter.center){
 							payments.push(data);
 						}
 					}
 					if(this.filter.ao != 'all' && this.filter.center == 'all' && this.filter.product != 'all'){
-						if(data.loan_details.account_officer.ao_id == this.filter.ao && data.loan_details.product.product_id == data.filter.product){
+						if(data.loan_details.account_officer.ao_id == this.filter.ao && data.loan_details.product.product_id == this.filter.product){
+							payments.push(data);
+						}
+					}
+					if(this.filter.ao == 'all' && this.filter.center != 'all' && this.filter.product != 'all'){
+						if(this.hasCenter(data.loan_details) == this.filter.center && data.loan_details.product.product_id == this.filter.product){
 							payments.push(data);
 						}
 					}
@@ -379,11 +472,78 @@ export default {
 							payments.push(data);
 						}
 					}
+					if(this.filter.ao == 'all' && this.filter.center == 'all' && this.filter.product != 'all'){
+						if(data.loan_details.product.product_id == this.filter.product){
+							payments.push(data);
+						}
+					}
+					if(this.filter.ao == 'all' && this.filter.center != 'all' && this.filter.product == 'all'){
+						if(this.hasCenter(data.loan_details) == this.filter.center){
+							payments.push(data);
+						}
+					}
 					
 				}.bind(this));
 			}
 			return payments
-		}
+		},
+		filteredProducts:function(){
+			var products = [];
+			this.ppayments.map(function(ov){
+				if(ov.loan_details.product){
+					var count = 0;
+					products.map(function(pp){
+						if(ov.loan_details.product.product_id == pp.product_id)
+						count++;
+					}.bind(this));
+					if(count == 0){
+						products.push(ov.loan_details.product);
+					}
+				}
+			}.bind(this));
+			if(!products.length){
+				this.filter.product_id = 'all';
+			}
+			return products;
+		},
+		filteredAos:function(){
+			var aofficers = [];
+			this.ppayments.map(function(ov){
+				if(ov.loan_details.account_officer){
+					var count = 0;
+					aofficers.map(function(pp){
+						if(ov.loan_details.account_officer.ao_id == pp.ao_id)
+						count++;
+					}.bind(this));
+					if(count == 0){
+						aofficers.push(ov.loan_details.account_officer);
+					}
+				}
+			}.bind(this));
+			if(!aofficers.length){
+				this.filter.ao_id = 'all';
+			}
+			return aofficers;
+		},
+		filteredCenters:function(){
+			var centers = [];
+			this.ppayments.map(function(ov){
+				if(ov.loan_details.center){
+					var count = 0;
+					centers.map(function(cc){
+						if(ov.loan_details.center.center_id == cc.center_id)
+						count++;
+					}.bind(this));
+					if(count == 0){
+						centers.push(ov.loan_details.center);
+					}
+				}
+			}.bind(this));
+			if(!centers.length){
+				this.filter.center_id = 'all';
+			}
+			return centers;
+		},
 	},
 	mounted(){
 		this.setAo;

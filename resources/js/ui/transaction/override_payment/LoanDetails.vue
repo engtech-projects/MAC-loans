@@ -12,16 +12,16 @@
 						<div style="flex:4"></div>
 						<div class="form-group mb-10" style="flex: 5">
 							<label for="transactionDate" class="form-label">Transaction Date</label>
-							<input :value="this.dateToYMD(new Date)" type="date" class="form-control form-input text-right" id="transactionDate">
+							<input disabled :value="this.dateToYMD(new Date)" type="date" class="form-control form-input text-right" id="transactionDate">
 						</div>
 					</div>
 					<div class="form-group mb-5" style="flex: 5">
 						<label for="client" class="form-label mb-3">Client</label>
-						<input :value="ppayment.loan_details.borrower.firstname + ' ' + ppayment.loan_details.borrower.lastname" type="text" class="form-control form-input " id="client">
+						<input disabled :value="ppayment.loan_details.borrower.firstname + ' ' + ppayment.loan_details.borrower.lastname" type="text" class="form-control form-input " id="client">
 					</div>
 					<div class="form-group mb-10" style="flex: 5">
 						<label for="address" class="form-label mb-3">Address</label>
-						<input :value="ppayment.loan_details.borrower.address" type="text" class="form-control form-input " id="address">
+						<input disabled :value="ppayment.loan_details.borrower.address" type="text" class="form-control form-input " id="address">
 					</div>
 				</div>
 				<div class="upload-photo d-flex flex-column" style="flex:4;padding-top:36px;">

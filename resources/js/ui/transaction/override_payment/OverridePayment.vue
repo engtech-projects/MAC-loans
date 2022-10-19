@@ -4,7 +4,6 @@
 		<div class="mb-16"></div>
 			<div class="ml-16 mb-24 bb-primary-dark pb-7 text-block d-flex justify-content-between">
 				<h1 class="m-0 font-35">Override Payment</h1>
-				<a href="#" class="btn btn-primary-dark min-w-150">New Client</a>
 			</div>
 		<div class="d-flex flex-column flex-xl-row p-16">
 			<div style="flex:9;">
@@ -14,11 +13,16 @@
 							<!-- <select class="form-control select2 select2-hidden-accessible" data-select2-id="1" tabindex="-1" aria-hidden="true">
 								<option value="">2022/11/11</option>
 							</select> -->
-							<input v-model="filter.created_at" type="date" class="form-control" placeholder="Pick a date">
+							<input v-model="preference.created_at" type="date" class="form-control" placeholder="Pick a date">
 						</div>
-						<div class="form-group flex-2">
-							<input type="text" class="form-control" placeholder="Specifications">
+						<div class="form-group flex-2 mr-7">
+							<input v-model="preference.specification" type="text" class="form-control" placeholder="Specifications">
 						</div>
+						<select v-model="preference.filter" name="" id="" class="flex-1 form-control input-sm">
+							<option value="client">Client</option>
+							<option value="ao">Account Officer</option>
+							<option value="product">Product</option>
+						</select>
 					</div>
 				</div>
 				<table class="table table-stripped mb-10" id="clientsList">
@@ -29,17 +33,17 @@
 						<th></th>
 					</thead>
 					<tbody>
-						<tr v-for="p in payments" :key="p.payment_id" class="client-item" :class="payment.payment_id==p.payment_id?'active':''">
+						<tr v-for="p in filterClient" :key="p.payment_id" class="client-item" :class="payment.payment_id==p.payment_id?'active':''">
 							<td style="vertical-align:middle;"><input v-model="p.checked" type="checkbox" class="form-control form-box"></td>
 							<td>{{p.loan_details.account_num}}</td>
 							<td><a href="#">{{p.loan_details.borrower.firstname + ' ' + p.loan_details.borrower.lastname}}</a></td>
-							<td @click="payment=p;openPayments(filter)"><span class="text-green c-pointer">select</span></td>
+							<td @click="payment=p;openPayments(preference)"><span class="text-green c-pointer">select</span></td>
 						</tr>
 					
 					</tbody>
 				</table>
 				<div class="d-flex flex-row-reverse sep-thin pb-10 mb-16" style="border-bottom-color:#CCC!important;">
-					<a href="#" @click="batchOverride()" class="btn btn-success">Batch Override</a>
+					<a href="#" v-if="boverrideCheck > 1" data-toggle="modal" data-target="#warningModal" class="btn btn-success">Batch Override</a>
 					<a href="#" data-toggle="modal" data-target="#overrideDetailsModal" class="btn btn-primary min-w-150 mr-16">View</a>
 				</div>
 				<section class="light-bb mb-16">
@@ -157,19 +161,44 @@
 			</div>
 			<overridepayment-details :ppayment="payment" :token="token" @reloadPayments="openPayments();resetPayment()"></overridepayment-details>
 		</div>
-		<overridepayment-view :ppayments="payments"></overridepayment-view>
+		<overridepayment-view :pbranch="pbranch" :ppayments="paymentsBase"></overridepayment-view>
+
+		<div class="modal" id="warningModal" tabindex="-1" role="dialog">
+			<div class="modal-dialog modal-md" role="document">
+				<div class="modal-content">
+					<div class="modal-body p-24">
+						<div class="d-flex align-items-center">
+							<img :src="baseURL()+'/img/warning.png'" style="width:120px;height:auto;" class="mr-24" alt="warning icon">
+							<div class="d-flex flex-column">
+								<span class="text-primary-dark text-bold mb-24">
+									Are you sure you want to override these payments?
+								</span>
+								<div class="d-flex mt-auto justify-content-between">
+									<a href="#" data-dismiss="modal" class="btn btn-danger min-w-120">Cancel</a>
+									<a @click.prevent="batchOverride()" href="#" data-dismiss="modal" class="btn btn-primary-dark min-w-120">Proceed</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
 	</div>
 </template>
 
 <script>
 export default {
-	props:['token'],
+	props:['token','pbranch'],
 	data(){
 		return {
 			paidPayments:[],
 			payments:[],
-			filter:{
+			paymentsBase:[],
+			preference:{
 				created_at: this.dateToYMD(new Date()),
+				specification:'',
+				filter:'client'
 			},
 			dates:[],
 			payment:{
@@ -192,7 +221,9 @@ export default {
 	methods:{
 
 		async openPayments(){
-			await axios.post(this.baseURL() + 'transaction/payments/open', this.filter ,{
+			var data = this.preference;
+			data.branch_id = this.pbranch;
+			await axios.post(this.baseURL() + 'transaction/payments/open', data ,{
 			headers: {
 				'Authorization': 'Bearer ' + this.token,
 				'Content-Type': 'application/json',
@@ -200,15 +231,15 @@ export default {
 				}
 			})
 			.then(function (response) {
-				this.payments = this.setCheckbox(response.data);
-				// console.log(response.data);
+				this.payments = this.setCheckbox(response.data.payments);
+				this.paymentsBase = response.data.base;
 			}.bind(this))
 			.catch(function (error) {
 				console.log(error);
 			}.bind(this));
 		},
 		async todaysPaidPayments(){
-			await axios.post(this.baseURL() + 'transaction/payments/paidtoday', this.filter ,{
+			await axios.post(this.baseURL() + 'transaction/payments/paidtoday', this.preference ,{
 			headers: {
 				'Authorization': 'Bearer ' + this.token,
 				'Content-Type': 'application/json',
@@ -217,7 +248,6 @@ export default {
 			})
 			.then(function (response) {
 				this.paidPayments = response.data;
-				console.log(response.data);
 			}.bind(this))
 			.catch(function (error) {
 				console.log(error);
@@ -242,7 +272,7 @@ export default {
 			};
 		},
 		fetchPayments:function(){
-			axios.post(this.baseURL() + 'api/payment/list',this.filter,{
+			axios.post(this.baseURL() + 'api/payment/list',this.preference,{
 			headers: {
 				'Authorization': 'Bearer ' + this.token,
 				'Content-Type': 'application/json',
@@ -305,6 +335,15 @@ export default {
 		},
 	},
 	computed:{
+		boverrideCheck:function(){
+			var count = 0;
+			this.payments.map(function(data){
+				if(data.checked){
+					count++
+				}
+			}.bind(this));
+			return count;
+		},
 		selected:function(){
 			var amount = 0;
 			this.payments.map(function(payment){
@@ -384,17 +423,50 @@ export default {
 			});
 			return amount;
 		},
+		filterClient:function(){
+			var result = [];
+			if(this.preference.created_at != ''){
+				this.payments.map(function(val){
+					if(this.dateToYMD(new Date(val.created_at)) == this.dateToYMD(new Date(this.preference.created_at))){
+						if(this.preference.specification == ''){
+							result.push(val);
+							return
+						}else{
+							if(this.preference.filter == 'client'){
+								if(val.loan_details.borrower.firstname.toLowerCase().includes(this.preference.specification.toLowerCase()) || val.loan_details.borrower.lastname.toLowerCase().includes(this.preference.specification.toLowerCase()) || (val.loan_details.borrower.firstname + ' ' + val.loan_details.borrower.lastname).toLowerCase().includes(this.preference.specification.toLowerCase()) || (val.loan_details.borrower.lastname + ' ' + val.loan_details.borrower.firstname).toLowerCase().includes(this.preference.specification.toLowerCase())){
+									result.push(val);
+									return
+								}
+							}
+							if(this.preference.filter == 'ao' && val.loan_details.account_officer){
+								if(val.loan_details.account_officer.name.toLowerCase().includes(this.preference.specification.toLowerCase())){
+									result.push(val);
+									return
+								}
+							}
+							if(this.preference.filter == 'product' && val.loan_details.product){
+								if(val.loan_details.product.product_name.toLowerCase().includes(this.preference.specification.toLowerCase())){
+									result.push(val);
+									return
+								}
+							}
+						}
+					}
+				}.bind(this))			
+			}
+			return result;
+		},
 	},
 	watch:{
-		'filter.created_at':function(newValue){
+		'preference.created_at':function(newValue){
 			this.fetchPayments();
-			this.openPayments(this.filter);
+			this.openPayments(this.preference);
 		}
 	},
 	mounted(){
 		this.fetchPayments();
 		this.overridePaymentDates();
-		this.openPayments(this.filter);
+		this.openPayments(this.preference);
 		this.todaysPaidPayments();
 	}
 }

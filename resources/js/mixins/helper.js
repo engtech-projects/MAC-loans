@@ -67,7 +67,7 @@ Vue.mixin({
 			return age;
 		},
 		formatToCurrency:function(amount) {
-			return parseFloat(amount).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,");
+			return amount? parseFloat(amount).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,"):'0.00';
 		},
 		formatToAmount:function(currency){
 			return parseFloat(currency.toString().split(',').join(''));
