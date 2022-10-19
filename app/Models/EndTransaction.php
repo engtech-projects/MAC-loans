@@ -180,19 +180,31 @@ class EndTransaction extends Model
 
 						break;
 					case 'Rebates':
-						$ledger[$key]['debit'] += $payment->rebates;
+
+						if( $payment->rebates > 0 && !$payment->rebates_approval_no ) {
+							$ledger[$key]['debit'] += $payment->rebates;	
+						}
+						
 						break;
 					case 'Interest Income':
 						$ledger[$key]['credit'] += $payment->interest;
 						break;
 					case 'Penalty Income':
-						$ledger[$key]['credit'] += $payment->penalty;
+
+						if( $payment->penalty > 0 && !$payment->penalty_approval_no ) {
+								$ledger[$key]['credit'] += $payment->penalty;
+						}
+
 						break;
 					case 'Overpayment':
 						$ledger[$key]['credit'] += $payment->over_payment;
 						break;
 					case 'Pastdue Interest':
-						 $ledger[$key]['credit'] += $payment->pdi;
+
+						if( $payment->pdi > 0 && !$payment->pdi_approval_no ) {
+								$ledger[$key]['credit'] += $payment->pdi;
+						}
+
 						break;
 					case 'Prepaid Interest':
 						// $ledger[$key]['credit'] = $payment->;
