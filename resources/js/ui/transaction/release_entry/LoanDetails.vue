@@ -24,7 +24,7 @@
 				</div>
 				<div class="form-group mb-10 mr-16" style="flex:7">
 					<label for="product" class="form-label">Product</label>
-					<select @change="setInterestRate()" required v-model="loanDetails.product_id" name="" id="" class="form-control form-input ">
+					<select @change="setInterestRate();setCenterSched();" required v-model="loanDetails.product_id" name="" id="" class="form-control form-input ">
 						<option v-for="prod in products" :key="prod.product_id" :value="prod.product_id">{{prod.product_name}}</option>
 					</select>
 				</div>
@@ -305,12 +305,15 @@
 			<div class="d-flex">
 				<a @click.prevent="navigate('custom-content-below-coborrowerinfo-tab')" href="#" data-tab="custom-content-below-coborrowerinfo-tab" class="btn btn-primary-dark mr-24 tab-navigate min-w-150">Back</a>
 				<a href="#" data-toggle="modal" data-target="#warningModal" class="btn btn-success tab-navigate min-w-150 hide" id="warningBtn"></a>
+				<a href="#" data-toggle="modal" data-target="#zeroModal" class="btn btn-success tab-navigate min-w-150 hide" id="zeroBtn"></a>
 				<button v-if="!loandetails.loan_account_id" class="btn btn-success tab-navigate min-w-150">Next</button>
+				<button v-if="prejected" class="btn btn-success tab-navigate min-w-150">Next</button>
 			</div>
 			<a href="#" data-toggle="modal" data-target="#lettersModal" class="btn btn-yellow-light">Print Document</a>
 			<!-- <div style="flex:22"></div> -->
 		</div>
 	</div>
+	
 	</form>
 </template>
 
@@ -325,7 +328,8 @@ export default {
 		'idtype',
 		'releasetype',
 		'pbranch',
-		'loanaccounts'
+		'loanaccounts',
+		'prejected'
 	],
 	data(){
 		return {
@@ -356,7 +360,7 @@ export default {
 				type : '',
 				payment_mode : '',
 				terms : '',
-				loan_amount : '',
+				loan_amount : 0,
 				no_of_installment : '',
 				day_schedule : '',
 				borrower_num : '',
@@ -389,6 +393,9 @@ export default {
 					account_no: '',
 					card_no:'',
 					promissory_number: '',
+				},
+				product:{
+					product_name:'',
 				}
 			},
 			branch:{
@@ -510,27 +517,36 @@ export default {
 			document.getElementById(tab).click();
 		},
 		submit:function(){
-			document.getElementById('warningBtn').click();
+			if(this.netProceeds >= 0){
+				document.getElementById('warningBtn').click();
+			}else{
+				document.getElementById('zeroBtn').click();
+			}
+
 		},
 		save: function(){
 			this.setPrepaidInterest();
 			this.loanDetails.status = 'pending';
 			this.loanDetails.branch_id = this.branch
 			if(this.loanDetails.loan_account_id){
-					axios.post(this.baseURL() + 'api/account/update/' + this.loanDetails.loan_account_id, this.loanDetails, {
-						headers: {
-							'Authorization': 'Bearer ' + this.token,
-							'Content-Type': 'application/json',
-							'Accept': 'application/json'
-						}
-					})
-					.then(function (response) {
-						this.notify('',response.data.message, 'success');
-						this.$emit('savedInfo', response.data.data)
-					}.bind(this))
-					.catch(function (error) {
-						console.log(error);
-					}.bind(this));
+				axios.post(this.baseURL() + 'api/account/update/' + this.loanDetails.loan_account_id, this.loanDetails, {
+					headers: {
+						'Authorization': 'Bearer ' + this.token,
+						'Content-Type': 'application/json',
+						'Accept': 'application/json'
+					}
+				})
+				.then(function (response) {
+					this.notify('',response.data.message, 'success');
+					this.$emit('savedInfo', response.data.data)
+					this.pay();
+					if(this.prejected){
+						window.location.href = this.baseURL() + 'transaction/rejected_release';
+					}
+				}.bind(this))
+				.catch(function (error) {
+					console.log(error);
+				}.bind(this));
 			}else {
 				axios.post(this.baseURL() + 'api/account/create/' + this.loanDetails.borrower_id, this.loanDetails, {
 					headers: {
@@ -566,6 +582,10 @@ export default {
 				}
 			}.bind(this));
 		},
+		setCenterSched:function(){
+			this.loanDetails.center_id = null;
+			this.loanDetails.day_schedule = null;
+		},
 		isEnabled:function(data){
 			if(data){
 				return true;
@@ -582,6 +602,7 @@ export default {
 		},
 		pay:function(){
 			if(this.loanaccount.loan_account_id){
+				alert('paying..');
 				let payment = {
 					loan_account_id: this.loanaccount.loan_account_id,
 					branch_id: this.pbranch,
@@ -590,9 +611,11 @@ export default {
 					memo_type: 'deduct to balance',
 					amortization_id: this.loanaccount.amortization_id,
 					principal: this.loanaccount.remainingBalance.principal.balance,
-					interest: this.loanaccount.remainingBalance.interest.balance,
+					interest: this.loanaccount.remainingBalance.interest.balance - this.loanaccount.remainingBalance.rebates.balance,
 					rebates: this.loanaccount.remainingBalance.rebates.balance,
 					rebates_approval_no: this.rebatesRefNo,
+					pdi:0,
+					penalty:0,
 					total_payable: 0,
 					amount_applied: this.loanaccount.remainingBalance.memo.balance,
 					amortization_id: this.loanaccount.amortization_id
@@ -631,6 +654,7 @@ export default {
 		},
 		'memoChecked'(newValue){
 			if(!newValue){
+				this.selectedLoanAccount = null;
 				this.loanaccount = {
 					loan_account_id:null,
 					remainingBalance:{
@@ -653,6 +677,7 @@ export default {
 			}
 		},
 		'loanDetails.product_id'(newValue){
+			this.setInterestRate();
 			if(!this.loanDetails.documents.promissory_number || this.loanDetails.documents.promissory_number == ''){
 				this.fetchPromissoryNo();
 			}
@@ -683,6 +708,7 @@ export default {
 		},
 		'memoRefNo':function(newValue){
 			if(!newValue.length){
+				this.selectedLoanAccount = null;
 				this.loanaccount = {
 					loan_account_id:null,
 					remainingBalance:{
@@ -711,11 +737,6 @@ export default {
 			this.loanaccount.remainingBalance.rebates.balance = this.loanaccount.remainingBalance.rebates.balance < this.loanaccount.remainingBalance.interest.balance ? this.loanaccount.remainingBalance.rebates.balance : this.loanaccount.remainingBalance.interest.balance;
 			this.calculateMemo
 		},
-		// 'saveloandetails'(newValue) {
-		// 	if(newValue){
-		// 		this.save();
-		// 	}
-		// },
 	},
 	computed: {
 		releaseType:function(){
