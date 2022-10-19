@@ -85,9 +85,20 @@ class Payment extends Model
         $payment->total_payable = $request->input('total_payable');
         $payment->amount_applied = $request->input('amount_applied');
         $payment->vat = 0.00;
-        if( $payment->interest > 0 ) {
-            $vat = $payment->interest / 1.2 * 0.12;
-            $payment->vat = round($vat);
+
+        if( $payment->interest > 0 || $payment->pdi > 0 || $payment->penalty > 0 ) {
+            $pdi = 0;
+            $penalty = 0; 
+            if( $payment->pdi > 0 && !$payment->pdi_approval_no){
+                $pdi = $payment->pdi; 
+            }
+
+            if( $payment->penalty > 0 && !$payment->penalty_approval_no){
+                $penalty = $payment->penalty; 
+            }
+
+            $vat = ($payment->interest + $pdi + $penalty) / 1.2 * 0.12;
+            $payment->vat = round($vat, 2);
         }
 
         // $payment->status = 'paid';
