@@ -63,9 +63,10 @@ class TransactionController extends Controller
 	}
 
 	public function openPayments(Request $request){
-		$payments = \App\Models\Payment::with('loanDetails')->where('status','open')->whereDate('created_at', '=', date($request->created_at))->get();
-		foreach ($payments as $key => $value) {
-			$payments[$key]->photo = $value->loanDetails->borrowerPhoto();
+		$payments['payments'] = \App\Models\Payment::with('loanDetails')->where('status','open')->where('branch_id', $request->branch_id)->whereDate('created_at', '=', date($request->created_at))->get();
+		$payments['base'] = \App\Models\Payment::with('loanDetails')->where('status','open')->where('branch_id', $request->branch_id)->get();
+		foreach ($payments['payments'] as $key => $value) {
+			$payments['payments'][$key]->photo = $value->loanDetails->borrowerPhoto();
 		}
 		return $payments;
 	}
@@ -74,4 +75,5 @@ class TransactionController extends Controller
 		$payments = \App\Models\Payment::with('loanDetails')->where('status','paid')->whereDate('updated_at', '=', Carbon::now())->get();
 		return $payments;
 	}
+
 }
