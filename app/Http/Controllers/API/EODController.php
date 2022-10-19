@@ -24,12 +24,14 @@ class EODController extends BaseController
 		$branchId = $request->input('branch_id');
 		$status = $request->input('status');
 
-		// $endTransaction = new EndTransaction();
-		// $dateEnd = $endTransaction->getTransactionDate($branchId)->date_end;
+		$endTransaction = new EndTransaction();
+		$dateEnd = $endTransaction->getTransactionDate($branchId)->date_end;
+
 		// $endTransaction->releasing($dateEnd, $branchId);
-		// $endTransaction->repayment($dateEnd, $branchId);
+		return $endTransaction->repayment($dateEnd, $branchId);
 		
-		return $this->sendResponse('End of day Transaction', 'The End');
+		// return $dateEnd;
+		// return $this->sendResponse('End of day Transaction', 'The End');
 	}
 
 	public function checkPendingTransctions(Request $request) {

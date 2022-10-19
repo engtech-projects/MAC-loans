@@ -50,10 +50,6 @@ class EndTransaction extends Model
     	return $transactionDate;
     }
 
-    public function closeTransactionDate() {
-    	
-    }
-
 	public function releasing($dateEnd, $branchId) {
 
 		$releaseLedger = new GeneralLedger();
@@ -157,10 +153,9 @@ class EndTransaction extends Model
 
 		$repaymentLedger = new GeneralLedger();
 		$branch = Branch::find($branchId);
-		$payments = Payment::where(['status' => 'paid', 'branch_id' => $branchId ])->whereDate('created_at', $dateEnd)->get();
+		$payments = Payment::where(['status' => 'paid', 'branch_id' => $branchId ])->whereDate('updated_at', $dateEnd)->get();
 
 		$ledger = $repaymentLedger->ledger('repayment');
-
 
 		foreach ($payments as $payment) {
 			
@@ -172,39 +167,39 @@ class EndTransaction extends Model
 						break;
 					case 'Check':
 
-						if( $payment->payment_type == 'Check' || $payment->payment_type == 'Check Payment' ){
+						if( Str::contains(Str::lower($payment->payment_type), 'check') ){
 							$ledger[$key]['debit'] += $payment->amount_applied;
 						}
 
 						break;
 					case 'Cash':
 						
-						if( $payment->payment_type == 'Cash' || $payment->payment_type == 'Cash Payment' ){
+						if( Str::contains(Str::lower($payment->payment_type), 'cash') ){
 							$ledger[$key]['debit'] += $payment->amount_applied;
 						}
 
 						break;
 					case 'Rebates':
-						 $ledger[$key]['debit'] += $payment->rebates;
+						$ledger[$key]['debit'] += $payment->rebates;
 						break;
 					case 'Interest Income':
-						 $ledger[$key]['credit'] += $payment->interest;
+						$ledger[$key]['credit'] += $payment->interest;
 						break;
 					case 'Penalty Income':
 						$ledger[$key]['credit'] += $payment->penalty;
 						break;
-					case 'Others':
-						// $ledger[$key]['credit'] += $payment->;
+					case 'Overpayment':
+						$ledger[$key]['credit'] += $payment->over_payment;
 						break;
 					case 'Pastdue Interest':
-						 $ledger[$key]['credit'] = $payment->pdi;
+						 $ledger[$key]['credit'] += $payment->pdi;
 						break;
 					case 'Prepaid Interest':
 						// $ledger[$key]['credit'] = $payment->;
 						break;
 					case 'Memo':
 			
-						if( Str::contains($payment->payment_type, 'memo') ){
+						if( Str::contains(Str::lower($payment->payment_type), 'memo') ){
 							$ledger[$key]['debit'] += $payment->amount_applied;
 						}
 
@@ -215,48 +210,81 @@ class EndTransaction extends Model
 				}
 			}
 
-
 		}
 
-		$journalEntry = new JournalEntry();
-		$loanPaymentsBook = 9;
 
-		$journalEntry->journal_no = $this->getJournalNo($loanPaymentsBook);
-		$journalEntry->journal_date = $dateEnd;
-		$journalEntry->branch_id = $branch->branch_id;
-		$journalEntry->book_id = $loanPaymentsBook;
-		$journalEntry->source = 'Repayments';
-		$journalEntry->cheque_no;
-		$journalEntry->cheque_date;
-		$journalEntry->amount;
-		$journalEntry->payee = $branch->branch_name;
-		$journalEntry->status = 'unposted';
-		$journalEntry->remarks = 'Loan Repayments for the day ' . Carbon::createFromFormat('Y-m-d', $dateEnd)->format('m/d/Y');
-		$journalEntry->save();
+		foreach ($ledger as $k => $v) {
+		
+			switch ($v['reference']) {
+				case 'Interest Income':
+					
 
+					if( $ledger[$k]['credit'] > 0 ) {
+						$ledger[$k]['debit'] = round($ledger[$k]['credit'] / 1.12 * 0.12, 2);
+					}
 
-		$entryData = [];
-		foreach ($ledger as $key => $value) {
-			
-			if( $value['debit'] > 0 || $value['credit'] > 0 ){
+				break;
 
-				$entryData[] = [
-					'journal_id' => $journalEntry->journal_id,
-					'account_id' => $value['id'],
-					'subsidiary_id' => $branch->branch_code,
-					'journal_details_account_no' => $value['acct'],
-					'journal_details_title' => $value['title'],
-					'journal_details_debit' => $value['debit'],
-					'journal_details_credit' => $value['credit'],
-					'journal_details_ref_no' => '',
-					'journal_details_description' => '',
-				];
+				case 'Penalty Income':
+					
+
+					if( $ledger[$k]['credit'] > 0 ) {
+						$ledger[$k]['debit'] = round($ledger[$k]['credit'] / 1.12 * 0.12, 2);
+					}
+
+				break;
+
+				case 'Pastdue Interest':
+					
+
+					if( $ledger[$k]['credit'] > 0 ) {
+						$ledger[$k]['debit'] = round($ledger[$k]['credit'] / 1.12 * 0.12, 2);
+					}
+
+				break;
 
 			}
 		}
 
-		JournalEntryDetails::insert($entryData);
-		// return $ledger;
+		// $journalEntry = new JournalEntry();
+		// $loanPaymentsBook = 9;
+
+		// $journalEntry->journal_no = $this->getJournalNo($loanPaymentsBook);
+		// $journalEntry->journal_date = $dateEnd;
+		// $journalEntry->branch_id = $branch->branch_id;
+		// $journalEntry->book_id = $loanPaymentsBook;
+		// $journalEntry->source = 'Repayments';
+		// $journalEntry->cheque_no;
+		// $journalEntry->cheque_date;
+		// $journalEntry->amount;
+		// $journalEntry->payee = $branch->branch_name;
+		// $journalEntry->status = 'unposted';
+		// $journalEntry->remarks = 'Loan Repayments for the day ' . Carbon::createFromFormat('Y-m-d', $dateEnd)->format('m/d/Y');
+		// $journalEntry->save();
+
+
+		// $entryData = [];
+		// foreach ($ledger as $key => $value) {
+			
+		// 	if( $value['debit'] > 0 || $value['credit'] > 0 ){
+
+		// 		$entryData[] = [
+		// 			'journal_id' => $journalEntry->journal_id,
+		// 			'account_id' => $value['id'],
+		// 			'subsidiary_id' => $branch->branch_code,
+		// 			'journal_details_account_no' => $value['acct'],
+		// 			'journal_details_title' => $value['title'],
+		// 			'journal_details_debit' => $value['debit'],
+		// 			'journal_details_credit' => $value['credit'],
+		// 			'journal_details_ref_no' => '',
+		// 			'journal_details_description' => '',
+		// 		];
+
+		// 	}
+		// }
+
+		// JournalEntryDetails::insert($entryData);
+		return $ledger;
 	}
 
 	public function getJournalNo($id) {
