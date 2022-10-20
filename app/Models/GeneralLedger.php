@@ -40,5 +40,22 @@ class GeneralLedger extends Model
 
     	return $ledger;
     }
+
+    public function getDataFromLedger(Array $ledger, $identifier, $recordType = 'debit') {
+
+
+    	foreach ($ledger as $key => $value) {
+    		
+
+    		if( $value['reference'] === $identifier ){
+
+    			return $value[$recordType];
+
+    		}
+
+    	}
+
+    }
+
 }
 
