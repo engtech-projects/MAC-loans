@@ -798,7 +798,7 @@ export default {
 				amount_paid:0,
 				over_payment:0,
 				status:null,
-			},
+			}
 		},
 		notify:function(title, text, type){
 			this.$notify({

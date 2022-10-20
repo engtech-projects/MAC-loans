@@ -233,7 +233,7 @@
 									<span class="">Total Memo Payment</span>
 									<span>:</span>
 								</div>
-								<span class="flex-3 text-primary-dark">P 0.00</span>
+								<span class="flex-3 text-primary-dark">P {{formatToCurrency(totalCheck)}}</span>
 							</div>
 							<div class="d-flex flex-row">
 								<div class="d-flex flex-row flex-2 justify-content-between pr-24">
@@ -342,6 +342,15 @@ export default {
 			var amount = 0;
 			this.ppayments.map(function(payment){
 				if(payment.payment_type == 'check'){
+					amount += payment.amount_applied;
+				}
+			});
+			return amount;
+		},
+		totalMemo:function(){
+			var amount = 0;
+			this.ppayments.map(function(payment){
+				if(payment.payment_type == 'memo'){
 					amount += payment.amount_applied;
 				}
 			});
