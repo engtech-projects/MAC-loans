@@ -233,7 +233,7 @@
 									<span class="">Total Memo Payment</span>
 									<span>:</span>
 								</div>
-								<span class="flex-3 text-primary-dark">P {{formatToCurrency(totalCheck)}}</span>
+								<span class="flex-3 text-primary-dark">P {{formatToCurrency(totalMemo)}}</span>
 							</div>
 							<div class="d-flex flex-row">
 								<div class="d-flex flex-row flex-2 justify-content-between pr-24">
@@ -263,13 +263,13 @@
 								</div>
 								<span class="flex-3 text-primary-dark">P 0.00</span>
 							</div>
-							<div class="d-flex flex-row">
+							<!-- <div class="d-flex flex-row">
 								<div class="d-flex flex-row flex-2 justify-content-between pr-24">
 									<span class="">TOTAL POS</span>
 									<span>:</span>
 								</div>
 								<span class="flex-3 text-primary-dark">P {{formatToCurrency(totalPos)}}</span>
-							</div>
+							</div> -->
 					   </div>
 					</section>
 					<section class="flex-2 d-flex align-items-start">
@@ -357,7 +357,7 @@ export default {
 			return amount;
 		},
 		totalPos:function(){
-			return this.totalCash + this.totalCheck;
+			return this.totalCash + this.totalCheck + this.totalMemo;
 		},
 		totalPayment:function(){
 			var amount = 0;
