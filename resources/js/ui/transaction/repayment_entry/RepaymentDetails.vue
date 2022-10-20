@@ -944,7 +944,12 @@ export default {
 				// overpayment
 				this.payment.over_payment = amount;
 				this.payment.total_payable = this.totalDue; // Verify if change payable if waived fees
-				this.payment.amount_applied = this.payment.pdi + this.payment.penalty + this.payment.interest + this.payment.principal;
+
+				this.payment.amount_applied = this.payment.pdi;
+				this.payment.amount_applied += this.payment.penalty;
+				this.payment.amount_applied += this.payment.interest;
+				this.payment.amount_applied += this.payment.principal;
+				this.payment.amount_applied += this.payment.over_payment;
 				// this.payment.amount_applied =  parseFloat(this.payment.amount_paid);
 			}
 		},

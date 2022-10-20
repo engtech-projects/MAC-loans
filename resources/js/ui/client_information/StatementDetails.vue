@@ -123,13 +123,13 @@
 					<div class="col-xl-1 col-lg-6">
 						<div class="info-display">
 							<span>Gender</span>
-							<span>{{borrower.gender}}</span>
+							<span>{{capitalizeFirstLetter(borrower.gender)}}</span>
 						</div>
 					</div>
 					<div class="col-xl-2 col-lg-6">
 						<div class="info-display">
 							<span>Status</span>
-							<span>{{borrower.status}}</span>
+							<span>{{capitalizeFirstLetter(borrower.status)}}</span>
 						</div>
 					</div>
 					<div class="col-xl-2 col-lg-6">
