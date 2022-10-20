@@ -97,7 +97,7 @@ class Payment extends Model
                 $penalty = $payment->penalty; 
             }
 
-            $vat = ($payment->interest + $pdi + $penalty) / 1.2 * 0.12;
+            $vat = ($payment->interest + $pdi + $penalty) / 1.12 * 0.12;
             $payment->vat = round($vat, 2);
         }
 
