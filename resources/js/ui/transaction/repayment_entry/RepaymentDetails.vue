@@ -765,6 +765,41 @@ export default {
 				rebates:false,
 			}
 		},
+		resetLoanAccount:function(){
+			this.loanAccount = {
+				payment_id:null,
+				loan_account_id:null,
+				branch_id:this.pbranch,
+				payment_type:'cash',
+				or_no:null,
+				cheque_no:null,
+				bank_name:null,
+				reference_no:null,
+				memo_type:null,
+				amortization_id:0,
+				principal:0,
+				interest:0,
+				short_principal:0,
+				advance_principal:0,
+				short_interest:0,
+				advance_interest:0,
+				pdi:0,
+				pdi_approval_no:null,
+				short_pdi:0,
+				penalty:0,
+				penalty_approval_no:null,
+				short_penalty:0,
+				vat:0,
+				rebates:0,
+				rebatesInputted:0,
+				rebates_approval_no:null,
+				total_payable:0,
+				amount_applied:0,
+				amount_paid:0,
+				over_payment:0,
+				status:null,
+			},
+		},
 		notify:function(title, text, type){
 			this.$notify({
 				group: 'foo',
@@ -1041,6 +1076,7 @@ export default {
 	watch:{
 		'pborrower.borrower_id':function(newValue){
 			this.resetPayment();
+			// this.resetLoanAccount();
 			if(this.pborrower.loan_accounts.length){
 				this.loanAccount = this.pborrower.loan_accounts[0];
 				this.amortSched();
