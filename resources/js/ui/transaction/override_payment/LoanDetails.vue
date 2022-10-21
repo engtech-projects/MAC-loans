@@ -86,7 +86,7 @@
 						</div>
 						<div class="d-flex flex-1 text-white p-10 bg-green font-20 align-items-center">
 							<span class="mr-16">TOTAL PAYMENT :</span>
-							<span>P {{formatToCurrency(ppayment.amount_applied)}}</span>
+							<span>P {{formatToCurrency(ppayment.amount_applied - ppayment.rebates)}}</span>
 						</div>
 					</div>
 					<div class="d-flex flex-row flex-1">
@@ -215,7 +215,7 @@ export default {
 			})
 			.then(function (response) {
 				this.$emit('reloadPayments');
-				this.notify('',response.data.message, 'success');
+				this.notify('','Payment has been deleted successfully.', 'success');
 			}.bind(this))
 			.catch(function (error) {
 				console.log(error);

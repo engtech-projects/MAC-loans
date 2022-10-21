@@ -223,7 +223,7 @@
 							</div>
 							<div class="d-flex flex-row">
 								<div class="d-flex flex-row flex-2 justify-content-between pr-24">
-									<span class="">POS</span>
+									<span class="">Total POS</span>
 									<span>:</span>
 								</div>
 								<span class="flex-3 text-primary-dark">P 0.00</span>
