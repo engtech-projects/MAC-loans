@@ -91,6 +91,9 @@ Vue.mixin({
 		
 		// 	return outputText;
 		// },
+		sentenceCase(value){
+			return value.replace(/(?:^|\s|-)\S/g, x => x.toUpperCase());
+		},
 		numToWords:function(s){
 			s = s + '';
 			var th = ['','thousand','million', 'billion','trillion'];

@@ -37,7 +37,7 @@
 							<td style="vertical-align:middle;"><input v-model="p.checked" type="checkbox" class="form-control form-box"></td>
 							<td>{{p.loan_details.account_num}}</td>
 							<td><a href="#">{{p.loan_details.borrower.firstname + ' ' + p.loan_details.borrower.lastname}}</a></td>
-							<td @click="payment=p;openPayments(preference)"><span class="text-green c-pointer">select</span></td>
+							<td @click="payment=p;"><span class="text-green c-pointer">select</span></td>
 						</tr>
 					
 					</tbody>
@@ -159,7 +159,7 @@
 					</div>
 				</section>
 			</div>
-			<overridepayment-details :ppayment="payment" :token="token" @reloadPayments="openPayments();resetPayment()"></overridepayment-details>
+			<overridepayment-details :ppayment="payment" :token="token" @reloadPayments="openPayments();resetPayment();resetLoanAccount()"></overridepayment-details>
 		</div>
 		<overridepayment-view :pbranch="pbranch" :ppayments="paymentsBase"></overridepayment-view>
 
@@ -320,6 +320,7 @@ export default {
 				console.log(response.data);
 				this.notify('',response.data.message, 'success');
 				this.openPayments();
+				this.resetPayment();
 			}.bind(this))
 			.catch(function (error) {
 				console.log(error);
@@ -433,7 +434,7 @@ export default {
 							return
 						}else{
 							if(this.preference.filter == 'client'){
-								if(val.loan_details.borrower.firstname.toLowerCase().includes(this.preference.specification.toLowerCase()) || val.loan_details.borrower.lastname.toLowerCase().includes(this.preference.specification.toLowerCase()) || (val.loan_details.borrower.firstname + ' ' + val.loan_details.borrower.lastname).toLowerCase().includes(this.preference.specification.toLowerCase()) || (val.loan_details.borrower.lastname + ' ' + val.loan_details.borrower.firstname).toLowerCase().includes(this.preference.specification.toLowerCase())){
+								if(val.loan_details.account_num.toLowerCase().includes(this.preference.specification.toLowerCase()) || val.loan_details.borrower.firstname.toLowerCase().includes(this.preference.specification.toLowerCase()) || val.loan_details.borrower.lastname.toLowerCase().includes(this.preference.specification.toLowerCase()) || (val.loan_details.borrower.firstname + ' ' + val.loan_details.borrower.lastname).toLowerCase().includes(this.preference.specification.toLowerCase()) || (val.loan_details.borrower.lastname + ' ' + val.loan_details.borrower.firstname).toLowerCase().includes(this.preference.specification.toLowerCase())){
 									result.push(val);
 									return
 								}
