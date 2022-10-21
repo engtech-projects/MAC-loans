@@ -238,10 +238,7 @@
 									<label for="transactionDate" class="form-label">Payment Type</label>
 									<div class="form-group">
 										<select required class="form-control form-input" v-model="payment.payment_type">
-										<option value="cash">Cash Payment</option>
-										<option value="cheque">Cheque Payment</option>
-										<option value="memo">Memo</option>
-										<option value="pos">POS</option>
+										<option v-for="(r, i) in rpaymentType" :value="r" :key="i">{{r}}</option>
 										</select>
 									</div>
 								</div>
@@ -609,7 +606,7 @@
 
 <script>
 export default {
-	props:['pborrower','token', 'pbranch'],
+	props:['pborrower','token', 'pbranch', 'ppaymenttype'],
 	data(){
 		return {
 			paymentType:'cash',
@@ -1114,6 +1111,9 @@ export default {
 		outstandingTotalRemaining:function(){
 			return this.outstandingPrincipalRemaining + this.outstandingInterestRemaining + this.outstandingSurchargeRemaining;
 		},
+		rpaymentType:function(){
+			return JSON.parse(this.ppaymenttype);
+		}
 	},
 	watch:{
 		'pborrower.borrower_id':function(newValue){
