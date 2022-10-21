@@ -57,10 +57,10 @@
 									<span class="text-center">021512131521</span>
 								</div>
 								<div style="flex:4"></div>
-								<div class="form-group mb-10" style="flex: 5">
+								<!-- <div class="form-group mb-10" style="flex: 5">
 									<label for="transactionDate" class="form-label">Transaction Date</label>
 									<input type="date" class="form-control form-input text-right" id="transactionDate">
-								</div>
+								</div> -->
 							</div>
 							<div class="form-group mb-5" style="flex: 5">
 								<label for="client" class="form-label mb-3">Client</label>
@@ -79,188 +79,44 @@
 				</section>
 
 				<section class="mb-24" style="flex:21;padding-left:16px;">
-					<span class="section-title section-subtitle">Select Loan Accounts Payable</span>
+					<div class="d-flex justify-content-between align-items-center mb-10">
+						<span class="section-title section-subtitle flex-2" style="padding:0;margin:0;line-height:1.2;border:none;">Payment Transactions</span>
+						<input type="text" class="form-control flex-1" id="searchBar" placeholder="Search">
+					</div>
 					<table class="table table-stripped table-hover light-border th-blue">
 						<thead>
-							<th>Account Number</th>
-							<th>Date Transaction</th>
-							<th>Balance</th>
+							<th>Account No.</th>
+							<th>Date Paid</th>
+							<th>O.R.</th>
+							<th>Amount</th>
 						</thead>
 						<tbody>
 							<tr>
 								<td>0542121212412</td>
 								<td>12/12/2021</td>
+								<td>00-000-1</td>
 								<td>P 79,411.00</td>
 							</tr>
 							<tr>
 								<td>0542121212412</td>
 								<td>12/12/2021</td>
+								<td>00-000-1</td>
 								<td>P 79,411.00</td>
 							</tr>
 							<tr>
 								<td>0542121212412</td>
 								<td>12/12/2021</td>
+								<td>00-000-1</td>
 								<td>P 79,411.00</td>
 							</tr>
 						</tbody>
 					</table>
-				</section>
-
-				<section class="mb-24" style="flex:21;padding-left:16px;">
-					<span class="section-title section-subtitle mb-24">Loan Account Number: 00021241</span>
-					<div class="d-flex flex-row loan-details">
-						<div class="d-flex flex-column flex-1">
-							<h4 class="text-primary-dark mb-12">Loan Details</h4>
-							<div class="d-flex flex-row mb-12">
-								<div class="d-flex flex-row flex-1 justify-content-between pr-24">
-									<span class="">Amount</span>
-									<span>:</span>
-								</div>
-								<span class="flex-1 text-primary-dark">9,000.00</span>
-							</div>
-
-							<div class="d-flex flex-row mb-12">
-								<div class="d-flex flex-row flex-1 justify-content-between pr-24">
-									<span class="">Filling Fee</span>
-									<span>:</span>
-								</div>
-								<span class="flex-1 text-primary-dark">200.71</span>
-							</div>
-
-							<div class="d-flex flex-row mb-12">
-								<div class="d-flex flex-row flex-1 justify-content-between pr-24">
-									<span class="">Documents</span>
-									<span>:</span>
-								</div>
-								<span class="flex-1 text-primary-dark">33.5</span>
-							</div>
-
-							<div class="d-flex flex-row mb-12">
-								<div class="d-flex flex-row flex-1 justify-content-between pr-24">
-									<span class="">Insurance</span>
-									<span>:</span>
-								</div>
-								<span class="flex-1 text-primary-dark">59.00</span>
-							</div>
-
-							<div class="d-flex flex-row mb-12">
-								<div class="d-flex flex-row flex-1 justify-content-between pr-24">
-									<span class="">Notarial</span>
-									<span>:</span>
-								</div>
-								<span class="flex-1 text-primary-dark">100.00</span>
-							</div>
-
-							<div class="d-flex flex-row mb-12">
-								<div class="d-flex flex-row flex-1 justify-content-between pr-24">
-									<span class="">Prepaid Interest</span>
-									<span>:</span>
-								</div>
-								<span class="flex-1 text-primary-dark">0.00</span>
-							</div>
-
-							<div class="d-flex flex-row mb-12">
-								<div class="d-flex flex-row flex-1 justify-content-between pr-24">
-									<span class="">Other / Mem</span>
-									<span>:</span>
-								</div>
-								<span class="flex-1 text-primary-dark">0.00</span>
-							</div>
-
-							<div class="d-flex flex-row mb-12">
-								<div class="d-flex flex-row flex-1 justify-content-between pr-24">
-									<span class="">Net Amount</span>
-									<span>:</span>
-								</div>
-								<span class="flex-1 text-primary-dark">8,670.29</span>
-							</div>
-
-							<div class="d-flex flex-row mb-12">
-								<div class="d-flex flex-row flex-1 justify-content-between pr-24">
-									<span class="">Cash Release Type</span>
-									<span>:</span>
-								</div>
-								<span class="flex-1 text-primary-dark">9,000.00</span>
-							</div>
+					<div class="d-flex flex-column">
+						<span class="text-bold">Remarks</span>
+						<text-area class="form-control mb-16" style="height:95px"></text-area>
+						<div class="d-flex justify-content-end">
+							<button class="btn btn-bright-blue btn-wide">Cancel - Verify</button>
 						</div>
-						<div class="d-flex flex-column flex-1">
-							<h4 class="text-primary-dark mb-12">SUMMARY OF RELEASE</h4>
-							<div class="d-flex flex-row mb-12">
-								<div class="d-flex flex-row flex-1 justify-content-between pr-24">
-									<span class="">Release Type</span>
-									<span>:</span>
-								</div>
-								<span class="flex-1 text-primary-dark">CHEQUE RELEASE DETAILS</span>
-							</div>
-							<div class="d-flex flex-row mb-12">
-								<div class="d-flex flex-row flex-1 justify-content-between pr-24">
-									<span class="">Total Cash</span>
-									<span>:</span>
-								</div>
-								<span class="flex-1 text-primary-dark">8,607.00</span>
-							</div>
-							<div class="d-flex flex-row mb-12">
-								<div class="d-flex flex-row flex-1 justify-content-between pr-24">
-									<span class="">Total Memo</span>
-									<span>:</span>
-								</div>
-								<span class="flex-1 text-primary-dark">0.00</span>
-							</div>
-							<div class="d-flex flex-row mb-12">
-								<div class="d-flex flex-row flex-1 justify-content-between pr-24">
-									<span class="">Total Check</span>
-									<span>:</span>
-								</div>
-								<span class="flex-1 text-primary-dark">0.00</span>
-							</div>
-							<div class="d-flex flex-row mb-12">
-								<div class="d-flex flex-row flex-1 justify-content-between pr-24">
-									<span class="">Total Release</span>
-									<span>:</span>
-								</div>
-								<span class="flex-1 text-primary-dark">8,607.00</span>
-							</div>
-						</div>
-					</div>
-				</section>
-
-				<section class="mb-24" style="flex:21;padding-left:16px;">
-					<span class="section-title section-subtitle mb-24">Cancel Payment Transactions</span>
-					<div class="loan-details mb-24">
-						<table class="table table-stripped th-nbt">
-							<thead>
-								<th class="text-primary-dark">No.</th>
-								<th class="text-primary-dark">Date</th>
-								<th class="text-primary-dark">Amount</th>
-							</thead>
-							<tbody>
-								<tr>
-									<td>1</td>
-									<td>08/22/21</td>
-									<td>1,542.00</td>
-								</tr>
-								<tr>
-									<td>1</td>
-									<td>08/22/21</td>
-									<td>1,542.00</td>
-								</tr>
-								<tr>
-									<td>1</td>
-									<td>08/22/21</td>
-									<td>1,542.00</td>
-								</tr>
-								<tr>
-									<td>1</td>
-									<td>08/22/21</td>
-									<td>1,542.00</td>
-								</tr>
-								<tr>
-									<td>1</td>
-									<td>08/22/21</td>
-									<td>1,542.00</td>
-								</tr>
-							</tbody>
-						</table>
 					</div>
 				</section>
 			</div>
