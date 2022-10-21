@@ -57,7 +57,7 @@ return [
 
 	'payment_type' => [
 		'Cash Payment',
-		'Cheque Payment',
+		'Check Payment',
 		'Memo',
 		'POS',
 	],
