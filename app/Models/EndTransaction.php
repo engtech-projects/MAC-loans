@@ -182,13 +182,19 @@ class EndTransaction extends Model
 						break;
 					case 'Rebates':
 
-						if( $payment->rebates > 0 && !$payment->rebates_approval_no ) {
+						if( $payment->rebates > 0 && $payment->rebates_approval_no ) {
 							$ledger[$key]['debit'] += $payment->rebates;
 						}
 						
 						break;
 					case 'Interest Income':
-						$ledger[$key]['credit'] += $payment->interest;
+						// rebates
+						$r = 0;
+						if( $payment->rebates > 0 && $payment->rebates_approval_no ) {
+							$r = $payment->rebates;
+						}
+
+						$ledger[$key]['credit'] += ($payment->interest + $r);
 						break;
 					case 'Penalty Income':
 
@@ -228,10 +234,10 @@ class EndTransaction extends Model
 		
 			switch ($v['reference']) {
 				case 'VAT':
-					$rebates = $repaymentLedger->getDataFromLedger($ledger, 'Rebates');
+					// $rebates = $repaymentLedger->getDataFromLedger($ledger, 'Rebates');
 					$interestIncome = $repaymentLedger->getDataFromLedger($ledger, 'Interest Income', 'credit');
 
-					$ledger[$k]['debit'] = round(($interestIncome - $rebates) / 1.12 * 0.12, 2);
+					$ledger[$k]['debit'] = round($interestIncome / 1.12 * 0.12, 2);
 				break;
 
 				case 'Penalty':
