@@ -223,6 +223,15 @@ class EndTransaction extends Model
 						}
 
 						break;
+
+					case 'POS':
+			
+						if( Str::contains(Str::lower($payment->payment_type), 'pos') ){
+							$ledger[$key]['debit'] += $payment->amount_applied;
+						}
+
+						break;
+
 					case 'VAT Payable':
 						$ledger[$key]['credit'] += $payment->vat;
 						break;
