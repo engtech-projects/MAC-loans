@@ -234,10 +234,10 @@ class EndTransaction extends Model
 		
 			switch ($v['reference']) {
 				case 'VAT':
-					// $rebates = $repaymentLedger->getDataFromLedger($ledger, 'Rebates');
+					$rebates = $repaymentLedger->getDataFromLedger($ledger, 'Rebates');
 					$interestIncome = $repaymentLedger->getDataFromLedger($ledger, 'Interest Income', 'credit');
 
-					$ledger[$k]['debit'] = round($interestIncome / 1.12 * 0.12, 2);
+					$ledger[$k]['debit'] = round(($interestIncome - $rebates) / 1.12 * 0.12, 2);
 				break;
 
 				case 'Penalty':
