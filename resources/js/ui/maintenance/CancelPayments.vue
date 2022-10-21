@@ -3,7 +3,7 @@
 		<div class="mb-16"></div>
 		<div class="d-flex justify-content-between mb-24 bb-primary-dark pb-7 text-block">
 			<h1 class="m-0 font-35">Cancel Payments</h1>
-			<a href="#" class="btn btn-primary-dark min-w-150">New Client</a>
+			<!-- <a href="#" class="btn btn-primary-dark min-w-150">New Client</a> -->
 		</div><!-- /.col -->
 		<div class="d-flex flex-column flex-xl-row">
 			<div style="flex:9;">
