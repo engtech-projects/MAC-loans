@@ -242,16 +242,16 @@
 										</select>
 									</div>
 								</div>
-								<div class="form-group mb-10 mr-16 flex-1" v-if="payment.payment_type!='memo'">
+								<div class="form-group mb-10 mr-16 flex-1" v-if="payment.payment_type!='Memo'">
 									<label for="transactionDate" class="form-label">OR #</label>
 									<input required v-model="payment.or_no" type="text" class="form-control form-input" id="transactionDate">
 								</div>
-								<div class="flex-2" v-if="payment.payment_type=='cash'"></div>
-								<div class="form-group mb-10 mr-16 flex-1" v-if="payment.payment_type=='pos'">
+								<div class="flex-2" v-if="payment.payment_type=='Cash Payment'"></div>
+								<div class="form-group mb-10 mr-16 flex-1" v-if="payment.payment_type=='POS'">
 									<label for="transactionDate" class="form-label">Referrence #</label>
 									<input required v-model="payment.reference_no" type="text" class="form-control form-input" id="transactionDate">
 								</div>
-								<div class="form-group mb-10 mr-16 flex-1" v-if="payment.payment_type=='cheque'">
+								<div class="form-group mb-10 mr-16 flex-1" v-if="payment.payment_type=='Check Payment'">
 									<label for="transactionDate" class="form-label">Cheque #</label>
 									<input required v-model="payment.cheque_no" type="text" class="form-control form-input" id="transactionDate">
 								</div>
@@ -263,7 +263,7 @@
 										<option value="">BDO</option>
 									</select>
 								</div> -->
-								<div class="form-group mb-10 mr-16 flex-1" v-if="payment.payment_type=='cheque'||payment.payment_type=='pos'">
+								<div class="form-group mb-10 mr-16 flex-1" v-if="payment.payment_type=='Check Payment'||payment.payment_type=='POS'">
 									<label for="transactionDate" class="form-label">Bank Name</label>
 									<div class="form-group">
 										<select required v-model="payment.bank_name" class="form-control form-input">
@@ -273,11 +273,11 @@
 										</select>
 									</div>
 								</div>
-								<div class="form-group mb-10 flex-1  mr-16" v-if="payment.payment_type=='memo'">
+								<div class="form-group mb-10 flex-1  mr-16" v-if="payment.payment_type=='Memo'">
 									<label for="transactionDate" class="form-label">Memo Referece #</label>
 									<input required v-model="payment.reference_no" type="text" class="form-control form-input" id="transactionDate">
 								</div>
-								<div class="form-group mb-10 mr-16 flex-1" v-if="payment.payment_type=='memo'">
+								<div class="form-group mb-10 mr-16 flex-1" v-if="payment.payment_type=='Memo'">
 									<label for="transactionDate" class="form-label">Type</label>
 									<div class="form-group">
 										<select required v-model="payment.memo_type" class="form-control form-input">
@@ -287,7 +287,7 @@
 										</select>
 									</div>
 								</div>
-								<div class="flex-1" v-if="payment.payment_type=='memo'"></div>
+								<div class="flex-1" v-if="payment.payment_type=='Memo'"></div>
 							</div>
 							<div class="d-flex flex-row mb-24">
 								<div class="form-group mb-0 flex-2 mr-24">
@@ -609,7 +609,7 @@ export default {
 	props:['pborrower','token', 'pbranch', 'ppaymenttype'],
 	data(){
 		return {
-			paymentType:'cash',
+			paymentType:'Cash Payment',
 			loanAccount:{
 				loan_account_id:null,
 				cycle_no : 1,
@@ -684,7 +684,7 @@ export default {
 				payment_id:null,
 				loan_account_id:null,
 				branch_id:this.pbranch,
-				payment_type:'cash',
+				payment_type:'Cash Payment',
 				or_no:null,
 				cheque_no:null,
 				bank_name:null,
@@ -727,7 +727,7 @@ export default {
 				payment_id:null,
 				loan_account_id:null,
 				branch_id:this.pbranch,
-				payment_type:'cash',
+				payment_type:'Cash Payment',
 				or_no:null,
 				cheque_no:null,
 				bank_name:null,
@@ -958,8 +958,8 @@ export default {
 		},
 		pay:function(){
 			this.payment.loan_account_id = this.loanAccount.loan_account_id;
-			this.payment.pdi = this.loanAccount.remainingBalance.pdi.balance;
-			this.payment.penalty = this.loanAccount.current_amortization.penalty + this.loanAccount.current_amortization.short_penalty;
+			this.payment.pdi = this.waive.pdi?0:this.loanAccount.remainingBalance.pdi.balance;
+			this.payment.penalty = this.waive.penalty?0:this.loanAccount.current_amortization.penalty + this.loanAccount.current_amortization.short_penalty;
 			if(parseFloat(this.payment.amount_paid) > 0 && this.checkRebates()){
 				axios.post(this.baseURL() + 'api/payment', this.payment, {
 					headers: {
