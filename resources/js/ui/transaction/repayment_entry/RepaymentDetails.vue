@@ -1134,9 +1134,11 @@ export default {
 			this.payment.amortization_id = this.loanAccount.current_amortization.id;
 		},
 		'waive.pdi':function(newValue){
+			this.payment.pdi = newValue? 0:this.loanAccount.remainingBalance.pdi.balance;
 			this.distribute();
 		},
 		'waive.penalty':function(newValue){
+			this.payment.penalty = newValue? 0:this.loanAccount.remainingBalance.penalty.balance;
 			this.distribute();
 		},
 		'waive.rebates':function(newValue){
