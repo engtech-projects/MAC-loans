@@ -993,7 +993,7 @@ export default {
 	computed:{
 		loanAccountStatus:function(){
 			if(this.loanAccount.current_amortization){
-				if(this.pdi > 0){
+				if(this.duePdi > 0){
 					return "Past Due";
 				}else if((this.loanAccount.current_amortization.principal > 0 && this.loanAccount.current_amortization.short_principal > 0 && this.duePrincipal > 0) || (this.duePrincipal > 0 && this.loanAccount.current_amortization.day_late >= 1)){
 					return "Delinquent";

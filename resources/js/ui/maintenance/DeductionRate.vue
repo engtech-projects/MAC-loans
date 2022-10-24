@@ -16,7 +16,7 @@
 							<label for="insurance" class="form-label">Deduction Name</label>
 							<select v-model="deduction.name" name="" id="" class="form-control form-input" required>
 								<option value="Insurance">Insurance</option>
-								<option value="Document Stamp">Document Stamp</option>
+								<option value="Documentary Stamp">Documentary Stamp</option>
 								<option value="Notarial Fee">Notarial Fee</option>
 								<option value="Filing Fee">Filing Fee</option>
 							</select>
