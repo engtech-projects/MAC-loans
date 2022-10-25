@@ -136,7 +136,7 @@ class Deduction extends Model
     		$amount = $constraints['loan_amount'] / $data->rate * 1.50;
     	}
 
-    	return round($amount);
+    	return ceil($amount);
     }
 
     public function notarial($ref) {
