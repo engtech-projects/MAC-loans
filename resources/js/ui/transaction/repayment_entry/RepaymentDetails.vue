@@ -958,8 +958,8 @@ export default {
 		},
 		pay:function(){
 			this.payment.loan_account_id = this.loanAccount.loan_account_id;
-			this.payment.pdi = this.waive.pdi?0:this.loanAccount.remainingBalance.pdi.balance;
-			this.payment.penalty = this.waive.penalty?0:this.loanAccount.current_amortization.penalty + this.loanAccount.current_amortization.short_penalty;
+			this.payment.pdi = this.loanAccount.remainingBalance.pdi.balance;
+			this.payment.penalty = this.loanAccount.current_amortization.penalty + this.loanAccount.current_amortization.short_penalty;
 			if(parseFloat(this.payment.amount_paid) > 0 && this.checkRebates()){
 				axios.post(this.baseURL() + 'api/payment', this.payment, {
 					headers: {
@@ -1134,11 +1134,9 @@ export default {
 			this.payment.amortization_id = this.loanAccount.current_amortization.id;
 		},
 		'waive.pdi':function(newValue){
-			this.payment.pdi = newValue? 0:this.loanAccount.remainingBalance.pdi.balance;
 			this.distribute();
 		},
 		'waive.penalty':function(newValue){
-			this.payment.penalty = newValue? 0:this.loanAccount.remainingBalance.penalty.balance;
 			this.distribute();
 		},
 		'waive.rebates':function(newValue){
