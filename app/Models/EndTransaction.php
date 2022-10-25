@@ -61,9 +61,10 @@ class EndTransaction extends Model
 
 		$ledger = $releaseLedger->ledger('releasing');
 
-
+		$netProceeds = 0;
 		foreach ($loanAccounts as $account) {
 			
+			$netProceeds += $account->net_proceeds;
 			foreach ($ledger as $key => $value) {
 				
 				switch ($value['reference']) {
@@ -120,8 +121,8 @@ class EndTransaction extends Model
 		$journalEntry->source = 'Releases';
 		$journalEntry->cheque_no;
 		$journalEntry->cheque_date;
-		$journalEntry->amount;
-		$journalEntry->payee = $branch->branch_name;
+		$journalEntry->amount = $netProceeds;
+		$journalEntry->payee = '';
 		$journalEntry->status = $status;
 		$journalEntry->remarks = 'Loan Releases for the day ' . Carbon::createFromFormat('Y-m-d', $dateEnd)->format('m/d/Y');
 		$journalEntry->save();
@@ -158,8 +159,10 @@ class EndTransaction extends Model
 
 		$ledger = $repaymentLedger->ledger('repayment');
 
+		$amountApplied = 0;
 		foreach ($payments as $payment) {
 			
+			$amountApplied = $payment->amount_applied;
 			foreach ($ledger as $key => $value) {
 				
 				switch ($value['reference']) {
@@ -272,7 +275,7 @@ class EndTransaction extends Model
 		$journalEntry->source = 'Repayments';
 		$journalEntry->cheque_no;
 		$journalEntry->cheque_date;
-		$journalEntry->amount;
+		$journalEntry->amount = $amountApplied;
 		$journalEntry->payee = $branch->branch_name;
 		$journalEntry->status = $status;
 		$journalEntry->remarks = 'Loan Repayments for the day ' . Carbon::createFromFormat('Y-m-d', $dateEnd)->format('m/d/Y');
