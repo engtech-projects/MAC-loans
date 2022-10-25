@@ -219,7 +219,6 @@ export default {
 		}
 	},
 	methods:{
-
 		async openPayments(){
 			var data = this.preference;
 			data.branch_id = this.pbranch;

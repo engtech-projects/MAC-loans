@@ -61,7 +61,7 @@
 							<td>{{formatToCurrency(p.amount_applied)}}</td>
 							<td>{{p.payment_type}}</td>
 							<td>{{formatToCurrency(p.principal)}}</td>
-							<td>{{formatToCurrency(p.interest)}}</td>
+							<td>{{formatToCurrency((p.interest - p.rebates) > 0? p.interest - p.rebates : 0)}}</td>
 							<td>{{formatToCurrency(p.penalty)}}</td>
 							<td>{{formatToCurrency(p.pdi)}}</td>
 							<td>{{formatToCurrency(p.advance_interest + p.advance_principal)}}</td>
@@ -332,7 +332,7 @@ export default {
 		totalCash:function(){
 			var amount = 0;
 			this.ppayments.map(function(payment){
-				if(payment.payment_type == 'cash'){
+				if(payment.payment_type == 'Cash Payment'){
 					amount += payment.amount_applied;
 				}
 			});
@@ -341,7 +341,7 @@ export default {
 		totalCheck:function(){
 			var amount = 0;
 			this.ppayments.map(function(payment){
-				if(payment.payment_type == 'check'){
+				if(payment.payment_type == 'Check Payment'){
 					amount += payment.amount_applied;
 				}
 			});
@@ -350,7 +350,7 @@ export default {
 		totalMemo:function(){
 			var amount = 0;
 			this.ppayments.map(function(payment){
-				if(payment.payment_type == 'memo'){
+				if(payment.payment_type == 'Memo'){
 					amount += payment.amount_applied;
 				}
 			});
