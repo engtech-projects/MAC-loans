@@ -320,6 +320,7 @@
 <script>
 export default {
 	props:[
+		'borrowerswitch',
 		'token',
 		'loandetails',
 		'borrower',
@@ -628,6 +629,7 @@ export default {
 				}
 				})
 				.then(function (response) {
+					this.memoChecked = false;
 					this.notify('','Payment successful.', 'success');
 				}.bind(this))
 				.catch(function (error) {
@@ -647,6 +649,9 @@ export default {
 			this.loanDetails.borrower_id = newValue.borrower_id;
 			this.loanDetails.borrower_num = newValue.borrower_num;
 			this.save();
+		},
+		'borrowerswitch'(newValue) {
+			this.memoChecked = false;
 		},
 		'borrowerbday'(newValue) {
 			this.age = this.calculateAge(newValue);
