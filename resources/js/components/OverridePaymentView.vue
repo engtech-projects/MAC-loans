@@ -62,12 +62,12 @@
 							<td>{{p.payment_type}}</td>
 							<td>{{formatToCurrency(p.principal)}}</td>
 							<td>{{formatToCurrency(p.interest)}}</td>
-							<td>{{formatToCurrency(p.penalty_approval_no ? 0 : p.penalty)}}</td>
-							<td>{{formatToCurrency(p.pdi_approval_no ? 0 : p.pdi)}}</td>
+							<td>{{formatToCurrency(p.penalty)}}</td>
+							<td>{{formatToCurrency(p.pdi)}}</td>
 							<td>{{formatToCurrency(p.advance_interest + p.advance_principal)}}</td>
 							<td>{{formatToCurrency(p.rebates)}}</td>
-							<td>{{formatToCurrency(p.penalty_approval_no ? p.penalty : 0)}}</td>
-							<td>{{formatToCurrency(p.pdi_approval_no ? p.pdi : 0)}}</td>
+							<td>0.00</td>
+							<td>0.00</td>
 						</tr>
 						<tr class="text-bold">
 							<td>TOTAL</td>
@@ -81,8 +81,8 @@
 							<td>{{formatToCurrency(totalPdi)}}</td>
 							<td>{{formatToCurrency(overPayment)}}</td>
 							<td>{{formatToCurrency(totalRebates)}}</td>
-							<td>{{formatToCurrency(totalPenaltyWaive)}}</td>
-							<td>{{formatToCurrency(totalPdiWaive)}}</td>
+							<td>0.00</td>
+							<td>0.00</td>
 						</tr>
 						<!-- <tr>
 							<td>0212154265</td>
@@ -226,7 +226,7 @@
 									<span class="">Total POS</span>
 									<span>:</span>
 								</div>
-								<span class="flex-3 text-primary-dark">P 0.00</span>
+								<span class="flex-3 text-primary-dark">P {{formatToCurrency(totalPOS)}}</span>
 							</div>
 							<div class="d-flex flex-row">
 								<div class="d-flex flex-row flex-2 justify-content-between pr-24">
@@ -247,7 +247,7 @@
 									<span class="pl-24">Deduct to Balance</span>
 									<span>:</span>
 								</div>
-								<span class="flex-3 text-primary-dark">P 0.00</span>
+								<span class="flex-3 text-primary-dark">P {{formatToCurrency(totalDeductToBalance)}}</span>
 							</div>
 							<div class="d-flex flex-row">
 								<div class="d-flex flex-row flex-2 justify-content-between pr-24">
@@ -332,7 +332,7 @@ export default {
 		totalCash:function(){
 			var amount = 0;
 			this.ppayments.map(function(payment){
-				if(payment.payment_type == 'Cash Payment'){
+				if(payment.payment_type == 'cash'){
 					amount += payment.amount_applied;
 				}
 			});
@@ -341,7 +341,7 @@ export default {
 		totalCheck:function(){
 			var amount = 0;
 			this.ppayments.map(function(payment){
-				if(payment.payment_type == 'Check Payment'){
+				if(payment.payment_type == 'check'){
 					amount += payment.amount_applied;
 				}
 			});
@@ -350,7 +350,25 @@ export default {
 		totalMemo:function(){
 			var amount = 0;
 			this.ppayments.map(function(payment){
-				if(payment.payment_type == 'Memo'){
+				if(payment.payment_type == 'memo'){
+					amount += payment.amount_applied;
+				}
+			});
+			return amount;
+		},
+		totalPOS:function(){
+			var amount = 0;
+			this.ppayments.map(function(payment){
+				if(payment.payment_type == 'POS'){
+					amount += payment.amount_applied;
+				}
+			});
+			return amount;
+		},
+		totalDeductToBalance:function(){
+			var amount = 0;
+			this.ppayments.map(function(payment){
+				if(payment.memo_type == 'deduct to balance'){
 					amount += payment.amount_applied;
 				}
 			});
@@ -383,36 +401,14 @@ export default {
 		totalPenalty:function(){
 			var amount = 0;
 			this.filteredPayments.map(function(payment){
-				if(!payment.penalty_approval_no){
-					amount += payment.penalty;
-				}
+				amount += payment.penalty;
 			});
 			return amount;
 		},
 		totalPdi:function(){
 			var amount = 0;
 			this.filteredPayments.map(function(payment){
-				if(!payment.pdi_approval_no){
-					amount += payment.pdi;
-				}
-			});
-			return amount;
-		},
-		totalPenaltyWaive:function(){
-			var amount = 0;
-			this.filteredPayments.map(function(payment){
-				if(payment.penalty_approval_no){
-					amount += payment.penalty;
-				}
-			});
-			return amount;
-		},
-		totalPdiWaive:function(){
-			var amount = 0;
-			this.filteredPayments.map(function(payment){
-				if(payment.pdi_approval_no){
-					amount += payment.pdi;
-				}
+				amount += payment.pdi;
 			});
 			return amount;
 		},
