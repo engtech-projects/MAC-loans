@@ -51,7 +51,7 @@ class EndTransaction extends Model
     	return $transactionDate;
     }
 
-	public function releasing($dateEnd, $branchId) {
+	public function releasing($dateEnd, $branchId, $status = 'unposted') {
 
 		$releaseLedger = new GeneralLedger();
 
@@ -110,47 +110,47 @@ class EndTransaction extends Model
 		}
 
 
-		// $journalEntry = new JournalEntry();
-		// $loanReleasesBook = 8;
+		$journalEntry = new JournalEntry();
+		$loanReleasesBook = 8;
 
-		// $journalEntry->journal_no = $this->getJournalNo($loanReleasesBook);
-		// $journalEntry->journal_date = $dateEnd;
-		// $journalEntry->branch_id = $branch->branch_id;
-		// $journalEntry->book_id = $loanReleasesBook;
-		// $journalEntry->source = 'Releases';
-		// $journalEntry->cheque_no;
-		// $journalEntry->cheque_date;
-		// $journalEntry->amount;
-		// $journalEntry->payee = $branch->branch_name;
-		// $journalEntry->status = 'unposted';
-		// $journalEntry->remarks = 'Loan Releases for the day ' . Carbon::createFromFormat('Y-m-d', $dateEnd)->format('m/d/Y');
-		// $journalEntry->save();
+		$journalEntry->journal_no = $this->getJournalNo($loanReleasesBook);
+		$journalEntry->journal_date = $dateEnd;
+		$journalEntry->branch_id = $branch->branch_id;
+		$journalEntry->book_id = $loanReleasesBook;
+		$journalEntry->source = 'Releases';
+		$journalEntry->cheque_no;
+		$journalEntry->cheque_date;
+		$journalEntry->amount;
+		$journalEntry->payee = $branch->branch_name;
+		$journalEntry->status = $status;
+		$journalEntry->remarks = 'Loan Releases for the day ' . Carbon::createFromFormat('Y-m-d', $dateEnd)->format('m/d/Y');
+		$journalEntry->save();
 
-		// $entryData = [];
-		// foreach ($ledger as $key => $value) {
+		$entryData = [];
+		foreach ($ledger as $key => $value) {
 			
-		// 	if( $value['debit'] > 0 || $value['credit'] > 0 ){
+			if( $value['debit'] > 0 || $value['credit'] > 0 ){
 
-		// 		$entryData[] = [
-		// 			'journal_id' => $journalEntry->journal_id,
-		// 			'account_id' => $value['id'],
-		// 			'subsidiary_id' => $branch->branch_code,
-		// 			'journal_details_account_no' => $value['acct'],
-		// 			'journal_details_title' => $value['title'],
-		// 			'journal_details_debit' => $value['debit'],
-		// 			'journal_details_credit' => $value['credit'],
-		// 			'journal_details_ref_no' => '',
-		// 			'journal_details_description' => '',
-		// 		];
+				$entryData[] = [
+					'journal_id' => $journalEntry->journal_id,
+					'account_id' => $value['id'],
+					'subsidiary_id' => $branch->branch_code,
+					'journal_details_account_no' => $value['acct'],
+					'journal_details_title' => $value['title'],
+					'journal_details_debit' => $value['debit'],
+					'journal_details_credit' => $value['credit'],
+					'journal_details_ref_no' => '',
+					'journal_details_description' => '',
+				];
 
-		// 	}
-		// }
+			}
+		}
 
-		// JournalEntryDetails::insert($entryData);
-		return $ledger;
+		JournalEntryDetails::insert($entryData);
+		// return $ledger;
 	}
 
-	public function repayment($dateEnd, $branchId) {
+	public function repayment($dateEnd, $branchId, $status = 'unposted') {
 
 		$repaymentLedger = new GeneralLedger();
 		$branch = Branch::find($branchId);
@@ -262,44 +262,44 @@ class EndTransaction extends Model
 			}
 		}
 
-		// $journalEntry = new JournalEntry();
-		// $loanPaymentsBook = 9;
+		$journalEntry = new JournalEntry();
+		$loanPaymentsBook = 9;
 
-		// $journalEntry->journal_no = $this->getJournalNo($loanPaymentsBook);
-		// $journalEntry->journal_date = $dateEnd;
-		// $journalEntry->branch_id = $branch->branch_id;
-		// $journalEntry->book_id = $loanPaymentsBook;
-		// $journalEntry->source = 'Repayments';
-		// $journalEntry->cheque_no;
-		// $journalEntry->cheque_date;
-		// $journalEntry->amount;
-		// $journalEntry->payee = $branch->branch_name;
-		// $journalEntry->status = 'unposted';
-		// $journalEntry->remarks = 'Loan Repayments for the day ' . Carbon::createFromFormat('Y-m-d', $dateEnd)->format('m/d/Y');
-		// $journalEntry->save();
+		$journalEntry->journal_no = $this->getJournalNo($loanPaymentsBook);
+		$journalEntry->journal_date = $dateEnd;
+		$journalEntry->branch_id = $branch->branch_id;
+		$journalEntry->book_id = $loanPaymentsBook;
+		$journalEntry->source = 'Repayments';
+		$journalEntry->cheque_no;
+		$journalEntry->cheque_date;
+		$journalEntry->amount;
+		$journalEntry->payee = $branch->branch_name;
+		$journalEntry->status = $status;
+		$journalEntry->remarks = 'Loan Repayments for the day ' . Carbon::createFromFormat('Y-m-d', $dateEnd)->format('m/d/Y');
+		$journalEntry->save();
 
 
-		// $entryData = [];
-		// foreach ($ledger as $key => $value) {
+		$entryData = [];
+		foreach ($ledger as $key => $value) {
 			
-		// 	if( $value['debit'] > 0 || $value['credit'] > 0 ){
+			if( $value['debit'] > 0 || $value['credit'] > 0 ){
 
-		// 		$entryData[] = [
-		// 			'journal_id' => $journalEntry->journal_id,
-		// 			'account_id' => $value['id'],
-		// 			'subsidiary_id' => $branch->branch_code,
-		// 			'journal_details_account_no' => $value['acct'],
-		// 			'journal_details_title' => $value['title'],
-		// 			'journal_details_debit' => $value['debit'],
-		// 			'journal_details_credit' => $value['credit'],
-		// 			'journal_details_ref_no' => '',
-		// 			'journal_details_description' => '',
-		// 		];
+				$entryData[] = [
+					'journal_id' => $journalEntry->journal_id,
+					'account_id' => $value['id'],
+					'subsidiary_id' => $branch->branch_code,
+					'journal_details_account_no' => $value['acct'],
+					'journal_details_title' => $value['title'],
+					'journal_details_debit' => $value['debit'],
+					'journal_details_credit' => $value['credit'],
+					'journal_details_ref_no' => '',
+					'journal_details_description' => '',
+				];
 
-		// 	}
-		// }
+			}
+		}
 
-		// JournalEntryDetails::insert($entryData);
+		JournalEntryDetails::insert($entryData);
 
 		return $ledger;
 	}
@@ -316,6 +316,14 @@ class EndTransaction extends Model
             ->first();
 
         return $book->book_code . '-' . str_pad($book->ccount+1, 7, '0', STR_PAD_LEFT);
+    }
+
+    public function close($branchId) {
+
+    	$transactionDate = EndTransaction::where([ 'branch_id' => $branchId, 'status' => 'open' ])->get()->last();
+    	$transactionDate->status = 'closed';
+    	return $transactionDate->save();
+
     }
 
 }
