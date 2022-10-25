@@ -99,7 +99,8 @@ export default {
 			})
 			.then(function (response) {
 				// console.log(response.data.data);
-				this.transactionDate = response.data.data;
+				this.transactionDate = response.data.data.date_end;
+				this.success = response.data.data.status == 'open' ? false : true;
 			}.bind(this))
 			.catch(function (error) {
 				console.log(error);

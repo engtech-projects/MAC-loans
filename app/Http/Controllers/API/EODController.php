@@ -70,7 +70,7 @@ class EODController extends BaseController
 	public function getTransactionDate($branchId) {
 
 		$endTransaction = new EndTransaction();
-		$dateEnd = $endTransaction->getTransactionDate($branchId)->date_end;
+		$dateEnd = $endTransaction->getTransactionDate($branchId);
 
 		return $this->sendResponse($dateEnd,
 			"Transaction Date"
