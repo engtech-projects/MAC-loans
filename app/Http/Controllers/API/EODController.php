@@ -31,9 +31,9 @@ class EODController extends BaseController
 		$endTransaction->repayment($dateEnd, $branchId, $status);
 
 		# eod
-		$endTransaction->close();
+		// $endTransaction->close($branchId);
 		// return $dateEnd;
-		$message = ($endTransaction->close()) ? 'successfull' : 'unsuccessful';
+		$message = ($endTransaction->close($branchId)) ? 'successfull' : 'unsuccessful';
 
 
 		return $this->sendResponse('End of day Transaction', $message);
