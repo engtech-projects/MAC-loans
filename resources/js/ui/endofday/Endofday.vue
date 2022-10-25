@@ -116,6 +116,7 @@ export default {
 				}
 			})
 			.then(function (response) {
+				this.loading = false;
 				if(response.data.data == 0){
 					this.loading = false;
 					this.endOfDay();
