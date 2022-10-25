@@ -175,7 +175,7 @@ export default {
 		}
 	},
 	mounted(){
-		this.checkEOD();
+		// this.checkEOD();
 		this.branch = JSON.parse(this.pbranch);
 		this.fetchTransactionDate();
 	}
