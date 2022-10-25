@@ -61,13 +61,13 @@
 							<td>{{formatToCurrency(p.amount_applied)}}</td>
 							<td>{{p.payment_type}}</td>
 							<td>{{formatToCurrency(p.principal)}}</td>
-							<td>{{formatToCurrency((p.interest - p.rebates) > 0? p.interest - p.rebates : 0)}}</td>
-							<td>{{formatToCurrency(p.penalty)}}</td>
-							<td>{{formatToCurrency(p.pdi)}}</td>
+							<td>{{formatToCurrency(p.interest)}}</td>
+							<td>{{formatToCurrency(p.penalty_approval_no ? 0 : p.penalty)}}</td>
+							<td>{{formatToCurrency(p.pdi_approval_no ? 0 : p.pdi)}}</td>
 							<td>{{formatToCurrency(p.advance_interest + p.advance_principal)}}</td>
 							<td>{{formatToCurrency(p.rebates)}}</td>
-							<td>0.00</td>
-							<td>0.00</td>
+							<td>{{formatToCurrency(p.penalty_approval_no ? p.penalty : 0)}}</td>
+							<td>{{formatToCurrency(p.pdi_approval_no ? p.pdi : 0)}}</td>
 						</tr>
 						<tr class="text-bold">
 							<td>TOTAL</td>
@@ -81,8 +81,8 @@
 							<td>{{formatToCurrency(totalPdi)}}</td>
 							<td>{{formatToCurrency(overPayment)}}</td>
 							<td>{{formatToCurrency(totalRebates)}}</td>
-							<td>0.00</td>
-							<td>0.00</td>
+							<td>{{formatToCurrency(totalPenaltyWaive)}}</td>
+							<td>{{formatToCurrency(totalPdiWaive)}}</td>
 						</tr>
 						<!-- <tr>
 							<td>0212154265</td>
@@ -383,14 +383,36 @@ export default {
 		totalPenalty:function(){
 			var amount = 0;
 			this.filteredPayments.map(function(payment){
-				amount += payment.penalty;
+				if(!payment.penalty_approval_no){
+					amount += payment.penalty;
+				}
 			});
 			return amount;
 		},
 		totalPdi:function(){
 			var amount = 0;
 			this.filteredPayments.map(function(payment){
-				amount += payment.pdi;
+				if(!payment.pdi_approval_no){
+					amount += payment.pdi;
+				}
+			});
+			return amount;
+		},
+		totalPenaltyWaive:function(){
+			var amount = 0;
+			this.filteredPayments.map(function(payment){
+				if(payment.penalty_approval_no){
+					amount += payment.penalty;
+				}
+			});
+			return amount;
+		},
+		totalPdiWaive:function(){
+			var amount = 0;
+			this.filteredPayments.map(function(payment){
+				if(payment.pdi_approval_no){
+					amount += payment.pdi;
+				}
 			});
 			return amount;
 		},
