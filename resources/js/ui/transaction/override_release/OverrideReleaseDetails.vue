@@ -382,7 +382,7 @@
 					</section>
 					<div class="d-flex flex-row-reverse mb-45 no-print">
 						<a href="#" @click="printAmort()" class="btn btn-default min-w-150">Print</a>
-						<a href="#" @click.prevent="export2Word('amortPrintContent', 'amortization_schedule')" class="btn btn-success min-w-150 mr-24">Download Document</a>
+						<!-- <a href="#" @click.prevent="export2Word('amortPrintContent', 'amortization_schedule')" class="btn btn-success min-w-150 mr-24">Download Document</a> -->
 						<a href="#" id="cancelModal" data-dismiss="modal" class="btn btn-danger min-w-150 mr-24 hide">Cancel</a>
 					</div>
 				</div>
@@ -734,7 +734,7 @@
 						<div class="mb-72"></div>
 						<div class="d-flex flex-row-reverse mb-45 no-print">
 							<a @click="printVoucher()" href="#" class="btn btn-default min-w-150">Print</a>
-							<a href="#" @click.prevent="export2Word('voucherPrintContent', 'Voucher')" class="btn btn-success min-w-150 mr-24">Download Document</a>
+							<!-- <a href="#" @click.prevent="export2Word('voucherPrintContent', 'Voucher')" class="btn btn-success min-w-150 mr-24">Download Document</a> -->
 							<a href="#" id="cancelVoucherModal" data-dismiss="modal" class="btn btn-danger min-w-150 mr-24 hide">Cancel</a>
 						</div>
 					</div>

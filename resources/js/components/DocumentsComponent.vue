@@ -124,7 +124,7 @@
 											<div class="mb-72"></div>
 											<div class="d-flex flex-row-reverse mb-45 no-print">
 												<button @click="printContent('reminder-letter')" class="btn btn-default min-w-150">Print</button>
-												<button data-dismiss="modal" id="excelBtn" class="btn btn-success min-w-150 mr-24">Download Excel</button>
+												<!-- <button data-dismiss="modal" id="excelBtn" class="btn btn-success min-w-150 mr-24">Download Excel</button> -->
 											</div>
 										</div>
 									</div>
@@ -173,7 +173,7 @@
 											</div>
 											<div class="d-flex flex-row-reverse mb-72 no-print">
 												<a @click.prevent="printContent('first-letter')" href="#" class="btn btn-default min-w-150">Print</a>
-												<a href="#" class="btn btn-success min-w-150 mr-24">Download Excel</a>
+												<!-- <a href="#" class="btn btn-success min-w-150 mr-24">Download Excel</a> -->
 											</div>
 											<div class="d-flex mb-24">
 												<img :src="this.baseURL()+'/img/logo-footer.png'" class="w-100" alt="">
@@ -225,7 +225,7 @@
 											</div>
 											<div class="d-flex flex-row-reverse mb-72 no-print">
 												<a @click.prevent="printContent('second-letter')" href="#" class="btn btn-default min-w-150">Print</a>
-												<a href="#" class="btn btn-success min-w-150 mr-24">Download Excel</a>
+												<!-- <a href="#" class="btn btn-success min-w-150 mr-24">Download Excel</a> -->
 											</div>
 											<div class="d-flex mb-24">
 												<img :src="this.baseURL()+'/img/logo-footer.png'" class="w-100" alt="">
@@ -316,7 +316,7 @@
 											</div>
 											<div class="d-flex flex-row-reverse mb-72 no-print">
 												<a @click.prevent="printContent('final-demand')" href="#" class="btn btn-default min-w-150">Print</a>
-												<a href="#" class="btn btn-success min-w-150 mr-24">Download Excel</a>
+												<!-- <a href="#" class="btn btn-success min-w-150 mr-24">Download Excel</a> -->
 											</div>
 											<div class="d-flex mb-24">
 												<img :src="this.baseURL()+'/img/logo-footer.png'" class="w-100" alt="">
@@ -468,7 +468,7 @@
 											</div> -->
 											<div class="d-flex flex-row-reverse mb-72 no-print">
 												<a @click.prevent="printContent('final-notice')" href="#" class="btn btn-default min-w-150">Print</a>
-												<a href="#" class="btn btn-success min-w-150 mr-24">Download Excel</a>
+												<!-- <a href="#" class="btn btn-success min-w-150 mr-24">Download Excel</a> -->
 											</div>
 											<div class="d-flex mb-24">
 												<img :src="this.baseURL()+'/img/logo-footer.png'" class="w-100" alt="">
@@ -550,7 +550,7 @@
 											</p>
 											<div class="d-flex flex-row-reverse mb-72 no-print">
 												<a @click.prevent="printContent('return-check')" href="#" class="btn btn-default min-w-150">Print</a>
-												<a href="#" class="btn btn-success min-w-150 mr-24">Download Excel</a>
+												<!-- <a href="#" class="btn btn-success min-w-150 mr-24">Download Excel</a> -->
 											</div>
 											<div class="d-flex mb-24">
 												<img :src="this.baseURL()+'/img/logo-footer.png'" class="w-100" alt="">
@@ -621,7 +621,7 @@
 
 											<div class="d-flex flex-row-reverse mb-72 no-print">
 												<a @click.prevent="printContent('attorneys-demand')" href="#" class="btn btn-default min-w-150">Print</a>
-												<a href="#" class="btn btn-success min-w-150 mr-24">Download Excel</a>
+												<!-- <a href="#" class="btn btn-success min-w-150 mr-24">Download Excel</a> -->
 											</div>
 										</div>
 									</div>
@@ -700,7 +700,7 @@
 											</p>
 											<div class="d-flex flex-row-reverse mb-72 no-print">
 												<a @click.prevent="printContent('bouncing-check')" href="#" class="btn btn-default min-w-150">Print</a>
-												<a href="#" class="btn btn-success min-w-150 mr-24">Download Excel</a>
+												<!-- <a href="#" class="btn btn-success min-w-150 mr-24">Download Excel</a> -->
 											</div>
 											<div class="d-flex mb-24">
 												<img :src="this.baseURL()+'/img/logo-footer.png'" class="w-100" alt="">
@@ -796,7 +796,7 @@
 											<div class="mb-72"></div>
 											<div class="d-flex flex-row-reverse mb-45 no-print">
 												<button @click="printContent('dacion-en-pago')" class="btn btn-default min-w-150">Print</button>
-												<button data-dismiss="modal" id="excelBtn" class="btn btn-success min-w-150 mr-24">Download Excel</button>
+												<!-- <button data-dismiss="modal" id="excelBtn" class="btn btn-success min-w-150 mr-24">Download Excel</button> -->
 											</div>
 										</div>
 									</div>
@@ -916,7 +916,7 @@
 											<div class="mb-72"></div>
 											<div class="d-flex flex-row-reverse mb-45 no-print">
 												<button @click="printContent('doa-for-atm')" class="btn btn-default min-w-150">Print</button>
-												<button data-dismiss="modal" id="excelBtn" class="btn btn-success min-w-150 mr-24">Download Excel</button>
+												<!-- <button data-dismiss="modal" id="excelBtn" class="btn btn-success min-w-150 mr-24">Download Excel</button> -->
 											</div>
 										</div>
 									</div>
@@ -1096,7 +1096,7 @@
 											<div class="mb-72"></div>
 											<div class="d-flex flex-row-reverse mb-45 no-print">
 												<button @click="printContent('moa-for-sme')" class="btn btn-default min-w-150">Print</button>
-												<button data-dismiss="modal" id="excelBtn" class="btn btn-success min-w-150 mr-24">Download Excel</button>
+												<!-- <button data-dismiss="modal" id="excelBtn" class="btn btn-success min-w-150 mr-24">Download Excel</button> -->
 											</div>
 										</div>
 									</div>
@@ -1153,7 +1153,7 @@
 											<div class="d-flex flex-row-reverse mb-45 no-print">
 												<button id="cancelDacionModal" data-dismiss="modal" class="btn btn-danger min-w-150 mr-24 hide">Cancel</button>
 												<button @click="printContent('sme-schedule')" class="btn btn-default min-w-150">Print</button>
-												<button data-dismiss="modal" id="excelBtn" class="btn btn-success min-w-150 mr-24">Download Excel</button>
+												<!-- <button data-dismiss="modal" id="excelBtn" class="btn btn-success min-w-150 mr-24">Download Excel</button> -->
 											</div>
 										</div>
 									</div>
@@ -1352,7 +1352,7 @@
 											<div class="mb-72"></div>
 											<div class="d-flex flex-row-reverse mb-45 no-print">
 												<a @click.prevent="printContent('promissory-note')" href="#" class="btn btn-default min-w-150">Print</a>
-												<a href="#" class="btn btn-success min-w-150 mr-24">Download Excel</a>
+												<!-- <a href="#" class="btn btn-success min-w-150 mr-24">Download Excel</a> -->
 											</div>
 										</div>
 									</div>
