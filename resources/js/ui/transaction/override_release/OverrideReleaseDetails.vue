@@ -624,7 +624,7 @@
 								Received payment from MICRO ACCESS LOANS CORPORATION - BUTUAN BRANCH (001) The sum of <span class="allcaps">{{numToWords(parseFloat(loanaccount.net_proceeds))}}</span> Pesos only.
 							</p>
 							<div class="d-flex flex-row">
-								<span class="flex-1">Received By: _________________________________</span>
+								<span class="flex-1">Received By: <span class="text-lg text-bold" style="margin-left:10px;border-bottom:1px solid #222;padding-right:100px;">{{loanaccount.borrower.firstname + ' ' + loanaccount.borrower.middlename.charAt(0).toUpperCase() + '. ' + loanaccount.borrower.lastname}}</span></span>
 								<span class="flex-1">Disbursed By: _________________________________</span>
 							</div>
 						</section>
@@ -717,11 +717,13 @@
 
 							<div class="d-flex flex-row px-45">
 								<div class="d-flex flex-column flex-1">
+									<span class="text-center text-lg text-bold">{{loanaccount.borrower.firstname + ' ' + loanaccount.borrower.middlename.charAt(0).toUpperCase() + '. ' + loanaccount.borrower.lastname}}</span>
 									<span class="text-center bt-dark-2 py-12 mb-45">Borrow Sign / Printed Name</span>
 									<span class="text-center bt-dark-2 py-12 mb-45">Date Disbursed / Acknowledged</span>
 								</div>
 								<div class="flex-1"></div>
 								<div class="d-flex flex-column flex-1">
+									<span class="text-center text-lg text-bold">{{loanaccount.co_borrower_name}}</span>
 									<span class="text-center bt-dark-2 py-12 mb-45">Co-Borrow Sign / Printed Name</span>
 									<span class="text-center bt-dark-2 py-12 mb-45">MAC Representative Signature</span>
 								</div>
