@@ -887,7 +887,7 @@
 			
 			<div class="d-flex flex-row-reverse mb-45">
 				<a @click="print()" href="#" class="btn btn-default min-w-150">Print</a>
-				<a href="#" class="btn btn-success min-w-150 mr-24">Download Excel</a>
+				<!-- <a href="#" class="btn btn-success min-w-150 mr-24">Download Excel</a> -->
 			</div>
 		</div>
 </template>

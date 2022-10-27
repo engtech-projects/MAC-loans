@@ -5,7 +5,7 @@
 			<h1 class="m-0 font-35">{{title}}</h1>
 		</div><!-- /.col -->
 		<div class="search-bar">
-			<input type="text" class="form-control" id="searchBar" placeholder="Search">
+			<input v-model="filter" type="text" class="form-control" id="searchBar" placeholder="Search">
 			<div><i class="fa fa-search"></i></div>
 		</div>
 		<table class="table table-stripped" id="clientsList">
@@ -16,7 +16,7 @@
 				<th>Address</th>
 			</thead>
 			<tbody>
-				<tr v-for="(borrower, i) in borrowers" :key="i">
+				<tr v-for="(borrower, i) in filteredBorrowers" :key="i">
 					<td>{{borrower.borrower_num}}</td>
 					<td><a :href="url.replace(':id', borrower.borrower_id)">{{borrower.firstname + ' ' + borrower.lastname}}</a></td>
 					<td>{{borrower.contact_number}}</td>
@@ -33,6 +33,7 @@ export default {
 	data(){
 		return {
 			borrowers:[],
+			filter:'',
 		}
 	},
 	methods:{
@@ -52,6 +53,21 @@ export default {
 				console.log(error);
 			}.bind(this));
 		},
+	},
+	computed:{
+		filteredBorrowers:function(){
+			var borrowers = [];
+			if(this.filter.length > 0){
+				this.borrowers.map(function(data){
+					if(data.borrower_num.toLowerCase().includes(this.filter.toLowerCase()) || data.firstname.toLowerCase().includes(this.filter.toLowerCase()) || data.lastname.toLowerCase().includes(this.filter.toLowerCase()) || (data.firstname + ' ' + data.lastname).toLowerCase().includes(this.filter.toLowerCase()) || (data.lastname + ' ' + data.firstname).toLowerCase().includes(this.filter.toLowerCase())){
+						borrowers.push(data);
+					}
+				}.bind(this));
+			}else{
+				borrowers = this.borrowers;
+			}
+			return borrowers;
+		}
 	},
 	mounted(){
 		this.fetchBorrowers();

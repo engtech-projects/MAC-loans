@@ -550,7 +550,7 @@
 						<div class="mb-72"></div>
 						<div class="d-flex flex-row-reverse mb-45">
 							<a @click.prevent="printContent('firstLetterPrintContent')" href="#" class="btn btn-default min-w-150">Print</a>
-							<a href="#" class="btn btn-success min-w-150 mr-24">Download Excel</a>
+							<!-- <a href="#" class="btn btn-success min-w-150 mr-24">Download Excel</a> -->
 						</div>
 						<div class="d-flex mb-24">
 							<img :src="this.baseURL()+'/img/logo-footer.png'" class="w-100" alt="Company Footer">
@@ -785,7 +785,7 @@
 																				</section>
 																				<div class="d-flex flex-row-reverse mb-45">
 																					<a @click.prevent="printContent('paymentStatusPrintContent')" href="#" class="btn btn-default min-w-150">Print</a>
-																					<a href="#" class="btn btn-success min-w-150 mr-24">Download Excel</a>
+																					<!-- <a href="#" class="btn btn-success min-w-150 mr-24">Download Excel</a> -->
 																				</div>
 																				<div class="d-flex mb-24">
 																					<img :src="this.baseURL()+'/img/logo-footer.png'" class="w-100" alt="Company Footer">
@@ -998,7 +998,7 @@
 											<div class="mb-72"></div>
 											<div class="d-flex flex-row-reverse mb-45 no-print">
 												<a @click.prevent="printContent('promissoryPrintContent')" href="#" class="btn btn-default min-w-150">Print</a>
-												<a href="#" class="btn btn-success min-w-150 mr-24">Download Excel</a>
+												<!-- <a href="#" class="btn btn-success min-w-150 mr-24">Download Excel</a> -->
 											</div>
 										</div>
 				</div>
@@ -1197,7 +1197,7 @@
 						<div class="mb-72"></div>
 						<div class="d-flex flex-row-reverse mb-45 no-print">
 							<a @click="printContent('voucherPrintContent')" href="#" class="btn btn-default min-w-150">Print</a>
-							<a href="#" class="btn btn-success min-w-150 mr-24">Download Excel</a>
+							<!-- <a href="#" class="btn btn-success min-w-150 mr-24">Download Excel</a> -->
 							<a href="#" id="cancelVoucherModal" data-dismiss="modal" class="btn btn-danger min-w-150 mr-24 hide">Cancel</a>
 						</div>
 						<div class="d-flex mb-24">
@@ -1400,7 +1400,7 @@
 															<div class="mb-72"></div>
 															<div class="d-flex flex-row-reverse mb-45">
 																<a href="#" class="btn btn-default min-w-150">Print</a>
-																<a href="#" class="btn btn-success min-w-150 mr-24">Download Excel</a>
+																<!-- <a href="#" class="btn btn-success min-w-150 mr-24">Download Excel</a> -->
 															</div>
 															<div class="d-flex mb-24">
 																<img :src="this.baseURL()+'/img/logo-footer.png'" class="w-100" alt="Company Footer">
@@ -1606,7 +1606,7 @@
 																							</section>
 																							<div class="d-flex flex-row-reverse mb-45">
 																								<a href="#" class="btn btn-default min-w-150">Print</a>
-																								<a href="#" class="btn btn-success min-w-150 mr-24">Download Excel</a>
+																								<!-- <a href="#" class="btn btn-success min-w-150 mr-24">Download Excel</a> -->
 																							</div>
 																							<div class="d-flex mb-24">
 																								<img :src="this.baseURL()+'/img/logo-footer.png'" class="w-100" alt="Company Footer">
@@ -1927,7 +1927,7 @@
 																	</section>
 																	<div class="d-flex flex-row-reverse mb-45">
 																		<a @click.prevent="printContent('soaPrintContent')" href="#" class="btn btn-default min-w-150">Print</a>
-																		<a href="#" class="btn btn-success min-w-150 mr-24">Download Excel</a>
+																		<!-- <a href="#" class="btn btn-success min-w-150 mr-24">Download Excel</a> -->
 																	</div>
 																	<div class="d-flex mb-24">
 																		<img :src="this.baseURL()+'/img/logo-footer.png'" class="w-100" alt="Company Footer">
@@ -2070,7 +2070,7 @@
 					</section>
 					<div class="d-flex flex-row-reverse mb-45 no-print">
 						<a href="#" @click.prevent="printContent('amortPrintContent')" class="btn btn-default min-w-150">Print</a>
-						<a href="#" class="btn btn-success min-w-150 mr-24">Download Excel</a>
+						<!-- <a href="#" class="btn btn-success min-w-150 mr-24">Download Excel</a> -->
 						<a href="#" id="cancelModal" data-dismiss="modal" class="btn btn-danger min-w-150 mr-24 hide">Cancel</a>
 					</div>
 					<div class="d-flex mb-24">
