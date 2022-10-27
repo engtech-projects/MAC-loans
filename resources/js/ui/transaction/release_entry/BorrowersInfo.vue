@@ -661,6 +661,18 @@
 			'borrower.created_at'(newValue){
 				this.borrower.created_at = this.dateToYMD(new Date(newValue));
 			},
+			'borrower.status'(newValue){
+				if(newValue!='married'){
+					this.borrower.spouse_firstname = '';
+					this.borrower.spouse_lastname = '';
+					this.borrower.spouse_middlename = '';
+					this.borrower.spouse_address = '';
+					this.borrower.spouse_birthdate = '';
+					this.borrower.spouse_id_type = '';
+					this.borrower.spouse_id_no = '';
+					this.borrower.spouse_id_date_issued = '';
+				}
+			},
 			'clear'(newValue){
 				if(newValue == 1){
 					this.clearInfo();

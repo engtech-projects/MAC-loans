@@ -108,7 +108,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="row info-container mb-24" style="width:100%">
+		<div v-if="borrower.status=='married'" class="row info-container mb-24" style="width:100%">
 			<div class="col-md-12" style="height:60px!important;">
 				<div class="info-display title">
 					<span>Spouse Information</span>
