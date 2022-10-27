@@ -49,4 +49,20 @@ class ClientInformationController extends Controller
 		return \App\Models\LoanAccount::where('account_num', $id)->first();
 	}
 
+	public function deleteOtherInfo(Request $request){
+		if($request->type == 'householdMembers'){
+			return \App\Models\HouseholdMembers::find($request->id)->delete();
+		}
+		if($request->type == 'outstandingObligations'){
+			return \App\Models\OutstandingObligations::find($request->id)->delete();
+		}
+		if($request->type == 'employmentInfo'){
+			return \App\Models\EmploymentInfo::find($request->id)->delete();
+		}
+		if($request->type == 'businessInfo'){
+			return \App\Models\BusinessInfo::find($request->id)->delete();
+		}
+		return 0;
+	}
+
 }

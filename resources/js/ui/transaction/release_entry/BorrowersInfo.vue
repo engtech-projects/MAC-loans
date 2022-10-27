@@ -214,7 +214,7 @@
 						<td>{{hm.occupation}}</td>
 						<td>{{hm.contact_no}}</td>
 						<td>{{hm.sbe_address}}</td>
-						<td><a @click.prevent="removeData('householdMembers', i)" href="#" class="text-red font-small">Delete</a></td>
+						<td><a href="#" @click.prevent="setData('householdMembers',i,hm.id)" data-toggle="modal" data-target="#deleteWarningModal" class="text-red font-small">Delete</a></td>
 					</tr>
 				</tbody>
 			</table>
@@ -278,7 +278,7 @@
 						<td>{{bo.amount}}</td>
 						<td>{{bo.balance}}</td>
 						<td>{{bo.amortization}}</td>
-						<td><a @click.prevent="removeData('outstandingObligations',i)" href="#" class="text-red font-small">Delete</a></td>
+						<td><a href="#" @click.prevent="setData('outstandingObligations',i,bo.id)" data-toggle="modal" data-target="#deleteWarningModal" class="text-red font-small">Delete</a></td>
 					</tr>
 				</tbody>
 			</table>
@@ -342,7 +342,7 @@
 						<td>{{emp.years_employed}}</td>
 						<td>{{emp.position}}</td>
 						<td>P {{emp.salary}}</td>
-						<td><a href="#" @click.prevent="removeData('employmentInfo',i)" class="text-red font-small">Delete</a></td>
+						<td><a href="#" @click.prevent="setData('employmentInfo',i,emp.id)" data-toggle="modal" data-target="#deleteWarningModal" class="text-red font-small">Delete</a></td>
 					</tr>
 				</tbody>
 			</table>
@@ -397,7 +397,7 @@
 						<td>{{biz.contact_no}}</td>
 						<td>{{biz.years_in_business}}</td>
 						<td>P {{biz.income}}</td>
-						<td><a @click.prevent="removeData('businessInfo', i)" href="#" class="text-red font-small">Delete</a></td>
+						<td><a href="#" @click.prevent="setData('businessInfo',i,biz.id)" data-toggle="modal" data-target="#deleteWarningModal" class="text-red font-small">Delete</a></td>
 					</tr>
 				</tbody>
 			</table>
@@ -410,6 +410,28 @@
 			<div style="flex:22"></div>
 		</div>
 		<upload-file @imageCapture="imageCapture"/>
+
+
+		<div class="modal" id="deleteWarningModal" tabindex="-1" role="dialog">
+			<div class="modal-dialog modal-md" role="document">
+				<div class="modal-content">
+					<div class="modal-body p-24">
+						<div class="d-flex align-items-center">
+							<img :src="baseURL()+'/img/warning.png'" style="width:120px;height:auto;" class="mr-24" alt="warning icon">
+							<div class="d-flex flex-column">
+								<span class="text-primary-dark text-bold mb-24">
+									Are you sure you want to delete this info?
+								</span>
+								<div class="d-flex mt-auto justify-content-end">
+									<a @click.prevent="deleteOtherInfo()" href="#" data-dismiss="modal" class="btn btn-primary-dark min-w-120 btn-wide mr-24">YES</a>
+									<a href="#" data-dismiss="modal" class="btn btn-danger min-w-120 pull-right btn-wide mr-24">NO</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 </template>
 
@@ -420,6 +442,11 @@
 			return {
 				baseUrl: this.baseURL(),
 				img: null,
+				otherInfo:{
+					type:'',
+					index:null,
+					id:null
+				},
 				borrower: {
 					borrower_id: null,
 					date_registered:'',
@@ -589,6 +616,11 @@
 				}
 				this.borrower[data] = arr;
 			},
+			setData:function(type, i, id){
+				this.otherInfo.type = type;
+				this.otherInfo.index = i;
+				this.otherInfo.id = id;
+			},
 			clearInfo:function(){
 				this.$emit('clearBorrowerInfo')
 				this.borrower = {
@@ -638,6 +670,26 @@
 			},
 			imageCapture:function(img){
 				this.img = img;
+			},
+			async deleteOtherInfo(){
+				await axios.post(this.baseURL() + 'client_information/personal_information_details/delete', this.otherInfo, {
+					headers: {
+						'Authorization': 'Bearer ' + this.token,
+						'Content-Type': 'application/json',
+						'Accept': 'application/json'
+					}
+				})
+				.then(function (response) {
+					if(response.data){
+						this.removeData(this.otherInfo.type, this.otherInfo.index);
+						this.notify('','Data has been deleted.', 'success');
+					}else{
+						this.notify('','Something went wrong.', 'error');
+					}
+				}.bind(this))
+				.catch(function (error) {
+					console.log(error);
+				}.bind(this));
 			}
 		},
 		watch: {
@@ -704,6 +756,7 @@
 		},
         mounted() {							
 			this.borrower.created_at = this.dateToYMD(new Date());
+			// this.deleteOtherInfo();
 			if(this.pclient){
 				this.fetchBorrower();
 			}
