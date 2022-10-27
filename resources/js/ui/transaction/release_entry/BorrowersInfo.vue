@@ -249,7 +249,7 @@
 				</div>
 				<div class="form-group mb-10 mr-16" style="flex: 1">
 					<label for="companySalary" class="form-label">Amortization / Frequency</label>
-					<input v-model="data.outstandingObligations.amortization" required type="number" class="form-control form-input " id="companySalary">
+					<input v-model="data.outstandingObligations.amortization" required type="text" class="form-control form-input " id="companySalary">
 				</div>
 				<div class="form-group mb-10 d-flex flex-column justify-content-end">
 					<button class="btn btn-success d-flex align-items-center" style="height:48px"><i class="fa fa-plus"></i></button>
@@ -372,7 +372,7 @@
 				</div>
 				<div class="form-group mb-10 mr-16" style="flex: 1">
 					<label for="businessIncome" class="form-label">Income / Frequency</label>
-					<input v-model="data.businessInfo.income" required type="number" class="form-control form-input " id="businessIncome">
+					<input v-model="data.businessInfo.income" required type="text" class="form-control form-input " id="businessIncome">
 				</div>
 				<div class="form-group mb-10 d-flex flex-column justify-content-end">
 					<button class="btn btn-success d-flex align-items-center" style="height:48px"><i class="fa fa-plus"></i></button>

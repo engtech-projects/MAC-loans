@@ -782,7 +782,7 @@
 			<a href="#" data-toggle="modal" data-target="#dstModal" class="btn btn-purple min-w-150">Generate DST</a>
 			<div class="d-flex flex-row-reverse">
 				<a @click="print()" href="#" class="btn btn-default min-w-150">Print</a>
-				<a href="#" class="btn btn-success min-w-150 mr-24">Download Excel</a>
+				<!-- <a href="#" class="btn btn-success min-w-150 mr-24">Download Excel</a> -->
 			</div>
 		</div>
 	</div>
