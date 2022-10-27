@@ -18,7 +18,7 @@ class DeductionFeesSeeder extends Seeder
         $docStamp = [
             [
                 "name" => "Documentary Stamp",
-                "rate" => 300,
+                "rate" => 200,
                 "term_start" => 1,
                 "term_end" => 365,
 				'created_at' => Carbon::now(),
@@ -26,7 +26,7 @@ class DeductionFeesSeeder extends Seeder
             ],
             [
                 "name" => "Documentary Stamp",
-                "rate" => 300,
+                "rate" => 200,
                 "term_start" => 366,
                 "term_end" => 9999,
 				'created_at' => Carbon::now(),

@@ -193,14 +193,7 @@ class GLSeeder extends Seeder
 				'created_at' => Carbon::now(),
 				'updated_at' => Carbon::now(),
     		],
-    		[
-    			'loans' => 'Rebates',
-    			'code' => '4010',
-    			'accounting' => 'Interest Income',
-    			'type' => 'repayment',
-				'created_at' => Carbon::now(),
-				'updated_at' => Carbon::now(),
-    		],
+    		
     		[
     			'loans' => 'PDI',
     			'code' => '4026',
