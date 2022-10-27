@@ -31,11 +31,13 @@ class EODController extends BaseController
 		$endTransaction->repayment($dateEnd, $branchId, $status);
 
 		# eod
-		// $endTransaction->close($branchId);
 		// return $dateEnd;
 		$message = ($endTransaction->close($branchId)) ? 'successful' : 'unsuccessful';
 
-		return $this->sendResponse('End of day Transaction', $message);
+		return $this->sendResponse(
+			'End of day Transaction', 
+			$message
+		);
 	}
 
 	public function checkPendingTransctions(Request $request) {
@@ -60,7 +62,8 @@ class EODController extends BaseController
 		$msg .= " & ";
 		$msg .= "{$paymentToOverrideCount} pending Repayment/s";
 
-		return $this->sendResponse(($accountsToOverrideCount + $paymentToOverrideCount),
+		return $this->sendResponse(
+			($accountsToOverrideCount + $paymentToOverrideCount),
 			"You have {$msg} to Override"
 		);
 
