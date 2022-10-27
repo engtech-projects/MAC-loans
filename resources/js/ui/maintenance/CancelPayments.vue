@@ -17,7 +17,7 @@
                         class="form-control"
                         id="searchBar"
                         placeholder="Search"
-						v-model="filter"
+                        v-model="filter"
                     />
                     <div><i class="fa fa-search"></i></div>
                 </div>
@@ -144,6 +144,7 @@
                             type="text"
                             class="form-control flex-1"
                             id="searchBar"
+							v-model="paymentFilter"
                             placeholder="Search"
                         />
                     </div>
@@ -159,7 +160,7 @@
                         <tbody>
                             <tr
                                 @click="selectedPayment = payment"
-                                v-for="payment in payments"
+                                v-for="payment in filteredPayments"
                                 :key="payment.payment_id"
                                 :class="
                                     selectedPayment.payment_id ==
@@ -243,7 +244,8 @@ export default {
                 address: "",
             },
             remarks: "",
-			filter:''
+            filter: "",
+            paymentFilter: "",
         };
     },
     methods: {
@@ -365,6 +367,13 @@ export default {
             }
             return borrowers;
         },
+        filteredPayments: function () {
+            if (this.paymentFilter.length > 0) {
+               return this.payments.filter((data)=> data.account_no.includes(this.paymentFilter) || data.created_at.includes(this.paymentFilter) || (data.or_no?data.or_no:'').includes(this.paymentFilter));
+            }
+			return this.payments;
+        },
+		
     },
     watch: {
         "selectedBorrower.borrower_id": function (newValue) {

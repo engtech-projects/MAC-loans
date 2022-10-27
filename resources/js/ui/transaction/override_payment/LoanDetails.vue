@@ -116,7 +116,7 @@
 					</div>
 					<div class="d-flex flex-column flex-1 mr-24">
 						<span class="font-20 lh-1 pb-5 mb-5" style="border-bottom:1px solid #555;">OVERPAYMENT</span>
-						<span class="font-20 lh-1">P {{formatToCurrency(0)}}</span>
+						<span class="font-20 lh-1">P {{formatToCurrency(overpayment)}}</span>
 					</div>
 					<!-- <div class="d-flex flex-column flex-1">
 						<span class="font-20 lh-1 pb-5 mb-5" style="border-bottom:1px solid #555;">INSURANCE</span>
@@ -149,7 +149,8 @@
 			<div class="d-flex flex-row-reverse">
 				<button v-if="!canOverride(ppayment)" disabled class="btn btn-success min-w-150">Override</button>
 				<a href="#" v-if="canOverride(ppayment)" class="btn btn-success min-w-150" @click="override()">Override</a>
-				<a href="#" data-toggle="modal" data-target="#cancelModal" class="btn btn-bright-blue min-w-150 mr-16">Delete</a>
+				<button v-if="!canOverride(ppayment)" href="#" disabled class="btn btn-bright-blue min-w-150 mr-16">Delete</button>
+				<a href="#" v-if="canOverride(ppayment)" data-toggle="modal" data-target="#cancelModal" class="btn btn-bright-blue min-w-150 mr-16">Delete</a>
 			</div>
 		</section>
 
@@ -236,6 +237,9 @@ export default {
 		borrowerPhoto:function(){
 			return this.ppayment.photo? this.ppayment.photo : this.baseURL()+'/img/user.png';
 		},
+		overpayment:function(){
+			return this.ppayment.over_payment? this.over_payment:0;
+		}
 	}
 	
 }
