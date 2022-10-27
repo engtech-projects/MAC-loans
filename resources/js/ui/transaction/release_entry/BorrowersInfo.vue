@@ -267,7 +267,7 @@
 					<th>Due Date</th>
 					<th>Loan Amount</th>
 					<th>Outstanding Bal.</th>
-					<th>Amort./Freq.</th>
+					<th>Amort./ Freq.</th>
 					<th></th>
 				</thead>
 				<tbody>
@@ -388,7 +388,7 @@
 					<th>Address</th>
 					<th>Contact No.</th>
 					<th>Years</th>
-					<th>Income Frequency</th>
+					<th>Income / Frequency</th>
 				</thead>
 				<tbody>
 					<tr v-for="(biz, i) in borrower.businessInfo" :key="i">
@@ -459,7 +459,7 @@
 						balance : 0,
 						term : '',
 						due_date : '',
-						amortization : 0
+						amortization : ''
 					},
 					householdMembers: {
 						id: null,
@@ -486,7 +486,7 @@
 						business_address : '',
 						contact_no : '',
 						years_in_business : '',
-						income : 0,
+						income : '',
 					}
 				}
 			}

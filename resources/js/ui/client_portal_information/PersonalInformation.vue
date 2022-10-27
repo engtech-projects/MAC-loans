@@ -243,7 +243,7 @@
 						<th>Business Address</th>
 						<th>Contact No.</th>
 						<th>Years in Business</th>
-						<th>Income Frequency</th>
+						<th>Income / Frequency</th>
 					</thead>
 					<tbody>
 						<tr v-if="borrower.businessInfo.length == 0"><td>No business information found.</td></tr>

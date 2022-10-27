@@ -385,7 +385,7 @@
 					<th>Address</th>
 					<th>Contact No.</th>
 					<th>Years</th>
-					<th>Income Frequency</th>
+					<th>Income / Frequency</th>
 				</thead>
 				<tbody>
 					<tr v-for="(biz, i) in borrower.businessInfo" :key="i">
