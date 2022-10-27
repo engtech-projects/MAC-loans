@@ -223,7 +223,7 @@
 						<th>Outstanding Balance</th>
 						<th>Term</th>
 						<th>Due Date</th>
-						<th>Amortization Frequency</th>
+						<th>Amortization / Frequency</th>
 					</thead>
 					<tbody>
 						<tr v-if="borrower.outstandingObligations.length == 0"><td>No outstanding obligation information found.</td></tr>
@@ -251,7 +251,7 @@
 						<th>Business Address</th>
 						<th>Contact No.</th>
 						<th>Years in Business</th>
-						<th>Income Frequency</th>
+						<th>Income / Frequency</th>
 					</thead>
 					<tbody>
 						<tr v-if="borrower.businessInfo.length == 0"><td>No business information found.</td></tr>
