@@ -672,24 +672,30 @@
 				this.img = img;
 			},
 			async deleteOtherInfo(){
-				await axios.post(this.baseURL() + 'client_information/personal_information_details/delete', this.otherInfo, {
-					headers: {
-						'Authorization': 'Bearer ' + this.token,
-						'Content-Type': 'application/json',
-						'Accept': 'application/json'
-					}
-				})
-				.then(function (response) {
-					if(response.data){
-						this.removeData(this.otherInfo.type, this.otherInfo.index);
-						this.notify('','Data has been deleted.', 'success');
-					}else{
-						this.notify('','Something went wrong.', 'error');
-					}
-				}.bind(this))
-				.catch(function (error) {
-					console.log(error);
-				}.bind(this));
+				if(this.otherInfo.id){
+					await axios.post(this.baseURL() + 'client_information/personal_information_details/delete', this.otherInfo, {
+						headers: {
+							'Authorization': 'Bearer ' + this.token,
+							'Content-Type': 'application/json',
+							'Accept': 'application/json'
+						}
+					})
+					.then(function (response) {
+						if(response.data){
+							this.removeData(this.otherInfo.type, this.otherInfo.index);
+							this.notify('','Data has been deleted.', 'success');
+						}else{
+							this.notify('','Something went wrong.', 'error');
+						}
+					}.bind(this))
+					.catch(function (error) {
+						console.log(error);
+					}.bind(this));
+				}else{
+					this.removeData(this.otherInfo.type, this.otherInfo.index);
+					this.notify('','Data has been deleted.', 'success');
+				}
+				
 			}
 		},
 		watch: {
