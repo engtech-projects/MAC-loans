@@ -132,10 +132,10 @@
 								</ul>
 								<div class="tab-content" id="custom-content-below-tabContent">
 
-									<div  class="tab-pane fade show active" id="reminder-letter" role="tabpanel" aria-labelledby="custom-content-below-home-tab">
-										<img :src="baseUrl+'/img/company_header.png'" style="width:100%" class="mb-45" alt="Company Header">
+									<div  class="tab-pane fade show active legaldoc" id="reminder-letter" role="tabpanel" aria-labelledby="custom-content-below-home-tab">
+										<!-- <img :src="baseUrl+'/img/company_header.png'" style="width:100%" class="mb-45" alt="Company Header"> -->
 										<div class="d-flex flex-column font-md" style="padding:0 35px;">
-
+											<img :src="baseUrl+'/img/company_header.png'" style="width:100%" class="mb-45 page-header" alt="Company Header">
 											<div class="d-flex flex-column title align-items-start mb-24">
 												<span class="font-26 lh-1">MGA PAHINUMDOM</span>
 											</div>
@@ -158,7 +158,7 @@
 												</div>
 											</section>
 											<div class="d-flex mb-24">
-												<img :src="baseURL() + 'img/logo-footer.png'" class="w-100" alt="">
+												<img :src="baseURL() + 'img/logo-footer.png'" class="w-100 page-footer" alt="">
 											</div>
 											<div class="mb-72"></div>
 											<div class="d-flex flex-row-reverse mb-45 no-print">
@@ -1425,7 +1425,7 @@
 				this.fetchRejectedAccounts();
 				this.fetchRejectedAccount();
 			}
-			// this.navigate('custom-content-below-loandetails-tab');
+			this.navigate('custom-content-below-loandetails-tab');
 			// this.navigate('custom-content-below-coborrowerinfo-tab');
         }
     }

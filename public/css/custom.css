@@ -1,5 +1,14 @@
 
 /* UTILITIES */
+.a4doc {
+	min-height: 297mm!important;
+}
+.shortdoc {
+	min-height: 279.4mm!important;
+}
+.legaldoc {
+	min-height: 330.2mm!important;
+}
 .no-border {
 	border: none!important;
 }
