@@ -1338,6 +1338,9 @@
 	display: none!important;
 }
 
+.display-on-print {
+	display: none!important;
+}
 
 /* MEDIA QUERIES  */
 @media print {
@@ -1359,7 +1362,11 @@
 		position:fixed;
 		bottom:0;
 	}
+	.display-on-print {
+		display: block!important;
+	}
 }
+@page { margin: 2cm }
 
 @media (max-width: 576px) {  
 	.xs-font-24 {

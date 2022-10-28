@@ -376,9 +376,12 @@
 							
 						</div>
 						<div class="mb-45"></div>	
-						<div class="mb-45"></div>			
-						<p class="text-block text-center" style="line-height:0!important;">This statement is a system generated copy!</p>
-						<p class="text-block text-center">&lt; End of file &gt;</p>
+						<div class="mb-45"></div>	
+						<div>
+							<p class="text-block text-center" style="line-height:0!important;">This statement is a system generated copy!</p>
+							<p class="text-block text-center">&lt; End of file &gt;</p>
+							<img :src="this.baseURL()+'/img/logo-footer.png'" class="w-100 page-footer" alt="">
+						</div>		
 					</section>
 					<div class="d-flex flex-row-reverse mb-45 no-print">
 						<a href="#" @click="printAmort()" class="btn btn-default min-w-150">Print</a>
@@ -518,12 +521,14 @@
 						<span class="flex-4">Prepared by:</span>
 						<span class="flex-4">Certified Corrected by:</span>
 						<span class="flex-4">Approved by:</span>
+						
 					</div>
+					<img :src="this.baseURL()+'/img/logo-footer.png'" class="w-100 page-footer display-on-print" alt="">
 					</div>
 					
 					<div class="d-flex flex-row-reverse">
 						<a href="#" @click="printOverride()" data-dismiss="modal" class="btn btn-default min-w-150">Print</a>
-						<a href="#" data-dismiss="modal" class="btn btn-success mr-16">Download to Excel</a>
+						<!-- <a href="#" data-dismiss="modal" class="btn btn-success mr-16">Download to Excel</a> -->
 						<a href="#" id="canceOverridelModal" data-dismiss="modal" class="btn btn-danger min-w-150 mr-24 hide">Cancel</a>
 					</div>
 				</div>
@@ -732,7 +737,8 @@
 						</section>
 
 						<div class="mb-72"></div>
-						<div class="d-flex flex-row-reverse mb-45 no-print">
+						<img :src="this.baseURL()+'/img/logo-footer.png'" class="w-100 page-footer" alt="">
+						<div class="d-flex flex-row-reverse mb-45 no-print" style="margin-top:24px">
 							<a @click="printVoucher()" href="#" class="btn btn-default min-w-150">Print</a>
 							<!-- <a href="#" @click.prevent="export2Word('voucherPrintContent', 'Voucher')" class="btn btn-success min-w-150 mr-24">Download Document</a> -->
 							<a href="#" id="cancelVoucherModal" data-dismiss="modal" class="btn btn-danger min-w-150 mr-24 hide">Cancel</a>
