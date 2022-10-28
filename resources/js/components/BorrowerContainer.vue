@@ -10,7 +10,7 @@ export default {
 	methods:{
 		redirect:function(){
 			setTimeout(function(){
-				window.location.href = this.baseURL() + 'client_information/personal_information_list';
+				window.location.href = this.baseURL() + 'client_information/personal_information_details/' + this.borrower_id;
 			}.bind(this), 500)
 		}
 	},
