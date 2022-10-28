@@ -1351,6 +1351,14 @@
 	.modal-backdrop {
 		background-color: transparent!important;
 	 }
+	.page-header {
+		position:fixed;
+		top:0;
+	}
+	.page-footer {
+		position:fixed;
+		bottom:0;
+	}
 }
 
 @media (max-width: 576px) {  

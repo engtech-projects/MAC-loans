@@ -133,9 +133,10 @@
 								<div class="tab-content" id="custom-content-below-tabContent">
 
 									<div  class="tab-pane fade show active legaldoc" id="reminder-letter" role="tabpanel" aria-labelledby="custom-content-below-home-tab">
-										<!-- <img :src="baseUrl+'/img/company_header.png'" style="width:100%" class="mb-45" alt="Company Header"> -->
 										<div class="d-flex flex-column font-md" style="padding:0 35px;">
-											<img :src="baseUrl+'/img/company_header.png'" style="width:100%" class="mb-45 page-header" alt="Company Header">
+											<div style="position:relative;">
+												<img :src="baseUrl+'/img/company_header.png'" style="width:100%" class="mb-45" alt="Company Header">
+											</div>
 											<div class="d-flex flex-column title align-items-start mb-24">
 												<span class="font-26 lh-1">MGA PAHINUMDOM</span>
 											</div>
@@ -158,13 +159,15 @@
 												</div>
 											</section>
 											<div class="d-flex mb-24">
-												<img :src="baseURL() + 'img/logo-footer.png'" class="w-100 page-footer" alt="">
+												<div style="position:relative;">
+													<img :src="baseURL() + 'img/logo-footer.png'" class="w-100 page-footer" alt="">
+												</div>
 											</div>
 											<div class="mb-72"></div>
 											<div class="d-flex flex-row-reverse mb-45 no-print">
 												<button id="cancelDacionModal" data-dismiss="modal" class="btn btn-danger min-w-150 mr-24 hide">Cancel</button>
 												<button @click="printReminder()" class="btn btn-default min-w-150">Print</button>
-												<button @click.prevent="export2Word('reminder-letter', 'reminder_letter')" id="excelBtn" class="btn btn-success min-w-150 mr-24">Download Document</button>
+												<!-- <button @click.prevent="export2Word('reminder-letter', 'reminder_letter')" id="excelBtn" class="btn btn-success min-w-150 mr-24">Download Document</button> -->
 											</div>
 										</div>
 									</div>
@@ -251,13 +254,13 @@
 												</div>
 											</section>
 											<div class="d-flex mb-24">
-												<img :src="baseURL() + 'img/logo-footer.png'" class="w-100" alt="">
+												<img :src="baseURL() + 'img/logo-footer.png'" class="w-100 page-footer" alt="">
 											</div>
 											<div class="mb-72"></div>
 											<div class="d-flex flex-row-reverse mb-45 no-print">
 												<button id="cancelDacionModal" data-dismiss="modal" class="btn btn-danger min-w-150 mr-24 hide">Cancel</button>
 												<button @click="print()" class="btn btn-default min-w-150">Print</button>
-												<button @click.prevent="export2Word('dacion-en-pago', 'dacion_en_pago')" id="excelBtn" class="btn btn-success min-w-150 mr-24">Download Document</button>
+												<!-- <button @click.prevent="export2Word('dacion-en-pago', 'dacion_en_pago')" id="excelBtn" class="btn btn-success min-w-150 mr-24">Download Document</button> -->
 											</div>
 										</div>
 									</div>
@@ -372,13 +375,13 @@
 
 											</section>
 											<div class="d-flex mb-24">
-												<img :src="baseURL() + 'img/logo-footer.png'" class="w-100" alt="">
+												<img :src="baseURL() + 'img/logo-footer.png'" class="w-100 page-footer" alt="">
 											</div>
 											<div class="mb-72"></div>
 											<div class="d-flex flex-row-reverse mb-45 no-print">
 												<button id="cancelDacionModal" data-dismiss="modal" class="btn btn-danger min-w-150 mr-24 hide">Cancel</button>
 												<button @click="printDoa()" class="btn btn-default min-w-150">Print</button>
-												<button @click.prevent="export2Word('doa-for-atm', 'doa')" id="excelBtn" class="btn btn-success min-w-150 mr-24">Download Document</button>
+												<!-- <button @click.prevent="export2Word('doa-for-atm', 'doa')" id="excelBtn" class="btn btn-success min-w-150 mr-24">Download Document</button> -->
 											</div>
 										</div>
 									</div>
@@ -553,13 +556,13 @@
 
 											</section>
 											<div class="d-flex mb-24">
-												<img :src="baseURL() + 'img/logo-footer.png'" class="w-100" alt="">
+												<img :src="baseURL() + 'img/logo-footer.png'" class="w-100 page-footer" alt="">
 											</div>
 											<div class="mb-72"></div>
 											<div class="d-flex flex-row-reverse mb-45 no-print">
 												<button id="cancelDacionModal" data-dismiss="modal" class="btn btn-danger min-w-150 mr-24 hide">Cancel</button>
 												<button @click="printMoa()" class="btn btn-default min-w-150">Print</button>
-												<button  @click.prevent="export2Word('moa-for-sme', 'memorandum_of_agreement')" id="excelBtn" class="btn btn-success min-w-150 mr-24">Download Document</button>
+												<!-- <button  @click.prevent="export2Word('moa-for-sme', 'memorandum_of_agreement')" id="excelBtn" class="btn btn-success min-w-150 mr-24">Download Document</button> -->
 											</div>
 										</div>
 									</div>
@@ -610,13 +613,13 @@
 												</table>
 											</section>
 											<div class="d-flex mb-24">
-												<img :src="baseURL() + 'img/logo-footer.png'" class="w-100" alt="">
+												<img :src="baseURL() + 'img/logo-footer.png'" class="w-100 page-footer" alt="">
 											</div>
 											<div class="mb-72"></div>
 											<div class="d-flex flex-row-reverse mb-45 no-print">
 												<button id="cancelDacionModal" data-dismiss="modal" class="btn btn-danger min-w-150 mr-24 hide">Cancel</button>
 												<button @click="printSchedule()" class="btn btn-default min-w-150">Print</button>
-												<button @click.prevent="export2Word('sme-schedule', 'sme_schedule')" id="excelBtn" class="btn btn-success min-w-150 mr-24">Download Document</button>
+												<!-- <button @click.prevent="export2Word('sme-schedule', 'sme_schedule')" id="excelBtn" class="btn btn-success min-w-150 mr-24">Download Document</button> -->
 											</div>
 										</div>
 									</div>
@@ -810,12 +813,12 @@
 												</div>
 											</section>
 											<div class="d-flex mb-24">
-												<img :src="baseURL() + 'img/logo-footer.png'" class="w-100" alt="">
+												<img :src="baseURL() + 'img/logo-footer.png'" class="w-100 page-footer" alt="">
 											</div>
 											<div class="mb-72"></div>
 											<div class="d-flex flex-row-reverse mb-45 no-print">
 												<a @click.prevent="printPromissory()" href="#" class="btn btn-default min-w-150">Print</a>
-												<a href="#" @click.prevent="export2Word('promissory-note', 'promissory_note')" class="btn btn-success min-w-150 mr-24">Download Document</a>
+												<!-- <a href="#" @click.prevent="export2Word('promissory-note', 'promissory_note')" class="btn btn-success min-w-150 mr-24">Download Document</a> -->
 											</div>
 										</div>
 									</div>
