@@ -538,7 +538,6 @@ export default {
 			}
 		},
 		compute:function(){
-			this.calculateInsurance;
 			this.computeDeduction();
 		}
 	},
