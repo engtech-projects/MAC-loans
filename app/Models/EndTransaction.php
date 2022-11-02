@@ -162,7 +162,7 @@ class EndTransaction extends Model
 		$amountApplied = 0;
 		foreach ($payments as $payment) {
 			
-			$amountApplied = $payment->amount_applied;
+			$amountApplied += $payment->amount_applied;
 			foreach ($ledger as $key => $value) {
 				
 				switch ($value['reference']) {
