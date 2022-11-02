@@ -25,19 +25,31 @@ class EODController extends BaseController
 		$status = $request->input('status');
 
 		$endTransaction = new EndTransaction();
-		$dateEnd = $endTransaction->getTransactionDate($branchId)->date_end;
+		$eod = $endTransaction->getTransactionDate($branchId);
 
-		$endTransaction->releasing($dateEnd, $branchId, $status);
-		$endTransaction->repayment($dateEnd, $branchId, $status);
 
-		# eod
-		// return $dateEnd;
-		$message = ($endTransaction->close($branchId)) ? 'successful' : 'unsuccessful';
+		if( $eod->status == 'open' ) {
 
-		return $this->sendResponse(
-			'End of day Transaction', 
-			$message
-		);
+			$endTransaction->releasing($eod->date_end, $branchId, $status);
+			$endTransaction->repayment($eod->date_end, $branchId, $status);
+
+			# eod
+			// return $dateEnd;
+			$message = ($endTransaction->close($branchId)) ? 'successful' : 'unsuccessful';
+
+			return $this->sendResponse(
+				'End of day Transaction', 
+				$message
+			);
+
+		}else{
+
+			return $this->sendResponse(
+				'closed', 
+				'End of Day Transaction is closed'
+			);
+
+		}
 	}
 
 	public function checkPendingTransctions(Request $request) {
