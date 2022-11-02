@@ -976,7 +976,7 @@
 													<span>Butuan City</span>
 												</div>
 												<p>
-													SUBSCRIBE AND SWORN before me this _______, day of __________ </b> and tax identetification number written above,
+													<b>SUBSCRIBE AND SWORN before me this _______, day of __________ </b> and tax identetification number written above,
 													Known to me and to me known to be the same person who executed the foregoing Promissory Note and they Acknowledged to me that the same is their own free and voluntary act and as well as the free and voluntary act and deed of the entitles herein represented with full power so to do and for the uses and purposes thereon set forth.
 												</p>
 												<p>
