@@ -135,17 +135,13 @@ class LoanAccountController extends BaseController
     public function reject(Request $request, LoanAccount $account) {
 
         if( $account->memo > 0 ){
-
-            return Payment::where(['reference_id' => $account->loan_account_id])->delete();
-
+            Payment::where(['reference_id' => $account->loan_account_id])->delete();
         }
 
-        // LoanAccount::where('loan_account_id', $account->loan_account_id)
-        //     ->update([
-        //         'status' => 'rejected',
-        //     ]);
-
-        // return $this->sendResponse(['status' => 'rejected'], 'Rejected');
+        $account->status = 'rejected';
+        $account->save();
+        
+        return $this->sendResponse(['status' => 'rejected'], 'Rejected');
     }
 
     public function destroy($id) {
