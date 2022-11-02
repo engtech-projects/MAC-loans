@@ -284,7 +284,7 @@ class EndTransaction extends Model
 			$journalEntry->cheque_no;
 			$journalEntry->cheque_date;
 			$journalEntry->amount = $amountApplied;
-			$journalEntry->payee = $branch->branch_name;
+			$journalEntry->payee = '';
 			$journalEntry->status = $status;
 			$journalEntry->remarks = 'Loan Repayments for the day ' . Carbon::createFromFormat('Y-m-d', $dateEnd)->format('m/d/Y');
 			$journalEntry->save();
