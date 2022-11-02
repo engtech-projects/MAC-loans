@@ -59,96 +59,102 @@ class EndTransaction extends Model
 		$loanAccounts = loanAccount::where(['status' => 'released', 'branch_code' => $branch->branch_code, 'date_release' => $dateEnd ])->get();
 		
 
-		$ledger = $releaseLedger->ledger('releasing');
+		if( count($loanAccounts) > 0 ) {
 
-		$netProceeds = 0;
-		foreach ($loanAccounts as $account) {
-			
-			$netProceeds += $account->net_proceeds;
-			foreach ($ledger as $key => $value) {
+			$ledger = $releaseLedger->ledger('releasing');
+
+			$netProceeds = 0;
+			foreach ($loanAccounts as $account) {
 				
-				switch ($value['reference']) {
-					case 'Loan Receivable':
-						$ledger[$key]['debit'] += $account->loan_amount;
-						break;
-					case 'Check':
+				$netProceeds += $account->net_proceeds;
+				foreach ($ledger as $key => $value) {
+					
+					switch ($value['reference']) {
+						case 'Loan Receivable':
+							$ledger[$key]['debit'] += $account->loan_amount;
+							break;
+						case 'Check':
 
-						if( $account->release_type == 'Check' || $account->release_type == 'Check Release' ){
-							$ledger[$key]['credit'] += $account->net_proceeds;
-						}
+							if( $account->release_type == 'Check' || $account->release_type == 'Check Release' ){
+								$ledger[$key]['credit'] += $account->net_proceeds;
+							}
 
-						break;
-					case 'Cash':
-						
-						if( $account->release_type == 'Cash' || $account->release_type == 'Cash Release' ){
-							$ledger[$key]['credit'] += $account->net_proceeds;
-						}
+							break;
+						case 'Cash':
+							
+							if( $account->release_type == 'Cash' || $account->release_type == 'Cash Release' ){
+								$ledger[$key]['credit'] += $account->net_proceeds;
+							}
 
-						break;
-					case 'Filing Fee':
-						 $ledger[$key]['credit'] += $account->filing_fee;
-						break;
-					case 'Documentary Stamp':
-						 $ledger[$key]['credit'] += $account->document_stamp;
-						break;
-					case 'Insurance':
-						$ledger[$key]['credit'] += $account->insurance;
-						break;
-					case 'Notarial':
-						$ledger[$key]['credit'] += $account->notarial_fee;
-						break;
-					case 'Prepaid':
-						 $ledger[$key]['credit'] += $account->prepaid_interest;
-						break;
-					case 'Others':
-						$ledger[$key]['credit'] += $account->affidavit_fee;
-						break;
-					case 'Memo':
-						$ledger[$key]['credit'] += $account->memo;
-						break;
+							break;
+						case 'Filing Fee':
+							 $ledger[$key]['credit'] += $account->filing_fee;
+							break;
+						case 'Documentary Stamp':
+							 $ledger[$key]['credit'] += $account->document_stamp;
+							break;
+						case 'Insurance':
+							$ledger[$key]['credit'] += $account->insurance;
+							break;
+						case 'Notarial':
+							$ledger[$key]['credit'] += $account->notarial_fee;
+							break;
+						case 'Prepaid':
+							 $ledger[$key]['credit'] += $account->prepaid_interest;
+							break;
+						case 'Others':
+							$ledger[$key]['credit'] += $account->affidavit_fee;
+							break;
+						case 'Memo':
+							$ledger[$key]['credit'] += $account->memo;
+							break;
+					}
 				}
 			}
-		}
 
 
-		$journalEntry = new JournalEntry();
-		$loanReleasesBook = 8;
+			$journalEntry = new JournalEntry();
+			$loanReleasesBook = 8;
 
-		$journalEntry->journal_no = $this->getJournalNo($loanReleasesBook);
-		$journalEntry->journal_date = $dateEnd;
-		$journalEntry->branch_id = $branch->branch_id;
-		$journalEntry->book_id = $loanReleasesBook;
-		$journalEntry->source = 'Releases';
-		$journalEntry->cheque_no;
-		$journalEntry->cheque_date;
-		$journalEntry->amount = $netProceeds;
-		$journalEntry->payee = '';
-		$journalEntry->status = $status;
-		$journalEntry->remarks = 'Loan Releases for the day ' . Carbon::createFromFormat('Y-m-d', $dateEnd)->format('m/d/Y');
-		$journalEntry->save();
+			$journalEntry->journal_no = $this->getJournalNo($loanReleasesBook);
+			$journalEntry->journal_date = $dateEnd;
+			$journalEntry->branch_id = $branch->branch_id;
+			$journalEntry->book_id = $loanReleasesBook;
+			$journalEntry->source = 'Releases';
+			$journalEntry->cheque_no;
+			$journalEntry->cheque_date;
+			$journalEntry->amount = $netProceeds;
+			$journalEntry->payee = '';
+			$journalEntry->status = $status;
+			$journalEntry->remarks = 'Loan Releases for the day ' . Carbon::createFromFormat('Y-m-d', $dateEnd)->format('m/d/Y');
+			$journalEntry->save();
 
-		$entryData = [];
-		foreach ($ledger as $key => $value) {
-			
-			if( $value['debit'] > 0 || $value['credit'] > 0 ){
+			$entryData = [];
+			foreach ($ledger as $key => $value) {
+				
+				if( $value['debit'] > 0 || $value['credit'] > 0 ){
 
-				$entryData[] = [
-					'journal_id' => $journalEntry->journal_id,
-					'account_id' => $value['id'],
-					'subsidiary_id' => $branch->branch_code,
-					'journal_details_account_no' => $value['acct'],
-					'journal_details_title' => $value['title'],
-					'journal_details_debit' => $value['debit'],
-					'journal_details_credit' => $value['credit'],
-					'journal_details_ref_no' => '',
-					'journal_details_description' => '',
-				];
+					$entryData[] = [
+						'journal_id' => $journalEntry->journal_id,
+						'account_id' => $value['id'],
+						'subsidiary_id' => $branch->branch_code,
+						'journal_details_account_no' => $value['acct'],
+						'journal_details_title' => $value['title'],
+						'journal_details_debit' => $value['debit'],
+						'journal_details_credit' => $value['credit'],
+						'journal_details_ref_no' => '',
+						'journal_details_description' => '',
+					];
 
+				}
 			}
-		}
 
-		JournalEntryDetails::insert($entryData);
-		// return $ledger;
+			return JournalEntryDetails::insert($entryData);
+			// return $ledger;
+		} 
+
+		return false;
+
 	}
 
 	public function repayment($dateEnd, $branchId, $status = 'unposted') {
@@ -157,154 +163,158 @@ class EndTransaction extends Model
 		$branch = Branch::find($branchId);
 		$payments = Payment::where(['status' => 'paid', 'branch_id' => $branchId ])->whereDate('updated_at', $dateEnd)->get();
 
-		$ledger = $repaymentLedger->ledger('repayment');
+		if( count($payments) > 0 ){
 
-		$amountApplied = 0;
-		foreach ($payments as $payment) {
-			
-			$amountApplied += $payment->amount_applied;
-			foreach ($ledger as $key => $value) {
+			$ledger = $repaymentLedger->ledger('repayment');
+
+			$amountApplied = 0;
+			foreach ($payments as $payment) {
 				
-				switch ($value['reference']) {
-					case 'Loan Receivable':
-						$ledger[$key]['credit'] += $payment->principal;
-						break;
-					case 'Check':
+				$amountApplied += $payment->amount_applied;
+				foreach ($ledger as $key => $value) {
+					
+					switch ($value['reference']) {
+						case 'Loan Receivable':
+							$ledger[$key]['credit'] += $payment->principal;
+							break;
+						case 'Check':
 
-						if( Str::contains(Str::lower($payment->payment_type), 'check') ){
-							$ledger[$key]['debit'] += $payment->amount_applied;
-						}
+							if( Str::contains(Str::lower($payment->payment_type), 'check') ){
+								$ledger[$key]['debit'] += $payment->amount_applied;
+							}
 
-						break;
-					case 'Cash':
-						
-						if( Str::contains(Str::lower($payment->payment_type), 'cash') ){
-							$ledger[$key]['debit'] += $payment->amount_applied;
-						}
+							break;
+						case 'Cash':
+							
+							if( Str::contains(Str::lower($payment->payment_type), 'cash') ){
+								$ledger[$key]['debit'] += $payment->amount_applied;
+							}
 
-						break;
-					case 'Rebates':
+							break;
+						case 'Rebates':
 
-						if( $payment->rebates > 0 && $payment->rebates_approval_no ) {
-							$ledger[$key]['debit'] += $payment->rebates;
-						}
-						
-						break;
-					case 'Interest Income':
-						// rebates
-						$r = 0;
-						if( $payment->rebates > 0 && $payment->rebates_approval_no ) {
-							$r = $payment->rebates;
-						}
+							if( $payment->rebates > 0 && $payment->rebates_approval_no ) {
+								$ledger[$key]['debit'] += $payment->rebates;
+							}
+							
+							break;
+						case 'Interest Income':
+							// rebates
+							$r = 0;
+							if( $payment->rebates > 0 && $payment->rebates_approval_no ) {
+								$r = $payment->rebates;
+							}
 
-						$ledger[$key]['credit'] += ($payment->interest + $r);
-						break;
-					case 'Penalty Income':
+							$ledger[$key]['credit'] += ($payment->interest + $r);
+							break;
+						case 'Penalty Income':
 
-						if( $payment->penalty > 0 && !$payment->penalty_approval_no ) {
-								$ledger[$key]['credit'] += $payment->penalty;
-						}
+							if( $payment->penalty > 0 && !$payment->penalty_approval_no ) {
+									$ledger[$key]['credit'] += $payment->penalty;
+							}
 
-						break;
-					case 'Overpayment':
-						$ledger[$key]['credit'] += $payment->over_payment;
-						break;
-					case 'Pastdue Interest':
+							break;
+						case 'Overpayment':
+							$ledger[$key]['credit'] += $payment->over_payment;
+							break;
+						case 'Pastdue Interest':
 
-						if( $payment->pdi > 0 && !$payment->pdi_approval_no ) {
-								$ledger[$key]['credit'] += $payment->pdi;
-						}
+							if( $payment->pdi > 0 && !$payment->pdi_approval_no ) {
+									$ledger[$key]['credit'] += $payment->pdi;
+							}
 
-						break;
-					// case 'Prepaid Interest':
-					// 	// $ledger[$key]['credit'] = $payment->;
-					// 	break;
-					case 'Memo':
-			
-						if( Str::contains(Str::lower($payment->payment_type), 'memo') ){
-							$ledger[$key]['debit'] += $payment->amount_applied;
-						}
+							break;
+						// case 'Prepaid Interest':
+						// 	// $ledger[$key]['credit'] = $payment->;
+						// 	break;
+						case 'Memo':
+				
+							if( Str::contains(Str::lower($payment->payment_type), 'memo') ){
+								$ledger[$key]['debit'] += $payment->amount_applied;
+							}
 
-						break;
+							break;
 
-					case 'POS':
-			
-						if( Str::contains(Str::lower($payment->payment_type), 'pos') ){
-							$ledger[$key]['debit'] += $payment->amount_applied;
-						}
+						case 'POS':
+				
+							if( Str::contains(Str::lower($payment->payment_type), 'pos') ){
+								$ledger[$key]['debit'] += $payment->amount_applied;
+							}
 
-						break;
+							break;
 
-					case 'VAT Payable':
-						$ledger[$key]['credit'] += $payment->vat;
-						break;
+						case 'VAT Payable':
+							$ledger[$key]['credit'] += $payment->vat;
+							break;
+					}
 				}
 			}
-		}
 
-		foreach ($ledger as $k => $v) {
-		
-			switch ($v['reference']) {
-				case 'VAT':
-					$rebates = $repaymentLedger->getDataFromLedger($ledger, 'Rebates');
-					$interestIncome = $repaymentLedger->getDataFromLedger($ledger, 'Interest Income', 'credit');
-
-					$ledger[$k]['debit'] = round(($interestIncome - $rebates) / 1.12 * 0.12, 2);
-				break;
-
-				case 'Penalty':
-					$penalty = $repaymentLedger->getDataFromLedger($ledger, 'Penalty Income', 'credit');
-
-					$ledger[$k]['debit'] = round($penalty / 1.12 * 0.12, 2);
-				break;
-
-				case 'PDI':
-					$pdi = $repaymentLedger->getDataFromLedger($ledger, 'Pastdue Interest', 'credit');
-					$ledger[$k]['debit'] = round($pdi / 1.12 * 0.12, 2);	
-				break;
-			}
-		}
-
-		$journalEntry = new JournalEntry();
-		$loanPaymentsBook = 9;
-
-		$journalEntry->journal_no = $this->getJournalNo($loanPaymentsBook);
-		$journalEntry->journal_date = $dateEnd;
-		$journalEntry->branch_id = $branch->branch_id;
-		$journalEntry->book_id = $loanPaymentsBook;
-		$journalEntry->source = 'Repayments';
-		$journalEntry->cheque_no;
-		$journalEntry->cheque_date;
-		$journalEntry->amount = $amountApplied;
-		$journalEntry->payee = $branch->branch_name;
-		$journalEntry->status = $status;
-		$journalEntry->remarks = 'Loan Repayments for the day ' . Carbon::createFromFormat('Y-m-d', $dateEnd)->format('m/d/Y');
-		$journalEntry->save();
-
-
-		$entryData = [];
-		foreach ($ledger as $key => $value) {
+			foreach ($ledger as $k => $v) {
 			
-			if( $value['debit'] > 0 || $value['credit'] > 0 ){
+				switch ($v['reference']) {
+					case 'VAT':
+						$rebates = $repaymentLedger->getDataFromLedger($ledger, 'Rebates');
+						$interestIncome = $repaymentLedger->getDataFromLedger($ledger, 'Interest Income', 'credit');
 
-				$entryData[] = [
-					'journal_id' => $journalEntry->journal_id,
-					'account_id' => $value['id'],
-					'subsidiary_id' => $branch->branch_code,
-					'journal_details_account_no' => $value['acct'],
-					'journal_details_title' => $value['title'],
-					'journal_details_debit' => $value['debit'],
-					'journal_details_credit' => $value['credit'],
-					'journal_details_ref_no' => '',
-					'journal_details_description' => '',
-				];
+						$ledger[$k]['debit'] = round(($interestIncome - $rebates) / 1.12 * 0.12, 2);
+					break;
 
+					case 'Penalty':
+						$penalty = $repaymentLedger->getDataFromLedger($ledger, 'Penalty Income', 'credit');
+
+						$ledger[$k]['debit'] = round($penalty / 1.12 * 0.12, 2);
+					break;
+
+					case 'PDI':
+						$pdi = $repaymentLedger->getDataFromLedger($ledger, 'Pastdue Interest', 'credit');
+						$ledger[$k]['debit'] = round($pdi / 1.12 * 0.12, 2);	
+					break;
+				}
 			}
+
+			$journalEntry = new JournalEntry();
+			$loanPaymentsBook = 9;
+
+			$journalEntry->journal_no = $this->getJournalNo($loanPaymentsBook);
+			$journalEntry->journal_date = $dateEnd;
+			$journalEntry->branch_id = $branch->branch_id;
+			$journalEntry->book_id = $loanPaymentsBook;
+			$journalEntry->source = 'Repayments';
+			$journalEntry->cheque_no;
+			$journalEntry->cheque_date;
+			$journalEntry->amount = $amountApplied;
+			$journalEntry->payee = $branch->branch_name;
+			$journalEntry->status = $status;
+			$journalEntry->remarks = 'Loan Repayments for the day ' . Carbon::createFromFormat('Y-m-d', $dateEnd)->format('m/d/Y');
+			$journalEntry->save();
+
+
+			$entryData = [];
+			foreach ($ledger as $key => $value) {
+				
+				if( $value['debit'] > 0 || $value['credit'] > 0 ){
+
+					$entryData[] = [
+						'journal_id' => $journalEntry->journal_id,
+						'account_id' => $value['id'],
+						'subsidiary_id' => $branch->branch_code,
+						'journal_details_account_no' => $value['acct'],
+						'journal_details_title' => $value['title'],
+						'journal_details_debit' => $value['debit'],
+						'journal_details_credit' => $value['credit'],
+						'journal_details_ref_no' => '',
+						'journal_details_description' => '',
+					];
+
+				}
+			}
+
+			return JournalEntryDetails::insert($entryData);
+			// return $ledger;
 		}
 
-		JournalEntryDetails::insert($entryData);
-
-		return $ledger;
+		return false;
 	}
 
 	public function getJournalNo($id) {

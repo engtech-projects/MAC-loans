@@ -30,8 +30,15 @@ class EODController extends BaseController
 
 		if( $eod->status == 'open' ) {
 
-			$endTransaction->releasing($eod->date_end, $branchId, $status);
-			$endTransaction->repayment($eod->date_end, $branchId, $status);
+			$hasRelease = $endTransaction->releasing($eod->date_end, $branchId, $status);
+			$hasRepayment = $endTransaction->repayment($eod->date_end, $branchId, $status);
+
+			if( !$hasRelease && !$hasRepayment ){
+				return $this->sendResponse(
+					'false', 
+					'No Transaction'
+				);
+			}
 
 			# eod
 			// return $dateEnd;
