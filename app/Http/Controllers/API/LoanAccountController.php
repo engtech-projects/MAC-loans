@@ -12,6 +12,7 @@ use App\Models\Product;
 use App\Models\Amortization;
 use App\Models\Branch;
 use App\Models\ChartOfAccounts;
+use App\Models\Payment;
 use Carbon\Carbon;
 use App\Http\Resources\Borrower as BorrowerResource;
 use App\Http\Resources\LoanAccount as LoanAccountResource;
@@ -133,12 +134,18 @@ class LoanAccountController extends BaseController
 
     public function reject(Request $request, LoanAccount $account) {
 
-        LoanAccount::where('loan_account_id', $account->loan_account_id)
-            ->update([
-                'status' => 'rejected',
-            ]);
+        if( $account->memo > 0 ){
 
-        return $this->sendResponse(['status' => 'rejected'], 'Rejected');
+            return Payment::where(['reference_id' => $account->loan_account_id])->delete();
+
+        }
+
+        // LoanAccount::where('loan_account_id', $account->loan_account_id)
+        //     ->update([
+        //         'status' => 'rejected',
+        //     ]);
+
+        // return $this->sendResponse(['status' => 'rejected'], 'Rejected');
     }
 
     public function destroy($id) {
