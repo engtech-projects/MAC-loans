@@ -12,7 +12,7 @@
  
  window.Vue = require('vue').default;
  Vue.use(Notifications);
- 
+
  Vue.component('login', require('./components/Login.vue').default);
  Vue.component('borrower-login', require('./components/BorrowerLogin.vue').default);
  Vue.component('client-list', require('./ui/client_information/ClientList.vue').default);
@@ -23,6 +23,7 @@
  Vue.component('print-docs', require('./components/DocumentsComponent.vue').default);
  Vue.component('borrower-container', require('./components/BorrowerContainer.vue').default);
  Vue.component('overridepayment-view', require('./components/OverridePaymentView.vue').default);
+ Vue.component('warning-modal', require('./components/WarningModal.vue').default);
  
  Vue.component('cancel-payments', require('./ui/maintenance/CancelPayments.vue').default);
  Vue.component('product-setup', require('./ui/maintenance/ProductSetup.vue').default);
@@ -61,9 +62,10 @@
  Vue.component('reports-collection-ao', require('./ui/reports/collection/Ao.vue').default);
  Vue.component('endof-day', require('./ui/endofday/Endofday.vue').default);
 
- // Vue.config.devtools = false;
+ Vue.config.devtools = false;
  const app = new Vue({
 	 el: '#app',
 	 mixin:[helper],
  });
+
  

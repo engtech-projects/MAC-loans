@@ -84,123 +84,6 @@
 							<td>{{formatToCurrency(totalPenaltyWaive)}}</td>
 							<td>{{formatToCurrency(totalPdiWaive)}}</td>
 						</tr>
-						<!-- <tr>
-							<td>0212154265</td>
-							<td>Jose Pedales</td>
-							<td>0000015711</td>
-							<td>12,000.00</td>
-							<td>CASH</td>
-							<td>32,000.00</td>
-							<td>2,000.00</td>
-							<td>0.00</td>
-							<td>0.00</td>
-							<td>0.00</td>
-							<td>200.00</td>
-						</tr>
-						<tr>
-							<td>0212154265</td>
-							<td>Jose Pedales</td>
-							<td>0000015711</td>
-							<td>12,000.00</td>
-							<td>CASH</td>
-							<td>32,000.00</td>
-							<td>2,000.00</td>
-							<td>0.00</td>
-							<td>0.00</td>
-							<td>0.00</td>
-							<td>200.00</td>
-						</tr>
-						<tr>
-							<td>0212154265</td>
-							<td>Jose Pedales</td>
-							<td>0000015711</td>
-							<td>12,000.00</td>
-							<td>CASH</td>
-							<td>32,000.00</td>
-							<td>2,000.00</td>
-							<td>0.00</td>
-							<td>0.00</td>
-							<td>0.00</td>
-							<td>200.00</td>
-						</tr>
-						<tr>
-							<td>0212154265</td>
-							<td>Jose Pedales</td>
-							<td>0000015711</td>
-							<td>12,000.00</td>
-							<td>CASH</td>
-							<td>32,000.00</td>
-							<td>2,000.00</td>
-							<td>0.00</td>
-							<td>0.00</td>
-							<td>0.00</td>
-							<td>200.00</td>
-						</tr>
-						<tr>
-							<td>0212154265</td>
-							<td>Jose Pedales</td>
-							<td>0000015711</td>
-							<td>12,000.00</td>
-							<td>CASH</td>
-							<td>32,000.00</td>
-							<td>2,000.00</td>
-							<td>0.00</td>
-							<td>0.00</td>
-							<td>0.00</td>
-							<td>200.00</td>
-						</tr>
-						<tr>
-							<td>0212154265</td>
-							<td>Jose Pedales</td>
-							<td>0000015711</td>
-							<td>12,000.00</td>
-							<td>CASH</td>
-							<td>32,000.00</td>
-							<td>2,000.00</td>
-							<td>0.00</td>
-							<td>0.00</td>
-							<td>0.00</td>
-							<td>200.00</td>
-						</tr>
-						<tr>
-							<td>0212154265</td>
-							<td>Jose Pedales</td>
-							<td>0000015711</td>
-							<td>12,000.00</td>
-							<td>CASH</td>
-							<td>32,000.00</td>
-							<td>2,000.00</td>
-							<td>0.00</td>
-							<td>0.00</td>
-							<td>0.00</td>
-							<td>200.00</td>
-						</tr>
-						<tr>
-							<td>0212154265</td>
-							<td>Jose Pedales</td>
-							<td>0000015711</td>
-							<td>12,000.00</td>
-							<td>CASH</td>
-							<td>32,000.00</td>
-							<td>2,000.00</td>
-							<td>0.00</td>
-							<td>0.00</td>
-							<td>0.00</td>
-							<td>200.00</td>
-						</tr>
-						<tr class="bbt-8 text-primary-dark text-bold">
-							<td>TOTAL</td>
-							<td></td>
-							<td></td>
-							<td>21,000.00</td>
-							<td></td>
-							<td>323,000.00</td>
-							<td>323,000.00</td>
-							<td>0.00</td>
-							<td>0.00</td>
-							<td>0.00</td>
-							<td>00.00</td>
-						</tr> -->
 					</tbody>
 				</table>
 				<div class="d-flex align-items-end mb-45">
@@ -261,7 +144,7 @@
 									<span class="pl-24">Rebates & Disc.</span>
 									<span>:</span>
 								</div>
-								<span class="flex-3 text-primary-dark">P 0.00</span>
+								<span class="flex-3 text-primary-dark">P {{formatToCurrency(totalRebates)}}</span>
 							</div>
 							<!-- <div class="d-flex flex-row">
 								<div class="d-flex flex-row flex-2 justify-content-between pr-24">
@@ -285,7 +168,6 @@
 					   <span class="flex-1 bb-primary-dark pb-24">Approved by:</span>
 					</section>
 					<section class="d-flex flex-1 justify-content-end">
-						<!-- <a href="#" data-dismiss="modal" class="btn btn-success mr-16">Download to Excel</a> -->
 						<a href="#" data-dismiss="modal" class="btn btn-default min-w-150">Print</a>
 					</section>
 				</div>
@@ -332,7 +214,7 @@ export default {
 		totalCash:function(){
 			var amount = 0;
 			this.ppayments.map(function(payment){
-				if(payment.payment_type == 'cash'){
+				if(payment.payment_type == 'Cash Payment'){
 					amount += payment.amount_applied;
 				}
 			});
@@ -341,7 +223,7 @@ export default {
 		totalCheck:function(){
 			var amount = 0;
 			this.ppayments.map(function(payment){
-				if(payment.payment_type == 'check'){
+				if(payment.payment_type == 'Check Payment'){
 					amount += payment.amount_applied;
 				}
 			});
@@ -350,7 +232,7 @@ export default {
 		totalMemo:function(){
 			var amount = 0;
 			this.ppayments.map(function(payment){
-				if(payment.payment_type == 'memo'){
+				if(payment.payment_type == 'Memo'){
 					amount += payment.amount_applied;
 				}
 			});

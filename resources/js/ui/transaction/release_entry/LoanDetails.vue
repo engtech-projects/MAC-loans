@@ -557,8 +557,9 @@ export default {
 					}
 				})
 				.then(function (response) {
+					console.log(response.data.data);
 					this.notify('',response.data.message, 'success');
-					this.pay();
+					this.pay(response.data.data.loan_account_id);
 					this.$emit('savedInfo', response.data.data)
 				}.bind(this))
 				.catch(function (error) {
@@ -601,13 +602,14 @@ export default {
 		compute:function(){
 			this.computeDeduction();
 		},
-		pay:function(){
+		pay:function(accountId){
 			if(this.loanaccount.loan_account_id){
 				let payment = {
 					loan_account_id: this.loanaccount.loan_account_id,
 					branch_id: this.pbranch,
 					payment_type: 'Memo',
 					reference_no: this.memoRefNo,
+					reference_id: accountId,
 					memo_type: 'deduct to balance',
 					amortization_id: this.loanaccount.amortization_id,
 					principal: this.loanaccount.remainingBalance.principal.balance,

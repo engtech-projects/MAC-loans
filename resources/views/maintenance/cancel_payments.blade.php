@@ -3,7 +3,7 @@
 @section('content')
     <!-- Main content -->
     <section class="content mb-45 app" id="app">
-		<cancel-payments></cancel-payments>
+		<cancel-payments branch="{{Session::get('branch')->branch_id}}" token="{{Session::get('token')}}"></cancel-payments>
     </section>
     <!-- /.content -->
 	<!-- MODALS  -->
