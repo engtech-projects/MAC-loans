@@ -114,14 +114,14 @@
 								<span class="pl-24">Rebates & Disc</span>
 								<span>:</span>
 							</div>
-							<span class="flex-3 text-primary-dark">P 0.00</span>
+							<span class="flex-3 text-primary-dark">P {{formatToCurrency(totalRebates)}}</span>
 						</div>
 						<div class="d-flex flex-row mb-12">
 							<div class="d-flex flex-row flex-2 justify-content-between pr-24">
 								<span class="">Total POS</span>
 								<span>:</span>
 							</div>
-							<span class="flex-3 text-primary-dark">P 0.00</span>
+							<span class="flex-3 text-primary-dark">P {{formatToCurrency(totalPOS)}}</span>
 						</div>
 					</div>
 					<!-- <div class="d-flex flex-column mb-24">
@@ -159,7 +159,7 @@
 					</div>
 				</section>
 			</div>
-			<overridepayment-details :ppayment="payment" :token="token" @reloadPayments="openPayments();resetPayment();resetLoanAccount()"></overridepayment-details>
+			<overridepayment-details :ppayment="payment" :token="token" @reloadPayments="reloadPayments"></overridepayment-details>
 		</div>
 		<overridepayment-view :pbranch="pbranch" :ppayments="paymentsBase"></overridepayment-view>
 
@@ -246,6 +246,7 @@ export default {
 				}
 			})
 			.then(function (response) {
+				console.log(response.data.data);
 				this.paidPayments = response.data;
 			}.bind(this))
 			.catch(function (error) {
@@ -320,6 +321,7 @@ export default {
 				this.notify('',response.data.message, 'success');
 				this.openPayments();
 				this.resetPayment();
+				this.todaysPaidPayments();
 			}.bind(this))
 			.catch(function (error) {
 				console.log(error);
@@ -333,6 +335,11 @@ export default {
 				type: type,
 			});
 		},
+		reloadPayments:function(){
+			this.openPayments();
+			this.resetPayment();
+			this.todaysPaidPayments()
+		}
 	},
 	computed:{
 		boverrideCheck:function(){
@@ -367,8 +374,8 @@ export default {
 		},
 		totalCash:function(){
 			var amount = 0;
-			this.payments.map(function(payment){
-				if(payment.payment_type == 'cash'){
+			this.paidPayments.map(function(payment){
+				if(payment.payment_type == 'Cash Payment'){
 					amount += payment.amount_applied;
 				}
 			});
@@ -376,24 +383,42 @@ export default {
 		},
 		totalCheck:function(){
 			var amount = 0;
-			this.payments.map(function(payment){
-				if(payment.payment_type == 'check'){
+			this.paidPayments.map(function(payment){
+				if(payment.payment_type == 'check Payment'){
 					amount += payment.amount_applied;
+				}
+			});
+			return amount;
+		},
+		totalRebates:function(){
+			var amount = 0;
+			this.paidPayments.map(function(payment){
+				if(payment.payment_type == 'Memo'){
+					amount += payment.rebates;
 				}
 			});
 			return amount;
 		},
 		totalMemo:function(){
 			var amount = 0;
-			this.payments.map(function(payment){
-				if(payment.payment_type == 'memo'){
+			this.paidPayments.map(function(payment){
+				if(payment.payment_type == 'Memo'){
+					amount += payment.amount_applied;
+				}
+			});
+			return amount;
+		},
+		totalPOS:function(){
+			var amount = 0;
+			this.paidPayments.map(function(payment){
+				if(payment.payment_type == 'POS'){
 					amount += payment.amount_applied;
 				}
 			});
 			return amount;
 		},
 		totalPayment:function(){
-			return this.selected + this.unselected;
+			return (this.totalCash + this.totalCheck + this.totalPOS + this.totalMemo) - this.totalRebates;
 		},
 		totalPrincipal:function(){
 			var amount = 0;

@@ -190,7 +190,7 @@ export default {
 			})
 			.then(function (response) {
 				console.log(response.data);
-				this.notify('',response.data.message, 'success');
+				this.notify('','Override successful.', 'success');
 				this.$emit('reloadPayments');
 			}.bind(this))
 			.catch(function (error) {

@@ -160,7 +160,7 @@
 						   <span>TOTAL PAYMENT</span>
 						   <div class="d-flex flex-row">
 							   <span>P</span>
-							   <span>{{formatToCurrency(totalPos)}}</span>
+							   <span>{{formatToCurrency(totalPaymentSummary)}}</span>
 						   </div>
 					   </div>
 					   <span class="flex-1 bb-primary-dark pb-24 mr-24">Prepared by:</span>
@@ -265,6 +265,9 @@ export default {
 				amount += payment.amount_applied;
 			});
 			return amount;
+		},
+		totalPaymentSummary:function(){
+			return this.totalCash + this.totalCheck + this.totalPOS + this.totalMemo - this.totalRebates;
 		},
 		totalPrincipal:function(){
 			var amount = 0;

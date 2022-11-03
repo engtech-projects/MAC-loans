@@ -1000,6 +1000,7 @@ export default {
 			.then(function (response) {
 				this.$emit('updateLoanAccounts');
 				this.fetchFilteredOverride(true);
+				this.notify('','Account has been rejected successfully.', 'success');
 			}.bind(this))
 			.catch(function (error) {
 				console.log(error);
