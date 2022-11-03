@@ -248,7 +248,7 @@
 								</div>
 								<div class="flex-2" v-if="payment.payment_type=='Cash Payment'"></div>
 								<div class="form-group mb-10 mr-16 flex-1" v-if="payment.payment_type=='POS'">
-									<label for="transactionDate" class="form-label">Referrence #</label>
+									<label for="transactionDate" class="form-label">Reference #</label>
 									<input required v-model="payment.reference_no" type="text" class="form-control form-input" id="transactionDate">
 								</div>
 								<div class="form-group mb-10 mr-16 flex-1" v-if="payment.payment_type=='Check Payment'">
@@ -274,7 +274,7 @@
 									</div>
 								</div>
 								<div class="form-group mb-10 flex-1  mr-16" v-if="payment.payment_type=='Memo'">
-									<label for="transactionDate" class="form-label">Memo Referece #</label>
+									<label for="transactionDate" class="form-label">Memo Reference #</label>
 									<input required v-model="payment.reference_no" type="text" class="form-control form-input" id="transactionDate">
 								</div>
 								<div class="form-group mb-10 mr-16 flex-1" v-if="payment.payment_type=='Memo'">
