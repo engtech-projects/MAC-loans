@@ -2137,7 +2137,7 @@ export default {
 				outstandingObligations : [],
 			},
 			accounts:[],
-			img:'/img/user.png',
+			img:this.baseURL()+'/img/user.png',
 			loanDetails: {
 				loan_account_id:null,
 				cycle_no : 1,

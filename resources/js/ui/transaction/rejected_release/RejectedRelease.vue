@@ -513,7 +513,7 @@ export default {
 			return accounts;
 		},
 		borrowerPhoto:function(){
-			return this.loanAccount.borrower_photo? this.loanAccount.borrower_photo : '/img/user.png';
+			return this.loanAccount.borrower_photo? this.loanAccount.borrower_photo : this.baseURL()+'/img/user.png';
 		},
 		dueDate:function(){
 			if(this.loanAccount.loan_account_id){

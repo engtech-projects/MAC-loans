@@ -224,7 +224,7 @@ export default {
 	},
 	computed:{
 		borrowerPhoto:function(){
-			return this.ppayment.photo? this.ppayment.photo : '/img/user.png';
+			return this.ppayment.photo? this.ppayment.photo : this.baseURL()+'/img/user.png';
 		},
 	}
 	

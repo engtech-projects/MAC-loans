@@ -316,7 +316,7 @@ export default {
 	},
 	computed:{
 		borrowerPhoto:function(){
-			return this.borrower.photo? this.borrower.photo : '/img/user.png';
+			return this.borrower.photo? this.borrower.photo : this.baseURL()+'/img/user.png';
 		}
 	},
 	mounted(){

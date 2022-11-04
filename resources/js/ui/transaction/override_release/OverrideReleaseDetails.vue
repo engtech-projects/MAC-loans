@@ -1119,7 +1119,7 @@ export default {
 			return this.totalCash + this.totalMemo + this.totalCheque;
 		},
 		borrowerPhoto:function(){
-			return this.loanaccount.borrower_photo? this.loanaccount.borrower_photo : '/img/user.png';
+			return this.loanaccount.borrower_photo? this.loanaccount.borrower_photo : this.baseURL()+'/img/user.png';
 		},
 		totalDebit:function(){
 			var amount = 0;
