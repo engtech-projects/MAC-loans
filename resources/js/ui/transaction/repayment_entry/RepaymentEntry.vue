@@ -7,7 +7,7 @@
 		</div><!-- /.col -->
 		<div class="d-flex flex-column flex-xl-row p-16">
 			<div style="flex:9;">
-				<client-list-side :pborrowers="borrowers" :id="{}" @selectBorrower="selectBorrower"></client-list-side>
+				<client-list-side :pborrowers="unpaidBorrowers" :id="{}" @selectBorrower="selectBorrower"></client-list-side>
 			</div>
 			<repayment-details :ppaymenttype="paymenttype" :pbranch="pbranch" :pborrower="borrower" :token="token"></repayment-details>
 		</div>
@@ -75,15 +75,29 @@ export default {
 			}.bind(this));
 		},
 		selectBorrower:function(arg1){
-			this.borrowers.map(function(data){
+			this.unpaidBorrowers.map(function(data){
 				if(data.borrower_id == arg1){
 					this.borrower = data;
 				}
 			}.bind(this));
 		}
 	},
+	computed:{
+		unpaidBorrowers:function(){
+			let filteredData = [];
+			this.borrowers.map(function(data){
+				data.loan_accounts.map(function(data2){
+					if(data2.remainingBalance.memo.balance > 0){
+						filteredData.push(data);
+						return;
+					}
+				}.bind(this))
+			}.bind(this))
+			return filteredData;
+		}
+	},
 	mounted(){
 		this.fetchBorrowers();
-	}
+	},
 }
 </script>
