@@ -66,17 +66,17 @@ class PaymentController extends BaseController
         $payment = null;
 
         foreach ($request->input() as $key => $value) {
+
             $payment = Payment::find($value['payment_id']);
-            $payment->status = 'paid';
-            $payment->save();
-
-
             $amortization = Amortization::find($payment->amortization_id);
             $loanAccount = LoanAccount::find($payment->loan_account_id);
 
-            if( $loanAccount->status != 'released' ){
-                return $this->sendResponse('Cannot perform override, account is ' . $loanAccount->status, 'Override Failed');
+            if( Str::lower($loanAccount->status) != 'released' ){
+               continue;
             }
+
+            $payment->status = 'paid';
+            $payment->save();
 
             # update amortization
             if( $payment->total_payable > $payment->amount_applied ){
