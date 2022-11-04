@@ -86,12 +86,19 @@ export default {
 		unpaidBorrowers:function(){
 			let filteredData = [];
 			this.borrowers.map(function(data){
-				data.loan_accounts.map(function(data2){
-					if(data2.remainingBalance.memo.balance > 0){
-						filteredData.push(data);
-						return;
-					}
-				}.bind(this))
+				let flag = false;
+				if(data.loan_accounts){
+					data.loan_accounts.map(function(data2){
+						if(flag){
+							return;
+						}
+						if(data2.remainingBalance.memo.balance > 0){
+							filteredData.push(data);
+							flag = true
+							return;
+						}
+					}.bind(this))	
+				}
 			}.bind(this))
 			return filteredData;
 		}

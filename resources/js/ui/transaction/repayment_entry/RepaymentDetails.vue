@@ -42,7 +42,7 @@
 						<th class="text-primary-dark">Balance</th>
 					</thead>
 					<tbody>
-						<tr @click="loanAccount=account;amortSched();" v-for="account in unpaidLoanAccounts" :key="account.loan_account_id" :class="isActive(account.loan_account_id)">
+						<tr v-for="account in unpaidLoanAccounts" @click="loanAccount=account;amortSched();" :key="account.loan_account_id" :class="isActive(account.loan_account_id)">
 							<td>{{account.account_num}}</td>
 							<td>{{dateToYMD(new Date(account.date_release))}}</td>
 							<td>P {{formatToCurrency(account.current_amortization ? account.current_amortization.outstandingBalance : 0)}}</td>
@@ -1119,7 +1119,7 @@ export default {
 			this.pborrower.loan_accounts.map(function(data){
 				if(data.remainingBalance.memo.balance > 0){
 					filteredData.push(data);
-					return;
+					// return;
 				}
 			}.bind(this))
 			return filteredData;
@@ -1129,8 +1129,8 @@ export default {
 		'pborrower.borrower_id':function(newValue){
 			this.resetPayment();
 			this.resetLoanAccount();
-			if(this.pborrower.loan_accounts.length){
-				this.loanAccount = this.pborrower.loan_accounts[0];
+			if(this.unpaidLoanAccounts.length){
+				this.loanAccount = this.unpaidLoanAccounts[0];
 				this.amortSched();
 			}
 		},
