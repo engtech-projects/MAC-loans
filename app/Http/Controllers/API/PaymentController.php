@@ -73,6 +73,11 @@ class PaymentController extends BaseController
 
             $amortization = Amortization::find($payment->amortization_id);
             $loanAccount = LoanAccount::find($payment->loan_account_id);
+
+            if( $loanAccount->status != 'released' ){
+                return $this->sendResponse('Cannot perform override, account is ' . $loanAccount->status, 'Override Failed');
+            }
+
             # update amortization
             if( $payment->total_payable > $payment->amount_applied ){
 
