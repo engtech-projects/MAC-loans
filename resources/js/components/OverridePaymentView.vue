@@ -353,7 +353,7 @@ export default {
 			return amount;
 		},
 		totalPaymentSummary:function(){
-			return this.totalCash + this.totalCheck + this.totalPOS + this.totalMemo - this.totalRebates;
+			return this.totalCash + this.totalCheck + this.totalPOS + this.totalMemo;
 		},
 		totalPrincipal:function(){
 			var amount = 0;
