@@ -212,7 +212,7 @@
 						   <span>TOTAL PAYMENT</span>
 						   <div class="d-flex flex-row">
 							   <span>P</span>
-							   <span>{{formatToCurrency(totalPaymentSummary)}}</span>
+							   <span>{{formatToCurrency(totalPayment)}}</span>
 						   </div>
 					   </div>
 					   <span class="flex-1 bb-primary-dark pb-24 mr-24">Prepared by:</span>
