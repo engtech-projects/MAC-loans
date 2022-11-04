@@ -2,8 +2,8 @@
 	<div class="modal" id="overrideDetailsModal" tabindex="-1" role="dialog">
 		<div class="modal-dialog modal-xl" style="min-width:90%" role="document">
 		  <div class="modal-content">
-			<div class="modal-body">
-				<div class="d-flex flex-row justify-content-between align-items-center light-bb pb-16">
+			<div class="modal-body" id="PrintContent">
+				<div class="d-flex flex-row justify-content-between align-items-center light-bb pb-16 no-print">
 					<span class="text-primary-dark text-bold">View Override Details</span>
 					<div class="d-flex flex-row">
 						<div class="d-flex font-md mr-24 align-items-center">
@@ -37,7 +37,7 @@
 						</div>
 					</div>
 				</div>
-				<table class="table table-stripped light-bb">
+				<table class="table table-stripped light-bb no-print">
 					<thead>
 						<th>Account #</th>
 						<th>Account Name</th>
@@ -86,6 +86,58 @@
 						</tr>
 					</tbody>
 				</table>
+				<div class="to-print">
+					<img :src="baseURL()+'/img/company_header.png'" style="width:100%" class="mb-45" alt="Company Header">
+					<table class="table table-stripped  light-bb table-thin text-xs">
+						<thead>
+							<th>Account #</th>
+							<th>Account Name</th>
+							<th>O.R #</th>
+							<th>Total Payment</th>
+							<th>Type</th>
+							<th>Principal</th>
+							<th>Interest</th>
+							<th>Penalty</th>
+							<th>PDI</th>
+							<th>Overpayment</th>
+							<th>Rebates</th>
+							<th>L.Disc</th>
+							<th>L.Waive</th>
+						</thead>
+						<tbody>
+							<tr v-for="p in filteredPayments" :key="p.payment_id">
+								<td>{{p.loan_details.account_num}}</td>
+								<td>{{p.loan_details.borrower.firstname + ' ' + p.loan_details.borrower.lastname}}</td>
+								<td>{{p.or_no}}</td>
+								<td>{{formatToCurrency(p.amount_applied)}}</td>
+								<td>{{p.payment_type}}</td>
+								<td>{{formatToCurrency(p.principal)}}</td>
+								<td>{{formatToCurrency(p.interest)}}</td>
+								<td>{{formatToCurrency(p.penalty_approval_no ? 0 : p.penalty)}}</td>
+								<td>{{formatToCurrency(p.pdi_approval_no ? 0 : p.pdi)}}</td>
+								<td>{{formatToCurrency(p.advance_interest + p.advance_principal)}}</td>
+								<td>{{formatToCurrency(p.rebates)}}</td>
+								<td>{{formatToCurrency(p.penalty_approval_no ? p.penalty : 0)}}</td>
+								<td>{{formatToCurrency(p.pdi_approval_no ? p.pdi : 0)}}</td>
+							</tr>
+							<tr class="text-bold">
+								<td>TOTAL</td>
+								<td></td>
+								<td></td>
+								<td>{{formatToCurrency(totalPayment)}}</td>
+								<td></td>
+								<td>{{formatToCurrency(totalPrincipal)}}</td>
+								<td>{{formatToCurrency(totalInterest)}}</td>
+								<td>{{formatToCurrency(totalPenalty)}}</td>
+								<td>{{formatToCurrency(totalPdi)}}</td>
+								<td>{{formatToCurrency(overPayment)}}</td>
+								<td>{{formatToCurrency(totalRebates)}}</td>
+								<td>{{formatToCurrency(totalPenaltyWaive)}}</td>
+								<td>{{formatToCurrency(totalPdiWaive)}}</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
 				<div class="d-flex align-items-end mb-45">
 					<section class="flex-1">
 					   <h4 class="section-title section-subtitle b-none">Payment Summary</h4>
@@ -168,7 +220,8 @@
 					   <span class="flex-1 bb-primary-dark pb-24">Approved by:</span>
 					</section>
 					<section class="d-flex flex-1 justify-content-end">
-						<a href="#" data-dismiss="modal" class="btn btn-default min-w-150">Print</a>
+						<img :src="baseURL() + 'img/logo-footer.png'" class="w-100 page-footer to-print" alt="">
+						<a href="#" @click.prevent="printContent('PrintContent')" data-dismiss="modal" class="btn btn-default min-w-150 no-print">Print</a>
 					</section>
 				</div>
 			</div>
@@ -208,6 +261,12 @@ export default {
 		},
 		hasCenter:function(loan){
 			return loan.center?loan.center.center_id:false;
+		},
+		printContent:function(printcontent){
+			var content = document.getElementById(printcontent).innerHTML;
+			var target = document.querySelector('.to-print');
+			target.innerHTML = content;
+			window.print();
 		}
 	},
 	computed:{
