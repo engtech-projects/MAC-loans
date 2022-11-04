@@ -65,6 +65,9 @@ class PaymentController extends BaseController
 
         $payment = null;
 
+
+        $succeed = 0;
+        $failed = 0;
         foreach ($request->input() as $key => $value) {
 
             $payment = Payment::find($value['payment_id']);
@@ -75,10 +78,12 @@ class PaymentController extends BaseController
                 $acc = LoanAccount::find($payment->reference_id);
 
                 if( $acc->status == 'pending' ){
+                    $failed++;
                     continue;
                 }
             }
 
+            $succeed++;
             $payment->status = 'paid';
             $payment->save();
 
@@ -114,7 +119,7 @@ class PaymentController extends BaseController
             $loanAccount->save();
         }
 
-        return $this->sendResponse('Override', 'Override');
+        return $this->sendResponse("{$succeed} of {$succeed + $failed} Successfully Overriden", 'Override');
     }
 
     public function overrideList(Request $request) {
