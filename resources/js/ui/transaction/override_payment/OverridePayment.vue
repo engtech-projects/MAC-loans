@@ -427,7 +427,7 @@ export default {
 		totalOffset:function(){
 			var amount = 0;
 			this.paidPayments.map(function(payment){
-				if(payment.memo_type == 'OffsetPF'){
+				if(payment.memo_type == 'Offset PF'){
 					amount += payment.amount_applied;
 				}
 			});
@@ -445,7 +445,7 @@ export default {
 		totalInterBranch:function(){
 			var amount = 0;
 			this.paidPayments.map(function(payment){
-				if(payment.memo_type == 'interbranch'){
+				if(payment.memo_type == 'Interbranch'){
 					amount += payment.amount_applied;
 				}
 			});
