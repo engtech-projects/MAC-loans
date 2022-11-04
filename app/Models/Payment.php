@@ -149,6 +149,25 @@ class Payment extends Model
 
     }
 
+    public function overriddenList($filters = array()) {
+
+        $payments = Payment::join('loan_accounts', 'loan_accounts.loan_account_id', '=', 'payment.loan_account_id')
+                            ->join('borrower_info', 'borrower_info.borrower_id', '=', 'loan_accounts.borrower_id');
+
+        if( isset($filters['transaction_date']) && $filters['transaction_date'] ){
+            $payments->whereDate('payment.updated_at', '=', $filters['transaction_date']);
+        }
+
+        if( isset($filters['branch_id']) ){
+            $payments->where('payment.branch_id', '=', $filters['branch_id']);
+        }
+
+        $payments->where('payment.status', '=', 'paid');
+
+        return $payments->get(['payment.*', 'loan_accounts.*', 'borrower_info.*']);
+
+    }
+
     public function paymentList($transDate, $branchId) {
 
         return Payment::whereDate('payment.updated_at', '=', $transDate)
