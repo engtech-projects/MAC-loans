@@ -644,8 +644,9 @@ export default {
 	watch: {
 		'loandetails'(newValue) {
 			this.loanDetails = newValue;
-			// this.calculateInsurance
-			// this.numberOfInstallment;
+			if(this.prejected) {
+				this.loanDetails.memo = 0;
+			}
 		},
 		'borrower'(newValue) {
 			this.loanDetails.borrower_id = newValue.borrower_id;

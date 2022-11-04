@@ -62,7 +62,7 @@
  Vue.component('reports-collection-ao', require('./ui/reports/collection/Ao.vue').default);
  Vue.component('endof-day', require('./ui/endofday/Endofday.vue').default);
 
- Vue.config.devtools = false;
+ Vue.config.devtools = true;
  const app = new Vue({
 	 el: '#app',
 	 mixin:[helper],
