@@ -71,8 +71,12 @@ class PaymentController extends BaseController
             $amortization = Amortization::find($payment->amortization_id);
             $loanAccount = LoanAccount::find($payment->loan_account_id);
 
-            if( Str::lower($loanAccount->status) != 'released' ){
-               continue;
+            if( $payment->reference_id ){
+                $acc = LoanAccount::find($payment->reference_id);
+
+                if( $acc->status == 'pending' ){
+                    continue;
+                }
             }
 
             $payment->status = 'paid';
