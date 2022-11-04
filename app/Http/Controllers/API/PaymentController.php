@@ -108,13 +108,42 @@ class PaymentController extends BaseController
         return $this->sendResponse('Override', 'Override');
     }
 
+    public function overrideList(Request $request) {
+
+        $branchId = $request->input('branch_id');
+
+        $endTransaction = new EndTransaction();
+        $eod = $endTransaction->getTransactionDate($branchId);
+
+        $payment = new Payment();
+        $list =  $payment->overriddenList(array('branch_id' => $branchId, 'transaction_date' => $eod->date_end));
+
+        if( count($list) > 0 ){
+            return $this->sendResponse(PaymentLoanAccountResource::collection($list), 'Payments');
+        }
+        
+        return false;
+    }
+
     public function destroy($id) {
 
         $payment = Payment::find($id);
-        return $payment->delete();
+        $payment->delete();
         // return $payment;
     
         return $this->sendResponse(['status' => 'Payment deleted'], 'Deleted');
+    }
+
+    public function update(Request $request, Payment $payment) {
+
+        $payment->fill($request->input());
+        $payment->save();
+
+        if( $payment->status == 'cancelled' ){
+            return $this->sendResponse(new PaymentResource($borrower), 'Payment Cancelled.');
+        }
+        
+        return $this->sendResponse(new PaymentResource($borrower), 'Payment Updated.');
     }
 
     public function show($branchId) {
