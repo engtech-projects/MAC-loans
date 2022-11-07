@@ -50,8 +50,8 @@
 						<th>PDI</th>
 						<th>Overpayment</th>
 						<th>Rebates</th>
-						<th>L.Disc</th>
-						<th>L.Waive</th>
+						<th>LW.Penalty</th>
+						<th>LW.PDI</th>
 					</thead>
 					<tbody>
 						<tr v-for="p in filteredPayments" :key="p.payment_id">
