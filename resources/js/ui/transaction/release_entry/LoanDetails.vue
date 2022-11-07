@@ -540,7 +540,7 @@ export default {
 				.then(function (response) {
 					this.notify('',response.data.message, 'success');
 					this.$emit('savedInfo', response.data.data)
-					this.pay();
+					this.pay(response.data.data.loan_account_id);
 					if(this.prejected){
 						window.location.href = this.baseURL() + 'transaction/rejected_release';
 					}

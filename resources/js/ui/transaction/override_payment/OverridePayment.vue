@@ -131,32 +131,6 @@
 							<span class="flex-3 text-primary-dark">P {{formatToCurrency(totalPOS)}}</span>
 						</div>
 					</div>
-					<!-- <div class="d-flex flex-column mb-24">
-						<div class="d-flex flex-column mb-5">
-							<span class="text-primary-dark font-20 bb-primary-dark">PRINCIPAL</span>
-							<span class="text-right font-md">P {{formatToCurrency(totalPrincipal)}}</span>
-						</div>
-						<div class="d-flex flex-column mb-5">
-							<span class="text-primary-dark font-20 bb-primary-dark">INTEREST</span>
-							<span class="text-right font-md">P {{formatToCurrency(totalInterest)}}</span>
-						</div>
-						<div class="d-flex flex-column mb-5">
-							<span class="text-primary-dark font-20 bb-primary-dark">PENALTY / PDI</span>
-							<span class="text-right font-md">P {{formatToCurrency(totalPDI)}}</span>
-						</div>
-						<div class="d-flex flex-column mb-5">
-							<span class="text-primary-dark font-20 bb-primary-dark">OTHERS</span>
-							<span class="text-right font-md">P 0.00</span>
-						</div>
-						<div class="d-flex flex-column mb-5">
-							<span class="text-primary-dark font-20 bb-primary-dark">DISCOUNT</span>
-							<span class="text-right font-md">P {{formatToCurrency(totalDiscount)}}</span>
-						</div>
-						<div class="d-flex flex-column mb-5">
-							<span class="text-primary-dark font-20 bb-primary-dark">INSURANCE</span>
-							<span class="text-right font-md">P 0.00</span>
-						</div>
-					</div> -->
 					<div class="d-flex flex-column button-text">
 						<span>TOTAL PAYMENT FOR TODAY</span>
 						<div class="d-flex flex-row">
@@ -391,7 +365,7 @@ export default {
 		totalCheck:function(){
 			var amount = 0;
 			this.paidPayments.map(function(payment){
-				if(payment.payment_type == 'check Payment'){
+				if(payment.payment_type == 'Check Payment'){
 					amount += payment.amount_applied;
 				}
 			});
