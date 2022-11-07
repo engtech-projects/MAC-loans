@@ -119,7 +119,8 @@ class PaymentController extends BaseController
             $loanAccount->save();
         }
 
-        return $this->sendResponse("{$succeed} of {$succeed + $failed} Successfully Overriden", 'Override');
+        $sf = $succeed + $failed;
+        return $this->sendResponse("{$succeed} of {$sf} Successfully Overriden", 'Override');
     }
 
     public function overrideList(Request $request) {
