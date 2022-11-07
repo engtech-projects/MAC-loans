@@ -150,15 +150,15 @@ class PaymentController extends BaseController
     }
 
     public function update(Request $request, Payment $payment) {
-
+        
         $payment->fill($request->input());
         $payment->save();
 
         if( $payment->status == 'cancelled' ){
-            return $this->sendResponse(new PaymentResource($borrower), 'Payment Cancelled.');
+            return $this->sendResponse(new PaymentResource($payment), 'Payment Cancelled.');
         }
         
-        return $this->sendResponse(new PaymentResource($borrower), 'Payment Updated.');
+        return $this->sendResponse(new PaymentResource($payment), 'Payment Updated.');
     }
 
     public function show($branchId) {
