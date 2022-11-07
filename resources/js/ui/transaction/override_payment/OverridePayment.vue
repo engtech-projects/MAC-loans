@@ -299,7 +299,7 @@ export default {
 			})
 			.then(function (response) {
 				console.log(response.data);
-				this.notify('',response.data.message, 'success');
+				this.notify('',response.data.data, 'success');
 				this.openPayments();
 				this.resetPayment();
 				this.todaysPaidPayments();

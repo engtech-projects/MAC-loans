@@ -189,8 +189,11 @@ export default {
 				}
 			})
 			.then(function (response) {
-				console.log(response.data);
-				this.notify('','Override successful.', 'success');
+				if(response.data.success){
+					this.notify('', response.data.data, 'success');
+				}else{
+					this.notify('', response.data.data, 'error');
+				}
 				this.$emit('reloadPayments');
 			}.bind(this))
 			.catch(function (error) {

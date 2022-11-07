@@ -622,7 +622,6 @@ export default {
 					amount_applied: this.loanaccount.remainingBalance.principal.balance + (this.loanaccount.remainingBalance.interest.balance - this.loanaccount.remainingBalance.rebates.balance),
 					amortization_id: this.loanaccount.amortization_id
 				}
-				console.log(payment);
 				axios.post(this.baseURL() + 'api/payment', payment, {
 				headers: {
 						'Authorization': 'Bearer ' + this.token,
