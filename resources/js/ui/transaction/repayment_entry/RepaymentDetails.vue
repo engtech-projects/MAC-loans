@@ -342,17 +342,24 @@
 											<span class="mb-5 text-bold">Amortization Scheduled Payment</span>
 											<div class="d-flex flex-row mb-7 font-md">
 												<div class="d-flex flex-row justify-content-between flex-1 mr-16">
+													<span>Date</span>
+													<span>:</span>
+												</div>
+												<span class="flex-1">{{loanAccount.current_amortization.amortization_date}}</span>
+											</div>
+											<div class="d-flex flex-row mb-7 font-md">
+												<div class="d-flex flex-row justify-content-between flex-1 mr-16">
 													<span>Principal</span>
 													<span>:</span>
 												</div>
-												<span class="flex-1">P {{formatToCurrency(loanAccount.current_amortization.principal)}}</span>
+												<span class="flex-1">P {{formatToCurrency(loanAccount.current_amortization.schedule_principal)}}</span>
 											</div>
 											<div class="d-flex flex-row">
 												<div class="d-flex flex-row justify-content-between flex-1 mr-16">
 													<span>Interest</span>
 													<span>:</span>
 												</div>
-												<span class="flex-1">P {{formatToCurrency(loanAccount.current_amortization.interest)}}</span>
+												<span class="flex-1">P {{formatToCurrency(loanAccount.current_amortization.schedule_interest)}}</span>
 											</div>
 										</div>
 										<div class="d-flex flex-column mb-10">

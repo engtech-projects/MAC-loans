@@ -195,7 +195,7 @@ class LoanAccountController extends BaseController
                 'loan_amount' =>  $account->loan_amount,
                 'date_granted' => $account->date_release,
                 'term' => $account->terms,
-                'collection_rate' => round( ( ($remBal['principal']['credit'] + $remBal['interest']['credit']) / ($remBal['principal']['debit'] + $remBal['interest']['debit']) ) * 100),
+                'collection_rate' => $account->collectionRate(),
                 'payment_history' => $account->payment_status,
                 'loan_status' => $account->loan_status
             ];
