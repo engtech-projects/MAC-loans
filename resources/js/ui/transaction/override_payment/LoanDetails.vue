@@ -147,7 +147,8 @@
 				</div>
 			</div>
 			<div class="d-flex flex-row-reverse">
-				<a href="#" class="btn btn-success min-w-150" @click="override()">Override</a>
+				<button v-if="!canOverride(ppayment)" disabled class="btn btn-success min-w-150">Override</button>
+				<a href="#" v-if="canOverride(ppayment)" class="btn btn-success min-w-150" @click="override()">Override</a>
 				<a href="#" data-toggle="modal" data-target="#cancelModal" class="btn btn-bright-blue min-w-150 mr-16">Delete</a>
 			</div>
 		</section>
@@ -199,6 +200,12 @@ export default {
 			.catch(function (error) {
 				console.log(error);
 			}.bind(this));
+		},
+		canOverride:function(payment){
+			if(payment.reference && payment.reference.status == 'pending'){
+				return false;
+			}
+			return true;
 		},
 		notify:function(title, text, type){
 			this.$notify({

@@ -1,5 +1,6 @@
 <template>
     <div class="container-fluid px-16">
+        <notifications group="foo" />
         <div class="mb-16"></div>
         <div
             class="d-flex justify-content-between mb-24 bb-primary-dark pb-7 text-block"
@@ -16,6 +17,7 @@
                         class="form-control"
                         id="searchBar"
                         placeholder="Search"
+						v-model="filter"
                     />
                     <div><i class="fa fa-search"></i></div>
                 </div>
@@ -30,7 +32,7 @@
                     </thead>
                     <tbody>
                         <tr
-                            v-for="borrower in borrowers"
+                            v-for="borrower in filteredBorrowers"
                             :key="borrower.borrower_id"
                             :class="
                                 borrower.borrower_id ==
@@ -192,12 +194,22 @@
                         <textarea
                             class="form-control mb-16"
                             style="height: 95px"
+                            v-model="remarks"
                         ></textarea>
                         <div class="d-flex justify-content-end">
-                            <button v-if="selectedPayment.payment_id" class="btn btn-bright-blue btn-wide" data-toggle="modal" data-target="#warningModal">
+                            <button
+                                v-if="selectedPayment.payment_id"
+                                class="btn btn-bright-blue btn-wide"
+                                data-toggle="modal"
+                                data-target="#warningModal"
+                            >
                                 Cancel - Verify
                             </button>
-							<button v-if="!selectedPayment.payment_id" class="btn btn-bright-blue btn-wide" disabled>
+                            <button
+                                v-if="!selectedPayment.payment_id"
+                                class="btn btn-bright-blue btn-wide"
+                                disabled
+                            >
                                 Cancel - Verify
                             </button>
                         </div>
@@ -205,7 +217,10 @@
                 </section>
             </div>
         </div>
-		<warning-modal message="Do you want to cancel this payment?" @proceed="cancelPayment"></warning-modal>
+        <warning-modal
+            message="Do you want to cancel this payment?"
+            @proceed="cancelPayment"
+        ></warning-modal>
     </div>
 </template>
 
@@ -227,6 +242,8 @@ export default {
                 lastname: "",
                 address: "",
             },
+            remarks: "",
+			filter:''
         };
     },
     methods: {
@@ -262,27 +279,54 @@ export default {
             });
             this.payments = payments;
         },
-		async cancelPayment(){
-			this.selectedPayment.status = 'cancelled';
-			await axios
-				.put(this.baseURL() + "api/payment/" + this.selectedPayment.payment_id, this.selectedPayment, {
-					headers: {
-						Authorization: "Bearer " + this.token,
-						"Content-Type": "application/json",
-						Accept: "application/json",
-					},
-				})
-				.then(
-					function (response) {
-						console.log(response.data.data);
-					}.bind(this)
-				)
-				.catch(
-					function (error) {
-						console.log(error);
-					}.bind(this)
-				);
-		}
+        removePayment: function () {
+            this.payments = this.payments.filter(
+                (payment) =>
+                    payment.payment_id != this.selectedPayment.payment_id
+            );
+            this.selectedPayment = { payment_id: null };
+        },
+        async cancelPayment() {
+            this.selectedPayment.status = "cancelled";
+            this.selectedPayment.remarks = this.remarks;
+            await axios
+                .put(
+                    this.baseURL() +
+                        "api/payment/" +
+                        this.selectedPayment.payment_id,
+                    this.selectedPayment,
+                    {
+                        headers: {
+                            Authorization: "Bearer " + this.token,
+                            "Content-Type": "application/json",
+                            Accept: "application/json",
+                        },
+                    }
+                )
+                .then(
+                    function (response) {
+                        this.notify(
+                            "",
+                            "Payment has been cancelled successfully.",
+                            "success"
+                        );
+                        this.removePayment();
+                    }.bind(this)
+                )
+                .catch(
+                    function (error) {
+                        console.log(error);
+                    }.bind(this)
+                );
+        },
+        notify: function (title, text, type) {
+            this.$notify({
+                group: "foo",
+                title: title,
+                text: text,
+                type: type,
+            });
+        },
     },
     computed: {
         borrowerPhoto: function () {
@@ -290,10 +334,41 @@ export default {
                 ? this.selectedBorrower.photo
                 : this.baseURL() + "/img/user.png";
         },
+        filteredBorrowers: function () {
+            var borrowers = [];
+            if (this.filter.length > 0) {
+                this.borrowers.map(
+                    function (data) {
+                        if (
+                            data.borrower_num
+                                .toLowerCase()
+                                .includes(this.filter.toLowerCase()) ||
+                            data.firstname
+                                .toLowerCase()
+                                .includes(this.filter.toLowerCase()) ||
+                            data.lastname
+                                .toLowerCase()
+                                .includes(this.filter.toLowerCase()) ||
+                            (data.firstname + " " + data.lastname)
+                                .toLowerCase()
+                                .includes(this.filter.toLowerCase()) ||
+                            (data.lastname + " " + data.firstname)
+                                .toLowerCase()
+                                .includes(this.filter.toLowerCase())
+                        ) {
+                            borrowers.push(data);
+                        }
+                    }.bind(this)
+                );
+            } else {
+                borrowers = this.borrowers;
+            }
+            return borrowers;
+        },
     },
     watch: {
         "selectedBorrower.borrower_id": function (newValue) {
-			this.selectedPayment = {payment_id: null};
+            this.selectedPayment = { payment_id: null };
             if (newValue && this.selectedBorrower.loan_accounts) {
                 this.setPayments();
                 if (this.payments.length == 1) {

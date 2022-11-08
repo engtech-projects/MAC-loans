@@ -67,6 +67,11 @@ class TransactionController extends Controller
 		$payments['base'] = \App\Models\Payment::with('loanDetails')->where('status','open')->where('branch_id', $request->branch_id)->get();
 		foreach ($payments['payments'] as $key => $value) {
 			$payments['payments'][$key]->photo = $value->loanDetails->borrowerPhoto();
+			if($value->reference_id){
+				$payments['payments'][$key]['reference'] = \App\Models\LoanAccount::find($value->reference_id);
+			}else{
+				$payments['payments'][$key]['reference'] = null;
+			}
 		}
 		return $payments;
 	}
