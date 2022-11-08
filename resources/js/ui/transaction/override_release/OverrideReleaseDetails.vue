@@ -234,50 +234,12 @@
 							</div>
 							<div class="d-flex mb-7">
 								<span class="mr-5">Amort: </span>
-								<span>{{amortAmount}}</span>
-							</div>
-
-
-
-							<div class="d-flex mb-7">
-								<span class="mr-5"></span>
-								<span></span>
+								<span>{{formatToCurrency(amortAmount)}}</span>
 							</div>
 							<div class="d-flex mb-7">
-								<span class="mr-5"></span>
-								<span></span>
+								<span class="mr-5">&nbsp;</span>
+								<span>&nbsp;</span>
 							</div>
-								<div class="d-flex mb-7">
-								<span class="mr-5"></span>
-								<span></span>
-							</div>
-								<div class="d-flex mb-7">
-								<span class="mr-5"></span>
-								<span></span>
-							</div>
-							<div class="d-flex mb-7">
-								<span class="mr-5"></span>
-								<span></span>
-							</div>
-								<div class="d-flex mb-7">
-								<span class="mr-5"></span>
-								<span></span>
-							</div>
-							<div class="d-flex mb-7">
-								<span class="mr-5"></span>
-								<span></span>
-							</div>
-							<div class="d-flex mb-7">
-								<span class="mr-5"></span>
-								<span></span>
-							</div>
-							<div class="d-flex mb-7">
-								<span class="mr-5"></span>
-								<span></span>
-							</div>
-
-
-
 							<div class="d-flex mb-7">
 								<span class="mr-5">Co-Borrower: </span>
 								<span>{{loanaccount.co_borrower_name}}</span>

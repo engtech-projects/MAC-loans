@@ -806,13 +806,6 @@
 			</div>
 		</div>
 
-
-
-
-
-
-
-
 		<div class="modal" id="promisoryNoteModal" tabindex="-1" role="dialog">
 			<div class="modal-dialog modal-lg minw-70" role="document">
 			<div class="modal-content">
@@ -1016,14 +1009,6 @@
 			</div>
 		</div>
 
-
-
-
-
-
-
-
-
 		<div class="modal" id="cashVoucherModal" tabindex="-1" role="dialog">
 			<div class="modal-dialog modal-lg minw-70" role="document">
 			<div class="modal-content">
@@ -1219,13 +1204,6 @@
 			</div>
 		</div>
 
-
-
-
-
-
-
-
 		<div class="modal" id="promisoryNoteModal" tabindex="-1" role="dialog">
 			<div class="modal-dialog modal-lg minw-70" role="document">
 				<div class="modal-content">
@@ -1420,8 +1398,6 @@
 				</div>
 			</div>
 		</div>
-
-
 
 
 		<div class="modal" id="schedulesModals" tabindex="-1" role="dialog">
@@ -1626,109 +1602,102 @@
 			</div>
 		</div>
 
-
-
-
-
-
-
-
 		<div class="modal" id="soaModal" tabindex="-1" role="dialog">
-		<div class="modal-dialog modal-lg minw-70" role="document">
-			<div class="modal-content">
-				<div class="modal-body" id="soaPrintContent">
-					<img :src="this.baseURL()+'/img/company_header.png'" style="width:100%" class="mb-16" alt="Company Header">
-					<div class="d-flex flex-column" style="padding:0 50px;">
-						<span class="text-center text-block dark-bb pb-10 text-bold font-lg mb-16">STATEMENT OF ACCOUNT</span>
+			<div class="modal-dialog modal-lg minw-70" role="document">
+				<div class="modal-content">
+					<div class="modal-body" id="soaPrintContent">
+						<img :src="this.baseURL()+'/img/company_header.png'" style="width:100%" class="mb-16" alt="Company Header">
+						<div class="d-flex flex-column" style="padding:0 50px;">
+							<span class="text-center text-block dark-bb pb-10 text-bold font-lg mb-16">STATEMENT OF ACCOUNT</span>
 
-						<div class="d-flex flex-row mb-24">
-						<div class="d-flex flex-column flex-2">
-							<div class="d-flex mb-7">
-								<span class="mr-5 text-primary-dark text-bold">Name: </span>
-								<span class="text-primary-dark text-bold">{{fullNameReverse(borrower.firstname, borrower.middlename, borrower.lastname)}}</span>
+							<div class="d-flex flex-row mb-24">
+								<div class="d-flex flex-column flex-2">
+									<div class="d-flex mb-7">
+										<span class="mr-5 text-primary-dark text-bold">Name: </span>
+										<span class="text-primary-dark text-bold">{{fullNameReverse(borrower.firstname, borrower.middlename, borrower.lastname)}}</span>
+									</div>
+									<div class="d-flex mb-7">
+										<span class="mr-5">Address: </span>
+										<span>{{borrower.address}}</span>
+									</div>
+									<div class="d-flex mb-7">
+										<span class="mr-5">Date Release: </span>
+										<span>{{dateToMDY(new Date(loanDetails.date_release))}}</span>
+									</div>
+									<div class="d-flex mb-7">
+										<span class="mr-5">Amount Granted: </span>
+										<span>{{formatToCurrency(loanDetails.loan_amount)}}</span>
+									</div>
+									<div class="d-flex mb-7">
+										<span class="mr-5">Term: </span>
+										<span>{{loanDetails.terms}} Days / {{loanDetails.terms / 30}} Month(s)</span>
+									</div>
+									<div class="d-flex mb-7">
+										<span class="mr-5">Amort: </span>
+										<span>{{formatToCurrency(loanAmortization)}}</span>
+									</div>
+									<!-- <div class="d-flex mb-7">
+										<span class="mr-5">Group: </span>
+									</div> -->
+									<div class="d-flex mb-7">
+										<span class="mr-5">Co-Borrower: </span>
+										<span>{{loanDetails.co_borrower_name}}</span>
+									</div>
+									<div class="d-flex mb-7">
+										<span class="mr-5">Co-Address: </span>
+										<span>{{loanDetails.co_borrower_address}}</span>
+									</div>
+									<div class="d-flex mb-7">
+										<span class="mr-5">Co-Maker: </span>
+										<span>{{loanDetails.co_maker_name}}</span>
+									</div>
+									<div class="d-flex mb-7">
+										<span class="mr-5">Co-Address: </span>
+										<span>{{loanDetails.co_maker_address}}</span>
+									</div>
+								</div>
+								<div class="flex-1"></div>
+								<div class="d-flex flex-column flex-2">
+									<div class="d-flex mb-7">
+										<span class="mr-5 text-primary-dark text-bold">Acc. #: </span>
+										<span class="text-primary-dark text-bold">{{loanDetails.account_num}}</span>
+									</div>
+									<div class="d-flex mb-7">
+										<span class="mr-5">A/O: </span>
+										<span class="">{{loanDetails.account_officer.name}}</span>
+									</div>
+									<div class=" d-flex mb-7">
+										<span class="mr-5">Due Date: </span>
+										<span class="">{{dateToMDY(new Date(loanDetails.due_date))}}</span>
+									</div>
+									<div class=" d-flex mb-7">
+										<span class="mr-5">Loan Type: </span>
+										<span class="">{{loanDetails.type}}</span>
+									</div>
+									<div class=" d-flex mb-7">
+										<span class="mr-5">Interest: </span>
+										<span class="">{{formatToCurrency(loanDetails.interest_amount)}}</span>
+									</div>
+									<div class=" d-flex mb-7">
+										<span class="mr-5">Int. Rate: </span>
+										<span class="">{{loanDetails.interest_rate * 12}}% p.a. / {{loanDetails.interest_rate}}% p.m.</span>
+									</div>
+									<div class=" d-flex mb-7">
+										<span class="mr-5">Mode: </span>
+										<span class="">{{loanDetails.payment_mode}}</span>
+									</div>
+									<div class=" d-flex mb-7">
+										<span class="mr-5">Center: </span>
+										<span class="">{{loanDetails.center?loanDetails.center.center:'None'}}</span>
+									</div>
+									<div class=" d-flex mb-7">
+										<span class="mr-5">ID #: </span>
+										<span class="">{{borrower.id_no}}</span>
+									</div>
+								</div>
 							</div>
-							<div class="d-flex mb-7">
-								<span class="mr-5">Address: </span>
-								<span>{{borrower.address}}</span>
-							</div>
-							<div class="d-flex mb-7">
-								<span class="mr-5">Date Release: </span>
-								<span>{{dateToMDY(new Date(loanDetails.date_release))}}</span>
-							</div>
-							<div class="d-flex mb-7">
-								<span class="mr-5">Amount Granted: </span>
-								<span>{{formatToCurrency(loanDetails.loan_amount)}}</span>
-							</div>
-							<div class="d-flex mb-7">
-								<span class="mr-5">Term: </span>
-								<span>{{loanDetails.terms}} Days / {{loanDetails.terms / 30}} Month(s)</span>
-							</div>
-							<div class="d-flex mb-7">
-								<span class="mr-5">Amort: </span>
-								<span>{{formatToCurrency(loanAmortization)}}</span>
-							</div>
-							<!-- <div class="d-flex mb-7">
-								<span class="mr-5">Group: </span>
-							</div> -->
-							<div class="d-flex mb-7">
-								<span class="mr-5">Co-Borrower: </span>
-								<span>{{loanDetails.co_borrower_name}}</span>
-							</div>
-							<div class="d-flex mb-7">
-								<span class="mr-5">Co-Address: </span>
-								<span>{{loanDetails.co_borrower_address}}</span>
-							</div>
-							<div class="d-flex mb-7">
-								<span class="mr-5">Co-Maker: </span>
-								<span>{{loanDetails.co_maker_name}}</span>
-							</div>
-							<div class="d-flex mb-7">
-								<span class="mr-5">Co-Address: </span>
-								<span>{{loanDetails.co_maker_address}}</span>
-							</div>
-						</div>
-						<div class="flex-1"></div>
-						<div class="d-flex flex-column flex-2">
-							<div class="d-flex mb-7">
-								<span class="mr-5 text-primary-dark text-bold">Acc. #: </span>
-								<span class="text-primary-dark text-bold">{{loanDetails.account_num}}</span>
-							</div>
-							<div class="d-flex mb-7">
-								<span class="mr-5">A/O: </span>
-								<span class="">{{loanDetails.account_officer.name}}</span>
-							</div>
-							<div class=" d-flex mb-7">
-								<span class="mr-5">Due Date: </span>
-								<span class="">{{dateToMDY(new Date(loanDetails.due_date))}}</span>
-							</div>
-							<div class=" d-flex mb-7">
-								<span class="mr-5">Loan Type: </span>
-								<span class="">{{loanDetails.type}}</span>
-							</div>
-							<div class=" d-flex mb-7">
-								<span class="mr-5">Interest: </span>
-								<span class="">{{formatToCurrency(loanDetails.interest_amount)}}</span>
-							</div>
-							<div class=" d-flex mb-7">
-								<span class="mr-5">Int. Rate: </span>
-								<span class="">{{loanDetails.interest_rate * 12}}% p.a. / {{loanDetails.interest_rate}}% p.m.</span>
-							</div>
-							<div class=" d-flex mb-7">
-								<span class="mr-5">Mode: </span>
-								<span class="">{{loanDetails.payment_mode}}</span>
-							</div>
-							<div class=" d-flex mb-7">
-								<span class="mr-5">Center: </span>
-								<span class="">{{loanDetails.center?loanDetails.center.center:'None'}}</span>
-							</div>
-							<div class=" d-flex mb-7">
-								<span class="mr-5">ID #: </span>
-								<span class="">{{borrower.id_no}}</span>
-							</div>
-						</div>
-					</div>
 
-					<section class=" mb-24 d-flex flex-column">
+				<section class=" mb-24 d-flex flex-column">
 																	<span class="text-bold bg-yellow" style="padding:0 5px;">Release</span>
 																	<table class="table th-nb td-nb table-thin">
 																		<thead>
@@ -1944,157 +1913,163 @@
 								</div>
 							</div>
 						</div>
-					</div>
-				</div>
-
-
-
-
-
+			</div>
+		</div>
 
 		<div class="modal" id="schedulesModal" tabindex="-1" role="dialog">
-		<div class="modal-dialog modal-lg minw-70" role="document">
-		  <div class="modal-content">
-			<div class="modal-body" id="amortPrintContent">
-			  	<img :src="this.baseURL()+'/img/company_header.png'" style="width:100%" class="mb-16" alt="Company Header">
-				<div class="d-flex flex-column" style="padding:0 50px;">
-					<span class="text-center text-block dark-bb pb-10 text-bold font-lg mb-16">AMORTIZATION SCHEDULE</span>
+			<div class="modal-dialog modal-lg minw-70" role="document">
+			  <div class="modal-content">
+				<div class="modal-body" id="amortPrintContent">
+				  	<img :src="this.baseURL()+'/img/company_header.png'" style="width:100%" class="mb-16" alt="Company Header">
+					<div class="d-flex flex-column" style="padding:0 50px;">
+						<span class="text-center text-block dark-bb pb-10 text-bold font-lg mb-16">AMORTIZATION SCHEDULE</span>
 
-					<div class="d-flex flex-row mb-24">
-						<div class="d-flex flex-column flex-2">
-							<div class="d-flex mb-7">
-								<span class="mr-5 text-primary-dark text-bold">Name: </span>
-								<span class="text-primary-dark text-bold">{{borrower.lastname + ', ' + borrower.firstname}}</span>
+						<div class="d-flex flex-row mb-24">
+							<div class="d-flex flex-column flex-2">
+								<div class="d-flex mb-7">
+									<span class="mr-5 text-primary-dark text-bold">Name: </span>
+									<span class="text-primary-dark text-bold">{{borrower.lastname + ', ' + borrower.firstname}}</span>
+								</div>
+								<div class="d-flex mb-7">
+									<span class="mr-5">Address: </span>
+									<span>{{borrower.address}}</span>
+								</div>
+								<div class="d-flex mb-7">
+									<span class="mr-5">Date Release: </span>
+									<span>{{loanDetails.date_release}}</span>
+								</div>
+								<div class="d-flex mb-7">
+									<span class="mr-5">Amount Granted: </span>
+									<span>{{loanDetails.loan_amount}}</span>
+								</div>
+								<div class="d-flex mb-7">
+									<span class="mr-5">Term: </span>
+									<span>{{loanDetails.terms + ' Days'}}</span>
+								</div>
+								<div class="d-flex mb-7">
+									<span class="mr-5">Amort: </span>
+									<span>{{formatToCurrency(loanAmortization)}}</span>
+								</div>
+								<div class="d-flex mb-7">
+									<span class="mr-5">&nbsp;</span>
+									<span>&nbsp;</span>
+								</div>
+								<div class="d-flex mb-7">
+									<span class="mr-5">Co-Borrower: </span>
+									<span>{{loanDetails.co_borrower_name}}</span>
+								</div>
+								<div class="d-flex mb-7">
+									<span class="mr-5">Co-Address: </span>
+									<span>{{loanDetails.co_borrower_address}}</span>
+								</div>
+								<div class="d-flex mb-7">
+									<span class="mr-5">Co-Maker: </span>
+									<span>{{loanDetails.co_maker_name}}</span>
+								</div>
+								<div class="d-flex mb-7">
+									<span class="mr-5">Co-Address: </span>
+									<span>{{loanDetails.co_maker_address}}</span>
+								</div>
 							</div>
-							<div class="d-flex mb-7">
-								<span class="mr-5">Address: </span>
-								<span>{{borrower.address}}</span>
-							</div>
-							<div class="d-flex mb-7">
-								<span class="mr-5">Date Release: </span>
-								<span>{{loanDetails.date_release}}</span>
-							</div>
-							<div class="d-flex mb-7">
-								<span class="mr-5">Amount Granted: </span>
-								<span>{{loanDetails.loan_amount}}</span>
-							</div>
-							<div class="d-flex mb-7">
-								<span class="mr-5">Term: </span>
-								<span>{{loanDetails.terms + ' Days'}}</span>
-							</div>
-							<div class="d-flex mb-7">
-								<span class="mr-5">Amort: </span>
-								<span>{{formatToCurrency(loanAmortization)}}</span>
-							</div>
-							<div class="d-flex mb-7">
-								<span class="mr-5">Co-Borrower: </span>
-								<span>{{loanDetails.co_borrower_name}}</span>
-							</div>
-							<div class="d-flex mb-7">
-								<span class="mr-5">Co-Address: </span>
-								<span>{{loanDetails.co_borrower_address}}</span>
-							</div>
-							<div class="d-flex mb-7">
-								<span class="mr-5">Co-Maker: </span>
-								<span>{{loanDetails.co_maker_name}}</span>
-							</div>
-							<div class="d-flex mb-7">
-								<span class="mr-5">Co-Address: </span>
-								<span>{{loanDetails.co_maker_address}}</span>
+							<div class="flex-1"></div>
+							<div class="d-flex flex-column flex-2">
+								<div class="d-flex mb-7">
+									<span class="mr-5 text-primary-dark text-bold">Acc. #: </span>
+									<span class="text-primary-dark text-bold">{{loanDetails.account_num}}</span>
+								</div>
+								<div class="d-flex mb-7">
+									<span class="mr-5">A/O: </span>
+									<span class="">{{loanDetails.account_officer.name}}</span>
+									<span></span>
+								</div>
+								<div class="d-flex mb-7">
+									<span class="mr-5">Due Date: </span>
+									<span class="">{{dateToMDY(new Date(loanDetails.due_date))}}</span>
+								</div>
+								<div class="d-flex mb-7">
+									<span class="mr-5">Loan Type: </span>
+									<span class="">{{loanDetails.type}}</span>
+								</div>
+								<div class="d-flex mb-7">
+									<span class="mr-5">Interest: </span>
+									<span class="">{{formatToCurrency(loanDetails.interest_amount)}}</span>
+								</div>
+								<!-- <div class="d-flex mb-7">
+									<span class="mr-5">Int. Rate: </span>
+									<span class="">{{loanDetails.interest_rate + '%'}}</span>
+								</div> -->
+								<div class="d-flex mb-7">
+									<span class="mr-5">Mode: </span>
+									<span class="">{{loanDetails.payment_mode}}</span>
+								</div>
+								<div class="d-flex mb-7">
+									<span class="mr-5">Center: </span>
+									<span class="">{{loanDetails.center? loanDetails.center.center:''}}</span>
+								</div>
+								<div class="d-flex mb-7">
+									<span class="mr-5">ID #: </span>
+									<span>{{loanDetails.co_borrower_id_number}}</span>
+								</div>
+								<div class="d-flex mb-7">
+									<span class="mr-5">ID Type: </span>
+									<span>{{loanDetails.co_borrower_id_type}}</span>
+								</div>
+								<div class="d-flex mb-7">
+									<span class="mr-5">ID #: </span>
+									<span>{{loanDetails.co_maker_id_number}}</span>
+								</div>
+								<div class="d-flex mb-7">
+									<span class="mr-5">ID Type: </span>
+									<span>{{loanDetails.co_maker_id_type}}</span>
+								</div>
 							</div>
 						</div>
-						<div class="flex-1"></div>
-						<div class="d-flex flex-column flex-2">
-							<div class="d-flex mb-7">
-								<span class="mr-5 text-primary-dark text-bold">Acc. #: </span>
-								<span class="text-primary-dark text-bold">{{loanDetails.account_num}}</span>
+
+						<section class="mb-24 d-flex flex-column">
+							<span class="text-bold bg-gray" style="padding:0 5px;">Schedules</span>
+							<div class="mb-10">
+								<table class="table th-nbt table-thin">
+									<thead>
+										<th>No.</th>
+										<th>Date</th>
+										<th>Principal</th>
+										<th>Interest</th>
+										<th>Total</th>
+										<th>Principal Balance</th>
+										<th>Interest Balance</th>
+									</thead>
+									<tbody>
+										<tr v-for="(sched, i) in amortizationSched" :key="i">
+											<td>{{i + 1}}</td>
+											<td>{{dateToYMD(new Date(sched.amortization_date))}}</td>
+											<td>{{sched.principal}}</td>
+											<td>{{sched.interest}}</td>
+											<td>{{sched.total}}</td>
+											<td>{{sched.principal_balance}}</td>
+											<td>{{sched.interest_balance}}</td>
+										</tr>
+									</tbody>
+								</table>
+
 							</div>
-							<div class="d-flex mb-7">
-								<span class="mr-5">A/O: </span>
-								<span class="">{{loanDetails.account_officer.name}}</span>
-								<span></span>
+							<div class="mb-45"></div>
+							<div class="mb-45"></div>
+							<div>
+								<p class="text-block text-center" style="line-height:0!important;">This statement is a system generated copy!</p>
+								<p class="text-block text-center">&lt; End of file &gt;</p>
+								<img :src="this.baseURL()+'/img/logo-footer.png'" class="w-100 page-footer" alt="Company Footer">
 							</div>
-							<div class="d-flex mb-7">
-								<span class="mr-5">Due Date: </span>
-								<span class="">{{dateToMDY(new Date(loanDetails.due_date))}}</span>
-							</div>
-							<div class="d-flex mb-7">
-								<span class="mr-5">Loan Type: </span>
-								<span class="">{{loanDetails.type}}</span>
-							</div>
-							<div class="d-flex mb-7">
-								<span class="mr-5">Interest: </span>
-								<span class="">{{formatToCurrency(loanDetails.interest_amount)}}</span>
-							</div>
-							<div class="d-flex mb-7">
-								<span class="mr-5">Int. Rate: </span>
-								<span class="">{{loanDetails.interest_rate + '%'}}</span>
-							</div>
-							<div class="d-flex mb-7">
-								<span class="mr-5">Mode: </span>
-								<span class="">{{loanDetails.payment_mode}}</span>
-							</div>
-							<div class="d-flex mb-7">
-								<span class="mr-5">Center: </span>
-								<span class="">{{loanDetails.center? loanDetails.center.center:''}}</span>
-							</div>
-							<div class="d-flex mb-7">
-								<span class="mr-5">ID #: </span>
-								<span class="">08-052415427-4</span>
-							</div>
+						</section>
+						<div class="d-flex flex-row-reverse mb-45 no-print">
+							<a href="#" @click.prevent="printContent('amortPrintContent')" class="btn btn-default min-w-150">Print</a>
+							<!-- <a href="#" class="btn btn-success min-w-150 mr-24">Download Excel</a> -->
+							<a href="#" id="cancelModal" data-dismiss="modal" class="btn btn-danger min-w-150 mr-24 hide">Cancel</a>
 						</div>
 					</div>
-
-					<section class="mb-24 d-flex flex-column">
-						<span class="text-bold bg-gray" style="padding:0 5px;">Schedules</span>
-						<div class="mb-10">
-							<table class="table th-nbt table-thin">
-								<thead>
-									<th>No.</th>
-									<th>Date</th>
-									<th>Principal</th>
-									<th>Interest</th>
-									<th>Total</th>
-									<th>Principal Balance</th>
-									<th>Interest Balance</th>
-								</thead>
-								<tbody>
-									<tr v-for="(sched, i) in amortizationSched" :key="i">
-										<td>{{i + 1}}</td>
-										<td>{{dateToYMD(new Date(sched.amortization_date))}}</td>
-										<td>{{sched.principal}}</td>
-										<td>{{sched.interest}}</td>
-										<td>{{sched.total}}</td>
-										<td>{{sched.principal_balance}}</td>
-										<td>{{sched.interest_balance}}</td>
-									</tr>
-								</tbody>
-							</table>
-
-						</div>
-						<div class="mb-45"></div>
-						<div class="mb-45"></div>
-						<p class="text-block text-center" style="line-height:0!important;">This statement is a system generated copy!</p>
-						<p class="text-block text-center">&lt; End of file &gt;</p>
-					</section>
-					<div class="d-flex flex-row-reverse mb-45 no-print">
-						<a href="#" @click.prevent="printContent('amortPrintContent')" class="btn btn-default min-w-150">Print</a>
-						<!-- <a href="#" class="btn btn-success min-w-150 mr-24">Download Excel</a> -->
-						<a href="#" id="cancelModal" data-dismiss="modal" class="btn btn-danger min-w-150 mr-24 hide">Cancel</a>
-					</div>
-					<div class="d-flex mb-24">
-							<img :src="this.baseURL()+'/img/logo-footer.png'" class="w-100" alt="Company Footer">
-						</div>
 				</div>
+			  </div>
 			</div>
-		  </div>
 		</div>
-	</div>
-
-
-
-
-
 
 		<div class="modal" id="uploadedFilesModal" tabindex="-1" role="dialog">
 			<div class="modal-dialog modal-lg minw-70" role="document">
