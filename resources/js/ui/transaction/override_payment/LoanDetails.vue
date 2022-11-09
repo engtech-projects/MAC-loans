@@ -116,7 +116,7 @@
 					</div>
 					<div class="d-flex flex-column flex-1 mr-24">
 						<span class="font-20 lh-1 pb-5 mb-5" style="border-bottom:1px solid #555;">OVERPAYMENT</span>
-						<span class="font-20 lh-1">P {{formatToCurrency(0)}}</span>
+						<span class="font-20 lh-1">P {{formatToCurrency(overpayment)}}</span>
 					</div>
 					<!-- <div class="d-flex flex-column flex-1">
 						<span class="font-20 lh-1 pb-5 mb-5" style="border-bottom:1px solid #555;">INSURANCE</span>
@@ -237,6 +237,9 @@ export default {
 		borrowerPhoto:function(){
 			return this.ppayment.photo? this.ppayment.photo : this.baseURL()+'/img/user.png';
 		},
+		overpayment:function(){
+			return this.ppayment.over_payment? this.over_payment:0;
+		}
 	}
 	
 }
