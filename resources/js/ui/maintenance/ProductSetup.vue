@@ -15,10 +15,6 @@
 							<label for="productName" class="form-label">Product Name</label>
 							<input type="text" v-model="product.product_name" class="form-control form-input " id="productName">
 						</div>
-						<div class="form-group mb-10" style="flex:1">
-							<label for="filingFee" class="form-label">Filing Fee</label>
-							<input type="number"  class="form-control form-input " id="filingFee">
-						</div>
 						<div class="d-flex flex-row mb-24">
 							<div class="form-group mb-10 mr-24" style="flex:1">
 								<label for="productName" class="form-label">Product Code</label>
@@ -42,10 +38,6 @@
 							<div class="form-group mb-10" style="flex:1">
 								<label for="productName" class="form-label">Product Name</label>
 								<input type="text" v-model="product.product_name" class="form-control form-input " id="productName">
-							</div>
-							<div class="form-group mb-10" style="flex:1">
-								<label for="filingFee" class="form-label">Filing Fee</label>
-								<input type="number"  class="form-control form-input " id="filingFee">
 							</div>
 							<div class="d-flex flex-row mb-24">
 								<div class="form-group mb-10 mr-24" style="flex:1">
@@ -76,7 +68,6 @@
 								<th>Product Name</th>
 								<th>Product Code</th>
 								<th>Percentage</th>
-								<th>Filing Fee</th>
 								<th>Status</th>
 								<th></th>
 							</thead>
@@ -92,7 +83,6 @@
 									<td>{{product.product_name}}</td>
 									<td>{{product.product_code}}</td>
 									<td>{{product.interest_rate}}%</td>
-									<td></td>
 									<td class="text-green text-sm"><a href="#" class="text-green">{{product.status}}</a></td>
 									<td><a @click.prevent="setEdit(product)" href="#"><i class="fa fa-edit"></i></a></td>
 								</tr>
