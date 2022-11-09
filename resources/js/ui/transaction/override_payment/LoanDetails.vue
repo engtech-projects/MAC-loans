@@ -238,7 +238,7 @@ export default {
 			return this.ppayment.photo? this.ppayment.photo : this.baseURL()+'/img/user.png';
 		},
 		overpayment:function(){
-			return this.ppayment.over_payment? this.over_payment:0;
+			return this.ppayment.over_payment?this.ppayment.over_payment:0;
 		}
 	}
 	

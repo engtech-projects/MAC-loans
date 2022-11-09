@@ -406,7 +406,6 @@ export default {
                 )
                 .then(
                     function (response) {
-                        console.log(response.data.data);
                         this.paidPayments = response.data;
                     }.bind(this)
                 )
