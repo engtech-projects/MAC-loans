@@ -214,7 +214,7 @@ class EndTransaction extends Model
 							}
 
 							break;
-						case 'Overpayment':
+						case 'Others':
 							$ledger[$key]['credit'] += $payment->over_payment;
 							break;
 						case 'Pastdue Interest':
