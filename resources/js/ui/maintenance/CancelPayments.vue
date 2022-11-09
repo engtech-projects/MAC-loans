@@ -369,10 +369,11 @@ export default {
         },
         filteredPayments: function () {
             if (this.paymentFilter.length > 0) {
-               return this.payments.filter((data)=> data.account_no.includes(this.paymentFilter) || data.created_at.includes(this.paymentFilter));
+               return this.payments.filter((data)=> data.account_no.includes(this.paymentFilter) || data.created_at.includes(this.paymentFilter) || (data.or_no?data.or_no:'').includes(this.paymentFilter));
             }
 			return this.payments;
         },
+		
     },
     watch: {
         "selectedBorrower.borrower_id": function (newValue) {
