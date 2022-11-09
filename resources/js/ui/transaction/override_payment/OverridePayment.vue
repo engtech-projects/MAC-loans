@@ -84,7 +84,7 @@
                                     style="
                                         position: absolute;
                                         top: 0;
-										min-width:130px;
+										min-width:140px;
                                         padding: 5px 7px;
                                         color: #fff;
                                         background-color: #222;
@@ -94,8 +94,9 @@
 										border:1px solid #222;
 										border-radius:7px!important;
 										display:none;
+										z-index:99999;
                                     "
-                                    >Reference account is still pending.</span
+                                    >Reference account is still subject for approval.</span
                                 >
 								</i>
                             </td>
