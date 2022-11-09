@@ -202,7 +202,7 @@
 								<div class="col-xl-3 col-lg-6">
 									<div class="info-display">
 										<span class="font-blue">Amortization</span>
-										<span>P {{formatToCurrency(Math.ceil(loanAmortization))}}</span>
+										<span>P {{formatToCurrency(loanAmortization)}}</span>
 									</div>
 								</div>
 								<div class="col-xl-3 col-lg-6">
@@ -352,6 +352,7 @@
 																		<th>PDI</th>
 																		<th>Penalty</th>
 																		<th>Total Payment</th>
+																		<th>Remarks</th>
 																	</thead>
 																	<tbody>
 																		<tr v-for="(p,pi) in loanDetails.payments" :key="pi">
@@ -364,6 +365,7 @@
 																			<td>{{formatToCurrency(p.pdi)}}</td>
 																			<td>{{formatToCurrency(p.penalty)}}</td>
 																			<td>{{formatToCurrency(p.amount_applied)}}</td>
+																			<td>{{p.status == 'cancelled' ? 'Cancelled - Reason' : ''}}</td>
 																		</tr>
 																		<tr v-if="loanDetails.payments.length==0">
 																			<td>No payments yet.</td>
@@ -458,7 +460,7 @@
 		<a href="#" data-toggle="modal" data-target="#uploadedFilesModal" class="btn btn-darkorange"><i class="fa fa-folder mr-10"></i> <span>Upload Document</span></a>
 		<div class="d-flex flex-row justify-content-end">
 			<a href="#" data-toggle="modal" data-target="#lettersModal" class="btn btn-sky-blue mr-10 min-w-150">Letters</a>
-			<a href="#" data-toggle="modal" data-target="#statusReportModal" class="btn btn-bright-blue mr-10 min-w-150">Print Payment Status</a>
+			<!-- <a href="#" data-toggle="modal" data-target="#statusReportModal" class="btn btn-bright-blue mr-10 min-w-150">Print Payment Status</a> -->
 			<a href="#" data-toggle="modal" data-target="#cashVoucherModal" class="btn btn-purple mr-10 min-w-150">Voucher</a>
 			<a href="#" data-toggle="modal" data-target="#promisoryNoteModal" class="btn btn-success mr-10 min-w-150">Promissory Note</a>
 			<a href="#" data-toggle="modal" data-target="#schedulesModal" class="btn btn-yellow mr-10 min-w-150">Amortization Sched.</a>
@@ -1611,90 +1613,105 @@
 							<span class="text-center text-block dark-bb pb-10 text-bold font-lg mb-16">STATEMENT OF ACCOUNT</span>
 
 							<div class="d-flex flex-row mb-24">
-								<div class="d-flex flex-column flex-2">
-									<div class="d-flex mb-7">
-										<span class="mr-5 text-primary-dark text-bold">Name: </span>
-										<span class="text-primary-dark text-bold">{{fullNameReverse(borrower.firstname, borrower.middlename, borrower.lastname)}}</span>
-									</div>
-									<div class="d-flex mb-7">
-										<span class="mr-5">Address: </span>
-										<span>{{borrower.address}}</span>
-									</div>
-									<div class="d-flex mb-7">
-										<span class="mr-5">Date Release: </span>
-										<span>{{dateToMDY(new Date(loanDetails.date_release))}}</span>
-									</div>
-									<div class="d-flex mb-7">
-										<span class="mr-5">Amount Granted: </span>
-										<span>{{formatToCurrency(loanDetails.loan_amount)}}</span>
-									</div>
-									<div class="d-flex mb-7">
-										<span class="mr-5">Term: </span>
-										<span>{{loanDetails.terms}} Days / {{loanDetails.terms / 30}} Month(s)</span>
-									</div>
-									<div class="d-flex mb-7">
-										<span class="mr-5">Amort: </span>
-										<span>{{formatToCurrency(loanAmortization)}}</span>
-									</div>
-									<!-- <div class="d-flex mb-7">
-										<span class="mr-5">Group: </span>
-									</div> -->
-									<div class="d-flex mb-7">
-										<span class="mr-5">Co-Borrower: </span>
-										<span>{{loanDetails.co_borrower_name}}</span>
-									</div>
-									<div class="d-flex mb-7">
-										<span class="mr-5">Co-Address: </span>
-										<span>{{loanDetails.co_borrower_address}}</span>
-									</div>
-									<div class="d-flex mb-7">
-										<span class="mr-5">Co-Maker: </span>
-										<span>{{loanDetails.co_maker_name}}</span>
-									</div>
-									<div class="d-flex mb-7">
-										<span class="mr-5">Co-Address: </span>
-										<span>{{loanDetails.co_maker_address}}</span>
-									</div>
+								
+							<div class="d-flex flex-column flex-2">
+								<div class="d-flex mb-7">
+									<span class="mr-5 text-primary-dark text-bold">Name: </span>
+									<span class="text-primary-dark text-bold">{{borrower.lastname + ', ' + borrower.firstname}}</span>
 								</div>
-								<div class="flex-1"></div>
-								<div class="d-flex flex-column flex-2">
-									<div class="d-flex mb-7">
-										<span class="mr-5 text-primary-dark text-bold">Acc. #: </span>
-										<span class="text-primary-dark text-bold">{{loanDetails.account_num}}</span>
-									</div>
-									<div class="d-flex mb-7">
-										<span class="mr-5">A/O: </span>
-										<span class="">{{loanDetails.account_officer.name}}</span>
-									</div>
-									<div class=" d-flex mb-7">
-										<span class="mr-5">Due Date: </span>
-										<span class="">{{dateToMDY(new Date(loanDetails.due_date))}}</span>
-									</div>
-									<div class=" d-flex mb-7">
-										<span class="mr-5">Loan Type: </span>
-										<span class="">{{loanDetails.type}}</span>
-									</div>
-									<div class=" d-flex mb-7">
-										<span class="mr-5">Interest: </span>
-										<span class="">{{formatToCurrency(loanDetails.interest_amount)}}</span>
-									</div>
-									<div class=" d-flex mb-7">
-										<span class="mr-5">Int. Rate: </span>
-										<span class="">{{loanDetails.interest_rate * 12}}% p.a. / {{loanDetails.interest_rate}}% p.m.</span>
-									</div>
-									<div class=" d-flex mb-7">
-										<span class="mr-5">Mode: </span>
-										<span class="">{{loanDetails.payment_mode}}</span>
-									</div>
-									<div class=" d-flex mb-7">
-										<span class="mr-5">Center: </span>
-										<span class="">{{loanDetails.center?loanDetails.center.center:'None'}}</span>
-									</div>
-									<div class=" d-flex mb-7">
-										<span class="mr-5">ID #: </span>
-										<span class="">{{borrower.id_no}}</span>
-									</div>
+								<div class="d-flex mb-7">
+									<span class="mr-5">Address: </span>
+									<span>{{borrower.address}}</span>
 								</div>
+								<div class="d-flex mb-7">
+									<span class="mr-5">Date Release: </span>
+									<span>{{loanDetails.date_release}}</span>
+								</div>
+								<div class="d-flex mb-7">
+									<span class="mr-5">Amount Granted: </span>
+									<span>{{loanDetails.loan_amount}}</span>
+								</div>
+								<div class="d-flex mb-7">
+									<span class="mr-5">Term: </span>
+									<span>{{loanDetails.terms + ' Days'}}</span>
+								</div>
+								<div class="d-flex mb-7">
+									<span class="mr-5">Amort: </span>
+									<span>{{formatToCurrency(loanAmortization)}}</span>
+								</div>
+								<div class="d-flex mb-7">
+									<span class="mr-5">&nbsp;</span>
+									<span>&nbsp;</span>
+								</div>
+								<div class="d-flex mb-7">
+									<span class="mr-5">Co-Borrower: </span>
+									<span>{{loanDetails.co_borrower_name}}</span>
+								</div>
+								<div class="d-flex mb-7">
+									<span class="mr-5">Co-Address: </span>
+									<span>{{loanDetails.co_borrower_address}}</span>
+								</div>
+								<div class="d-flex mb-7">
+									<span class="mr-5">Co-Maker: </span>
+									<span>{{loanDetails.co_maker_name}}</span>
+								</div>
+								<div class="d-flex mb-7">
+									<span class="mr-5">Co-Address: </span>
+									<span>{{loanDetails.co_maker_address}}</span>
+								</div>
+							</div>
+							<div class="flex-1"></div>
+							<div class="d-flex flex-column flex-2">
+								<div class="d-flex mb-7">
+									<span class="mr-5 text-primary-dark text-bold">Acc. #: </span>
+									<span class="text-primary-dark text-bold">{{loanDetails.account_num}}</span>
+								</div>
+								<div class="d-flex mb-7">
+									<span class="mr-5">A/O: </span>
+									<span class="">{{loanDetails.account_officer.name}}</span>
+									<span></span>
+								</div>
+								<div class="d-flex mb-7">
+									<span class="mr-5">Due Date: </span>
+									<span class="">{{dateToMDY(new Date(loanDetails.due_date))}}</span>
+								</div>
+								<div class="d-flex mb-7">
+									<span class="mr-5">Loan Type: </span>
+									<span class="">{{loanDetails.type}}</span>
+								</div>
+								<div class="d-flex mb-7">
+									<span class="mr-5">Interest: </span>
+									<span class="">{{formatToCurrency(loanDetails.interest_amount)}}</span>
+								</div>
+								<!-- <div class="d-flex mb-7">
+									<span class="mr-5">Int. Rate: </span>
+									<span class="">{{loanDetails.interest_rate + '%'}}</span>
+								</div> -->
+								<div class="d-flex mb-7">
+									<span class="mr-5">Mode: </span>
+									<span class="">{{loanDetails.payment_mode}}</span>
+								</div>
+								<div class="d-flex mb-7">
+									<span class="mr-5">Center: </span>
+									<span class="">{{loanDetails.center? loanDetails.center.center:''}}</span>
+								</div>
+								<div class="d-flex mb-7">
+									<span class="mr-5">ID #: </span>
+									<span>{{loanDetails.co_borrower_id_number}}</span>
+								</div>
+								<div class="d-flex mb-7">
+									<span class="mr-5">ID Type: </span>
+									<span>{{loanDetails.co_borrower_id_type}}</span>
+								</div>
+								<div class="d-flex mb-7">
+									<span class="mr-5">ID #: </span>
+									<span>{{loanDetails.co_maker_id_number}}</span>
+								</div>
+								<div class="d-flex mb-7">
+									<span class="mr-5">ID Type: </span>
+									<span>{{loanDetails.co_maker_id_type}}</span>
+								</div>
+							</div>
 							</div>
 
 				<section class=" mb-24 d-flex flex-column">
@@ -1752,7 +1769,7 @@
 																					<td>{{formatToCurrency(py.pdi)}}</td>
 																					<td>{{formatToCurrency(py.penalty)}}</td>
 																					<td>{{formatToCurrency(py.amount_applied)}}</td>
-																					<td></td>
+																					<td>{{py.status == 'cancelled' ? 'Cancelled - Reason' : ''}}</td>
 																				</tr>
 																				<tr v-if="loanDetails.payments.length < 1">
 																					<td>No payment records found.</td>
@@ -2507,7 +2524,7 @@ export default {
 			return this.accounts;
 		},
 		loanAmortization:function(){
-			return (this.loanDetails.loan_amount/this.loanDetails.no_of_installment) + (this.loanDetails.interest_amount/this.loanDetails.no_of_installment);
+			return Math.ceil( (this.loanDetails.loan_amount/this.loanDetails.no_of_installment) + (this.loanDetails.interest_amount/this.loanDetails.no_of_installment) );
 		}
 	},
 	mounted(){
