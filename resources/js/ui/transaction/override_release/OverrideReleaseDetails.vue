@@ -234,7 +234,7 @@
 							</div>
 							<div class="d-flex mb-7">
 								<span class="mr-5">Amort: </span>
-								<span>{{formatToCurrency(amortAmount)}}</span>
+								<span>{{amortAmount}}</span>
 							</div>
 							<div class="d-flex mb-7">
 								<span class="mr-5">&nbsp;</span>
@@ -277,7 +277,7 @@
 							</div>
 							<div class="d-flex mb-7">
 								<span class="mr-5">Interest: </span>
-								<span class="">{{loanInterest}}</span>
+								<span class="">{{formatToCurrency(loanaccount.interest_amount)}}</span>
 							</div>
 							<!-- <div class="d-flex mb-7">
 								<span class="mr-5">Int. Rate: </span>
