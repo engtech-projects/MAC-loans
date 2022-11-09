@@ -1,7 +1,8 @@
 <template>
 	<div class="card card-outline">
 		<div class="card-header text-center">
-		<span href="" class="h1"><b>δάνειο</b>s</span>
+		<!-- <span href="" class="h1"><b>δάνειο</b>s</span> -->
+		<span href="" class="h1"><img :src="baseURL()+'/img/logo-side.png'" alt=""></span>
 		</div>
 		<div class="card-body">
 			<p class="login-box-msg">Sign in</p>
