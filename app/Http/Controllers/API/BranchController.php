@@ -69,4 +69,9 @@ class BranchController extends BaseController
      * Remove the specified resource from storage.
      */
     public function destroy() {}
+
+    public function activeBranch() {
+        $branch = Branch::where(["status" => "active"])->get();
+        return $this->sendResponse(BranchResource::collection($branch), 'AO fetched.');
+    }
 }

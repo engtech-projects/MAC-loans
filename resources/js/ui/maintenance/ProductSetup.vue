@@ -83,7 +83,7 @@
 									<td>{{product.product_name}}</td>
 									<td>{{product.product_code}}</td>
 									<td>{{product.interest_rate}}%</td>
-									<td class="text-green text-sm"><a href="#" class="text-green">{{product.status}}</a></td>
+									<td class="text-green text-sm"><a href="#" class="text-green">{{sentenceCase(product.status)}}</a></td>
 									<td><a @click.prevent="setEdit(product)" href="#"><i class="fa fa-edit"></i></a></td>
 								</tr>
 							</tbody>
@@ -161,8 +161,10 @@
 						.then(function (response) {
 							this.notify('',response.data.message, 'success');
 							this.fetchProducts();
+							this.resetProduct();
 						}.bind(this))
 						.catch(function (error) {
+							this.notify('',"Something went wrong. Please make sure all fields have been filled.",'error')
 							console.log(error);
 						}.bind(this));
 				}else {
@@ -179,6 +181,7 @@
 							this.fetchProducts();
 						}.bind(this))
 						.catch(function (error) {
+							this.notify('',"Something went wrong. Please make sure all fields have been filled.",'error')
 							console.log(error);
 						}.bind(this));
 				}

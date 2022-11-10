@@ -149,6 +149,7 @@
 								</tr>
 								<tr v-for="officer in officers" :key="officer.ao_id">
 									<td>{{officer.name}}</td>
+									<td>{{upperFirst(officer.branch.branch_name)}}</td>
 									<td class="text-right"><a href="#" class="text-green text-sm">{{upperFirst(officer.status)}}</a></td>
 									<td class="text-right"><a @click.prevent="setEdit(officer,'officer')" href="#" class="fa fa-edit"></a></td>
 								</tr>
@@ -189,24 +190,6 @@ export default {
 		}
 	},
 	methods:{
-		resetOfficer:function(){
-			this.officer = {
-				ao_id:null,
-				name:'',
-				branch_id:'',
-				status:'active',
-				deleted:0,
-			}
-		},
-		resetCenter:function(){
-			this.center = {
-				center_id:null,
-				center:'',
-				day_sched:'',
-				status:'active',
-				deleted:0
-			}
-		},
 		fetchCenters:function(){
 			axios.get(this.baseURL() + 'api/center', {
 				headers: {
@@ -242,7 +225,7 @@ export default {
 		},
 
 		fetchBranches:function(){
-			axios.get(this.baseURL() + 'api/branch', {
+			axios.get(this.baseURL() + 'api/branches/activeBranch', {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
 					'Content-Type': 'application/json',
@@ -270,8 +253,10 @@ export default {
 					.then(function (response) {
 						this.notify('',response.data.message, 'success');
 						this.fetchOfficers();
+						this.resetOfficer();
 					}.bind(this))
 					.catch(function (error) {
+						this.notify('',"Something went wrong. Please make sure all fields have been filled correctly.",'error')
 						console.log(error);
 					}.bind(this));
 			}else {
@@ -288,6 +273,7 @@ export default {
 					this.resetOfficer();
 				}.bind(this))
 				.catch(function (error) {
+					this.notify('',"Something went wrong. Please make sure all fields have been filled correctly.",'error')
 					console.log(error);
 				}.bind(this));
 			}
@@ -306,8 +292,10 @@ export default {
 					.then(function (response) {
 						this.notify('',response.data.message, 'success');
 						this.fetchCenters();
+						this.resetCenter();
 					}.bind(this))
 					.catch(function (error) {
+						this.notify('',"Something went wrong. Please make sure all fields have been filled correctly.",'error')
 						console.log(error);
 					}.bind(this));
 			}else {
@@ -324,6 +312,7 @@ export default {
 					this.resetCenter();
 				}.bind(this))
 				.catch(function (error) {
+					this.notify('',"Something went wrong. Please make sure all fields have been filled correctly.",'error')
 					console.log(error);
 				}.bind(this));
 			}
@@ -370,10 +359,11 @@ export default {
 			this.officer = {
 				ao_id:null,
 				name:'',
-				branch_id:1,
+				branch_id:'',
 				status:'active',
 				deleted:0,
 			}
+			this.branch_code = '';
 		}
 	},
 	watch: {

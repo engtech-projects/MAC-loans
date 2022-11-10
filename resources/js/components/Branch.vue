@@ -25,6 +25,10 @@
 										<input type="text" v-model="branch.branch_name" class="form-control form-input " id="branchName">
 									</div>
 									<div class="form-group mb-24" style="flex:1">
+										<label for="branchManager" class="form-label">Branch Manager</label>
+										<input type="text" v-model="branch.branch_manager" class="form-control form-input " id="branchManager">
+									</div>
+									<div class="form-group mb-24" style="flex:1">
 										<label for="branchAddress" class="form-label">Branch Address</label>
 										<input type="text" v-model="branch.branch_address" class="form-control form-input " id="branchAddress">
 									</div>
@@ -46,6 +50,10 @@
 										<input type="text" v-model="branch.branch_name" class="form-control form-input " id="branchName">
 									</div>
 									<div class="form-group mb-24" style="flex:1">
+										<label for="branchManager" class="form-label">Branch Manager</label>
+										<input type="text" v-model="branch.branch_manager" class="form-control form-input " id="branchManager">
+									</div>
+									<div class="form-group mb-24" style="flex:1">
 										<label for="branchAddress" class="form-label">Branch Address</label>
 										<input type="text" v-model="branch.branch_address" class="form-control form-input " id="branchAddress">
 									</div>
@@ -60,6 +68,7 @@
 								<thead>
 									<th>Code</th>
 									<th>Branch Name</th>
+									<th>Branch Manager</th>
 									<th>Address</th>
 									<th>Status</th>
 									<th></th>
@@ -71,6 +80,7 @@
 									<tr v-for="branch in branches" :key="branch.branch_id">
 										<td>{{branch.branch_code}}</td>
 										<td>{{branch.branch_name}}</td>
+										<td>{{branch.branch_manager}}</td>
 										<td>{{branch.branch_address}}</td>
 										<td class="text-green">{{upperFirst(branch.status)}}</td>
 										<td><a @click.prevent="setEdit(branch)" href="#"><i class="fa fa-edit"></i></a></td>
@@ -95,6 +105,7 @@ export default {
 				branch_id:null,
 				branch_code:'',
 				branch_name:'',
+				branch_manager:'',
 				branch_address:'',
 				status:'active',
 				deleted:0
@@ -130,9 +141,11 @@ export default {
 					.then(function (response) {
 						this.notify('',response.data.message, 'success');
 						this.fetchBranches();
+						this.resetBranch();
 						this.$emit('branchUpdated');
 					}.bind(this))
 					.catch(function (error) {
+						this.notify('',"Something went wrong. Please make sure all fields have been filled correctly.",'error')
 						console.log(error);
 					}.bind(this));
 			}else {
@@ -150,6 +163,7 @@ export default {
 					this.$emit('branchUpdated');
 				}.bind(this))
 				.catch(function (error) {
+					this.notify('',"Something went wrong. Please make sure all fields have been filled correctly.",'error')
 					console.log(error);
 				}.bind(this));
 			}

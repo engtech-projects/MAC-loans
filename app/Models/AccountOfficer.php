@@ -17,6 +17,6 @@ class AccountOfficer extends Model
     ];
 
     public function branch() {
-    	return $this->hasOne(Branch::class, 'branch_id');
+    	return $this->hasOne(Branch::class, 'branch_id', 'branch_id');
     }
 }

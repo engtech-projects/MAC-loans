@@ -136,14 +136,14 @@ class TestDataSeeder extends Seeder
         DB::table('center')->insert([
             [
                 'center' => 'Acasia',
-                'day_sched' => 'Monday',
+                'day_sched' => 'monday',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
 
             ],
             [
                 'center' => 'Pineapple',
-                'day_sched' => 'Tuesday',
+                'day_sched' => 'tuesday',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ]
