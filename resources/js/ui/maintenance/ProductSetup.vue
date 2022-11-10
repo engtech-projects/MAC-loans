@@ -22,7 +22,7 @@
 							</div>
 							<div class="form-group mb-10" style="flex:1">
 								<label for="productName" class="form-label">Percentage</label>
-								<input type="text" v-model="product.interest_rate" class="form-control form-input " id="productName">
+								<input type="number" v-model="product.interest_rate" class="form-control form-input " id="productName" min="0" max="100">
 							</div>
 						</div>
 						<div class="d-flex justify-content-end">
@@ -46,7 +46,7 @@
 								</div>
 								<div class="form-group mb-10" style="flex:1">
 									<label for="productName" class="form-label">Percentage</label>
-									<input type="text" v-model="product.interest_rate" class="form-control form-input " id="productName">
+									<input type="number" v-model="product.interest_rate" class="form-control form-input " id="productName" min="0" max="100">
 								</div>
 							</div>
 							<div class="d-flex justify-content-between">
