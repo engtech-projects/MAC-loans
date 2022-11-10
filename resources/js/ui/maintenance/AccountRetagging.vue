@@ -5,47 +5,127 @@
 			<h1 class="m-0 font-35">Account Retagging</h1>
 		</div><!-- /.col -->
 		<div class="d-flex flex-column flex-xl-row">
-			<div style="flex:9;">
+			<div style="flex:1;">
 				<div class="search-bar mb-12">
 					<input type="text" class="form-control" id="searchBar" placeholder="Search">
 					<div><i class="fa fa-search"></i></div>
 				</div>
 				<table class="table table-stripped" id="clientsList">
 					<thead>
+						<th>All</th>
 						<th>Account #</th>
 						<th>Client Name</th>
-						<th></th>
+						<th>Date Release</th>
+						<th>Amount</th>
+						<th>AO</th>
+						<th>Product</th>
+						<th>Center</th>
+						<th>Loan Status</th>
 					</thead>
 					<tbody>
 						<tr>
+							<td><input type="checkbox" class="form-control form-box"></td>
 							<td>183</td>
 							<td><a href="#">John Doe</a></td>
-							<td><span class="text-green">select</span></td>
+							<td>02/02/2022</td>
+							<td>100,000.00</td>
+							<td>Rustom Pedales</td>
+							<td>Micro Group</td>
+							<td>Acassia</td>
+							<td>Delinquent</td>
 						</tr>
 						<tr>
-						<td>183</td>
-						<td><a href="#">John Doe</a></td>
-						<td><span class="text-green">select</span></td>
-					</tr>
-					<tr>
-						<td>183</td>
-						<td><a href="#">John Doe</a></td>
-						<td><span class="text-green">select</span></td>
-					</tr>
-					<tr>
-						<td>183</td>
-						<td><a href="#">John Doe</a></td>
-						<td><span class="text-green">select</span></td>
-					</tr>
-					<tr>
-						<td>183</td>
-						<td><a href="#">John Doe</a></td>
-						<td><span class="text-green">select</span></td>
-					</tr>
+							<td><input type="checkbox" class="form-control form-box"></td>
+							<td>183</td>
+							<td><a href="#">John Doe</a></td>
+							<td>02/02/2022</td>
+							<td>100,000.00</td>
+							<td>Rustom Pedales</td>
+							<td>Micro Group</td>
+							<td>Acassia</td>
+							<td>Delinquent</td>
+						</tr>
+						<tr>
+							<td><input type="checkbox" class="form-control form-box"></td>
+							<td>183</td>
+							<td><a href="#">John Doe</a></td>
+							<td>02/02/2022</td>
+							<td>100,000.00</td>
+							<td>Rustom Pedales</td>
+							<td>Micro Group</td>
+							<td>Acassia</td>
+							<td>Delinquent</td>
+						</tr>
+						<tr>
+							<td><input type="checkbox" class="form-control form-box"></td>
+							<td>183</td>
+							<td><a href="#">John Doe</a></td>
+							<td>02/02/2022</td>
+							<td>100,000.00</td>
+							<td>Rustom Pedales</td>
+							<td>Micro Group</td>
+							<td>Acassia</td>
+							<td>Delinquent</td>
+						</tr>
+						<tr>
+							<td><input type="checkbox" class="form-control form-box"></td>
+							<td>183</td>
+							<td><a href="#">John Doe</a></td>
+							<td>02/02/2022</td>
+							<td>100,000.00</td>
+							<td>Rustom Pedales</td>
+							<td>Micro Group</td>
+							<td>Acassia</td>
+							<td>Delinquent</td>
+						</tr>
+						<tr>
+							<td><input type="checkbox" class="form-control form-box"></td>
+							<td>183</td>
+							<td><a href="#">John Doe</a></td>
+							<td>02/02/2022</td>
+							<td>100,000.00</td>
+							<td>Rustom Pedales</td>
+							<td>Micro Group</td>
+							<td>Acassia</td>
+							<td>Delinquent</td>
+						</tr>
+						<tr>
+							<td><input type="checkbox" class="form-control form-box"></td>
+							<td>183</td>
+							<td><a href="#">John Doe</a></td>
+							<td>02/02/2022</td>
+							<td>100,000.00</td>
+							<td>Rustom Pedales</td>
+							<td>Micro Group</td>
+							<td>Acassia</td>
+							<td>Delinquent</td>
+						</tr>
+						<tr>
+							<td><input type="checkbox" class="form-control form-box"></td>
+							<td>183</td>
+							<td><a href="#">John Doe</a></td>
+							<td>02/02/2022</td>
+							<td>100,000.00</td>
+							<td>Rustom Pedales</td>
+							<td>Micro Group</td>
+							<td>Acassia</td>
+							<td>Delinquent</td>
+						</tr>
+						<tr>
+							<td><input type="checkbox" class="form-control form-box"></td>
+							<td>183</td>
+							<td><a href="#">John Doe</a></td>
+							<td>02/02/2022</td>
+							<td>100,000.00</td>
+							<td>Rustom Pedales</td>
+							<td>Micro Group</td>
+							<td>Acassia</td>
+							<td>Delinquent</td>
+						</tr>
 					</tbody>
 				</table>
 			</div>
-			<div style="flex:20">
+			<!-- <div style="flex:20">
 				<section class="mb-24" style="flex:21;padding-left:16px;">
 					<span class="section-title mb-24">Details</span>
 					<div class="d-flex mb-12">
@@ -310,7 +390,7 @@
 				<div class="d-flex flex-row-reverse mb-72">
 					<a href="#" data-toggle="modal" data-target="#retagModal" class="btn btn-primary-dark min-w-150">Re-tag</a>
 				</div>
-			</div>
+			</div> -->
 		</div>
 
 		<!-- MODALS -->

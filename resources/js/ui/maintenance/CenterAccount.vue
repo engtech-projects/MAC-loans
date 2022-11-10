@@ -189,6 +189,24 @@ export default {
 		}
 	},
 	methods:{
+		resetOfficer:function(){
+			this.officer = {
+				ao_id:null,
+				name:'',
+				branch_id:'',
+				status:'active',
+				deleted:0,
+			}
+		},
+		resetCenter:function(){
+			this.center = {
+				center_id:null,
+				center:'',
+				day_sched:'',
+				status:'active',
+				deleted:0
+			}
+		},
 		fetchCenters:function(){
 			axios.get(this.baseURL() + 'api/center', {
 				headers: {
@@ -267,6 +285,7 @@ export default {
 				.then(function (response) {
 					this.notify('',response.data.message, 'success');
 					this.fetchOfficers();
+					this.resetOfficer();
 				}.bind(this))
 				.catch(function (error) {
 					console.log(error);
@@ -302,6 +321,7 @@ export default {
 				.then(function (response) {
 					this.notify('',response.data.message, 'success');
 					this.fetchCenters();
+					this.resetCenter();
 				}.bind(this))
 				.catch(function (error) {
 					console.log(error);

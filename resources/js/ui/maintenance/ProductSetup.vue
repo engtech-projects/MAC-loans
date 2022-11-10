@@ -32,7 +32,7 @@
 					<div class="d-flex flex-column light-border" v-if="product.product_id">
 						<div class="d-flex justify-content-between mb-16 bg-primary-dark text-white px-16 py-7">
 							<span class="text-bold font-md">Edit {{product.product_name}}</span>
-							<a href="" @click="resetProduct()" class="text-white"><i class="fa fa-times"></i></a>
+							<a href="" @click.prevent="resetProduct()" class="text-white"><i class="fa fa-times"></i></a>
 						</div>
 						<div class="px-16 mb-16">
 							<div class="form-group mb-10" style="flex:1">
@@ -114,6 +114,17 @@
 			}
 		},
 		methods: {
+			resetProduct:function(){
+				this.product = {
+					product_id:null,
+					product_code:'',
+					product_name:'',
+					product_description:'',
+					interest_rate:'',
+					status:'active',
+					deleted:0
+				}
+			},
 			fetchProducts: function(){
 				axios.get(this.baseURL() + 'api/product/', {
 					headers: {
@@ -164,6 +175,7 @@
 						})
 						.then(function (response) {
 							this.notify('',response.data.message, 'success');
+							this.resetProduct();
 							this.fetchProducts();
 						}.bind(this))
 						.catch(function (error) {
