@@ -41,7 +41,7 @@ class Payment extends JsonResource
             'amount_applied' => $this->amount_applied,
             'status' => $this->status,
             'reference_id' => $this->reference_id,
-            'remarks' => $this->remarks
+            'remarks' => $this->status + '-' +$this->remarks
         ];
     }
 }
