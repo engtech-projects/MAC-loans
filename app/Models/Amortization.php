@@ -74,10 +74,9 @@ class Amortization extends Model
             // principal balance
             $principalBalance = $principalBalance - $principal;
 
-            if( max($principalBalance, 0) == 0 || $principalBalance < 0 ) {
-
-                $principalBalance = $principal - $principalBalance;
-            }
+            // if( max($principalBalance, 0) == 0 || $principalBalance < 0 ) {
+            //     $principalBalance = 0;
+            // }
 
             $interestBalance = $interestBalance - $interest;
 
@@ -88,7 +87,12 @@ class Amortization extends Model
             $totalAmount -= $total;
 
             if( $totalAmount <= 0 ){
-                $principal = $principal + $totalAmount;
+                $principal = ($principal) - abs($principalBalance);
+
+                if( $principalBalance < 0 ){
+                    $principalBalance = 0;
+                }
+
                 $total = $total + $totalAmount;
             }
 
