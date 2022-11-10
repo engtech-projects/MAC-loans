@@ -80,17 +80,21 @@ class Amortization extends Model
 
             $interestBalance = $interestBalance - $interest;
 
-            if( max($interestBalance, 0) == 0 ) {
-                $interestBalance = 0;
-            }
+            // if( max($interestBalance, 0) == 0 ) {
+            //     $interestBalance = 0;
+            // }
             // deducting total(principal+interest) from total amount (loan amount+interest)
             $totalAmount -= $total;
 
             if( $totalAmount <= 0 ){
                 $principal = ($principal) - abs($principalBalance);
-
+                $interest = ($interest) - abs($interestBalance);
                 if( $principalBalance < 0 ){
                     $principalBalance = 0;
+                }
+
+                if( $interestBalance < 0 ){
+                    $interestBalance = 0;
                 }
 
                 $total = $total + $totalAmount;
