@@ -41,7 +41,8 @@ class Payment extends Model
 		'total_payable',
 		'amount_applied',
         'status',
-        'reference_id'
+        'reference_id',
+        'remarks'
     ];
 
 	public function loanDetails(){
@@ -87,6 +88,7 @@ class Payment extends Model
         $payment->amount_applied = $request->input('amount_applied');
         $payment->vat = 0.00;
         $payment->reference_id = $request->input('reference_id');
+        $payment->remarks = $request->input('remarks');
 
         if( $payment->interest > 0 || $payment->pdi > 0 || $payment->penalty > 0 ) {
             $pdi = 0;
