@@ -312,7 +312,7 @@
 				<a @click.prevent="navigate('custom-content-below-coborrowerinfo-tab')" href="#" data-tab="custom-content-below-coborrowerinfo-tab" class="btn btn-primary-dark mr-24 tab-navigate min-w-150">Back</a>
 				<a href="#" data-toggle="modal" data-target="#warningModal" class="btn btn-success tab-navigate min-w-150 hide" id="warningBtn"></a>
 				<a href="#" data-toggle="modal" data-target="#zeroModal" class="btn btn-success tab-navigate min-w-150 hide" id="zeroBtn"></a>
-				<button v-if="!loandetails.loan_account_id" class="btn btn-success tab-navigate min-w-150">Next</button>
+				<button v-if="!loandetails.loan_account_id" :disabled="isComputed" class="btn btn-success tab-navigate min-w-150">Next</button>
 				<button v-if="prejected" class="btn btn-success tab-navigate min-w-150">Next</button>
 			</div>
 			<a href="#" data-toggle="modal" data-target="#lettersModal" class="btn btn-yellow-light">Print Document</a>
@@ -607,8 +607,18 @@ export default {
 			}
 		},
 		compute:function(){
-			this.computeDeduction();
-			this.deductionComputation += 1;
+
+			if(this.loanDetails.loan_amount == 0 ){
+				this.notify("Can't Compute", "Loan Amount is Required", 'error')
+			}else if(this.loanDetails.terms == ''){
+				this.notify("Can't Compute", "Terms is Required", 'error')
+			}else if(this.loanDetails.product_id == ''){
+				this.notify("Can't Compute", "Product is Required", 'error')
+			}else{
+				this.computeDeduction();
+				this.deductionComputation += 1;
+			}
+			
 		},
 		pay:function(accountId){
 			if(this.loanaccount.loan_account_id){
