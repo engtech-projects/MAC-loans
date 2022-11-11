@@ -705,6 +705,16 @@ export default {
 			if(!this.loanDetails.documents.promissory_number || this.loanDetails.documents.promissory_number == ''){
 				this.fetchPromissoryNo();
 			}
+			this.deductionComputation = 0;
+		},
+		'loanDetails.terms'(){
+			this.deductionComputation = 0;
+		},
+		'loanDetails.loan_amount'(){
+			this.deductionComputation = 0;
+		},
+		'loanDetails.type'(){
+			this.deductionComputation = 0;
 		},
 		'loanDetails.center_id':function(){
 			this.centers.map(function(data){
