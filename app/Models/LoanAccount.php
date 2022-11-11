@@ -261,7 +261,7 @@ class LoanAccount extends Model
    }
 
    public function payments() {
-      return $this->hasMany(Payment::class, 'loan_account_id')->where(['status' => 'paid']);
+      return $this->hasMany(Payment::class, 'loan_account_id')->whereIn('status', ['paid', 'cancelled']);
    }
 
    public function overrideReleaseAccounts($filters = array()) {
