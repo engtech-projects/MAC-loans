@@ -59,6 +59,7 @@ Route::group(['middleware' => 'auth'], function (){
 	Route::get('/maintenance/user_settings', [MaintenanceController::class, 'userSettings'])->name('maintenance.user_settings');
 	Route::get('/maintenance/gl_setup', [MaintenanceController::class, 'glSetup'])->name('maintenance.gl_setup');
 	Route::get('/maintenance/account_retagging', [MaintenanceController::class, 'accountRetagging'])->name('maintenance.account_retagging');
+	Route::get('/maintenance/account_retagging/accounts', [MaintenanceController::class, 'retagList']);
 	Route::get('/maintenance/deductions', [MaintenanceController::class, 'deductionRates'])->name('maintenance.deductions');
 
 	Route::get('/transaction/release_entry', [TransactionController::class, 'releaseEntry'])->name('transaction.release_entry');

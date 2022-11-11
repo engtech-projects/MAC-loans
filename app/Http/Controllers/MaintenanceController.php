@@ -55,4 +55,13 @@ class MaintenanceController extends Controller
 			'title' => 'Deduction Rate',
 		]);
 	}
+
+	public function retagList(){
+		$accounts =  \App\Models\LoanAccount::where('loan_status', '<>', 'Paid')->get();
+		foreach ($accounts as $key => $value) {
+			$accounts[$key]->borrower->photo = $value->borrower->getPhoto();
+			$accounts[$key]->checked = false;
+		}
+		return $accounts;
+	}
 }

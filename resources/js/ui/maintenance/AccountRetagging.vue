@@ -21,106 +21,20 @@
 						<th>Product</th>
 						<th>Center</th>
 						<th>Loan Status</th>
+						<th></th>
 					</thead>
 					<tbody>
-						<tr data-toggle="modal" data-target="#retagDetailsModal">
+						<tr v-for="account in loanAccounts" :key="account.loan_account_id">
 							<td><input type="checkbox" class="form-control form-box"></td>
 							<td>183</td>
-							<td><a href="#">John Doe</a></td>
-							<td>02/02/2022</td>
-							<td>100,000.00</td>
-							<td>Rustom Pedales</td>
-							<td>Micro Group</td>
-							<td>Acassia</td>
-							<td>Delinquent</td>
-						</tr>
-						<tr>
-							<td><input type="checkbox" class="form-control form-box"></td>
-							<td>183</td>
-							<td><a href="#">John Doe</a></td>
-							<td>02/02/2022</td>
-							<td>100,000.00</td>
-							<td>Rustom Pedales</td>
-							<td>Micro Group</td>
-							<td>Acassia</td>
-							<td>Delinquent</td>
-						</tr>
-						<tr>
-							<td><input type="checkbox" class="form-control form-box"></td>
-							<td>183</td>
-							<td><a href="#">John Doe</a></td>
-							<td>02/02/2022</td>
-							<td>100,000.00</td>
-							<td>Rustom Pedales</td>
-							<td>Micro Group</td>
-							<td>Acassia</td>
-							<td>Delinquent</td>
-						</tr>
-						<tr>
-							<td><input type="checkbox" class="form-control form-box"></td>
-							<td>183</td>
-							<td><a href="#">John Doe</a></td>
-							<td>02/02/2022</td>
-							<td>100,000.00</td>
-							<td>Rustom Pedales</td>
-							<td>Micro Group</td>
-							<td>Acassia</td>
-							<td>Delinquent</td>
-						</tr>
-						<tr>
-							<td><input type="checkbox" class="form-control form-box"></td>
-							<td>183</td>
-							<td><a href="#">John Doe</a></td>
-							<td>02/02/2022</td>
-							<td>100,000.00</td>
-							<td>Rustom Pedales</td>
-							<td>Micro Group</td>
-							<td>Acassia</td>
-							<td>Delinquent</td>
-						</tr>
-						<tr>
-							<td><input type="checkbox" class="form-control form-box"></td>
-							<td>183</td>
-							<td><a href="#">John Doe</a></td>
-							<td>02/02/2022</td>
-							<td>100,000.00</td>
-							<td>Rustom Pedales</td>
-							<td>Micro Group</td>
-							<td>Acassia</td>
-							<td>Delinquent</td>
-						</tr>
-						<tr>
-							<td><input type="checkbox" class="form-control form-box"></td>
-							<td>183</td>
-							<td><a href="#">John Doe</a></td>
-							<td>02/02/2022</td>
-							<td>100,000.00</td>
-							<td>Rustom Pedales</td>
-							<td>Micro Group</td>
-							<td>Acassia</td>
-							<td>Delinquent</td>
-						</tr>
-						<tr>
-							<td><input type="checkbox" class="form-control form-box"></td>
-							<td>183</td>
-							<td><a href="#">John Doe</a></td>
-							<td>02/02/2022</td>
-							<td>100,000.00</td>
-							<td>Rustom Pedales</td>
-							<td>Micro Group</td>
-							<td>Acassia</td>
-							<td>Delinquent</td>
-						</tr>
-						<tr>
-							<td><input type="checkbox" class="form-control form-box"></td>
-							<td>183</td>
-							<td><a href="#">John Doe</a></td>
-							<td>02/02/2022</td>
-							<td>100,000.00</td>
-							<td>Rustom Pedales</td>
-							<td>Micro Group</td>
-							<td>Acassia</td>
-							<td>Delinquent</td>
+							<td>{{account.borrower.firstname + ' ' + account.borrower.lastname}}</td>
+							<td>{{account.date_release.replaceAll('-','/')}}</td>
+							<td>{{formatToCurrency(account.loan_amount)}}</td>
+							<td>{{account.account_officer.name}}</td>
+							<td>{{account.product.product_name}}</td>
+							<td>{{account.center?account.center.center:'None'}}</td>
+							<td>{{account.loan_status}}</td>
+							<td><a href="#" @click.prevent="loanAccount=account" class="text-green-bright text-md" data-toggle="modal" data-target="#retagDetailsModal"><i>View Details</i></a></td>
 						</tr>
 					</tbody>
 				</table>
@@ -463,7 +377,7 @@
 									<div class="d-flex flex-row">
 										<div class="borrower-number d-flex flex-column" style="flex: 5">
 											<span>Borrower's Number</span>
-											<span class="text-center">{{borrower.borrower_num}}</span>
+											<span class="text-center">{{loanAccount.borrower.borrower_num}}</span>
 										</div>
 										<div style="flex:4"></div>
 										<div class="form-group mb-10" style="flex: 5">
@@ -473,11 +387,11 @@
 									</div>
 									<div class="form-group mb-5" style="flex: 5">
 										<label for="client" class="form-label mb-3">Client</label>
-										<input disabled :value="borrower.borrower_id?borrower.firstname + ' ' + borrower.lastname + ' ' + borrower.middlename.charAt(0) + '.':''" type="text" class="form-control form-input " id="client">
+										<input disabled :value="loanAccount.borrower.borrower_id?loanAccount.borrower.firstname + ' ' + loanAccount.borrower.lastname + ' ' + loanAccount.borrower.middlename.charAt(0) + '.':''" type="text" class="form-control form-input " id="client">
 									</div>
 									<div class="form-group mb-10" style="flex: 5">
 										<label for="address" class="form-label mb-3">Address</label>
-										<input disabled :value="borrower.address" type="text" class="form-control form-input " id="address">
+										<input disabled :value="loanAccount.borrower.address" type="text" class="form-control form-input " id="address">
 									</div>
 								</div>
 								<div class="upload-photo d-flex flex-column" style="flex:4;padding-top:36px;">
@@ -672,6 +586,7 @@ export default {
 				borrower_num:'############',
 				photo:null,
 			},
+			loanAccounts:[],
 			loanAccount:{
 				loan_account_id:null,
 				cycle_no : 1,
@@ -707,6 +622,11 @@ export default {
 				release_type : '',
 				interest_rate:'',
 				interest_amount:'',
+				borrower:{
+					borrower_id:null,
+					borrower_num:'############',
+					photo:null,
+				},
 				product:{
 					product_name:'',
 				},
@@ -747,10 +667,35 @@ export default {
 			}
 		}
 	},
-	computed:{
-		borrowerPhoto:function(){
-			return this.borrower.photo? this.borrower.photo : this.baseURL()+'/img/user.png';
+	methods:{
+		async fetchAccounts(){
+			await axios
+                .get(this.baseURL() + "maintenance/account_retagging/accounts/", {
+                    headers: {
+                        Authorization: "Bearer " + this.token,
+                        "Content-Type": "application/json",
+                        Accept: "application/json",
+                    },
+                })
+                .then(
+                    function (response) {
+						this.loanAccounts = response.data;
+                    }.bind(this)
+                )
+                .catch(
+                    function (error) {
+                        console.log(error);
+                    }.bind(this)
+                );
 		}
 	},
+	computed:{
+		borrowerPhoto:function(){
+			return this.loanAccount.borrower.photo? this.loanAccount.borrower.photo : this.baseURL()+'/img/user.png';
+		}
+	},
+	mounted(){
+		this.fetchAccounts();
+	}
 }
 </script>
