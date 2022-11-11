@@ -365,7 +365,7 @@
 																			<td>{{formatToCurrency(p.pdi)}}</td>
 																			<td>{{formatToCurrency(p.penalty)}}</td>
 																			<td>{{formatToCurrency(p.amount_applied)}}</td>
-																			<td>{{p.status == 'cancelled' ? 'Cancelled - Reason' : ''}}</td>
+																			<td>{{p.status == 'cancelled' ? 'Cancelled' + (p.remarks ? ' - ' + p.remarks : '') : ''}}</td>
 																		</tr>
 																		<tr v-if="loanDetails.payments.length==0">
 																			<td>No payments yet.</td>
@@ -1769,7 +1769,7 @@
 																					<td>{{formatToCurrency(py.pdi)}}</td>
 																					<td>{{formatToCurrency(py.penalty)}}</td>
 																					<td>{{formatToCurrency(py.amount_applied)}}</td>
-																					<td>{{py.status == 'cancelled' ? 'Cancelled - Reason' : ''}}</td>
+																					<td>{{py.status == 'cancelled' ? 'Cancelled' + (py.remarks ? ' - ' + py.remarks : '') : ''}}</td>
 																				</tr>
 																				<tr v-if="loanDetails.payments.length < 1">
 																					<td>No payment records found.</td>

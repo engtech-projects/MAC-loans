@@ -11,6 +11,10 @@
 				<section class="mb-24" style="flex:21;padding-left:16px;">
 					<span class="section-title section-subtitle mb-12">Inputs</span>
 
+					<div v-if="deduction.id" class="d-flex justify-content-between bg-primary-dark text-white px-16 py-7">
+						<span class="text-bold font-md">Edit {{deduction.name}}</span>
+						<a href="" @click.prevent="resetDeduction()" class="text-white"><i class="fa fa-times"></i></a>
+					</div>
 					<div class="d-flex flex-column p-16 light-border">
 						<div class="form-group mb-10" style="flex:1">
 							<label for="insurance" class="form-label">Deduction Name</label>
@@ -23,7 +27,7 @@
 						</div>
 						<div class="form-group mb-10" style="flex:1">
 							<label for="documentStamp" class="form-label">Rate</label>
-							<input v-model="deduction.rate" type="text" class="form-control form-input " id="Rate">
+							<input v-model="deduction.rate" type="text" class="form-control form-input " id="Rate" required>
 						</div>
 						<div class="form-group mb-10" style="flex:1">
 							<label for="notarialFee" class="form-label">Product</label>
@@ -44,7 +48,7 @@
 								</div>
 							</div>
 						</div>
-						<div class="mb-12">
+						<div class="mb-24" style="flex:1">
 							<span class="font-lg">Age Bracket</span>
 							<div class="d-flex">
 								<div class="d-flex flex-column flex-1 mr-24">
@@ -57,12 +61,13 @@
 								</div>
 							</div>
 						</div>
-						<div class="form-group mb-24" style="flex:1">
+						<!-- <div class="form-group mb-24" style="flex:1">
 							<label for="documentStamp" class="form-label">Status</label>
 							<input v-model="deduction.status" type="text" disabled class="form-control form-input " id="Rate">
-						</div>
+						</div> -->
 						<div class="d-flex justify-content-between">
-							<a href="#" @click.prevent="setDeductionStatus()" class="btn btn-yellow-light">Activate / Deactivate</a>
+							<a @click="deduction.status='active'" v-if="deduction.status!='active'" href="#" class="btn btn-lg btn-yellow-light min-w-150">Activate</a>
+							<a @click="deduction.status='inactive'" v-if="deduction.status=='active'" href="#" class="btn btn-lg btn-danger min-w-150">Deactivate</a>
 							<input type="submit" class="btn btn-lg btn-success min-w-150" value="Save">
 						</div>
 					</div>
@@ -97,7 +102,7 @@
 									<td> {{d.age_end}}</td>
 									<td v-if="d.status=='active'"><i class="text-green">{{upperFirst(d.status)}}</i></td>
 									<td v-if="d.status!='active'"><i class="text-red">{{upperFirst(d.status)}}</i></td>
-									<td><a href="#" @click.prevent="deduction=d"><i class="fa fa-edit text-sm mr-16"></i></a><a href="#" @click.prevent="attemptDelete(d.id)"><i class="fa fa-trash text-sm"></i></a></td>
+									<td><a href="#" @click.prevent="deduction=JSON.parse( JSON.stringify( d ) )"><i class="fa fa-edit text-sm mr-16"></i></a><a href="#" @click.prevent="attemptDelete(d.id)"><i class="fa fa-trash text-sm"></i></a></td>
 								</tr>
 							</tbody>
 						</table>
@@ -175,6 +180,7 @@
 						.then(function (response) {
 							this.notify('',response.data.message, 'success');
 							this.fetchDeductions();
+							this.resetDeduction();
 						}.bind(this))
 						.catch(function (error) {
 							console.log(error);
@@ -190,6 +196,7 @@
 						.then(function (response) {
 							this.notify('',response.data.message, 'success');
 							this.fetchDeductions();
+							this.resetDeduction();
 						}.bind(this))
 						.catch(function (error) {
 							console.log(error);
@@ -242,6 +249,19 @@
 			},
 			setDeductionStatus:function(){
 				this.deduction.status = this.deduction.status=='active'?'inactive':'active';
+			},
+			resetDeduction:function(){
+				this.deduction = {
+					id:null,
+					name:'',
+					rate:'',
+					product_id:'',
+					term_start:'',
+					term_end:'',
+					age_start:'',
+					age_end:'',
+					status:'active',
+				}
 			}
 		},
         mounted() {

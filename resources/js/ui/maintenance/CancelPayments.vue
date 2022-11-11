@@ -320,6 +320,7 @@ export default {
                         console.log(error);
                     }.bind(this)
                 );
+                this.remarks = '';
         },
         notify: function (title, text, type) {
             this.$notify({
