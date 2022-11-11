@@ -77,4 +77,11 @@ class DeductionController extends BaseController {
     	
     }
 
+     public function destroy($id) {
+
+        $deduction = Deduction::find($id);
+        $deduction->delete();
+        return $this->sendResponse(['status' => 'Deduction deleted'], 'Deleted');
+    }
+
 }
