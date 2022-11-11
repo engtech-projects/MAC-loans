@@ -108,116 +108,122 @@
 				<span class="section-title no-border no-padding">Deduction Fees</span>
 				<button @click.prevent="compute()" class="btn btn-success btn-sm btn-wide mb-10">Compute</button>
 			</div>
-			<div class="d-flex flex-row">
-				<div class="d-flex flex-column mr-45" style="flex:3;">
-					<div class="d-flex flex-row mb-16">
-						<label for="dueDate" class="form-label" style="flex:3">Filling Fee</label>
-						<input @blur="inputs.filingFee=false" v-if="inputs.filingFee" v-model="loanDetails.filing_fee" required type="number" class="form-control form-input text-right mr-16" style="flex:4" id="filingFee">
-						<input @focus="inputs.filingFee=true" v-if="!inputs.filingFee" :value="formatToCurrency(loanDetails.filing_fee)" required type="text" class="form-control form-input text-right mr-16" style="flex:4" id="filingFee">
-						<span class="flex-1" style="padding:7px 15px"></span>
-					</div>
-					<div class="d-flex flex-row mb-16">
-						<label for="dueDate" class="form-label" style="flex:3">Doc. Stamp</label>
-						<input @blur="inputs.docStamp=false" v-if="inputs.docStamp" v-model="loanDetails.document_stamp" requried type="number" class="form-control form-input text-right mr-16" style="flex:4" id="docStamp">
-						<input @focus="inputs.docStamp=true" v-if="!inputs.docStamp" :value="formatToCurrency(loanDetails.document_stamp)" requried type="text" class="form-control form-input text-right mr-16" style="flex:4" id="docStamp2">
-						<span class="flex-1" style="padding:7px 15px"></span>
-					</div>
-					<div class="d-flex flex-row mb-16">
-						<label for="dueDate" class="form-label" style="flex:3">Insurance</label>
-						<input @blur="inputs.insurance=false" v-if="inputs.insurance" v-model="loanDetails.insurance" required type="number" class="form-control form-input text-right mr-16" style="flex:4" id="insurance">
-						<input @focus="inputs.insurance=true" v-if="!inputs.insurance" :value="formatToCurrency(loanDetails.insurance)" required type="text" class="form-control form-input text-right mr-16" style="flex:4" id="insurance">
-						<span class="flex-1" style="padding:7px 15px"></span>
-					</div>
-					<div class="d-flex flex-row mb-16">
-						<label for="dueDate" class="form-label" style="flex:3">Notarial Fee</label>
-						<input @blur="inputs.notarialFee=false" v-if="inputs.notarialFee" v-model="loanDetails.notarial_fee" required type="number" class="form-control form-input text-right mr-16" style="flex:4" id="notrialFee">
-						<input @focus="inputs.notarialFee=true" v-if="!inputs.notarialFee" :value="formatToCurrency(loanDetails.notarial_fee)" required type="text" class="form-control form-input text-right mr-16" style="flex:4" id="notrialFee">
-						<span class="flex-1" style="padding:7px 15px"></span>
-					</div>
-					<div v-if="loanDetails.type=='Prepaid'" class="d-flex flex-row mb-16">
-						<label for="dueDate" class="form-label" style="flex:3">Prepaid Interest</label>
-						<input @blur="inputs.prepaidInterest=false" v-if="inputs.prepaidInterest" v-model="loanDetails.prepaid_interest" required type="number" class="form-control form-input text-right mr-16" style="flex:4" id="prepaidInterest">
-						<input @focus="inputs.prepaidInterest=true" v-if="!inputs.prepaidInterest" :value="formatToCurrency(loanDetails.prepaid_interest)" required type="text" class="form-control form-input text-right mr-16" style="flex:4" id="prepaidInterest">
-						<span class="flex-1" style="padding:7px 15px"></span>
-					</div>
-					<div class="d-flex flex-row mb-16">
-						<label for="dueDate" class="form-label" style="flex:3">Affidavit</label>
-						<input @blur="inputs.affidavit=false" v-if="inputs.affidavit" v-model="loanDetails.affidavit_fee" type="number" class="form-control form-input text-right mr-16" style="flex:4" id="affidavit">
-						<input @focus="inputs.affidavit=true" v-if="!inputs.affidavit" :value="formatToCurrency(loanDetails.affidavit_fee)" type="text" class="form-control form-input text-right mr-16" style="flex:4" id="affidavit">
-						<span class="flex-1" style="padding:7px 15px"></span>
-					</div>
-					<div class="d-flex flex-row mb-16">
-						<div style="flex:3;align-items:center" class="d-flex">
-							<input v-model="memoChecked" type="checkbox" class="" style="margin-right:10px;width:25px;height:25px;">
-							<label for="dueDate" class="form-label" style="margin-bottom:0;">Memo</label>
+			<div :hidden="isComputed">
+				<div class="d-flex flex-row" >
+					<div class="d-flex flex-column mr-45" style="flex:3;">
+						<div class="d-flex flex-row mb-16">
+							<label for="dueDate" class="form-label" style="flex:3">Filling Fee</label>
+							<input @blur="inputs.filingFee=false" v-if="inputs.filingFee" v-model="loanDetails.filing_fee" required type="number" class="form-control form-input text-right mr-16" style="flex:4" id="filingFee">
+							<input @focus="inputs.filingFee=true" v-if="!inputs.filingFee" :value="formatToCurrency(loanDetails.filing_fee)" required type="text" class="form-control form-input text-right mr-16" style="flex:4" id="filingFee">
+							<span class="flex-1" style="padding:7px 15px"></span>
 						</div>
-						<input @blur="inputs.memo=false" v-if="inputs.memo" v-model="loanDetails.memo" type="number" class="form-control form-input text-right mr-16" style="flex:4" id="memo">
-						<input disabled @focus="inputs.memo=true" v-if="!inputs.memo" :value="formatToCurrency(loanDetails.memo)" type="text" class="form-control form-input text-right mr-16" style="flex:4" id="memo">
-						<span class="flex-1" style="padding:7px 15px"></span>
+						<div class="d-flex flex-row mb-16">
+							<label for="dueDate" class="form-label" style="flex:3">Doc. Stamp</label>
+							<input @blur="inputs.docStamp=false" v-if="inputs.docStamp" v-model="loanDetails.document_stamp" requried type="number" class="form-control form-input text-right mr-16" style="flex:4" id="docStamp">
+							<input @focus="inputs.docStamp=true" v-if="!inputs.docStamp" :value="formatToCurrency(loanDetails.document_stamp)" requried type="text" class="form-control form-input text-right mr-16" style="flex:4" id="docStamp2">
+							<span class="flex-1" style="padding:7px 15px"></span>
+						</div>
+						<div class="d-flex flex-row mb-16">
+							<label for="dueDate" class="form-label" style="flex:3">Insurance</label>
+							<input @blur="inputs.insurance=false" v-if="inputs.insurance" v-model="loanDetails.insurance" required type="number" class="form-control form-input text-right mr-16" style="flex:4" id="insurance">
+							<input @focus="inputs.insurance=true" v-if="!inputs.insurance" :value="formatToCurrency(loanDetails.insurance)" required type="text" class="form-control form-input text-right mr-16" style="flex:4" id="insurance">
+							<span class="flex-1" style="padding:7px 15px"></span>
+						</div>
+						<div class="d-flex flex-row mb-16">
+							<label for="dueDate" class="form-label" style="flex:3">Notarial Fee</label>
+							<input @blur="inputs.notarialFee=false" v-if="inputs.notarialFee" v-model="loanDetails.notarial_fee" required type="number" class="form-control form-input text-right mr-16" style="flex:4" id="notrialFee">
+							<input @focus="inputs.notarialFee=true" v-if="!inputs.notarialFee" :value="formatToCurrency(loanDetails.notarial_fee)" required type="text" class="form-control form-input text-right mr-16" style="flex:4" id="notrialFee">
+							<span class="flex-1" style="padding:7px 15px"></span>
+						</div>
+						<div v-if="loanDetails.type=='Prepaid'" class="d-flex flex-row mb-16">
+							<label for="dueDate" class="form-label" style="flex:3">Prepaid Interest</label>
+							<input @blur="inputs.prepaidInterest=false" v-if="inputs.prepaidInterest" v-model="loanDetails.prepaid_interest" required type="number" class="form-control form-input text-right mr-16" style="flex:4" id="prepaidInterest">
+							<input @focus="inputs.prepaidInterest=true" v-if="!inputs.prepaidInterest" :value="formatToCurrency(loanDetails.prepaid_interest)" required type="text" class="form-control form-input text-right mr-16" style="flex:4" id="prepaidInterest">
+							<span class="flex-1" style="padding:7px 15px"></span>
+						</div>
+						<div class="d-flex flex-row mb-16">
+							<label for="dueDate" class="form-label" style="flex:3">Affidavit</label>
+							<input @blur="inputs.affidavit=false" v-if="inputs.affidavit" v-model="loanDetails.affidavit_fee" type="number" class="form-control form-input text-right mr-16" style="flex:4" id="affidavit">
+							<input @focus="inputs.affidavit=true" v-if="!inputs.affidavit" :value="formatToCurrency(loanDetails.affidavit_fee)" type="text" class="form-control form-input text-right mr-16" style="flex:4" id="affidavit">
+							<span class="flex-1" style="padding:7px 15px"></span>
+						</div>
+						<div class="d-flex flex-row mb-16">
+							<div style="flex:3;align-items:center" class="d-flex">
+								<input v-model="memoChecked" type="checkbox" class="" style="margin-right:10px;width:25px;height:25px;">
+								<label for="dueDate" class="form-label" style="margin-bottom:0;">Memo</label>
+							</div>
+							<input @blur="inputs.memo=false" v-if="inputs.memo" v-model="loanDetails.memo" type="number" class="form-control form-input text-right mr-16" style="flex:4" id="memo">
+							<input disabled @focus="inputs.memo=true" v-if="!inputs.memo" :value="formatToCurrency(loanDetails.memo)" type="text" class="form-control form-input text-right mr-16" style="flex:4" id="memo">
+							<span class="flex-1" style="padding:7px 15px"></span>
+						</div>
+					</div>
+					<div class="d-flex flex-column" style="flex:2;">
+						<div class="form-group mb-16">
+							<label for="dueDate" class="form-label">Total Deductions</label>
+							<input required :value="formatToCurrency(totalDeductions)" disabled type="text" class="form-control form-input text-right mr-16 text-green " id="dueDate">
+							<span class="flex-1" style="padding:7px 15px"></span>
+						</div>
+						<div class="form-group mb-45">
+							<label for="dueDate" class="form-label">Net Proceeds</label>
+							<input required :value="formatToCurrency(netProceeds)" disabled type="text" class="form-control form-input text-right mr-16 text-green " id="dueDate">
+							<span class="flex-1" style="padding:7px 15px"></span>
+						</div>
+						<div class="form-group">
+							<label for="dueDate" class="form-label">Release Type</label>
+							<select required v-model="loanDetails.release_type" name="" id="" class="form-control form-input pr-12 text-right mr-16 text-green">
+								<option v-for="(r,p) in releaseType" :key="p" :value="r">{{r}}</option>
+								<!-- <option value="Cheque Release">Cheque Release</option>
+								<option value="Restructure Release">Restructure Release</option> -->
+							</select>
+						</div>
+					</div>
+					<div class="flex-1"></div>
+				</div>
+				<div v-if="memoChecked" class="d-flex flex-column" style="padding-top:24px">
+					<div class="d-flex align-items-end">
+						<div class="d-flex flex-2 align-items-center">
+							<span class="mr-16 font-20 flex-2">Account # and Balance</span>
+							<select  v-if="memoRefNo.length" v-model="selectedLoanAccount" name="" id="" class="form-control form-input pr-12 mr-24 text-green flex-3">
+								<option v-for="(la, z) in loanaccounts" :key="z" :value="la.loan_account_id">{{la.account_num + ' - ' + formatToCurrency(la.remainingBalance.memo.balance)}}</option>
+							</select>
+							<select disabled v-if="!memoRefNo.length" v-model="selectedLoanAccount" name="" id="" class="form-control form-input pr-12 mr-24 text-green flex-3">
+								<option value=""></option>
+							</select>
+						</div>
+						<div class="d-flex flex-column flex-1">
+							<label for="dueDate" class="form-label">Memo Reference No.</label>
+							<input v-model="memoRefNo" type="text" class="form-control form-input">
+						</div>
+						<div class="flex-1"></div>
+					</div>
+					<div class="d-flex align-items-end mb-36">
+						<div class="d-flex flex-2 align-items-center">
+							<span class="mr-16 font-20 flex-2">Outstanding Principal</span>
+							<input type="text" :value="formatToCurrency(loanaccount.remainingBalance.principal.balance)" class="form-control form-input flex-3 mr-24" disabled>
+						</div>
+						<div class="d-flex flex-column flex-1">
+							<label for="dueDate" class="form-label">Rebate Amount</label>
+							<input v-model="loanaccount.remainingBalance.rebates.balance" v-if="rebatesRefNo.length" type="number" class="form-control form-input">
+							<input v-if="!rebatesRefNo.length" type="number" :value="formatToCurrency(baseAmount)" class="form-control form-input" disabled>
+						</div>
+						<div class="flex-1"></div>
+					</div>
+					<div class="d-flex align-items-end">
+						<div class="d-flex flex-2 align-items-center">
+							<span class="mr-16 font-20 flex-2">Outstanding Interest</span>
+							<input :value="formatToCurrency((loanaccount.remainingBalance.interest.balance - loanaccount.remainingBalance.rebates.balance) > 0? loanaccount.remainingBalance.interest.balance - loanaccount.remainingBalance.rebates.balance:0)" type="text" class="form-control form-input flex-3 mr-24" disabled>
+						</div>
+						<div class="d-flex flex-column flex-1">
+							<span class="mr-16 font-20 flex-2">Rebate Approval No.</span>
+							<input v-model="rebatesRefNo" type="text" class="form-control form-input flex-3 mr-24">
+						</div>
+						<div class="flex-1"></div>
 					</div>
 				</div>
-				<div class="d-flex flex-column" style="flex:2;">
-					<div class="form-group mb-16">
-						<label for="dueDate" class="form-label">Total Deductions</label>
-						<input required :value="formatToCurrency(totalDeductions)" disabled type="text" class="form-control form-input text-right mr-16 text-green " id="dueDate">
-						<span class="flex-1" style="padding:7px 15px"></span>
-					</div>
-					<div class="form-group mb-45">
-						<label for="dueDate" class="form-label">Net Proceeds</label>
-						<input required :value="formatToCurrency(netProceeds)" disabled type="text" class="form-control form-input text-right mr-16 text-green " id="dueDate">
-						<span class="flex-1" style="padding:7px 15px"></span>
-					</div>
-					<div class="form-group">
-						<label for="dueDate" class="form-label">Release Type</label>
-						<select required v-model="loanDetails.release_type" name="" id="" class="form-control form-input pr-12 text-right mr-16 text-green">
-							<option v-for="(r,p) in releaseType" :key="p" :value="r">{{r}}</option>
-							<!-- <option value="Cheque Release">Cheque Release</option>
-							<option value="Restructure Release">Restructure Release</option> -->
-						</select>
-					</div>
-				</div>
-				<div class="flex-1"></div>
 			</div>
-			<div v-if="memoChecked" class="d-flex flex-column" style="padding-top:24px">
-				<div class="d-flex align-items-end">
-					<div class="d-flex flex-2 align-items-center">
-						<span class="mr-16 font-20 flex-2">Account # and Balance</span>
-						<select  v-if="memoRefNo.length" v-model="selectedLoanAccount" name="" id="" class="form-control form-input pr-12 mr-24 text-green flex-3">
-							<option v-for="(la, z) in loanaccounts" :key="z" :value="la.loan_account_id">{{la.account_num + ' - ' + formatToCurrency(la.remainingBalance.memo.balance)}}</option>
-						</select>
-						<select disabled v-if="!memoRefNo.length" v-model="selectedLoanAccount" name="" id="" class="form-control form-input pr-12 mr-24 text-green flex-3">
-							<option value=""></option>
-						</select>
-					</div>
-					<div class="d-flex flex-column flex-1">
-						<label for="dueDate" class="form-label">Memo Reference No.</label>
-						<input v-model="memoRefNo" type="text" class="form-control form-input">
-					</div>
-					<div class="flex-1"></div>
-				</div>
-				<div class="d-flex align-items-end mb-36">
-					<div class="d-flex flex-2 align-items-center">
-						<span class="mr-16 font-20 flex-2">Outstanding Principal</span>
-						<input type="text" :value="formatToCurrency(loanaccount.remainingBalance.principal.balance)" class="form-control form-input flex-3 mr-24" disabled>
-					</div>
-					<div class="d-flex flex-column flex-1">
-						<label for="dueDate" class="form-label">Rebate Amount</label>
-						<input v-model="loanaccount.remainingBalance.rebates.balance" v-if="rebatesRefNo.length" type="number" class="form-control form-input">
-						<input v-if="!rebatesRefNo.length" type="number" :value="formatToCurrency(baseAmount)" class="form-control form-input" disabled>
-					</div>
-					<div class="flex-1"></div>
-				</div>
-				<div class="d-flex align-items-end">
-					<div class="d-flex flex-2 align-items-center">
-						<span class="mr-16 font-20 flex-2">Outstanding Interest</span>
-						<input :value="formatToCurrency((loanaccount.remainingBalance.interest.balance - loanaccount.remainingBalance.rebates.balance) > 0? loanaccount.remainingBalance.interest.balance - loanaccount.remainingBalance.rebates.balance:0)" type="text" class="form-control form-input flex-3 mr-24" disabled>
-					</div>
-					<div class="d-flex flex-column flex-1">
-						<span class="mr-16 font-20 flex-2">Rebate Approval No.</span>
-						<input v-model="rebatesRefNo" type="text" class="form-control form-input flex-3 mr-24">
-					</div>
-					<div class="flex-1"></div>
-				</div>
+			<div :hidden="!isComputed">
+				<label>Press compute to show Deductions</label>
+				
 			</div>
 			<!-- <div class="d-flex align-items-center" v-if="memoChecked">
 				<span class="mr-16 font-20" style="margin-top:10px">Account # and Balance</span>
@@ -423,6 +429,7 @@ export default {
 			baseAmount:0.00,
 			rebatesRefNo:'',
 			memoRefNo:'',
+			deductionComputation:0,
 		}
 	},
 	methods:{
@@ -601,6 +608,7 @@ export default {
 		},
 		compute:function(){
 			this.computeDeduction();
+			this.deductionComputation += 1;
 		},
 		pay:function(accountId){
 			if(this.loanaccount.loan_account_id){
@@ -745,6 +753,9 @@ export default {
 		},
 	},
 	computed: {
+		isComputed:function(){
+			return this.deductionComputation > 0 ? false : true;
+		},
 		releaseType:function(){
 			return JSON.parse(this.releasetype);
 		},
