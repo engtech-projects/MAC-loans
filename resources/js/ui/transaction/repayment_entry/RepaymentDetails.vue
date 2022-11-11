@@ -52,6 +52,7 @@
 			</div>
 			<div class="sep"></div>
 		</section>
+		
 		<section v-if="loanAccount.loan_account_id" class="mb-24" style="flex:21;padding-left:16px;">
 			<div class="d-flex flex-row justify-content-between align-items-center section-title pb-12 mb-24">
 				<span class="section-title section-subtitle b-none p-0">Loan Details</span>

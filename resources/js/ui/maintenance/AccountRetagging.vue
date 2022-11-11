@@ -23,7 +23,7 @@
 						<th>Loan Status</th>
 					</thead>
 					<tbody>
-						<tr>
+						<tr data-toggle="modal" data-target="#retagDetailsModal">
 							<td><input type="checkbox" class="form-control form-box"></td>
 							<td>183</td>
 							<td><a href="#">John Doe</a></td>
@@ -124,6 +124,18 @@
 						</tr>
 					</tbody>
 				</table>
+				<div class="d-flex justify-content-between align-items-center">
+					<div class="d-flex flex-column">
+						<span style="margin-bottom:12px" class="text-lg">Retagging Field</span>
+						<select name="" id="" class="form-control" style="min-width:250px;">
+							<option value="">Account Officer</option>
+							<option value="">Center / Office</option>
+						</select>
+					</div>
+					<button class="btn btn-success btn-wide" data-toggle="modal" data-target="#retagModal">Retagg</button>
+				</div>
+			
+				
 			</div>
 			<!-- <div style="flex:20">
 				<section class="mb-24" style="flex:21;padding-left:16px;">
@@ -395,7 +407,7 @@
 
 		<!-- MODALS -->
 		<div class="modal" id="retagModal" tabindex="-1" role="dialog">
-			<div class="modal-dialog modal-md" role="document">
+			<div class="modal-dialog modal-lg" role="document">
 			<div class="modal-content">
 				<div class="modal-body p-24">
 					<div class="d-flex flex-column">
@@ -438,6 +450,217 @@
 			</div>
 			</div>
 		</div>
+
+		<div class="modal" id="retagDetailsModal" tabindex="-1" role="dialog">
+			<div class="modal-dialog modal-xl" role="document">
+			<div class="modal-content">
+				<div class="modal-body p-24">
+					<div class="d-flex flex-column">
+						<section class="mb-24" style="flex:21;padding-left:16px;">
+							<span class="section-title mb-24">Details</span>
+							<div class="d-flex mb-12">
+								<div class="d-flex flex-column mr-16" style="flex:20;">
+									<div class="d-flex flex-row">
+										<div class="borrower-number d-flex flex-column" style="flex: 5">
+											<span>Borrower's Number</span>
+											<span class="text-center">{{borrower.borrower_num}}</span>
+										</div>
+										<div style="flex:4"></div>
+										<div class="form-group mb-10" style="flex: 5">
+											<!-- <label for="transactionDate" class="form-label">Transaction Date</label>
+											<input type="date" class="form-control form-input text-right" id="transactionDate"> -->
+										</div>
+									</div>
+									<div class="form-group mb-5" style="flex: 5">
+										<label for="client" class="form-label mb-3">Client</label>
+										<input disabled :value="borrower.borrower_id?borrower.firstname + ' ' + borrower.lastname + ' ' + borrower.middlename.charAt(0) + '.':''" type="text" class="form-control form-input " id="client">
+									</div>
+									<div class="form-group mb-10" style="flex: 5">
+										<label for="address" class="form-label mb-3">Address</label>
+										<input disabled :value="borrower.address" type="text" class="form-control form-input " id="address">
+									</div>
+								</div>
+								<div class="upload-photo d-flex flex-column" style="flex:4;padding-top:36px;">
+									<img :src="borrowerPhoto" alt="" style="max-width:230px;">
+								</div>
+							</div>
+							<div class="sep mb-24"></div>
+						</section>
+
+						<section  class="mb-24" style="flex:21;padding-left:16px;">
+							<div class="d-flex flex-row justify-content-between align-items-center section-title pb-12 mb-24">
+								<span class="section-title section-subtitle b-none p-0">Loan Details</span>
+							</div>
+							<div class="d-flex flex-row">
+								<div class="d-flex flex-column flex-1 mr-45">
+									<div class="d-flex flex-row mb-12">
+										<div class="d-flex flex-row flex-1 justify-content-between pr-24">
+											<span class="">Account Number</span>
+											<span>:</span>
+										</div>
+										<span class="flex-2 text-primary-dark">{{loanAccount.account_num}}</span>
+									</div>
+
+									<div class="d-flex flex-row mb-12">
+										<div class="d-flex flex-row flex-1 justify-content-between pr-24">
+											<span class="">Co Borrower</span>
+											<span>:</span>
+										</div>
+										<span class="flex-2 text-primary-dark">{{loanAccount.co_borrower_name}}</span>
+									</div>
+
+									<div class="d-flex flex-row mb-12">
+										<div class="d-flex flex-row flex-1 justify-content-between pr-24">
+											<span class="">Address</span>
+											<span>:</span>
+										</div>
+										<span class="flex-2 text-primary-dark">{{loanAccount.co_borrower_address}}</span>
+									</div>
+
+									<div class="d-flex flex-row mb-12">
+										<div class="d-flex flex-row flex-1 justify-content-between pr-24">
+											<span class="">Co Maker</span>
+											<span>:</span>
+										</div>
+										<span class="flex-2 text-primary-dark">{{loanAccount.co_maker_name}}</span>
+									</div>
+
+									<div class="d-flex flex-row mb-12">
+										<div class="d-flex flex-row flex-1 justify-content-between pr-24">
+											<span class="">Address</span>
+											<span>:</span>
+										</div>
+										<span class="flex-2 text-primary-dark">{{loanAccount.co_maker_address}}</span>
+									</div>
+
+									<div class="d-flex flex-row mb-12">
+										<div class="d-flex flex-row flex-1 justify-content-between pr-24">
+											<span class="">Contact No.</span>
+											<span>:</span>
+										</div>
+										<span class="flex-2 text-primary-dark">{{borrower.contact_number}}</span>
+									</div>
+
+									<div class="d-flex flex-row mb-12">
+										<div class="d-flex flex-row flex-1 justify-content-between pr-24">
+											<span class="">Date Release</span>
+											<span>:</span>
+										</div>
+										<span class="flex-2 text-primary-dark">{{loanAccount.date_release}}</span>
+									</div>
+
+									<div class="d-flex flex-row mb-12">
+										<div class="d-flex flex-row flex-1 justify-content-between pr-24">
+											<span class="">Product Name</span>
+											<span>:</span>
+										</div>
+										<span class="flex-2 text-primary-dark">{{loanAccount.product.product_name}}</span>
+									</div>
+
+									<div class="d-flex flex-row mb-12">
+										<div class="d-flex flex-row flex-1 justify-content-between pr-24">
+											<span class="">Missed Payments</span>
+											<span>:</span>
+										</div>
+										<span class="flex-2 text-primary-dark">0</span>
+									</div>
+
+									<div class="d-flex flex-row mb-12">
+										<div class="d-flex flex-row flex-1 justify-content-between pr-24">
+											<span class="">Type</span>
+											<span>:</span>
+										</div>
+										<span class="flex-2 text-primary-dark">{{loanAccount.type}}</span>
+									</div>
+
+									<div class="d-flex flex-row mb-12">
+										<div class="d-flex flex-row flex-1 justify-content-between pr-24">
+											<span class="">Cycle</span>
+											<span>:</span>
+										</div>
+										<span class="flex-2 text-primary-dark">{{loanAccount.cycle_no}}</span>
+									</div>
+								</div>
+								<div class="d-flex flex-column flex-1">
+									<div class="d-flex flex-row mb-12">
+										<div class="d-flex flex-row flex-1 justify-content-between pr-24">
+											<span class="">Last Transaction</span>
+											<span>:</span>
+										</div>
+										<span class="flex-2 text-primary-dark"></span>
+									</div>
+									<div class="d-flex flex-row mb-12">
+										<div class="d-flex flex-row flex-1 justify-content-between pr-24">
+											<span class="">Loan Amount</span>
+											<span>:</span>
+										</div>
+										<span class="flex-2 text-primary-dark">{{loanAccount.loan_amount}}</span>
+									</div>
+									<div class="d-flex flex-row mb-12">
+										<div class="d-flex flex-row flex-1 justify-content-between pr-24">
+											<span class="">Interest</span>
+											<span>:</span>
+										</div>
+										<span class="flex-2 text-primary-dark">{{loanAccount.interest_amount}}</span>
+									</div>
+									<div class="d-flex flex-row mb-12">
+										<div class="d-flex flex-row flex-1 justify-content-between pr-24">
+											<span class="">Due Date</span>
+											<span>:</span>
+										</div>
+										<span class="flex-2 text-primary-dark">{{loanAccount.due_date}}</span>
+									</div>
+									<div class="d-flex flex-row mb-12">
+										<div class="d-flex flex-row flex-1 justify-content-between pr-24">
+											<span class="">{{loanAccount.payment_mode}}</span>
+											<span>:</span>
+										</div>
+										<span class="flex-2 text-primary-dark">{{formatToCurrency(Math.ceil(loanAccount.interest_amount/loanAccount.no_of_installment) + Math.ceil(loanAccount.loan_amount/loanAccount.no_of_installment))}}</span>
+									</div>
+									<!-- <div class="d-flex flex-row mb-12">
+										<div class="d-flex flex-row flex-1 justify-content-between pr-24">
+											<span class="">Int. Rate</span>
+											<span>:</span>
+										</div>
+										<span class="flex-2 text-primary-dark">{{loanAccount.interest_rate}}%</span>
+									</div> -->
+									<div class="d-flex flex-row mb-12">
+										<div class="d-flex flex-row flex-1 justify-content-between pr-24">
+											<span class="">Mode</span>
+											<span>:</span>
+										</div>
+										<span class="flex-2 text-primary-dark">{{loanAccount.payment_mode}}</span>
+									</div>
+									<div class="d-flex flex-row mb-12">
+										<div class="d-flex flex-row flex-1 justify-content-between pr-24">
+											<span class="">Rate</span>
+											<span>:</span>
+										</div>
+										<span class="flex-2 text-primary-dark">{{loanAccount.interest_rate}}%</span>
+									</div>
+									<div class="d-flex flex-row mb-12">
+										<div class="d-flex flex-row flex-1 justify-content-between pr-24">
+											<span class="">Term</span>
+											<span>:</span>
+										</div>
+										<span class="flex-2 text-primary-dark">{{loanAccount.terms }} Days</span>
+									</div>
+									<div class="d-flex flex-row mb-12">
+										<div class="d-flex flex-row flex-1 justify-content-between pr-24">
+											<span class="">Status</span>
+											<span>:</span>
+										</div>
+										<span class="flex-2"></span>
+
+									</div>
+								</div>
+							</div>
+						</section>
+					</div>
+				</div>
+			</div>
+			</div>
+		</div>
 	</div>
 </template>
 
@@ -445,8 +668,89 @@
 export default {
 	data(){
 		return {
-			baseUrl: window.location.origin
+			borrower:{
+				borrower_num:'############',
+				photo:null,
+			},
+			loanAccount:{
+				loan_account_id:null,
+				cycle_no : 1,
+				ao_id : '',
+				product_id : '',
+				center_id : '',
+				type : '',
+				payment_mode : '',
+				terms : '',
+				loan_amount : '',
+				no_of_installment : '',
+				day_schedule : '',
+				borrower_num : '',
+				co_borrower_name : '',
+				co_borrower_address : '',
+				co_borrower_id_type : '',
+				co_borrower_id_number : '',
+				co_borrower_id_date_issued : '',
+				co_maker_name : '',
+				co_maker_address : '',
+				co_maker_id_type : '',
+				co_maker_id_number : '',
+				co_maker_id_date_issued : '',
+				document_stamp : '',
+				filing_fee : '',
+				insurance : '',
+				notarial_fee : '100.00',
+				prepaid_interest : '',
+				affidavit_fee : '',
+				memo : '',
+				total_deduction : '',
+				net_proceeds : '',
+				release_type : '',
+				interest_rate:'',
+				interest_amount:'',
+				product:{
+					product_name:'',
+				},
+				documents: {
+					date_release: '',
+					description: '',
+					bank: '',
+					account_no: '',
+					card_no:'',
+					promissory_number: '',
+				},
+				outstandingBalance:{
+					principal_balance:'',
+					interest_balance:'',
+					surcharge:'',
+				},
+				current_amortization:{
+					principal:'',
+					interest:'',
+					short_interest:'',
+					advance_interest:'',
+					short_principal:'',
+					advance_principal:'',
+					outstandingBalance:{
+						principal_balance:'',
+						interest_balance:'',
+						surcharge:'',
+					},
+					lastPayment:{
+						principal:'',
+						interest:'',
+						short_interest:'',
+						advance_interest:'',
+						short_principal:'',
+						advance_principal:'',
+					}
+				}
+			}
 		}
-	}
+	},
+	computed:{
+		borrowerPhoto:function(){
+			return this.borrower.photo? this.borrower.photo : this.baseURL()+'/img/user.png';
+		}
+	},
 }
 </script>
