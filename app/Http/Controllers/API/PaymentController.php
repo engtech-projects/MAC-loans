@@ -154,6 +154,15 @@ class PaymentController extends BaseController
         $payment->save();
 
         if( $payment->status == 'cancelled' ){
+
+            if( $payment->amortization_id ){
+
+                  $amortization = Amortization::find($payment->amortization_id);
+                  $amortization->status = 'open';
+                  $amortization->save();
+
+            }
+
             return $this->sendResponse(new PaymentResource($payment), 'Payment Cancelled.');
         }
         
