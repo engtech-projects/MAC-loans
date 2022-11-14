@@ -41,7 +41,7 @@
                                     class="form-control form-box"
                                 />
                             </td>
-                            <td>183</td>
+                            <td>{{ account.account_num }}</td>
                             <td>
                                 {{
                                     account.borrower.firstname +
@@ -653,7 +653,8 @@
                                             <span
                                                 class="flex-2 text-primary-dark"
                                                 >{{
-                                                    borrower.contact_number
+                                                    loanAccount.borrower
+                                                        .contact_number
                                                 }}</span
                                             >
                                         </div>
@@ -670,7 +671,7 @@
                                             <span
                                                 class="flex-2 text-primary-dark"
                                                 >{{
-                                                    loanAccount.date_release
+                                                    dateToMDY(new Date(loanAccount.date_release))
                                                 }}</span
                                             >
                                         </div>
@@ -748,7 +749,8 @@
                                             </div>
                                             <span
                                                 class="flex-2 text-primary-dark"
-                                            ></span>
+                                                >{{ lastTransaction }}</span
+                                            >
                                         </div>
                                         <div class="d-flex flex-row mb-12">
                                             <div
@@ -762,7 +764,7 @@
                                             <span
                                                 class="flex-2 text-primary-dark"
                                                 >{{
-                                                    loanAccount.loan_amount
+                                                    formatToCurrency(loanAccount.loan_amount)
                                                 }}</span
                                             >
                                         </div>
@@ -776,7 +778,7 @@
                                             <span
                                                 class="flex-2 text-primary-dark"
                                                 >{{
-                                                    loanAccount.interest_amount
+                                                    formatToCurrency(loanAccount.interest_amount)
                                                 }}</span
                                             >
                                         </div>
@@ -790,7 +792,7 @@
                                             <span
                                                 class="flex-2 text-primary-dark"
                                                 >{{
-                                                    loanAccount.due_date
+                                                    dateToMDY(new Date(loanAccount.due_date))
                                                 }}</span
                                             >
                                         </div>
@@ -876,7 +878,7 @@
                                                 <span class="">Status</span>
                                                 <span>:</span>
                                             </div>
-                                            <span class="flex-2"></span>
+                                            <span class="flex-2" :class="loanAccountStatusColor">{{loanAccount.loan_status}}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -891,6 +893,7 @@
 
 <script>
 export default {
+    props: ["pbranch", "token"],
     data() {
         return {
             filter: "",
@@ -980,6 +983,38 @@ export default {
         };
     },
     methods: {
+        async fetchBorrowers() {
+            await axios
+                .get(this.baseURL() + "api/borrower/list/" + this.pbranch, {
+                    headers: {
+                        Authorization: "Bearer " + this.token,
+                        "Content-Type": "application/json",
+                        Accept: "application/json",
+                    },
+                })
+                .then(
+                    function (response) {
+                        this.setAccounts(response.data.data);
+                    }.bind(this)
+                )
+                .catch(
+                    function (error) {
+                        console.log(error);
+                    }.bind(this)
+                );
+        },
+        setAccounts: function (borrowers) {
+            var accounts = [];
+            borrowers.forEach((b) => {
+                if (b.loan_accounts) {
+                    b.loan_accounts.forEach((la) => {
+                        la.checked = false;
+                        accounts.push(la);
+                    });
+                }
+            });
+            this.loanAccounts = accounts;
+        },
         async fetchAccounts() {
             await axios
                 .get(
@@ -1005,14 +1040,30 @@ export default {
         },
     },
     computed: {
+		loanAccountStatusColor:function(){
+			if(this.loanAccount.loan_status == "Past Due"){
+				return "text-danger";
+			}else if(this.loanAccount.loan_status == "Delinquent"){
+				return "text-danger";
+			}
+			return "text-ocean";
+		},
         borrowerPhoto: function () {
             return this.loanAccount.borrower.photo
                 ? this.loanAccount.borrower.photo
                 : this.baseURL() + "/img/user.png";
         },
+        lastTransaction: function () {
+            return this.loanAccount.payments && this.loanAccount.payments.length
+                ? this.dateToMDY(
+                      new Date(this.loanAccount.payments[0].created_at)
+                  )
+                : "None";
+        },
         filteredAccounts: function () {
             return this.loanAccounts.filter(
                 (data) =>
+                    data.account_num.includes(this.filter) ||
                     data.borrower.firstname
                         .toLowerCase()
                         .includes(this.filter.toLowerCase()) ||
@@ -1024,18 +1075,28 @@ export default {
                         .includes(this.filter.toLowerCase()) ||
                     (data.borrower.lastname + " " + data.borrower.firstname)
                         .toLowerCase()
-                        .includes(this.filter.toLowerCase()) || 
-					data.product.product_name
+                        .includes(this.filter.toLowerCase()) ||
+                    data.product.product_name
                         .toLowerCase()
                         .includes(this.filter.toLowerCase()) ||
-					data.loan_status
+                    data.loan_status
                         .toLowerCase()
-                        .includes(this.filter.toLowerCase()) 
+                        .includes(this.filter.toLowerCase()) ||
+                    data.account_officer.name
+                        .toLowerCase()
+                        .includes(this.filter.toLowerCase()) ||
+                    (data.center ? data.center.center : "")
+                        .toLowerCase()
+                        .includes(this.filter.toLowerCase()) ||
+                    data.date_release
+                        .replaceAll("-", "/")
+                        .includes(this.filter.toLowerCase())
             );
         },
     },
     mounted() {
-        this.fetchAccounts();
+        this.fetchBorrowers();
+        // this.fetchAccounts();
     },
 };
 </script>
