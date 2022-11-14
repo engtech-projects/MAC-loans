@@ -123,7 +123,6 @@ export default {
 			})
 			.then(function (response) {
 				this.branches = response.data.data;
-				console.log(response.data);
 			}.bind(this))
 			.catch(function (error) {
 				console.log(error);

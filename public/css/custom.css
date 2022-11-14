@@ -25,6 +25,10 @@
 	cursor: pointer;
 }
 
+.hover-underline:hover {
+	text-decoration: underline;
+}
+
 .client-item.active {
 	background-color: #78e08f;
 }

@@ -871,6 +871,36 @@
                                                 Days</span
                                             >
                                         </div>
+										 <div class="d-flex flex-row mb-12">
+                                            <div
+                                                class="d-flex flex-row flex-1 justify-content-between pr-24"
+                                            >
+                                                <span class="">Prin. Balance</span>
+                                                <span>:</span>
+                                            </div>
+                                            <span
+                                                class="flex-2 text-primary-dark"
+                                                >{{
+                                                    formatToCurrency(loanAccount.remainingBalance.principal.balance)
+                                                }}
+                                            </span
+                                            >
+                                        </div>
+										 <div class="d-flex flex-row mb-12">
+                                            <div
+                                                class="d-flex flex-row flex-1 justify-content-between pr-24"
+                                            >
+                                                <span class="">Int. Balance</span>
+                                                <span>:</span>
+                                            </div>
+                                            <span
+                                                class="flex-2 text-primary-dark"
+                                                >{{
+                                                    formatToCurrency(loanAccount.remainingBalance.interest.balance)
+                                                }}
+                                            </span
+                                            >
+                                        </div>
                                         <div class="d-flex flex-row mb-12">
                                             <div
                                                 class="d-flex flex-row flex-1 justify-content-between pr-24"
@@ -937,6 +967,14 @@ export default {
                 release_type: "",
                 interest_rate: "",
                 interest_amount: "",
+				remainingBalance:{
+					principal:{
+						balance:0
+					},
+					interest:{
+						balance:0
+					}
+				},
                 borrower: {
                     borrower_id: null,
                     borrower_num: "############",
@@ -994,7 +1032,7 @@ export default {
                 })
                 .then(
                     function (response) {
-                        this.setAccounts(response.data.data);
+                        this.loanAccounts = this.setAccounts(response.data.data);
                     }.bind(this)
                 )
                 .catch(
@@ -1013,7 +1051,7 @@ export default {
                     });
                 }
             });
-            this.loanAccounts = accounts;
+            return accounts;
         },
         async fetchAccounts() {
             await axios

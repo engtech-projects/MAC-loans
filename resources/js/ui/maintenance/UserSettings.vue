@@ -6,7 +6,7 @@
 			<h1 class="m-0 font-35">User Settings</h1>
 		</div><!-- /.col -->
 		<div class="search-bar">
-			<input type="text" class="form-control" id="searchBar" placeholder="Search">
+			<input v-model="filter" type="text" class="form-control" id="searchBar" placeholder="Search">
 			<div><i class="fa fa-search"></i></div>
 		</div>
 		<table class="table table-stripped table-hover" id="clientsList">
@@ -17,18 +17,20 @@
 				<th>User Name</th>
 				<th>Password</th>
 				<th></th>
+				<th></th>
 			</thead>
 			<tbody>
-				<tr v-for="account in accounts" :key="account.id">
-					<td><a href="#">{{account.firstname + ' ' + account.lastname}}</a></td>
-					<td><span v-for="branch in account.branch" :key="branch.branch_id">{{branch.branch_name}}</span></td>
-					<td>{{account.username}}</td>
+				<tr v-for="acc in filteredAccounts" :key="acc.id" :class="account.id==acc.id?'active-account':''">
+					<td><a href="#">{{acc.firstname + ' ' + acc.lastname}}</a></td>
+					<td><span v-for="branch in acc.branch" :key="branch.branch_id">{{branch.branch_name + ' '}}</span></td>
+					<td>{{acc.username}}</td>
 					<td>**********************************</td>
 					<td><a href="#" @click.prevent="" class="text-green text-sm">Active</a></td>
+					<td><span @click="assignAccount(acc)" class="text-green c-pointer text-sm hover-underline"><i class="fa fa-edit"></i> Edit</span></td>
 				</tr>
 			</tbody>
 		</table>
-		<form @submit.prevent="save()">
+		<form @submit.prevent="submit()">
 		<section class="d-flex flex-row">
 			<div class="flex-1 mr-24">
 				<span class="text-20 py-7 mid-light-bb text-block text-primary-dark text-bold mb-12">Inputs</span>
@@ -55,7 +57,7 @@
 								<select v-for="ab in account.branch" :key="ab.branch_id" name="" id="" class="form-control form-input mb-5">
 									<option value="ab.branch_id">{{ab.branch_name}}</option>
 								</select>
-								<a href="#" class="text-green-bright text-bold text-right link-underline">Add Access Branch</a>
+								<a href="#" @click.prevent data-toggle="modal" data-target="#branchModal" class="text-green-bright text-bold text-right link-underline">Add Access Branch</a>
 							</div>
 							<a @click.prevent="addBranch()" href="#" class="btn btn-primary-dark" style="line-height:2;"><i class="fa fa-plus"></i></a>
 						</div>
@@ -77,7 +79,9 @@
 					<div class="d-flex justify-content-between mb-72">
 						<a @click.prevent="account.status=='active'?account.status='inactive':account.status='active'" href="#" class="btn btn-lg btn-yellow-light min-w-150">Activate / Deactivate</a>
 						<!-- <a href="#" ></a> -->
-						<button class="btn btn-lg btn-success min-w-150">Save</button>
+						<button @click="resetAccount()" v-if="account.id" class="btn btn-lg btn-default">Clear</button>
+						<button v-if="account.id" class="btn btn-lg btn-success min-w-150">Update</button>
+						<button v-else class="btn btn-lg btn-success min-w-150">Save</button>
 					</div>
 				</div>
 			</div>
@@ -112,7 +116,7 @@
 						<div class="px-45">
 							<div v-for="cinfo in permissionList('Transaction')" :key="cinfo.access_id" class="d-flex flex-row justify-content-between light-bb align-items-center">
 								<span class="flex-1 py-10">{{cinfo.label}}</span>
-								<input @change="togglePermission(cinfo.access_id, $event)" type="checkbox">
+								<input @change="togglePermission(cinfo.access_id, $event)" type="checkbox" :checked="isChecked(cinfo.access_id)">
 							</div>
 						</div>
 					</div>
@@ -124,7 +128,7 @@
 						<div class="px-45">
 							<div v-for="cinfo in permissionList('Maintenance')" :key="cinfo.access_id" class="d-flex flex-row justify-content-between light-bb align-items-center">
 								<span class="flex-1 py-10">{{cinfo.label}}</span>
-								<input @change="togglePermission(cinfo.access_id, $event)" type="checkbox">
+								<input @change="togglePermission(cinfo.access_id, $event)" type="checkbox" :checked="isChecked(cinfo.access_id)">
 							</div>
 						</div>
 					</div>
@@ -136,7 +140,7 @@
 						<div class="px-45">
 							<div v-for="cinfo in permissionList('Reports')" :key="cinfo.access_id" class="d-flex flex-row justify-content-between light-bb align-items-center">
 								<span class="flex-1 py-10">{{cinfo.label}}</span>
-								<input @change="togglePermission(cinfo.access_id, $event)" type="checkbox">
+								<input @change="togglePermission(cinfo.access_id, $event)" type="checkbox" :checked="isChecked(cinfo.access_id)">
 							</div>
 						</div>
 					</div>
@@ -148,7 +152,7 @@
 						<div class="px-45">
 							<div v-for="cinfo in permissionList('End of Day')" :key="cinfo.access_id" class="d-flex flex-row justify-content-between light-bb align-items-center">
 								<span class="flex-1 py-10">{{cinfo.label}}</span>
-								<input @change="togglePermission(cinfo.access_id, $event)" type="checkbox">
+								<input @change="togglePermission(cinfo.access_id, $event)" type="checkbox" :checked="isChecked(cinfo.access_id)">
 							</div>
 						</div>
 					</div>
@@ -164,6 +168,7 @@
 			</div>
 		</section>
 		</form>
+		<branch :token="token" @branchUpdated="fetchBranches"></branch>
 	  </div>
 </template>
 
@@ -172,8 +177,10 @@ export default {
 	props:['token'],
 	data(){
 		return {
+			filter:'',
 			accounts:[],
 			account:{
+				id:null,
 				username:'',
 				password:'',
 				firstname:'',
@@ -192,6 +199,14 @@ export default {
 		}
 	},
 	methods:{
+		assignAccount:function(acc){
+			let permissions = [];
+			this.account = acc;
+			this.account.accessibility.forEach(function(a){
+				permissions.push(a.access_id);
+			})
+			this.account.accessibility = permissions;
+		},
 		fetchAccounts: function(){
 			axios.get(this.baseURL() + 'api/user/', {
 				headers: {
@@ -236,6 +251,7 @@ export default {
 		},
 		resetAccount:function(){
 			this.account = {
+				id:null,
 				username:'',
 				password:'',
 				firstname:'',
@@ -266,6 +282,13 @@ export default {
 				}.bind(this));
 			}
 		},
+		submit:function(){
+			if(this.account.id){
+				this.update();
+			}else{
+				this.save();
+			}
+		},
 		async save(){
 			this.account.permissions = this.account.accessibility;
 			await 	axios.post(this.baseURL() + 'api/user', this.account, {
@@ -285,7 +308,8 @@ export default {
 					}.bind(this));
 		},
 		async update(){
-			await 	axios.post(this.baseURL() + 'api/user', this.account, {
+			this.account.accessibility = this.convertPermissions();
+			await 	axios.put(this.baseURL() + 'api/user/' + this.account.id, this.account, {
 						headers: {
 							'Authorization': 'Bearer ' + this.token,
 							'Content-Type': 'application/json',
@@ -300,6 +324,19 @@ export default {
 					.catch(function (error) {
 						console.log(error);
 					}.bind(this));
+		},
+		convertPermissions:function(){
+			var access = [];
+			for(let i in this.permissions){
+				this.permissions[i].forEach(p => {
+					this.account.accessibility.forEach((a)=>{
+						if(p.access_id == a){
+							access.push(p);
+						}
+					})
+				})
+			}
+			return access;
 		},
 		notify:function(title, text, type){
 			this.$notify({
@@ -323,16 +360,23 @@ export default {
 		},
 		isChecked:function(permission){
 			var checked = false;
-			this.account.accessibility.map(function(data){
+			this.account.accessibility.forEach(function(data){
 				if(data == permission){
 					checked = true;
 				}
 			}.bind(this));
+			
 			return checked;
 		}
 	},
 	computed:{
-		
+		filteredAccounts:function(){
+			return this.accounts.filter(a => a.firstname.toLowerCase().includes(this.filter.toLowerCase()) || 
+										a.lastname.toLowerCase().includes(this.filter.toLowerCase()) ||
+										(a.firstname + ' ' + a.lastname).toLowerCase().includes(this.filter.toLowerCase()) ||
+										(a.lastname + ' ' + a.firstname).toLowerCase().includes(this.filter.toLowerCase()) ||
+										a.username.toLowerCase().includes(this.filter.toLowerCase()))
+		}
 	},
 	mounted(){
 		this.fetchAccounts();
@@ -342,3 +386,9 @@ export default {
 
 }
 </script>
+
+<style scoped>
+	.active-account {
+		background-color: #78e08f !important;
+	}
+</style>
