@@ -211,7 +211,7 @@
 					<div class="d-flex align-items-end">
 						<div class="d-flex flex-2 align-items-center">
 							<span class="mr-16 font-20 flex-2">Outstanding Interest</span>
-							<input :value="formatToCurrency((loanaccount.remainingBalance.interest.balance - loanaccount.remainingBalance.rebates.credit) > 0? loanaccount.remainingBalance.interest.balance - loanaccount.remainingBalance.rebates.credit:0)" type="text" class="form-control form-input flex-3 mr-24" disabled>
+							<input :value="formatToCurrency((loanaccount.remainingBalance.interest.balance - loanaccount.remainingBalance.rebates.credit - this.loanaccount.remainingBalance.rebates.balance) > 0? loanaccount.remainingBalance.interest.balance - loanaccount.remainingBalance.rebates.credit - this.loanaccount.remainingBalance.rebates.balance:0)" type="text" class="form-control form-input flex-3 mr-24" disabled>
 						</div>
 						<div class="d-flex flex-column flex-1">
 							<span class="mr-16 font-20 flex-2">Rebate Approval No.</span>
@@ -631,13 +631,13 @@ export default {
 					memo_type: 'deduct to balance',
 					amortization_id: this.loanaccount.amortization_id,
 					principal: this.loanaccount.remainingBalance.principal.balance,
-					interest: this.loanaccount.remainingBalance.interest.balance - this.loanaccount.remainingBalance.rebates.credit,
+					interest: (this.loanaccount.remainingBalance.interest.balance - this.loanaccount.remainingBalance.rebates.credit) - this.loanaccount.remainingBalance.rebates.balance,
 					rebates: this.loanaccount.remainingBalance.rebates.balance,
 					rebates_approval_no: this.rebatesRefNo,
 					pdi:0,
 					penalty:0,
 					total_payable: 0,
-					amount_applied: this.loanaccount.remainingBalance.principal.balance + (this.loanaccount.remainingBalance.interest.balance - this.loanaccount.remainingBalance.rebates.credit),
+					amount_applied: this.loanaccount.remainingBalance.principal.balance + (this.loanaccount.remainingBalance.interest.balance - this.loanaccount.remainingBalance.rebates.credit) - this.loanaccount.remainingBalance.rebates.balance,
 					amortization_id: this.loanaccount.amortization_id
 				}
 				axios.post(this.baseURL() + 'api/payment', payment, {
