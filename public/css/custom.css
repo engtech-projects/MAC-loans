@@ -29,6 +29,10 @@
 	text-decoration: underline;
 }
 
+.hover-white:hover {
+	color: white;
+}
+
 .client-item.active {
 	background-color: #78e08f;
 }
@@ -216,6 +220,10 @@
 
 .text-white {
 	color: #FFF;
+}
+
+.text-offwhite {
+	color: #eee;
 }
 
 .text-ocean {

@@ -34,7 +34,11 @@
 		<section class="d-flex flex-row">
 			<div class="flex-1 mr-24">
 				<span class="text-20 py-7 mid-light-bb text-block text-primary-dark text-bold mb-12">Inputs</span>
-				<div class="light-border p-16">
+				<div class="light-border p-16 relative" :style="account.id?'padding-top:65px;':''">
+					<div v-if="account.id" class="flex bg-primary-dark align-items-center justify-content-between" style="position:absolute;width:100%;padding:12px 15px;left:0;top:0;">
+						<span class="text-white text-bold">Edit {{account.username}}</span>
+						<i @click="resetAccount" class="fa fa-times text-lg text-offwhite c-pointer hover-white"></i>
+					</div>
 					<div class="form-group mb-10">
 						<label for="firstName" class="form-label">First Name</label>
 						<input v-model="account.firstname" type="text" class="form-control form-input " id="firstName" required>
@@ -54,8 +58,9 @@
 								<select v-model="selected.branch" name="" id="" class="form-control form-input mb-12">
 									<option v-for="br in branches" :key="br.branch_id" :value="br.branch_id">{{br.branch_name}}</option>
 								</select>
-								<select v-for="ab in account.branch" :key="ab.branch_id" name="" id="" class="form-control form-input mb-5">
+								<select @change="removeBranch(ab,$event)" v-for="ab in account.branch" :key="ab.branch_id" name="" id="" class="form-control form-input mb-12">
 									<option value="ab.branch_id">{{ab.branch_name}}</option>
+									<option value="remove">Remove</option>
 								</select>
 								<a href="#" @click.prevent data-toggle="modal" data-target="#branchModal" class="text-green-bright text-bold text-right link-underline">Add Access Branch</a>
 							</div>
@@ -77,11 +82,12 @@
 						<input v-model="account.status" type="text" class="form-control form-input " id="status" disabled>
 					</div>
 					<div class="d-flex justify-content-between mb-72">
-						<a @click.prevent="account.status=='active'?account.status='inactive':account.status='active'" href="#" class="btn btn-lg btn-yellow-light min-w-150">Activate / Deactivate</a>
+						<a @click.prevent="account.status=='active'?account.status='inactive':account.status='active'" href="#" class="btn btn-md btn-yellow-light min-w-150">Activate / Deactivate</a>
 						<!-- <a href="#" ></a> -->
-						<button @click="resetAccount()" v-if="account.id" class="btn btn-lg btn-default">Clear</button>
-						<button v-if="account.id" class="btn btn-lg btn-success min-w-150">Update</button>
-						<button v-else class="btn btn-lg btn-success min-w-150">Save</button>
+						<div>
+							<button v-if="account.id" class="btn btn-md btn-success btn-wide">Update</button>
+							<button v-else class="btn btn-md btn-success btn-wide">Save</button>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -199,6 +205,11 @@ export default {
 		}
 	},
 	methods:{
+		removeBranch:function(branch, e){
+			if(e.target.value == 'remove'){
+				this.account.branch = this.account.branch.filter(b => b !== branch);
+			}
+		},
 		assignAccount:function(acc){
 			let permissions = [];
 			this.account = acc;
@@ -308,7 +319,7 @@ export default {
 					}.bind(this));
 		},
 		async update(){
-			this.account.accessibility = this.convertPermissions();
+			this.account.permissions = this.account.accessibility;
 			await 	axios.put(this.baseURL() + 'api/user/' + this.account.id, this.account, {
 						headers: {
 							'Authorization': 'Bearer ' + this.token,
