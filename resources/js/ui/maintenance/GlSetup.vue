@@ -138,18 +138,18 @@
 								<th></th>
 							</thead>
 							<tbody>
-								<tr v-if="1==0">
+								<tr v-if="!ledgerAccounts.length">
 									<td>No products found.</td>
 									<td></td>
 									<td></td>
 									<td></td>
 									<td></td>
 								</tr>
-								<tr>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
+								<tr v-for="la in ledgerAccounts" :key="la.gl_id">
+									<td>{{la.loans}}</td>
+									<td>{{la.code}}</td>
+									<td>{{la.accounting}}</td>
+									<td>{{la.type}}</td>
 									<td></td>
 								</tr>
 							</tbody>

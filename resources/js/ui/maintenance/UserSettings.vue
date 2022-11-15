@@ -25,7 +25,7 @@
 					<td><span v-for="branch in acc.branch" :key="branch.branch_id">{{branch.branch_name + ' '}}</span></td>
 					<td>{{acc.username}}</td>
 					<td>**********************************</td>
-					<td><a href="#" @click.prevent="" class="text-green text-sm">Active</a></td>
+					<td><a href="#" @click.prevent="" class="text-green text-sm">{{acc.status}}</a></td>
 					<td><span @click="assignAccount(acc)" class="text-green c-pointer text-sm hover-underline"><i class="fa fa-edit"></i> Edit</span></td>
 				</tr>
 			</tbody>
@@ -53,18 +53,17 @@
 					</div>
 					<div class="form-group mb-24">
 						<label for="lastName" class="form-label">Branch</label>
-						<div class="d-flex align-items-start">
-							<div class="d-flex flex-column flex-1 mr-1">
-								<select v-model="selected.branch" name="" id="" class="form-control form-input mb-12">
-									<option v-for="br in branches" :key="br.branch_id" :value="br.branch_id">{{br.branch_name}}</option>
-								</select>
-								<select @change="removeBranch(ab,$event)" v-for="ab in account.branch" :key="ab.branch_id" name="" id="" class="form-control form-input mb-12">
-									<option value="ab.branch_id">{{ab.branch_name}}</option>
-									<option value="remove">Remove</option>
-								</select>
-								<a href="#" @click.prevent data-toggle="modal" data-target="#branchModal" class="text-green-bright text-bold text-right link-underline">Add Access Branch</a>
-							</div>
+						<div class="d-flex mb-12">
+							<select v-model="selected.branch" name="" id="" class="form-control form-input mr-10">
+								<option v-for="br in branches" :key="br.branch_id" :value="br.branch_id">{{br.branch_name}}</option>
+							</select>
 							<a @click.prevent="addBranch()" href="#" class="btn btn-primary-dark" style="line-height:2;"><i class="fa fa-plus"></i></a>
+						</div>
+						<div class="d-flex flex-column">
+							<div class="d-flex mb-12" v-for="ab in account.branch" :key="ab.branch_id">
+								<input type="text" :value="ab.branch_name" disabled name="" id="" class="form-control form-input mr-10">
+								<a @click.prevent="removeBranch(ab,$event)" href="#" class="btn btn-default" style="line-height:2;"><i class="fa fa-times text-red"></i></a>
+							</div>
 						</div>
 					</div>
 					<div class="darker-bb mb-24"></div>
@@ -77,16 +76,16 @@
 						<label for="middleName" class="form-label">Password</label>
 						<input v-model="account.password" type="password" class="form-control form-input " id="password" required>
 					</div>
-					<div class="form-group mb-10">
+					<div class="form-group mb-16">
 						<label for="firstName" class="form-label">Status</label>
 						<input v-model="account.status" type="text" class="form-control form-input " id="status" disabled>
 					</div>
 					<div class="d-flex justify-content-between mb-72">
-						<a @click.prevent="account.status=='active'?account.status='inactive':account.status='active'" href="#" class="btn btn-md btn-yellow-light min-w-150">Activate / Deactivate</a>
+						<a @click.prevent="account.status=='active'?account.status='inactive':account.status='active'" href="#" class="btn btn-lg min-w-150" :class="account.status=='active'?'btn-danger':'btn-yellow-light'">{{account.status=='active'?'Deactivate':'Activate'}}</a>
 						<!-- <a href="#" ></a> -->
 						<div>
-							<button v-if="account.id" class="btn btn-md btn-success btn-wide">Update</button>
-							<button v-else class="btn btn-md btn-success btn-wide">Save</button>
+							<button v-if="account.id" class="btn btn-lg btn-success btn-wide">Update</button>
+							<button v-else class="btn btn-lg btn-success btn-wide">Save</button>
 						</div>
 					</div>
 				</div>
@@ -206,13 +205,11 @@ export default {
 	},
 	methods:{
 		removeBranch:function(branch, e){
-			if(e.target.value == 'remove'){
-				this.account.branch = this.account.branch.filter(b => b !== branch);
-			}
+			this.account.branch = this.account.branch.filter(b => b !== branch);
 		},
 		assignAccount:function(acc){
 			let permissions = [];
-			this.account = acc;
+			this.account = JSON.parse(JSON.stringify(acc));
 			this.account.accessibility.forEach(function(a){
 				permissions.push(a.access_id);
 			})
@@ -294,12 +291,17 @@ export default {
 			}
 		},
 		submit:function(){
-			if(this.account.id){
-				this.update();
+			if(this.account.branch.length){
+				if(this.account.id){
+					this.update();
+				}else{
+					this.save();
+				}
 			}else{
-				this.save();
-			}
+				this.notify('','Branch is required.', 'error');
+			}		
 		},
+		
 		async save(){
 			this.account.permissions = this.account.accessibility;
 			await 	axios.post(this.baseURL() + 'api/user', this.account, {
@@ -378,6 +380,15 @@ export default {
 			}.bind(this));
 			
 			return checked;
+		},
+		hasBranch:function(account){
+			var res = false;
+			account.branch.forEach(a => {
+				if(a.branch_name.toLowerCase().includes(this.filter.toLowerCase())){
+					res = true
+				}
+			})
+			return res
 		}
 	},
 	computed:{
@@ -386,8 +397,9 @@ export default {
 										a.lastname.toLowerCase().includes(this.filter.toLowerCase()) ||
 										(a.firstname + ' ' + a.lastname).toLowerCase().includes(this.filter.toLowerCase()) ||
 										(a.lastname + ' ' + a.firstname).toLowerCase().includes(this.filter.toLowerCase()) ||
-										a.username.toLowerCase().includes(this.filter.toLowerCase()))
-		}
+										a.username.toLowerCase().includes(this.filter.toLowerCase()) ||
+										this.hasBranch(a))
+		},
 	},
 	mounted(){
 		this.fetchAccounts();
