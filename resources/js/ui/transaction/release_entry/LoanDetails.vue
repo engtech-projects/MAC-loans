@@ -768,7 +768,11 @@ export default {
 			this.calculateMemo
 		},
 		'loanaccount.remainingBalance.rebates.balance':function(){
-			this.loanaccount.remainingBalance.rebates.balance = this.loanaccount.remainingBalance.rebates.balance < this.loanaccount.remainingBalance.interest.balance ? this.loanaccount.remainingBalance.rebates.balance : this.loanaccount.remainingBalance.interest.balance;
+			if(this.loanaccount.remainingBalance.rebates.balance > this.loanaccount.remainingBalance.interest.balance){
+				this.loanaccount.remainingBalance.rebates.balance =  this.loanaccount.remainingBalance.interest.balance;
+			}else if(this.loanaccount.remainingBalance.rebates.balance < 0){
+				this.loanaccount.remainingBalance.rebates.balance =  0;
+			}
 			this.calculateMemo
 		},
 	},

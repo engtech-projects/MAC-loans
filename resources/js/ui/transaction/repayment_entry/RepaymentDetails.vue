@@ -1163,6 +1163,8 @@ export default {
 		'payment.rebatesInputted':function(newValue){
 			if(this.outstandingInterest < this.payment.rebatesInputted){
 				this.payment.rebatesInputted = this.outstandingInterest;
+			}else if(this.payment.rebatesInputted < 0){
+				this.payment.rebatesInputted = 0
 			}
 			this.distribute();
 		},
