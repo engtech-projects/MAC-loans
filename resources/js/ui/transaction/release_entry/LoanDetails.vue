@@ -637,7 +637,7 @@ export default {
 					pdi:0,
 					penalty:0,
 					total_payable: 0,
-					amount_applied: this.loanaccount.remainingBalance.principal.balance + (this.loanaccount.remainingBalance.interest.balance - this.loanaccount.remainingBalance.rebates.credit) - this.loanaccount.remainingBalance.rebates.balance,
+					amount_applied: this.loanaccount.remainingBalance.principal.balance + (this.loanaccount.remainingBalance.interest.balance - this.loanaccount.remainingBalance.rebates.credit),
 					amortization_id: this.loanaccount.amortization_id
 				}
 				axios.post(this.baseURL() + 'api/payment', payment, {

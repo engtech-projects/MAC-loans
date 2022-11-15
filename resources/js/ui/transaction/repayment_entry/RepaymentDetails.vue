@@ -477,10 +477,17 @@
 												</div>
 												<span class="flex-1">P {{formatToCurrency(totalWaive)}}</span>
 											</div>
+											<div class="d-flex flex-row mb-7">
+												<div class="d-flex flex-row justify-content-between flex-1 mr-16">
+													<span>Rebates</span>
+													<span>:</span>
+												</div>
+												<span class="flex-1">P {{formatToCurrency(rebatesApplied)}}</span>
+											</div>
 										</div>
 										<div class="d-flex flex-column mb-10">
 											<span class="text-20 text-primary-dark">TOTAL</span>
-											<span class="bg-darkgreen text-white font-30 pxy-25 lh-1">P {{formatToCurrency(payment.amount_paid)}}</span>
+											<span class="bg-darkgreen text-white font-30 pxy-25 lh-1">P {{formatToCurrency(payment.amount_applied)}}</span>
 										</div>
 										<div class="d-flex flex-column bg-peach p-16">
 											<span>Waive:</span>
@@ -953,6 +960,7 @@ export default {
 				this.payment.amount_applied = this.payment.pdi;
 				this.payment.amount_applied += this.payment.penalty;
 				this.payment.amount_applied += this.payment.interest;
+				this.payment.amount_applied += this.rebatesApplied;
 				this.payment.amount_applied += this.payment.principal;
 				this.payment.amount_applied += this.payment.over_payment;
 				// this.payment.amount_applied =  parseFloat(this.payment.amount_paid);
