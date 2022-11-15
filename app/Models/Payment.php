@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class Payment extends Model
 {
@@ -42,16 +43,26 @@ class Payment extends Model
 		'amount_applied',
         'status',
         'reference_id',
-        'remarks'
+        'remarks',
+        'transaction_number',
+        'transaction_date'
+    ];
+
+    public $pCodes = [
+        'cash' => 'CSH',
+        'check' => 'CHK',
+        'pos' => 'POS',
+        'deduct' => 'MDB',
+        'interbranch' => 'MBP',
+        'offset' => 'MPF',
+        'rebates' => 'MEM' 
     ];
 
 	public function loanDetails(){
 		return $this->belongsTo(LoanAccount::class, 'loan_account_id');
 	}
 
-
     public function getTotalPayment() {
-
     }
 
     public function addPayment(Request $request){
@@ -89,6 +100,8 @@ class Payment extends Model
         $payment->vat = 0.00;
         $payment->reference_id = $request->input('reference_id');
         $payment->remarks = $request->input('remarks');
+        $payment->transaction_number = $this->generateTransactionNumber($payment->payment_type ,$payment->memo_type);
+        $payment->transaction_date = $request->input('transaction_date');
 
         if( $payment->interest > 0 || $payment->pdi > 0 || $payment->penalty > 0 ) {
             $pdi = 0;
@@ -148,7 +161,6 @@ class Payment extends Model
         $payments->where('payment.status', '=', 'open');
 
         return $payments->get(['payment.*', 'loan_accounts.*', 'borrower_info.*']);
-
     }
 
     public function overriddenList($filters = array()) {
@@ -167,7 +179,6 @@ class Payment extends Model
         $payments->where('payment.status', '=', 'paid');
 
         return $payments->get(['payment.*', 'loan_accounts.*', 'borrower_info.*']);
-
     }
 
     public function paymentList($transDate, $branchId) {
@@ -175,9 +186,47 @@ class Payment extends Model
         return Payment::whereDate('payment.updated_at', '=', $transDate)
                         ->where([ 'branch_id' => $branchId ])
                         ->get();
+    }
+
+    public function generateTransactionNumber($paymentType, $memoType = null) {
+
+        if( $paymentType ) {
+
+            if( Str::contains(Str::lower($paymentType), 'cash')  ) {
+                return $this->pCodes['cash'];
+            }
+            if( Str::contains(Str::lower($paymentType), 'check')  ) {
+                return $this->pCodes['check'];   
+            }
+            if( Str::contains(Str::lower($paymentType), 'pos')  ) {
+                return $this->pCodes['pos'];
+            }
+            if( Str::contains(Str::lower($paymentType), 'memo')  ) {
+
+                if( Str::contains(Str::lower($paymentType), 'deduct')  ) {
+                     return $this->pCodes['deduct'];
+                }
+                if( Str::contains(Str::lower($paymentType), 'interbranch')  ) {
+                     return $this->pCodes['interbranch'];
+                }
+                if( Str::contains(Str::lower($paymentType), 'offset')  ) {
+
+                     return $this->pCodes['offset'];
+                }
+                if( Str::contains(Str::lower($paymentType), 'rebates')  ) {
+                     return $this->pCodes['rebates'];
+                }
+            }
+
+        }
+
+
+
+        // Str::contains(Str::lower($payment->payment_type), 'check')
 
     }
 
     public function cancelPayment() {}
+        
 
 }

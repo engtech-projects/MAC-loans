@@ -209,11 +209,6 @@ class LoanAccountController extends BaseController
         return $accountDetails;
     }
 
-    // end of day transaction
-    // public function setDelinquent(){
+     
 
-    //     $loanAccount = new LoanAccount();
-    //     $loanAccount->setDelinquent();
-
-    // }
 }

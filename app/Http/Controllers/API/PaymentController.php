@@ -214,5 +214,4 @@ class PaymentController extends BaseController
 
         return $summary;
     }
-
 }
