@@ -214,13 +214,4 @@ class PaymentController extends BaseController
 
         return $summary;
     }
-
-    // public function generateTn($id) {
-
-    //     $payment = new Payment();
-
-    //     return $payment->generateTransactionNumber('Deduct to balance');
-
-    // }
-
 }
