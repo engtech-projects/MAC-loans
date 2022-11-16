@@ -223,7 +223,17 @@ class Payment extends Model
 
 
         // Str::contains(Str::lower($payment->payment_type), 'check')
+    }
 
+    public function remarks() {
+        $status = $this->status;
+        $remarks = $this->remarks;
+
+        if( Str::lower($status) == 'cancelled' ){
+            return ucwords($status) . ' - ' . $remarks;
+        }
+
+        return $remarks;
     }
 
     public function cancelPayment() {}
