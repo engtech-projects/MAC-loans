@@ -344,13 +344,15 @@
 						<table class="table table-stripped mb-64">
 																	<thead>
 																		<th>Date</th>
-																		<th>O.R #</th>
-																		<th>Payment Type</th>
+																		<th>O.R. #</th>
+																		<th>Trans. #</th>
 																		<th>Reference</th>
 																		<th>Principal</th>
 																		<th>Interest</th>
 																		<th>PDI</th>
 																		<th>Penalty</th>
+																		<th>Rebates</th>
+																		<th>Over Payment</th>
 																		<th>Total Payment</th>
 																		<th>Remarks</th>
 																	</thead>
@@ -358,78 +360,20 @@
 																		<tr v-for="(p,pi) in loanDetails.payments" :key="pi">
 																			<td>{{dateToMDY(new Date(p.created_at))}}</td>
 																			<td>{{p.or_no}}</td>
-																			<td>{{p.payment_type}}</td>
+																			<td>{{p.transaction_number}}</td>
 																			<td>{{p.reference_no}}</td>
 																			<td>{{formatToCurrency(p.principal)}}</td>
 																			<td>{{formatToCurrency(p.interest)}}</td>
 																			<td>{{formatToCurrency(p.pdi)}}</td>
 																			<td>{{formatToCurrency(p.penalty)}}</td>
+																			<td>{{formatToCurrency(p.rebates)}}</td>
+																			<td>{{formatToCurrency(p.over_payment)}}</td>
 																			<td>{{formatToCurrency(p.amount_applied)}}</td>
 																			<td>{{p.status == 'cancelled' ? 'Cancelled' + (p.remarks ? ' - ' + p.remarks : '') : ''}}</td>
 																		</tr>
 																		<tr v-if="loanDetails.payments.length==0">
 																			<td>No payments yet.</td>
 																		</tr>
-																		<!-- <tr>
-																			<td>12/12/2021</td>
-																			<td>00212</td>
-																			<td>Cash</td>
-																			<td></td>
-																			<td>250.00</td>
-																			<td>100.00</td>
-																			<td>0.00</td>
-																			<td>0.00</td>
-																			<td>350.00</td>
-																			<td>CANCELLED</td>
-																		</tr>
-																		<tr>
-																			<td>12/12/2021</td>
-																			<td>00212</td>
-																			<td>Cash</td>
-																			<td></td>
-																			<td>250.00</td>
-																			<td>100.00</td>
-																			<td>0.00</td>
-																			<td>0.00</td>
-																			<td>350.00</td>
-																			<td></td>
-																		</tr>
-																		<tr>
-																			<td>12/12/2021</td>
-																			<td>00212</td>
-																			<td>Cash</td>
-																			<td></td>
-																			<td>250.00</td>
-																			<td>100.00</td>
-																			<td>0.00</td>
-																			<td>0.00</td>
-																			<td>350.00</td>
-																			<td>CANCELLED</td>
-																		</tr>
-																		<tr>
-																			<td>12/12/2021</td>
-																			<td>00212</td>
-																			<td>Cash</td>
-																			<td></td>
-																			<td>250.00</td>
-																			<td>100.00</td>
-																			<td>0.00</td>
-																			<td>0.00</td>
-																			<td>350.00</td>
-																			<td></td>
-																		</tr>
-																		<tr>
-																			<td>12/12/2021</td>
-																			<td>00212</td>
-																			<td>Cash</td>
-																			<td></td>
-																			<td>250.00</td>
-																			<td>100.00</td>
-																			<td>0.00</td>
-																			<td>0.00</td>
-																			<td>350.00</td>
-																			<td></td>
-																		</tr> -->
 																	</tbody>
 																</table>
 					</div>
@@ -1614,322 +1558,266 @@
 
 							<div class="d-flex flex-row mb-24">
 								
-							<div class="d-flex flex-column flex-2">
-								<div class="d-flex mb-7">
-									<span class="mr-5 text-primary-dark text-bold">Name: </span>
-									<span class="text-primary-dark text-bold">{{borrower.lastname + ', ' + borrower.firstname}}</span>
+								<div class="d-flex flex-column flex-2">
+									<div class="d-flex mb-7">
+										<span class="mr-5 text-primary-dark text-bold">Name: </span>
+										<span class="text-primary-dark text-bold">{{borrower.lastname + ', ' + borrower.firstname}}</span>
+									</div>
+									<div class="d-flex mb-7">
+										<span class="mr-5">Address: </span>
+										<span>{{borrower.address}}</span>
+									</div>
+									<div class="d-flex mb-7">
+										<span class="mr-5">Date Release: </span>
+										<span>{{loanDetails.date_release}}</span>
+									</div>
+									<div class="d-flex mb-7">
+										<span class="mr-5">Amount Granted: </span>
+										<span>{{loanDetails.loan_amount}}</span>
+									</div>
+									<div class="d-flex mb-7">
+										<span class="mr-5">Term: </span>
+										<span>{{loanDetails.terms + ' Days'}}</span>
+									</div>
+									<div class="d-flex mb-7">
+										<span class="mr-5">Amort: </span>
+										<span>{{formatToCurrency(loanAmortization)}}</span>
+									</div>
+									<div class="d-flex mb-7">
+										<span class="mr-5">&nbsp;</span>
+										<span>&nbsp;</span>
+									</div>
+									<div class="d-flex mb-7">
+										<span class="mr-5">Co-Borrower: </span>
+										<span>{{loanDetails.co_borrower_name}}</span>
+									</div>
+									<div class="d-flex mb-7">
+										<span class="mr-5">Co-Address: </span>
+										<span>{{loanDetails.co_borrower_address}}</span>
+									</div>
+									<div class="d-flex mb-7">
+										<span class="mr-5">Co-Maker: </span>
+										<span>{{loanDetails.co_maker_name}}</span>
+									</div>
+									<div class="d-flex mb-7">
+										<span class="mr-5">Co-Address: </span>
+										<span>{{loanDetails.co_maker_address}}</span>
+									</div>
 								</div>
-								<div class="d-flex mb-7">
-									<span class="mr-5">Address: </span>
-									<span>{{borrower.address}}</span>
-								</div>
-								<div class="d-flex mb-7">
-									<span class="mr-5">Date Release: </span>
-									<span>{{loanDetails.date_release}}</span>
-								</div>
-								<div class="d-flex mb-7">
-									<span class="mr-5">Amount Granted: </span>
-									<span>{{loanDetails.loan_amount}}</span>
-								</div>
-								<div class="d-flex mb-7">
-									<span class="mr-5">Term: </span>
-									<span>{{loanDetails.terms + ' Days'}}</span>
-								</div>
-								<div class="d-flex mb-7">
-									<span class="mr-5">Amort: </span>
-									<span>{{formatToCurrency(loanAmortization)}}</span>
-								</div>
-								<div class="d-flex mb-7">
-									<span class="mr-5">&nbsp;</span>
-									<span>&nbsp;</span>
-								</div>
-								<div class="d-flex mb-7">
-									<span class="mr-5">Co-Borrower: </span>
-									<span>{{loanDetails.co_borrower_name}}</span>
-								</div>
-								<div class="d-flex mb-7">
-									<span class="mr-5">Co-Address: </span>
-									<span>{{loanDetails.co_borrower_address}}</span>
-								</div>
-								<div class="d-flex mb-7">
-									<span class="mr-5">Co-Maker: </span>
-									<span>{{loanDetails.co_maker_name}}</span>
-								</div>
-								<div class="d-flex mb-7">
-									<span class="mr-5">Co-Address: </span>
-									<span>{{loanDetails.co_maker_address}}</span>
+								<div class="flex-1"></div>
+								<div class="d-flex flex-column flex-2">
+									<div class="d-flex mb-7">
+										<span class="mr-5 text-primary-dark text-bold">Acc. #: </span>
+										<span class="text-primary-dark text-bold">{{loanDetails.account_num}}</span>
+									</div>
+									<div class="d-flex mb-7">
+										<span class="mr-5">A/O: </span>
+										<span class="">{{loanDetails.account_officer.name}}</span>
+										<span></span>
+									</div>
+									<div class="d-flex mb-7">
+										<span class="mr-5">Due Date: </span>
+										<span class="">{{dateToMDY(new Date(loanDetails.due_date))}}</span>
+									</div>
+									<div class="d-flex mb-7">
+										<span class="mr-5">Loan Type: </span>
+										<span class="">{{loanDetails.type}}</span>
+									</div>
+									<div class="d-flex mb-7">
+										<span class="mr-5">Interest: </span>
+										<span class="">{{formatToCurrency(loanDetails.interest_amount)}}</span>
+									</div>
+									<!-- <div class="d-flex mb-7">
+										<span class="mr-5">Int. Rate: </span>
+										<span class="">{{loanDetails.interest_rate + '%'}}</span>
+									</div> -->
+									<div class="d-flex mb-7">
+										<span class="mr-5">Mode: </span>
+										<span class="">{{loanDetails.payment_mode}}</span>
+									</div>
+									<div class="d-flex mb-7">
+										<span class="mr-5">Center: </span>
+										<span class="">{{loanDetails.center? loanDetails.center.center:''}}</span>
+									</div>
+									<div class="d-flex mb-7">
+										<span class="mr-5">ID #: </span>
+										<span>{{loanDetails.co_borrower_id_number}}</span>
+									</div>
+									<div class="d-flex mb-7">
+										<span class="mr-5">ID Type: </span>
+										<span>{{loanDetails.co_borrower_id_type}}</span>
+									</div>
+									<div class="d-flex mb-7">
+										<span class="mr-5">ID #: </span>
+										<span>{{loanDetails.co_maker_id_number}}</span>
+									</div>
+									<div class="d-flex mb-7">
+										<span class="mr-5">ID Type: </span>
+										<span>{{loanDetails.co_maker_id_type}}</span>
+									</div>
 								</div>
 							</div>
-							<div class="flex-1"></div>
-							<div class="d-flex flex-column flex-2">
-								<div class="d-flex mb-7">
-									<span class="mr-5 text-primary-dark text-bold">Acc. #: </span>
-									<span class="text-primary-dark text-bold">{{loanDetails.account_num}}</span>
+
+							<section class=" mb-24 d-flex flex-column">
+								<span class="text-bold bg-yellow" style="padding:0 5px;">Release</span>
+								<table class="table th-nb td-nb table-thin">
+									<thead>
+										<th>Date</th>
+										<th>Details</th>
+										<th>Debit</th>
+										<th>Credit</th>
+										<th>Total Balance</th>
+									</thead>
+									<tbody>
+										<tr>
+											<td>{{dateToYMD(new Date(loanDetails.date_release)).split('-').join('/')}}</td>
+											<td>Amount Loan</td>
+											<td>{{formatToCurrency(loanDetails.loan_amount)}}</td>
+											<td></td>
+											<td>{{formatToCurrency(loanDetails.loan_amount)}}</td>
+										</tr>
+										<tr>
+											<td>{{dateToYMD(new Date(loanDetails.date_release)).split('-').join('/')}}</td>
+											<td>Interest</td>
+											<td>{{formatToCurrency(loanDetails.interest_amount)}}</td>
+											<td></td>
+											<td>{{formatToCurrency(loanDetails.loan_amount + loanDetails.interest_amount)}}</td>
+										</tr>
+									</tbody>
+								</table>
+							</section>
+
+							<section class="mb-24 d-flex flex-column">
+								<span class="text-bold bg-gray" style="padding:0 5px;">Payment</span>
+								<table class="table table-stripped mb-64">
+									<thead>
+										<th>Date</th>
+										<th>O.R #</th>
+										<th>Trans. #</th>
+										<th>Reference</th>
+										<th>Principal</th>
+										<th>Interest</th>
+										<th>PDI</th>
+										<th>Penalty</th>
+										<th>Rebates</th>
+										<th>Over Payment</th>
+										<th>Total Payment</th>
+										<th>Remarks</th>
+									</thead>
+									<tbody>
+										<tr v-for="(py,x) in loanDetails.payments" :key="x">
+											<td>{{dateToYMD(new Date(py.created_at)).split('-').join('/')}}</td>
+											<td>{{py.or_no}}</td>
+											<td>{{py.transaction_number}}</td>
+											<td></td>
+											<td>{{formatToCurrency(py.principal)}}</td>
+											<td>{{formatToCurrency(py.interest)}}</td>
+											<td>{{formatToCurrency(py.pdi)}}</td>
+											<td>{{formatToCurrency(py.penalty)}}</td>
+											<td>{{formatToCurrency(py.rebates)}}</td>
+											<td>{{formatToCurrency(py.over_payment)}}</td>
+											<td>{{formatToCurrency(py.amount_applied)}}</td>
+											<td>{{py.status == 'cancelled' ? 'Cancelled' + (py.remarks ? ' - ' + py.remarks : '') : ''}}</td>
+										</tr>
+										<tr v-if="loanDetails.payments.length < 1">
+											<td>No payment records found.</td>
+										</tr>
+									</tbody>
+								</table>
+
+
+
+								<div>
+									<span class="text-primary-dark text-lg text-bold mb-15">ACCOUNT BALANCE SUMMARY</span>
+									<div class="d-flex flex-row mb-45">
+										<div class="light-border p-10" style="flex:4">
+											<table class="table th-nbt td-nb table-thin">
+												<thead>
+													<th class="col-md-3"></th>
+													<th class="col-md-3">Debit</th>
+													<th class="col-md-3">Credit</th>
+													<th class="col-md-3">Balance</th>
+												</thead>
+												<tbody>
+													<tr>
+														<td>Principal</td>
+														<td>{{formatToCurrency(loanDetails.remaining_balance.principal.debit)}}</td>
+														<td>{{formatToCurrency(loanDetails.remaining_balance.principal.credit)}}</td>
+														<td>{{formatToCurrency(loanDetails.remaining_balance.principal.balance)}}</td>
+													</tr>
+													<tr>
+														<td>Interest</td>
+														<td>{{formatToCurrency(loanDetails.remaining_balance.interest.debit)}}</td>
+														<td>{{formatToCurrency(loanDetails.remaining_balance.interest.credit)}}</td>
+														<td>{{formatToCurrency(loanDetails.remaining_balance.interest.balance)}}</td>
+													</tr>
+													<tr>
+														<td>Int. Rebates</td>
+														<td>{{formatToCurrency(loanDetails.remaining_balance.rebates.debit)}}</td>
+														<td>{{formatToCurrency(loanDetails.remaining_balance.rebates.credit)}}</td>
+														<td>{{formatToCurrency(loanDetails.remaining_balance.rebates.balance)}}</td>
+													</tr>
+													<tr>
+														<td style="border-bottom: 2px solid #aaa!important;"></td>
+														<td style="border-bottom: 2px solid #aaa!important;"></td>
+														<td style="border-bottom: 2px solid #aaa!important;"></td>
+														<td style="border-bottom: 2px solid #aaa!important;"></td>
+													</tr>
+													<tr>
+														<td class="text-bold">Total Balance</td>
+														<td>{{formatToCurrency(loanDetails.remaining_balance.principal.debit + loanDetails.remaining_balance.interest.debit + loanDetails.remaining_balance.rebates.debit)}}</td>
+														<td>{{formatToCurrency(loanDetails.remaining_balance.principal.credit + loanDetails.remaining_balance.interest.credit + loanDetails.remaining_balance.rebates.credit)}}</td>
+														<td>{{formatToCurrency(loanDetails.remaining_balance.principal.balance + loanDetails.remaining_balance.interest.balance + loanDetails.remaining_balance.rebates.balance)}}</td>
+													</tr>
+													<tr>
+														<td class="text-bold" style="padding-top:24px;padding-bottom:5px;">CURRENT CHARGES</td>
+														<td></td>
+														<td></td>
+														<td></td>
+													</tr>
+													<tr>
+														<td>Penalty</td>
+														<td>{{formatToCurrency(loanDetails.remaining_balance.penalty.debit)}}</td>
+														<td>{{formatToCurrency(loanDetails.remaining_balance.penalty.credit)}}</td>
+														<td>{{formatToCurrency(loanDetails.remaining_balance.penalty.balance)}}</td>
+													</tr>
+													<tr>
+														<td>PD Int.</td>
+														<td>{{formatToCurrency(loanDetails.remaining_balance.pdi.debit)}}</td>
+														<td>{{formatToCurrency(loanDetails.remaining_balance.pdi.credit)}}</td>
+														<td>{{formatToCurrency(loanDetails.remaining_balance.pdi.balance)}}</td>
+													</tr>
+													<tr>
+														<td style="border-bottom: 2px solid #aaa!important;"></td>
+														<td style="border-bottom: 2px solid #aaa!important;"></td>
+														<td style="border-bottom: 2px solid #aaa!important;"></td>
+														<td style="border-bottom: 2px solid #aaa!important;"></td>
+													</tr>
+													<tr>
+														<td class="text-bold">Current Balance</td>
+														<td>{{formatToCurrency(loanDetails.remaining_balance.penalty.debit + loanDetails.remaining_balance.pdi.debit)}}</td>
+														<td>{{formatToCurrency(loanDetails.remaining_balance.penalty.credit + loanDetails.remaining_balance.pdi.credit)}}</td>
+														<td>{{formatToCurrency(loanDetails.remaining_balance.penalty.balance + loanDetails.remaining_balance.pdi.balance)}}</td>
+													</tr>
+												</tbody>
+											</table>
+										</div>
+										<div style="flex:1"></div>
+									</div>
+									<p class="text-block text-center" style="line-height:0!important;">This statement is a system generated copy!</p>
+									<p class="text-block text-center">&lt; End of file &gt;</p>
 								</div>
-								<div class="d-flex mb-7">
-									<span class="mr-5">A/O: </span>
-									<span class="">{{loanDetails.account_officer.name}}</span>
-									<span></span>
-								</div>
-								<div class="d-flex mb-7">
-									<span class="mr-5">Due Date: </span>
-									<span class="">{{dateToMDY(new Date(loanDetails.due_date))}}</span>
-								</div>
-								<div class="d-flex mb-7">
-									<span class="mr-5">Loan Type: </span>
-									<span class="">{{loanDetails.type}}</span>
-								</div>
-								<div class="d-flex mb-7">
-									<span class="mr-5">Interest: </span>
-									<span class="">{{formatToCurrency(loanDetails.interest_amount)}}</span>
-								</div>
-								<!-- <div class="d-flex mb-7">
-									<span class="mr-5">Int. Rate: </span>
-									<span class="">{{loanDetails.interest_rate + '%'}}</span>
-								</div> -->
-								<div class="d-flex mb-7">
-									<span class="mr-5">Mode: </span>
-									<span class="">{{loanDetails.payment_mode}}</span>
-								</div>
-								<div class="d-flex mb-7">
-									<span class="mr-5">Center: </span>
-									<span class="">{{loanDetails.center? loanDetails.center.center:''}}</span>
-								</div>
-								<div class="d-flex mb-7">
-									<span class="mr-5">ID #: </span>
-									<span>{{loanDetails.co_borrower_id_number}}</span>
-								</div>
-								<div class="d-flex mb-7">
-									<span class="mr-5">ID Type: </span>
-									<span>{{loanDetails.co_borrower_id_type}}</span>
-								</div>
-								<div class="d-flex mb-7">
-									<span class="mr-5">ID #: </span>
-									<span>{{loanDetails.co_maker_id_number}}</span>
-								</div>
-								<div class="d-flex mb-7">
-									<span class="mr-5">ID Type: </span>
-									<span>{{loanDetails.co_maker_id_type}}</span>
-								</div>
+							</section>
+							<div class="d-flex flex-row-reverse mb-45">
+								<a @click.prevent="printContent('soaPrintContent')" href="#" class="btn btn-default min-w-150">Print</a>
+								<!-- <a href="#" class="btn btn-success min-w-150 mr-24">Download Excel</a> -->
 							</div>
-							</div>
-
-				<section class=" mb-24 d-flex flex-column">
-																	<span class="text-bold bg-yellow" style="padding:0 5px;">Release</span>
-																	<table class="table th-nb td-nb table-thin">
-																		<thead>
-																			<th>Date</th>
-																			<th>Details</th>
-																			<th>Debit</th>
-																			<th>Credit</th>
-																			<th>Total Balance</th>
-																		</thead>
-																		<tbody>
-																			<tr>
-																				<td>{{dateToYMD(new Date(loanDetails.date_release)).split('-').join('/')}}</td>
-																				<td>Amount Loan</td>
-																				<td>{{formatToCurrency(loanDetails.loan_amount)}}</td>
-																				<td></td>
-																				<td>{{formatToCurrency(loanDetails.loan_amount)}}</td>
-																			</tr>
-																			<tr>
-																				<td>{{dateToYMD(new Date(loanDetails.date_release)).split('-').join('/')}}</td>
-																				<td>Interest</td>
-																				<td>{{formatToCurrency(loanDetails.interest_amount)}}</td>
-																				<td></td>
-																				<td>{{formatToCurrency(loanDetails.loan_amount + loanDetails.interest_amount)}}</td>
-																			</tr>
-																		</tbody>
-																	</table>
-																	</section>
-
-																	<section class="mb-24 d-flex flex-column">
-																		<span class="text-bold bg-gray" style="padding:0 5px;">Payment</span>
-																		<table class="table table-stripped mb-64">
-																			<thead>
-																				<th>Date</th>
-																				<th>O.R #</th>
-																				<th>Payment Type</th>
-																				<th>Reference</th>
-																				<th>Principal</th>
-																				<th>Interest</th>
-																				<th>PDI</th>
-																				<th>Penalty</th>
-																				<th>Total Payment</th>
-																				<th>Remarks</th>
-																			</thead>
-																			<tbody>
-																				<tr v-for="(py,x) in loanDetails.payments" :key="x">
-																					<td>{{dateToYMD(new Date(py.created_at)).split('-').join('/')}}</td>
-																					<td>{{py.or_no}}</td>
-																					<td>{{py.payment_type}}</td>
-																					<td></td>
-																					<td>{{formatToCurrency(py.principal)}}</td>
-																					<td>{{formatToCurrency(py.interest)}}</td>
-																					<td>{{formatToCurrency(py.pdi)}}</td>
-																					<td>{{formatToCurrency(py.penalty)}}</td>
-																					<td>{{formatToCurrency(py.amount_applied)}}</td>
-																					<td>{{py.status == 'cancelled' ? 'Cancelled' + (py.remarks ? ' - ' + py.remarks : '') : ''}}</td>
-																				</tr>
-																				<tr v-if="loanDetails.payments.length < 1">
-																					<td>No payment records found.</td>
-																				</tr>
-																				<!-- <tr>
-																					<td>12/12/2021</td>
-																					<td>00212</td>
-																					<td>Cash</td>
-																					<td></td>
-																					<td>250.00</td>
-																					<td>100.00</td>
-																					<td>0.00</td>
-																					<td>0.00</td>
-																					<td>350.00</td>
-																					<td>CANCELLED</td>
-																				</tr>
-																				<tr>
-																					<td>12/12/2021</td>
-																					<td>00212</td>
-																					<td>Cash</td>
-																					<td></td>
-																					<td>250.00</td>
-																					<td>100.00</td>
-																					<td>0.00</td>
-																					<td>0.00</td>
-																					<td>350.00</td>
-																					<td></td>
-																				</tr>
-																				<tr>
-																					<td>12/12/2021</td>
-																					<td>00212</td>
-																					<td>Cash</td>
-																					<td></td>
-																					<td>250.00</td>
-																					<td>100.00</td>
-																					<td>0.00</td>
-																					<td>0.00</td>
-																					<td>350.00</td>
-																					<td>CANCELLED</td>
-																				</tr>
-																				<tr>
-																					<td>12/12/2021</td>
-																					<td>00212</td>
-																					<td>Cash</td>
-																					<td></td>
-																					<td>250.00</td>
-																					<td>100.00</td>
-																					<td>0.00</td>
-																					<td>0.00</td>
-																					<td>350.00</td>
-																					<td></td>
-																				</tr>
-																				<tr>
-																					<td>12/12/2021</td>
-																					<td>00212</td>
-																					<td>Cash</td>
-																					<td></td>
-																					<td>250.00</td>
-																					<td>100.00</td>
-																					<td>0.00</td>
-																					<td>0.00</td>
-																					<td>350.00</td>
-																					<td></td>
-																				</tr> -->
-																			</tbody>
-																		</table>
-
-
-
-																		<div>
-																			<span class="text-primary-dark text-lg text-bold mb-15">ACCOUNT BALANCE SUMMARY</span>
-																			<div class="d-flex flex-row mb-45">
-																				<div class="light-border p-10" style="flex:4">
-																					<table class="table th-nbt td-nb table-thin">
-																						<thead>
-																							<th class="col-md-3"></th>
-																							<th class="col-md-3">Debit</th>
-																							<th class="col-md-3">Credit</th>
-																							<th class="col-md-3">Balance</th>
-																						</thead>
-																						<tbody>
-																							<tr>
-																								<td>Principal</td>
-																								<td>{{formatToCurrency(loanDetails.remaining_balance.principal.debit)}}</td>
-																								<td>{{formatToCurrency(loanDetails.remaining_balance.principal.credit)}}</td>
-																								<td>{{formatToCurrency(loanDetails.remaining_balance.principal.balance)}}</td>
-																							</tr>
-																							<tr>
-																								<td>Interest</td>
-																								<td>{{formatToCurrency(loanDetails.remaining_balance.interest.debit)}}</td>
-																								<td>{{formatToCurrency(loanDetails.remaining_balance.interest.credit)}}</td>
-																								<td>{{formatToCurrency(loanDetails.remaining_balance.interest.balance)}}</td>
-																							</tr>
-																							<tr>
-																								<td>Int. Rebates</td>
-																								<td>{{formatToCurrency(loanDetails.remaining_balance.rebates.debit)}}</td>
-																								<td>{{formatToCurrency(loanDetails.remaining_balance.rebates.credit)}}</td>
-																								<td>{{formatToCurrency(loanDetails.remaining_balance.rebates.balance)}}</td>
-																							</tr>
-																							<tr>
-																								<td style="border-bottom: 2px solid #aaa!important;"></td>
-																								<td style="border-bottom: 2px solid #aaa!important;"></td>
-																								<td style="border-bottom: 2px solid #aaa!important;"></td>
-																								<td style="border-bottom: 2px solid #aaa!important;"></td>
-																							</tr>
-																							<tr>
-																								<td class="text-bold">Total Balance</td>
-																								<td>{{formatToCurrency(loanDetails.remaining_balance.principal.debit + loanDetails.remaining_balance.interest.debit + loanDetails.remaining_balance.rebates.debit)}}</td>
-																								<td>{{formatToCurrency(loanDetails.remaining_balance.principal.credit + loanDetails.remaining_balance.interest.credit + loanDetails.remaining_balance.rebates.credit)}}</td>
-																								<td>{{formatToCurrency(loanDetails.remaining_balance.principal.balance + loanDetails.remaining_balance.interest.balance + loanDetails.remaining_balance.rebates.balance)}}</td>
-																							</tr>
-																							<tr>
-																								<td class="text-bold" style="padding-top:24px;padding-bottom:5px;">CURRENT CHARGES</td>
-																								<td></td>
-																								<td></td>
-																								<td></td>
-																							</tr>
-																							<tr>
-																								<td>Penalty</td>
-																								<td>{{formatToCurrency(loanDetails.remaining_balance.penalty.debit)}}</td>
-																								<td>{{formatToCurrency(loanDetails.remaining_balance.penalty.credit)}}</td>
-																								<td>{{formatToCurrency(loanDetails.remaining_balance.penalty.balance)}}</td>
-																							</tr>
-																							<tr>
-																								<td>PD Int.</td>
-																								<td>{{formatToCurrency(loanDetails.remaining_balance.pdi.debit)}}</td>
-																								<td>{{formatToCurrency(loanDetails.remaining_balance.pdi.credit)}}</td>
-																								<td>{{formatToCurrency(loanDetails.remaining_balance.pdi.balance)}}</td>
-																							</tr>
-																							<tr>
-																								<td style="border-bottom: 2px solid #aaa!important;"></td>
-																								<td style="border-bottom: 2px solid #aaa!important;"></td>
-																								<td style="border-bottom: 2px solid #aaa!important;"></td>
-																								<td style="border-bottom: 2px solid #aaa!important;"></td>
-																							</tr>
-																							<tr>
-																								<td class="text-bold">Current Balance</td>
-																								<td>{{formatToCurrency(loanDetails.remaining_balance.penalty.debit + loanDetails.remaining_balance.pdi.debit)}}</td>
-																								<td>{{formatToCurrency(loanDetails.remaining_balance.penalty.credit + loanDetails.remaining_balance.pdi.credit)}}</td>
-																								<td>{{formatToCurrency(loanDetails.remaining_balance.penalty.balance + loanDetails.remaining_balance.pdi.balance)}}</td>
-																							</tr>
-																						</tbody>
-																					</table>
-																				</div>
-																				<div style="flex:1"></div>
-																			</div>
-																			<p class="text-block text-center" style="line-height:0!important;">This statement is a system generated copy!</p>
-																			<p class="text-block text-center">&lt; End of file &gt;</p>
-																		</div>
-																	</section>
-																	<div class="d-flex flex-row-reverse mb-45">
-																		<a @click.prevent="printContent('soaPrintContent')" href="#" class="btn btn-default min-w-150">Print</a>
-																		<!-- <a href="#" class="btn btn-success min-w-150 mr-24">Download Excel</a> -->
-																	</div>
-																	<div class="d-flex mb-24">
-																		<img :src="this.baseURL()+'/img/logo-footer.png'" class="w-100" alt="Company Footer">
-																	</div>
-								</div>
+							<div class="d-flex mb-24">
+								<img :src="this.baseURL()+'/img/logo-footer.png'" class="w-100" alt="Company Footer">
 							</div>
 						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 
