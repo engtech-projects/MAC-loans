@@ -100,7 +100,6 @@ class Payment extends Model
         $payment->vat = 0.00;
         $payment->reference_id = $request->input('reference_id');
         $payment->remarks = $request->input('remarks');
-        $payment->transaction_number = $this->generateTransactionNumber($payment->payment_type ,$payment->memo_type);
         $payment->transaction_date = $request->input('transaction_date');
 
         if( $payment->interest > 0 || $payment->pdi > 0 || $payment->penalty > 0 ) {
@@ -121,6 +120,12 @@ class Payment extends Model
         // $payment->status = 'paid';
         $payment->save();
 
+        if( $payment->payment_id ){
+            $payment->transaction_number = $this->generateTransactionNumber($payment->payment_id, $payment->payment_type, $payment->memo_type);
+            $payment->save();    
+        }
+
+        
         // $amortization = Amortization::find( $payment->amortization_id );
         // $amortization->status = 'paid';
 
@@ -188,33 +193,33 @@ class Payment extends Model
                         ->get();
     }
 
-    public function generateTransactionNumber($paymentType, $memoType = null) {
+    public function generateTransactionNumber($paymentId, $paymentType, $memoType = null) {
 
         if( $paymentType ) {
 
             if( Str::contains(Str::lower($paymentType), 'cash')  ) {
-                return $this->pCodes['cash'];
+                return $this->pCodes['cash'] . '-' . str_pad($paymentId, 7, '0', STR_PAD_LEFT);
             }
             if( Str::contains(Str::lower($paymentType), 'check')  ) {
-                return $this->pCodes['check'];   
+                return $this->pCodes['check'] . '-' . str_pad($paymentId, 7, '0', STR_PAD_LEFT);
             }
             if( Str::contains(Str::lower($paymentType), 'pos')  ) {
-                return $this->pCodes['pos'];
+                return $this->pCodes['pos'] . '-' . str_pad($paymentId, 7, '0', STR_PAD_LEFT);
             }
             if( Str::contains(Str::lower($paymentType), 'memo')  ) {
 
                 if( Str::contains(Str::lower($paymentType), 'deduct')  ) {
-                     return $this->pCodes['deduct'];
+                     return $this->pCodes['deduct'] . '-' . str_pad($paymentId, 7, '0', STR_PAD_LEFT);
                 }
                 if( Str::contains(Str::lower($paymentType), 'interbranch')  ) {
-                     return $this->pCodes['interbranch'];
+                     return $this->pCodes['interbranch'] . '-' . str_pad($paymentId, 7, '0', STR_PAD_LEFT);
                 }
                 if( Str::contains(Str::lower($paymentType), 'offset')  ) {
 
-                     return $this->pCodes['offset'];
+                     return $this->pCodes['offset'] . '-' . str_pad($paymentId, 7, '0', STR_PAD_LEFT);
                 }
                 if( Str::contains(Str::lower($paymentType), 'rebates')  ) {
-                     return $this->pCodes['rebates'];
+                     return $this->pCodes['rebates'] . '-' . str_pad($paymentId, 7, '0', STR_PAD_LEFT);
                 }
             }
 
