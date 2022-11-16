@@ -62,6 +62,8 @@ Route::middleware(['auth:sanctum'])->group( function () {
     Route::delete('payment/delete/{id}', [PaymentController::class, 'destroy']);
     Route::get('payment/cancel/{id}', [PaymentController::class, 'cancel']);
     Route::post('payment/overridelist/{id}', [PaymentController::class, 'overrideList']);
+    Route::post('payment/paymentlist/', [PaymentController::class, 'cancelPaymentList']);
+
 
     // loan account
     Route::get('account/show/{account}', [LoanAccountController::class, 'showLoanAccount']);

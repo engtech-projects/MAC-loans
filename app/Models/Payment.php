@@ -208,17 +208,17 @@ class Payment extends Model
             }
             if( Str::contains(Str::lower($paymentType), 'memo')  ) {
 
-                if( Str::contains(Str::lower($paymentType), 'deduct')  ) {
+                if( Str::contains(Str::lower($memoType), 'deduct')  ) {
                      return $this->pCodes['deduct'] . '-' . str_pad($paymentId, 7, '0', STR_PAD_LEFT);
                 }
-                if( Str::contains(Str::lower($paymentType), 'interbranch')  ) {
+                if( Str::contains(Str::lower($memoType), 'interbranch')  ) {
                      return $this->pCodes['interbranch'] . '-' . str_pad($paymentId, 7, '0', STR_PAD_LEFT);
                 }
-                if( Str::contains(Str::lower($paymentType), 'offset')  ) {
+                if( Str::contains(Str::lower($memoType), 'offset')  ) {
 
                      return $this->pCodes['offset'] . '-' . str_pad($paymentId, 7, '0', STR_PAD_LEFT);
                 }
-                if( Str::contains(Str::lower($paymentType), 'rebates')  ) {
+                if( Str::contains(Str::lower($memoType), 'rebates')  ) {
                      return $this->pCodes['rebates'] . '-' . str_pad($paymentId, 7, '0', STR_PAD_LEFT);
                 }
             }
