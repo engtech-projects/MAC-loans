@@ -25,7 +25,7 @@
 					<td><span v-for="branch in acc.branch" :key="branch.branch_id">{{branch.branch_name + ' '}}</span></td>
 					<td>{{acc.username}}</td>
 					<td>**********************************</td>
-					<td><a href="#" @click.prevent="" class="text-green text-sm">{{acc.status}}</a></td>
+					<td><a href="#" @click.prevent="" class="text-green text-sm">{{upperFirst(acc.status)}}</a></td>
 					<td><span @click="assignAccount(acc)" class="text-green c-pointer text-sm hover-underline"><i class="fa fa-edit"></i> Edit</span></td>
 				</tr>
 			</tbody>
@@ -78,10 +78,10 @@
 					</div>
 					<div class="form-group mb-16">
 						<label for="firstName" class="form-label">Status</label>
-						<input v-model="account.status" type="text" class="form-control form-input " id="status" disabled>
+						<input :value="upperFirst(account.status)" type="text" class="form-control form-input " id="status" disabled>
 					</div>
 					<div class="d-flex justify-content-between mb-72">
-						<a @click.prevent="account.status=='active'?account.status='inactive':account.status='active'" href="#" class="btn btn-lg min-w-150" :class="account.status=='active'?'btn-danger':'btn-yellow-light'">{{account.status=='active'?'Deactivate':'Activate'}}</a>
+						<a v-if="account.id" @click.prevent="account.status=='active'?account.status='inactive':account.status='active'" href="#" class="btn btn-lg min-w-150" :class="account.status=='active'?'btn-danger':'btn-yellow-light'">{{account.status=='active'?'Deactivate':'Activate'}}</a>
 						<!-- <a href="#" ></a> -->
 						<div>
 							<button v-if="account.id" class="btn btn-lg btn-success btn-wide">Update</button>
