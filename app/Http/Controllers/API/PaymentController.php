@@ -216,9 +216,7 @@ class PaymentController extends BaseController
     }
 
     public function cancelPaymentList(Request $request) {
-
         $payments = Payment::where(['transaction_date' => $request->transaction_date, 'branch_id' => $request->branch_id])->get();
-        
         foreach ($payments as $payment) {
             $account = LoanAccount::find($payment->loan_account_id);
             $payment->account = $account;

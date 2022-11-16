@@ -976,6 +976,7 @@ export default {
 			this.payment.loan_account_id = this.loanAccount.loan_account_id;
 			this.payment.pdi = this.loanAccount.remainingBalance.pdi.balance;
 			this.payment.penalty = this.loanAccount.current_amortization.penalty + this.loanAccount.current_amortization.short_penalty;
+			this.payment.transaction_date = this.dateToYMD(new Date);
 			if(parseFloat(this.payment.amount_paid) > 0 && this.checkRebates()){
 				axios.post(this.baseURL() + 'api/payment', this.payment, {
 					headers: {

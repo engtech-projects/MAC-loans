@@ -11,15 +11,23 @@
         <!-- /.col -->
         <div class="d-flex flex-column flex-xl-row">
             <div style="flex: 9">
-                <div class="search-bar mb-12">
+                <div class="d-flex justify-content-between">
+                    <div class="search-bar mr-10" style="flex: 5">
+                        <input
+                            type="text"
+                            class="form-control"
+                            id="searchBar"
+                            placeholder="Search"
+                            v-model="filter"
+                        />
+                        <div><i class="fa fa-search"></i></div>
+                    </div>
                     <input
-                        type="text"
+                        v-model="searchDate"
+                        type="date"
                         class="form-control"
-                        id="searchBar"
-                        placeholder="Search"
-                        v-model="filter"
+                        style="flex: 2"
                     />
-                    <div><i class="fa fa-search"></i></div>
                 </div>
                 <table
                     class="table table-stripped table-hover"
@@ -31,6 +39,11 @@
                         <th></th>
                     </thead>
                     <tbody>
+                        <tr v-if="!filteredBorrowers.length">
+                            <td>No payments found.</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
                         <tr
                             v-for="borrower in filteredBorrowers"
                             :key="borrower.borrower_id"
@@ -144,7 +157,7 @@
                             type="text"
                             class="form-control flex-1"
                             id="searchBar"
-							v-model="paymentFilter"
+                            v-model="paymentFilter"
                             placeholder="Search"
                         />
                     </div>
@@ -155,6 +168,7 @@
                             <th>Account No.</th>
                             <th>Date Paid</th>
                             <th>O.R.</th>
+                            <th>Transaction No.</th>
                             <th>Amount</th>
                         </thead>
                         <tbody>
@@ -169,7 +183,7 @@
                                         : ''
                                 "
                             >
-                                <td>{{ payment.account_no }}</td>
+                                <td>{{ payment.account.account_num }}</td>
                                 <td>
                                     {{
                                         dateToYMD(
@@ -178,6 +192,7 @@
                                     }}
                                 </td>
                                 <td>{{ payment.or_no }}</td>
+                                <td>{{ payment.transaction_num }}</td>
                                 <td>
                                     P
                                     {{
@@ -185,7 +200,7 @@
                                     }}
                                 </td>
                             </tr>
-                            <tr v-if="!payments.length">
+                            <tr v-if="!selectedBorrower.payments.length">
                                 <td>No payments yet.</td>
                             </tr>
                         </tbody>
@@ -230,6 +245,8 @@ export default {
     props: ["branch", "token"],
     data() {
         return {
+            searchDate: this.dateToYMD(new Date()),
+            accounts: [],
             borrowers: [],
             payments: [],
             selectedPayment: {
@@ -242,6 +259,7 @@ export default {
                 middlename: "",
                 lastname: "",
                 address: "",
+                payments: [],
             },
             remarks: "",
             filter: "",
@@ -249,18 +267,28 @@ export default {
         };
     },
     methods: {
-        async fetchBorrowers() {
+        async fetchAccounts() {
             await axios
-                .get(this.baseURL() + "api/borrower/list/" + this.branch, {
-                    headers: {
-                        Authorization: "Bearer " + this.token,
-                        "Content-Type": "application/json",
-                        Accept: "application/json",
+                .post(
+                    this.baseURL() + "api/payment/paymentlist",
+                    {
+                        transaction_date: this.dateToYMD(
+                            new Date(this.searchDate)
+                        ),
+                        branch_id: this.branch,
                     },
-                })
+                    {
+                        headers: {
+                            Authorization: "Bearer " + this.token,
+                            "Content-Type": "application/json",
+                            Accept: "application/json",
+                        },
+                    }
+                )
                 .then(
                     function (response) {
-                        this.borrowers = response.data.data;
+                        this.borrowers = this.organizePayments(response.data);
+                        this.removePayment();
                     }.bind(this)
                 )
                 .catch(
@@ -268,6 +296,29 @@ export default {
                         console.log(error);
                     }.bind(this)
                 );
+        },
+        organizePayments: function (payments) {
+            var borrowers = [];
+            var fborrowers = [];
+            payments.forEach((p) => {
+                if (
+                    !borrowers.includes(p.account.borrower_id) &&
+                    p.status != "cancelled"
+                ) {
+                    borrowers.push(p.account.borrower_id);
+                    fborrowers.push(p.account.borrower);
+                }
+            });
+            fborrowers.forEach((fb, i) => {
+                fborrowers[i].payments = [];
+                payments.forEach((p) => {
+                    p.account.borrower_id == fb.borrower_id &&
+                    p.status != "cancelled"
+                        ? fborrowers[i].payments.push(p)
+                        : 0;
+                });
+            });
+            return fborrowers;
         },
         setPayments: function () {
             var payments = [];
@@ -282,21 +333,72 @@ export default {
             this.payments = payments;
         },
         removePayment: function () {
-            this.payments = this.payments.filter(
-                (payment) =>
-                    payment.payment_id != this.selectedPayment.payment_id
-            );
-            this.selectedPayment = { payment_id: null };
+            if (this.selectedBorrower.borrower_id) {
+                let counter = 0;
+                this.borrowers.forEach((b) => {
+                    if (this.selectedBorrower.borrower_id == b.borrower_id) {
+                        this.selectedBorrower = b;
+                        counter++;
+                    }
+                });
+                if (counter == 0) {
+                    this.selectedBorrower = {
+                        borrower_id: null,
+                        borrower_num: "###########",
+                        firstname: "",
+                        middlename: "",
+                        lastname: "",
+                        address: "",
+                        payments: [],
+                    };
+                }
+            }
+        },
+        preparePayment: function (payment) {
+            var data = {
+                payment_id: payment.payment_id,
+                loan_account_id: payment.loan_account_id,
+                branch_id: payment.branch_id,
+                payment_type: payment.payment_type,
+                or_no: payment.or_no,
+                cheque_no: payment.cheque_no,
+                bank_name: payment.bank_name,
+                reference_no: payment.reference_no,
+                memo_type: payment.memo_type,
+                amortization_id: payment.amortization_id,
+                principal: payment.principal,
+                interest: payment.interest,
+                short_principal: payment.short_principal,
+                advance_principal: payment.advance_principal,
+                short_interest: payment.short_interest,
+                advance_interest: payment.advance_interest,
+                pdi: payment.pdi,
+                pdi_approval_no: payment.pdi_approval_no,
+                short_pdi: payment.short_pdi,
+                penalty: payment.penalty,
+                penalty_approval_no: payment.penalty_approval_no,
+                short_penalty: payment.short_penalty,
+                vat: payment.vat,
+                rebates: payment.rebates,
+                rebatesInputted: payment.rebatesInputted,
+                rebates_approval_no: payment.rebates_approval_no,
+                total_payable: payment.total_payable,
+                amount_applied: payment.amount_applied,
+                amount_paid: payment.amount_paid,
+                over_payment: payment.over_payment,
+                status: payment.status,
+                remarks: payment.remarks,
+            };
+            return data;
         },
         async cancelPayment() {
             this.selectedPayment.status = "cancelled";
             this.selectedPayment.remarks = this.remarks;
+            var payment = this.preparePayment(this.selectedPayment);
             await axios
                 .put(
-                    this.baseURL() +
-                        "api/payment/" +
-                        this.selectedPayment.payment_id,
-                    this.selectedPayment,
+                    this.baseURL() + "api/payment/" + payment.payment_id,
+                    payment,
                     {
                         headers: {
                             Authorization: "Bearer " + this.token,
@@ -312,7 +414,8 @@ export default {
                             "Payment has been cancelled successfully.",
                             "success"
                         );
-                        this.removePayment();
+                        // this.removePayment();
+                        this.fetchAccounts();
                     }.bind(this)
                 )
                 .catch(
@@ -320,7 +423,7 @@ export default {
                         console.log(error);
                     }.bind(this)
                 );
-                this.remarks = '';
+            this.remarks = "";
         },
         notify: function (title, text, type) {
             this.$notify({
@@ -330,6 +433,15 @@ export default {
                 type: type,
             });
         },
+		hasTransactionNumber:function(data){
+			var result = false;
+			data.payments.forEach(d=>{
+				if(d.transaction_number && d.transaction_number.includes(this.filter)){
+					result = true;
+				}
+			})
+			return result;
+		}
     },
     computed: {
         borrowerPhoto: function () {
@@ -349,6 +461,7 @@ export default {
                             data.firstname
                                 .toLowerCase()
                                 .includes(this.filter.toLowerCase()) ||
+							this.hasTransactionNumber(data) ||
                             data.lastname
                                 .toLowerCase()
                                 .includes(this.filter.toLowerCase()) ||
@@ -370,11 +483,20 @@ export default {
         },
         filteredPayments: function () {
             if (this.paymentFilter.length > 0) {
-               return this.payments.filter((data)=> data.account_no.includes(this.paymentFilter) || data.created_at.includes(this.paymentFilter) || (data.or_no?data.or_no:'').includes(this.paymentFilter));
+                return this.selectedBorrower.payments.filter(
+                    (data) =>
+                        data.account.account_num.includes(this.paymentFilter) ||
+                        (data.transaction_num
+                            ? data.transaction_num
+                            : ""
+                        ).includes(this.paymentFilter) ||
+                        (data.or_no ? data.or_no : "").includes(
+                            this.paymentFilter
+                        )
+                );
             }
-			return this.payments;
+            return this.selectedBorrower.payments;
         },
-		
     },
     watch: {
         "selectedBorrower.borrower_id": function (newValue) {
@@ -386,9 +508,12 @@ export default {
                 }
             }
         },
+        searchDate: function () {
+            this.fetchAccounts();
+        },
     },
     mounted() {
-        this.fetchBorrowers();
+        this.fetchAccounts();
     },
 };
 </script>
