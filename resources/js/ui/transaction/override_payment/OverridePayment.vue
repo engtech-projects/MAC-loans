@@ -284,6 +284,7 @@
                 :ppayment="payment"
                 :token="token"
                 @reloadPayments="reloadPayments"
+				:candelete="candelete"
             ></overridepayment-details>
         </div>
         <overridepayment-view
@@ -335,7 +336,7 @@
 
 <script>
 export default {
-    props: ["token", "pbranch"],
+    props: ["token", "pbranch", "candelete"],
     data() {
         return {
             paidPayments: [],
