@@ -1143,16 +1143,7 @@ export default {
     },
     computed: {
 		canRetagg:function(){
-			var counter = 0;
-			this.filteredAccounts.forEach(fa=>{
-				if(fa.checked){
-					counter++;
-				}
-			})
-			if(counter > 0 && this.retaggingField.length){
-				return true;
-			}
-			return false;
+			return this.filteredAccounts.filter(a => a.checked).length && this.retaggingField.length;
 		},
 		loanAccountStatusColor:function(){
 			if(this.loanAccount.loan_status == "Past Due"){
