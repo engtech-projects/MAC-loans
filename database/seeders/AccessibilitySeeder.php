@@ -119,7 +119,7 @@ class AccessibilitySeeder extends Seeder
             [ 
                 'label' => 'Delete Payment',
                 'group' => 'Override Payment',
-                'permission' => 'view override payment',
+                'permission' => 'delete override payment',
                 'description' => 'description',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(), 

@@ -256,6 +256,7 @@
 			</li>
 			@endif
 
+			@if(1==0)
 			<li class="nav-item">
 				<a href="#" class="nav-link main-link">
 				  <p>
@@ -316,6 +317,7 @@
 				  </li>
 				</ul>
 			</li>
+			@endif
 
 			<li class="nav-item pick {{isset($nav) && isActive($nav[0], 'reports')? 'active menu-open' : ''}}">
 				<a href="{{route('reports.transaction')}}" class="nav-link main-link">

@@ -196,8 +196,8 @@
 					<a href="#" data-toggle="modal" data-target="#lettersModal" class="mr-16 flex-1 btn btn-yellow-light">Print Document</a>
 					<a href="#" @click.prevent="amortSched" data-toggle="modal" data-target="#schedulesModal" class="mr-16 flex-1 btn btn-orange">Print Amort. Sched.</a>
 					<a href="#" data-toggle="modal" data-target="#cashVoucherModal" class="mr-16 flex-1 btn btn-brown">Print Voucher</a>
-					<a href="#" data-toggle="modal" data-target="#rejectModal" class="mr-16 flex-1 btn btn-primary-dark">Reject</a>
-					<a href="#" data-toggle="modal" data-target="#warningDeleteModal" class="mr-16 flex-1 btn btn-primary">Delete</a>
+					<a v-if="JSON.parse(canreject)" href="#" data-toggle="modal" data-target="#rejectModal" class="mr-16 flex-1 btn btn-primary-dark">Reject</a>
+					<a v-if="JSON.parse(candelete)" href="#" data-toggle="modal" data-target="#warningDeleteModal" class="mr-16 flex-1 btn btn-primary">Delete</a>
 					<a href="#" @click="override()" data-toggle="modal" data-target="" class="flex-1 btn btn-success">Override</a>
 				</div>
 			</div>
@@ -736,7 +736,7 @@
 
 <script>
 export default {
-	props:['ploanaccount', 'pdate', 'token', 'csrf', 'pbranch','pboverride'],
+	props:['ploanaccount', 'pdate', 'token', 'csrf', 'pbranch','pboverride', 'candelete', 'canreject'],
 	data(){
 		return {
 			filter:{ao_id:'all',center_id:'all',product_id:'all', created_at:''},

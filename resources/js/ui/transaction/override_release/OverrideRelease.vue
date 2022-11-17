@@ -122,7 +122,19 @@
 				</section>
 			</div>
 			<div style="flex:20">
-				<override-release-details @deleteAccount="fetchAccounts" @doneOverride="pbatchoverride=0" :pboverride="pbatchoverride" :pbranch="pbranch" @updateLoanAccounts="fetchAccounts();resetLoanAccount();" :csrf="csrf" :token="token" :ploanaccount="loanAccount" :pdate="preference.date"></override-release-details>
+				<override-release-details @deleteAccount="fetchAccounts" 
+					@doneOverride="pbatchoverride=0" 
+					:pboverride="pbatchoverride" 
+					:pbranch="pbranch" 
+					@updateLoanAccounts="fetchAccounts();resetLoanAccount();" 
+					:csrf="csrf" 
+					:token="token" 
+					:ploanaccount="loanAccount" 
+					:pdate="preference.date"
+					:canreject="canreject"
+					:candelete="candelete"
+				>
+				</override-release-details>
 			</div>
 		</div>
 		<print-docs :ploanDetails="loanAccount" :token="token" :staff='staff' :branch_mgr='branch_mgr'></print-docs>
@@ -152,7 +164,7 @@
 <script>
 
 export default {
-	props:['token', 'csrf', 'pbranch', 'staff', 'branch_mgr'],
+	props:['token', 'csrf', 'pbranch', 'staff', 'branch_mgr','canreject','candelete'],
 	data(){
 		return {
 			loanAccounts:[],
