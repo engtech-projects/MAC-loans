@@ -62,6 +62,15 @@ return [
 		'POS',
 	],
 
+
+	'loan_status' => [
+		'Write-Off',
+		'Case Filed',
+		'Litigated',
+		'Restructured',
+		'Restructured w/o PDI',
+
+	],
 	
 	
 ];

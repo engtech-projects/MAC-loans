@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\Payment;
 use App\Models\LoanAccount;
 use App\Models\Amortization;
+use App\Models\Borrower;
 use App\Http\Resources\Payment as PaymentResource;
 use App\Http\Resources\PaymentLoanAccount as PaymentLoanAccountResource;
 use Carbon\Carbon;
@@ -163,6 +164,17 @@ class PaymentController extends BaseController
 
             }
 
+            if( $payment->loan_account_id ) {
+
+                $account = LoanAccount::find($payment->loan_account_id);
+
+                if( Str::lower($account->status) == 'paid' ){
+                    $account->loan_status = 'Ongoing';
+                    $account->save();
+                }
+
+            }
+
             return $this->sendResponse(new PaymentResource($payment), 'Payment Cancelled.');
         }
         
@@ -219,7 +231,10 @@ class PaymentController extends BaseController
         $payments = Payment::where(['transaction_date' => $request->transaction_date, 'branch_id' => $request->branch_id])->get();
         foreach ($payments as $payment) {
             $account = LoanAccount::find($payment->loan_account_id);
+            $borrower = Borrower::find($account->borrower_id);
+            $account->borrower->photo = $borrower->getPhoto();
             $payment->account = $account;
+            
         }
         
         return $payments;
