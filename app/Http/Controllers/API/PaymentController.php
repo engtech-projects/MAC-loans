@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\Payment;
 use App\Models\LoanAccount;
 use App\Models\Amortization;
+use App\Models\Borrower;
 use App\Http\Resources\Payment as PaymentResource;
 use App\Http\Resources\PaymentLoanAccount as PaymentLoanAccountResource;
 use Carbon\Carbon;
@@ -232,7 +233,10 @@ class PaymentController extends BaseController
         
         foreach ($payments as $payment) {
             $account = LoanAccount::find($payment->loan_account_id);
+            $borrower = Borrower::find($account->borrower_id);
+            $account->borrower->photo = $borrower->getPhoto();
             $payment->account = $account;
+            
         }
         
         return $payments;
