@@ -163,6 +163,17 @@ class PaymentController extends BaseController
 
             }
 
+            if( $payment->loan_account_id ) {
+
+                $account = LoanAccount::find($payment->loan_account_id);
+
+                if( Str::lower($account->status) == 'paid' ){
+                    $account->loan_status = 'Ongoing';
+                    $account->save();
+                }
+
+            }
+
             return $this->sendResponse(new PaymentResource($payment), 'Payment Cancelled.');
         }
         
