@@ -187,12 +187,12 @@
                                 <td>
                                     {{
                                         dateToYMD(
-                                            new Date(payment.created_at)
+                                            new Date(payment.transaction_date)
                                         ).replaceAll("-", "/")
                                     }}
                                 </td>
                                 <td>{{ payment.or_no }}</td>
-                                <td>{{ payment.transaction_num }}</td>
+                                <td>{{ payment.transaction_number }}</td>
                                 <td>
                                     P
                                     {{

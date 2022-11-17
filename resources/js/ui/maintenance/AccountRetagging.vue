@@ -37,6 +37,7 @@
                         >
                             <td>
                                 <input
+									v-model="account.checked"
                                     type="checkbox"
                                     class="form-control form-box"
                                 />
@@ -86,12 +87,17 @@
                             id=""
                             class="form-control"
                             style="min-width: 250px"
+							v-model="retaggingField"
                         >
-                            <option value="">Account Officer</option>
-                            <option value="">Center / Office</option>
+							<option value="product">Product</option>
+                            <option value="ao">Account Officer</option>
+                            <option value="center">Center / Office</option>
+							<option value="loan status">Loan Status</option>
+							<option value="remedial">Remedial</option>
                         </select>
                     </div>
                     <button
+						:disabled="!canRetagg"
                         class="btn btn-success btn-wide"
                         data-toggle="modal"
                         data-target="#retagModal"
@@ -378,34 +384,40 @@
                                 class="text-bold font-20 text-primary-dark pb-10 light-bb mb-16"
                                 >Retagging</span
                             >
-                            <div class="form-group mb-10" style="flex: 5">
+                            <div v-if="retaggingField=='product'" class="form-group mb-10" style="flex: 5">
                                 <label for="product" class="form-label"
                                     >Product</label
                                 >
                                 <select
                                     class="form-control form-input"
                                     id="product"
-                                ></select>
+                                >
+									<option v-for="p in products" :key="p.product_id" :value="p.product_id">{{p.product_name}}</option>
+								</select>
                             </div>
-                            <div class="form-group mb-10" style="flex: 5">
+                            <div v-if="retaggingField=='ao'" class="form-group mb-10" style="flex: 5">
                                 <label for="product" class="form-label"
                                     >Account Officer</label
                                 >
                                 <select
                                     class="form-control form-input"
                                     id="product"
-                                ></select>
+                                >
+									<option v-for="a in accountOfficers" :key="a.ao_id" :value="a.ao_id">{{a.name}}</option>
+								</select>
                             </div>
-                            <div class="form-group mb-10" style="flex: 5">
+                            <div v-if="retaggingField=='center'" class="form-group mb-10" style="flex: 5">
                                 <label for="product" class="form-label"
                                     >Center / Office</label
                                 >
                                 <select
                                     class="form-control form-input"
                                     id="product"
-                                ></select>
+                                >
+									<option v-for="c in centers" :key="c.center_id" :value="c.center_id">{{c.center}}</option>
+								</select>
                             </div>
-                            <div class="form-group mb-10" style="flex: 5">
+                            <!-- <div class="form-group mb-10" style="flex: 5">
                                 <label for="product" class="form-label"
                                     >Group / Dept.</label
                                 >
@@ -413,17 +425,19 @@
                                     class="form-control form-input"
                                     id="product"
                                 ></select>
-                            </div>
-                            <div class="form-group mb-10" style="flex: 5">
+                            </div> -->
+                            <div v-if="retaggingField=='loan status'" class="form-group mb-10" style="flex: 5">
                                 <label for="product" class="form-label"
                                     >Loan Status</label
                                 >
                                 <select
                                     class="form-control form-input"
                                     id="product"
-                                ></select>
+                                >
+									<option v-for="l in loanStatus" :key="l" :value="l">{{l}}</option>
+								</select>
                             </div>
-                            <div class="form-group mb-24" style="flex: 5">
+                            <div v-if="retaggingField=='remedial'" class="form-group mb-24" style="flex: 5">
                                 <label for="product" class="form-label"
                                     >Remedial</label
                                 >
@@ -923,10 +937,14 @@
 
 <script>
 export default {
-    props: ["pbranch", "token"],
+    props: ["pbranch", "token",'ploanstatus'],
     data() {
         return {
+			retaggingField:'',
             filter: "",
+			products:[],
+			accountOfficers:[],
+			centers:[],
             borrower: {
                 borrower_num: "############",
                 photo: null,
@@ -1018,9 +1036,55 @@ export default {
                     },
                 },
             },
+			loanStatus:['Write-Off','Case Filed','Litigated','Restructured','Restructured w/o PDI']
         };
     },
     methods: {
+		async fetchCenters(){
+			await axios.get(this.baseURL() + 'api/center', {
+				headers: {
+					'Authorization': 'Bearer ' + this.token,
+					'Content-Type': 'application/json',
+					'Accept': 'application/json'
+				}
+			})
+			.then(function (response) {
+				this.centers = response.data.data;
+			}.bind(this))
+			.catch(function (error) {
+				console.log(error);
+			}.bind(this));
+		},
+		async fetchOfficers(){
+			await axios.get(this.baseURL() + 'api/accountofficer', {
+				headers: {
+					'Authorization': 'Bearer ' + this.token,
+					'Content-Type': 'application/json',
+					'Accept': 'application/json'
+				}
+			})
+			.then(function (response) {
+				this.accountOfficers = response.data.data;
+			}.bind(this))
+			.catch(function (error) {
+				console.log(error);
+			}.bind(this));
+		},
+		async fetchProducts(){
+			await axios.get(this.baseURL() + 'api/product/', {
+				headers: {
+					'Authorization': 'Bearer ' + this.token,
+					'Content-Type': 'application/json',
+					'Accept': 'application/json'
+				}
+			})
+			.then(function (response) {
+				this.products = response.data.data;
+			}.bind(this))
+			.catch(function (error) {
+				console.log(error);
+			}.bind(this));
+		},
         async fetchBorrowers() {
             await axios
                 .get(this.baseURL() + "api/borrower/list/" + this.pbranch, {
@@ -1078,6 +1142,18 @@ export default {
         },
     },
     computed: {
+		canRetagg:function(){
+			var counter = 0;
+			this.filteredAccounts.forEach(fa=>{
+				if(fa.checked){
+					counter++;
+				}
+			})
+			if(counter > 0 && this.retaggingField.length){
+				return true;
+			}
+			return false;
+		},
 		loanAccountStatusColor:function(){
 			if(this.loanAccount.loan_status == "Past Due"){
 				return "text-danger";
@@ -1134,6 +1210,9 @@ export default {
     },
     mounted() {
         this.fetchBorrowers();
+		this.fetchCenters();
+		this.fetchOfficers();
+		this.fetchProducts();
         // this.fetchAccounts();
     },
 };
