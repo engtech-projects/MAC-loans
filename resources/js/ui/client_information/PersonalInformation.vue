@@ -4,7 +4,7 @@
 		<div class="mb-16"></div>
 		<div class="d-flex justify-content-between mb-24 bb-primary-dark pb-7 text-block">
 			<h1 class="m-0 font-35">Personal Information</h1>
-			<a :href="this.baseURL()+'client_information/personal_information_details/edit/' + borrower_id" class="btn btn-success min-w-150">Edit Information</a>
+			<a v-if="JSON.parse(canedit)" :href="this.baseURL()+'client_information/personal_information_details/edit/' + borrower_id" class="btn btn-success min-w-150">Edit Information</a>
 		</div><!-- /.col -->
 		<div class="d-flex flex-column flex-sm-row personal-info" style="margin-bottom:24px;">
 			<div class="upload-photo mb-24">
@@ -271,7 +271,7 @@
 
 <script>
 export default {
-	props:['borrower_id','token'],
+	props:['borrower_id','token','canedit'],
 	data(){
 		return {
 			baseUrl: this.baseURL(),

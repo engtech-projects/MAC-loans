@@ -9,6 +9,7 @@ use DB;
 class TransactionController extends Controller
 {
 	public function releaseEntry(){
+		$this->checkAccess('view release entry');
 		return view('transaction.release_entry')->with([
 			'nav' => ['transaction', 'release entry'],
 			'title' => 'Release Entry',
@@ -20,6 +21,7 @@ class TransactionController extends Controller
 	}
 
 	public function overrideRelease(){
+		$this->checkAccess('view override release');
 		return view('transaction.override_release')->with([
 			'nav' => ['transaction', 'override release'],
 			'title' => 'Override Release',
@@ -27,6 +29,7 @@ class TransactionController extends Controller
 	}
 	
 	public function rejectedRelease(){
+		$this->checkAccess('view rejected release');
 		return view('transaction.rejected_release')->with([
 			'nav' => ['transaction', 'rejected release'],
 			'title' => 'Rejected Release',
@@ -34,6 +37,7 @@ class TransactionController extends Controller
 	}
 
 	public function rejectedReleaseEdit($id, Request $request){
+		$this->checkAccess('view rejected release');
 		return view('transaction.rejected_release_edit')->with([
 			'nav' => ['transaction', 'rejected release'],
 			'title' => 'Rejected Release Edit',
@@ -41,6 +45,7 @@ class TransactionController extends Controller
 	}
 
 	public function repaymentEntry(){
+		$this->checkAccess('view repayment entry');
 		return view('transaction.repayment_entry')->with([
 			'nav' => ['transaction', 'repayment entry'],
 			'title' => 'Repayment Entry',
@@ -48,6 +53,7 @@ class TransactionController extends Controller
 	}
 
 	public function overridePayment(){
+		$this->checkAccess('view override payment');
 		return view('transaction.override_payment')->with([
 			'nav' => ['transaction', 'override payment'],
 			'title' => 'Override Payment',

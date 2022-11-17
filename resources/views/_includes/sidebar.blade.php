@@ -24,6 +24,9 @@
 	<!-- Sidebar Menu -->
 	<nav class="mt-2">
 	  	<ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+			@if(Auth::user()->hasAccess('view borrower') || 
+				Auth::user()->hasAccess('view statement of accounts') || 
+				Auth::user()->hasAccess('view balance inquiry'))
 			<li class="nav-item {{isset($nav) && isActive($nav[0], 'client information')? 'active menu-open' : ''}}">
 				<a href="#" class="nav-link main-link">
 				  <p>
@@ -32,6 +35,7 @@
 				  </p>
 				</a>
 				<ul class="nav nav-treeview">
+					@if(Auth::user()->hasAccess('view borrower'))
 					<li class="nav-item pick {{isset($nav) && isActive($nav[1], 'personal information list')? 'active menu-open' : ''}}">
 						<div class="flex navicon">
 							<div class="top-line invis"></div>
@@ -42,6 +46,8 @@
 						  <p>Personal Information</p>
 						</a>
 					  </li>
+					  @endif
+					  @if(Auth::user()->hasAccess('view statement of accounts'))
 					  <li class="nav-item pick {{isset($nav) && isActive($nav[1], 'statement of accounts list')? 'active menu-open' : ''}}">
 						  <div class="flex navicon">
 							<div class="top-line"></div>
@@ -53,6 +59,8 @@
 						  <p>Statement of Accounts</p>
 						</a>
 					  </li>
+					  @endif
+					  @if(Auth::user()->hasAccess('view balance inquiry'))
 					  <li class="nav-item pick">
 						  <div class="flex navicon">
 							<div class="top-line"></div>
@@ -64,9 +72,16 @@
 						  <p>Balance Inquiry</p>
 						</a>
 					  </li>
+					  @endif
 				</ul>
 			</li>
+			@endif
 
+			@if(Auth::user()->hasAccess('view release entry') || 
+				Auth::user()->hasAccess('view override release') || 
+				Auth::user()->hasAccess('view rejected release') ||
+				Auth::user()->hasAccess('view repayment entry') || 
+				Auth::user()->hasAccess('view override payment'))
 			<li class="nav-item {{isset($nav) && isActive($nav[0], 'transaction')? 'active menu-open' : ''}}">
 				<a href="#" class="nav-link main-link">
 				  <p>
@@ -75,58 +90,76 @@
 				  </p>
 				</a>
 				<ul class="nav nav-treeview">
-				  <li class="nav-item pick {{isset($nav) && isActive($nav[1], 'release entry')? 'active menu-open' : ''}}">
-					  <div class="flex navicon">
-							<div class="top-line invis"></div>
-							<div class="mid-circle"></div>
-							<div class="bottom-line"></div>
-						</div>
-					<a href="{{route('transaction.release_entry')}}" class="nav-link">
-					  <p>Release Entry</p>
-					</a>
-				  </li>
-				  <li class="nav-item pick {{isset($nav) && isActive($nav[1], 'override release')? 'active menu-open' : ''}}">
-					  <div class="flex navicon">
-							<div class="top-line"></div>
-							<div class="mid-circle"></div>
-							<div class="bottom-line"></div>
-						</div>
-					<a href="{{route('transaction.override_release')}}" class="nav-link">
-					  <p>Override Release</p>
-					</a>
-				  </li>
-				  <li class="nav-item pick {{isset($nav) && isActive($nav[1], 'rejected release')? 'active menu-open' : ''}}">
-					  <div class="flex navicon">
-							<div class="top-line"></div>
-							<div class="mid-circle"></div>
-							<div class="bottom-line"></div>
-						</div>
-					<a href="{{route('transaction.rejected_release')}}" class="nav-link">
-					  <p>Rejected Release</p>
-					</a>
-				  </li>
-				  <li class="nav-item pick {{isset($nav) && isActive($nav[1], 'repayment entry')? 'active menu-open' : ''}}">
-					  <div class="flex navicon">
-							<div class="top-line"></div>
-							<div class="mid-circle"></div>
-							<div class="bottom-line"></div>
-						</div>
-					<a href="{{route('transaction.repayment_entry')}}" class="nav-link">
-					  <p>Repayment Entry</p>
-					</a>
-				  </li>
-				  <li class="nav-item pick {{isset($nav) && isActive($nav[1], 'override payment')? 'active menu-open' : ''}}">
-					  <div class="flex navicon">
-							<div class="top-line"></div>
-							<div class="mid-circle"></div>
-							<div class="bottom-line invis"></div>
-						</div>
-					<a href="{{route('transaction.override_payment')}}" class="nav-link">
-					  <p>Override Payment</p>
-					</a>
-				  </li>
+					@if(Auth::user()->hasAccess('view release entry'))
+					<li class="nav-item pick {{isset($nav) && isActive($nav[1], 'release entry')? 'active menu-open' : ''}}">
+						<div class="flex navicon">
+								<div class="top-line invis"></div>
+								<div class="mid-circle"></div>
+								<div class="bottom-line"></div>
+							</div>
+						<a href="{{route('transaction.release_entry')}}" class="nav-link">
+						<p>Release Entry</p>
+						</a>
+					</li>
+					@endif
+					@if(Auth::user()->hasAccess('view override release'))
+					<li class="nav-item pick {{isset($nav) && isActive($nav[1], 'override release')? 'active menu-open' : ''}}">
+						<div class="flex navicon">
+								<div class="top-line"></div>
+								<div class="mid-circle"></div>
+								<div class="bottom-line"></div>
+							</div>
+						<a href="{{route('transaction.override_release')}}" class="nav-link">
+						<p>Override Release</p>
+						</a>
+					</li>
+					@endif
+					@if(Auth::user()->hasAccess('view rejected release'))
+					<li class="nav-item pick {{isset($nav) && isActive($nav[1], 'rejected release')? 'active menu-open' : ''}}">
+						<div class="flex navicon">
+								<div class="top-line"></div>
+								<div class="mid-circle"></div>
+								<div class="bottom-line"></div>
+							</div>
+						<a href="{{route('transaction.rejected_release')}}" class="nav-link">
+						<p>Rejected Release</p>
+						</a>
+					</li>
+					@endif
+					@if(Auth::user()->hasAccess('view repayment entry'))
+					<li class="nav-item pick {{isset($nav) && isActive($nav[1], 'repayment entry')? 'active menu-open' : ''}}">
+						<div class="flex navicon">
+								<div class="top-line"></div>
+								<div class="mid-circle"></div>
+								<div class="bottom-line"></div>
+							</div>
+						<a href="{{route('transaction.repayment_entry')}}" class="nav-link">
+						<p>Repayment Entry</p>
+						</a>
+					</li>
+					@endif
+					@if(Auth::user()->hasAccess('view override payment'))
+					<li class="nav-item pick {{isset($nav) && isActive($nav[1], 'override payment')? 'active menu-open' : ''}}">
+						<div class="flex navicon">
+								<div class="top-line"></div>
+								<div class="mid-circle"></div>
+								<div class="bottom-line invis"></div>
+							</div>
+						<a href="{{route('transaction.override_payment')}}" class="nav-link">
+						<p>Override Payment</p>
+						</a>
+					</li>
+					@endif
 				</ul>
 			</li>
+			@endif
+
+			@if(Auth::user()->hasAccess('view cancelled payments') || 
+				Auth::user()->hasAccess('view product setup') || 
+				Auth::user()->hasAccess('view center') ||
+				Auth::user()->hasAccess('view gl_setup') || 
+				Auth::user()->hasAccess('view users') ||
+				Auth::user()->hasAccess('view account retagging'))
 			<li class="nav-item {{isset($nav) && isActive($nav[0], 'maintenance')? 'active menu-open' : ''}}">
 				<a href="#" class="nav-link main-link">
 				  <p>
@@ -135,6 +168,7 @@
 				  </p>
 				</a>
 				<ul class="nav nav-treeview">
+					@if(Auth::user()->hasAccess('view cancelled payments'))
 					<li class="nav-item pick {{isset($nav) && isActive($nav[1], 'cancel payments')? 'active' : ''}}">
 						<div class="flex navicon">
 							  <div class="top-line invis"></div>
@@ -145,6 +179,8 @@
 						<p>Cancel Payments</p>
 					  </a>
 					</li>
+					@endif
+					@if(Auth::user()->hasAccess('view product setup'))
 					<li class="nav-item pick {{isset($nav) && isActive($nav[1], 'product setup')? 'active' : ''}}">
 						<div class="flex navicon">
 							  <div class="top-line"></div>
@@ -155,6 +191,8 @@
 						<p>Product Setup</p>
 					  </a>
 					</li>
+					@endif
+					@if(Auth::user()->hasAccess('view center'))
 					<li class="nav-item pick {{isset($nav) && isActive($nav[1], 'center ao')? 'active' : ''}}">
 						<div class="flex navicon">
 							  <div class="top-line"></div>
@@ -165,6 +203,8 @@
 						<p>Center - AO Setup</p>
 					  </a>
 					</li>
+					@endif
+					@if(Auth::user()->hasAccess('view users'))
 					<li class="nav-item pick {{isset($nav) && isActive($nav[1], 'user settings')? 'active' : ''}}">
 						<div class="flex navicon">
 							  <div class="top-line"></div>
@@ -175,6 +215,8 @@
 						<p>User Settings</p>
 					  </a>
 					</li>
+					@endif
+					@if(Auth::user()->hasAccess('view gl setup'))
 					<li class="nav-item pick {{isset($nav) && isActive($nav[1], 'gl setup')? 'active' : ''}}">
 						<div class="flex navicon">
 							  <div class="top-line"></div>
@@ -185,6 +227,8 @@
 						<p>GL Setup</p>
 					  </a>
 					</li>
+					@endif
+					@if(Auth::user()->hasAccess('view account retagging'))
 					<li class="nav-item pick {{isset($nav) && isActive($nav[1], 'account retagging')? 'active' : ''}}">
 						<div class="flex navicon">
 							  <div class="top-line"></div>
@@ -195,6 +239,8 @@
 						<p>Account Re-Tagging</p>
 					  </a>
 					</li>
+					@endif
+					@if(Auth::user()->hasAccess('view deduction rate'))
 					<li class="nav-item pick {{isset($nav) && isActive($nav[1], 'deduction rates')? 'active' : ''}}">
 						<div class="flex navicon">
 							  <div class="top-line"></div>
@@ -205,8 +251,10 @@
 						<p>Deduction Rate</p>
 					  </a>
 					</li>
+					@endif
 				</ul>
 			</li>
+			@endif
 
 			<li class="nav-item">
 				<a href="#" class="nav-link main-link">

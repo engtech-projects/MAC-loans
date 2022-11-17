@@ -152,6 +152,15 @@ Vue.mixin({
 		},
 		extractFileName:function(str){
 			return str.split('\\').pop().split('/').pop();
+		},
+		hasAccess:function(list, access){
+			var hasAccess = false;
+			list.forEach(a => {
+				if(a.access_id == access){
+					hasAccess = true;
+				}
+			})
+			return hasAccess;
 		}
 	}
 })
