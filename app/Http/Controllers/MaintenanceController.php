@@ -8,6 +8,7 @@ use App\Models\Center;
 class MaintenanceController extends Controller
 {
     public function productSetup(){
+		$this->checkAccess('view product setup');
 		return view('maintenance.product_setup')->with([
 			'nav' => ['maintenance', 'product setup'],
 			'title' => 'Product Setup',
@@ -15,6 +16,7 @@ class MaintenanceController extends Controller
 	}
 
 	public function cancelPayments(){
+		$this->checkAccess('view cancelled payments');
 		return view('maintenance.cancel_payments')->with([
 			'nav' => ['maintenance', 'cancel payments'],
 			'title' => 'Cancel Payments',
@@ -22,6 +24,7 @@ class MaintenanceController extends Controller
 	}
 
 	public function centerAo(){
+		$this->checkAccess('view center');
 		return view('maintenance.center_ao')->with([
 			'nav' => ['maintenance', 'center ao'],
 			'title' => 'Center - Account Officer Setup',
@@ -29,6 +32,7 @@ class MaintenanceController extends Controller
 	}
 
 	public function userSettings(){
+		$this->checkAccess('view users');
 		return view('maintenance.user_settings')->with([
 			'nav' => ['maintenance', 'user settings'],
 			'title' => 'User Settings',
@@ -36,6 +40,7 @@ class MaintenanceController extends Controller
 	}
 
 	public function glSetup(){
+		$this->checkAccess('view gl setup');
 		return view('maintenance.gl_setup')->with([
 			'nav' => ['maintenance', 'gl setup'],
 			'title' => 'General Ledger Setup',
@@ -43,6 +48,7 @@ class MaintenanceController extends Controller
 	}
 
 	public function accountRetagging(){
+		$this->checkAccess('view account retagging');
 		return view('maintenance.account_retagging')->with([
 			'nav' => ['maintenance', 'account retagging'],
 			'title' => 'Account Retagging',
@@ -50,6 +56,7 @@ class MaintenanceController extends Controller
 	}
 
 	public function deductionRates(){
+		$this->checkAccess('view deduction rate');
 		return view('maintenance.deductions')->with([
 			'nav' => ['maintenance', 'deduction rates'],
 			'title' => 'Deduction Rate',

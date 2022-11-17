@@ -3,7 +3,7 @@
 @section('content')
     <!-- Main content -->
     <section class="content mb-45 app" id="app">
-		<personal-information borrower_id="{{$id}}" token="{{Session::get('token')}}"></personal-information>
+		<personal-information borrower_id="{{$id}}" token="{{Session::get('token')}}" canedit="{{json_encode(Auth::user()->hasAccess('edit borrower'))}}"></personal-information>
     </section>
     <!-- /.content -->
 	<!-- MODALS  -->

@@ -93,11 +93,11 @@
 			<div class="flex-2">
 				<span class="text-20 py-7 mid-light-bb text-block text-primary-dark text-bold mb-12">Access</span>
 				<div class="d-flex flex-column light-border px-16">
-					<!-- <div class="d-flex flex-row justify-content-between light-bb align-items-center">
+					<!-- <div class="d-flex flex-row justify-content-between light-bb align-items-center hover-border-dark">
 						<span class="flex-1 py-10">Client Information</span>
 						<input type="checkbox">
 					</div>
-					<div class="d-flex flex-row justify-content-between light-bb align-items-center">
+					<div class="d-flex flex-row justify-content-between light-bb align-items-center hover-border-dark">
 						<span class="flex-1 py-10">Transaction</span>
 						<input type="checkbox">
 					</div> -->
@@ -107,9 +107,15 @@
 							<input type="checkbox">
 						</div>
 						<div class="px-45">
-							<div v-for="cinfo in permissionList('Client Information')" :key="cinfo.access_id" class="d-flex flex-row justify-content-between light-bb align-items-center">
-								<span class="flex-1 py-10">{{cinfo.label}}</span>
-								<input @change="togglePermission(cinfo.access_id, $event)" type="checkbox" :checked="isChecked(cinfo.access_id)">
+							<div v-for="cinfo in permissionList('Client Information')" :key="cinfo.access_id">
+								<div class="d-flex flex-row justify-content-between light-bb align-items-center hover-border-dark">
+									<span class="flex-1 py-10">{{cinfo.label}}</span>
+									<input @change="togglePermission(cinfo.access_id, $event)" type="checkbox" :checked="isChecked(cinfo.access_id)">
+								</div>
+								<div v-for="cc in cinfo.child_permissions" :key="cc.access_id" class="d-flex flex-row justify-content-between light-bb align-items-center mx-45 hover-border-dark">
+									<span class="flex-1 py-10 text-tomato">{{cc.label}}</span>
+									<input @change="togglePermission(cc.access_id, $event)" type="checkbox" :checked="isChecked(cc.access_id)">
+								</div>
 							</div>
 						</div>
 					</div>
@@ -119,9 +125,15 @@
 							<input type="checkbox">
 						</div>
 						<div class="px-45">
-							<div v-for="cinfo in permissionList('Transaction')" :key="cinfo.access_id" class="d-flex flex-row justify-content-between light-bb align-items-center">
-								<span class="flex-1 py-10">{{cinfo.label}}</span>
-								<input @change="togglePermission(cinfo.access_id, $event)" type="checkbox" :checked="isChecked(cinfo.access_id)">
+							<div v-for="cinfo in permissionList('Transaction')" :key="cinfo.access_id">
+								<div class="d-flex flex-row justify-content-between light-bb align-items-center hover-border-dark">
+									<span class="flex-1 py-10">{{cinfo.label}}</span>
+									<input @change="togglePermission(cinfo.access_id, $event)" type="checkbox" :checked="isChecked(cinfo.access_id)">
+								</div>
+								<div v-for="cc in cinfo.child_permissions" :key="cc.access_id" class="d-flex flex-row justify-content-between light-bb align-items-center mx-45 hover-border-dark">
+									<span class="flex-1 py-10 text-tomato">{{cc.label}}</span>
+									<input @change="togglePermission(cc.access_id, $event)" type="checkbox" :checked="isChecked(cc.access_id)">
+								</div>
 							</div>
 						</div>
 					</div>
@@ -131,9 +143,15 @@
 							<input type="checkbox">
 						</div>
 						<div class="px-45">
-							<div v-for="cinfo in permissionList('Maintenance')" :key="cinfo.access_id" class="d-flex flex-row justify-content-between light-bb align-items-center">
-								<span class="flex-1 py-10">{{cinfo.label}}</span>
-								<input @change="togglePermission(cinfo.access_id, $event)" type="checkbox" :checked="isChecked(cinfo.access_id)">
+							<div v-for="cinfo in permissionList('Maintenance')" :key="cinfo.access_id">
+								<div class="d-flex flex-row justify-content-between light-bb align-items-center hover-border-dark">
+									<span class="flex-1 py-10">{{cinfo.label}}</span>
+									<input @change="togglePermission(cinfo.access_id, $event)" type="checkbox" :checked="isChecked(cinfo.access_id)">
+								</div>
+								<div v-for="cc in cinfo.child_permissions" :key="cc.access_id" class="d-flex flex-row justify-content-between light-bb align-items-center mx-45 hover-border-dark">
+									<span class="flex-1 py-10 text-tomato">{{cc.label}}</span>
+									<input @change="togglePermission(cc.access_id, $event)" type="checkbox" :checked="isChecked(cc.access_id)">
+								</div>
 							</div>
 						</div>
 					</div>
@@ -143,9 +161,15 @@
 							<input type="checkbox">
 						</div>
 						<div class="px-45">
-							<div v-for="cinfo in permissionList('Reports')" :key="cinfo.access_id" class="d-flex flex-row justify-content-between light-bb align-items-center">
-								<span class="flex-1 py-10">{{cinfo.label}}</span>
-								<input @change="togglePermission(cinfo.access_id, $event)" type="checkbox" :checked="isChecked(cinfo.access_id)">
+							<div v-for="cinfo in permissionList('Reports')" :key="cinfo.access_id">
+								<div class="d-flex flex-row justify-content-between light-bb align-items-center hover-border-dark">
+									<span class="flex-1 py-10">{{cinfo.label}}</span>
+									<input @change="togglePermission(cinfo.access_id, $event)" type="checkbox" :checked="isChecked(cinfo.access_id)">
+								</div>
+								<div v-for="cc in cinfo.child_permissions" :key="cc.access_id" class="d-flex flex-row justify-content-between light-bb align-items-center mx-45 hover-border-dark">
+									<span class="flex-1 py-10 text-tomato">{{cc.label}}</span>
+									<input @change="togglePermission(cc.access_id, $event)" type="checkbox" :checked="isChecked(cc.access_id)">
+								</div>
 							</div>
 						</div>
 					</div>
@@ -155,9 +179,15 @@
 							<input type="checkbox">
 						</div>
 						<div class="px-45">
-							<div v-for="cinfo in permissionList('End of Day')" :key="cinfo.access_id" class="d-flex flex-row justify-content-between light-bb align-items-center">
-								<span class="flex-1 py-10">{{cinfo.label}}</span>
-								<input @change="togglePermission(cinfo.access_id, $event)" type="checkbox" :checked="isChecked(cinfo.access_id)">
+							<div v-for="cinfo in permissionList('End of Day')" :key="cinfo.access_id">
+								<div class="d-flex flex-row justify-content-between light-bb align-items-center hover-border-dark">
+									<span class="flex-1 py-10">{{cinfo.label}}</span>
+									<input @change="togglePermission(cinfo.access_id, $event)" type="checkbox" :checked="isChecked(cinfo.access_id)">
+								</div>
+								<div v-for="cc in cinfo.child_permissions" :key="cc.access_id" class="d-flex flex-row justify-content-between light-bb align-items-center mx-45 hover-border-dark">
+									<span class="flex-1 py-10 text-tomato">{{cc.label}}</span>
+									<input @change="togglePermission(cc.access_id, $event)" type="checkbox" :checked="isChecked(cc.access_id)">
+								</div>
 							</div>
 						</div>
 					</div>
@@ -165,7 +195,7 @@
 						<span class="flex-1 py-10">Report</span>
 						<input type="checkbox">
 					</div>
-					<div class="d-flex flex-row justify-content-between light-bb align-items-center">
+					<div class="d-flex flex-row justify-content-between light-bb align-items-center hover-border-dark">
 						<span class="flex-1 py-10">End of Day</span>
 						<input type="checkbox">
 					</div> -->
@@ -248,6 +278,7 @@ export default {
 				}
 			})
 			.then(function (response) {
+				console.log(response.data.data);
 				this.permissions = response.data.data;
 			}.bind(this))
 			.catch(function (error) {
@@ -413,5 +444,8 @@ export default {
 <style scoped>
 	.active-account {
 		background-color: #78e08f !important;
+	}
+	.hover-border-dark:hover {
+		border-color: #95a5a6!important;
 	}
 </style>

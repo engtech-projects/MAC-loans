@@ -173,6 +173,14 @@ class AccessibilitySeeder extends Seeder
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(), 
             ],
+			[ 
+                'label' => 'Deduction Rate',
+                'group' => 'Maintenance',
+                'permission' => 'view deduction rate',
+                'description' => 'description',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(), 
+            ],
             // reports
             [ 
                 'label' => 'Transaction',

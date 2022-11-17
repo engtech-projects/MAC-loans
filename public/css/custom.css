@@ -338,6 +338,10 @@
 	margin-top: 120px;
 }
 
+.mx-45 {
+	margin:0 45px;
+}
+
 .pl-10 {
 	padding-left: 10px;
 }
@@ -455,6 +459,10 @@
 
 .text-red {
 	color: red!important;
+}
+
+.text-tomato {
+	color: #e74c3c;
 }
 
 .text-green {
