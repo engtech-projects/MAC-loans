@@ -1107,11 +1107,13 @@ export default {
         },
         setAccounts: function (borrowers) {
             var accounts = [];
-            borrowers.forEach((b) => {
+            borrowers.forEach(b => {
                 if (b.loan_accounts) {
-                    b.loan_accounts.forEach((la) => {
+                    b.loan_accounts.forEach(la => {
                         la.checked = false;
-                        accounts.push(la);
+						if(la.loan_status != 'Paid' && la.status == 'released'){
+							accounts.push(la);
+						}
                     });
                 }
             });
@@ -1204,7 +1206,6 @@ export default {
 		this.fetchCenters();
 		this.fetchOfficers();
 		this.fetchProducts();
-        // this.fetchAccounts();
     },
 };
 </script>
