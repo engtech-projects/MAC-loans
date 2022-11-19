@@ -15,8 +15,6 @@
 
  Vue.component('login', require('./components/Login.vue').default);
  Vue.component('borrower-login', require('./components/BorrowerLogin.vue').default);
- Vue.component('client-list', require('./ui/client_information/ClientList.vue').default);
- Vue.component('personal-information', require('./ui/client_information/PersonalInformation.vue').default);
  Vue.component('branch', require('./components/Branch.vue').default);
  Vue.component('client-list-side', require('./components/ClientListSide.vue').default);
  Vue.component('upload-file', require('./components/UploadFile.vue').default);
@@ -25,6 +23,9 @@
  Vue.component('overridepayment-view', require('./components/OverridePaymentView.vue').default);
  Vue.component('warning-modal', require('./components/WarningModal.vue').default);
  
+ Vue.component('client-list', require('./ui/client_information/ClientList.vue').default);
+ Vue.component('personal-information', require('./ui/client_information/PersonalInformation.vue').default);
+ Vue.component('balance-inquiry', require('./ui/client_information/BalanceInquiry.vue').default);
  Vue.component('cancel-payments', require('./ui/maintenance/CancelPayments.vue').default);
  Vue.component('product-setup', require('./ui/maintenance/ProductSetup.vue').default);
  Vue.component('deduction-rate', require('./ui/maintenance/DeductionRate.vue').default);

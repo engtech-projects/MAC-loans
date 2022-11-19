@@ -51,6 +51,8 @@ Route::group(['middleware' => 'auth'], function (){
 	Route::get('/client_information/personal_information_details/edit/{id}', [ClientInformationController::class, 'personalInformationDetailsEdit'])->name('client_information.personal_information_details.edit');
 	Route::get('/client_information/account_statement_details/{id}', [ClientInformationController::class, 'accountStatementDetails'])->name('client_information.account_statement_details');
 	Route::get('/account/statement/{id}', [ClientInformationController::class, 'statement']);
+	Route::get('/client_information/balance_inquiry/{id}', [ClientInformationController::class, 'balanceInquiry'])->name('client_information.balance_inquiry');
+	Route::get('/client_information/balance_inquiry_list/', [ClientInformationController::class, 'balanceInquiryList'])->name('client_information.balance_inquiry_list');
 	Route::post('/client_information/personal_information_details/delete/', [ClientInformationController::class, 'deleteOtherInfo']);
 	
 	Route::get('/maintenance/cancel_payments', [MaintenanceController::class, 'cancelPayments'])->name('maintenance.cancel_payments');

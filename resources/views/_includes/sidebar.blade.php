@@ -61,13 +61,13 @@
 					  </li>
 					  @endif
 					  @if(Auth::user()->hasAccess('view balance inquiry'))
-					  <li class="nav-item pick">
+					  <li class="nav-item pick {{isset($nav) && isActive($nav[1], 'balance inquiry')? 'active menu-open' : ''}}">
 						  <div class="flex navicon">
 							<div class="top-line"></div>
 							<div class="mid-circle"></div>
 							<div class="bottom-line invis"></div>
 						</div>
-						<a href="balance_inquiry_list.php" class="nav-link">
+						<a href="{{route('client_information.balance_inquiry_list')}}" class="nav-link">
 
 						  <p>Balance Inquiry</p>
 						</a>
