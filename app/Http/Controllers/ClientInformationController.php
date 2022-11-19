@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Session;
 use Auth;
+use App\Models\Borrower;
 
 class ClientInformationController extends Controller
 {
@@ -49,6 +50,28 @@ class ClientInformationController extends Controller
 			'nav' => ['client information', 'statement of accounts list'],
 			'id' => $id,
 			'title' => 'Statement of Account Details',
+		]);
+	}
+	public function balanceInquiry($id){
+		$borrower = Borrower::find($id);
+		$borrower->loanAccounts = $borrower->loanAccounts();
+		foreach ($borrower->loanAccounts as $key => $value) {
+			$borrower->loanAccounts[$key]->amortization = $value->currentAmortization($value->loan_account_id);
+		}
+		$borrower->photo = $borrower->getPhoto();
+		$this->checkAccess('view balance inquiry');
+		return view('client_information.balance_inquiry')->with([
+			'nav' => ['client information', 'balance inquiry'],
+			'title' => 'Balance Inquiry',
+			'borrower' => $borrower
+		]);
+	}
+
+	public function balanceInquiryList(){
+		$this->checkAccess('view balance inquiry');
+		return view('client_information.balance_inquiry_list')->with([
+			'nav' => ['client information', 'balance inquiry'],
+			'title' => 'Balance Inquiry Loan Account List',
 		]);
 	}
 	

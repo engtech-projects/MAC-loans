@@ -1,5 +1,6 @@
 <template>
     <div class="container-fluid px-16">
+		<notifications group="foo" />
         <div class="mb-16"></div>
         <div class="mb-24 bb-primary-dark pb-7 text-block">
             <h1 class="m-0 font-35">Account Retagging</h1>
@@ -389,6 +390,7 @@
                                     >Product</label
                                 >
                                 <select
+									v-model="retagValue"
                                     class="form-control form-input"
                                     id="product"
                                 >
@@ -400,6 +402,7 @@
                                     >Account Officer</label
                                 >
                                 <select
+									v-model="retagValue"
                                     class="form-control form-input"
                                     id="product"
                                 >
@@ -411,6 +414,7 @@
                                     >Center / Office</label
                                 >
                                 <select
+									v-model="retagValue"
                                     class="form-control form-input"
                                     id="product"
                                 >
@@ -431,6 +435,7 @@
                                     >Loan Status</label
                                 >
                                 <select
+									v-model="retagValue"
                                     class="form-control form-input"
                                     id="product"
                                 >
@@ -442,12 +447,14 @@
                                     >Remedial</label
                                 >
                                 <select
+									v-model="retagValue"
                                     class="form-control form-input"
                                     id="product"
                                 ></select>
                             </div>
                             <div class="d-flex justify-content-end">
                                 <a
+									@click="setRetaggedAccounts()"
                                     href="#"
                                     data-dismiss="modal"
                                     class="btn btn-success min-w-150"
@@ -941,6 +948,7 @@ export default {
     data() {
         return {
 			retaggingField:'',
+			retagValue:null,
             filter: "",
 			products:[],
 			accountOfficers:[],
@@ -1040,6 +1048,49 @@ export default {
         };
     },
     methods: {
+		async retag(account){
+			await axios.post(this.baseURL() + 'api/account/update/' + account.loan_account_id, account, {
+				headers: {
+					'Authorization': 'Bearer ' + this.token,
+					'Content-Type': 'application/json',
+					'Accept': 'application/json'
+				}
+			})
+			.then(function (response) {
+				this.notify('','Account # ' + account.account_num + ' has been updated.', 'success');
+			}.bind(this))
+			.catch(function (error) {
+				console.log(error);
+			}.bind(this));
+		},
+		setRetaggedAccounts:function(){
+			this.filteredAccounts.forEach(a=>{
+				if(a.checked){
+					if(this.retaggingField == 'product'){
+						a.product_id = this.retagValue;
+					}else if(this.retaggingField == 'ao'){
+						a.ao_id = this.retagValue;
+					}else if(this.retaggingField == 'center'){
+						a.center_id = this.retagValue;
+					}else if(this.retaggingField == 'loan status'){
+						a.loan_status = this.retagValue;
+					}else{
+
+					}
+					console.log(a);
+					this.retag(a);
+				}
+			});
+			this.fetchBorrowers();
+		},
+		notify:function(title, text, type){
+			this.$notify({
+				group: 'foo',
+				title: title,
+				text: text,
+				type: type,
+			});
+		},
 		async fetchCenters(){
 			await axios.get(this.baseURL() + 'api/center', {
 				headers: {
