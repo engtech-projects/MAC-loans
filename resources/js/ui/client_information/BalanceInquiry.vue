@@ -7,7 +7,7 @@
             >
                 <h1 class="m-0 font-35">Statement of Account Details</h1>
                 <a
-                    :href="baseURL() + '/client_information/balance_inquiry_list'"
+                    :href="baseURL() + 'client_information/balance_inquiry_list'"
                     class="btn btn-primary-dark float-right"
                     style="padding: 7px 50px !important; font-size: 14px"
                     >Back</a
@@ -43,7 +43,7 @@
                         <span>Accounts</span>
                     </div>
                     <div class="flex-col accounts-list">
-                        <div v-for="(a, i) in borrower.loanAccounts" :key="a.loan_account_id" class="card mb-12" :class="i > 0? 'collapsed-card':''">
+                        <div v-for="(a, i) in borrower.loan_accounts" :key="a.loan_account_id" class="card mb-12" :class="i > 0? 'collapsed-card':''">
                             <div
                                 class="card-header"
                                 style="background-color: #dfdfd0 !important"
@@ -79,7 +79,7 @@
                                                     <span class="font-blue"
                                                         >Amortization</span
                                                     >
-                                                    <span>P {{formatToCurrency(a.amortization.principal + a.amortization.interest)}}</span>
+                                                    <span>P {{formatToCurrency(a.current_amortization.principal + a.current_amortization.interest)}}</span>
                                                 </div>
                                             </div>
                                             <div class="col-xl-3 col-lg-6">
@@ -262,19 +262,19 @@
 													<span>Amort. Principal</span>
 													<span>:</span>
 												</div>
-												<span class="flex-3 pl-10">P {{formatToCurrency(a.amortization.principal)}}</span>
+												<span class="flex-3 pl-10">P {{formatToCurrency(a.current_amortization.principal)}}</span>
 											</div>
 											<div class="d-flex justify-content-between py-5 text-primary-dark">
 												<div class="flex-4 d-flex justify-content-between">
 													<span>Interest</span>
 													<span>:</span>
 												</div>
-												<span class="flex-3 pl-10">P {{formatToCurrency(a.amortization.interest)}}</span>
+												<span class="flex-3 pl-10">P {{formatToCurrency(a.current_amortization.interest)}}</span>
 											</div>
 										</div>
 										<div>
 											<span class="text-lg text-bold text-primary-dark">TOTAL</span>
-											<span class="text-block bg-primary-dark text-white px-16 text-45 mr-36">P {{formatToCurrency(a.amortization.principal + a.amortization.interest)}}</span>
+											<span class="text-block bg-primary-dark text-white px-16 text-45 mr-36">P {{formatToCurrency(a.current_amortization.principal + a.current_amortization.interest)}}</span>
 										</div>
 									</div>
 									<div class="flex-1 px-16 br-primary-dark d-flex flex-column justify-content-between">
@@ -285,33 +285,33 @@
 													<span>Principal</span>
 													<span>:</span>
 												</div>
-												<span class="flex-3 pl-10">P {{formatToCurrency(a.amortization.principal)}}</span>
+												<span class="flex-3 pl-10">P {{formatToCurrency(a.current_amortization.principal)}}</span>
 											</div>
 											<div class="d-flex justify-content-between py-5 text-primary-dark">
 												<div class="flex-4 d-flex justify-content-between">
 													<span>Interest</span>
 													<span>:</span>
 												</div>
-												<span class="flex-3 pl-10">P {{formatToCurrency(a.amortization.interest)}}</span>
+												<span class="flex-3 pl-10">P {{formatToCurrency(a.current_amortization.interest)}}</span>
 											</div>
 											<div class="d-flex justify-content-between py-5 text-primary-dark">
 												<div class="flex-4 d-flex justify-content-between">
 													<span>Penalty</span>
 													<span>:</span>
 												</div>
-												<span class="flex-3 pl-10">P {{formatToCurrency(a.amortization.penalty)}}</span>
+												<span class="flex-3 pl-10">P {{formatToCurrency(a.current_amortization.penalty)}}</span>
 											</div>
 											<div class="d-flex justify-content-between py-5 text-primary-dark">
 												<div class="flex-4 d-flex justify-content-between">
 													<span>PDI</span>
 													<span>:</span>
 												</div>
-												<span class="flex-3 pl-10">P {{formatToCurrency(a.amortization.pdi)}}</span>
+												<span class="flex-3 pl-10">P {{formatToCurrency(a.current_amortization.pdi)}}</span>
 											</div>
 										</div>
 										<div>
 											<span class="text-lg text-bold text-primary-dark">TOTAL</span>
-											<span class="text-block bg-primary-dark text-white px-16 text-45 mr-36">P {{formatToCurrency(a.amortization.principal + a.amortization.interest + a.amortization.pdi + a.amortization.penalty)}}</span>
+											<span class="text-block bg-primary-dark text-white px-16 text-45 mr-36">P {{formatToCurrency(a.current_amortization.principal + a.current_amortization.interest + a.current_amortization.pdi + a.current_amortization.penalty)}}</span>
 										</div>
 									</div>
 									<div class="flex-1 px-16 d-flex flex-column justify-content-between">
@@ -322,26 +322,26 @@
 													<span>Principal Balance</span>
 													<span>:</span>
 												</div>
-												<span class="flex-3 pl-10">P 321.00</span>
+												<span class="flex-3 pl-10">P {{formatToCurrency(a.current_amortization.principal_balance)}}</span>
 											</div>
 											<div class="d-flex justify-content-between py-5 text-primary-dark">
 												<div class="flex-4 d-flex justify-content-between">
 													<span>Interest Balance</span>
 													<span>:</span>
 												</div>
-												<span class="flex-3 pl-10">P 95.00</span>
+												<span class="flex-3 pl-10">P {{formatToCurrency(a.current_amortization.interest_balance)}}</span>
 											</div>
 											<div class="d-flex justify-content-between py-5 text-primary-dark">
 												<div class="flex-4 d-flex justify-content-between">
 													<span>Surcharge</span>
 													<span>:</span>
 												</div>
-												<span class="flex-3 pl-10">P 95.00</span>
+												<span class="flex-3 pl-10">P 0.00</span>
 											</div>
 										</div>
 										<div>
 											<span class="text-lg text-bold text-primary-dark">TOTAL</span>
-											<span class="text-block bg-primary-dark text-white px-16 text-45 mr-36">P 566.95</span>
+											<span class="text-block bg-primary-dark text-white px-16 text-45 mr-36">P {{formatToCurrency(a.current_amortization.principal_balance + a.current_amortization.interest_balance)}}</span>
 										</div>
 									</div>
 									<div class="flex-1 px-16"></div>
@@ -354,28 +354,28 @@
 													<span>Short Principal</span>
 													<span>:</span>
 												</div>
-												<span class="flex-3 pl-10">P 321.00</span>
+												<span class="flex-3 pl-10">P {{formatToCurrency(a.current_amortization.short_principal)}}</span>
 											</div>
 											<div class="d-flex justify-content-between mb-10 text-primary-dark">
 												<div class="flex-4 d-flex justify-content-between">
 													<span>Adv. Principal</span>
 													<span>:</span>
 												</div>
-												<span class="flex-3 pl-10">P 321.00</span>
+												<span class="flex-3 pl-10">P {{formatToCurrency(a.current_amortization.advance_principal)}}</span>
 											</div>
 											<div class="d-flex justify-content-between text-primary-dark">
 												<div class="flex-4 d-flex justify-content-between">
 													<span>Short Interest</span>
 													<span>:</span>
 												</div>
-												<span class="flex-3 pl-10">P 321.00</span>
+												<span class="flex-3 pl-10">P {{formatToCurrency(a.current_amortization.short_interest)}}</span>
 											</div>
 											<div class="d-flex justify-content-between text-primary-dark">
 												<div class="flex-4 d-flex justify-content-between">
 													<span>Overpayment</span>
 													<span>:</span>
 												</div>
-												<span class="flex-3 pl-10">P 321.00</span>
+												<span class="flex-3 pl-10">P 0.00</span>
 											</div>
 										</div>
 									</div>
@@ -388,126 +388,6 @@
 									<div class="flex-1 px-16"></div>
 								</div>
                             </div>
-                            <!-- /.card-body -->
-                        </div>
-
-                        <div class="card collapsed-card mb-12">
-                            <div
-                                class="card-header"
-                                style="background-color: #dfdfd0 !important"
-                            >
-                                <h3 class="card-title" style="color: #283f53">
-                                    Account Number: 1001-3429-15248
-                                </h3>
-
-                                <div class="card-tools">
-                                    <button
-                                        type="button"
-                                        class="btn btn-tool"
-                                        data-card-widget="collapse"
-                                        title="Collapse"
-                                    >
-                                        <i class="fas fa-plus"></i>
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="card-body p-0"></div>
-                            <!-- /.card-body -->
-                        </div>
-
-                        <div class="card collapsed-card mb-12">
-                            <div
-                                class="card-header"
-                                style="background-color: #dfdfd0 !important"
-                            >
-                                <h3 class="card-title" style="color: #283f53">
-                                    Account Number: 1001-3429-15248
-                                </h3>
-
-                                <div class="card-tools">
-                                    <button
-                                        type="button"
-                                        class="btn btn-tool"
-                                        data-card-widget="collapse"
-                                        title="Collapse"
-                                    >
-                                        <i class="fas fa-plus"></i>
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="card-body p-0"></div>
-                            <!-- /.card-body -->
-                        </div>
-
-                        <div class="card collapsed-card mb-12">
-                            <div
-                                class="card-header"
-                                style="background-color: #dfdfd0 !important"
-                            >
-                                <h3 class="card-title" style="color: #283f53">
-                                    Account Number: 1001-3429-15248
-                                </h3>
-
-                                <div class="card-tools">
-                                    <button
-                                        type="button"
-                                        class="btn btn-tool"
-                                        data-card-widget="collapse"
-                                        title="Collapse"
-                                    >
-                                        <i class="fas fa-plus"></i>
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="card-body p-0"></div>
-                            <!-- /.card-body -->
-                        </div>
-
-                        <div class="card collapsed-card mb-12">
-                            <div
-                                class="card-header"
-                                style="background-color: #dfdfd0 !important"
-                            >
-                                <h3 class="card-title" style="color: #283f53">
-                                    Account Number: 1001-3429-15248
-                                </h3>
-
-                                <div class="card-tools">
-                                    <button
-                                        type="button"
-                                        class="btn btn-tool"
-                                        data-card-widget="collapse"
-                                        title="Collapse"
-                                    >
-                                        <i class="fas fa-plus"></i>
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="card-body p-0"></div>
-                            <!-- /.card-body -->
-                        </div>
-
-                        <div class="card collapsed-card mb-12">
-                            <div
-                                class="card-header"
-                                style="background-color: #dfdfd0 !important"
-                            >
-                                <h3 class="card-title" style="color: #283f53">
-                                    Account Number: 1001-3429-15248
-                                </h3>
-
-                                <div class="card-tools">
-                                    <button
-                                        type="button"
-                                        class="btn btn-tool"
-                                        data-card-widget="collapse"
-                                        title="Collapse"
-                                    >
-                                        <i class="fas fa-plus"></i>
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="card-body p-0"></div>
                             <!-- /.card-body -->
                         </div>
                     </div>
@@ -551,9 +431,25 @@ export default {
 				businessInfo : [],
 				householdMembers : [],
 				outstandingObligations : [],
-				loanAccounts:[],
+				loan_accounts:[],
 				created_at: '',
 			}
+		}
+	},
+	methods:{
+		async fetchBorrower(){
+			await axios.get(this.baseURL() + 'api/borrower/' + this.pborrower, {
+					headers: {
+						'Authorization': 'Bearer ' + this.token,
+						'contentType': "multipart/form-data"
+					}
+				})
+				.then(function (response) {
+					this.borrower = response.data.data;
+				}.bind(this))
+				.catch(function (error) {
+					console.log(error);
+				}.bind(this));
 		}
 	},
 	computed:{
@@ -563,6 +459,7 @@ export default {
 	},
 	mounted(){
 		this.borrower = JSON.parse(this.pborrower);
+		this.fetchBorrower();
 	}
 }
 </script>

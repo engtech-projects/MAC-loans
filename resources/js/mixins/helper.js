@@ -161,6 +161,9 @@ Vue.mixin({
 				}
 			})
 			return hasAccess;
+		},
+		checkVal:function(val){
+			return val?val:0;
 		}
 	}
 })

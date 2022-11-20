@@ -93,18 +93,10 @@
 			<div class="flex-2">
 				<span class="text-20 py-7 mid-light-bb text-block text-primary-dark text-bold mb-12">Access</span>
 				<div class="d-flex flex-column light-border px-16">
-					<!-- <div class="d-flex flex-row justify-content-between light-bb align-items-center hover-border-dark">
-						<span class="flex-1 py-10">Client Information</span>
-						<input type="checkbox">
-					</div>
-					<div class="d-flex flex-row justify-content-between light-bb align-items-center hover-border-dark">
-						<span class="flex-1 py-10">Transaction</span>
-						<input type="checkbox">
-					</div> -->
 					<div class="d-flex flex-column">
 						<div class="d-flex justify-content-between light-bb align-items-center">
 							<span class="flex-1 py-10 text-bold">Client Information</span>
-							<input type="checkbox">
+							<input @change="toggleChildren('Client Information', $event)" type="checkbox" :checked="areChildrenChecked('Client Information')">
 						</div>
 						<div class="px-45">
 							<div v-for="cinfo in permissionList('Client Information')" :key="cinfo.access_id">
@@ -122,7 +114,7 @@
 					<div class="d-flex flex-column">
 						<div class="d-flex justify-content-between light-bb align-items-center">
 							<span class="flex-1 py-10 text-bold">Transaction</span>
-							<input type="checkbox">
+							<input @change="toggleChildren('Transaction', $event)" type="checkbox" :checked="areChildrenChecked('Transaction')">
 						</div>
 						<div class="px-45">
 							<div v-for="cinfo in permissionList('Transaction')" :key="cinfo.access_id">
@@ -140,7 +132,7 @@
 					<div class="d-flex flex-column">
 						<div class="d-flex justify-content-between light-bb align-items-center">
 							<span class="flex-1 py-10 text-bold">Maintenance</span>
-							<input type="checkbox">
+							<input @change="toggleChildren('Maintenance', $event)" type="checkbox" :checked="areChildrenChecked('Maintenance')">
 						</div>
 						<div class="px-45">
 							<div v-for="cinfo in permissionList('Maintenance')" :key="cinfo.access_id">
@@ -158,7 +150,7 @@
 					<div class="d-flex flex-column">
 						<div class="d-flex justify-content-between light-bb align-items-center">
 							<span class="flex-1 py-10 text-bold">Reports</span>
-							<input type="checkbox">
+							<input @change="toggleChildren('Reports', $event)" type="checkbox" :checked="areChildrenChecked('Reports')">
 						</div>
 						<div class="px-45">
 							<div v-for="cinfo in permissionList('Reports')" :key="cinfo.access_id">
@@ -176,7 +168,7 @@
 					<div class="d-flex flex-column">
 						<div class="d-flex justify-content-between light-bb align-items-center">
 							<span class="flex-1 py-10 text-bold">End of Day</span>
-							<input type="checkbox">
+							<input @change="toggleChildren('End of Day', $event)" type="checkbox" :checked="areChildrenChecked('End of Day')">
 						</div>
 						<div class="px-45">
 							<div v-for="cinfo in permissionList('End of Day')" :key="cinfo.access_id">
@@ -278,7 +270,6 @@ export default {
 				}
 			})
 			.then(function (response) {
-				console.log(response.data.data);
 				this.permissions = response.data.data;
 			}.bind(this))
 			.catch(function (error) {
@@ -391,9 +382,7 @@ export default {
 			});
 		},
 		permissionList:function(permission){
-			if(this.permissions[permission]){
-				return this.permissions[permission]? this.permissions[permission]:[];
-			}
+			return this.permissions[permission]? this.permissions[permission]:[];
 		},
 		togglePermission:function(permission, e){
 			if(!e.target.checked){
@@ -401,6 +390,33 @@ export default {
 			}else{
 				this.account.accessibility.push(permission);
 			}
+		},
+		toggleChildren(permission, e){
+			if(!e.target.checked){
+				this.permissionList(permission).forEach(p=>{
+					this.account.accessibility = this.account.accessibility.filter(data => data != p.access_id);
+					p.child_permissions.forEach(c=>{
+						this.account.accessibility = this.account.accessibility.filter(data => data != c.access_id);
+					})
+				})
+			}else{
+				this.permissionList(permission).forEach(p=>{
+					!this.account.accessibility.includes(p.access_id)?this.account.accessibility.push(p.access_id):0
+					p.child_permissions.forEach(c=>{
+						!this.account.accessibility.includes(c.access_id)?this.account.accessibility.push(c.access_id):0
+					})
+				})
+			}
+		},
+		areChildrenChecked:function(permission){
+			var checked = true;
+			this.permissionList(permission).length?this.permissionList(permission).forEach(p=>{
+				!this.account.accessibility.includes(p.access_id)?checked=false:0
+					p.child_permissions.forEach(c=>{
+						!this.account.accessibility.includes(c.access_id)?checked=false:0
+					})
+			}):checked=false;
+			return checked
 		},
 		isChecked:function(permission){
 			var checked = false;

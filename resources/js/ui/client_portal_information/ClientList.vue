@@ -29,7 +29,7 @@
 
 <script>
 export default {
-	props:['title', 'url', 'token'],
+	props:['title', 'url', 'token', 'pbranch'],
 	data(){
 		return {
 			borrowers:[],
