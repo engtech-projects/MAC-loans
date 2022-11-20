@@ -3,11 +3,11 @@
         <div class="container-fluid">
             <div class="mb-16"></div>
             <div
-                class="d-flex justify-content-between mb-24 bb-primary-dark pb-7 text-block"
+                class="d-flex justify-content-between align-items-center mb-24 bb-primary-dark pb-7 text-block"
             >
                 <h1 class="m-0 font-35">Statement of Account Details</h1>
                 <a
-                    href="balance_inquiry_list.html"
+                    :href="baseURL() + '/client_information/balance_inquiry_list'"
                     class="btn btn-primary-dark float-right"
                     style="padding: 7px 50px !important; font-size: 14px"
                     >Back</a
@@ -98,7 +98,7 @@
                                                         >Term</span
                                                     >
                                                     <span
-                                                        >360 Days / 12 Month
+                                                        >{{a.terms}} Days / {{a.terms / 30}} Month
                                                         (s)</span
                                                     >
                                                 </div>
@@ -108,7 +108,7 @@
                                                     <span class="font-blue"
                                                         >Due Date</span
                                                     >
-                                                    <span>03/21/2022</span>
+                                                    <span>{{dateToMDY(new Date(a.due_date))}}</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -119,7 +119,7 @@
                                                         >Interest</span
                                                     >
                                                     <span
-                                                        >30% p.a / 3% p.m</span
+                                                        >{{a.interest_rate * 12}}% p.a / {{a.interest_rate}}% p.m</span
                                                     >
                                                 </div>
                                             </div>
@@ -128,23 +128,23 @@
                                                     <span class="font-blue"
                                                         >Mode</span
                                                     >
-                                                    <span>Monthly</span>
+                                                    <span>{{a.payment_mode}}</span>
                                                 </div>
                                             </div>
-                                            <div class="col-xl-3 col-lg-6">
+                                            <!-- <div class="col-xl-3 col-lg-6">
                                                 <div class="info-display">
                                                     <span class="font-blue"
                                                         >Group</span
                                                     >
                                                     <span>Various Pension</span>
                                                 </div>
-                                            </div>
+                                            </div> -->
                                             <div class="col-xl-3 col-lg-6">
                                                 <div class="info-display">
                                                     <span class="font-blue"
                                                         >Type</span
                                                     >
-                                                    <span>Add-on</span>
+                                                    <span>{{a.type}}</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -156,13 +156,13 @@
                                             <span class="font-blue"
                                                 >Product Name</span
                                             >
-                                            <span>Pension Load</span>
+                                            <span>{{a.product.product_name}}</span>
                                         </div>
                                     </div>
                                     <div class="col-xl-2 col-lg-6">
                                         <div class="info-display">
                                             <span class="font-blue">Cycle</span>
-                                            <span>20th</span>
+                                            <span>{{nthDay(a.cycle_no)}}</span>
                                         </div>
                                     </div>
                                     <div class="col-xl-2 col-lg-6">
@@ -170,7 +170,7 @@
                                             <span class="font-blue"
                                                 >Status</span
                                             >
-                                            <span>Current</span>
+                                            <span>{{a.status}}</span>
                                         </div>
                                     </div>
                                     <div class="col-xl-2 col-lg-6">
@@ -178,7 +178,7 @@
                                             <span class="font-blue"
                                                 >Center</span
                                             >
-                                            <span>---</span>
+                                            <span>{{a.center?a.center.center:'---'}}</span>
                                         </div>
                                     </div>
                                     <div class="col-xl-3 col-lg-6">
@@ -186,7 +186,7 @@
                                             <span class="font-blue"
                                                 >Collection Rate</span
                                             >
-                                            <span>30%</span>
+                                            <span>---</span>
                                         </div>
                                     </div>
                                 </div>
@@ -199,7 +199,7 @@
                                             <span class="font-blue"
                                                 >Co-Borrower</span
                                             >
-                                            <span>Cioneveve C. Langahit</span>
+                                            <span>{{a.co_borrower_name}}</span>
                                         </div>
                                     </div>
                                     <div class="col-xl-5 col-lg-6">
@@ -208,8 +208,7 @@
                                                 >Co-Borrower Address</span
                                             >
                                             <span
-                                                >P-10 Brgy. San Mateo, Butuan
-                                                City</span
+                                                >{{a.co_borrower_address}}</span
                                             >
                                         </div>
                                     </div>
@@ -218,7 +217,7 @@
                                             <span class="font-blue"
                                                 >Co-Borrower ID</span
                                             >
-                                            <span>05-08452-054784</span>
+                                            <span>{{a.co_borrower_id_number}}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -229,7 +228,7 @@
                                             <span class="font-blue"
                                                 >Co-Maker</span
                                             >
-                                            <span>Cioneveve C. Langahit</span>
+                                            <span>{{a.co_maker_name}}</span>
                                         </div>
                                     </div>
                                     <div class="col-xl-5 col-lg-6">
@@ -238,8 +237,7 @@
                                                 >Co-Maker Address</span
                                             >
                                             <span
-                                                >P-10 Brgy. San Mateo, Butuan
-                                                City</span
+                                                >{{a.co_maker_address}}</span
                                             >
                                         </div>
                                     </div>
@@ -248,7 +246,7 @@
                                             <span class="font-blue"
                                                 >Co-Maker ID</span
                                             >
-                                            <span>05-08452-054784</span>
+                                            <span>{{a.co_maker_id_number}}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -264,19 +262,19 @@
 													<span>Amort. Principal</span>
 													<span>:</span>
 												</div>
-												<span class="flex-3 pl-10">P 321.00</span>
+												<span class="flex-3 pl-10">P {{formatToCurrency(a.amortization.principal)}}</span>
 											</div>
 											<div class="d-flex justify-content-between py-5 text-primary-dark">
 												<div class="flex-4 d-flex justify-content-between">
 													<span>Interest</span>
 													<span>:</span>
 												</div>
-												<span class="flex-3 pl-10">P 95.00</span>
+												<span class="flex-3 pl-10">P {{formatToCurrency(a.amortization.interest)}}</span>
 											</div>
 										</div>
 										<div>
 											<span class="text-lg text-bold text-primary-dark">TOTAL</span>
-											<span class="text-block bg-primary-dark text-white px-16 text-45 mr-36">P 411.95</span>
+											<span class="text-block bg-primary-dark text-white px-16 text-45 mr-36">P {{formatToCurrency(a.amortization.principal + a.amortization.interest)}}</span>
 										</div>
 									</div>
 									<div class="flex-1 px-16 br-primary-dark d-flex flex-column justify-content-between">
@@ -287,33 +285,33 @@
 													<span>Principal</span>
 													<span>:</span>
 												</div>
-												<span class="flex-3 pl-10">P 321.00</span>
+												<span class="flex-3 pl-10">P {{formatToCurrency(a.amortization.principal)}}</span>
 											</div>
 											<div class="d-flex justify-content-between py-5 text-primary-dark">
 												<div class="flex-4 d-flex justify-content-between">
 													<span>Interest</span>
 													<span>:</span>
 												</div>
-												<span class="flex-3 pl-10">P 95.00</span>
+												<span class="flex-3 pl-10">P {{formatToCurrency(a.amortization.interest)}}</span>
 											</div>
 											<div class="d-flex justify-content-between py-5 text-primary-dark">
 												<div class="flex-4 d-flex justify-content-between">
 													<span>Penalty</span>
 													<span>:</span>
 												</div>
-												<span class="flex-3 pl-10">P 0.00</span>
+												<span class="flex-3 pl-10">P {{formatToCurrency(a.amortization.penalty)}}</span>
 											</div>
 											<div class="d-flex justify-content-between py-5 text-primary-dark">
 												<div class="flex-4 d-flex justify-content-between">
 													<span>PDI</span>
 													<span>:</span>
 												</div>
-												<span class="flex-3 pl-10">P 103.00</span>
+												<span class="flex-3 pl-10">P {{formatToCurrency(a.amortization.pdi)}}</span>
 											</div>
 										</div>
 										<div>
 											<span class="text-lg text-bold text-primary-dark">TOTAL</span>
-											<span class="text-block bg-primary-dark text-white px-16 text-45 mr-36">P 9,255.00</span>
+											<span class="text-block bg-primary-dark text-white px-16 text-45 mr-36">P {{formatToCurrency(a.amortization.principal + a.amortization.interest + a.amortization.pdi + a.amortization.penalty)}}</span>
 										</div>
 									</div>
 									<div class="flex-1 px-16 d-flex flex-column justify-content-between">

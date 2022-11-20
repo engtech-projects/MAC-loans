@@ -55,8 +55,11 @@ class ClientInformationController extends Controller
 	public function balanceInquiry($id){
 		$borrower = Borrower::find($id);
 		$borrower->loanAccounts = $borrower->loanAccounts();
-		foreach ($borrower->loanAccounts as $key => $value) {
-			$borrower->loanAccounts[$key]->amortization = $value->currentAmortization($value->loan_account_id);
+		if($borrower->loanAccounts){
+			foreach ($borrower->loanAccounts as $key => $value) {
+				$borrower->loanAccounts[$key]->amortization = $value->currentAmortization($value->loan_account_id);
+				$borrower->loanAccounts[$key]->current_amortization = $value->getCurrentAmortization();
+			}
 		}
 		$borrower->photo = $borrower->getPhoto();
 		$this->checkAccess('view balance inquiry');
