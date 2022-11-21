@@ -59,10 +59,24 @@ class ReportsController extends BaseController
 		}elseif( $type == 'product' ){
 			return $report->repaymentByProduct($filters);
 		}
-
 	}
 
 	public function collectionReports() {}
+
+	public function branchReports(Request $request) {
+
+		$filters = [
+			'type' => $request->input('type'),
+			'transaction_date' => $request->input('transaction_date'),
+			'account_officer' => $request->input('account_officer'),
+			'center' => $request->input('center'),
+			'branch_id' => $request->input('branch_id')
+		];
+
+		return $filters;
+	}
+
+
 
 	// public function releaseByClientReports(Request $request) {
 
