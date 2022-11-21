@@ -43,7 +43,7 @@
                         <span>Accounts</span>
                     </div>
                     <div class="flex-col accounts-list">
-                        <div v-for="(a, i) in borrower.loan_accounts" :key="a.loan_account_id" class="card mb-12" :class="i > 0? 'collapsed-card':''">
+                        <div v-for="(a, i) in borrower.loanAccounts" :key="a.loan_account_id" class="card mb-12" :class="i > 0? 'collapsed-card':''">
                             <div
                                 class="card-header"
                                 style="background-color: #dfdfd0 !important"
@@ -186,7 +186,7 @@
                                             <span class="font-blue"
                                                 >Collection Rate</span
                                             >
-                                            <span>---</span>
+                                            <span>{{a.collection_rate}}%</span>
                                         </div>
                                     </div>
                                 </div>
@@ -336,12 +336,12 @@
 													<span>Surcharge</span>
 													<span>:</span>
 												</div>
-												<span class="flex-3 pl-10">P 0.00</span>
+												<span class="flex-3 pl-10">P {{formatToCurrency(a.outstandingBalance - (a.current_amortization.principal_balance + a.current_amortization.interest_balance))}}</span>
 											</div>
 										</div>
 										<div>
 											<span class="text-lg text-bold text-primary-dark">TOTAL</span>
-											<span class="text-block bg-primary-dark text-white px-16 text-45 mr-36">P {{formatToCurrency(a.current_amortization.principal_balance + a.current_amortization.interest_balance)}}</span>
+											<span class="text-block bg-primary-dark text-white px-16 text-45 mr-36">P {{formatToCurrency(a.outstandingBalance)}}</span>
 										</div>
 									</div>
 									<div class="flex-1 px-16"></div>
@@ -459,7 +459,7 @@ export default {
 	},
 	mounted(){
 		this.borrower = JSON.parse(this.pborrower);
-		this.fetchBorrower();
+		// this.fetchBorrower();
 	}
 }
 </script>

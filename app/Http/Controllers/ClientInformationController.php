@@ -59,6 +59,8 @@ class ClientInformationController extends Controller
 			foreach ($borrower->loanAccounts as $key => $value) {
 				$borrower->loanAccounts[$key]->amortization = $value->currentAmortization($value->loan_account_id);
 				$borrower->loanAccounts[$key]->current_amortization = $value->getCurrentAmortization();
+				$borrower->loanAccounts[$key]->collection_rate = $value->collectionRate();
+				$borrower->loanAccounts[$key]->outstandingBalance = $value->outstandingBalance($value->loan_account_id);
 			}
 		}
 		$borrower->photo = $borrower->getPhoto();
