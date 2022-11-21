@@ -26,27 +26,27 @@ class Reports extends Model
 
     	$loanAccount->where([ 'loan_accounts.status' => 'released' ]);
     	
-    	if( isset($filters['product_id']) ){
+    	if( isset($filters['product_id']) && $filters['product_id'] ){
     		$loanAccount->where([ 'loan_accounts.product_id' => $filters['product_id'] ]);
     	}
 
-    	if( isset($filters['cycle_no']) ){
+    	if( isset($filters['cycle_no']) && $filters['cycle_no'] ){
     		$loanAccount->where([ 'loan_accounts.cycle_no' => $filters['cycle_no'] ]);
     	}
 
-    	if( isset($filters['branch_code']) ){
+    	if( isset($filters['branch_code']) && $filters['branch_code'] ){
     		$loanAccount->where([ 'loan_accounts.branch_code' => $filters['branch_code'] ]);
     	}
 
-    	if( isset($filters['center']) ){
+    	if( isset($filters['center']) && $filters['center'] ){
     		$loanAccount->where([ 'loan_accounts.center_id' => $filters['center'] ]);
     	}
 
-    	if( isset($filters['product']) ){
+    	if( isset($filters['product']) && $filters['product'] ){
     		$loanAccount->where([ 'loan_accounts.product_id' => $filters['product'] ]);
     	}
 
-    	if( isset($filters['account_officer']) ){
+    	if( isset($filters['account_officer']) && $filters['account_officer'] ){
     		$loanAccount->where([ 'loan_accounts.ao_id' => $filters['account_officer'] ]);
     	}
 
@@ -72,7 +72,8 @@ class Reports extends Model
 			'loan_accounts.center_id', 
 			'loan_accounts.branch_code',
             'loan_accounts.release_type',
-            'loan_accounts.cycle_no'
+            'loan_accounts.cycle_no',
+            'loan_accounts.memo'
         ]);
     }
 
@@ -90,7 +91,12 @@ class Reports extends Model
 
     public function getReleaseByProduct($filters) {
 
-        $products = Product::where([ 'status' => 'active' ])->get(['product_id', 'product_code', 'product_name', 'interest_rate']);
+        if( isset($filters['product']) && $filters['product'] ){
+            $products = Product::where([ 'status' => 'active', 'product_id' => $filters['product'] ])->get(['product_id', 'product_code', 'product_name', 'interest_rate']);
+        }else{
+            $products = Product::where([ 'status' => 'active' ])->get(['product_id', 'product_code', 'product_name', 'interest_rate']);
+        }
+        
         $paymentTypes = config('enums.payment_type');
 
         foreach ($products as $key => $product) {
@@ -107,7 +113,7 @@ class Reports extends Model
                 $product->reference = $product->product_code . ' - ' . $product->product_name;
 
                 foreach ($accounts as $account) {
-                    
+
                     $product->principal += $account->loan_amount;
                     $product->interest += $account->interest_amount;
                     $product->document_stamp += $account->document_stamp;
@@ -439,17 +445,50 @@ class Reports extends Model
 
     public function branchCollectionReport($filters = []) {
 
-        // $payments = new Payment();
+        $payments = new Payment();
 
-        // $payments = Payment::join('loan_accounts', 'loan_accounts.loan_account_id', '=', 'payment.loan_account_id')
-        //                     ->join('borrower_info', 'borrower_info.borrower_id', '=', 'loan_accounts.borrower_id');
-        // where(['transaction_date' => $filters['transaction_date']]);
+        $payments = Payment::join('loan_accounts', 'loan_accounts.loan_account_id', '=', 'payment.loan_account_id')
+                            ->join('borrower_info', 'borrower_info.borrower_id', '=', 'loan_accounts.borrower_id');
+        
 
-        // $payments = Payment::join('loan_account', )
+        $payments->where(['payment.transaction_date' => $filters['transaction_date']]);
 
+        if( isset($filters['account_officer']) ){
+            $payments->where([ 'loan_accounts.ao_id' => $filters['account_officer'] ]);
+        }
 
+        if( isset($filters['center']) && $filters['center']) {
+             $payments->where([ 'loan_accounts.center_id' => $filters['center'] ]);
+
+        }
+
+        $payments = $payments->get();
+        $data = [];
+
+        if( count($payments) > 0 ) {
+
+            foreach ($payments as $key => $value) {
+                
+                // $loanAccount = LoanAccount::find($value['loan_account_id']);
+                
+                // return $loanAccount->getCurrentAmortization();
+                $data[$key]['id'] = $value['loan_account_id'];
+                $data[$key]['client'] = Borrower::find($value['borrower_id'])->fullname();
+                $data[$key]['date_loan'] = $value['date_release'];
+                $data[$key]['maturity_date'] = $value['due_date'];
+                $data[$key]['amount_loan'] = $value['loan_amount'];
+                $data[$key]['outstanding_balance'] = '';
+                $data[$key]['principal_balance'] = '';
+                $data[$key]['delinquent'] = '';
+                $data[$key]['weekly_amortization'] = '';
+                $data[$key]['contact'] = $value['contact_number'];
+                $data[$key]['address'] = $value['address'];
+
+            }
+        }
+
+        return $data;
         // return $payments;
-
     }
 
     public function cancelledRepaymentByClient($filters = []) {
