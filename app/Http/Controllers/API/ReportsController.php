@@ -65,13 +65,50 @@ class ReportsController extends BaseController
 
 	public function branchReports(Request $request) {
 
-		$filters = [
-			'type' => $request->input('type'),
-			'transaction_date' => $request->input('transaction_date'),
-			'account_officer' => $request->input('account_officer'),
-			'center' => $request->input('center'),
-			'branch_id' => $request->input('branch_id')
-		];
+		$type = $request->input('type');
+		$filters = [];
+		$report = new Reports();
+
+		switch ($type) {
+
+			case 'collection':
+				
+				$filters = [
+					'type' => $request->input('type'),
+					'transaction_date' => $request->input('transaction_date'),
+					'account_officer' => $request->input('account_officer'),
+					'center' => $request->input('center'),
+					'branch_id' => $request->input('branch_id'),
+					'group' => $request->input('group')
+				];
+
+				$collectionReport = $report->branchCollectionReport($filters);
+				return $collectionReport;
+				// return $this->sendResponse('Invalid Parameters', 'Could not load data');
+				break;
+			case 'maturity':
+				# code...
+				break;
+			case 'client_payment_status':
+				# code...
+				break;
+			case 'account_officer':
+				# code...
+				break;
+			case 'loan_listing':
+				# code...
+				break;
+			case 'loan_aging_summary':
+				# code...
+				break;
+			case 'revenue':
+				# code...
+				break;
+
+			default:
+				return $this->sendResponse('Invalid Parameters', 'Could not load data');
+				break;
+		}
 
 		return $filters;
 	}
