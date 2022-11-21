@@ -55,6 +55,13 @@ class ReportsController extends Controller
 		]);
 	}
 
+	public function repaymentCancelled(){
+		return view('reports.repayment.cancelled')->with([
+			'nav' => ['reports', 'cancelled payments',''],
+			'title' => 'Reports - Cancelled Payments',
+		]);
+	}
+
 	public function collectionClient(){
 		return view('reports.collection.client')->with([
 			'nav' => ['reports', 'collection',''],

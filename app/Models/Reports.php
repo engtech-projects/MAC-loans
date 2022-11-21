@@ -507,11 +507,11 @@ class Reports extends Model
         foreach ($payments as $payment) {
 
             $data[] = [
-                'date_cancelled' => $payment->updated_at,
+                'date_cancelled' => Carbon::createFromFormat('Y-m-d H:i:s', $payment->updated_at)->format('m/d/Y'),
                 'cancelled_by' => '[backend_get_cancelled_by]',
                 'account_num' => $payment->account_num,
                 'borrower' => Borrower::find($payment->borrower_id)->fullname(),
-                'payment_date' => $payment->updated_at,
+                'payment_date' => Carbon::createFromFormat('Y-m-d H:i:s', $payment->updated_at)->format('m/d/Y'),
                 'or' => $payment->or_no,
                 'transaction_number' => $payment->transaction_number,
                 'principal' => $payment->principal,
