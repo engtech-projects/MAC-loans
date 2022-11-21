@@ -107,7 +107,7 @@
 			</div>
 		</div>
 		<div class="light-bb pxy-25 d-flex justify-content-between align-items-center hover-light report-nav-item <?php echo isActiveNav($nav[1], 'cancelled payments'); ?>">
-			<a href="reports_cancelled_payments.php" class="text-20 base-link">Cancelled Payments</a>
+			<a href="{{route('reports.repayment.cancelled')}}" class="text-20 base-link">Cancelled Payments</a>
 			<i class="fa fa-caret-right"></i>
 		</div>
 		<div class="light-bb pxy-25 d-flex justify-content-between align-items-center hover-light report-nav-item <?php echo isActiveNav($nav[1], 'micro monitoring'); ?>">

@@ -58,6 +58,7 @@
  Vue.component('reports-release-ao', require('./ui/reports/release/Ao.vue').default);
  Vue.component('reports-repayment-product', require('./ui/reports/repayment/Product.vue').default);
  Vue.component('reports-repayment-client', require('./ui/reports/repayment/Client.vue').default);
+ Vue.component('reports-repayment-cancelled', require('./ui/reports/repayment/Cancelled.vue').default);
  Vue.component('reports-collection-product', require('./ui/reports/collection/Product.vue').default);
  Vue.component('reports-collection-client', require('./ui/reports/collection/Client.vue').default);
  Vue.component('reports-collection-ao', require('./ui/reports/collection/Ao.vue').default);

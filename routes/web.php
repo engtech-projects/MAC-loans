@@ -84,6 +84,7 @@ Route::group(['middleware' => 'auth'], function (){
 
 	Route::get('/reports/repayment/product', [ReportsController::class, 'repaymentProduct'])->name('reports.repayment.product');
 	Route::get('/reports/repayment/client', [ReportsController::class, 'repaymentClient'])->name('reports.repayment.client');
+	Route::get('/reports/repayment/cancelled', [ReportsController::class, 'repaymentCancelled'])->name('reports.repayment.cancelled');
 
 	Route::get('/reports/collection/product', [ReportsController::class, 'collectionProduct'])->name('reports.collection.product');
 	Route::get('/reports/collection/client', [ReportsController::class, 'collectionClient'])->name('reports.collection.client');
