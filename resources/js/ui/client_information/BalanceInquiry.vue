@@ -322,26 +322,28 @@
 													<span>Principal Balance</span>
 													<span>:</span>
 												</div>
-												<span class="flex-3 pl-10">P {{formatToCurrency(a.current_amortization.principal_balance)}}</span>
+												<span class="flex-3 pl-10">P {{formatToCurrency(a.remainingBalance.principal.balance)}}</span>
 											</div>
 											<div class="d-flex justify-content-between py-5 text-primary-dark">
 												<div class="flex-4 d-flex justify-content-between">
 													<span>Interest Balance</span>
 													<span>:</span>
 												</div>
-												<span class="flex-3 pl-10">P {{formatToCurrency(a.current_amortization.interest_balance)}}</span>
+												<span class="flex-3 pl-10">P {{formatToCurrency(a.remainingBalance.interest.balance - a.remainingBalance.rebates.balance)}}</span>
 											</div>
 											<div class="d-flex justify-content-between py-5 text-primary-dark">
 												<div class="flex-4 d-flex justify-content-between">
 													<span>Surcharge</span>
 													<span>:</span>
 												</div>
-												<span class="flex-3 pl-10">P {{formatToCurrency(a.outstandingBalance - (a.current_amortization.principal_balance + a.current_amortization.interest_balance))}}</span>
+												<span class="flex-3 pl-10">P {{formatToCurrency(a.remainingBalance.penalty.balance + a.remainingBalance.pdi.balance)}}</span>
 											</div>
 										</div>
 										<div>
 											<span class="text-lg text-bold text-primary-dark">TOTAL</span>
-											<span class="text-block bg-primary-dark text-white px-16 text-45 mr-36">P {{formatToCurrency(a.outstandingBalance)}}</span>
+											<span class="text-block bg-primary-dark text-white px-16 text-45 mr-36">P {{formatToCurrency(a.remainingBalance.principal.balance +
+																																		(a.remainingBalance.interest.balance - a.remainingBalance.rebates.balance) +
+																																		(a.remainingBalance.penalty.balance + a.remainingBalance.pdi.balance))}}</span>
 										</div>
 									</div>
 									<div class="flex-1 px-16"></div>
