@@ -441,4 +441,45 @@ class Reports extends Model
 
     }
 
+    public function cancelledRepaymentByClient($filters = []) {
+
+        $payments = Payment::join('loan_accounts', 'payment.loan_account_id', '=', 'loan_accounts.loan_account_id')
+                        ->where(['payment.branch_id' => $filters['branch_id'], 'payment.status' => 'cancelled'])
+                        ->whereDate('payment.updated_at', '>=', $filters['date_from'])
+                        ->whereDate('payment.updated_at', '<=', $filters['date_to'])
+                        ->orderBy('payment.updated_at', 'ASC')
+                        ->get([
+                            'payment.*', 'loan_accounts.borrower_id', 'loan_accounts.account_num',
+                        ]);
+
+        $data = [];
+
+        foreach ($payments as $payment) {
+
+            $data[] = [
+                'date_cancelled' => $payment->updated_at,
+                'cancelled_by' => '[backend_get_cancelled_by]',
+                'account_num' => $payment->account_num,
+                'borrower' => Borrower::find($payment->borrower_id)->fullname(),
+                'payment_date' => $payment->updated_at,
+                'or' => $payment->or_no,
+                'transaction_number' => $payment->transaction_number,
+                'principal' => $payment->principal,
+                'interest' => $payment->interest,
+                'pdi' => ($payment->pdi_approval_no) ? $payment->pdi : 0,
+                'pdi_waive' => ($payment->pdi_approval_no) ? 0 : $payment->pdi,
+                'penalty' => ($payment->penalty_approval_no) ? $payment->penalty : 0,
+                'penalty_waive' => ($payment->penalty_approval_no) ? 0 : $payment->penalty,
+                'rebates' => $payment->rebates,
+                'overpayment' => $payment->over_payment,
+                'total' => $payment->amount_applied,
+                'remarks' => $payment->remarks,
+                'payment_type' => $payment->payment_type
+            ];
+
+        }
+
+        return $data;
+    }
+
 }
