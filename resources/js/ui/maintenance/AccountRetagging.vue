@@ -394,7 +394,7 @@
                                     class="form-control form-input"
                                     id="product"
                                 >
-									<option v-for="p in products" :key="p.product_id" :value="p.product_id">{{p.product_name}}</option>
+									<option v-for="p in products.filter(p=>p.status=='active')" :key="p.product_id" :value="p.product_id">{{p.product_name}}</option>
 								</select>
                             </div>
                             <div v-if="retaggingField=='ao'" class="form-group mb-10" style="flex: 5">
@@ -406,7 +406,7 @@
                                     class="form-control form-input"
                                     id="product"
                                 >
-									<option v-for="a in accountOfficers" :key="a.ao_id" :value="a.ao_id">{{a.name}}</option>
+									<option v-for="a in accountOfficers.filter(ao=>ao.status=='active')" :key="a.ao_id" :value="a.ao_id">{{a.name}}</option>
 								</select>
                             </div>
                             <div v-if="retaggingField=='center'" class="form-group mb-10" style="flex: 5">
@@ -418,7 +418,7 @@
                                     class="form-control form-input"
                                     id="product"
                                 >
-									<option v-for="c in centers" :key="c.center_id" :value="c.center_id">{{c.center}}</option>
+									<option v-for="c in centers.filter(c=>c.status=='active')" :key="c.center_id" :value="c.center_id">{{c.center}}</option>
 								</select>
                             </div>
                             <!-- <div class="form-group mb-10" style="flex: 5">
@@ -1115,7 +1115,7 @@ export default {
 				}
 			})
 			.then(function (response) {
-				this.accountOfficers = response.data.data;
+				this.accountOfficers = response.data.data.filter(ao=>ao.branch_id == this.pbranch);
 			}.bind(this))
 			.catch(function (error) {
 				console.log(error);
@@ -1162,6 +1162,7 @@ export default {
                 if (b.loan_accounts) {
                     b.loan_accounts.forEach(la => {
                         la.checked = false;
+						la.photo = b.photo;
 						if(la.loan_status != 'Paid' && la.status == 'released'){
 							accounts.push(la);
 						}
@@ -1207,8 +1208,8 @@ export default {
 			return "text-ocean";
 		},
         borrowerPhoto: function () {
-            return this.loanAccount.borrower.photo
-                ? this.loanAccount.borrower.photo
+            return this.loanAccount.photo
+                ? this.loanAccount.photo
                 : this.baseURL() + "/img/user.png";
         },
         lastTransaction: function () {
