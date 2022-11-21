@@ -52,28 +52,28 @@ class Reports extends Model
 
 
     	return $loanAccount->get([
-							'loan_accounts.loan_account_id',
-							'loan_accounts.account_num',
-							'loan_accounts.date_release',
-							'loan_accounts.terms',
-							'loan_accounts.loan_amount', 
-							'loan_accounts.interest_amount', 
-							'loan_accounts.document_stamp', 
-							'loan_accounts.filing_fee', 
-							'loan_accounts.insurance', 
-							'loan_accounts.notarial_fee', 
-							'loan_accounts.prepaid_interest', 
-							'loan_accounts.affidavit_fee', 
-							'loan_accounts.total_deduction', 
-							'loan_accounts.net_proceeds', 
-							'loan_accounts.borrower_id',
-							'loan_accounts.product_id',
-							'loan_accounts.ao_id', 
-							'loan_accounts.center_id', 
-							'loan_accounts.branch_code',
-                            'loan_accounts.release_type',
-                            'loan_accounts.cycle_no'
-						]);
+			'loan_accounts.loan_account_id',
+			'loan_accounts.account_num',
+			'loan_accounts.date_release',
+			'loan_accounts.terms',
+			'loan_accounts.loan_amount', 
+			'loan_accounts.interest_amount', 
+			'loan_accounts.document_stamp', 
+			'loan_accounts.filing_fee', 
+			'loan_accounts.insurance', 
+			'loan_accounts.notarial_fee', 
+			'loan_accounts.prepaid_interest', 
+			'loan_accounts.affidavit_fee', 
+			'loan_accounts.total_deduction', 
+			'loan_accounts.net_proceeds', 
+			'loan_accounts.borrower_id',
+			'loan_accounts.product_id',
+			'loan_accounts.ao_id', 
+			'loan_accounts.center_id', 
+			'loan_accounts.branch_code',
+            'loan_accounts.release_type',
+            'loan_accounts.cycle_no'
+        ]);
     }
 
 
@@ -118,6 +118,7 @@ class Reports extends Model
                     $product->affidavit_fee += $account->affidavit_fee;
                     $product->total_deduction += $account->total_deduction;
                     $product->net_proceeds += $account->net_proceeds;
+                    $product->memo += $account->memo;
 
                     if( str_contains(strtolower($account->release_type), 'cash')  ){
                          $product->cash += $account->net_proceeds;
@@ -190,6 +191,7 @@ class Reports extends Model
                         'deduction' => $account->total_deduction,
                         'prepaid_interest' => $account->prepaid_interest,
                         'net_proceeds' => $account->net_proceeds,
+                        'memo' => $account->memo,
                         'type' => '',
                     ];
 
@@ -207,11 +209,11 @@ class Reports extends Model
                             'principal' => $payment->principal,
                             'interest' => $payment->interest,
                             'pdi' => $payment->pdi,
-                            'over' => null,
+                            'over' => $payment->over_payment,
                             'discount' => null,
                             'total_payment' => $payment->amount_applied,
                             'net_int' => null,
-                            'vat' => null
+                            'vat' => $payment->vat
                     ];
                 }
             }
@@ -437,7 +439,16 @@ class Reports extends Model
 
     public function branchCollectionReport($filters = []) {
 
+        // $payments = new Payment();
 
+        // $payments = Payment::join('loan_accounts', 'loan_accounts.loan_account_id', '=', 'payment.loan_account_id')
+        //                     ->join('borrower_info', 'borrower_info.borrower_id', '=', 'loan_accounts.borrower_id');
+        // where(['transaction_date' => $filters['transaction_date']]);
+
+        // $payments = Payment::join('loan_account', )
+
+
+        // return $payments;
 
     }
 
