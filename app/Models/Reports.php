@@ -445,50 +445,52 @@ class Reports extends Model
 
     public function branchCollectionReport($filters = []) {
 
-        $payments = new Payment();
+        $branch = Branch::find($filters['branch_id']);
+        $accounts = LoanAccount::join('amortization', 'amortization.loan_account_id', '=', 'loan_accounts.loan_account_id');
 
-        $payments = Payment::join('loan_accounts', 'loan_accounts.loan_account_id', '=', 'payment.loan_account_id')
-                            ->join('borrower_info', 'borrower_info.borrower_id', '=', 'loan_accounts.borrower_id');
-        
-
-        $payments->where(['payment.transaction_date' => $filters['transaction_date']]);
-
-        if( isset($filters['account_officer']) ){
-            $payments->where([ 'loan_accounts.ao_id' => $filters['account_officer'] ]);
+        if( isset($filters['account_officer']) && $filters['account_officer'] ){
+            $accounts->where([ 'loan_accounts.ao_id' => $filters['account_officer'] ]);
         }
 
-        if( isset($filters['center']) && $filters['center']) {
-             $payments->where([ 'loan_accounts.center_id' => $filters['center'] ]);
-
+        if( isset($filters['center']) && $filters['center'] ){
+            $accounts->where([ 'loan_accounts.center_id' => $filters['center'] ]);
         }
 
-        $payments = $payments->get();
+        $accounts->where([
+            'amortization.amortization_date' => $filters['transaction_date'], 
+            'amortization.status' => 'open',
+            'loan_accounts.branch_code' => $branch->branch_code,
+            'loan_accounts.loan_status' => 'Ongoing'
+        ]);
+
+        $accounts = $accounts->get();
+
         $data = [];
 
-        if( count($payments) > 0 ) {
+        if( count($accounts) > 0 ) {
 
-            foreach ($payments as $key => $value) {
+            foreach ($accounts as $key => $value) {
                 
-                // $loanAccount = LoanAccount::find($value['loan_account_id']);
+                $loanAccount = LoanAccount::find($value['loan_account_id']);
+                $currentAmortization = $loanAccount->getCurrentAmortization();
                 
-                // return $loanAccount->getCurrentAmortization();
-                $data[$key]['id'] = $value['loan_account_id'];
-                $data[$key]['client'] = Borrower::find($value['borrower_id'])->fullname();
+                $borrower = Borrower::find($value['borrower_id']);
+                $data[$key]['client'] = $borrower->fullname();
                 $data[$key]['date_loan'] = $value['date_release'];
                 $data[$key]['maturity_date'] = $value['due_date'];
                 $data[$key]['amount_loan'] = $value['loan_amount'];
-                $data[$key]['outstanding_balance'] = '';
-                $data[$key]['principal_balance'] = '';
-                $data[$key]['delinquent'] = '';
-                $data[$key]['weekly_amortization'] = '';
-                $data[$key]['contact'] = $value['contact_number'];
-                $data[$key]['address'] = $value['address'];
+                $data[$key]['outstanding_balance'] = $currentAmortization->outstandingBalance;
+                $data[$key]['principal_balance'] = $currentAmortization->principal_balance;
+                $data[$key]['delinquent'] = $currentAmortization->total;
+                $data[$key]['weekly_amortization'] = $value['total'];
+                $data[$key]['contact'] = $borrower->contact_number;
+                $data[$key]['address'] = $borrower->address;
 
             }
+
         }
 
         return $data;
-        // return $payments;
     }
 
     public function cancelledRepaymentByClient($filters = []) {
