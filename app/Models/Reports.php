@@ -76,6 +76,8 @@ class Reports extends Model
 						]);
     }
 
+
+    /* start transaction reports */
     public function transactionReports($filters = []) {
 
     	$report = new Reports();
@@ -86,238 +88,22 @@ class Reports extends Model
     	return $report;
     }
 
-    public function releaseReports($filters = [], $category) {
-
-    	switch ($category) {
-    		case 'product':
-                $type = $filters['type'];
-                if( $type == 'new' ){
-                    $filters['cycle_no'] = 1;
-                }else{
-                    $filters[$type] = $filters['spec'];
-                }
-
-    			return $this->getReleaseByProduct($filters);
-    			break;
-
-    		case 'client':
-    			$type = $filters['type'];
-    			if( $type == 'new' ){
-    				$filters['cycle_no'] = 1;
-    			}else{
-    				$filters[$type] = $filters['spec'];
-    			}
-    			return $this->getReleaseByClient($filters, false);
-    			break;
-
-    		case 'account_officer':
-                $type = $filters['type'];
-    			if( $type == 'new' ){
-                    $filters['cycle_no'] = 1;
-                }
-
-                return $this->getReleaseByAccountOfficer($filters);
-    			break;
-    		
-    		default:
-    			# code...
-    			break;
-    	}
-    }
-
     public function getReleaseByProduct($filters) {
 
-    	$products = Product::where([ 'status' => 'active' ])->get(['product_id', 'product_code', 'product_name', 'interest_rate']);
-    	$paymentTypes = config('enums.payment_type');
+        $products = Product::where([ 'status' => 'active' ])->get(['product_id', 'product_code', 'product_name', 'interest_rate']);
+        $paymentTypes = config('enums.payment_type');
 
-    	foreach ($products as $key => $product) {
+        foreach ($products as $key => $product) {
 
-        	$accounts = null;
-        	$payments = null;
-        	$filters['product_id'] = $product->product_id;
-        	$accounts = $this->getLoanAccounts($filters);
+            $accounts = null;
+            $payments = null;
+            $filters['product_id'] = $product->product_id;
+            $accounts = $this->getLoanAccounts($filters);
             $product->cash = 0;
             $product->check = 0;
 
-        	if( count($accounts) > 0 ){
-
-        		$product->reference = $product->product_code . ' - ' . $product->product_name;
-
-        		foreach ($accounts as $account) {
-        			
-        			$product->principal += $account->loan_amount;
-		    		$product->interest += $account->interest_amount;
-		    		$product->document_stamp += $account->document_stamp;
-					$product->filing_fee += $account->filing_fee;
-					$product->insurance += $account->insurance;
-					$product->notarial_fee += $account->notarial_fee;
-					$product->prepaid_interest += $account->prepaid_interest;
-					$product->affidavit_fee += $account->affidavit_fee;
-					$product->total_deduction += $account->total_deduction;
-					$product->net_proceeds += $account->net_proceeds;
-
-                    if( str_contains(strtolower($account->release_type), 'cash')  ){
-                         $product->cash += $account->net_proceeds;
-                    }
-
-                    if( str_contains(strtolower($account->release_type), 'check') ){
-                         $product->check += $account->net_proceeds;
-                    }
-
-					if( count($account->payments) ){
-
-						foreach ($account->payments as $payment) {
-
-							foreach ($paymentTypes as $type) {
-								
-								if( $payment->payment_type == $type ){
-
-									if( !isset($payments[$type]) ){
-										$payments[$type]['principal'] = 0;
-										$payments[$type]['interest'] = 0;
-										$payments[$type]['pdi'] = 0;
-										$payments[$type]['over'] = 0;
-										$payments[$type]['discount'] = 0;
-										$payments[$type]['total_payment'] = 0;
-										$payments[$type]['net_int'] = 0;
-										$payments[$type]['vat'] = 0;
-									}
-
-									$payments[$type]['principal'] += $payment->principal;
-									$payments[$type]['interest'] += $payment->interest;
-									$payments[$type]['pdi'] += $payment->pdi;
-									$payments[$type]['over'] += null;
-									$payments[$type]['discount'] += null;
-									$payments[$type]['total_payment'] += $payment->amount_applied;
-									$payments[$type]['net_int'] += null;
-									$payments[$type]['vat'] += null;
-								}
-							}
-						}
-					}
-        		}
-
-        		$product->payments = $payments;
-        	}else{
-        		unset($products[$key]);
-        	}     	
-    	}
-
-    	return $products;
-    }
-
-    public function getReleaseByClient($filters, $collection = true) {
-
-    	$client = [];
-    	$accounts = $this->getLoanAccounts($filters);
-
-    	foreach ($accounts as $account) {
-    		
-    		$client['summary'][] = [ 
-    					'account_num' => $account->account_num,
-    					'borrower' => $account->borrower->fullname() ,
-    					'date_loan' => $account->date_release,
-    					'term' => $account->terms,
-    					'amount_loan' => $account->loan_amount,
-    					'filing_fee' => $account->filing_fee,
-    					'document_stamp' => $account->document_stamp,
-    					'insurance' => $account->insurance,
-    					'notarial_fee' => $account->notarial_fee,
-    					'affidavit_fee' => $account->affidavit_fee,
-    					'deduction' => $account->total_deduction,
-    					'prepaid_interest' => $account->prepaid_interest,
-    					'net_proceeds' => $account->net_proceeds,
-    					'type' => '',
-    				];
-
-    		if( !$collection ) continue;
-
-			if( count($account->payments) ){
-
-    			foreach ($account->payments as $payment) {
-
-    				$client['collection'][] = [
-	    					'borrower' => $account->borrower->fullname(),
-	    					// 'date_paid' => Carbon::createFromFormat('Y-m-d', $payment->created_at)->format('Y-m-d'),
-	    					'date_paid' => Carbon::createFromFormat('Y-m-d H:i:s', $payment->created_at)->format('m/d/Y'),
-	    					'or' => $payment->or_no,
-	    					'principal' => $payment->principal,
-							'interest' => $payment->interest,
-							'pdi' => $payment->pdi,
-							'over' => null,
-							'discount' => null,
-							'total_payment' => $payment->amount_applied,
-							'net_int' => null,
-							'vat' => null
-	    			];
-    			}
-    		}
-    	}
-
-    	return $client;
-    }
-
-    public function getReleaseByAccountOfficer($filters) {
-
-        $officers = AccountOfficer::where(['status' => 'active'])->get()->toArray();
-
-        if( $filters['type'] != 'all' ){
-            $aoId = $filters['type'];
-            $officers = AccountOfficer::where(['status' => 'active', 'ao_id' => $aoId ])->get()->toArray();    
-        }
-
-        $products = Product::where([ 'status' => 'active' ])->get(['product_id', 'product_code', 'product_name', 'interest_rate'])->toArray();
-
-        foreach ($officers as $key => $value) {
-            
-            foreach ($products as $k => $v) {
-
-                $accounts = null;
-                $filters['product_id'] = $v['product_id'];
-                $filters['account_officer'] = $value['ao_id'];
-                
-                $accounts = $this->getLoanAccounts($filters);
-
-                if( count($accounts) > 0 ) {
-
-                    $v['reference'] = $v['product_code'] . ' - ' . $v['product_name'];
-                    $v['repeat_account'] = 0;
-                    $v['repeat_account_amount'] = 0;
-                    $v['new_account'] = 0;
-                    $v['new_account_amount'] = 0;
-                    foreach ($accounts as $account) {
-
-                        if( $account->cycle_no > 1 ){
-                            $v['repeat_account'] += 1;
-                            $v['repeat_account_amount'] += $account->loan_amount;
-                        }else{
-                             $v['new_account'] += 1;
-                             $v['new_account_amount'] += $account->loan_amount;
-                        }
-                    }
-                }
-
-                $officers[$key]['products'][] = $v;
-            }
-        }
-        return $officers;
-    }
-
-    public function releaseByProduct($filters = []){
-
-        $products = Product::where([ 'status' => 'active' ])->get(['product_id', 'product_code', 'product_name', 'interest_rate']);
-
-
-        $data = [];
-
-        foreach ($products as $key => $product) {
-        
-            $filters['product_id'] = $product->product_id;
-            $accounts = $this->getLoanAccounts($filters);
-
             if( count($accounts) > 0 ){
 
-                $data[$key]['reference'] = $value['product_code'] . '-' . $value['product_name'];
                 $product->reference = $product->product_code . ' - ' . $product->product_name;
 
                 foreach ($accounts as $account) {
@@ -367,7 +153,7 @@ class Reports extends Model
                                     $payments[$type]['discount'] += null;
                                     $payments[$type]['total_payment'] += $payment->amount_applied;
                                     $payments[$type]['net_int'] += null;
-                                    $payments[$type]['vat'] += null;
+                                    $payments[$type]['vat'] += $payment->vat;
                                 }
                             }
                         }
@@ -379,16 +165,176 @@ class Reports extends Model
                 unset($products[$key]);
             }       
         }
+
+        return $products;
     }
 
-    public function releaseByClient($filters = []){}
+    public function getReleaseByClient($filters, $collection = true) {
 
-    public function releaseByAccountOfficer($filters = []){}
+        $client = [];
+        $accounts = $this->getLoanAccounts($filters);
 
+        foreach ($accounts as $account) {
+            
+            $client['summary'][] = [ 
+                        'account_num' => $account->account_num,
+                        'borrower' => $account->borrower->fullname() ,
+                        'date_loan' => $account->date_release,
+                        'term' => $account->terms,
+                        'amount_loan' => $account->loan_amount,
+                        'filing_fee' => $account->filing_fee,
+                        'document_stamp' => $account->document_stamp,
+                        'insurance' => $account->insurance,
+                        'notarial_fee' => $account->notarial_fee,
+                        'affidavit_fee' => $account->affidavit_fee,
+                        'deduction' => $account->total_deduction,
+                        'prepaid_interest' => $account->prepaid_interest,
+                        'net_proceeds' => $account->net_proceeds,
+                        'type' => '',
+                    ];
+
+            if( !$collection ) continue;
+
+            if( count($account->payments) ){
+
+                foreach ($account->payments as $payment) {
+
+                    $client['collection'][] = [
+                            'borrower' => $account->borrower->fullname(),
+                            // 'date_paid' => Carbon::createFromFormat('Y-m-d', $payment->created_at)->format('Y-m-d'),
+                            'date_paid' => Carbon::createFromFormat('Y-m-d H:i:s', $payment->created_at)->format('m/d/Y'),
+                            'or' => $payment->or_no,
+                            'principal' => $payment->principal,
+                            'interest' => $payment->interest,
+                            'pdi' => $payment->pdi,
+                            'over' => null,
+                            'discount' => null,
+                            'total_payment' => $payment->amount_applied,
+                            'net_int' => null,
+                            'vat' => null
+                    ];
+                }
+            }
+        }
+
+        return $client;
+    }
+    /* start transaction reports */
+
+    /* start release reports */
+    public function releaseReports($filters = [], $category) {
+
+    	switch ($category) {
+    		case 'product':
+                $type = $filters['type'];
+                if( $type == 'new' ){
+                    $filters['cycle_no'] = 1;
+                }else{
+                    $filters[$type] = $filters['spec'];
+                }
+
+    			return $this->getReleaseByProduct($filters);
+    			break;
+
+    		case 'client':
+    			$type = $filters['type'];
+    			if( $type == 'new' ){
+    				$filters['cycle_no'] = 1;
+    			}else{
+    				$filters[$type] = $filters['spec'];
+    			}
+    			return $this->getReleaseByClient($filters, false);
+    			break;
+
+    		case 'account_officer':
+                $type = $filters['type'];
+    			if( $type == 'new' ){
+                    $filters['cycle_no'] = 1;
+                }
+
+                return $this->getReleaseByAccountOfficer($filters);
+    			break;
+
+            case 'dst':
+                $type = $filters['type'];
+                if( $type == 'new' ){
+                    $filters['cycle_no'] = 1;
+                }
+                return $this->getReleaseByDST($filters);
+                break;
+    		
+    		default:
+    			# code...
+    			break;
+    	}
+    }
+
+    public function getReleaseByDST($filters) {
+        $accounts = $this->getLoanAccounts($filters);
+
+        $releaseSummary = [];
+        foreach ($accounts as $key => $value) {
+            
+            $releaseSummary[$key]['cycle_no'] = $value->cycle_no;
+            $releaseSummary[$key]['term'] = $value->terms;
+            $releaseSummary[$key]['loan_amount'] = $value->loan_amount;
+
+        }
+
+        return $releaseSummary;
+    }   
+    
+    public function getReleaseByAccountOfficer($filters) {
+
+        $officers = AccountOfficer::where(['status' => 'active'])->get()->toArray();
+
+        if( $filters['type'] != 'all' ){
+            $aoId = $filters['type'];
+            $officers = AccountOfficer::where(['status' => 'active', 'ao_id' => $aoId ])->get()->toArray();    
+        }
+
+        $products = Product::where([ 'status' => 'active' ])->get(['product_id', 'product_code', 'product_name', 'interest_rate'])->toArray();
+
+        foreach ($officers as $key => $value) {
+            
+            foreach ($products as $k => $v) {
+
+                $accounts = null;
+                $filters['product_id'] = $v['product_id'];
+                $filters['account_officer'] = $value['ao_id'];
+                
+                $accounts = $this->getLoanAccounts($filters);
+
+                if( count($accounts) > 0 ) {
+
+                    $v['reference'] = $v['product_code'] . ' - ' . $v['product_name'];
+                    $v['repeat_account'] = 0;
+                    $v['repeat_account_amount'] = 0;
+                    $v['new_account'] = 0;
+                    $v['new_account_amount'] = 0;
+                    foreach ($accounts as $account) {
+
+                        if( $account->cycle_no > 1 ){
+                            $v['repeat_account'] += 1;
+                            $v['repeat_account_amount'] += $account->loan_amount;
+                        }else{
+                             $v['new_account'] += 1;
+                             $v['new_account_amount'] += $account->loan_amount;
+                        }
+                    }
+                }
+
+                $officers[$key]['products'][] = $v;
+            }
+        }
+        return $officers;
+    }
+    /* end release reports */
+
+    /* start repayment report */
     public function repaymentByProduct($filters = []) {
 
         $products = Product::where([ 'status' => 'active' ])->get(['product_id', 'product_code', 'product_name', 'interest_rate']);
-
 
         $data = [];
 
@@ -483,8 +429,15 @@ class Reports extends Model
 
         return $data;
     }
+    /* end repayment report */
+
 
     public function repaymentByAccountOfficer($filters = []) {
+    }
+
+    public function branchCollectionReport($filters = []) {
+
+
 
     }
 
