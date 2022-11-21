@@ -993,6 +993,7 @@ export default {
                 release_type: "",
                 interest_rate: "",
                 interest_amount: "",
+				loan_status:'',
 				remainingBalance:{
 					principal:{
 						balance:0
