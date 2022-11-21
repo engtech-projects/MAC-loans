@@ -58,6 +58,8 @@ class ReportsController extends BaseController
 			return $report->repaymentByClient($filters);
 		}elseif( $type == 'product' ){
 			return $report->repaymentByProduct($filters);
+		}elseif( $type == 'cancelled' ){
+			return $report->cancelledRepaymentByClient($filters);
 		}
 	}
 
