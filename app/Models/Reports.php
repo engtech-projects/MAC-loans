@@ -534,4 +534,28 @@ class Reports extends Model
         return $data;
     }
 
+    public function microGroup($filters = []){
+        $data = [];
+        $weeksOfMonth = [];
+        $day = Carbon::createFromFormat('Y-m-d', ($filters['date']."-1") );
+        $monthNow = $day->month;
+        $weekOfMonth = 1;
+        while($monthNow == $day->month){
+            if($day->dayOfWeek == Carbon::SUNDAY && $day->day != 1){
+                $weekOfMonth += 1;
+            }
+            
+            $weeksAndDays[$day->format("m-d-Y")] = $weekOfMonth;
+            $day = $day->addDays(1);
+        }
+
+        return $weeksAndDays;
+        return $data;
+    }
+
+    public function microIndividual($filters = []){
+
+    }
+
+
 }

@@ -93,6 +93,7 @@ Route::middleware(['auth:sanctum'])->group( function () {
     Route::post('report/release/', [ReportsController::class, 'releaseReports']);
     Route::post('report/repayment/', [ReportsController::class, 'repaymentReports']);
     Route::post('report/branch/', [ReportsController::class, 'branchReports']);
+    Route::post('report/micro/', [ReportsController::class, 'microReports']);
 	Route::post('uploadfile/{id}', [LoanAccountController::class, 'uploadFile']);
 
     Route::get('eod/eodtransaction/{branch_id}', [EODController::class, 'getTransactionDate']);
