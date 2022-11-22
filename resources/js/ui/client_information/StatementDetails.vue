@@ -176,229 +176,11 @@
 			</div>
 		</div>
 	</section>
-	<section v-if="loanDetails.loan_account_id" id="accountDetails" class="">
-		<div class="info-display title mb-12">
-			<span>Account Details</span>
-		</div>
-		<div class="flex-col accounts-list">
-			<div class="card mb-12">
-				<div class="card-header" style="background-color:#dfdfd0!important;">
-					<h3 class="card-title" style="color: #283f53;">Account Number: {{loanDetails.account_num}}</h3>
+	<div class="info-display title mb-12">
+		<span>Account Details</span>
+	</div>
+	<account-details v-if="loanDetails.loan_account_id" :loanDetails="loanDetails" :showPayments="true"></account-details>
 
-					<div class="card-tools">
-						<button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-							<i class="fas fa-minus"></i>
-						</button>
-					</div>
-				</div>
-				<div class="card-body p-0" style="padding:25px 20px!important">
-					<div class="flex mb-16">
-						<div class="flex-col granted-amount mr-24">
-							<span>Amount Granted</span>
-							<span>P {{formatToCurrency(loanDetails.loan_amount)}}</span>
-						</div>
-						<div class="flex-col flex-1">
-							<div class="row mb-16">
-								<div class="col-xl-3 col-lg-6">
-									<div class="info-display">
-										<span class="font-blue">Amortization</span>
-										<span>P {{formatToCurrency(loanAmortization)}}</span>
-									</div>
-								</div>
-								<div class="col-xl-3 col-lg-6">
-									<div class="info-display">
-										<span class="font-blue">Release Date</span>
-										<span>{{dateToMDY(new Date(loanDetails.date_release))}}</span>
-									</div>
-								</div>
-								<div class="col-xl-3 col-lg-6">
-									<div class="info-display">
-										<span class="font-blue">Term</span>
-										<span>{{loanDetails.terms}} Days / {{Math.ceil(loanDetails.terms/30)}} Month (s)</span>
-									</div>
-								</div>
-								<div class="col-xl-3 col-lg-6">
-									<div class="info-display">
-										<span class="font-blue">Due Date</span>
-										<span>{{dateToMDY(new Date(loanDetails.due_date))}}</span>
-									</div>
-								</div>
-							</div>
-							<div class="row">
-								<div class="col-xl-3 col-lg-6">
-									<div class="info-display">
-										<span class="font-blue">Interest</span>
-										<span>{{loanDetails.interest_rate}}%</span>
-									</div>
-								</div>
-								<div class="col-xl-3 col-lg-6">
-									<div class="info-display">
-										<span class="font-blue">Mode</span>
-										<span>{{loanDetails.payment_mode}}</span>
-									</div>
-								</div>
-								<!-- <div class="col-xl-3 col-lg-6">
-									<div class="info-display">
-										<span class="font-blue">Group</span>
-										<span>Various Pension</span>
-									</div>
-								</div> -->
-								<div class="col-xl-3 col-lg-6">
-									<div class="info-display">
-										<span class="font-blue">Type</span>
-										<span>{{loanDetails.type}}</span>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="row mb-16">
-						<div class="col-xl-3 col-lg-6">
-							<div class="info-display">
-								<span class="font-blue">Product Name</span>
-								<span>{{loanDetails.product.product_name}}</span>
-							</div>
-						</div>
-						<div class="col-xl-2 col-lg-6">
-							<div class="info-display">
-								<span class="font-blue">Cycle</span>
-								<span>{{loanDetails.cycle_no}}</span>
-							</div>
-						</div>
-						<div class="col-xl-2 col-lg-6">
-							<div class="info-display">
-								<span class="font-blue">Status</span>
-								<span>{{loanAccountStatus}}</span>
-							</div>
-						</div>
-						<div class="col-xl-2 col-lg-6">
-							<div class="info-display">
-								<span class="font-blue">Center</span>
-								<span>{{loanDetails.center?loanDetails.center.center:''}}</span>
-							</div>
-						</div>
-						<div class="col-xl-3 col-lg-6">
-							<div class="info-display">
-								<span class="font-blue">Collection Rate</span>
-								<span>{{loanDetails.collection_rate}}%</span>
-							</div>
-						</div>
-					</div>
-
-					<div class="row mb-16">
-						<div class="col-xl-3 col-lg-6">
-							<div class="info-display">
-								<span class="font-blue">Co-Borrower</span>
-								<span>{{loanDetails.co_borrower_name}}</span>
-							</div>
-						</div>
-						<div class="col-xl-5 col-lg-6">
-							<div class="info-display">
-								<span class="font-blue">Co-Borrower Address</span>
-								<span>{{loanDetails.co_borrower_address}}</span>
-							</div>
-						</div>
-						<div class="col-xl-2 col-lg-6">
-							<div class="info-display">
-								<span class="font-blue">Co-Borrower ID Type</span>
-								<span>{{loanDetails.co_borrower_id_type}}</span>
-							</div>
-						</div>
-						<div class="col-xl-2 col-lg-6">
-							<div class="info-display">
-								<span class="font-blue">Co-Borrower ID</span>
-								<span>{{loanDetails.co_borrower_id_number}}</span>
-							</div>
-						</div>
-					</div>
-
-					<div class="row mb-45">
-						<div class="col-xl-3 col-lg-6">
-							<div class="info-display">
-								<span class="font-blue">Co-Maker</span>
-								<span>{{loanDetails.co_maker_name}}</span>
-							</div>
-						</div>
-						<div class="col-xl-5 col-lg-6">
-							<div class="info-display">
-								<span class="font-blue">Co-Maker Address</span>
-								<span>{{loanDetails.co_maker_address}}</span>
-							</div>
-						</div>
-						<div class="col-xl-2 col-lg-6">
-							<div class="info-display">
-								<span class="font-blue">Co-Maker ID Type</span>
-								<span>{{loanDetails.co_maker_id_type}}</span>
-							</div>
-						</div>
-						<div class="col-xl-2 col-lg-6">
-							<div class="info-display">
-								<span class="font-blue">Co-Maker ID</span>
-								<span>{{loanDetails.co_maker_id_number}}</span>
-							</div>
-						</div>
-					</div>
-
-					<div class="flex-col payments-list">
-						<span class="header">Payments</span>
-						<table class="table table-stripped mb-64">
-																	<thead>
-																		<th>Date</th>
-																		<th>O.R. #</th>
-																		<th>Trans. #</th>
-																		<th>Reference</th>
-																		<th>Principal</th>
-																		<th>Interest</th>
-																		<th>PDI</th>
-																		<th>Penalty</th>
-																		<th>Rebates</th>
-																		<th>Over Payment</th>
-																		<th>Total Payment</th>
-																		<th>Remarks</th>
-																	</thead>
-																	<tbody>
-																		<tr v-for="(p,pi) in loanDetails.payments" :key="pi">
-																			<td>{{dateToMDY(new Date(p.created_at))}}</td>
-																			<td>{{p.or_no}}</td>
-																			<td>{{p.transaction_number}}</td>
-																			<td>{{p.reference_no}}</td>
-																			<td>{{formatToCurrency(p.principal)}}</td>
-																			<td>{{formatToCurrency(p.interest)}}</td>
-																			<td>{{formatToCurrency(p.pdi)}}</td>
-																			<td>{{formatToCurrency(p.penalty)}}</td>
-																			<td>{{formatToCurrency(p.rebates)}}</td>
-																			<td>{{formatToCurrency(p.over_payment)}}</td>
-																			<td>{{formatToCurrency(p.amount_applied)}}</td>
-																			<td>{{p.status == 'cancelled' ? 'Cancelled' + (p.remarks ? ' - ' + p.remarks : '') : ''}}</td>
-																		</tr>
-																		<tr v-if="loanDetails.payments.length==0">
-																			<td>No payments yet.</td>
-																		</tr>
-																	</tbody>
-																</table>
-					</div>
-
-				</div>
-				<!-- /.card-body -->
-			</div>
-
-			<!-- <div class="card collapsed-card mb-12">
-				<div class="card-header" style="background-color:#dfdfd0!important;">
-				<h3 class="card-title" style="color: #283f53;">Account Number: 1001-3429-15248</h3>
-
-				<div class="card-tools">
-					<button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-					<i class="fas fa-plus"></i>
-					</button>
-				</div>
-				</div>
-				<div class="card-body p-0">
-
-
-				</div>
-			</div> -->
-		</div>
-	</section>
 	<div class="mb-72"></div>
 	<div v-if="loanDetails.loan_account_id" class="d-flex flex-row mb-72 justify-content-between">
 		<a href="#" data-toggle="modal" data-target="#uploadedFilesModal" class="btn btn-darkorange"><i class="fa fa-folder mr-10"></i> <span>Upload Document</span></a>
@@ -2024,122 +1806,16 @@
 </template>
 
 <script>
-export default {
-	props:['borrower_id','token'],
-	data(){
-		return {
-			loanAccount:{},
-			activeBrowse:false,
-			fileName:'',
-			baseUrl: this.baseURL(),
-			selected:null,
-			borrower:{
-				borrower_id: null,
-				borrower_num:'',
-				firstname:'',
-				lastname:'',
-				middlename:'',
-				suffix :'' ,
-				address :'' ,
-				birthdate :'',
-				gender :'' ,
-				status :'' ,
-				contact_number :'',
-				id_type :'',
-				id_no :'',
-				id_date_issued :'',
-				spouse_firstname:'',
-				spouse_lastname:'',
-				spouse_middlename:'',
-				spouse_address :'',
-				spouse_birthdate :'',
-				spouse_id_type :'',
-				spouse_id_no :'',
-				spouse_id_date_issued :'',
-				employmentInfo : [],
-				businessInfo : [],
-				householdMembers : [],
-				outstandingObligations : [],
-			},
-			accounts:[],
-			img:this.baseURL()+'/img/user.png',
-			loanDetails: {
-				loan_account_id:null,
-				cycle_no : 1,
-				ao_id : '',
-				product_id : '',
-				center_id : '',
-				type : '',
-				payment_mode : '',
-				terms : 0,
-				loan_amount : '',
-				no_of_installment : '',
-				day_schedule : '',
-				date_release:'',
-				borrower_num : '',
-				co_borrower_name : '',
-				co_borrower_address : '',
-				co_borrower_id_type : '',
-				co_borrower_id_number : '',
-				co_borrower_id_date_issued : '',
-				co_maker_name : '',
-				co_maker_address : '',
-				co_maker_id_type : '',
-				co_maker_id_number : '',
-				co_maker_id_date_issued : '',
-				document_stamp : 0.00,
-				filing_fee : 0.00,
-				insurance : 0.00,
-				notarial_fee : 100.00,
-				prepaid_interest : 0.00,
-				affidavit_fee : 0.00,
-				memo : 0.00,
-				total_deduction : 0.00,
-				net_proceeds : 0.00,
-				release_type : '',
-				loanfiles:[],
-				docs:false,
-				remaining_balance:{
-					memo:{
-						debit:0,
-						credit:0,
-						balance:0,
-					},
-					rebates:{
-						debit:0,
-						credit:0,
-						balance:0,
-					},
-					pdi:{
-						debit:0,
-						credit:0,
-						balance:0,
-					},
-					penalty:{
-						debit:0,
-						credit:0,
-						balance:0,
-					},
-					interest:{
-						debit:0,
-						credit:0,
-						balance:0,
-					},
-					principal:{
-						debit:0,
-						credit:0,
-						balance:0,
-					},
-				},
-				documents: {
-					date_release: this.dateToYMD(new Date),
-					description: '',
-					bank: '',
-					account_no: '',
-					card_no:'',
-					promissory_number: '',
-				},
-					borrower:{
+	export default {
+		props:['borrower_id','token'],
+		data(){
+			return {
+				loanAccount:{},
+				activeBrowse:false,
+				fileName:'',
+				baseUrl: this.baseURL(),
+				selected:null,
+				borrower:{
 					borrower_id: null,
 					borrower_num:'',
 					firstname:'',
@@ -2167,259 +1843,365 @@ export default {
 					householdMembers : [],
 					outstandingObligations : [],
 				},
-				current_amortization:{
-					interest:0,
-					principal:0,
-					principal_balance:0,
-					delinquent:{
-						ids:[]
+				accounts:[],
+				img:this.baseURL()+'/img/user.png',
+				loanDetails: {
+					loan_account_id:null,
+					cycle_no : 1,
+					ao_id : '',
+					product_id : '',
+					center_id : '',
+					type : '',
+					payment_mode : '',
+					terms : 0,
+					loan_amount : '',
+					no_of_installment : '',
+					day_schedule : '',
+					date_release:'',
+					borrower_num : '',
+					co_borrower_name : '',
+					co_borrower_address : '',
+					co_borrower_id_type : '',
+					co_borrower_id_number : '',
+					co_borrower_id_date_issued : '',
+					co_maker_name : '',
+					co_maker_address : '',
+					co_maker_id_type : '',
+					co_maker_id_number : '',
+					co_maker_id_date_issued : '',
+					document_stamp : 0.00,
+					filing_fee : 0.00,
+					insurance : 0.00,
+					notarial_fee : 100.00,
+					prepaid_interest : 0.00,
+					affidavit_fee : 0.00,
+					memo : 0.00,
+					total_deduction : 0.00,
+					net_proceeds : 0.00,
+					release_type : '',
+					loanfiles:[],
+					docs:false,
+					remaining_balance:{
+						memo:{
+							debit:0,
+							credit:0,
+							balance:0,
+						},
+						rebates:{
+							debit:0,
+							credit:0,
+							balance:0,
+						},
+						pdi:{
+							debit:0,
+							credit:0,
+							balance:0,
+						},
+						penalty:{
+							debit:0,
+							credit:0,
+							balance:0,
+						},
+						interest:{
+							debit:0,
+							credit:0,
+							balance:0,
+						},
+						principal:{
+							debit:0,
+							credit:0,
+							balance:0,
+						},
+					},
+					documents: {
+						date_release: this.dateToYMD(new Date),
+						description: '',
+						bank: '',
+						account_no: '',
+						card_no:'',
+						promissory_number: '',
+					},
+						borrower:{
+						borrower_id: null,
+						borrower_num:'',
+						firstname:'',
+						lastname:'',
+						middlename:'',
+						suffix :'' ,
+						address :'' ,
+						birthdate :'',
+						gender :'' ,
+						status :'' ,
+						contact_number :'',
+						id_type :'',
+						id_no :'',
+						id_date_issued :'',
+						spouse_firstname:'',
+						spouse_lastname:'',
+						spouse_middlename:'',
+						spouse_address :'',
+						spouse_birthdate :'',
+						spouse_id_type :'',
+						spouse_id_no :'',
+						spouse_id_date_issued :'',
+						employmentInfo : [],
+						businessInfo : [],
+						householdMembers : [],
+						outstandingObligations : [],
+					},
+					current_amortization:{
+						interest:0,
+						principal:0,
+						principal_balance:0,
+						delinquent:{
+							ids:[]
+						}
+					},
+					product:{
+						product_name:'',
+					},
+					payments:[],
+					center:{
+						center:''
+					},
+					account_officer:{
+						name:''
 					}
 				},
-				product:{
-					product_name:'',
-				},
-				payments:[],
-				center:{
-					center:''
-				},
-				account_officer:{
-					name:''
-				}
-			},
-			vouchers:[],
-			amortizationSched:[],
-			filter:'',
-		}
-	},
-	methods:{
-		notify:function(title, text, type){
-			this.$notify({
-				group: 'foo',
-				title: title,
-				text: text,
-				type: type,
-			});
+				vouchers:[],
+				amortizationSched:[],
+				filter:'',
+			}
 		},
-		async uploadFile(){
-			await axios.post(this.baseURL() + 'api/account/update/' + this.loanDetails.loan_account_id, this.loanAccount, {
+		methods:{
+			notify:function(title, text, type){
+				this.$notify({
+					group: 'foo',
+					title: title,
+					text: text,
+					type: type,
+				});
+			},
+			async uploadFile(){
+				await axios.post(this.baseURL() + 'api/account/update/' + this.loanDetails.loan_account_id, this.loanAccount, {
+						headers: {
+							'Authorization': 'Bearer ' + this.token,
+							'contentType': "multipart/form-data"
+						}
+					})
+					.then(function (response) {
+						console.log(response.data);
+						this.notify('','File has been successfully uploaded', 'success');
+						var file = document.getElementById('fileUploadDocs');
+						file.value = '';
+						this.fetchAccount(this.loanDetails.loan_account_id);
+					}.bind(this))
+					.catch(function (error) {
+						console.log(error);
+					}.bind(this));
+			},
+			fileChange:function(e){
+				if(e.target.files.length){
+					this.loanDetails.loanfiles = [];
+					let formData = new FormData();
+					formData.append('loanfiles', e.target.files[0]);
+					formData.append('data',JSON.stringify(this.loanDetails));
+					this.loanAccount = formData;
+					this.fileName = e.target.files[0].name;
+				}
+				return
+			},
+			amortSched:function(){
+				axios.post(this.baseURL() + 'api/account/generate-amortization', this.loanDetails, {
 					headers: {
 						'Authorization': 'Bearer ' + this.token,
-						'contentType': "multipart/form-data"
+						'Content-Type': 'application/json',
+						'Accept': 'application/json'
 					}
 				})
 				.then(function (response) {
-					console.log(response.data);
-					this.notify('','File has been successfully uploaded', 'success');
-					var file = document.getElementById('fileUploadDocs');
-					file.value = '';
-					this.fetchAccount(this.loanDetails.loan_account_id);
+					this.amortizationSched = response.data.data;
 				}.bind(this))
 				.catch(function (error) {
 					console.log(error);
 				}.bind(this));
-		},
-		fileChange:function(e){
-			if(e.target.files.length){
-				this.loanDetails.loanfiles = [];
-				let formData = new FormData();
-				formData.append('loanfiles', e.target.files[0]);
-				formData.append('data',JSON.stringify(this.loanDetails));
-				this.loanAccount = formData;
-				this.fileName = e.target.files[0].name;
-			}
-			return
-		},
-		amortSched:function(){
-			axios.post(this.baseURL() + 'api/account/generate-amortization', this.loanDetails, {
+			},
+			fetchBorrower:function(){
+				axios.get(this.baseURL() + 'api/borrower/' + this.borrower_id, {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
-					'Content-Type': 'application/json',
-					'Accept': 'application/json'
-				}
-			})
-			.then(function (response) {
-				this.amortizationSched = response.data.data;
-			}.bind(this))
-			.catch(function (error) {
-				console.log(error);
-			}.bind(this));
-		},
-		fetchBorrower:function(){
-			axios.get(this.baseURL() + 'api/borrower/' + this.borrower_id, {
-			headers: {
-				'Authorization': 'Bearer ' + this.token,
-					'Content-Type': 'application/json',
-					'Accept': 'application/json'
-				}
-			})
-			.then(function (response) {
-				this.borrower = response.data.data;
-				this.fetchStatements();
-			}.bind(this))
-			.catch(function (error) {
-				console.log(error);
-			}.bind(this));
-		},
-
-		fetchStatements:function(){
-			axios.get(this.baseURL() + 'api/account/statement/' + this.borrower_id, {
-			headers: {
-				'Authorization': 'Bearer ' + this.token,
-					'Content-Type': 'application/json',
-					'Accept': 'application/json'
-				}
-			})
-			.then(function (response) {
-				this.accounts = response.data;
-			}.bind(this))
-			.catch(function (error) {
-				console.log(error);
-			}.bind(this));
-		},
-
-		fetchCashVoucher:function(id){
-			axios.get(this.baseURL() + 'api/account/cashvoucher/' + id, {
-				headers: {
-					'Authorization': 'Bearer ' + this.token,
-					'Content-Type': 'application/json',
-					'Accept': 'application/json'
-				}
-			})
-			.then(function (response) {
-				this.vouchers = response.data.data.cash_voucher;
-			}.bind(this))
-			.catch(function (error) {
-				console.log(error);
-			}.bind(this));
-		},
-
-		fetchAccount:function(id){
-			axios.get(this.baseURL() + 'api/account/show/' + id, {
-			headers: {
-				'Authorization': 'Bearer ' + this.token,
-					'Content-Type': 'application/json',
-					'Accept': 'application/json'
-				}
-			})
-			.then(function (response) {
-				this.loanDetails = response.data.data;
-				this.loanDetails.documents = response.data.data.document;
-				this.amortSched();
-				this.fetchCashVoucher(id);
-			}.bind(this))
-			.catch(function (error) {
-				console.log(error);
-			}.bind(this));
-		},
-
-		fetchAccountId:function(id){
-			axios.get(this.baseURL() + 'account/statement/' + id, {
-			headers: {
-				'Authorization': 'Bearer ' + this.token,
-					'Content-Type': 'application/json',
-					'Accept': 'application/json'
-				}
-			})
-			.then(function (response) {
-				this.fetchAccount(response.data.loan_account_id);
-			}.bind(this))
-			.catch(function (error) {
-				console.log(error);
-			}.bind(this));
-		},
-
-		printContent:function(content){
-			var content = document.getElementById(content).innerHTML;
-			var target = document.querySelector('.to-print');
-			var cancel = document.querySelector('#cancelVoucherModal');
-			target.innerHTML = content;
-			cancel.click();
-			window.print();
-		},
-
-		imageCapture:function(img){
-			this.img = img;
-		},
-
-		browseFile(){
-			document.getElementById('fileUploadDocs').click();
-		}
-	},
-	computed:{
-		loanAccountStatus:function(){
-			if(this.loanDetails.current_amortization){
-				if(this.loanDetails.current_amortization.delinquent.ids.length > 0){
-					return "Delinquent";
-				}
-			}
-			return "Current";
-		},
-		borrowerPhoto:function(){
-			return this.borrower.photo? this.borrower.photo : this.img;
-		},
-		totalDebit:function(){
-			var amount = 0;
-			this.vouchers.map(function(val){
-				amount+=val.debit;
-			}.bind(this));
-			return amount;
-		},
-		totalCredit:function(){
-			var amount = 0;
-			this.vouchers.map(function(val){
-				amount+=val.credit;
-			}.bind(this));
-			return amount;
-		},
-		totalAmountBalance:function(){
-			var amount = this.loanDetails.loan_amount;
-			this.loanDetails.payments.map(function(val){
-				amount-=val.principal;
-			}.bind(this));
-			return amount;
-		},
-		totalInterestBalance:function(){
-			var amount = this.loanDetails.interest_amount;
-			this.loanDetails.payments.map(function(val){
-				amount-=val.interest;
-			}.bind(this));
-			return amount;
-		},
-		totalPrincipalPaid:function(){
-			var amount = 0;
-			this.loanDetails.payments.map(function(val){
-				amount+=val.principal;
-			}.bind(this));
-			return amount;
-		},
-		totalInterestPaid:function(){
-			var amount = 0;
-			this.loanDetails.payments.map(function(val){
-				amount+=val.interest;
-			}.bind(this));
-			return amount;
-		},
-		filteredAccounts:function(){
-			if(this.filter.length > 0){
-				var accounts = [];
-				this.accounts.map(function(acc){
-					if(acc.account_num.includes(this.filter)){
-						accounts.push(acc);
+						'Content-Type': 'application/json',
+						'Accept': 'application/json'
 					}
+				})
+				.then(function (response) {
+					this.borrower = response.data.data;
+					this.fetchStatements();
+				}.bind(this))
+				.catch(function (error) {
+					console.log(error);
 				}.bind(this));
-				return accounts;
+			},
+
+			fetchStatements:function(){
+				axios.get(this.baseURL() + 'api/account/statement/' + this.borrower_id, {
+				headers: {
+					'Authorization': 'Bearer ' + this.token,
+						'Content-Type': 'application/json',
+						'Accept': 'application/json'
+					}
+				})
+				.then(function (response) {
+					this.accounts = response.data;
+				}.bind(this))
+				.catch(function (error) {
+					console.log(error);
+				}.bind(this));
+			},
+
+			fetchCashVoucher:function(id){
+				axios.get(this.baseURL() + 'api/account/cashvoucher/' + id, {
+					headers: {
+						'Authorization': 'Bearer ' + this.token,
+						'Content-Type': 'application/json',
+						'Accept': 'application/json'
+					}
+				})
+				.then(function (response) {
+					this.vouchers = response.data.data.cash_voucher;
+				}.bind(this))
+				.catch(function (error) {
+					console.log(error);
+				}.bind(this));
+			},
+
+			fetchAccount:function(id){
+				axios.get(this.baseURL() + 'api/account/show/' + id, {
+				headers: {
+					'Authorization': 'Bearer ' + this.token,
+						'Content-Type': 'application/json',
+						'Accept': 'application/json'
+					}
+				})
+				.then(function (response) {
+					this.loanDetails = response.data.data;
+					this.loanDetails.documents = response.data.data.document;
+					this.amortSched();
+					this.fetchCashVoucher(id);
+				}.bind(this))
+				.catch(function (error) {
+					console.log(error);
+				}.bind(this));
+			},
+
+			fetchAccountId:function(id){
+				axios.get(this.baseURL() + 'account/statement/' + id, {
+				headers: {
+					'Authorization': 'Bearer ' + this.token,
+						'Content-Type': 'application/json',
+						'Accept': 'application/json'
+					}
+				})
+				.then(function (response) {
+					this.fetchAccount(response.data.loan_account_id);
+				}.bind(this))
+				.catch(function (error) {
+					console.log(error);
+				}.bind(this));
+			},
+
+			printContent:function(content){
+				var content = document.getElementById(content).innerHTML;
+				var target = document.querySelector('.to-print');
+				var cancel = document.querySelector('#cancelVoucherModal');
+				target.innerHTML = content;
+				cancel.click();
+				window.print();
+			},
+
+			imageCapture:function(img){
+				this.img = img;
+			},
+
+			browseFile(){
+				document.getElementById('fileUploadDocs').click();
 			}
-			return this.accounts;
 		},
-		loanAmortization:function(){
-			return Math.ceil( (this.loanDetails.loan_amount/this.loanDetails.no_of_installment) + (this.loanDetails.interest_amount/this.loanDetails.no_of_installment) );
+		computed:{
+			loanAccountStatus:function(){
+				if(this.loanDetails.current_amortization){
+					if(this.loanDetails.current_amortization.delinquent.ids.length > 0){
+						return "Delinquent";
+					}
+				}
+				return "Current";
+			},
+			borrowerPhoto:function(){
+				return this.borrower.photo? this.borrower.photo : this.img;
+			},
+			totalDebit:function(){
+				var amount = 0;
+				this.vouchers.map(function(val){
+					amount+=val.debit;
+				}.bind(this));
+				return amount;
+			},
+			totalCredit:function(){
+				var amount = 0;
+				this.vouchers.map(function(val){
+					amount+=val.credit;
+				}.bind(this));
+				return amount;
+			},
+			totalAmountBalance:function(){
+				var amount = this.loanDetails.loan_amount;
+				this.loanDetails.payments.map(function(val){
+					amount-=val.principal;
+				}.bind(this));
+				return amount;
+			},
+			totalInterestBalance:function(){
+				var amount = this.loanDetails.interest_amount;
+				this.loanDetails.payments.map(function(val){
+					amount-=val.interest;
+				}.bind(this));
+				return amount;
+			},
+			totalPrincipalPaid:function(){
+				var amount = 0;
+				this.loanDetails.payments.map(function(val){
+					amount+=val.principal;
+				}.bind(this));
+				return amount;
+			},
+			totalInterestPaid:function(){
+				var amount = 0;
+				this.loanDetails.payments.map(function(val){
+					amount+=val.interest;
+				}.bind(this));
+				return amount;
+			},
+			filteredAccounts:function(){
+				if(this.filter.length > 0){
+					var accounts = [];
+					this.accounts.map(function(acc){
+						if(acc.account_num.includes(this.filter)){
+							accounts.push(acc);
+						}
+					}.bind(this));
+					return accounts;
+				}
+				return this.accounts;
+			},
+			loanAmortization:function(){
+				return Math.ceil( (this.loanDetails.loan_amount/this.loanDetails.no_of_installment) + (this.loanDetails.interest_amount/this.loanDetails.no_of_installment) );
+			}
+		},
+		mounted(){
+			// console.log(this.extractFileName("http://mac-loans.test/storage/borrowers/1/12/hello.pdf"));
+			this.fetchBorrower();
 		}
-	},
-	mounted(){
-		console.log(this.extractFileName("http://mac-loans.test/storage/borrowers/1/12/hello.pdf"));
-		this.fetchBorrower();
 	}
-}
 </script>
 
 <style>

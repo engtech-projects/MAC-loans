@@ -115,6 +115,23 @@ class ReportsController extends BaseController
 		return $filters;
 	}
 
+	public function microReports(Request $request){
+		$type = $request->input("type");
+		$filters = [
+			'date' => $request->input('date'),
+			'branch_id' => $request->input('branch_id'),
+			'type' => $request->input('type')
+		];
+		$report = new Reports();
+
+		if( $type == 'group' ){
+			return $report->microGroup($filters);
+		}elseif( $type == 'individual' ){
+			return $report->microIndividual($filters);
+		}
+
+	}
+
 
 
 	// public function releaseByClientReports(Request $request) {
