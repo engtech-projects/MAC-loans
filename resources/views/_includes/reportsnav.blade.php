@@ -48,7 +48,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="report-main-item pxy-25 light-bb d-flex flex-column relative <?php echo isActiveNav($nav[1], 'branch'); ?> hover-light report-nav-item">
+		<!-- <div class="report-main-item pxy-25 light-bb d-flex flex-column relative <?php echo isActiveNav($nav[1], 'branch'); ?> hover-light report-nav-item">
 			<div class="nav-item-body d-flex justify-content-between align-items-center">
 				<a href="" class="text-20 base-link">Branch</a>
 				<i class="fa fa-caret-right" style="display:block"></i>
@@ -105,7 +105,9 @@
 					<a href="#" class="text-md base-link">Revenue Report</a>
 				</div>
 			</div>
-		</div>
+		</div> -->
+		<branch-nav mainNav="{{$nav[0]}}" nav1="{{$nav[1]}}" nav2="{{$nav[2]}}"></branch-nav>
+		
 		<div class="light-bb pxy-25 d-flex justify-content-between align-items-center hover-light report-nav-item <?php echo isActiveNav($nav[1], 'cancelled payments'); ?>">
 			<a href="{{route('reports.repayment.cancelled')}}" class="text-20 base-link">Cancelled Payments</a>
 			<i class="fa fa-caret-right"></i>

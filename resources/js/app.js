@@ -22,6 +22,7 @@
  Vue.component('borrower-container', require('./components/BorrowerContainer.vue').default);
  Vue.component('overridepayment-view', require('./components/OverridePaymentView.vue').default);
  Vue.component('warning-modal', require('./components/WarningModal.vue').default);
+ Vue.component('branch-nav', require('./components/BranchNav.vue').default);
  
  Vue.component('client-list', require('./ui/client_information/ClientList.vue').default);
  Vue.component('personal-information', require('./ui/client_information/PersonalInformation.vue').default);
@@ -62,6 +63,11 @@
  Vue.component('reports-collection-product', require('./ui/reports/collection/Product.vue').default);
  Vue.component('reports-collection-client', require('./ui/reports/collection/Client.vue').default);
  Vue.component('reports-collection-ao', require('./ui/reports/collection/Ao.vue').default);
+ Vue.component('reports-branch-collection', require('./ui/reports/branch/CollectionReport.vue').default);
+ Vue.component('reports-branch-maturity', require('./ui/reports/branch/MaturityReport.vue').default);
+ Vue.component('reports-branch-paymentstatus', require('./ui/reports/branch/ClientPaymentStatus.vue').default);
+ Vue.component('reports-branch-accountofficer', require('./ui/reports/branch/AccountOfficer.vue').default);
+
  Vue.component('endof-day', require('./ui/endofday/Endofday.vue').default);
 
  Vue.config.devtools = true;
