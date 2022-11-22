@@ -89,6 +89,13 @@ Route::group(['middleware' => 'auth'], function (){
 	Route::get('/reports/collection/product', [ReportsController::class, 'collectionProduct'])->name('reports.collection.product');
 	Route::get('/reports/collection/client', [ReportsController::class, 'collectionClient'])->name('reports.collection.client');
 	Route::get('/reports/collection/ao', [ReportsController::class, 'collectionAo'])->name('reports.collection.ao');
+
+	Route::get('/reports/branch/collection_report', [ReportsController::class, 'branchCollectionReport'])->name('reports.branch.collection');
+	Route::get('/reports/branch/maturity_report', [ReportsController::class, 'branchMaturityReport'])->name('reports.branch.maturity');
+	Route::get('/reports/branch/client_payment_status', [ReportsController::class, 'branchPaymentStatus'])->name('reports.branch.paymentstatus');
+	Route::get('/reports/branch/account_officer', [ReportsController::class, 'branchAccountOfficer'])->name('reports.branch.accountofficer');
+	Route::get('/reports/branch/loan_listing', [ReportsController::class, 'branchLoanListing'])->name('reports.branch.loanlisting');
+
 	Route::get('/endofday/', [EndOfDayController::class, 'index'])->name('endofday');
 	Route::get('/eod/check', [EndOfDayController::class, 'eodCheck']);
 

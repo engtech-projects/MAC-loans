@@ -82,4 +82,39 @@ class ReportsController extends Controller
 			'title' => 'Reports - Collection',
 		]);
 	}
+
+	public function branchCollectionReport(){
+		return view('reports.branch.collection_report')->with([
+			'nav' => ['reports', 'branch','collection report'],
+			'title' => 'Reports - Branch Collection Report',
+		]);
+	}
+
+	public function branchMaturityReport(){
+		return view('reports.branch.maturity_report')->with([
+			'nav' => ['reports', 'branch','maturity report'],
+			'title' => 'Reports - Branch Maturity Report',
+		]);
+	}
+	
+	public function branchPaymentStatus(){
+		return view('reports.branch.client_payment_status')->with([
+			'nav' => ['reports', 'branch','client payment status'],
+			'title' => 'Reports - Branch Client Payment Status',
+		]);
+	}
+
+	public function branchAccountOfficer(){
+		return view('reports.branch.account_officer')->with([
+			'nav' => ['reports', 'branch','account officer'],
+			'title' => 'Reports - Branch Account Officer',
+		]);
+	}
+
+	public function branchLoanListing(){
+		return view('reports.branch.loan_listing')->with([
+			'nav' => ['reports', 'branch','loan listing'],
+			'title' => 'Reports - Branch Loan Listing',
+		]);
+	}
 }
