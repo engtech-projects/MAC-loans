@@ -79,7 +79,7 @@
                                                     <span class="font-blue"
                                                         >Amortization</span
                                                     >
-                                                    <span>P {{formatToCurrency(a.current_amortization.principal + a.current_amortization.interest)}}</span>
+                                                    <span>P {{a.current_amortization?formatToCurrency(a.current_amortization.principal + a.current_amortization.interest):'0.00'}}</span>
                                                 </div>
                                             </div>
                                             <div class="col-xl-3 col-lg-6">
@@ -262,19 +262,19 @@
 													<span>Amort. Principal</span>
 													<span>:</span>
 												</div>
-												<span class="flex-3 pl-10">P {{formatToCurrency(a.current_amortization.principal)}}</span>
+												<span class="flex-3 pl-10">P {{formatToCurrency(a.current_amortization?a.current_amortization.principal:0)}}</span>
 											</div>
 											<div class="d-flex justify-content-between py-5 text-primary-dark">
 												<div class="flex-4 d-flex justify-content-between">
 													<span>Interest</span>
 													<span>:</span>
 												</div>
-												<span class="flex-3 pl-10">P {{formatToCurrency(a.current_amortization.interest)}}</span>
+												<span class="flex-3 pl-10">P {{formatToCurrency(a.current_amortization?a.current_amortization.interest:0)}}</span>
 											</div>
 										</div>
 										<div>
 											<span class="text-lg text-bold text-primary-dark">TOTAL</span>
-											<span class="text-block bg-primary-dark text-white px-16 text-45 mr-36">P {{formatToCurrency(a.current_amortization.principal + a.current_amortization.interest)}}</span>
+											<span class="text-block bg-primary-dark text-white px-16 text-45 mr-36">P {{a.current_amortization?formatToCurrency(a.current_amortization.principal + a.current_amortization.interest):'0.00'}}</span>
 										</div>
 									</div>
 									<div class="flex-1 px-16 br-primary-dark d-flex flex-column justify-content-between">
@@ -285,33 +285,33 @@
 													<span>Principal</span>
 													<span>:</span>
 												</div>
-												<span class="flex-3 pl-10">P {{formatToCurrency(a.current_amortization.principal)}}</span>
+												<span class="flex-3 pl-10">P {{formatToCurrency(a.current_amortization?a.current_amortization.principal:0)}}</span>
 											</div>
 											<div class="d-flex justify-content-between py-5 text-primary-dark">
 												<div class="flex-4 d-flex justify-content-between">
 													<span>Interest</span>
 													<span>:</span>
 												</div>
-												<span class="flex-3 pl-10">P {{formatToCurrency(a.current_amortization.interest)}}</span>
+												<span class="flex-3 pl-10">P {{formatToCurrency(a.current_amortization?a.current_amortization.interest:0)}}</span>
 											</div>
 											<div class="d-flex justify-content-between py-5 text-primary-dark">
 												<div class="flex-4 d-flex justify-content-between">
 													<span>Penalty</span>
 													<span>:</span>
 												</div>
-												<span class="flex-3 pl-10">P {{formatToCurrency(a.current_amortization.penalty)}}</span>
+												<span class="flex-3 pl-10">P {{formatToCurrency(a.current_amortization?a.current_amortization.penalty:0)}}</span>
 											</div>
 											<div class="d-flex justify-content-between py-5 text-primary-dark">
 												<div class="flex-4 d-flex justify-content-between">
 													<span>PDI</span>
 													<span>:</span>
 												</div>
-												<span class="flex-3 pl-10">P {{formatToCurrency(a.current_amortization.pdi)}}</span>
+												<span class="flex-3 pl-10">P {{formatToCurrency(a.current_amortization?a.current_amortization.pdi:0)}}</span>
 											</div>
 										</div>
 										<div>
 											<span class="text-lg text-bold text-primary-dark">TOTAL</span>
-											<span class="text-block bg-primary-dark text-white px-16 text-45 mr-36">P {{formatToCurrency(a.current_amortization.principal + a.current_amortization.interest + a.current_amortization.pdi + a.current_amortization.penalty)}}</span>
+											<span class="text-block bg-primary-dark text-white px-16 text-45 mr-36">P {{a.current_amortization?formatToCurrency(a.current_amortization.principal + a.current_amortization.interest + a.current_amortization.pdi + a.current_amortization.penalty):'0.00'}}</span>
 										</div>
 									</div>
 									<div class="flex-1 px-16 d-flex flex-column justify-content-between">
@@ -356,21 +356,21 @@
 													<span>Short Principal</span>
 													<span>:</span>
 												</div>
-												<span class="flex-3 pl-10">P {{formatToCurrency(a.current_amortization.short_principal)}}</span>
+												<span class="flex-3 pl-10">P {{formatToCurrency(a.current_amortization?a.current_amortization.short_principal:0)}}</span>
 											</div>
 											<div class="d-flex justify-content-between mb-10 text-primary-dark">
 												<div class="flex-4 d-flex justify-content-between">
 													<span>Adv. Principal</span>
 													<span>:</span>
 												</div>
-												<span class="flex-3 pl-10">P {{formatToCurrency(a.current_amortization.advance_principal)}}</span>
+												<span class="flex-3 pl-10">P {{formatToCurrency(a.current_amortization?a.current_amortization.advance_principal:0)}}</span>
 											</div>
 											<div class="d-flex justify-content-between text-primary-dark">
 												<div class="flex-4 d-flex justify-content-between">
 													<span>Short Interest</span>
 													<span>:</span>
 												</div>
-												<span class="flex-3 pl-10">P {{formatToCurrency(a.current_amortization.short_interest)}}</span>
+												<span class="flex-3 pl-10">P {{formatToCurrency(a.current_amortization?a.current_amortization.short_interest:0)}}</span>
 											</div>
 											<div class="d-flex justify-content-between text-primary-dark">
 												<div class="flex-4 d-flex justify-content-between">
