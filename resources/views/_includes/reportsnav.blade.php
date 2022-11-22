@@ -48,64 +48,7 @@
 				</div>
 			</div>
 		</div>
-		<!-- <div class="report-main-item pxy-25 light-bb d-flex flex-column relative <?php echo isActiveNav($nav[1], 'branch'); ?> hover-light report-nav-item">
-			<div class="nav-item-body d-flex justify-content-between align-items-center">
-				<a href="" class="text-20 base-link">Branch</a>
-				<i class="fa fa-caret-right" style="display:block"></i>
-			</div>
-			<div class="sub-item-container mt-10">
-				<div class="pxy-15 light-bt light-bb d-flex justify-content-between align-items-center hover-primary-dark <?php echo isActiveNav($nav[2], 'collection report'); ?>">
-					<a href="reports_branch_collection.php" class="text-md base-link">Collection Report</a>
-				</div>
-				<div class="pxy-15 light-bb d-flex justify-content-between align-items-center hover-primary-dark <?php echo isActiveNav($nav[2], 'maturity report'); ?>">
-					<a href="reports_branch_maturity.php" class="text-md base-link">Maturity Report</a>
-				</div>
-				<div class="pxy-15 light-bb d-flex justify-content-between align-items-center hover-primary-dark <?php echo isActiveNav($nav[2], 'client payment status'); ?>">
-					<a href="reports_branch_client_payment_status.php" class="text-md base-link">Client Payment Status</a>
-				</div>
-				<div class="pxy-15 light-bb d-flex justify-content-between align-items-center hover-primary-dark <?php echo isActiveNav($nav[2], 'account officer'); ?>">
-					<a href="reports_branch_account_officer.php" class="text-md base-link">Account Officer</a>
-				</div>
-				<div class="pxy-15 light-bb d-flex justify-content-between align-items-center hover-primary-dark <?php echo isActiveNav($nav[2], 'loan listing'); ?>">
-					<a href="reports_branch_loan_listing.php" class="text-md base-link">Loan Listing</a>
-				</div>
-				<div class="pxy-15 light-bb d-flex justify-content-between align-items-center hover-primary-dark <?php echo isActiveNav($nav[2], 'loan status summary'); ?>">
-					<a href="reports_branch_loan_status_summary.php" class="text-md base-link">Loan Status Summary</a>
-				</div>
-				<div class="pxy-15 light-bb d-flex justify-content-between align-items-center hover-primary-dark <?php echo isActiveNav($nav[2], 'loan aging summary'); ?>">
-					<a href="reports_branch_loan_aging_summary.php" class="text-md base-link">Loan Aging Summary</a>
-				</div>
-				<div class="pxy-15 d-flex justify-content-between align-items-center hover-primary-dark <?php echo isActiveNav($nav[2], 'revenue report'); ?>">
-					<a href="reports_branch_revenue_report.php" class="text-md base-link">Revenue Report</a>
-				</div>
-			</div>
-		</div>
-		<div class="report-main-item pxy-25 light-bb d-flex flex-column relative <?php echo isActiveNav($nav[1], 'consolidated'); ?> hover-light report-nav-item">
-			<div class="nav-item2-body d-flex justify-content-between align-items-center">
-				<a href="" class="text-20 base-link">Consolidated</a>
-				<i class="fa fa-caret-right" style="display:block"></i>
-			</div>
-			<div class="sub-item-container mt-10">
-				<div class="pxy-15 light-bt light-bb d-flex justify-content-between align-items-center hover-primary-dark <?php echo isActiveNav($nav[2], 'loan summary report'); ?>">
-					<a href="reports_consolidated_loan_summary_report.php" class="text-md base-link">Loan Summary Report</a>
-				</div>
-				<div class="pxy-15 light-bb d-flex justify-content-between align-items-center hover-primary-dark <?php echo isActiveNav($nav[2], 'consolidated aging report'); ?>">
-					<a href="reports_consolidated_loan_aging_report.php" class="text-md base-link">Loan Aging Report</a>
-				</div>
-				<div class="pxy-15 light-bb d-flex justify-content-between align-items-center hover-primary-dark <?php echo isActiveNav($nav[2], 'performance report'); ?>">
-					<a href="#" class="text-md base-link">Performance Report</a>
-				</div>
-				<div class="pxy-15 light-bb d-flex justify-content-between align-items-center hover-primary-dark <?php echo isActiveNav($nav[2], 'write-off report'); ?>">
-					<a href="#" class="text-md base-link">Write-Off Report</a>
-				</div>
-				<div class="pxy-15 light-bb d-flex justify-content-between align-items-center hover-primary-dark <?php echo isActiveNav($nav[2], 'delinquent report'); ?>">
-					<a href="#" class="text-md base-link">Delinquent Report</a>
-				</div>
-				<div class="pxy-15 d-flex justify-content-between align-items-center hover-primary-dark <?php echo isActiveNav($nav[2], 'consolidated revenue report'); ?>">
-					<a href="#" class="text-md base-link">Revenue Report</a>
-				</div>
-			</div>
-		</div> -->
+		
 		<branch-nav mainNav="{{$nav[0]}}" nav1="{{$nav[1]}}" nav2="{{$nav[2]}}"></branch-nav>
 		
 		<div class="light-bb pxy-25 d-flex justify-content-between align-items-center hover-light report-nav-item <?php echo isActiveNav($nav[1], 'cancelled payments'); ?>">
