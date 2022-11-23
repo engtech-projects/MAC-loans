@@ -22,7 +22,7 @@
  Vue.component('borrower-container', require('./components/BorrowerContainer.vue').default);
  Vue.component('overridepayment-view', require('./components/OverridePaymentView.vue').default);
  Vue.component('warning-modal', require('./components/WarningModal.vue').default);
- Vue.component('branch-nav', require('./components/BranchNav.vue').default);
+ Vue.component('account-details', require('./components/AccountDetails.vue').default);
  Vue.component('client-list', require('./ui/client_information/ClientList.vue').default);
  Vue.component('personal-information', require('./ui/client_information/PersonalInformation.vue').default);
  Vue.component('balance-inquiry', require('./ui/client_information/BalanceInquiry.vue').default);

@@ -84,7 +84,7 @@ class Reports extends Model
     	$report = new Reports();
 
     	$report->by_product = $this->getReleaseByProduct($filters);
-    	$report->by_client = $this->getReleaseByClient($filters);
+    	// $report->by_client = $this->getReleaseByClient($filters);
 
     	return $report;
     }
@@ -138,29 +138,35 @@ class Reports extends Model
 
                         foreach ($account->payments as $payment) {
 
-                            foreach ($paymentTypes as $type) {
+                            $transactionDate = Carbon::createFromFormat('Y-m-d', $payment->transaction_date);
+                            $fromDate = Carbon::createFromFormat('Y-m-d', $filters['date_from']);
+                            $toDate = Carbon::createFromFormat('Y-m-d', $filters['date_to']);
+                            return $transactionDate->addDay(1);
+                            if( $transactionDate->gte($fromDate) && $transactionDate->lte($toDate) ){
+                                foreach ($paymentTypes as $type) {
                                 
-                                if( $payment->payment_type == $type ){
+                                    if( $payment->payment_type == $type ){
 
-                                    if( !isset($payments[$type]) ){
-                                        $payments[$type]['principal'] = 0;
-                                        $payments[$type]['interest'] = 0;
-                                        $payments[$type]['pdi'] = 0;
-                                        $payments[$type]['over'] = 0;
-                                        $payments[$type]['discount'] = 0;
-                                        $payments[$type]['total_payment'] = 0;
-                                        $payments[$type]['net_int'] = 0;
-                                        $payments[$type]['vat'] = 0;
+                                        if( !isset($payments[$type]) ) {
+                                            $payments[$type]['principal'] = 0;
+                                            $payments[$type]['interest'] = 0;
+                                            $payments[$type]['pdi'] = 0;
+                                            $payments[$type]['over'] = 0;
+                                            $payments[$type]['discount'] = 0;
+                                            $payments[$type]['total_payment'] = 0;
+                                            $payments[$type]['net_int'] = 0;
+                                            $payments[$type]['vat'] = 0;
+                                        }
+
+                                        $payments[$type]['principal'] += $payment->principal;
+                                        $payments[$type]['interest'] += $payment->interest;
+                                        $payments[$type]['pdi'] += $payment->pdi;
+                                        $payments[$type]['over'] += null;
+                                        $payments[$type]['discount'] += null;
+                                        $payments[$type]['total_payment'] += $payment->amount_applied;
+                                        $payments[$type]['net_int'] += null;
+                                        $payments[$type]['vat'] += $payment->vat;
                                     }
-
-                                    $payments[$type]['principal'] += $payment->principal;
-                                    $payments[$type]['interest'] += $payment->interest;
-                                    $payments[$type]['pdi'] += $payment->pdi;
-                                    $payments[$type]['over'] += null;
-                                    $payments[$type]['discount'] += null;
-                                    $payments[$type]['total_payment'] += $payment->amount_applied;
-                                    $payments[$type]['net_int'] += null;
-                                    $payments[$type]['vat'] += $payment->vat;
                                 }
                             }
                         }
@@ -234,14 +240,15 @@ class Reports extends Model
 
     	switch ($category) {
     		case 'product':
-                $type = $filters['type'];
-                if( $type == 'new' ){
-                    $filters['cycle_no'] = 1;
-                }else{
-                    $filters[$type] = $filters['spec'];
-                }
 
-    			return $this->getReleaseByProduct($filters);
+                // $type = $filters['type'];
+                // if( $type == 'new' ){
+                //     $filters['cycle_no'] = 1;
+                // }else{
+                //     $filters[$type] = $filters['spec'];
+                // }
+
+    			return $this->getReleaseByProduct(['date_from' => $filters['date_from'], 'date_to' => $filters['date_to']]);
     			break;
 
     		case 'client':
@@ -491,6 +498,12 @@ class Reports extends Model
         }
 
         return $data;
+    }
+
+    public function branchMaturityReport($filters = []) {
+
+        return $filters;
+
     }
 
     public function cancelledRepaymentByClient($filters = []) {

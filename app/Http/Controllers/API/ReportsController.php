@@ -15,10 +15,11 @@ class ReportsController extends BaseController
 	public function transactionReports(Request $request) {
 
 		$filters = [ 
-			'date_from' => Carbon::createFromFormat('Y-m-d', $request->input('date_from')),
-			'date_to' => Carbon::createFromFormat('Y-m-d', $request->input('date_to')),
+			'date_from' => $request->input('date_from'),
+			'date_to' => $request->input('date_to'),
 			'branch_id' => $request->input('branch_id')
 		];
+
 
 		$report = new Reports();
 		return $this->sendResponse($report->transactionReports($filters), '');
@@ -27,15 +28,39 @@ class ReportsController extends BaseController
 
 	public function releaseReports(Request $request) {
 
-		$filters = [ 
-			'date_from' => Carbon::createFromFormat('Y-m-d', $request->input('date_from')),
-			'date_to' => Carbon::createFromFormat('Y-m-d', $request->input('date_to')),
-			'type' => $request->input('type'),
-			'spec' => $request->input('spec'),
-			'branch_id' => $request->input('branch_id')
-		];
+		// $category = $request->input('category');
+		// $filters = [];
 
-		$category = $request->input('category');
+		// switch ($category) {
+		// 	case 'product':
+				
+		// 		$filters = [
+		// 			'date_from' => '',
+		// 			'date_to' => '',
+		// 			'branch_id' => 
+
+		// 		];
+
+		// 		break;
+		// 	case 'client':
+		// 		# code...
+		// 		break;
+		// 	case 'account_officer':
+		// 		# code...
+		// 		break;
+		// }
+
+		// $filters = [ 
+		// 	'date_from' => Carbon::createFromFormat('Y-m-d', $request->input('date_from')),
+		// 	'date_to' => Carbon::createFromFormat('Y-m-d', $request->input('date_to')),
+		// 	'type' => $request->input('type'),
+		// 	'spec' => $request->input('spec'),
+		// 	'branch_id' => $request->input('branch_id')
+		// ];
+
+		
+
+
 		$report = new Reports();
 
 		return $this->sendResponse($report->releaseReports($filters, $category), '');
@@ -71,12 +96,12 @@ class ReportsController extends BaseController
 		$filters = [];
 		$report = new Reports();
 
+		$branchReport = NULL;
 		switch ($type) {
 
 			case 'collection':
 				
 				$filters = [
-					'type' => $request->input('type'),
 					'transaction_date' => $request->input('transaction_date'),
 					'account_officer' => $request->input('account_officer'),
 					'center' => $request->input('center'),
@@ -84,12 +109,21 @@ class ReportsController extends BaseController
 					'group' => $request->input('group')
 				];
 
-				$collectionReport = $report->branchCollectionReport($filters);
-				return $collectionReport;
+				$branchReport = $report->branchCollectionReport($filters);
 				// return $this->sendResponse('Invalid Parameters', 'Could not load data');
 				break;
 			case 'maturity':
-				# code...
+				
+				$filters = [
+					'date_from' => $request->input('date_from'),
+					'date_to' => $request->input('date_to'),
+					'account_officer' => $request->input('account_officer'),
+					'center' => $request->input('center'),
+					'branch_id' => $request->input('branch_id')
+				];
+
+				$branchReport = $report->branchMaturityReport($filters);
+
 				break;
 			case 'client_payment_status':
 				# code...
@@ -112,7 +146,7 @@ class ReportsController extends BaseController
 				break;
 		}
 
-		return $filters;
+		return $branchReport;
 	}
 
 	public function microReports(Request $request){
