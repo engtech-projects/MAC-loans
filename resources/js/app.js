@@ -23,7 +23,6 @@
  Vue.component('overridepayment-view', require('./components/OverridePaymentView.vue').default);
  Vue.component('warning-modal', require('./components/WarningModal.vue').default);
  Vue.component('account-details', require('./components/AccountDetails.vue').default);
- 
  Vue.component('client-list', require('./ui/client_information/ClientList.vue').default);
  Vue.component('personal-information', require('./ui/client_information/PersonalInformation.vue').default);
  Vue.component('balance-inquiry', require('./ui/client_information/BalanceInquiry.vue').default);
@@ -67,6 +66,10 @@
  Vue.component('reports-branch-maturity', require('./ui/reports/branch/MaturityReport.vue').default);
  Vue.component('reports-branch-paymentstatus', require('./ui/reports/branch/ClientPaymentStatus.vue').default);
  Vue.component('reports-branch-accountofficer', require('./ui/reports/branch/AccountOfficer.vue').default);
+ Vue.component('reports-branch-loanlisting', require('./ui/reports/branch/LoanListing.vue').default);
+ Vue.component('reports-branch-loanstatussummary', require('./ui/reports/branch/LoanStatusSummary.vue').default);
+ Vue.component('reports-branch-loanagingsummary', require('./ui/reports/branch/LoanAgingSummary.vue').default);
+ Vue.component('reports-branch-revenuereport', require('./ui/reports/branch/RevenueReport.vue').default);
 
  Vue.component('endof-day', require('./ui/endofday/Endofday.vue').default);
 

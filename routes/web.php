@@ -95,6 +95,12 @@ Route::group(['middleware' => 'auth'], function (){
 	Route::get('/reports/branch/client_payment_status', [ReportsController::class, 'branchPaymentStatus'])->name('reports.branch.paymentstatus');
 	Route::get('/reports/branch/account_officer', [ReportsController::class, 'branchAccountOfficer'])->name('reports.branch.accountofficer');
 	Route::get('/reports/branch/loan_listing', [ReportsController::class, 'branchLoanListing'])->name('reports.branch.loanlisting');
+	Route::get('/reports/branch/loan_status_summary', [ReportsController::class, 'branchLoanStatusSummary'])->name('reports.branch.loanstatussummary');
+	Route::get('/reports/branch/loan_aging_summary', [ReportsController::class, 'branchLoanAgingSummary'])->name('reports.branch.loanagingsummary');
+	Route::get('/reports/branch/revenue_report', [ReportsController::class, 'branchRevenueReport'])->name('reports.branch.revenuereport');
+
+	Route::get('/reports/consolidated/revenue_report', [ReportsController::class, 'consolidatedLoanSummaryReport'])->name('reports.consolidated.loansummaryreport');
+
 
 	Route::get('/endofday/', [EndOfDayController::class, 'index'])->name('endofday');
 	Route::get('/eod/check', [EndOfDayController::class, 'eodCheck']);

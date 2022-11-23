@@ -22,19 +22,19 @@
 					<a :href="baseURL() + 'reports/branch/loan_listing'" class="text-md base-link">Loan Listing</a>
 				</div>
 				<div class="pxy-15 light-bb d-flex justify-content-between align-items-center hover-primary-dark" :class="nav2=='loan status summary'?'active':''">
-					<a href="reports_branch_loan_status_summary.php" class="text-md base-link">Loan Status Summary</a>
+					<a :href="baseURL() + 'reports/branch/loan_status_summary'" class="text-md base-link">Loan Status Summary</a>
 				</div>
 				<div class="pxy-15 light-bb d-flex justify-content-between align-items-center hover-primary-dark" :class="nav2=='loan aging summary'?'active':''">
-					<a href="reports_branch_loan_aging_summary.php" class="text-md base-link">Loan Aging Summary</a>
+					<a :href="baseURL() + 'reports/branch/loan_aging_summary'" class="text-md base-link">Loan Aging Summary</a>
 				</div>
 				<div class="pxy-15 d-flex justify-content-between align-items-center hover-primary-dark" :class="nav2=='revenue report'?'active':''">
-					<a href="reports_branch_revenue_report.php" class="text-md base-link">Revenue Report</a>
+					<a :href="baseURL() + 'reports/branch/revenue_report'" class="text-md base-link">Revenue Report</a>
 				</div>
 			</div>
 		</div>
 		<div class="report-main-item pxy-25 light-bb d-flex flex-column relative hover-light report-nav-item" :class="consolidatedNav?'active':''">
 			<div @click="consolidatedNav=!consolidatedNav" class="nav-item2-body d-flex justify-content-between align-items-center">
-				<a href="" class="text-20 base-link">Consolidated</a>
+				<a @click.prevent href="" class="text-20 base-link">Consolidated</a>
 				<i class="fa fa-caret-right" style="display:block"></i>
 			</div>
 			<div class="sub-item-container mt-10">
