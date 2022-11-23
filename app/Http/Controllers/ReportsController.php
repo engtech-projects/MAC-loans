@@ -117,4 +117,32 @@ class ReportsController extends Controller
 			'title' => 'Reports - Branch Loan Listing',
 		]);
 	}
+
+	public function branchLoanStatusSummary(){
+		return view('reports.branch.loan_status_summary')->with([
+			'nav' => ['reports', 'branch','loan status summary'],
+			'title' => 'Reports - Branch Loan Status Summary',
+		]);
+	}
+
+	public function branchLoanAgingSummary(){
+		return view('reports.branch.loan_aging_summary')->with([
+			'nav' => ['reports', 'branch','loan aging summary'],
+			'title' => 'Reports - Branch Loan aging Summary',
+		]);
+	}
+
+	public function branchRevenueReport(){
+		return view('reports.branch.revenue_report')->with([
+			'nav' => ['reports', 'branch','revenue report'],
+			'title' => 'Reports - Branch Revenue Report',
+		]);
+	}
+
+	public function consolidatedLoanSummaryReport(){
+		return view('reports.consolidated.loan_summary_report')->with([
+			'nav' => ['reports', 'consolidated','revenue report'],
+			'title' => 'Reports - consolidated Revenue Report',
+		]);
+	}
 }
