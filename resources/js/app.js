@@ -72,6 +72,14 @@
  Vue.component('reports-branch-loanagingsummary', require('./ui/reports/branch/LoanAgingSummary.vue').default);
  Vue.component('reports-branch-revenuereport', require('./ui/reports/branch/RevenueReport.vue').default);
 
+ Vue.component('reports-consolidated-loansummary', require('./ui/reports/consolidated/LoanSummaryReport.vue').default);
+ Vue.component('reports-consolidated-loanaging', require('./ui/reports/consolidated/LoanAgingReport.vue').default);
+ Vue.component('reports-consolidated-loanperformance', require('./ui/reports/consolidated/LoanPerformanceReport.vue').default);
+
+ Vue.component('reports-micromonitoring', require('./ui/reports/MicroMonitoring.vue').default);
+ Vue.component('reports-prepaidinterest', require('./ui/reports/PrepaidInterest.vue').default);
+ Vue.component('reports-performancereport', require('./ui/reports/PerformanceReport.vue').default);
+
  Vue.component('endof-day', require('./ui/endofday/Endofday.vue').default);
 
  Vue.config.devtools = true;

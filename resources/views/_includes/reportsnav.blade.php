@@ -56,15 +56,15 @@
 			<i class="fa fa-caret-right"></i>
 		</div>
 		<div class="light-bb pxy-25 d-flex justify-content-between align-items-center hover-light report-nav-item <?php echo isActiveNav($nav[1], 'micro monitoring'); ?>">
-			<a href="reports_micro_monitoring.php" class="text-20 base-link">Micro Monitoring</a>
+			<a href="{{route('reports.micromonitoring')}}" class="text-20 base-link">Micro Monitoring</a>
 			<i class="fa fa-caret-right"></i>
 		</div>
 		<div class="light-bb pxy-25 d-flex justify-content-between align-items-center hover-light report-nav-item <?php echo isActiveNav($nav[1], 'prepaid interest'); ?>">
-			<a href="reports_prepaid_interest.php" class="text-20 base-link">Prepaid Interest</a>
+			<a href="{{route('reports.prepaidinterest')}}" class="text-20 base-link">Prepaid Interest</a>
 			<i class="fa fa-caret-right"></i>
 		</div>
 		<div class="pxy-25 d-flex justify-content-between align-items-center hover-light report-nav-item <?php echo isActiveNav($nav[1], 'performance report'); ?>">
-			<a href="reports_performance_report.php" class="text-20 base-link">Performance Report</a>
+			<a href="{{route('reports.performancereport')}}" class="text-20 base-link">Performance Report</a>
 			<i class="fa fa-caret-right"></i>
 		</div>
 	</div>

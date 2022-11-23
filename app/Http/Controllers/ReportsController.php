@@ -141,8 +141,43 @@ class ReportsController extends Controller
 
 	public function consolidatedLoanSummaryReport(){
 		return view('reports.consolidated.loan_summary_report')->with([
-			'nav' => ['reports', 'consolidated','revenue report'],
-			'title' => 'Reports - consolidated Revenue Report',
+			'nav' => ['reports', 'consolidated','loan summary report'],
+			'title' => 'Reports - consolidated Loan Summary Report',
+		]);
+	}
+
+	public function consolidatedLoanAgingReport(){
+		return view('reports.consolidated.loan_aging_report')->with([
+			'nav' => ['reports', 'consolidated','loan aging report'],
+			'title' => 'Reports - consolidated Loan Aging Report',
+		]);
+	}
+
+	public function consolidatedLoanPerformanceReport(){
+		return view('reports.consolidated.loan_performance_report')->with([
+			'nav' => ['reports', 'consolidated','loan performance report'],
+			'title' => 'Reports - consolidated Loan Performance Report',
+		]);
+	}
+	
+	public function reportsMicroMonitoring(){
+		return view('reports.micro_monitoring')->with([
+			'nav' => ['reports', 'micro monitoring',''],
+			'title' => 'Reports - Micro Monitoring',
+		]);
+	}
+
+	public function reportsPrepaidInterest(){
+		return view('reports.prepaid_interest')->with([
+			'nav' => ['reports', 'prepaid interest',''],
+			'title' => 'Reports - Prepaid Interest',
+		]);
+	}
+
+	public function reportsPerformanceReport(){
+		return view('reports.performance_report')->with([
+			'nav' => ['reports', 'performance report',''],
+			'title' => 'Reports - Performance Report',
 		]);
 	}
 }

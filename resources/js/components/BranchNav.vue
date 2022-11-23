@@ -39,13 +39,13 @@
 			</div>
 			<div class="sub-item-container mt-10">
 				<div class="pxy-15 light-bt light-bb d-flex justify-content-between align-items-center hover-primary-dark" :class="nav2=='loan summary report'?'active':''">
-					<a href="reports_consolidated_loan_summary_report.php" class="text-md base-link">Loan Summary Report</a>
+					<a :href="baseURL() + 'reports/consolidated/loan_summary_report'" class="text-md base-link">Loan Summary Report</a>
 				</div>
-				<div class="pxy-15 light-bb d-flex justify-content-between align-items-center hover-primary-dark" :class="nav2=='consolidated aging report'?'active':''">
-					<a href="reports_consolidated_loan_aging_report.php" class="text-md base-link">Loan Aging Report</a>
+				<div class="pxy-15 light-bb d-flex justify-content-between align-items-center hover-primary-dark" :class="nav2=='loan aging report'?'active':''">
+					<a :href="baseURL() + 'reports/consolidated/loan_aging_report'" class="text-md base-link">Loan Aging Report</a>
 				</div>
-				<div class="pxy-15 light-bb d-flex justify-content-between align-items-center hover-primary-dark" :class="nav2=='performance report'?'active':''">
-					<a href="#" class="text-md base-link">Performance Report</a>
+				<!-- <div class="pxy-15 light-bb d-flex justify-content-between align-items-center hover-primary-dark" :class="nav2=='performance report'?'active':''">
+					<a :href="baseURL() + 'reports/consolidated/loan_performance_report'">Performance Report</a>
 				</div>
 				<div class="pxy-15 light-bb d-flex justify-content-between align-items-center hover-primary-dark" :class="nav2=='write-off report'?'active':''">
 					<a href="#" class="text-md base-link">Write-Off Report</a>
@@ -55,7 +55,7 @@
 				</div>
 				<div class="pxy-15 d-flex justify-content-between align-items-center hover-primary-dark" :class="nav2=='consolidated revenue report'?'active':''">
 					<a href="#" class="text-md base-link">Revenue Report</a>
-				</div>
+				</div> -->
 			</div>
 		</div>
 	</div>

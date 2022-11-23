@@ -99,7 +99,14 @@ Route::group(['middleware' => 'auth'], function (){
 	Route::get('/reports/branch/loan_aging_summary', [ReportsController::class, 'branchLoanAgingSummary'])->name('reports.branch.loanagingsummary');
 	Route::get('/reports/branch/revenue_report', [ReportsController::class, 'branchRevenueReport'])->name('reports.branch.revenuereport');
 
-	Route::get('/reports/consolidated/revenue_report', [ReportsController::class, 'consolidatedLoanSummaryReport'])->name('reports.consolidated.loansummaryreport');
+	Route::get('/reports/consolidated/loan_summary_report', [ReportsController::class, 'consolidatedLoanSummaryReport'])->name('reports.consolidated.loansummaryreport');
+	Route::get('/reports/consolidated/loan_aging_report', [ReportsController::class, 'consolidatedLoanAgingReport'])->name('reports.consolidated.loanagingreport');
+	Route::get('/reports/consolidated/loan_performance_report', [ReportsController::class, 'consolidatedLoanPerformanceReport'])->name('reports.consolidated.loanperformancereport');
+
+	Route::get('/reports/micro_monitoring', [ReportsController::class, 'reportsMicroMonitoring'])->name('reports.micromonitoring');
+	Route::get('/reports/prepaid_interest', [ReportsController::class, 'reportsPrepaidInterest'])->name('reports.prepaidinterest');
+	Route::get('/reports/performance_report', [ReportsController::class, 'reportsPerformanceReport'])->name('reports.performancereport');
+
 
 
 	Route::get('/endofday/', [EndOfDayController::class, 'index'])->name('endofday');
