@@ -20,7 +20,7 @@ class ReportsController extends BaseController
 			'branch_id' => $request->input('branch_id')
 		];
 
-
+		
 		$report = new Reports();
 		return $this->sendResponse($report->transactionReports($filters), '');
 
