@@ -20,7 +20,7 @@ class ReportsController extends BaseController
 			'branch_id' => $request->input('branch_id')
 		];
 
-		
+
 		$report = new Reports();
 		return $this->sendResponse($report->transactionReports($filters), '');
 
@@ -28,27 +28,51 @@ class ReportsController extends BaseController
 
 	public function releaseReports(Request $request) {
 
-		// $category = $request->input('category');
-		// $filters = [];
+		$category = $request->input('category');
+		$filters = [];
+		$report = new Reports();
 
-		// switch ($category) {
-		// 	case 'product':
+		switch ($category) {
+			case 'product':
 				
-		// 		$filters = [
-		// 			'date_from' => '',
-		// 			'date_to' => '',
-		// 			'branch_id' => 
+				// {
+				//     "date_from" : "2022-09-26",
+				//     "date_to" : "2022-10-27",
+				//     "branch_id" : 1,
+				//     "category" : "product"
+				// }
 
-		// 		];
+				$filters = [
+					'date_from' => $request->input('date_from'),
+					'date_to' => $request->input('date_to'),
+					'branch_id' => $request->input('branch_id')
 
-		// 		break;
-		// 	case 'client':
-		// 		# code...
-		// 		break;
-		// 	case 'account_officer':
-		// 		# code...
-		// 		break;
-		// }
+				];
+
+				break;
+			case 'account_officer':
+
+				// {
+				//     "date_from" : "2022-11-21",
+				//     "date_to" : "2022-11-21",
+				//     "branch_id" : 1,
+				//     "account_officer" : 1,
+				//     "category" : "account_officer"
+				// }
+				
+				$filters = [
+					'date_from' => $request->input('date_from'),
+					'date_to' => $request->input('date_to'),
+					'branch_id' => $request->input('branch_id'),
+					'account_officer' => $request->input('account_officer')
+				];
+
+
+				break;
+			case 'client':
+				# code...
+				break;
+		}
 
 		// $filters = [ 
 		// 	'date_from' => Carbon::createFromFormat('Y-m-d', $request->input('date_from')),
@@ -57,9 +81,6 @@ class ReportsController extends BaseController
 		// 	'spec' => $request->input('spec'),
 		// 	'branch_id' => $request->input('branch_id')
 		// ];
-
-		
-
 
 		$report = new Reports();
 

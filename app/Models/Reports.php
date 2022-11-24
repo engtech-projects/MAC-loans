@@ -47,9 +47,9 @@ class Reports extends Model
     	// 	$loanAccount->where([ 'loan_accounts.product_id' => $filters['product'] ]);
     	// }
 
-    	// if( isset($filters['account_officer']) && $filters['account_officer'] ){
-    	// 	$loanAccount->where([ 'loan_accounts.ao_id' => $filters['account_officer'] ]);
-    	// }
+    	if( isset($filters['account_officer']) && $filters['account_officer'] ){
+    		$loanAccount->where([ 'loan_accounts.ao_id' => $filters['account_officer'] ]);
+    	}
 
 
     	return $loanAccount->get([
@@ -207,88 +207,7 @@ class Reports extends Model
                 }
 
             }
-
-            // $payments = $this->getPayments($filters)
-
-
-            // $filters['product_id'] = $product->product_id;
-            // $accounts = $this->getLoanAccounts($filters);
-            // $payments = $this->getPayments($filters)
-            // $product->cash = 0;
-            // $product->check = 0;
-
-            // if( count($accounts) > 0 ){
-
-            //     $product->reference = $product->product_code . ' - ' . $product->product_name;
-
-            //     foreach ($accounts as $account) {
-
-            //         $product->principal += $account->loan_amount;
-            //         $product->interest += $account->interest_amount;
-            //         $product->document_stamp += $account->document_stamp;
-            //         $product->filing_fee += $account->filing_fee;
-            //         $product->insurance += $account->insurance;
-            //         $product->notarial_fee += $account->notarial_fee;
-            //         $product->prepaid_interest += $account->prepaid_interest;
-            //         $product->affidavit_fee += $account->affidavit_fee;
-            //         $product->total_deduction += $account->total_deduction;
-            //         $product->net_proceeds += $account->net_proceeds;
-            //         $product->memo += $account->memo;
-
-            //         if( str_contains(strtolower($account->release_type), 'cash')  ){
-            //              $product->cash += $account->net_proceeds;
-            //         }
-
-            //         if( str_contains(strtolower($account->release_type), 'check') ){
-            //              $product->check += $account->net_proceeds;
-            //         }
-
-            //         if( count($account->payments) ){
-
-            //             foreach ($account->payments as $payment) {
-
-            //                 $transactionDate = Carbon::createFromFormat('Y-m-d', $payment->transaction_date);
-            //                 $fromDate = Carbon::createFromFormat('Y-m-d', $filters['date_from']);
-            //                 $toDate = Carbon::createFromFormat('Y-m-d', $filters['date_to']);
-            //                 return $transactionDate->addDay(1);
-            //                 if( $transactionDate->gte($fromDate) && $transactionDate->lte($toDate) ){
-            //                     foreach ($paymentTypes as $type) {
-                                
-            //                         if( $payment->payment_type == $type ){
-
-            //                             if( !isset($payments[$type]) ) {
-            //                                 $payments[$type]['principal'] = 0;
-            //                                 $payments[$type]['interest'] = 0;
-            //                                 $payments[$type]['pdi'] = 0;
-            //                                 $payments[$type]['over'] = 0;
-            //                                 $payments[$type]['discount'] = 0;
-            //                                 $payments[$type]['total_payment'] = 0;
-            //                                 $payments[$type]['net_int'] = 0;
-            //                                 $payments[$type]['vat'] = 0;
-            //                             }
-
-            //                             $payments[$type]['principal'] += $payment->principal;
-            //                             $payments[$type]['interest'] += $payment->interest;
-            //                             $payments[$type]['pdi'] += $payment->pdi;
-            //                             $payments[$type]['over'] += null;
-            //                             $payments[$type]['discount'] += null;
-            //                             $payments[$type]['total_payment'] += $payment->amount_applied;
-            //                             $payments[$type]['net_int'] += null;
-            //                             $payments[$type]['vat'] += $payment->vat;
-            //                         }
-            //                     }
-            //                 }
-            //             }
-            //         }
-            //     }
-
-            //     $product->payments = $payments; 
-            // }else{
-            //     unset($products[$key]);
-            // }       
         }
-
-        // return $products;
         return $data;
     }
 
@@ -401,14 +320,7 @@ class Reports extends Model
     	switch ($category) {
     		case 'product':
 
-                // $type = $filters['type'];
-                // if( $type == 'new' ){
-                //     $filters['cycle_no'] = 1;
-                // }else{
-                //     $filters[$type] = $filters['spec'];
-                // }
-
-    			return $this->getReleaseByProduct(['date_from' => $filters['date_from'], 'date_to' => $filters['date_to']]);
+    			return $this->getReleaseByProduct($filters);
     			break;
 
     		case 'client':
@@ -422,11 +334,10 @@ class Reports extends Model
     			break;
 
     		case 'account_officer':
-                $type = $filters['type'];
-    			if( $type == 'new' ){
-                    $filters['cycle_no'] = 1;
-                }
-
+       //          $type = $filters['type'];
+    			// if( $type == 'new' ){
+       //              $filters['cycle_no'] = 1;
+       //          }
                 return $this->getReleaseByAccountOfficer($filters);
     			break;
 
@@ -461,48 +372,78 @@ class Reports extends Model
     
     public function getReleaseByAccountOfficer($filters) {
 
-        $officers = AccountOfficer::where(['status' => 'active'])->get()->toArray();
-
-        if( $filters['type'] != 'all' ){
-            $aoId = $filters['type'];
-            $officers = AccountOfficer::where(['status' => 'active', 'ao_id' => $aoId ])->get()->toArray();    
+        if( $filters['account_officer'] == 'all' ){
+            $officers = AccountOfficer::where(['status' => 'active'])->get();
+        }else{
+            $officers = AccountOfficer::where(['status' => 'active', 'ao_id' => $filters['account_officer'] ])->get();
         }
+        
+        // if( $filters['type'] != 'all' ){
+        //     $aoId = $filters['type'];
+        //     $officers = AccountOfficer::where(['status' => 'active', 'ao_id' => $aoId ])->get()->toArray();    
+        // }
 
-        $products = Product::where([ 'status' => 'active' ])->get(['product_id', 'product_code', 'product_name', 'interest_rate'])->toArray();
+        $products = Product::where([ 'status' => 'active' ])->get(['product_id', 'product_code', 'product_name', 'interest_rate']);
 
+        $data = [];
         foreach ($officers as $key => $value) {
-            
+            $data[$key]['account_officer'] = $value['name'];
+
             foreach ($products as $k => $v) {
+
+                $data[$key]['products'][$k] = [
+                    'reference' => null,
+                    'new_account' => null,
+                    'new_account_amount_released' => null,
+                    'repeat_account' => null,
+                    'repeat_account_amount_released' => null,
+                    'total_released' => null,
+                ];
 
                 $accounts = null;
                 $filters['product_id'] = $v['product_id'];
                 $filters['account_officer'] = $value['ao_id'];
-                
                 $accounts = $this->getLoanAccounts($filters);
 
                 if( count($accounts) > 0 ) {
 
-                    $v['reference'] = $v['product_code'] . ' - ' . $v['product_name'];
-                    $v['repeat_account'] = 0;
-                    $v['repeat_account_amount'] = 0;
-                    $v['new_account'] = 0;
-                    $v['new_account_amount'] = 0;
+                    $data[$key]['products'][$k] = [
+                        'reference' => $v['product_code'] . ' - ' . $v['product_name'],
+                        'new_account' => null,
+                        'new_account_amount_released' => null,
+                        'repeat_account' => null,
+                        'repeat_account_amount_released' => null,
+                        'total_released' => null,
+                    ];
+
+            //         $v['reference'] = $v['product_code'] . ' - ' . $v['product_name'];
+            //         // $v['repeat_account'] = 0;
+            //         // $v['repeat_account_amount'] = 0;
+            //         // $v['new_account'] = 0;
+            //         // $v['new_account_amount'] = 0;
                     foreach ($accounts as $account) {
 
                         if( $account->cycle_no > 1 ){
-                            $v['repeat_account'] += 1;
-                            $v['repeat_account_amount'] += $account->loan_amount;
+                            $data[$key]['products'][$k]['repeat_account'] += 1;
+                            $data[$key]['products'][$k]['repeat_account_amount_released'] += $account->loan_amount;
+            //         //         $v['repeat_account'] += 1;
+            //         //         $v['repeat_account_amount'] += $account->loan_amount;
                         }else{
-                             $v['new_account'] += 1;
-                             $v['new_account_amount'] += $account->loan_amount;
+                            $data[$key]['products'][$k]['new_account'] += 1;
+                            $data[$key]['products'][$k]['new_account_amount_released'] += $account->loan_amount;
+            //         //          $v['new_account'] += 1;
+            //         //          $v['new_account_amount'] += $account->loan_amount;
                         }
+
+                        $data[$key]['products'][$k]['total_released'] = $data[$key]['products'][$k]['new_account_amount_released'] + $data[$key]['products'][$k]['repeat_account_amount_released'];
                     }
                 }
 
-                $officers[$key]['products'][] = $v;
+            //     // $officers[$key] = $v;
             }
         }
-        return $officers;
+        return $data;
+        // return $filters;
     }
     /* end release reports */
 
