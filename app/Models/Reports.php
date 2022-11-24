@@ -14,6 +14,7 @@ class Reports extends Model
 
     public function getLoanAccounts($filters = []) {
 
+        $branch = Branch::find($filters['branch_id']);
     	$loanAccount = new LoanAccount();
 
     	if( isset($filters['date_from']) && isset($filters['date_to']) ){
@@ -24,31 +25,31 @@ class Reports extends Model
     	}
 
 
-    	$loanAccount->where([ 'loan_accounts.status' => 'released' ]);
+    	$loanAccount->where([ 'loan_accounts.status' => 'released', 'branch_code' => $branch->branch_code ]);
     	
     	if( isset($filters['product_id']) && $filters['product_id'] ){
     		$loanAccount->where([ 'loan_accounts.product_id' => $filters['product_id'] ]);
     	}
 
-    	if( isset($filters['cycle_no']) && $filters['cycle_no'] ){
-    		$loanAccount->where([ 'loan_accounts.cycle_no' => $filters['cycle_no'] ]);
-    	}
+    	// if( isset($filters['cycle_no']) && $filters['cycle_no'] ){
+    	// 	$loanAccount->where([ 'loan_accounts.cycle_no' => $filters['cycle_no'] ]);
+    	// }
 
-    	if( isset($filters['branch_code']) && $filters['branch_code'] ){
-    		$loanAccount->where([ 'loan_accounts.branch_code' => $filters['branch_code'] ]);
-    	}
+    	// if( isset($filters['branch_code']) && $filters['branch_code'] ){
+    	// 	$loanAccount->where([ 'loan_accounts.branch_code' => $filters['branch_code'] ]);
+    	// }
 
-    	if( isset($filters['center']) && $filters['center'] ){
-    		$loanAccount->where([ 'loan_accounts.center_id' => $filters['center'] ]);
-    	}
+    	// if( isset($filters['center']) && $filters['center'] ){
+    	// 	$loanAccount->where([ 'loan_accounts.center_id' => $filters['center'] ]);
+    	// }
 
-    	if( isset($filters['product']) && $filters['product'] ){
-    		$loanAccount->where([ 'loan_accounts.product_id' => $filters['product'] ]);
-    	}
+    	// if( isset($filters['product']) && $filters['product'] ){
+    	// 	$loanAccount->where([ 'loan_accounts.product_id' => $filters['product'] ]);
+    	// }
 
-    	if( isset($filters['account_officer']) && $filters['account_officer'] ){
-    		$loanAccount->where([ 'loan_accounts.ao_id' => $filters['account_officer'] ]);
-    	}
+    	// if( isset($filters['account_officer']) && $filters['account_officer'] ){
+    	// 	$loanAccount->where([ 'loan_accounts.ao_id' => $filters['account_officer'] ]);
+    	// }
 
 
     	return $loanAccount->get([
@@ -77,155 +78,320 @@ class Reports extends Model
         ]);
     }
 
+    public function getPayments($filters = []) {
+
+        $branch = Branch::find($filters['branch_id']);
+        $payments = new Payment();
+
+        if( isset($filters['date_from']) && isset($filters['date_to']) ){
+            $payments = Payment::whereDate('payment.transaction_date', '>=', $filters['date_from']);
+            $payments = Payment::whereDate('payment.transaction_date', '<=', $filters['date_to']);
+        }
+
+        $payments->where([ 'payment.status' => 'paid', 'branch_id' => $branch->branch_id ]);
+
+        return $payments->get();
+    }
 
     /* start transaction reports */
     public function transactionReports($filters = []) {
 
     	$report = new Reports();
 
-    	$report->by_product = $this->getReleaseByProduct($filters);
-    	$report->by_client = $this->getReleaseByClient($filters);
+    	$report->product = $this->getReleaseByProduct($filters);
+    	$report->client = $this->getReleaseByClient($filters);
 
     	return $report;
     }
 
     public function getReleaseByProduct($filters) {
 
-        if( isset($filters['product']) && $filters['product'] ){
-            $products = Product::where([ 'status' => 'active', 'product_id' => $filters['product'] ])->get(['product_id', 'product_code', 'product_name', 'interest_rate']);
-        }else{
+        // if( isset($filters['product']) && $filters['product'] ){
+        //     $products = Product::where([ 'status' => 'active', 'product_id' => $filters['product'] ])->get(['product_id', 'product_code', 'product_name', 'interest_rate']);
+        // }else{
             $products = Product::where([ 'status' => 'active' ])->get(['product_id', 'product_code', 'product_name', 'interest_rate']);
-        }
+        // }
         
         $paymentTypes = config('enums.payment_type');
 
+        $data = [];
+     
+
         foreach ($products as $key => $product) {
+
+            $data[$key]['reference'] = $product->reference = $product->product_code . ' - ' . $product->product_name;
+            $data[$key]['release'] = [
+                'principal' => 0,
+                'interest' => 0,
+                'document_stamp' => 0,
+                'filing_fee' => 0,
+                'insurance' => 0,
+                'notarial_fee' => 0,
+                'prepaid_interest' => 0,
+                'affidavit_fee' => 0,
+                'total_deduction' => 0,
+                'net_proceeds' => 0,
+                'memo' => 0,
+                'cash' => 0,
+                'check' => 0,
+            ];
+
+            $data[$key]['payment'] = [];
 
             $accounts = null;
             $payments = null;
-            $filters['product_id'] = $product->product_id;
+
             $accounts = $this->getLoanAccounts($filters);
-            $product->cash = 0;
-            $product->check = 0;
+            $payments = $this->getPayments($filters);
 
-            if( count($accounts) > 0 ){
-
-                $product->reference = $product->product_code . ' - ' . $product->product_name;
+            if( count($accounts) ){
 
                 foreach ($accounts as $account) {
 
-                    $product->principal += $account->loan_amount;
-                    $product->interest += $account->interest_amount;
-                    $product->document_stamp += $account->document_stamp;
-                    $product->filing_fee += $account->filing_fee;
-                    $product->insurance += $account->insurance;
-                    $product->notarial_fee += $account->notarial_fee;
-                    $product->prepaid_interest += $account->prepaid_interest;
-                    $product->affidavit_fee += $account->affidavit_fee;
-                    $product->total_deduction += $account->total_deduction;
-                    $product->net_proceeds += $account->net_proceeds;
-                    $product->memo += $account->memo;
+                    $data[$key]['release']['principal'] += $account->loan_amount;
+                    $data[$key]['release']['interest'] += $account->interest_amount;
+                    $data[$key]['release']['document_stamp'] += $account->document_stamp;
+                    $data[$key]['release']['filing_fee'] += $account->filing_fee;
+                    $data[$key]['release']['insurance'] += $account->insurance;
+                    $data[$key]['release']['notarial_fee'] += $account->notarial_fee;
+                    $data[$key]['release']['prepaid_interest'] += $account->prepaid_interest;
+                    $data[$key]['release']['affidavit_fee'] += $account->affidavit_fee;
+                    $data[$key]['release']['total_deduction'] += $account->total_deduction;
+                    $data[$key]['release']['net_proceeds'] += $account->net_proceeds;
+                    $data[$key]['release']['memo'] += $account->memo;
 
                     if( str_contains(strtolower($account->release_type), 'cash')  ){
-                         $product->cash += $account->net_proceeds;
+                         $data[$key]['release']['cash'] += $account->net_proceeds;
                     }
 
                     if( str_contains(strtolower($account->release_type), 'check') ){
-                         $product->check += $account->net_proceeds;
-                    }
-
-                    if( count($account->payments) ){
-
-                        foreach ($account->payments as $payment) {
-
-                            foreach ($paymentTypes as $type) {
-                                
-                                if( $payment->payment_type == $type ){
-
-                                    if( !isset($payments[$type]) ){
-                                        $payments[$type]['principal'] = 0;
-                                        $payments[$type]['interest'] = 0;
-                                        $payments[$type]['pdi'] = 0;
-                                        $payments[$type]['over'] = 0;
-                                        $payments[$type]['discount'] = 0;
-                                        $payments[$type]['total_payment'] = 0;
-                                        $payments[$type]['net_int'] = 0;
-                                        $payments[$type]['vat'] = 0;
-                                    }
-
-                                    $payments[$type]['principal'] += $payment->principal;
-                                    $payments[$type]['interest'] += $payment->interest;
-                                    $payments[$type]['pdi'] += $payment->pdi;
-                                    $payments[$type]['over'] += null;
-                                    $payments[$type]['discount'] += null;
-                                    $payments[$type]['total_payment'] += $payment->amount_applied;
-                                    $payments[$type]['net_int'] += null;
-                                    $payments[$type]['vat'] += $payment->vat;
-                                }
-                            }
-                        }
+                         $data[$key]['release']['check'] += $account->net_proceeds;
                     }
                 }
+            }
 
-                $product->payments = $payments;
-            }else{
-                unset($products[$key]);
-            }       
+            
+            if( count($payments) ) {
+
+                foreach ($payments as $k => $payment) {
+                    
+                    foreach ($paymentTypes as $type) {
+
+                        if( $payment->payment_type == $type ){
+
+                            if( !isset($data[$key]['payment'][$type]) ){
+                                $data[$key]['payment'][$type] = [
+                                    'principal' => 0,
+                                    'interest' => 0,
+                                    'pdi' => 0,
+                                    'over' => 0,
+                                    'discount' => 0,
+                                    'total_payment' => 0,
+                                    'net_int' => 0,
+                                    'vat' => 0
+                                ];
+                            }
+
+                            $data[$key]['payment'][$type]['principal'] += $payment->principal;
+                            $data[$key]['payment'][$type]['interest'] += $payment->interest;
+                            $data[$key]['payment'][$type]['pdi'] += $payment->pdi;
+                            $data[$key]['payment'][$type]['over'] += $payment->over_payment;
+                            $data[$key]['payment'][$type]['discount'] += null;
+                            $data[$key]['payment'][$type]['total_payment'] += $payment->amount_applied;
+                            $data[$key]['payment'][$type]['net_int'] += null;
+                            $data[$key]['payment'][$type]['vat'] += $payment->vat;
+                        }
+
+                    }
+
+                }
+
+            }
+
+            // $payments = $this->getPayments($filters)
+
+
+            // $filters['product_id'] = $product->product_id;
+            // $accounts = $this->getLoanAccounts($filters);
+            // $payments = $this->getPayments($filters)
+            // $product->cash = 0;
+            // $product->check = 0;
+
+            // if( count($accounts) > 0 ){
+
+            //     $product->reference = $product->product_code . ' - ' . $product->product_name;
+
+            //     foreach ($accounts as $account) {
+
+            //         $product->principal += $account->loan_amount;
+            //         $product->interest += $account->interest_amount;
+            //         $product->document_stamp += $account->document_stamp;
+            //         $product->filing_fee += $account->filing_fee;
+            //         $product->insurance += $account->insurance;
+            //         $product->notarial_fee += $account->notarial_fee;
+            //         $product->prepaid_interest += $account->prepaid_interest;
+            //         $product->affidavit_fee += $account->affidavit_fee;
+            //         $product->total_deduction += $account->total_deduction;
+            //         $product->net_proceeds += $account->net_proceeds;
+            //         $product->memo += $account->memo;
+
+            //         if( str_contains(strtolower($account->release_type), 'cash')  ){
+            //              $product->cash += $account->net_proceeds;
+            //         }
+
+            //         if( str_contains(strtolower($account->release_type), 'check') ){
+            //              $product->check += $account->net_proceeds;
+            //         }
+
+            //         if( count($account->payments) ){
+
+            //             foreach ($account->payments as $payment) {
+
+            //                 $transactionDate = Carbon::createFromFormat('Y-m-d', $payment->transaction_date);
+            //                 $fromDate = Carbon::createFromFormat('Y-m-d', $filters['date_from']);
+            //                 $toDate = Carbon::createFromFormat('Y-m-d', $filters['date_to']);
+            //                 return $transactionDate->addDay(1);
+            //                 if( $transactionDate->gte($fromDate) && $transactionDate->lte($toDate) ){
+            //                     foreach ($paymentTypes as $type) {
+                                
+            //                         if( $payment->payment_type == $type ){
+
+            //                             if( !isset($payments[$type]) ) {
+            //                                 $payments[$type]['principal'] = 0;
+            //                                 $payments[$type]['interest'] = 0;
+            //                                 $payments[$type]['pdi'] = 0;
+            //                                 $payments[$type]['over'] = 0;
+            //                                 $payments[$type]['discount'] = 0;
+            //                                 $payments[$type]['total_payment'] = 0;
+            //                                 $payments[$type]['net_int'] = 0;
+            //                                 $payments[$type]['vat'] = 0;
+            //                             }
+
+            //                             $payments[$type]['principal'] += $payment->principal;
+            //                             $payments[$type]['interest'] += $payment->interest;
+            //                             $payments[$type]['pdi'] += $payment->pdi;
+            //                             $payments[$type]['over'] += null;
+            //                             $payments[$type]['discount'] += null;
+            //                             $payments[$type]['total_payment'] += $payment->amount_applied;
+            //                             $payments[$type]['net_int'] += null;
+            //                             $payments[$type]['vat'] += $payment->vat;
+            //                         }
+            //                     }
+            //                 }
+            //             }
+            //         }
+            //     }
+
+            //     $product->payments = $payments; 
+            // }else{
+            //     unset($products[$key]);
+            // }       
         }
 
-        return $products;
+        // return $products;
+        return $data;
     }
 
     public function getReleaseByClient($filters, $collection = true) {
 
-        $client = [];
+        $data = [];
         $accounts = $this->getLoanAccounts($filters);
+        $payments = $this->getPayments($filters);
 
         foreach ($accounts as $account) {
             
-            $client['summary'][] = [ 
-                        'account_num' => $account->account_num,
-                        'borrower' => $account->borrower->fullname() ,
-                        'date_loan' => $account->date_release,
-                        'term' => $account->terms,
-                        'amount_loan' => $account->loan_amount,
-                        'filing_fee' => $account->filing_fee,
-                        'document_stamp' => $account->document_stamp,
-                        'insurance' => $account->insurance,
-                        'notarial_fee' => $account->notarial_fee,
-                        'affidavit_fee' => $account->affidavit_fee,
-                        'deduction' => $account->total_deduction,
-                        'prepaid_interest' => $account->prepaid_interest,
-                        'net_proceeds' => $account->net_proceeds,
-                        'memo' => $account->memo,
-                        'type' => '',
-                    ];
-
-            if( !$collection ) continue;
-
-            if( count($account->payments) ){
-
-                foreach ($account->payments as $payment) {
-
-                    $client['collection'][] = [
-                            'borrower' => $account->borrower->fullname(),
-                            // 'date_paid' => Carbon::createFromFormat('Y-m-d', $payment->created_at)->format('Y-m-d'),
-                            'date_paid' => Carbon::createFromFormat('Y-m-d H:i:s', $payment->created_at)->format('m/d/Y'),
-                            'or' => $payment->or_no,
-                            'principal' => $payment->principal,
-                            'interest' => $payment->interest,
-                            'pdi' => $payment->pdi,
-                            'over' => $payment->over_payment,
-                            'discount' => null,
-                            'total_payment' => $payment->amount_applied,
-                            'net_int' => null,
-                            'vat' => $payment->vat
-                    ];
-                }
-            }
+            $data['release'][] = [ 
+                'account_num' => $account->account_num,
+                'borrower' => $account->borrower->fullname() ,
+                'date_loan' => $account->date_release,
+                'date_release' => $account->date_release,
+                'term' => $account->terms,
+                'amount_loan' => $account->loan_amount,
+                'filing_fee' => $account->filing_fee,
+                'document_stamp' => $account->document_stamp,
+                'insurance' => $account->insurance,
+                'notarial_fee' => $account->notarial_fee,
+                'affidavit_fee' => $account->affidavit_fee,
+                'deduction' => $account->total_deduction,
+                'prepaid_interest' => $account->prepaid_interest,
+                'net_proceeds' => $account->net_proceeds,
+                'memo' => $account->memo,
+                'type' => $account->release_type,
+            ];
         }
 
-        return $client;
+        if( !$collection ) {
+
+            return $data;
+
+        }
+
+        foreach ($payments as $payment) {
+            
+            $borrower = LoanAccount::find($payment->loan_account_id);
+
+            $data['collection'][] = [
+                'borrower' => Borrower::find($borrower->borrower_id)->fullname(),
+                'date_paid' => Carbon::createFromFormat('Y-m-d H:i:s', $payment->created_at)->format('m/d/Y'),
+                'or' => $payment->or_no,
+                'principal' => $payment->principal,
+                'interest' => $payment->interest,
+                'pdi' => $payment->pdi,
+                'over' => $payment->over_payment,
+                'discount' => null,
+                'total_payment' => $payment->amount_applied,
+                'net_int' => null,
+                'vat' => $payment->vat
+            ];
+
+        }
+
+        // foreach ($accounts as $account) {
+            
+        //     $client['summary'][] = [ 
+        //                 'account_num' => $account->account_num,
+        //                 'borrower' => $account->borrower->fullname() ,
+        //                 'date_loan' => $account->date_release,
+        //                 'date_release' => $account->date_release,
+        //                 'term' => $account->terms,
+        //                 'amount_loan' => $account->loan_amount,
+        //                 'filing_fee' => $account->filing_fee,
+        //                 'document_stamp' => $account->document_stamp,
+        //                 'insurance' => $account->insurance,
+        //                 'notarial_fee' => $account->notarial_fee,
+        //                 'affidavit_fee' => $account->affidavit_fee,
+        //                 'deduction' => $account->total_deduction,
+        //                 'prepaid_interest' => $account->prepaid_interest,
+        //                 'net_proceeds' => $account->net_proceeds,
+        //                 'memo' => $account->memo,
+        //                 'type' => $account->release_type,
+        //             ];
+
+        //     if( !$collection ) continue;
+
+        //     if( count($account->payments) ) {
+
+        //         foreach ($account->payments as $payment) {
+
+        //             $client['collection'][] = [
+        //                     'borrower' => $account->borrower->fullname(),
+        //                     // 'date_paid' => Carbon::createFromFormat('Y-m-d', $payment->created_at)->format('Y-m-d'),
+        //                     'date_paid' => Carbon::createFromFormat('Y-m-d H:i:s', $payment->created_at)->format('m/d/Y'),
+        //                     'or' => $payment->or_no,
+        //                     'principal' => $payment->principal,
+        //                     'interest' => $payment->interest,
+        //                     'pdi' => $payment->pdi,
+        //                     'over' => $payment->over_payment,
+        //                     'discount' => null,
+        //                     'total_payment' => $payment->amount_applied,
+        //                     'net_int' => null,
+        //                     'vat' => $payment->vat
+        //             ];
+        //         }
+        //     }
+        // }
+
+        return $data;
     }
     /* start transaction reports */
 
@@ -234,14 +400,15 @@ class Reports extends Model
 
     	switch ($category) {
     		case 'product':
-                $type = $filters['type'];
-                if( $type == 'new' ){
-                    $filters['cycle_no'] = 1;
-                }else{
-                    $filters[$type] = $filters['spec'];
-                }
 
-    			return $this->getReleaseByProduct($filters);
+                // $type = $filters['type'];
+                // if( $type == 'new' ){
+                //     $filters['cycle_no'] = 1;
+                // }else{
+                //     $filters[$type] = $filters['spec'];
+                // }
+
+    			return $this->getReleaseByProduct(['date_from' => $filters['date_from'], 'date_to' => $filters['date_to']]);
     			break;
 
     		case 'client':
@@ -491,6 +658,12 @@ class Reports extends Model
         }
 
         return $data;
+    }
+
+    public function branchMaturityReport($filters = []) {
+
+        return $filters;
+
     }
 
     public function cancelledRepaymentByClient($filters = []) {

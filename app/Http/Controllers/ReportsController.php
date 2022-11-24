@@ -117,4 +117,67 @@ class ReportsController extends Controller
 			'title' => 'Reports - Branch Loan Listing',
 		]);
 	}
+
+	public function branchLoanStatusSummary(){
+		return view('reports.branch.loan_status_summary')->with([
+			'nav' => ['reports', 'branch','loan status summary'],
+			'title' => 'Reports - Branch Loan Status Summary',
+		]);
+	}
+
+	public function branchLoanAgingSummary(){
+		return view('reports.branch.loan_aging_summary')->with([
+			'nav' => ['reports', 'branch','loan aging summary'],
+			'title' => 'Reports - Branch Loan aging Summary',
+		]);
+	}
+
+	public function branchRevenueReport(){
+		return view('reports.branch.revenue_report')->with([
+			'nav' => ['reports', 'branch','revenue report'],
+			'title' => 'Reports - Branch Revenue Report',
+		]);
+	}
+
+	public function consolidatedLoanSummaryReport(){
+		return view('reports.consolidated.loan_summary_report')->with([
+			'nav' => ['reports', 'consolidated','loan summary report'],
+			'title' => 'Reports - consolidated Loan Summary Report',
+		]);
+	}
+
+	public function consolidatedLoanAgingReport(){
+		return view('reports.consolidated.loan_aging_report')->with([
+			'nav' => ['reports', 'consolidated','loan aging report'],
+			'title' => 'Reports - consolidated Loan Aging Report',
+		]);
+	}
+
+	public function consolidatedLoanPerformanceReport(){
+		return view('reports.consolidated.loan_performance_report')->with([
+			'nav' => ['reports', 'consolidated','loan performance report'],
+			'title' => 'Reports - consolidated Loan Performance Report',
+		]);
+	}
+	
+	public function reportsMicroMonitoring(){
+		return view('reports.micro_monitoring')->with([
+			'nav' => ['reports', 'micro monitoring',''],
+			'title' => 'Reports - Micro Monitoring',
+		]);
+	}
+
+	public function reportsPrepaidInterest(){
+		return view('reports.prepaid_interest')->with([
+			'nav' => ['reports', 'prepaid interest',''],
+			'title' => 'Reports - Prepaid Interest',
+		]);
+	}
+
+	public function reportsPerformanceReport(){
+		return view('reports.performance_report')->with([
+			'nav' => ['reports', 'performance report',''],
+			'title' => 'Reports - Performance Report',
+		]);
+	}
 }

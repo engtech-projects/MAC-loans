@@ -23,7 +23,7 @@
  Vue.component('overridepayment-view', require('./components/OverridePaymentView.vue').default);
  Vue.component('warning-modal', require('./components/WarningModal.vue').default);
  Vue.component('account-details', require('./components/AccountDetails.vue').default);
- 
+ Vue.component('branch-nav', require('./components/BranchNav.vue').default);
  Vue.component('client-list', require('./ui/client_information/ClientList.vue').default);
  Vue.component('personal-information', require('./ui/client_information/PersonalInformation.vue').default);
  Vue.component('balance-inquiry', require('./ui/client_information/BalanceInquiry.vue').default);
@@ -67,6 +67,18 @@
  Vue.component('reports-branch-maturity', require('./ui/reports/branch/MaturityReport.vue').default);
  Vue.component('reports-branch-paymentstatus', require('./ui/reports/branch/ClientPaymentStatus.vue').default);
  Vue.component('reports-branch-accountofficer', require('./ui/reports/branch/AccountOfficer.vue').default);
+ Vue.component('reports-branch-loanlisting', require('./ui/reports/branch/LoanListing.vue').default);
+ Vue.component('reports-branch-loanstatussummary', require('./ui/reports/branch/LoanStatusSummary.vue').default);
+ Vue.component('reports-branch-loanagingsummary', require('./ui/reports/branch/LoanAgingSummary.vue').default);
+ Vue.component('reports-branch-revenuereport', require('./ui/reports/branch/RevenueReport.vue').default);
+
+ Vue.component('reports-consolidated-loansummary', require('./ui/reports/consolidated/LoanSummaryReport.vue').default);
+ Vue.component('reports-consolidated-loanaging', require('./ui/reports/consolidated/LoanAgingReport.vue').default);
+ Vue.component('reports-consolidated-loanperformance', require('./ui/reports/consolidated/LoanPerformanceReport.vue').default);
+
+ Vue.component('reports-micromonitoring', require('./ui/reports/MicroMonitoring.vue').default);
+ Vue.component('reports-prepaidinterest', require('./ui/reports/PrepaidInterest.vue').default);
+ Vue.component('reports-performancereport', require('./ui/reports/PerformanceReport.vue').default);
 
  Vue.component('endof-day', require('./ui/endofday/Endofday.vue').default);
 

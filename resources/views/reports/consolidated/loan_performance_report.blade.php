@@ -11,7 +11,7 @@
 			</div>
 			<div class="d-flex flex-row align-items-start">
 				@include('_includes/reportsnav')
-				<reports-branch-loanlisting></reports-branch-loanlisting>
+				<!-- <reports-consolidated-loanaging></reports-consolidated-loanaging> -->
 			</div>
 		</div>
     </section>
