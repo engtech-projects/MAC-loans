@@ -731,7 +731,7 @@ class Reports extends Model
                         ->whereDate('payment.updated_at', '>=', $weekData['start'])
                         ->whereDate('payment.updated_at', '<=', $weekData['end'])
                         ->groupBy("loan_accounts.center_id")
-                        ->select([DB::raw("count(payment.payment_id) as num_of_payments"),DB::raw("sum(payment.amount_applied) total_paid")])
+                        ->select([DB::raw("count(payment.payment_id) as num_of_payments"),DB::raw("sum(payment.amount_applied) as total_paid")])
                         ->first();
                     $data[$weekDay][$centerVal->center][$week] = $loanAccounts;
                     $data[$weekDay][$centerVal->center][$week]["start"] = $weekData['start'];
@@ -751,23 +751,22 @@ class Reports extends Model
             ->whereDate('payment.updated_at', '>=', $monthStart)
             ->whereDate('payment.updated_at', '<=', $monthEnd)
             ->groupBy("loan_accounts.borrower_id", "loan_accounts.center_id")
-            ->select([DB::raw("sum(payment.amount_applied) total_paid"), "payment.*"])
-            ->get();
+            ->select([DB::raw("count(payment.payment_id) as num_of_payments"), DB::raw("sum(payment.amount_applied) total_paid"), "loan_accounts.borrower_id", "loan_accounts.center_id"])
+            ->get()->toArray();
         foreach($data as $key => $paymentData) {
-            $data[$key]["borrower"] = Borrower::find($paymentData->borrower_id)->fullname();
+            $data[$key]["borrower"] = Borrower::find($paymentData['borrower_id'])->fullname();
             foreach($weeksAndDays as $week => $weekData){
                 $loanAccounts = Payment::join("loan_accounts", 'payment.loan_account_id', '=', 'loan_accounts.loan_account_id')
                     ->join("product", 'loan_accounts.product_id', '=', 'product.product_id')
-                    ->where(["loan_accounts.center_id"=>$paymentData->center_id, "loan_accounts.borrower_id"=>$paymentData->borrower_id, "product.product_name"=>'micro individual'])
+                    ->where(["loan_accounts.center_id"=>$paymentData['center_id'], "loan_accounts.borrower_id"=>$paymentData['borrower_id'], "product.product_name"=>'micro individual'])
                     ->whereDate('payment.updated_at', '>=', $weekData['start'])
                     ->whereDate('payment.updated_at', '<=', $weekData['end'])
                     ->groupBy("loan_accounts.borrower_id", "loan_accounts.center_id")
-                    ->select([DB::raw("sum(payment.amount_applied) total_paid")])
+                    ->select([DB::raw("count(payment.payment_id) as num_of_payments"),DB::raw("sum(payment.amount_applied) as total_paid")])
                     ->first();
-                $data[$key][$week] = $loanAccounts->total_paid;
+                $data[$key][$week] = $loanAccounts;
                 $data[$key][$week]["start"] = $weekData['start'];
                 $data[$key][$week]["end"] = $weekData['end'];
-                
             }
         }
         return $data;
