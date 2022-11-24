@@ -625,6 +625,11 @@ export default {
 	data(){
 		return {
 			paymentType:'Cash Payment',
+			transactionDate: {
+				branch_id: this.pbranch,
+				status: 'closed',
+				date_end: '',
+			},
 			loanAccount:{
 				loan_account_id:null,
 				cycle_no : 1,
@@ -849,6 +854,21 @@ export default {
 				}
 			}
 		},
+		fetchTransactionDate:function(){
+			axios.get(this.baseURL() + 'api/eod/eodtransaction/'+this.pbranch, {
+			headers: {
+				'Authorization': 'Bearer ' + this.token,
+					'Content-Type': 'application/json',
+					'Accept': 'application/json'
+				}
+			})
+			.then(function (response) {
+				this.transactionDate = response.data.data;
+			}.bind(this))
+			.catch(function (error) {
+				console.log(error);
+			}.bind(this));
+		},
 		notify:function(title, text, type){
 			this.$notify({
 				group: 'foo',
@@ -976,7 +996,7 @@ export default {
 			this.payment.loan_account_id = this.loanAccount.loan_account_id;
 			this.payment.pdi = this.loanAccount.remainingBalance.pdi.balance;
 			this.payment.penalty = this.loanAccount.current_amortization.penalty + this.loanAccount.current_amortization.short_penalty;
-			this.payment.transaction_date = this.dateToYMD(new Date);
+			this.payment.transaction_date = this.transactionDate.date_end;
 			if(parseFloat(this.payment.amount_paid) > 0 && this.checkRebates()){
 				axios.post(this.baseURL() + 'api/payment', this.payment, {
 					headers: {
@@ -1179,6 +1199,7 @@ export default {
 		},
 	},
 	mounted(){
+		this.fetchTransactionDate();
 		this.payment.branch_id = this.pbranch;
 	}
 }
