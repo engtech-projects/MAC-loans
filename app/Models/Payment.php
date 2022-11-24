@@ -100,7 +100,7 @@ class Payment extends Model
         $payment->vat = 0.00;
         $payment->reference_id = $request->input('reference_id');
         $payment->remarks = $request->input('remarks');
-        $payment->transaction_date = $request->input('transaction_date');
+        $payment->transaction_date = EndTransaction::getTransactionDate($request->input('branch_id'))["date_end"];
 
         if( $payment->interest > 0 || $payment->pdi > 0 || $payment->penalty > 0 ) {
             $pdi = 0;
