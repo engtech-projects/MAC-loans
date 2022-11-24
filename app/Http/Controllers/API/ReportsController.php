@@ -154,15 +154,50 @@ class ReportsController extends BaseController
 		$filters = [
 			'date' => $request->input('date'),
 			'branch_id' => $request->input('branch_id'),
-			'type' => $request->input('type')
 		];
+
+        $weeksOfMonth = [];
+        $day = Carbon::createFromFormat('Y-m-d', ($filters['date']."-1") );
+        $monthNow = $day->month;
+        $monthStart = $day->format("Y-m-d");
+        $weekOfMonth = 1;
+        while($monthNow == $day->month){
+            if($day->dayOfWeek == Carbon::SUNDAY && $day->day != 1){
+                $weekOfMonth += 1;
+                if(!isset($weeksAndDays[$weekOfMonth]['start'])){
+                    $weeksAndDays[$weekOfMonth]["start"] = $day->format("Y-m-d");
+                }
+                if(!isset($weeksAndDays[$weekOfMonth]['end'])){
+                    $weeksAndDays[$weekOfMonth]["end"] = $day->format("Y-m-d");
+                }else{
+                    $weeksAndDays[$weekOfMonth]["end"] = $day->format("Y-m-d");
+                }
+            }
+            if(!isset($weeksAndDays[$weekOfMonth]['start'])){
+                $weeksAndDays[$weekOfMonth] = ["start" => $day->format("Y-m-d")];
+            }
+            if(!isset($weeksAndDays[$weekOfMonth]['end'])){
+                $weeksAndDays[$weekOfMonth]["end"] = $day->format("Y-m-d");
+            }else{
+                $weeksAndDays[$weekOfMonth]["end"] = $day->format("Y-m-d");
+            }
+            $monthEnd = $day->format("Y-m-d");
+            $day = $day->addDays(1);
+        }
+        $weeksOfMonth = $weeksAndDays;
+        $weeksOfMonth["start"] = $monthStart;
+        $weeksOfMonth["end"] = $monthEnd;
+
 		$report = new Reports();
 
-		if( $type == 'group' ){
-			return $report->microGroup($filters);
-		}elseif( $type == 'individual' ){
-			return $report->microIndividual($filters);
-		}
+		$group = $report->microGroup($filters, $weeksAndDays, $monthStart, $monthEnd);
+		$individual = $report->microIndividual($filters, $weeksAndDays, $monthStart, $monthEnd);
+		$data = [
+			"schedule" => $weeksOfMonth,
+			"group" => $group,
+			"individual" => $individual
+		];
+		return $this->sendResponse($data, '');
 
 	}
 
