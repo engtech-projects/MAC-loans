@@ -5,12 +5,13 @@
 		<div class="ml-16 mb-24 bb-primary-dark pb-7 text-block d-flex justify-content-between">
 			<h1 class="m-0 font-35">Repayment Entry</h1>
 		</div><!-- /.col -->
-		<div class="d-flex flex-column flex-xl-row p-16">
+		<div class="d-flex flex-column flex-xl-row p-16" v-if="transactionDate.status == 'open'">
 			<div style="flex:9;">
 				<client-list-side :pborrowers="unpaidBorrowers" :id="{}" @selectBorrower="selectBorrower"></client-list-side>
 			</div>
 			<repayment-details :ppaymenttype="paymenttype" :pbranch="pbranch" :pborrower="borrower" :token="token"></repayment-details>
 		</div>
+		<day-ended v-else></day-ended>
 
 
 		
@@ -24,6 +25,11 @@ export default {
 		return {
 			paymentType:'cash',
 			borrowers:[],
+			transactionDate: {
+				branch_id: this.pbranch,
+				status: 'closed',
+				date_end: '',
+			},
 			borrower : {
 					borrower_id: null,
 					date_registered:'',
@@ -74,6 +80,21 @@ export default {
 				console.log(error);
 			}.bind(this));
 		},
+		fetchTransactionDate:function(){
+			axios.get(this.baseURL() + 'api/eod/eodtransaction/'+this.pbranch, {
+			headers: {
+				'Authorization': 'Bearer ' + this.token,
+					'Content-Type': 'application/json',
+					'Accept': 'application/json'
+				}
+			})
+			.then(function (response) {
+				this.transactionDate = response.data.data;
+			}.bind(this))
+			.catch(function (error) {
+				console.log(error);
+			}.bind(this));
+		},
 		selectBorrower:function(arg1){
 			this.unpaidBorrowers.map(function(data){
 				if(data.borrower_id == arg1){
@@ -105,6 +126,7 @@ export default {
 	},
 	mounted(){
 		this.fetchBorrowers();
+		this.fetchTransactionDate();
 	},
 }
 </script>

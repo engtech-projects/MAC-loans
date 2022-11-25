@@ -25,10 +25,7 @@
 				<button @click="posted=false" data-toggle="modal" data-target="#postedModal" class="btn btn-success px-35">Unposted</button>
 			</div>
 		</div>
-		<div v-if="success" class="d-flex flex-column align-items-center justify-content-center p-16 " style="padding-top:150px">
-			<span class="text-red text-xl text-center" style="max-width:575px">Transactions for today</span>
-			<span class="text-red text-xl text-center" style="max-width:575px">has already ended.</span>
-		</div>
+		<day-ended v-if="success"></day-ended>
 
 		<div v-if="failed" class="d-flex flex-column align-items-center p-16" style="padding-top:65px">
 			<p class="font-lg text-center lh-1">End of Day Stopped</p>

@@ -648,27 +648,69 @@ class Reports extends Model
         return $data;
     }
 
-    public function microGroup($filters = []){
-        $data = [];
-        $weeksOfMonth = [];
-        $day = Carbon::createFromFormat('Y-m-d', ($filters['date']."-1") );
-        $monthNow = $day->month;
-        $weekOfMonth = 1;
-        while($monthNow == $day->month){
-            if($day->dayOfWeek == Carbon::SUNDAY && $day->day != 1){
-                $weekOfMonth += 1;
+    public function microGroup($filters = [], $weeksAndDays, $monthStart, $monthEnd){
+        $data = ["monday"=>[],"tuesday"=>[],"wednesday"=>[],"thursday"=>[],"friday"=>[]];
+        foreach ($data as $weekDay => $weekDayData) {
+            //get centers where center.day_sched
+            $centers = Center::where(["center.day_sched"=>$weekDay,"status"=>"active"])
+                ->get();
+            foreach ($centers as $centerId => $centerVal) {
+                $data[$weekDay][$centerVal->center]["all"] = Payment::join("loan_accounts", 'payment.loan_account_id', '=', 'loan_accounts.loan_account_id')
+                    ->join("product", 'loan_accounts.product_id', '=', 'product.product_id')
+                    ->where(["loan_accounts.center_id"=>$centerVal->center_id, "product.product_name"=>'micro group'])
+                    ->whereDate('payment.transaction_date', '>=', $monthStart)
+                    ->whereDate('payment.transaction_date', '<=', $monthEnd)
+                    ->groupBy("loan_accounts.center_id")
+                    ->select([DB::raw("count(payment.payment_id) as num_of_payments"),DB::raw("sum(payment.amount_applied) total_paid")])
+                    ->first();
+                $data[$weekDay][$centerVal->center]["all"]["start"] = $monthStart;
+                $data[$weekDay][$centerVal->center]["all"]["end"] = $monthEnd;
+                foreach($weeksAndDays as $week => $weekData){
+                    $loanAccounts = Payment::join("loan_accounts", 'payment.loan_account_id', '=', 'loan_accounts.loan_account_id')
+                        ->join("product", 'loan_accounts.product_id', '=', 'product.product_id')
+                        ->where(["loan_accounts.center_id"=>$centerVal->center_id, "product.product_name"=>'micro group'])
+                        ->whereDate('payment.transaction_date', '>=', $weekData['start'])
+                        ->whereDate('payment.transaction_date', '<=', $weekData['end'])
+                        ->groupBy("loan_accounts.center_id")
+                        ->select([DB::raw("count(payment.payment_id) as num_of_payments"),DB::raw("sum(payment.amount_applied) as total_paid")])
+                        ->first();
+                    $data[$weekDay][$centerVal->center][$week] = $loanAccounts;
+                    $data[$weekDay][$centerVal->center][$week]["start"] = $weekData['start'];
+                    $data[$weekDay][$centerVal->center][$week]["end"] = $weekData['end'];
+                }
             }
-            
-            $weeksAndDays[$day->format("m-d-Y")] = $weekOfMonth;
-            $day = $day->addDays(1);
         }
-
-        return $weeksAndDays;
         return $data;
     }
 
-    public function microIndividual($filters = []){
-
+    public function microIndividual($filters = [], $weeksAndDays, $monthStart, $monthEnd){
+        $centers = Center::where(["status"=>"active"])->get();
+        $data = Payment::join("loan_accounts", 'payment.loan_account_id', '=', 'loan_accounts.loan_account_id')
+            ->join("center", "loan_accounts.center_id", "=", "center.center_id")
+            ->join("product", 'loan_accounts.product_id', '=', 'product.product_id')
+            ->where(["product.product_name"=>'micro individual'])
+            ->whereDate('payment.transaction_date', '>=', $monthStart)
+            ->whereDate('payment.transaction_date', '<=', $monthEnd)
+            ->groupBy("loan_accounts.borrower_id", "loan_accounts.center_id")
+            ->select([DB::raw("count(payment.payment_id) as num_of_payments"), DB::raw("sum(payment.amount_applied) total_paid"), "loan_accounts.borrower_id", "loan_accounts.center_id"])
+            ->get()->toArray();
+        foreach($data as $key => $paymentData) {
+            $data[$key]["borrower"] = Borrower::find($paymentData['borrower_id'])->fullname();
+            foreach($weeksAndDays as $week => $weekData){
+                $loanAccounts = Payment::join("loan_accounts", 'payment.loan_account_id', '=', 'loan_accounts.loan_account_id')
+                    ->join("product", 'loan_accounts.product_id', '=', 'product.product_id')
+                    ->where(["loan_accounts.center_id"=>$paymentData['center_id'], "loan_accounts.borrower_id"=>$paymentData['borrower_id'], "product.product_name"=>'micro individual'])
+                    ->whereDate('payment.transaction_date', '>=', $weekData['start'])
+                    ->whereDate('payment.transaction_date', '<=', $weekData['end'])
+                    ->groupBy("loan_accounts.borrower_id", "loan_accounts.center_id")
+                    ->select([DB::raw("count(payment.payment_id) as num_of_payments"),DB::raw("sum(payment.amount_applied) as total_paid")])
+                    ->first();
+                $data[$key][$week] = $loanAccounts;
+                $data[$key][$week]["start"] = $weekData['start'];
+                $data[$key][$week]["end"] = $weekData['end'];
+            }
+        }
+        return $data;
     }
 
 

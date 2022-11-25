@@ -6,6 +6,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Carbon\Carbon;
+use Faker\Factory as Faker;
 
 class TestDataSeeder extends Seeder
 {
@@ -16,6 +17,7 @@ class TestDataSeeder extends Seeder
      */
     public function run()
     {
+        $fake = Faker::create();
         DB::table('branch')->insert([
             [
                 'branch_code' => "001",
@@ -152,35 +154,34 @@ class TestDataSeeder extends Seeder
         DB::table('borrower_info')->insert([
             [
                 'borrower_num' => '0000001',
-                'date_registered' => '2015-04-11',
-                'firstname' => 'Vincent',
-                'middlename' => 'L',
-                'lastname' => 'Padilla',
+                'date_registered' => $fake->date(),
+                'firstname' => $fake->firstName,
+                'middlename' => $fake->randomLeter,
+                'lastname' => $fake->lastName,
                 'suffix' => '',
-                'address' => 'Libertad Butuan City',
-                'birthdate' => '1995-02-12',
+                'address' => $fake->city,
+                'birthdate' => $fake->date(),
                 'gender' => 'male',
                 'status' => 'married',
-                'contact_number' => '9639427945',
+                'contact_number' => $fake->e164PhoneNumber,
                 'id_type' => 'SSS',
                 'id_no' => '233-456-456',
-                'id_date_issued' => '2015-04-11',
-                'spouse_firstname' => 'May Ann',
-                'spouse_middlename' => 'J',
-                'spouse_lastname' => 'Padilla',
+                'id_date_issued' => $fake->date(),
+                'spouse_firstname' => $fake->firstName,
+                'spouse_middlename' => $fake->randomLeter,
+                'spouse_lastname' => $fake->lastName,
                 'spouse_address' => 'Libertad Butuan City',
-                'spouse_birthdate' => '1997-05-11',
+                'spouse_birthdate' => $fake->date(),
                 'spouse_contact_number' => '123456',
                 'spouse_id_type' => 'SSS',
                 'spouse_id_no' => '233-456-456',
-                'spouse_id_date_issued' => '2015-04-11',
+                'spouse_id_date_issued' => $fake->date(),
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
                 'username' => 'VincentPadilla',
                 'password' => Hash::make("admin"),
             ]
         ]);
-
         DB::table('loan_accounts')->insert([
             [
                 'account_num' => '001-001-0000001',
@@ -199,13 +200,13 @@ class TestDataSeeder extends Seeder
                 'day_schedule' => '1',
                 'borrower_num' => '0000001',
                 'borrower_id' => '1',
-                'co_borrower_name' => 'Maria Padilla',
-                'co_borrower_address' => 'Butuan City',
+                'co_borrower_name' => $fake->name,
+                'co_borrower_address' => $fake->city,
                 'co_borrower_id_type' => 'SSS',
                 'co_borrower_id_number' => '89-8712398',
                 'co_borrower_id_date_issued' => '2020-10-02',
-                'co_maker_name' => 'Toni Gonzaga',
-                'co_maker_address' => 'Butuan',
+                'co_maker_name' => $fake->name,
+                'co_maker_address' => $fake->city,
                 'co_maker_id_type' => 'TIN',
                 'co_maker_id_number' => '1234',
                 'co_maker_id_date_issued' => '2020-05-01',
