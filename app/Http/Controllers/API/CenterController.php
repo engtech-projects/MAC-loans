@@ -62,6 +62,7 @@ class CenterController extends BaseController
         $center->center = $input['center'];
         $center->day_sched = $input['day_sched'];
         $center->status = $input['status'];
+        $center->area = $input['area'];
         $center->save();
 
         return $this->sendResponse(new CenterResource($center), 'Center Updated.');

@@ -12,7 +12,7 @@ class Center extends Model
     protected $primaryKey = 'center_id';
 
     protected $fillable = [
-    	'center', 'day_sched', 'status', 'deleted'
+    	'center', 'day_sched', 'status', 'deleted', 'area'
 
     ];
 }

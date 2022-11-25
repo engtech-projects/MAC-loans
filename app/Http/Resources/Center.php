@@ -19,6 +19,7 @@ class Center extends JsonResource
             'center' => $this->center,
             'day_sched' => $this->day_sched,
             'status' => $this->status,
+            'area' => $this->area,
             'deleted' => $this->deleted,
         ];
     }
