@@ -171,6 +171,12 @@ class ReportsController extends BaseController
 	}
 
 	public function microReports(Request $request){
+		/*
+		{
+			date : "2022-11",
+			branch_id : 1
+		}
+		*/
 		$type = $request->input("type");
 		$filters = [
 			'date' => $request->input('date'),
