@@ -52,7 +52,14 @@ class EndTransaction extends Model
     // }
 
     public function getTransactionDate($branchId) {
-    	return EndTransaction::where([ 'branch_id' => $branchId])->get()->last();
+
+    	$eod = EndTransaction::where([ 'branch_id' => $branchId, 'status' => 'open' ])->get()->last();
+
+    	if( !$eod ) {
+    		$eod = EndTransaction::where([ 'branch_id' => $branchId ])->get()->last();
+    	}
+
+    	return $eod;
     }
 
    	public function verify($branchId) {
