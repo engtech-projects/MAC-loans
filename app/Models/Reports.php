@@ -711,10 +711,10 @@ class Reports extends Model
         $data = ["monday"=>[],"tuesday"=>[],"wednesday"=>[],"thursday"=>[],"friday"=>[]];
         foreach ($data as $weekDay => $weekDayData) {
             //get centers where center.day_sched
-            $centers = Center::where(["center.day_sched"=>$weekDay,"status"=>"active"])
+            $centers = Center::where(["center.day_sched"=>$weekDay,"status"=>"active"]) // center daysched  or use center sched in loan account?
                 ->get();
             foreach ($centers as $centerId => $centerVal) {
-                $data[$weekDay][$centerVal->center]["all"] = Payment::join("loan_accounts", 'payment.loan_account_id', '=', 'loan_accounts.loan_account_id')
+                $monthPayments = Payment::join("loan_accounts", 'payment.loan_account_id', '=', 'loan_accounts.loan_account_id')
                     ->join("product", 'loan_accounts.product_id', '=', 'product.product_id')
                     ->where(["loan_accounts.center_id"=>$centerVal->center_id, "product.product_name"=>'micro group'])
                     ->whereDate('payment.transaction_date', '>=', $monthStart)
@@ -722,6 +722,13 @@ class Reports extends Model
                     ->groupBy("loan_accounts.center_id")
                     ->select([DB::raw("count(payment.payment_id) as num_of_payments"),DB::raw("sum(payment.amount_applied) total_paid")])
                     ->first();
+                $data[$weekDay][$centerVal->center]["all"]  = $monthPayments ? $monthPayments : ["num_of_payments"=>0, "total_paid"=>0];
+                $no_of_clients = LoanAccount::join("product", 'loan_accounts.product_id', '=', 'product.product_id')
+                    ->where(["loan_accounts.center_id"=>$centerVal->center_id, "product.product_name"=>'micro group'])
+                    ->groupBy("loan_accounts.center_id")
+                    ->select([DB::raw("ifnull(count(loan_accounts.loan_account_id),0) as no_of_clients")])
+                    ->first();
+                $data[$weekDay][$centerVal->center]["all"]['no_of_clients'] = $no_of_clients->no_of_clients ? $no_of_clients->no_of_clients : 0;
                 $data[$weekDay][$centerVal->center]["all"]["start"] = $monthStart;
                 $data[$weekDay][$centerVal->center]["all"]["end"] = $monthEnd;
                 foreach($weeksAndDays as $week => $weekData){
@@ -733,9 +740,9 @@ class Reports extends Model
                         ->groupBy("loan_accounts.center_id")
                         ->select([DB::raw("count(payment.payment_id) as num_of_payments"),DB::raw("sum(payment.amount_applied) as total_paid")])
                         ->first();
-                    $data[$weekDay][$centerVal->center][$week] = $loanAccounts;
-                    $data[$weekDay][$centerVal->center][$week]["start"] = $weekData['start'];
-                    $data[$weekDay][$centerVal->center][$week]["end"] = $weekData['end'];
+                    $data[$weekDay][$centerVal->center]["weeklyData"][$week] = $loanAccounts ? $loanAccounts : ["num_of_payments"=>0, "total_paid"=>0];
+                    $data[$weekDay][$centerVal->center]["weeklyData"][$week]["start"] = $weekData['start'];
+                    $data[$weekDay][$centerVal->center]["weeklyData"][$week]["end"] = $weekData['end'];
                 }
             }
         }
@@ -751,7 +758,7 @@ class Reports extends Model
             ->whereDate('payment.transaction_date', '>=', $monthStart)
             ->whereDate('payment.transaction_date', '<=', $monthEnd)
             ->groupBy("loan_accounts.borrower_id", "loan_accounts.center_id")
-            ->select([DB::raw("count(payment.payment_id) as num_of_payments"), DB::raw("sum(payment.amount_applied) total_paid"), "loan_accounts.borrower_id", "loan_accounts.center_id"])
+            ->select([DB::raw("count(payment.payment_id) as num_of_payments"), DB::raw("sum(payment.amount_applied) total_paid"), "loan_accounts.borrower_id", "center.center_id", "center.center", "loan_accounts.day_schedule as loanSched", "center.day_sched as centerSched"])
             ->get()->toArray();
         foreach($data as $key => $paymentData) {
             $data[$key]["borrower"] = Borrower::find($paymentData['borrower_id'])->fullname();
@@ -764,9 +771,9 @@ class Reports extends Model
                     ->groupBy("loan_accounts.borrower_id", "loan_accounts.center_id")
                     ->select([DB::raw("count(payment.payment_id) as num_of_payments"),DB::raw("sum(payment.amount_applied) as total_paid")])
                     ->first();
-                $data[$key][$week] = $loanAccounts;
-                $data[$key][$week]["start"] = $weekData['start'];
-                $data[$key][$week]["end"] = $weekData['end'];
+                $data[$key]["weeklyData"][$week] = $loanAccounts ? $loanAccounts : ["num_of_payments"=>0, "total_paid"=>0];
+                $data[$key]["weeklyData"][$week]["start"] = $weekData['start'];
+                $data[$key]["weeklyData"][$week]["end"] = $weekData['end'];
             }
         }
         return $data;

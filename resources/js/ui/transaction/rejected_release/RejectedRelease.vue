@@ -5,7 +5,7 @@
 		<div class="ml-16 mb-24 bb-primary-dark pb-7 text-block d-flex justify-content-between">
 			<h1 class="m-0 font-35">Rejected Release</h1>
 		</div>
-		<div class="d-flex flex-column flex-xl-row p-16">
+		<div v-if="transactionDate.status == 'open'" class="d-flex flex-column flex-xl-row p-16">
 			<div style="flex:9;">
 				<div class="search-bar mb-12">
 					<input v-model="filter" type="text" class="form-control" id="searchBar" placeholder="Search">
@@ -399,6 +399,7 @@
 				</section>
 			</div>
 		</div>
+		<day-ended v-else></day-ended>
 		<div class="modal" id="editModal" tabindex="-1" role="dialog">
 		<div class="modal-dialog" role="document">
 		  <div class="modal-content">
@@ -426,6 +427,11 @@ export default {
 	props:['token','rejectid','pbranch'],
 	data(){
 		return {
+			transactionDate: {
+				branch_id: this.pbranch,
+				status: 'closed',
+				date_end: '',
+			},
 			loanAccounts:[],
 			filter:'',
 			loanAccount:{
@@ -480,6 +486,21 @@ export default {
 		}
 	},
 	methods: {
+		fetchTransactionDate:function(){
+			axios.get(this.baseURL() + 'api/eod/eodtransaction/'+this.pbranch, {
+			headers: {
+				'Authorization': 'Bearer ' + this.token,
+					'Content-Type': 'application/json',
+					'Accept': 'application/json'
+				}
+			})
+			.then(function (response) {
+				this.transactionDate = response.data.data;
+			}.bind(this))
+			.catch(function (error) {
+				console.log(error);
+			}.bind(this));
+		},
 		fetchRejectedAccounts:function(){
 			axios.get(this.baseURL() + 'api/account/rejected/' + this.pbranch, {
 			headers: {
@@ -545,6 +566,7 @@ export default {
 		}
 	},
 	mounted(){
+		this.fetchTransactionDate();
 		this.fetchRejectedAccounts();
 	}
 }

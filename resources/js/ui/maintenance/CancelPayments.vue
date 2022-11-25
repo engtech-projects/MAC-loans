@@ -9,7 +9,7 @@
             <!-- <a href="#" class="btn btn-primary-dark min-w-150">New Client</a> -->
         </div>
         <!-- /.col -->
-        <div class="d-flex flex-column flex-xl-row">
+        <div v-if="transactionDate.status == 'open'" class="d-flex flex-column flex-xl-row">
             <div style="flex: 9">
                 <div class="d-flex justify-content-between">
                     <div class="search-bar mr-10" style="flex: 5">
@@ -233,6 +233,8 @@
                 </section>
             </div>
         </div>
+        <day-ended v-else></day-ended>
+
         <warning-modal
             message="Do you want to cancel this payment?"
             @proceed="cancelPayment"
@@ -245,6 +247,11 @@ export default {
     props: ["branch", "token"],
     data() {
         return {
+            transactionDate: {
+                branch_id: this.branch,
+                status: 'closed',
+                date_end: '',
+            },
             searchDate: this.dateToYMD(new Date()),
             accounts: [],
             borrowers: [],
@@ -267,6 +274,22 @@ export default {
         };
     },
     methods: {
+
+        fetchTransactionDate:function(){
+            axios.get(this.baseURL() + 'api/eod/eodtransaction/'+this.branch, {
+            headers: {
+                'Authorization': 'Bearer ' + this.token,
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                }
+            })
+            .then(function (response) {
+                this.transactionDate = response.data.data;
+            }.bind(this))
+            .catch(function (error) {
+                console.log(error);
+            }.bind(this));
+        },
         async fetchAccounts() {
             await axios
                 .post(
@@ -514,6 +537,7 @@ export default {
     },
     mounted() {
         this.fetchAccounts();
+        this.fetchTransactionDate();
     },
 };
 </script>
