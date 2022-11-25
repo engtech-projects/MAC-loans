@@ -24,31 +24,69 @@ class EndTransaction extends Model
     	fetch transaction date by branch that has an open status
     	open status means an End of day transaction has not been performed yet
     */
-    public function getTransactionDate($branchId) {
+    // public function getTransactionDate($branchId) {
 
-    	# get current date
-    	$currentDate = Carbon::now()->format('Y-m-d');
-    	$transactionDate = EndTransaction::where([ 'branch_id' => $branchId, 'status' => 'open' ])->get()->last();
+    	// # get current date
+    	// $currentDate = Carbon::now()->format('Y-m-d');
+    	// $transactionDate = EndTransaction::where([ 'branch_id' => $branchId, 'status' => 'open' ])->get()->last();
 
-    	if( !$transactionDate ){
+    	// if( !$transactionDate ){
 
-    		$hasCurrentDate = EndTransaction::where([ 'branch_id' => $branchId, 'status' => 'closed' ])->get()->last();
+    	// 	$hasCurrentDate = EndTransaction::where([ 'branch_id' => $branchId, 'status' => 'closed' ])->get()->last();
 
 
-    		if( $hasCurrentDate && ($hasCurrentDate->date_end == $currentDate)) {
-    			return $hasCurrentDate;
-    		}
+    	// 	if( $hasCurrentDate && ($hasCurrentDate->date_end == $currentDate)) {
+    	// 		return $hasCurrentDate;
+    	// 	}
 
-    		# create transaction date based on current date.
-    		return EndTransaction::create(array(
-    			'branch_id' => $branchId,
-    			'date_end' => Carbon::now()->format('Y-m-d'),
-    			'status' => 'open',
-    		));
+    	// 	# create transaction date based on current date.
+    	// 	return EndTransaction::create(array(
+    	// 		'branch_id' => $branchId,
+    	// 		'date_end' => Carbon::now()->format('Y-m-d'),
+    	// 		'status' => 'open',
+    	// 	));
     		
+    	// }
+
+    	// return $transactionDate;
+    // }
+
+    public function getTransactionDate($branchId) {
+    	return EndTransaction::where([ 'branch_id' => $branchId, 'status' => 'open' ])->get()->last();
+    }
+
+   	public function verify($branchId) {
+
+   		$transactionDate = EndTransaction::where([ 'branch_id' => $branchId, 'status' => 'open' ])->get()->last();
+
+   		if( $transactionDate ){
+   			return true;
+   		}
+   		return false;
+   	}
+
+   	public function exists($dateEnd, $branchId) {
+
+   		$transactionDate = EndTransaction::where(['date_end' => $dateEnd, 'branch_id' => $branchId ])->first();
+
+   		if( $transactionDate ) {
+   			return true;
+   		}
+   		return false;
+   	}
+
+    public function validate($dateEnd, $branchId) {
+
+    	if( $this->verify($branchId) ) {
+    		return true;
     	}
 
-    	return $transactionDate;
+    	if( $this->exists($dateEnd, $branchId) ) {
+    		return true;
+    	}
+
+
+    	
     }
 
 	public function releasing($dateEnd, $branchId, $status = 'unposted') {
