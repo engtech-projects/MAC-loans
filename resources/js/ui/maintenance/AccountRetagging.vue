@@ -103,7 +103,7 @@
                         data-toggle="modal"
                         data-target="#retagModal"
                     >
-                        Retagg
+                        Retag
                     </button>
                 </div>
             </div>

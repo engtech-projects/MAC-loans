@@ -72,16 +72,16 @@
 							<tbody>
 								<tr v-for="(a, i) in accounts" :key="i">
 									<td>{{a.reference}}</td>
-									<td>{{formatToCurrency(a.principal)}}</td>
-									<td>{{formatToCurrency(a.interest)}}</td>
-									<td>{{formatToCurrency(a.filing_fee)}}</td>
-									<td>{{formatToCurrency(a.document_stamp)}}</td>
-									<td>{{formatToCurrency(a.insurance)}}</td>
-									<td>{{formatToCurrency(a.notarial_fee)}}</td>
-									<td>{{formatToCurrency(a.affidavit_fee)}}</td>
-									<td>{{formatToCurrency(a.total_deduction)}}</td>
-									<td>{{formatToCurrency(a.prepaid_interest)}}</td>
-									<td>{{formatToCurrency(a.net_proceeds)}}</td>
+									<td>{{formatToCurrency(a.release.principal)}}</td>
+									<td>{{formatToCurrency(a.release.interest)}}</td>
+									<td>{{formatToCurrency(a.release.filing_fee)}}</td>
+									<td>{{formatToCurrency(a.release.document_stamp)}}</td>
+									<td>{{formatToCurrency(a.release.insurance)}}</td>
+									<td>{{formatToCurrency(a.release.notarial_fee)}}</td>
+									<td>{{formatToCurrency(a.release.affidavit_fee)}}</td>
+									<td>{{formatToCurrency(a.release.total_deduction)}}</td>
+									<td>{{formatToCurrency(a.release.prepaid_interest)}}</td>
+									<td>{{formatToCurrency(a.release.net_proceeds)}}</td>
 								</tr>
 								<tr v-if="accounts.length == 0">
 									<td><i>No accounts on the list.</i></td>
@@ -121,21 +121,21 @@
 										<span class="flex-1">TOTAL CASH RELEASE</span>
 										<span>:</span>
 									</div>
-									<span class="flex-1">{{formatToCurrency(totalRelease)}}</span>
+									<span class="flex-1">{{formatToCurrency(total('cash'))}}</span>
 								</div>
 								<div class="d-flex flex-row flex-1 mb-5">
 									<div class="d-flex flex-row justify-content-between flex-2 mr-24">
 										<span class="flex-1">TOTAL CHECK RELEASE</span>
 										<span>:</span>
 									</div>
-									<span class="flex-1">0.00</span>
+									<span class="flex-1">{{formatToCurrency(total('check'))}}</span>
 								</div>
 								<div class="d-flex flex-row flex-1">
 									<div class="d-flex flex-row justify-content-between flex-2 mr-24">
 										<span class="flex-1">TOTAL MEMO RELEASE</span>
 										<span>:</span>
 									</div>
-									<span class="flex-1">0.00</span>
+									<span class="flex-1">{{formatToCurrency(total('memo'))}}</span>
 								</div>
 							</div>
 							<div class="d-flex flex-column flex-1">
@@ -170,7 +170,7 @@
 
 <script>
 export default {
-	props:['token'],
+	props:['token','branch'],
 	data(){
 		return {
 			filter:{
@@ -185,6 +185,7 @@ export default {
 	},
 	methods:{
 		fetchAccounts:function(){
+			this.filter.branch_id = this.branch;
 			axios.post(this.baseURL() + 'api/report/release', this.filter, {
 			headers: {
 				'Authorization': 'Bearer ' + this.token,
@@ -209,19 +210,16 @@ export default {
 		total:function(val){
 			var amount = 0;
 			this.accounts.map(function(item){
-				amount += parseFloat(item[val]);
+				amount += parseFloat(item['release'][val]);
 			}.bind(this));
 			return amount;
 		}
 	},
 	computed:{
 		totalRelease:function(){
-			var amount = 0;
-			this.accounts.map(function(item){
-				amount += parseFloat(item.net_proceeds)
-			}.bind(this));
-			return amount;
-		}
+			return this.total('cash') + this.total('check') + this.total('memo');
+		},
+		
 	},
 	watch:{
 		 filter: {
