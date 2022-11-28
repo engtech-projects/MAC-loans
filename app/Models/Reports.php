@@ -12,6 +12,10 @@ class Reports extends Model
 {
     use HasFactory;
 
+    const BRANCH_AO_PERFORMANCE = "performance_report";
+    const BRANCH_AO_WRITEOFF = "write_off";
+    const BRANCH_AO_DELINQUENT = "delinquent";
+
     public function getLoanAccounts($filters = []) {
 
         $branch = Branch::find($filters['branch_id']);
@@ -608,6 +612,54 @@ class Reports extends Model
 
         return $filters;
 
+    }
+
+    public function branchAOReport($filters = []) {
+        $data = [];
+        if($filters["group"] == Reports::BRANCH_AO_PERFORMANCE){
+            $accOfficers =  AccountOfficer::where(["status" => AccountOfficer::STATUS_ACTIVE, "branch_id" => $filters["branch_id"]])
+                ->get()->toArray();
+            $products = Product::where(["status" => Product::STATUS_ACTIVE])
+                ->get()->toArray();
+            foreach ($accOfficers as $aoKey => $aoValue) {
+                foreach ($products as $prodKey => $prodValue) {
+                    $tempProd = $prodValue;
+                    $allAOProd = LoanAccount::where([
+                        "status"=>LoanAccount::STATUS_RELEASED,
+                        "ao_id"=>$aoValue["ao_id"], 
+                        "product_id"=>$prodValue["product_id"]
+                    ])
+                    ->whereNotIn("loan_status",[LoanAccount::LOAN_PAID])
+                    ->get();
+                    $tempProd["all"] = ["count" => 0, "amount" => 0];
+                    $tempProd["delinquent"] = ["count" => 0, "amount" => 0, "rate" => 0];
+                    $tempProd["pastdue"] = ["count" => 0, "amount" => 0, "rate" => 0];
+                    foreach ($allAOProd as $key => $value) {
+                        $tempProd["all"]["count"] += 1;
+                        $tempProd["all"]["amount"] += $value->remainingBalance()["principal"]["balance"];
+                        if($value->loan_status == LoanAccount::LOAN_ONGOING){
+                            if($value->payment_status == LoanAccount::PAYMENT_DELINQUENT){
+                                $tempProd["delinquent"]["count"] += 1;
+                                $tempProd["delinquent"]["amount"] += $value->remainingBalance()["principal"]["balance"];
+                                $tempProd["delinquent"]["rate"] = ($tempProd["delinquent"]["amount"] / $tempProd["all"]["amount"])*100;
+                            }
+                        }
+                        if($value->loan_status == LoanAccount::LOAN_PASTDUE){
+                            $tempProd["pastdue"]["count"] += 1;
+                            $tempProd["pastdue"]["amount"] += $value->remainingBalance()["principal"]["balance"];
+                            $tempProd["pastdue"]["rate"] = ($tempProd["pastdue"]["amount"] / $tempProd["all"]["amount"])*100;
+                        }
+                    }
+                    $accOfficers[$aoKey]["products"][] = $tempProd;
+                }
+            }
+            $data = $accOfficers;
+        }else if($filters["group"] == Reports::BRANCH_AO_WRITEOFF){
+            // WRITE OFF REPORTS
+        }else if($filters["group"] == Reports::BRANCH_AO_DELINQUENT){
+            // DELINQUENT REPORTS
+        }
+        return $data;
     }
 
     public function cancelledRepaymentByClient($filters = []) {

@@ -16,6 +16,9 @@ class AccountOfficer extends Model
     	'name', 'status', 'deleted', 'branch_id'
     ];
 
+    const STATUS_ACTIVE = "active";
+    const STATUS_INACTIVE = "inactive";
+
     public function branch() {
     	return $this->hasOne(Branch::class, 'branch_id', 'branch_id');
     }
