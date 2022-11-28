@@ -156,6 +156,12 @@ class ReportsController extends BaseController
 					'center' => $request->input('center'),
 					'branch_id' => $request->input('branch_id')
 				];
+				if($request->input('due_from')){
+					$filters["due_from"] = $request->input('due_from');
+				}
+				if($request->input('due_to')){
+					$filters["due_to"] = $request->input('due_to');
+				}
 				if($filters['center'] == "all"){
 					unset($filters['center']);
 				}
