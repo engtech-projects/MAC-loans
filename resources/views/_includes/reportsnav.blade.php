@@ -14,7 +14,7 @@
 					<a href="{{route('reports.release.product')}}" class="text-20 base-link">By Product</a>
 				</div>
 				<div class="pxy-25 light-bb d-flex justify-content-between align-items-center hover-primary-dark">
-					<a href="{{route('reports.release.summary')}}" class="text-20 base-link">By Client</a>
+					<a href="{{route('reports.release.client')}}" class="text-20 base-link">By Client</a>
 				</div>
 				<div class="pxy-25 light-bb d-flex justify-content-between align-items-center hover-primary-dark">
 					<a href="{{route('reports.release.ao')}}" class="text-20 base-link">By Account Officer</a>
