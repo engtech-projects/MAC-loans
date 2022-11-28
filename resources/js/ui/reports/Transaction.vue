@@ -12,7 +12,7 @@
 				</div>
 				<div class="d-flex flex-row align-items-center" style="flex:4">
 					<span class="mr-10">Type: </span>
-					<select name="" id="selectProductClient" class="form-control">
+					<select v-model="type" name="" id="selectProductClient" class="form-control">
 						<option value="product">Summary Release and Payment by Product</option>
 						<option value="client">Summary Release and Payment by Client</option>
 					</select>
@@ -22,7 +22,7 @@
 			<div id="printContent">
 				<img :src="this.baseURL()+'/img/company_header_fit.png'" class="mb-24" alt="">
 
-				<section class="" id="productSection">
+				<section v-if="type=='product'" class="" id="productSection">
 					<div class="d-flex flex-column mb-16">
 						<div class="d-flex flex-row align-items-center">
 							<div class="flex-1"></div>
@@ -431,8 +431,7 @@
 					</section>
 				</section>
 
-
-				<section class="hide" id="clientSection">
+				<section v-else id="clientSection">
 					<div class="d-flex flex-column mb-16">
 						<div class="d-flex flex-row align-items-center">
 							<div class="flex-1"></div>
@@ -872,8 +871,6 @@
 					</section>
 				</section>
 			
-
-
 				<section class="d-flex flex-row mb-72">
 					<span class="flex-2 pb-24 text-bold darker-bb mr-64">Prepared By:</span>
 					<span class="flex-2 pb-24 text-bold darker-bb mr-64">Certified Corrected By:</span>
@@ -894,13 +891,48 @@
 
 <script>
 export default {
+	props:['token','branch'],
+	data(){
+		return {
+			type:'product',
+			transactions:[],
+			filter:{
+				date_from:'',
+				date_to:'',
+				branch_id:'',
+			}
+		}
+	},
 	methods:{
+		async fetchTransactions(){
+			await axios.post(this.baseURL() + 'api/report/transaction', this.filter, {
+				headers: {
+					'Authorization': 'Bearer ' + this.token,
+					'Content-Type': 'application/json',
+					'Accept': 'application/json'
+				}
+			})
+			.then(function (response) {
+				this.transactions = response.data.data;
+				console.log(response.data.data);
+			}.bind(this))
+			.catch(function (error) {
+				console.log(error);
+			}.bind(this));
+		},
 		print:function(){
 			var content = document.getElementById('printContent').innerHTML;
 			var target = document.querySelector('.to-print');
 			target.innerHTML = content;
 			window.print();
 		},
+		
+	},
+	mounted(){
+		this.filter.branch_id = this.branch;
+		this.filter.date_from = '2022-08-01';
+		this.filter.date_to = '2022-28-11';
+		this.fetchTransactions();
 	}
 }
 </script>

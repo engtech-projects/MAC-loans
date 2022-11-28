@@ -3,13 +3,13 @@
 		<div class="d-flex flex-row font-md align-items-center mb-16">
 			<span class="font-lg text-primary-dark" style="flex:4">Micro Monitoring</span>
 			<div class="d-flex flex-row align-items-center mr-24" style="flex:2">
-				<span class="mr-10">From: </span>
-				<input type="date" class="form-control">
+				<span class="mr-10">Date: </span>
+				<input v-model="filter.date" type="month" class="form-control">
 			</div>
-			<div class="d-flex flex-row align-items-center" style="flex:2">
+			<!-- <div class="d-flex flex-row align-items-center" style="flex:2">
 				<span class="mr-10">To: </span>
-				<input type="date" class="form-control">
-			</div>
+				<input v-model="filter.date_to" type="date" class="form-control">
+			</div> -->
 		</div>
 		<div class="sep mb-45"></div>
 		<img :src="this.baseURL()+'/img/company_header_fit.png'" class="mb-24" alt="">
@@ -35,11 +35,7 @@
 					<thead style="font-size:13px">
 						<tr>
 							<th colspan="6">MICRO GROUP MONITORING</th>
-							<th colspan="2">Week 1</th>
-							<th colspan="2">Week 2</th>
-							<th colspan="2">Week 3</th>
-							<th colspan="2">Week 4</th>
-							<th colspan="2">Week 5</th>
+							<th v-for="(w, i) in tranSched" :key="w.start" colspan="2">Week {{parseInt(i) + 1}}</th>
 							<th rowspan="2">Total Amount Collection</th>
 						</tr>
 						<tr>
@@ -49,16 +45,7 @@
 							<th>Active</th>
 							<th>Areas of Ope.</th>
 							<th>Sched</th>
-							<th>Active</th>
-							<th>Dec.1-7</th>
-							<th>Active</th>
-							<th>Dec.8-14</th>
-							<th>Active</th>
-							<th>Dec.15-21</th>
-							<th>Active</th>
-							<th>Dec.21-28</th>
-							<th>Active</th>
-							<th>Jan.1-7</th>
+							<th v-for="(s, i) in schedHeader" :key="i" class="text-sm">{{s}}</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -1140,13 +1127,63 @@
 
 <script>
 export default {
+	props:['token', 'branch'],
+	data(){
+		return {
+			transactions:{schedule:[]},
+			filter:{
+				date:'',
+				branch_id:'',
+			}
+		}
+	},
 	methods:{
+		async fetchTransactions(){
+			await axios.post(this.baseURL() + 'api/report/micro', this.filter, {
+				headers: {
+					'Authorization': 'Bearer ' + this.token,
+					'Content-Type': 'application/json',
+					'Accept': 'application/json'
+				}
+			})
+			.then(function (response) {
+				this.transactions = response.data.data;
+				console.log(response.data.data);
+			}.bind(this))
+			.catch(function (error) {
+				console.log(error);
+			}.bind(this));
+		},
 		print:function(){
 			var content = document.getElementById('printContent').innerHTML;
 			var target = document.querySelector('.to-print');
 			target.innerHTML = content;
 			window.print();
 		},
+	},
+	computed:{
+		tranSched:function(){
+			var data = [];
+			for(var i in this.transactions.schedule){
+				if(this.transactions.schedule[i].start){
+					data.push(this.transactions.schedule[i])
+				}
+			}
+			return data;
+		},
+		schedHeader:function(){
+			var sched = [];
+			this.tranSched.forEach(t=>{
+				sched.push('Active');
+				sched.push(this.dateToHalfMonth(new Date(t.start)) + '.' + new Date(t.start).getDate() + '-' + new Date(t.end).getDate());
+			})
+			return sched;
+		}
+	},
+	mounted(){
+		this.filter.branch_id = this.branch;
+		this.filter.date = '2022-11';
+		this.fetchTransactions();
 	}
 }
 </script>

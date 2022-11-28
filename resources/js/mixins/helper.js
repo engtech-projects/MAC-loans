@@ -42,6 +42,12 @@ Vue.mixin({
 								];
 			return monthNames[date.getMonth()];
 		},
+		dateToHalfMonth:function(date){
+			const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+								"Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+								];
+			return monthNames[date.getMonth()];
+		},
 		todayTime:function(date){
 			var hour = date.getHours() > 12? (date.getHours() - 12) : date.getHours();
 			return hour + ':' + date.getMinutes();
@@ -52,6 +58,9 @@ Vue.mixin({
 		dateFullDay:function(date){
 			const weekday = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
 			return weekday[date.getDay()];
+		},
+		dateDay:function(date){
+			return date.getDay();
 		},
 		capitalizeFirstLetter(str) {
 			return str.charAt(0).toUpperCase() + str.slice(1);
