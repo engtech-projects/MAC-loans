@@ -32,11 +32,11 @@
 			</div>
 			<section class="d-flex flex-column mb-45">
 				<table class="table table-thin table-bordered tv-center mb-24">
-					<thead style="font-size:13px">
+					<thead style="font-size:12px">
 						<tr>
 							<th colspan="6">MICRO GROUP MONITORING</th>
 							<th v-for="(w, i) in tranSched" :key="w.start" colspan="2">Week {{parseInt(i) + 1}}</th>
-							<th rowspan="2">Total Amount Collection</th>
+							<th rowspan="2">Total Amt.</th>
 						</tr>
 						<tr>
 							<th>#</th>
@@ -45,17 +45,20 @@
 							<th>Active</th>
 							<th>Areas of Ope.</th>
 							<th>Sched</th>
-							<th v-for="(s, i) in schedHeader" :key="i" class="text-sm">{{s}}</th>
+							<th v-for="(s, i) in schedHeader" :key="i">{{s}}</th>
 						</tr>
 					</thead>
 					<tbody>
-						<tr>
-							<td>2</td>
-							<td>Longan</td>
-							<td>13</td>
-							<td>7</td>
-							<td>MJ Santos</td>
-							<td>MONDAY</td>
+						<tr v-for="(m, i) in monitoring" :key="i" :class="m[0]==''?'td-nb text-bold bg-yellow-pale':''">
+							<td v-for="(j, k) in m" :key="k">{{j}}</td>
+						</tr>
+						<!-- <tr class="td-nb text-bold bg-yellow-pale">
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
 							<td>3</td>
 							<td>452</td>
 							<td>1</td>
@@ -67,8 +70,8 @@
 							<td>7</td>
 							<td>845</td>
 							<td>5452</td>
-						</tr>
-						<tr>
+						</tr> -->
+						<!-- <tr>
 							<td>3</td>
 							<td>Chemo</td>
 							<td>13</td>
@@ -903,7 +906,7 @@
 							<td>7</td>
 							<td>845</td>
 							<td>5452</td>
-						</tr>
+						</tr> -->
 					</tbody>
 				</table>
 
@@ -1130,7 +1133,7 @@ export default {
 	props:['token', 'branch'],
 	data(){
 		return {
-			transactions:{schedule:[]},
+			transactions:{schedule:[],group:[]},
 			filter:{
 				date:'',
 				branch_id:'',
@@ -1178,12 +1181,65 @@ export default {
 				sched.push(this.dateToHalfMonth(new Date(t.start)) + '.' + new Date(t.start).getDate() + '-' + new Date(t.end).getDate());
 			})
 			return sched;
+		},
+		groupTransaction:function(){
+			var days = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday']
+			var group = {};
+			days.forEach(d=>{
+				for(var i in this.transactions.group){
+					if(d == i){
+						group[d]=this.transactions.group[i];
+					}
+				}
+			})
+			console.log(group);
+			return  group;
+		},
+		monitoring:function(){
+			var data = [];
+			for(var i in this.groupTransaction){
+				var count = 1;
+				var totalRow = ['','','','','',''];
+				var c = 6;
+				var coll = 0;
+				for(var p in this.groupTransaction[i]){
+					var row = [];
+					var weekly = this.groupTransaction[i][p].weeklyData;
+					var collection = 0
+					row.push(count);
+					row.push(p);
+					row.push(this.groupTransaction[i][p].all.no_of_clients);
+					row.push(this.groupTransaction[i][p].all.num_of_payments);
+					row.push('');
+					row.push(i.toUpperCase());
+					for(var w in weekly){
+						totalRow[c] = !totalRow[c]?0:totalRow[c];
+						collection += parseFloat(weekly[w].total_paid);
+						row.push(weekly[w].num_of_payments);
+						totalRow[c] += parseFloat(weekly[w].num_of_payments);
+						c++;
+						row.push(weekly[w].total_paid);
+						totalRow[c] += parseFloat(weekly[w].total_paid);
+					}
+					coll += collection;
+					row.push(collection);
+					count++;
+					data.push(row);
+				}
+				totalRow[totalRow.length - 1] = coll;
+				data.push(totalRow);
+			}
+			return data;
+		}
+	},
+	watch:{
+		'filter.date'(){
+			this.fetchTransactions();
 		}
 	},
 	mounted(){
 		this.filter.branch_id = this.branch;
-		this.filter.date = '2022-11';
-		this.fetchTransactions();
+		this.filter.date = '2022-10';
 	}
 }
 </script>
