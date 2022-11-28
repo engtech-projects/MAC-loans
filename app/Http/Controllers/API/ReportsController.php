@@ -160,7 +160,11 @@ class ReportsController extends BaseController
 				# code...
 				break;
 			case 'account_officer':
-				# code...
+				$filters = [
+					'branch_id' => $request->input("branch_id"),
+					'group' => $request->input("group")
+				];
+				$branchReport = $report->branchAOReport($filters);
 				break;
 			case 'loan_listing':
 				# code...

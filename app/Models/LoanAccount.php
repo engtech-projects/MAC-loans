@@ -63,6 +63,14 @@ class LoanAccount extends Model
       'loan_status',
    ];
 
+   const STATUS_RELEASED = "released";
+   const STATUS_PENDING = "pending";
+   const PAYMENT_PAID = "Paid";
+   const PAYMENT_CURRENT = "Current";
+   const PAYMENT_DELINQUENT = "Delinquent";
+   const LOAN_ONGOING = "Ongoing";
+   const LOAN_PAID = "Paid";
+   const LOAN_PASTDUE = "Past Due";
 
    public static function generateAccountNum($branchCode, $productCode, $identifier = 1) {
       // compute for the document transaction

@@ -11,6 +11,8 @@ class Product extends Model
 
     protected $table = 'product';
     protected $primaryKey = 'product_id';
+    const STATUS_ACTIVE = "active";
+    const STATUS_INACTIVE = "inactive";
 
     protected $fillable = [
     	'product_code', 'product_name', 'interest_rate', 'status', 'deleted'
