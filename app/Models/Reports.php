@@ -355,6 +355,10 @@ class Reports extends Model
                 }
                 return $this->getReleaseByDST($filters);
                 break;
+
+            case 'insurance':
+            return $this->releaseInsurance($filters);
+                break;
     		
     		default:
     			# code...
@@ -364,7 +368,6 @@ class Reports extends Model
 
     public function getReleaseByDST($filters) {
         $accounts = $this->getLoanAccounts($filters);
-
         $releaseSummary = [];
         foreach ($accounts as $key => $value) {
             
@@ -452,6 +455,11 @@ class Reports extends Model
         return $data;
         // return $filters;
     }
+
+    public function releaseInsurance($filters = []){
+        return $this->getLoanAccounts($filters);
+    }
+
     /* end release reports */
 
     /* start repayment report */

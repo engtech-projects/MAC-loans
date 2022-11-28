@@ -90,6 +90,13 @@ class ReportsController extends BaseController
 
 				# code...
 				break;
+			case 'insurance':
+				$filters = [
+					'date_from' => $request->input('date_from'),
+					'date_to' => $request->input('date_to'),
+					'branch_id' => $request->input('branch_id'),
+				];
+				break;
 		}
 
 		$report = new Reports();
