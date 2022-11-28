@@ -765,6 +765,8 @@
 			// this.deleteOtherInfo();
 			if(this.pclient){
 				this.fetchBorrower();
+			}else{
+				this.borrower = this.pborrower;
 			}
         }
     }
