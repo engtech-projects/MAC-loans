@@ -70,17 +70,27 @@ class ReportsController extends BaseController
 
 				break;
 			case 'client':
+
+				// {
+				//     "date_from" : "2022-11-21",
+				//     "date_to" : "2022-11-21",
+				//     "branch_id" : 1,
+				//     "type" : all, new, center, product, account_officer
+				//     "spec" : product_id, center_id, account_officer_id
+				//     "category" : "client"
+				// }
+
+				$filters = [
+					'date_from' => $request->input('date_from'),
+					'date_to' => $request->input('date_to'),
+					'branch_id' => $request->input('branch_id'),
+					'type' => $request->input('type'),
+					'spec' => $request->input('spec'),
+				];
+
 				# code...
 				break;
 		}
-
-		// $filters = [ 
-		// 	'date_from' => Carbon::createFromFormat('Y-m-d', $request->input('date_from')),
-		// 	'date_to' => Carbon::createFromFormat('Y-m-d', $request->input('date_to')),
-		// 	'type' => $request->input('type'),
-		// 	'spec' => $request->input('spec'),
-		// 	'branch_id' => $request->input('branch_id')
-		// ];
 
 		$report = new Reports();
 

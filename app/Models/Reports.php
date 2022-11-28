@@ -31,21 +31,17 @@ class Reports extends Model
     		$loanAccount->where([ 'loan_accounts.product_id' => $filters['product_id'] ]);
     	}
 
-    	// if( isset($filters['cycle_no']) && $filters['cycle_no'] ){
-    	// 	$loanAccount->where([ 'loan_accounts.cycle_no' => $filters['cycle_no'] ]);
-    	// }
+    	if( isset($filters['cycle_no']) && $filters['cycle_no'] ){
+    		$loanAccount->where([ 'loan_accounts.cycle_no' => $filters['cycle_no'] ]);
+    	}
 
-    	// if( isset($filters['branch_code']) && $filters['branch_code'] ){
-    	// 	$loanAccount->where([ 'loan_accounts.branch_code' => $filters['branch_code'] ]);
-    	// }
+    	if( isset($filters['center']) && $filters['center'] ){
+    		$loanAccount->where([ 'loan_accounts.center_id' => $filters['center'] ]);
+    	}
 
-    	// if( isset($filters['center']) && $filters['center'] ){
-    	// 	$loanAccount->where([ 'loan_accounts.center_id' => $filters['center'] ]);
-    	// }
-
-    	// if( isset($filters['product']) && $filters['product'] ){
-    	// 	$loanAccount->where([ 'loan_accounts.product_id' => $filters['product'] ]);
-    	// }
+    	if( isset($filters['product']) && $filters['product'] ){
+    		$loanAccount->where([ 'loan_accounts.product_id' => $filters['product'] ]);
+    	}
 
     	if( isset($filters['account_officer']) && $filters['account_officer'] ){
     		$loanAccount->where([ 'loan_accounts.ao_id' => $filters['account_officer'] ]);
@@ -220,6 +216,8 @@ class Reports extends Model
         foreach ($accounts as $account) {
             
             $data['release'][] = [ 
+                'cycle_no' => $account->cycle_no,
+                'product_id' => $account->product_id,
                 'account_num' => $account->account_num,
                 'borrower' => $account->borrower->fullname() ,
                 'date_loan' => $account->date_release,
@@ -324,12 +322,17 @@ class Reports extends Model
     			break;
 
     		case 'client':
+
     			$type = $filters['type'];
     			if( $type == 'new' ){
     				$filters['cycle_no'] = 1;
-    			}else{
-    				$filters[$type] = $filters['spec'];
     			}
+
+                if( $type == 'center' || $type == 'product' || $type == 'account_officer' ) {
+                    $filters[$type] = $filters['spec'];
+                }
+
+                
     			return $this->getReleaseByClient($filters, false);
     			break;
 
