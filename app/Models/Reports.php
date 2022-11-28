@@ -734,7 +734,7 @@ class Reports extends Model
                     ->whereDate('payment.transaction_date', '>=', $monthStart)
                     ->whereDate('payment.transaction_date', '<=', $monthEnd)
                     ->groupBy("loan_accounts.center_id")
-                    ->select([DB::raw("count(payment.payment_id) as num_of_payments"),DB::raw("sum(payment.amount_applied) total_paid")])
+                    ->select([DB::raw("count(payment.payment_id) as num_of_payments"),DB::raw("sum(payment.amount_applied) as total_paid")])
                     ->first();
                 $data[$weekDay][$centerVal->center]["all"]  = $monthPayments ? $monthPayments : ["num_of_payments"=>0, "total_paid"=>0];
                 $no_of_clients = LoanAccount::join("product", 'loan_accounts.product_id', '=', 'product.product_id')
@@ -771,8 +771,8 @@ class Reports extends Model
             ->where(["product.product_name"=>'micro individual'])
             ->whereDate('payment.transaction_date', '>=', $monthStart)
             ->whereDate('payment.transaction_date', '<=', $monthEnd)
-            ->groupBy("loan_accounts.borrower_id", "loan_accounts.center_id")
-            ->select([DB::raw("count(payment.payment_id) as num_of_payments"), DB::raw("sum(payment.amount_applied) total_paid"), "loan_accounts.borrower_id", "center.center_id", "center.center", "loan_accounts.day_schedule as loanSched", "center.day_sched as centerSched"])
+            ->groupBy("loan_accounts.borrower_id", "loan_accounts.center_id", "center.center", "center.day_sched", "loan_accounts.day_schedule")
+            ->select([DB::raw("count(payment.payment_id) as num_of_payments"), DB::raw("sum(payment.amount_applied) as total_paid"), "loan_accounts.borrower_id", "loan_accounts.center_id", "center.center", "loan_accounts.day_schedule as loanSched", "center.day_sched as centerSched"])
             ->get()->toArray();
         foreach($data as $key => $paymentData) {
             $data[$key]["borrower"] = Borrower::find($paymentData['borrower_id'])->fullname();
