@@ -15,17 +15,17 @@ class Reports extends Model
     public function getLoanAccounts($filters = []) {
 
         $branch = Branch::find($filters['branch_id']);
-    	$loanAccount = new LoanAccount();
+        
+
+        $loanAccount = Loanaccount::where([ 'loan_accounts.status' => 'released', 'branch_code' => $branch->branch_code ]);
 
     	if( isset($filters['date_from']) && isset($filters['date_to']) ){
     		/*$loanAccount = LoanAccount::whereBetween(DB::raw('date(loan_accounts.date_release)'), [ $filters['date_from'], $filters['date_to'] ]);*/
 
-            $loanAccount = LoanAccount::whereDate('loan_accounts.date_release', '>=', $filters['date_from']);
-            $loanAccount = LoanAccount::whereDate('loan_accounts.date_release', '<=', $filters['date_to']);
+            $loanAccount->whereDate('loan_accounts.date_release', '>=', $filters['date_from']);
+            $loanAccount->whereDate('loan_accounts.date_release', '<=', $filters['date_to']);
     	}
 
-
-    	$loanAccount->where([ 'loan_accounts.status' => 'released', 'branch_code' => $branch->branch_code ]);
     	
     	if( isset($filters['product_id']) && $filters['product_id'] ){
     		$loanAccount->where([ 'loan_accounts.product_id' => $filters['product_id'] ]);
@@ -46,7 +46,6 @@ class Reports extends Model
     	if( isset($filters['account_officer']) && $filters['account_officer'] ){
     		$loanAccount->where([ 'loan_accounts.ao_id' => $filters['account_officer'] ]);
     	}
-
 
     	return $loanAccount->get([
 			'loan_accounts.loan_account_id',
@@ -76,17 +75,22 @@ class Reports extends Model
 
     public function getPayments($filters = []) {
 
-        $branch = Branch::find($filters['branch_id']);
-        $payments = new Payment();
 
-        if( isset($filters['date_from']) && isset($filters['date_to']) ){
-            $payments = Payment::whereDate('payment.transaction_date', '>=', $filters['date_from']);
-            $payments = Payment::whereDate('payment.transaction_date', '<=', $filters['date_to']);
+        $branch = Branch::find($filters['branch_id']);
+
+        $payments = Payment::where([ 'payment.status' => 'paid', 'branch_id' => $branch->branch_id ]);
+
+        if( isset($filters['product_id']) ){
+            $payments = Payment::join('loan_accounts', 'loan_accounts.loan_account_id', '=', 'payment.loan_account_id');
+            $payments->where([ 'loan_accounts.product_id' => $filters['product_id'] ]);
         }
 
-        $payments->where([ 'payment.status' => 'paid', 'branch_id' => $branch->branch_id ]);
+        if( isset($filters['date_from']) && isset($filters['date_to']) ){
+            $payments->whereDate('payment.transaction_date', '>=', $filters['date_from']);
+            $payments->whereDate('payment.transaction_date', '<=', $filters['date_to']);
+        }
 
-        return $payments->get();
+        return $payments->get(['payment.*', 'loan_accounts.*']);
     }
 
     /* start transaction reports */
@@ -101,7 +105,6 @@ class Reports extends Model
     }
 
     public function getReleaseByProduct($filters) {
-
         // if( isset($filters['product']) && $filters['product'] ){
         //     $products = Product::where([ 'status' => 'active', 'product_id' => $filters['product'] ])->get(['product_id', 'product_code', 'product_name', 'interest_rate']);
         // }else{
@@ -137,9 +140,11 @@ class Reports extends Model
             $accounts = null;
             $payments = null;
 
+            $filters['product_id'] = $product->product_id;
+
             $accounts = $this->getLoanAccounts($filters);
             $payments = $this->getPayments($filters);
-
+           
             if( count($accounts) ){
 
                 foreach ($accounts as $account) {
@@ -166,7 +171,7 @@ class Reports extends Model
                 }
             }
 
-            
+        
             if( count($payments) ) {
 
                 foreach ($payments as $k => $payment) {
@@ -177,6 +182,7 @@ class Reports extends Model
 
                             if( !isset($data[$key]['payment'][$type]) ){
                                 $data[$key]['payment'][$type] = [
+                                   
                                     'principal' => 0,
                                     'interest' => 0,
                                     'pdi' => 0,
@@ -557,8 +563,9 @@ class Reports extends Model
     public function branchCollectionReport($filters = []) {
 
         $branch = Branch::find($filters['branch_id']);
-        $accounts = LoanAccount::join('amortization', 'amortization.loan_account_id', '=', 'loan_accounts.loan_account_id');
 
+        $accounts = LoanAccount::join('center', 'center.center_id', '=', 'loan_accounts.center_id');
+        
         if( isset($filters['account_officer']) && $filters['account_officer'] ){
             $accounts->where([ 'loan_accounts.ao_id' => $filters['account_officer'] ]);
         }
@@ -567,12 +574,8 @@ class Reports extends Model
             $accounts->where([ 'loan_accounts.center_id' => $filters['center'] ]);
         }
 
-        $accounts->where([
-            'amortization.amortization_date' => $filters['transaction_date'], 
-            'amortization.status' => 'open',
-            'loan_accounts.branch_code' => $branch->branch_code,
-            'loan_accounts.loan_status' => 'Ongoing'
-        ]);
+        $accounts->where(['loan_accounts.branch_code' => $branch->branch_code]);
+        $accounts->whereIn('loan_accounts.loan_status', ['Ongoing', 'Past Due']);
 
         $accounts = $accounts->get();
 
@@ -586,6 +589,8 @@ class Reports extends Model
                 $currentAmortization = $loanAccount->getCurrentAmortization();
                 
                 $borrower = Borrower::find($value['borrower_id']);
+                $data[$key]['center'] = $value->center_id;
+                $data[$key]['account_officer'] = $value->ao_id; 
                 $data[$key]['client'] = $borrower->fullname();
                 $data[$key]['date_loan'] = $value['date_release'];
                 $data[$key]['maturity_date'] = $value['due_date'];
@@ -601,7 +606,12 @@ class Reports extends Model
 
         }
 
-        return $data;
+        return $d = [
+
+                    'name' =>  '',
+                    'data' => $data,
+
+                ];
     }
 
     public function branchMaturityReport($filters = []) {

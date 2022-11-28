@@ -35,7 +35,7 @@ class ReportsController extends BaseController
 		switch ($category) {
 			case 'product':
 				
-				// {
+				// {	
 				//     "date_from" : "2022-09-26",
 				//     "date_to" : "2022-10-27",
 				//     "branch_id" : 1,
@@ -88,7 +88,6 @@ class ReportsController extends BaseController
 					'spec' => $request->input('spec'),
 				];
 
-				# code...
 				break;
 		}
 
@@ -133,11 +132,9 @@ class ReportsController extends BaseController
 			case 'collection':
 				
 				$filters = [
-					'transaction_date' => $request->input('transaction_date'),
 					'account_officer' => $request->input('account_officer'),
 					'center' => $request->input('center'),
 					'branch_id' => $request->input('branch_id'),
-					'group' => $request->input('group')
 				];
 
 				$branchReport = $report->branchCollectionReport($filters);
