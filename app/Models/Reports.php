@@ -469,7 +469,21 @@ class Reports extends Model
     }
 
     public function releaseInsurance($filters = []){
-        return $this->getLoanAccounts($filters);
+        $accounts = $this->getLoanAccounts($filters);
+        $insurance = [];
+        foreach ($accounts as $key => $value) {
+            $insurance[$key]["account_num"] = $value->account_num;
+            $insurance[$key]["name"] = $value->borrower->fullname();
+            $insurance[$key]["birthdate"] = $value->borrower->birthdate;
+            $insurance[$key]["gender"] = $value->borrower->gender;
+            $insurance[$key]["marital_status"] = $value->borrower->status;
+            $insurance[$key]["amount_loan"] = $value->loan_amount;
+            $insurance[$key]["insurance"] = $value->insurance;
+            $insurance[$key]["date_loan"] = $value->date_release;
+            $insurance[$key]["due_date"] = $value->due_date;
+            $insurance[$key]["term"] = $value->terms;
+        }
+        return $insurance;
     }
 
     /* end release reports */
