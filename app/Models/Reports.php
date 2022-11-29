@@ -765,9 +765,10 @@ class Reports extends Model
                     ->where(["loan_accounts.center_id"=>$centerVal->center_id, "product.product_name"=>'micro group'])
                     ->whereDate('payment.transaction_date', '>=', $monthStart)
                     ->whereDate('payment.transaction_date', '<=', $monthEnd)
-                    ->groupBy("loan_accounts.center_id")
+                    ->groupBy("loan_accounts.center_id","loan_accounts.loan_account_id")
                     ->select([DB::raw("count(payment.payment_id) as num_of_payments"),DB::raw("sum(payment.amount_applied) as total_paid")])
                     ->first();
+                $data[$weekDay][$centerVal->center]["account_officer"]  = "test_data_api_result";
                 $data[$weekDay][$centerVal->center]["all"]  = $monthPayments ? $monthPayments : ["num_of_payments"=>0, "total_paid"=>0];
                 $no_of_clients = LoanAccount::join("product", 'loan_accounts.product_id', '=', 'product.product_id')
                     ->where(["loan_accounts.center_id"=>$centerVal->center_id, "product.product_name"=>'micro group'])
@@ -783,7 +784,7 @@ class Reports extends Model
                         ->where(["loan_accounts.center_id"=>$centerVal->center_id, "product.product_name"=>'micro group'])
                         ->whereDate('payment.transaction_date', '>=', $weekData['start'])
                         ->whereDate('payment.transaction_date', '<=', $weekData['end'])
-                        ->groupBy("loan_accounts.center_id")
+                        ->groupBy("loan_accounts.center_id", "loan_accounts.loan_account_id")
                         ->select([DB::raw("count(payment.payment_id) as num_of_payments"),DB::raw("sum(payment.amount_applied) as total_paid")])
                         ->first();
                     $data[$weekDay][$centerVal->center]["weeklyData"][$week] = $loanAccounts ? $loanAccounts : ["num_of_payments"=>0, "total_paid"=>0];
