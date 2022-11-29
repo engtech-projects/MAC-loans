@@ -760,7 +760,8 @@ class Reports extends Model
             $centers = Center::where(["center.day_sched"=>$weekDay,"status"=>"active"]) // center daysched  or use center sched in loan account?
                 ->get();
             foreach ($centers as $centerId => $centerVal) {
-                $data[$weekDay][$centerVal->center]["account_officer"]  = "test_data_api_result";
+                $data[$weekDay][$centerVal->center]["account_officer"]  = "test_data_api_result_ACCOUNT_OFFICER";
+                $data[$weekDay][$centerVal->center]["area_of_operation"]  = "test_data_api_result_AREA_OPERATION";
                 $no_of_clients = LoanAccount::join("product", 'loan_accounts.product_id', '=', 'product.product_id')
                     ->where(["loan_accounts.center_id"=>$centerVal->center_id, "product.product_name"=>'micro group'])
                     ->groupBy("loan_accounts.center_id")
@@ -774,7 +775,7 @@ class Reports extends Model
                     ->where(["loan_accounts.center_id"=>$centerVal->center_id, "product.product_name"=>'micro group'])
                     ->whereDate('payment.transaction_date', '>=', $monthStart)
                     ->whereDate('payment.transaction_date', '<=', $monthEnd)
-                    ->groupBy("loan_accounts.loan_account_id")
+                    ->groupBy("loan_accounts.loan_account_id", "payment.amount_applied")
                     ->select(["loan_accounts.loan_account_id","payment.amount_applied as total_paid"])
                     ->get();
                 $data[$weekDay][$centerVal->center]["all"]["num_of_payments"] = 0;
