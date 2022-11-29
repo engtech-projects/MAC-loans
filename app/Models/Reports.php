@@ -767,7 +767,7 @@ class Reports extends Model
                     ->groupBy("loan_accounts.center_id")
                     ->select([DB::raw("ifnull(count(loan_accounts.loan_account_id),0) as no_of_clients")])
                     ->first();
-                $data[$weekDay][$centerVal->center]["all"]['no_of_clients'] = $no_of_clients->no_of_clients ? $no_of_clients->no_of_clients : 0;
+                $data[$weekDay][$centerVal->center]["all"]['no_of_clients'] = $no_of_clients ? $no_of_clients->no_of_clients : 0;
                 $data[$weekDay][$centerVal->center]["all"]["start"] = $monthStart;
                 $data[$weekDay][$centerVal->center]["all"]["end"] = $monthEnd;
                 $monthPayments = Payment::join("loan_accounts", 'payment.loan_account_id', '=', 'loan_accounts.loan_account_id')
