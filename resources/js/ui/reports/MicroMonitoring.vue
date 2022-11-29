@@ -71,15 +71,16 @@
 						</tr>
 					</thead>
 					<tbody>
+						<tr v-if="!transactions.individual.length"><td>No data available.</td></tr>
 						<tr v-for="(t,i) in individual" :key="i" :class="t[0]=='TOTAL SUMMARY'?'text-bold bg-green-mint':''">
 							<td v-for="(j,k) in t" :key="k">{{j}}</td>
 						</tr>
 					</tbody>
 				</table>
-				<div class="d-flex flex-row justify-content-end mb-24">
+				<!-- <div class="d-flex flex-row justify-content-end mb-24">
 					<a href="#" class="text-green text-md text-bold mr-24">Previous Page</a>
 					<a href="#" class="text-green text-md text-bold">Next Page</a>
-				</div>
+				</div> -->
 			</section>
 			<section class="d-flex flex-row mb-72">
 			<span class="flex-2 pb-24 text-bold darker-bb mr-64">Prepared By:</span>
@@ -101,7 +102,7 @@ export default {
 	props:['token', 'branch'],
 	data(){
 		return {
-			transactions:{schedule:[],group:[]},
+			transactions:{schedule:[],group:[],individual:[]},
 			filter:{
 				date:'',
 				branch_id:'',
@@ -166,7 +167,6 @@ export default {
 					}
 				}
 			})
-			console.log(group);
 			return  group;
 		},
 		monitoring:function(){
@@ -174,13 +174,12 @@ export default {
 			for(var i in this.groupTransaction){
 				var count = 1;
 				var totalRow = ['','','','','',''];
-				var c = 6;
 				var coll = 0;
 				for(var p in this.groupTransaction[i]){
 					var row = [];
 					var weekly = this.groupTransaction[i][p].weeklyData;
 					var collection = 0
-					c= 6;
+					var c= 6;
 					row.push(count);
 					row.push(p);
 					row.push(this.groupTransaction[i][p].all.no_of_clients);
