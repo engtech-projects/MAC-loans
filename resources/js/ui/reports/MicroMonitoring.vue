@@ -20,14 +20,13 @@
 					<div class="flex-1"></div>
 					<span class="font-30 text-bold text-primary-dark">MICRO MONITORING - BY CENTER</span>
 					<div class="flex-1" style="padding-left:24px">
-						<span class="text-primary-dark mr-10">Tuesday 12/21/2021</span>
-						<span class="text-primary-dark">Time: 11:36 AM</span>
+						<span class="text-primary-dark mr-10">{{dateFullDay(new Date())}} {{dateToYMD(new Date()).split('-').join('/')}}</span>
+						<span class="text-primary-dark">Time: {{todayTime(new Date())}} {{(new Date()).getHours() > 12? 'PM':'AM'}}</span>
 					</div>
 				</div>
 				<span class="text-center text-primary-dark text-bold font-md mb-5">Butuan Branch (001)</span>
 				<div class="d-flex flex-row justify-content-center text-primary-dark">
-					<span class="mr-5">From:</span><span class="mr-16">12/14/2021</span>
-					<span class="mr-5">To:</span><span>12/15/2021</span>
+					<span class="mr-16">{{this.dateToFullMonth(new Date(filter.date)) + ' ' + new Date(filter.date).getFullYear()}}</span>
 				</div>
 			</div>
 			<section class="d-flex flex-column mb-45">
@@ -52,861 +51,6 @@
 						<tr v-for="(m, i) in monitoring" :key="i" :class="m[0]==''?'td-nb text-bold bg-yellow-pale':''">
 							<td v-for="(j, k) in m" :key="k">{{j}}</td>
 						</tr>
-						<!-- <tr class="td-nb text-bold bg-yellow-pale">
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td>3</td>
-							<td>452</td>
-							<td>1</td>
-							<td>421</td>
-							<td>3</td>
-							<td>541</td>
-							<td>5</td>
-							<td>412</td>
-							<td>7</td>
-							<td>845</td>
-							<td>5452</td>
-						</tr> -->
-						<!-- <tr>
-							<td>3</td>
-							<td>Chemo</td>
-							<td>13</td>
-							<td>7</td>
-							<td>MJ Santos</td>
-							<td>MONDAY</td>
-							<td>3</td>
-							<td>452</td>
-							<td>1</td>
-							<td>421</td>
-							<td>3</td>
-							<td>541</td>
-							<td>5</td>
-							<td>412</td>
-							<td>7</td>
-							<td>845</td>
-							<td>5452</td>
-						</tr>
-						<tr>
-							<td>4</td>
-							<td>Papaya</td>
-							<td>13</td>
-							<td>7</td>
-							<td>MJ Santos</td>
-							<td>MONDAY</td>
-							<td>3</td>
-							<td>452</td>
-							<td>1</td>
-							<td>421</td>
-							<td>3</td>
-							<td>541</td>
-							<td>5</td>
-							<td>412</td>
-							<td>7</td>
-							<td>845</td>
-							<td>5452</td>
-						</tr>
-						<tr>
-							<td>5</td>
-							<td>Plum</td>
-							<td>13</td>
-							<td>7</td>
-							<td>MJ Santos</td>
-							<td>MONDAY</td>
-							<td>3</td>
-							<td>452</td>
-							<td>1</td>
-							<td>421</td>
-							<td>3</td>
-							<td>541</td>
-							<td>5</td>
-							<td>412</td>
-							<td>7</td>
-							<td>845</td>
-							<td>5452</td>
-						</tr>
-						<tr>
-							<td>6</td>
-							<td>Chico</td>
-							<td>13</td>
-							<td>7</td>
-							<td>MJ Santos</td>
-							<td>MONDAY</td>
-							<td>3</td>
-							<td>452</td>
-							<td>1</td>
-							<td>421</td>
-							<td>3</td>
-							<td>541</td>
-							<td>5</td>
-							<td>412</td>
-							<td>7</td>
-							<td>845</td>
-							<td>5452</td>
-						</tr>
-						<tr>
-							<td>7</td>
-							<td>Walnut</td>
-							<td>13</td>
-							<td>7</td>
-							<td>MJ Santos</td>
-							<td>MONDAY</td>
-							<td>3</td>
-							<td>452</td>
-							<td>1</td>
-							<td>421</td>
-							<td>3</td>
-							<td>541</td>
-							<td>5</td>
-							<td>412</td>
-							<td>7</td>
-							<td>845</td>
-							<td>5452</td>
-						</tr>
-						<tr>
-							<td>8</td>
-							<td>Durian</td>
-							<td>13</td>
-							<td>7</td>
-							<td>MJ Santos</td>
-							<td>MONDAY</td>
-							<td>3</td>
-							<td>452</td>
-							<td>1</td>
-							<td>421</td>
-							<td>3</td>
-							<td>541</td>
-							<td>5</td>
-							<td>412</td>
-							<td>7</td>
-							<td>845</td>
-							<td>5452</td>
-						</tr>
-						<tr>
-							<td>1</td>
-							<td>Physalis</td>
-							<td>13</td>
-							<td>7</td>
-							<td>MJ Santos</td>
-							<td>MONDAY</td>
-							<td>3</td>
-							<td>452</td>
-							<td>1</td>
-							<td>421</td>
-							<td>3</td>
-							<td>541</td>
-							<td>5</td>
-							<td>412</td>
-							<td>7</td>
-							<td>845</td>
-							<td>5452</td>
-						</tr>
-						<tr class="td-nb text-bold bg-yellow-pale">
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td>3</td>
-							<td>452</td>
-							<td>1</td>
-							<td>421</td>
-							<td>3</td>
-							<td>541</td>
-							<td>5</td>
-							<td>412</td>
-							<td>7</td>
-							<td>845</td>
-							<td>5452</td>
-						</tr>
-						<tr>
-							<td>2</td>
-							<td>Longan</td>
-							<td>13</td>
-							<td>7</td>
-							<td>MJ Santos</td>
-							<td>MONDAY</td>
-							<td>3</td>
-							<td>452</td>
-							<td>1</td>
-							<td>421</td>
-							<td>3</td>
-							<td>541</td>
-							<td>5</td>
-							<td>412</td>
-							<td>7</td>
-							<td>845</td>
-							<td>5452</td>
-						</tr>
-						<tr>
-							<td>3</td>
-							<td>Chemo</td>
-							<td>13</td>
-							<td>7</td>
-							<td>MJ Santos</td>
-							<td>MONDAY</td>
-							<td>3</td>
-							<td>452</td>
-							<td>1</td>
-							<td>421</td>
-							<td>3</td>
-							<td>541</td>
-							<td>5</td>
-							<td>412</td>
-							<td>7</td>
-							<td>845</td>
-							<td>5452</td>
-						</tr>
-						<tr>
-							<td>4</td>
-							<td>Papaya</td>
-							<td>13</td>
-							<td>7</td>
-							<td>MJ Santos</td>
-							<td>MONDAY</td>
-							<td>3</td>
-							<td>452</td>
-							<td>1</td>
-							<td>421</td>
-							<td>3</td>
-							<td>541</td>
-							<td>5</td>
-							<td>412</td>
-							<td>7</td>
-							<td>845</td>
-							<td>5452</td>
-						</tr>
-						<tr>
-							<td>5</td>
-							<td>Plum</td>
-							<td>13</td>
-							<td>7</td>
-							<td>MJ Santos</td>
-							<td>MONDAY</td>
-							<td>3</td>
-							<td>452</td>
-							<td>1</td>
-							<td>421</td>
-							<td>3</td>
-							<td>541</td>
-							<td>5</td>
-							<td>412</td>
-							<td>7</td>
-							<td>845</td>
-							<td>5452</td>
-						</tr>
-						<tr>
-							<td>6</td>
-							<td>Chico</td>
-							<td>13</td>
-							<td>7</td>
-							<td>MJ Santos</td>
-							<td>MONDAY</td>
-							<td>3</td>
-							<td>452</td>
-							<td>1</td>
-							<td>421</td>
-							<td>3</td>
-							<td>541</td>
-							<td>5</td>
-							<td>412</td>
-							<td>7</td>
-							<td>845</td>
-							<td>5452</td>
-						</tr>
-						<tr>
-							<td>7</td>
-							<td>Walnut</td>
-							<td>13</td>
-							<td>7</td>
-							<td>MJ Santos</td>
-							<td>MONDAY</td>
-							<td>3</td>
-							<td>452</td>
-							<td>1</td>
-							<td>421</td>
-							<td>3</td>
-							<td>541</td>
-							<td>5</td>
-							<td>412</td>
-							<td>7</td>
-							<td>845</td>
-							<td>5452</td>
-						</tr>
-						<tr>
-							<td>8</td>
-							<td>Durian</td>
-							<td>13</td>
-							<td>7</td>
-							<td>MJ Santos</td>
-							<td>MONDAY</td>
-							<td>3</td>
-							<td>452</td>
-							<td>1</td>
-							<td>421</td>
-							<td>3</td>
-							<td>541</td>
-							<td>5</td>
-							<td>412</td>
-							<td>7</td>
-							<td>845</td>
-							<td>5452</td>
-						</tr>
-						<tr>
-							<td>1</td>
-							<td>Physalis</td>
-							<td>13</td>
-							<td>7</td>
-							<td>MJ Santos</td>
-							<td>MONDAY</td>
-							<td>3</td>
-							<td>452</td>
-							<td>1</td>
-							<td>421</td>
-							<td>3</td>
-							<td>541</td>
-							<td>5</td>
-							<td>412</td>
-							<td>7</td>
-							<td>845</td>
-							<td>5452</td>
-						</tr>
-						<tr class="td-nb text-bold bg-yellow-pale">
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td>3</td>
-							<td>452</td>
-							<td>1</td>
-							<td>421</td>
-							<td>3</td>
-							<td>541</td>
-							<td>5</td>
-							<td>412</td>
-							<td>7</td>
-							<td>845</td>
-							<td>5452</td>
-						</tr>
-						<tr>
-							<td>2</td>
-							<td>Longan</td>
-							<td>13</td>
-							<td>7</td>
-							<td>MJ Santos</td>
-							<td>MONDAY</td>
-							<td>3</td>
-							<td>452</td>
-							<td>1</td>
-							<td>421</td>
-							<td>3</td>
-							<td>541</td>
-							<td>5</td>
-							<td>412</td>
-							<td>7</td>
-							<td>845</td>
-							<td>5452</td>
-						</tr>
-						<tr>
-							<td>3</td>
-							<td>Chemo</td>
-							<td>13</td>
-							<td>7</td>
-							<td>MJ Santos</td>
-							<td>MONDAY</td>
-							<td>3</td>
-							<td>452</td>
-							<td>1</td>
-							<td>421</td>
-							<td>3</td>
-							<td>541</td>
-							<td>5</td>
-							<td>412</td>
-							<td>7</td>
-							<td>845</td>
-							<td>5452</td>
-						</tr>
-						<tr>
-							<td>4</td>
-							<td>Papaya</td>
-							<td>13</td>
-							<td>7</td>
-							<td>MJ Santos</td>
-							<td>MONDAY</td>
-							<td>3</td>
-							<td>452</td>
-							<td>1</td>
-							<td>421</td>
-							<td>3</td>
-							<td>541</td>
-							<td>5</td>
-							<td>412</td>
-							<td>7</td>
-							<td>845</td>
-							<td>5452</td>
-						</tr>
-						<tr>
-							<td>5</td>
-							<td>Plum</td>
-							<td>13</td>
-							<td>7</td>
-							<td>MJ Santos</td>
-							<td>MONDAY</td>
-							<td>3</td>
-							<td>452</td>
-							<td>1</td>
-							<td>421</td>
-							<td>3</td>
-							<td>541</td>
-							<td>5</td>
-							<td>412</td>
-							<td>7</td>
-							<td>845</td>
-							<td>5452</td>
-						</tr>
-						<tr>
-							<td>6</td>
-							<td>Chico</td>
-							<td>13</td>
-							<td>7</td>
-							<td>MJ Santos</td>
-							<td>MONDAY</td>
-							<td>3</td>
-							<td>452</td>
-							<td>1</td>
-							<td>421</td>
-							<td>3</td>
-							<td>541</td>
-							<td>5</td>
-							<td>412</td>
-							<td>7</td>
-							<td>845</td>
-							<td>5452</td>
-						</tr>
-						<tr>
-							<td>7</td>
-							<td>Walnut</td>
-							<td>13</td>
-							<td>7</td>
-							<td>MJ Santos</td>
-							<td>MONDAY</td>
-							<td>3</td>
-							<td>452</td>
-							<td>1</td>
-							<td>421</td>
-							<td>3</td>
-							<td>541</td>
-							<td>5</td>
-							<td>412</td>
-							<td>7</td>
-							<td>845</td>
-							<td>5452</td>
-						</tr>
-						<tr>
-							<td>8</td>
-							<td>Durian</td>
-							<td>13</td>
-							<td>7</td>
-							<td>MJ Santos</td>
-							<td>MONDAY</td>
-							<td>3</td>
-							<td>452</td>
-							<td>1</td>
-							<td>421</td>
-							<td>3</td>
-							<td>541</td>
-							<td>5</td>
-							<td>412</td>
-							<td>7</td>
-							<td>845</td>
-							<td>5452</td>
-						</tr>
-						<tr>
-							<td>1</td>
-							<td>Physalis</td>
-							<td>13</td>
-							<td>7</td>
-							<td>MJ Santos</td>
-							<td>MONDAY</td>
-							<td>3</td>
-							<td>452</td>
-							<td>1</td>
-							<td>421</td>
-							<td>3</td>
-							<td>541</td>
-							<td>5</td>
-							<td>412</td>
-							<td>7</td>
-							<td>845</td>
-							<td>5452</td>
-						</tr>
-						<tr class="td-nb text-bold bg-yellow-pale">
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td>3</td>
-							<td>452</td>
-							<td>1</td>
-							<td>421</td>
-							<td>3</td>
-							<td>541</td>
-							<td>5</td>
-							<td>412</td>
-							<td>7</td>
-							<td>845</td>
-							<td>5452</td>
-						</tr>
-						<tr>
-							<td>2</td>
-							<td>Longan</td>
-							<td>13</td>
-							<td>7</td>
-							<td>MJ Santos</td>
-							<td>MONDAY</td>
-							<td>3</td>
-							<td>452</td>
-							<td>1</td>
-							<td>421</td>
-							<td>3</td>
-							<td>541</td>
-							<td>5</td>
-							<td>412</td>
-							<td>7</td>
-							<td>845</td>
-							<td>5452</td>
-						</tr>
-						<tr>
-							<td>3</td>
-							<td>Chemo</td>
-							<td>13</td>
-							<td>7</td>
-							<td>MJ Santos</td>
-							<td>MONDAY</td>
-							<td>3</td>
-							<td>452</td>
-							<td>1</td>
-							<td>421</td>
-							<td>3</td>
-							<td>541</td>
-							<td>5</td>
-							<td>412</td>
-							<td>7</td>
-							<td>845</td>
-							<td>5452</td>
-						</tr>
-						<tr>
-							<td>4</td>
-							<td>Papaya</td>
-							<td>13</td>
-							<td>7</td>
-							<td>MJ Santos</td>
-							<td>MONDAY</td>
-							<td>3</td>
-							<td>452</td>
-							<td>1</td>
-							<td>421</td>
-							<td>3</td>
-							<td>541</td>
-							<td>5</td>
-							<td>412</td>
-							<td>7</td>
-							<td>845</td>
-							<td>5452</td>
-						</tr>
-						<tr>
-							<td>5</td>
-							<td>Plum</td>
-							<td>13</td>
-							<td>7</td>
-							<td>MJ Santos</td>
-							<td>MONDAY</td>
-							<td>3</td>
-							<td>452</td>
-							<td>1</td>
-							<td>421</td>
-							<td>3</td>
-							<td>541</td>
-							<td>5</td>
-							<td>412</td>
-							<td>7</td>
-							<td>845</td>
-							<td>5452</td>
-						</tr>
-						<tr>
-							<td>6</td>
-							<td>Chico</td>
-							<td>13</td>
-							<td>7</td>
-							<td>MJ Santos</td>
-							<td>MONDAY</td>
-							<td>3</td>
-							<td>452</td>
-							<td>1</td>
-							<td>421</td>
-							<td>3</td>
-							<td>541</td>
-							<td>5</td>
-							<td>412</td>
-							<td>7</td>
-							<td>845</td>
-							<td>5452</td>
-						</tr>
-						<tr>
-							<td>7</td>
-							<td>Walnut</td>
-							<td>13</td>
-							<td>7</td>
-							<td>MJ Santos</td>
-							<td>MONDAY</td>
-							<td>3</td>
-							<td>452</td>
-							<td>1</td>
-							<td>421</td>
-							<td>3</td>
-							<td>541</td>
-							<td>5</td>
-							<td>412</td>
-							<td>7</td>
-							<td>845</td>
-							<td>5452</td>
-						</tr>
-						<tr>
-							<td>8</td>
-							<td>Durian</td>
-							<td>13</td>
-							<td>7</td>
-							<td>MJ Santos</td>
-							<td>MONDAY</td>
-							<td>3</td>
-							<td>452</td>
-							<td>1</td>
-							<td>421</td>
-							<td>3</td>
-							<td>541</td>
-							<td>5</td>
-							<td>412</td>
-							<td>7</td>
-							<td>845</td>
-							<td>5452</td>
-						</tr>
-						<tr>
-							<td>1</td>
-							<td>Physalis</td>
-							<td>13</td>
-							<td>7</td>
-							<td>MJ Santos</td>
-							<td>MONDAY</td>
-							<td>3</td>
-							<td>452</td>
-							<td>1</td>
-							<td>421</td>
-							<td>3</td>
-							<td>541</td>
-							<td>5</td>
-							<td>412</td>
-							<td>7</td>
-							<td>845</td>
-							<td>5452</td>
-						</tr>
-						<tr class="td-nb text-bold bg-yellow-pale">
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td>3</td>
-							<td>452</td>
-							<td>1</td>
-							<td>421</td>
-							<td>3</td>
-							<td>541</td>
-							<td>5</td>
-							<td>412</td>
-							<td>7</td>
-							<td>845</td>
-							<td>5452</td>
-						</tr>
-						<tr>
-							<td>2</td>
-							<td>Longan</td>
-							<td>13</td>
-							<td>7</td>
-							<td>MJ Santos</td>
-							<td>MONDAY</td>
-							<td>3</td>
-							<td>452</td>
-							<td>1</td>
-							<td>421</td>
-							<td>3</td>
-							<td>541</td>
-							<td>5</td>
-							<td>412</td>
-							<td>7</td>
-							<td>845</td>
-							<td>5452</td>
-						</tr>
-						<tr>
-							<td>3</td>
-							<td>Chemo</td>
-							<td>13</td>
-							<td>7</td>
-							<td>MJ Santos</td>
-							<td>MONDAY</td>
-							<td>3</td>
-							<td>452</td>
-							<td>1</td>
-							<td>421</td>
-							<td>3</td>
-							<td>541</td>
-							<td>5</td>
-							<td>412</td>
-							<td>7</td>
-							<td>845</td>
-							<td>5452</td>
-						</tr>
-						<tr>
-							<td>4</td>
-							<td>Papaya</td>
-							<td>13</td>
-							<td>7</td>
-							<td>MJ Santos</td>
-							<td>MONDAY</td>
-							<td>3</td>
-							<td>452</td>
-							<td>1</td>
-							<td>421</td>
-							<td>3</td>
-							<td>541</td>
-							<td>5</td>
-							<td>412</td>
-							<td>7</td>
-							<td>845</td>
-							<td>5452</td>
-						</tr>
-						<tr>
-							<td>5</td>
-							<td>Plum</td>
-							<td>13</td>
-							<td>7</td>
-							<td>MJ Santos</td>
-							<td>MONDAY</td>
-							<td>3</td>
-							<td>452</td>
-							<td>1</td>
-							<td>421</td>
-							<td>3</td>
-							<td>541</td>
-							<td>5</td>
-							<td>412</td>
-							<td>7</td>
-							<td>845</td>
-							<td>5452</td>
-						</tr>
-						<tr>
-							<td>6</td>
-							<td>Chico</td>
-							<td>13</td>
-							<td>7</td>
-							<td>MJ Santos</td>
-							<td>MONDAY</td>
-							<td>3</td>
-							<td>452</td>
-							<td>1</td>
-							<td>421</td>
-							<td>3</td>
-							<td>541</td>
-							<td>5</td>
-							<td>412</td>
-							<td>7</td>
-							<td>845</td>
-							<td>5452</td>
-						</tr>
-						<tr>
-							<td>7</td>
-							<td>Walnut</td>
-							<td>13</td>
-							<td>7</td>
-							<td>MJ Santos</td>
-							<td>MONDAY</td>
-							<td>3</td>
-							<td>452</td>
-							<td>1</td>
-							<td>421</td>
-							<td>3</td>
-							<td>541</td>
-							<td>5</td>
-							<td>412</td>
-							<td>7</td>
-							<td>845</td>
-							<td>5452</td>
-						</tr>
-						<tr>
-							<td>8</td>
-							<td>Durian</td>
-							<td>13</td>
-							<td>7</td>
-							<td>MJ Santos</td>
-							<td>MONDAY</td>
-							<td>3</td>
-							<td>452</td>
-							<td>1</td>
-							<td>421</td>
-							<td>3</td>
-							<td>541</td>
-							<td>5</td>
-							<td>412</td>
-							<td>7</td>
-							<td>845</td>
-							<td>5452</td>
-						</tr>
-						<tr>
-							<td>1</td>
-							<td>Physalis</td>
-							<td>13</td>
-							<td>7</td>
-							<td>MJ Santos</td>
-							<td>MONDAY</td>
-							<td>3</td>
-							<td>452</td>
-							<td>1</td>
-							<td>421</td>
-							<td>3</td>
-							<td>541</td>
-							<td>5</td>
-							<td>412</td>
-							<td>7</td>
-							<td>845</td>
-							<td>5452</td>
-						</tr>
-						<tr class="td-nb text-bold bg-yellow-pale">
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td>3</td>
-							<td>452</td>
-							<td>1</td>
-							<td>421</td>
-							<td>3</td>
-							<td>541</td>
-							<td>5</td>
-							<td>412</td>
-							<td>7</td>
-							<td>845</td>
-							<td>5452</td>
-						</tr> -->
 					</tbody>
 				</table>
 
@@ -915,11 +59,7 @@
 					<thead>
 						<tr>
 							<th colspan="4">MICRO INDIVIDUAL COLLECTION MONITORING</th>
-							<th>Week 1</th>
-							<th>Week 2</th>
-							<th>Week 3</th>
-							<th>Week 4</th>
-							<th>Week 5</th>
+							<th v-for="(t, i) in tranSched" :key="i">Week {{i + 1}}</th>
 							<th rowspan="2">Total Amount Collected</th>
 						</tr>
 						<tr>
@@ -927,184 +67,12 @@
 							<th>Name of Client</th>
 							<th>Areas of Ope.</th>
 							<th>Schedule</th>
-							<th>Dec 1-3</th>
-							<th>Dec 8-10</th>
-							<th>Dec 13-17</th>
-							<th>Dec 20-24</th>
-							<th>Dec 27-31</th>
+							<th v-for="s in individualSchedHeaader" :key="s">{{s}}</th>
 						</tr>
 					</thead>
 					<tbody>
-						<tr>
-							<td>1</td>
-							<td>Burias, Jeanette C.</td>
-							<td>Bonbon</td>
-							<td>THURSDAY</td>
-							<td>200</td>
-							<td>200</td>
-							<td>500</td>
-							<td>522</td>
-							<td>451</td>
-							<td>1873</td>
-						</tr>
-						<tr>
-							<td>1</td>
-							<td>Burias, Jeanette C.</td>
-							<td>Bonbon</td>
-							<td>THURSDAY</td>
-							<td>200</td>
-							<td>200</td>
-							<td>500</td>
-							<td>522</td>
-							<td>451</td>
-							<td>1873</td>
-						</tr>
-						<tr>
-							<td>1</td>
-							<td>Burias, Jeanette C.</td>
-							<td>Bonbon</td>
-							<td>THURSDAY</td>
-							<td>200</td>
-							<td>200</td>
-							<td>500</td>
-							<td>522</td>
-							<td>451</td>
-							<td>1873</td>
-						</tr>
-						<tr>
-							<td>1</td>
-							<td>Burias, Jeanette C.</td>
-							<td>Bonbon</td>
-							<td>THURSDAY</td>
-							<td>200</td>
-							<td>200</td>
-							<td>500</td>
-							<td>522</td>
-							<td>451</td>
-							<td>1873</td>
-						</tr>
-						<tr>
-							<td>1</td>
-							<td>Burias, Jeanette C.</td>
-							<td>Bonbon</td>
-							<td>THURSDAY</td>
-							<td>200</td>
-							<td>200</td>
-							<td>500</td>
-							<td>522</td>
-							<td>451</td>
-							<td>1873</td>
-						</tr>
-						<tr>
-							<td>1</td>
-							<td>Burias, Jeanette C.</td>
-							<td>Bonbon</td>
-							<td>THURSDAY</td>
-							<td>200</td>
-							<td>200</td>
-							<td>500</td>
-							<td>522</td>
-							<td>451</td>
-							<td>1873</td>
-						</tr>
-						<tr>
-							<td>1</td>
-							<td>Burias, Jeanette C.</td>
-							<td>Bonbon</td>
-							<td>THURSDAY</td>
-							<td>200</td>
-							<td>200</td>
-							<td>500</td>
-							<td>522</td>
-							<td>451</td>
-							<td>1873</td>
-						</tr>
-						<tr>
-							<td>1</td>
-							<td>Burias, Jeanette C.</td>
-							<td>Bonbon</td>
-							<td>THURSDAY</td>
-							<td>200</td>
-							<td>200</td>
-							<td>500</td>
-							<td>522</td>
-							<td>451</td>
-							<td>1873</td>
-						</tr>
-						<tr>
-							<td>1</td>
-							<td>Burias, Jeanette C.</td>
-							<td>Bonbon</td>
-							<td>THURSDAY</td>
-							<td>200</td>
-							<td>200</td>
-							<td>500</td>
-							<td>522</td>
-							<td>451</td>
-							<td>1873</td>
-						</tr>
-						<tr>
-							<td>1</td>
-							<td>Burias, Jeanette C.</td>
-							<td>Bonbon</td>
-							<td>THURSDAY</td>
-							<td>200</td>
-							<td>200</td>
-							<td>500</td>
-							<td>522</td>
-							<td>451</td>
-							<td>1873</td>
-						</tr>
-						<tr>
-							<td>1</td>
-							<td>Burias, Jeanette C.</td>
-							<td>Bonbon</td>
-							<td>THURSDAY</td>
-							<td>200</td>
-							<td>200</td>
-							<td>500</td>
-							<td>522</td>
-							<td>451</td>
-							<td>1873</td>
-						</tr>
-						<tr>
-							<td>1</td>
-							<td>Burias, Jeanette C.</td>
-							<td>Bonbon</td>
-							<td>THURSDAY</td>
-							<td>200</td>
-							<td>200</td>
-							<td>500</td>
-							<td>522</td>
-							<td>451</td>
-							<td>1873</td>
-						</tr>
-						<tr class=" text-bold bg-yellow-pale">
-							<td>SUBTOTAL</td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td>200</td>
-							<td>200</td>
-							<td>500</td>
-							<td>522</td>
-							<td>451</td>
-							<td>1873</td>
-						</tr>
-						<tr>
-							<td style="padding:3px!important"></td>
-						</tr>
-						<tr class=" text-bold bg-green-mint">
-							<td>TOTAL SUMMARY</td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td>200</td>
-							<td>200</td>
-							<td>500</td>
-							<td>522</td>
-							<td>451</td>
-							<td>1873</td>
+						<tr v-for="(t,i) in individual" :key="i" :class="t[0]=='TOTAL SUMMARY'?'text-bold bg-green-mint':''">
+							<td v-for="(j,k) in t" :key="k">{{j}}</td>
 						</tr>
 					</tbody>
 				</table>
@@ -1151,7 +119,6 @@ export default {
 			})
 			.then(function (response) {
 				this.transactions = response.data.data;
-				console.log(response.data.data);
 			}.bind(this))
 			.catch(function (error) {
 				console.log(error);
@@ -1178,9 +145,16 @@ export default {
 			var sched = [];
 			this.tranSched.forEach(t=>{
 				sched.push('Active');
-				sched.push(this.dateToHalfMonth(new Date(t.start)) + '.' + new Date(t.start).getDate() + '-' + new Date(t.end).getDate());
+				if(t.start != t.end){
+					sched.push(this.dateToHalfMonth(new Date(t.start)) + '.' + new Date(t.start).getDate() + '-' + new Date(t.end).getDate());
+				}else{
+					sched.push(this.dateToHalfMonth(new Date(t.start)) + '.' + new Date(t.start).getDate());
+				}
 			})
 			return sched;
+		},
+		individualSchedHeaader:function(){
+			return this.schedHeader.filter(s=>s!='Active')
 		},
 		groupTransaction:function(){
 			var days = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday']
@@ -1206,6 +180,7 @@ export default {
 					var row = [];
 					var weekly = this.groupTransaction[i][p].weeklyData;
 					var collection = 0
+					c= 6;
 					row.push(count);
 					row.push(p);
 					row.push(this.groupTransaction[i][p].all.no_of_clients);
@@ -1214,22 +189,51 @@ export default {
 					row.push(i.toUpperCase());
 					for(var w in weekly){
 						totalRow[c] = !totalRow[c]?0:totalRow[c];
-						collection += parseFloat(weekly[w].total_paid);
 						row.push(weekly[w].num_of_payments);
 						totalRow[c] += parseFloat(weekly[w].num_of_payments);
 						c++;
+						totalRow[c] = !totalRow[c]?0:totalRow[c];
 						row.push(weekly[w].total_paid);
 						totalRow[c] += parseFloat(weekly[w].total_paid);
+						collection += parseFloat(weekly[w].total_paid);
+						c++;
 					}
 					coll += collection;
 					row.push(collection);
 					count++;
 					data.push(row);
 				}
-				totalRow[totalRow.length - 1] = coll;
+				totalRow.push(coll);
 				data.push(totalRow);
 			}
 			return data;
+		},
+		individual:function(){
+			var data = this.transactions.individual;
+			var result = [];
+			var weeklyRow = ['TOTAL SUMMARY','','',''];
+			for(var i in data){
+				var index = 4;
+				var row = [];
+				var total = 0;
+				row.push(parseInt(i) + 1);
+				row.push(data[i].borrower);
+				row.push(data[i].center);
+				row.push(data[i].centerSched.toUpperCase());
+				for(var w in data[i].weeklyData){
+					weeklyRow[index] = !weeklyRow[index]?0:weeklyRow[index];
+					weeklyRow[index] += data[i].weeklyData[w].total_paid;
+					row.push(data[i].weeklyData[w].total_paid);
+					total += parseFloat(data[i].weeklyData[w].total_paid);
+					index++;
+				}
+				weeklyRow[index] = !weeklyRow[index]?0:weeklyRow[index];
+				weeklyRow[index] += total;
+				row.push(total);
+				result.push(row);
+			}
+			result.push(weeklyRow);
+			return result;
 		}
 	},
 	watch:{
@@ -1239,7 +243,7 @@ export default {
 	},
 	mounted(){
 		this.filter.branch_id = this.branch;
-		this.filter.date = '2022-10';
+		this.filter.date = '2022-11';
 	}
 }
 </script>
