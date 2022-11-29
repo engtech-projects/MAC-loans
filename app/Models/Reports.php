@@ -23,12 +23,17 @@ class Reports extends Model
 
         $loanAccount = Loanaccount::where([ 'loan_accounts.status' => 'released', 'branch_code' => $branch->branch_code ]);
 
-    	if( isset($filters['date_from']) && isset($filters['date_to']) ){
-    		/*$loanAccount = LoanAccount::whereBetween(DB::raw('date(loan_accounts.date_release)'), [ $filters['date_from'], $filters['date_to'] ]);*/
+        if( isset($filters['date_from']) && isset($filters['date_to']) ){
+            /*$loanAccount = LoanAccount::whereBetween(DB::raw('date(loan_accounts.date_release)'), [ $filters['date_from'], $filters['date_to'] ]);*/
 
             $loanAccount->whereDate('loan_accounts.date_release', '>=', $filters['date_from']);
             $loanAccount->whereDate('loan_accounts.date_release', '<=', $filters['date_to']);
-    	}
+        }
+
+        if( isset($filters['due_from']) && isset($filters['due_to']) ){
+            $loanAccount->whereDate('loan_accounts.due_date', '>=', $filters['due_from']);
+            $loanAccount->whereDate('loan_accounts.due_date', '<=', $filters['due_to']);
+        }
 
     	
     	if( isset($filters['product_id']) && $filters['product_id'] ){
@@ -73,7 +78,8 @@ class Reports extends Model
 			'loan_accounts.branch_code',
             'loan_accounts.release_type',
             'loan_accounts.cycle_no',
-            'loan_accounts.memo'
+            'loan_accounts.memo',
+            'loan_accounts.due_date',
         ]);
     }
 
@@ -463,7 +469,21 @@ class Reports extends Model
     }
 
     public function releaseInsurance($filters = []){
-        return $this->getLoanAccounts($filters);
+        $accounts = $this->getLoanAccounts($filters);
+        $insurance = [];
+        foreach ($accounts as $key => $value) {
+            $insurance[$key]["account_num"] = $value->account_num;
+            $insurance[$key]["name"] = $value->borrower->fullname();
+            $insurance[$key]["birthdate"] = $value->borrower->birthdate;
+            $insurance[$key]["gender"] = $value->borrower->gender;
+            $insurance[$key]["marital_status"] = $value->borrower->status;
+            $insurance[$key]["amount_loan"] = $value->loan_amount;
+            $insurance[$key]["insurance"] = $value->insurance;
+            $insurance[$key]["date_loan"] = $value->date_release;
+            $insurance[$key]["due_date"] = $value->due_date;
+            $insurance[$key]["term"] = $value->terms;
+        }
+        return $insurance;
     }
 
     /* end release reports */
@@ -627,8 +647,20 @@ class Reports extends Model
     }
 
     public function branchMaturityReport($filters = []) {
-
-        return $filters;
+        $matureLoans = [];
+        $loanAccounts = $this->getLoanAccounts($filters);
+        foreach ($loanAccounts as $key => $value) {
+            $matureLoans[$key]["loan_account_id"] = $value->loan_account_id;
+            $matureLoans[$key]["loan_account_num"] = $value->account_num;
+            $matureLoans[$key]["client"] = $value->borrower->fullname();
+            $matureLoans[$key]["date_released"] = $value->date_release;
+            $matureLoans[$key]["due_date"] = $value->due_date;
+            // $matureLoans[$key]["balance"] = $value->remainingBalance();
+            $matureLoans[$key]["principal_balance"] = $value->remainingBalance()["principal"]["balance"];
+            $matureLoans[$key]["interest_balance"] = $value->remainingBalance()["interest"]["balance"];
+            $matureLoans[$key]["center"] = $value->center->center;
+        }
+        return $matureLoans;
 
     }
 

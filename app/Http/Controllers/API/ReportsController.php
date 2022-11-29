@@ -150,12 +150,24 @@ class ReportsController extends BaseController
 			case 'maturity':
 				
 				$filters = [
-					'date_from' => $request->input('date_from'),
-					'date_to' => $request->input('date_to'),
+					'due_from' => $request->input('date_from'),
+					'due_to' => $request->input('date_to'),
 					'account_officer' => $request->input('account_officer'),
 					'center' => $request->input('center'),
 					'branch_id' => $request->input('branch_id')
 				];
+				if($request->input('due_from')){
+					$filters["due_from"] = $request->input('due_from');
+				}
+				if($request->input('due_to')){
+					$filters["due_to"] = $request->input('due_to');
+				}
+				if($filters['center'] == "all"){
+					unset($filters['center']);
+				}
+				if($filters['account_officer'] == "all"){
+					unset($filters['account_officer']);
+				}
 
 				$branchReport = $report->branchMaturityReport($filters);
 
@@ -185,7 +197,7 @@ class ReportsController extends BaseController
 				break;
 		}
 
-		return $branchReport;
+		return $this->sendResponse($branchReport,"Branch Report");
 	}
 
 	public function microReports(Request $request){
