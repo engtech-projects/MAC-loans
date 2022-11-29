@@ -100,7 +100,7 @@ class Reports extends Model
             $payments->whereDate('payment.transaction_date', '<=', $filters['date_to']);
         }
 
-        return $payments->get(['payment.*', 'loan_accounts.*']);
+        return $payments->get();
     }
 
     /* start transaction reports */
