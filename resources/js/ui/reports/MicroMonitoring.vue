@@ -48,7 +48,7 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr v-for="(m, i) in monitoring" :key="i" :class="m[0]==''?'td-nb text-bold bg-yellow-pale':''">
+						<tr v-for="(m, i) in group" :key="i" :class="m[0]==''?'td-nb text-bold bg-yellow-pale':''">
 							<td v-for="(j, k) in m" :key="k">{{j}}</td>
 						</tr>
 					</tbody>
@@ -169,7 +169,7 @@ export default {
 			})
 			return  group;
 		},
-		monitoring:function(){
+		group:function(){
 			var data = [];
 			for(var i in this.groupTransaction){
 				var count = 1;

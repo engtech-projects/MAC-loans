@@ -25,6 +25,10 @@
 									<option v-for="(day, d) in ddays" :key="d" :value="day">{{upperFirst(day)}}</option>
 								</select>
 							</div>
+							<div class="form-group mb-24" style="flex:1">
+								<label for="centerName" class="form-label">Area of Operation</label>
+								<input type="text" v-model="center.area" class="form-control form-input " id="centerName">
+							</div>
 							<div class="d-flex justify-content-between">
 								<a @click="center.status='active'" v-if="center.status!='active'" href="#" class="btn btn-lg btn-yellow-light min-w-150">Activate</a>
 								<a @click="center.status='inactive'" v-if="center.status=='active'" href="#" class="btn btn-lg btn-danger min-w-150">Deactivate</a>
@@ -47,6 +51,10 @@
 								<option v-for="(day, d) in ddays" :key="d" :value="day">{{upperFirst(day)}}</option>
 							</select>
 						</div>
+						<div class="form-group mb-24" style="flex:1">
+							<label for="centerName" class="form-label">Area of Operation</label>
+							<input type="text" v-model="center.area" class="form-control form-input " id="centerName">
+						</div>
 						<div class="d-flex justify-content-end">
 							<a href="#" @click="save()" class="btn btn-lg btn-success min-w-150">Save</a>
 						</div>
@@ -65,8 +73,9 @@
 								<tr v-for="center in centers" :key="center.center_id">
 									<td class="">{{center.center}}</td>
 									<td>{{upperFirst(center.day_sched)}}</td>
+									<td>{{center.area}}</td>
 									<td class="text-right"><a href="#" class="text-green text-sm">{{upperFirst(center.status)}}</a></td>
-									<td class="text-right"><a @click="setEdit(center, 'center')" href="#" class="fa fa-edit"></a></td>
+									<td class="text-right"><a @click.prevent="setEdit(center, 'center')" href="#" class="fa fa-edit"></a></td>
 								</tr>
 							</tbody>
 						</table>
@@ -175,7 +184,8 @@ export default {
 				center:'',
 				day_sched:'',
 				status:'active',
-				deleted:0
+				deleted:0,
+				area:''
 			},
 			officers:[],
 			officer:{
@@ -326,6 +336,7 @@ export default {
 				this.center.day_sched = data.day_sched;
 				this.center.status = data.status;
 				this.center.deleted = data.deleted;
+				this.center.area = data.area;
 			}else{
 				this.officer.ao_id= data.ao_id;
 				this.officer.name= data.name;

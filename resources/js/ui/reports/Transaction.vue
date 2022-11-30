@@ -4,11 +4,11 @@
 				<span class="font-lg text-primary-dark" style="flex:3">Transaction</span>
 				<div class="d-flex flex-row align-items-center mr-24" style="flex:2">
 					<span class="mr-10">From: </span>
-					<input type="date" class="form-control">
+					<input v-model="filter.date_from" type="date" class="form-control">
 				</div>
 				<div class="d-flex flex-row align-items-center mr-64" style="flex:2">
 					<span class="mr-10">To: </span>
-					<input type="date" class="form-control">
+					<input v-model="filter.date_to" type="date" class="form-control">
 				</div>
 				<div class="d-flex flex-row align-items-center" style="flex:4">
 					<span class="mr-10">Type: </span>
@@ -28,14 +28,14 @@
 							<div class="flex-1"></div>
 							<span class="font-30 text-bold text-primary-dark">SUMMARY RELEASE AND PAYMENT BY PRODUCT</span>
 							<div class="flex-1" style="padding-left:24px">
-								<span class="text-primary-dark mr-10">Tuesday 12/21/2021</span>
-								<span class="text-primary-dark">Time: 11:36 AM</span>
+								<span class="text-primary-dark mr-10">{{dateFullDay(new Date())}} {{dateToYMD(new Date()).split('-').join('/')}}</span>
+								<span class="text-primary-dark">Time: {{todayTime(new Date())}} {{(new Date()).getHours() > 12? 'PM':'AM'}}</span>
 							</div>
 						</div>
 						<span class="text-center text-primary-dark text-bold font-md mb-5">Butuan Branch (001)</span>
-						<div class="d-flex flex-row justify-content-center text-primary-dark">
-							<span class="mr-5">From:</span><span class="mr-16">12/14/2021</span>
-							<span class="mr-5">To:</span><span>12/15/2021</span>
+						<div v-if="filter.date_from.length && filter.date_to.length" class="d-flex flex-row justify-content-center text-primary-dark">
+							<span class="mr-5">From:</span><span class="mr-16">{{filter.date_from.replaceAll('-','/')}}</span>
+							<span class="mr-5">To:</span><span>{{filter.date_to.replaceAll('-','/')}}</span>
 						</div>
 					</div>
 					<section class="d-flex flex-column mb-16">
@@ -55,70 +55,22 @@
 								<th>Net Proceeds</th>
 							</thead>
 							<tbody>
-								<tr>
-									<td>0063 - Pension Loan</td>
-									<td>8,500.00</td>
-									<td>2,435.00</td>
-									<td>121.00</td>
-									<td>41.66</td>
-									<td>500.00</td>
-									<td>200.00</td>
-									<td>0.00</td>
-									<td>1,484.00</td>
-									<td>0.00</td>
-									<td>6,347.00</td>
+								<tr v-for="(prod,i) in transactions.product" :key="i">
+									<td>{{prod.reference}}</td>
+									<td>{{formatToCurrency(prod.release.principal)}}</td>
+									<td>{{formatToCurrency(prod.release.interest)}}</td>
+									<td>{{formatToCurrency(prod.release.filing_fee)}}</td>
+									<td>{{formatToCurrency(prod.release.document_stamp)}}</td>
+									<td>{{formatToCurrency(prod.release.insurance)}}</td>
+									<td>{{formatToCurrency(prod.release.notarial_fee)}}</td>
+									<td>{{formatToCurrency(prod.release.affidavit_fee)}}</td>
+									<td>{{formatToCurrency(prod.release.total_deduction)}}</td>
+									<td>{{formatToCurrency(prod.release.prepaid_interest)}}</td>
+									<td>{{formatToCurrency(prod.release.net_proceeds)}}</td>
 								</tr>
-								<tr>
-									<td>0064 - Micro Group</td>
-									<td>8,500.00</td>
-									<td>2,435.00</td>
-									<td>121.00</td>
-									<td>41.66</td>
-									<td>500.00</td>
-									<td>200.00</td>
-									<td>0.00</td>
-									<td>1,484.00</td>
-									<td>0.00</td>
-									<td>6,347.00</td>
-								</tr>
-								<tr>
-									<td>0065 - Salary Loan</td>
-									<td>8,500.00</td>
-									<td>2,435.00</td>
-									<td>121.00</td>
-									<td>41.66</td>
-									<td>500.00</td>
-									<td>200.00</td>
-									<td>0.00</td>
-									<td>1,484.00</td>
-									<td>0.00</td>
-									<td>6,347.00</td>
-								</tr>
-								<tr class="border-cell-gray-7">
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-								</tr>
-								<tr class="tr-pt-7">
+								<tr class="tr-pt-7 text-bold">
 									<td>TOTAL RELEASES</td>
-									<td>122,500.00</td>
-									<td>8,435.00</td>
-									<td>121.00</td>
-									<td>41.66</td>
-									<td>500.00</td>
-									<td>200.00</td>
-									<td>0.00</td>
-									<td>1,484.00</td>
-									<td>0.00</td>
-									<td>20,347.00</td>
+									<td v-for="t,i in totalReleases" :key="i">{{formatToCurrency(t)}}</td>
 								</tr>
 							</tbody>
 						</table>
@@ -129,27 +81,27 @@
 										<span class="flex-1">TOTAL CASH RELEASE</span>
 										<span>:</span>
 									</div>
-									<span class="flex-1">6,347.00</span>
+									<span class="flex-1">{{formatToCurrency(totalCash)}}</span>
 								</div>
 								<div class="d-flex flex-row flex-1 mb-5">
 									<div class="d-flex flex-row justify-content-between flex-2 mr-24">
 										<span class="flex-1">TOTAL CHECK RELEASE</span>
 										<span>:</span>
 									</div>
-									<span class="flex-1">0.00</span>
+									<span class="flex-1">{{formatToCurrency(totalCheck)}}</span>
 								</div>
 								<div class="d-flex flex-row flex-1">
 									<div class="d-flex flex-row justify-content-between flex-2 mr-24">
 										<span class="flex-1">TOTAL MEMO RELEASE</span>
 										<span>:</span>
 									</div>
-									<span class="flex-1">1,484.00</span>
+									<span class="flex-1">{{formatToCurrency(totalMemo)}}</span>
 								</div>
 							</div>
 							<div class="d-flex flex-column flex-1">
 								<div class="info-display">
 									<span class="text-primary-dark">TOTAL RELEASES</span>
-									<span class="text-primary-dark">17,000.00</span>
+									<span class="text-primary-dark">{{formatToCurrency(totalCash + totalCheck + totalMemo)}}</span>
 								</div>
 							</div>
 							<div class="flex-2"></div>
@@ -171,185 +123,8 @@
 								<th>VAT</th>
 							</thead>
 							<tbody>
-								<tr>
-									<td>0063 - Pension Loan</td>
-									<td>CASH PAYMENT</td>
-									<td>8,500.00</td>
-									<td>2,435.00</td>
-									<td>121.00</td>
-									<td>41.66</td>
-									<td>500.00</td>
-									<td>200.00</td>
-									<td>4,150.00</td>
-									<td>487.50</td>
-								</tr>
-								<tr>
-									<td></td>
-									<td>CHECK PAYMENT</td>
-									<td>8,500.00</td>
-									<td>2,435.00</td>
-									<td>121.00</td>
-									<td>41.66</td>
-									<td>500.00</td>
-									<td>200.00</td>
-									<td>4,150.00</td>
-									<td>487.50</td>
-								</tr>
-								<tr class="border-cell-dashed">
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-								</tr>
-								<tr class="text-bold">
-									<td>TOTAL PRODUCT</td>
-									<td></td>
-									<td>17,000.00</td>
-									<td>5,435.00</td>
-									<td>352.00</td>
-									<td>82.66</td>
-									<td>1,000.00</td>
-									<td>400.00</td>
-									<td>8,150.00</td>
-									<td>987.50</td>
-								</tr>
-								<tr class="border-cell-gray-7-dark">
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-								</tr>
-								<tr class="space-row">
-									<td>0063 - Pension Loan</td>
-									<td>CASH PAYMENT</td>
-									<td>8,500.00</td>
-									<td>2,435.00</td>
-									<td>121.00</td>
-									<td>41.66</td>
-									<td>500.00</td>
-									<td>200.00</td>
-									<td>4,150.00</td>
-									<td>487.50</td>
-								</tr>
-								<tr>
-									<td></td>
-									<td>CHECK PAYMENT</td>
-									<td>8,500.00</td>
-									<td>2,435.00</td>
-									<td>121.00</td>
-									<td>41.66</td>
-									<td>500.00</td>
-									<td>200.00</td>
-									<td>4,150.00</td>
-									<td>487.50</td>
-								</tr>
-								<tr class="border-cell-dashed">
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-								</tr>
-								<tr class="text-bold">
-									<td>TOTAL PRODUCT</td>
-									<td></td>
-									<td>17,000.00</td>
-									<td>5,435.00</td>
-									<td>352.00</td>
-									<td>82.66</td>
-									<td>1,000.00</td>
-									<td>400.00</td>
-									<td>8,150.00</td>
-									<td>987.50</td>
-								</tr>
-								<tr class="border-cell-gray-7-dark">
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-								</tr>
-								<tr class="space-row">
-									<td>0063 - Salary Loan</td>
-									<td>CASH PAYMENT</td>
-									<td>8,500.00</td>
-									<td>2,435.00</td>
-									<td>121.00</td>
-									<td>41.66</td>
-									<td>500.00</td>
-									<td>200.00</td>
-									<td>4,150.00</td>
-									<td>487.50</td>
-								</tr>
-								<tr class="border-cell-dashed">
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-								</tr>
-								<tr class="text-bold">
-									<td>TOTAL PRODUCT</td>
-									<td></td>
-									<td>17,000.00</td>
-									<td>5,435.00</td>
-									<td>352.00</td>
-									<td>82.66</td>
-									<td>1,000.00</td>
-									<td>400.00</td>
-									<td>8,150.00</td>
-									<td>987.50</td>
-								</tr>
-								<tr class="border-cell-gray-7-dark">
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-								</tr>
-								<tr class="text-bold space-row-5">
-									<td>TOTAL PAYMENT</td>
-									<td></td>
-									<td>17,000.00</td>
-									<td>5,435.00</td>
-									<td>352.00</td>
-									<td>82.66</td>
-									<td>1,000.00</td>
-									<td>400.00</td>
-									<td>8,150.00</td>
-									<td>987.50</td>
+								<tr :class="rowBorders(p[0])" v-for="p,i in paymentSummary" :key="i">
+									<td v-for="j,k in p" :key="k">{{p[0]=='TOTAL PRODUCT'&&k>1?formatToCurrency(j):j}}</td>
 								</tr>
 							</tbody>
 						</table>
@@ -361,69 +136,69 @@
 										<span class="flex-1">TOTAL CASH RELEASE</span>
 										<span>:</span>
 									</div>
-									<span class="flex-1">6,347.00</span>
+									<span class="flex-1">{{formatToCurrency(paymentSummaryTotal.cash)}}</span>
 								</div>
 								<div class="d-flex flex-row flex-1 mb-5">
 									<div class="d-flex flex-row justify-content-between flex-2 mr-24">
 										<span class="flex-1">TOTAL CHECK RELEASE</span>
 										<span>:</span>
 									</div>
-									<span class="flex-1">0.00</span>
+									<span class="flex-1">{{formatToCurrency(paymentSummaryTotal.check)}}</span>
 								</div>
 								<div class="d-flex flex-row flex-1">
 									<div class="d-flex flex-row justify-content-between flex-2 mr-24">
 										<span class="flex-1">TOTAL MEMO RELEASE</span>
 										<span>:</span>
 									</div>
-									<span class="flex-1">1,484.00</span>
+									<span class="flex-1">{{formatToCurrency(paymentSummaryTotal.memo)}}</span>
 								</div>
 								<div class="d-flex flex-row flex-1">
 									<div class="d-flex flex-row justify-content-between flex-2 mr-24">
 										<span class="flex-1 pl-24">DED BALANCE</span>
 										<span>:</span>
 									</div>
-									<span class="flex-1">14,852.00</span>
+									<span class="flex-1">0.00</span>
 								</div>
 								<div class="d-flex flex-row flex-1">
 									<div class="d-flex flex-row justify-content-between flex-2 mr-24">
 										<span class="flex-1 pl-24">OFFSET PF</span>
 										<span>:</span>
 									</div>
-									<span class="flex-1">14,852.00</span>
+									<span class="flex-1">0.00</span>
 								</div>
 								<div class="d-flex flex-row flex-1">
 									<div class="d-flex flex-row justify-content-between flex-2 mr-24">
 										<span class="flex-1 pl-24">OVER PAYMENT</span>
 										<span>:</span>
 									</div>
-									<span class="flex-1">14,852.00</span>
+									<span class="flex-1">0.00</span>
 								</div>
 								<div class="d-flex flex-row flex-1">
 									<div class="d-flex flex-row justify-content-between flex-2 mr-24">
 										<span class="flex-1 pl-24">DISCOUNT</span>
 										<span>:</span>
 									</div>
-									<span class="flex-1">14,852.00</span>
+									<span class="flex-1">0.00</span>
 								</div>
 								<div class="d-flex flex-row flex-1">
 									<div class="d-flex flex-row justify-content-between flex-2 mr-24">
 										<span class="flex-1 pl-24">CANCELLED</span>
 										<span>:</span>
 									</div>
-									<span class="flex-1">14,852.00</span>
+									<span class="flex-1">0.00</span>
 								</div>
 								<div class="d-flex flex-row flex-1">
 									<div class="d-flex flex-row justify-content-between flex-2 mr-24">
 										<span class="flex-1 pl-24">BRANCH</span>
 										<span>:</span>
 									</div>
-									<span class="flex-1">14,852.00</span>
+									<span class="flex-1">0.00</span>
 								</div>
 							</div>
 							<div class="d-flex flex-column flex-1">
 								<div class="info-display">
 									<span class="text-primary-dark">TOTAL RELEASES</span>
-									<span class="text-primary-dark">172,222.00</span>
+									<span class="text-primary-dark">{{formatToCurrency(paymentSummaryTotal.cash + paymentSummaryTotal.check + paymentSummaryTotal.memo)}}</span>
 								</div>
 							</div>
 							<div class="flex-2"></div>
@@ -442,9 +217,9 @@
 							</div>
 						</div>
 						<span class="text-center text-primary-dark text-bold font-md mb-5">Butuan Branch (001)</span>
-						<div class="d-flex flex-row justify-content-center text-primary-dark">
-							<span class="mr-5">From:</span><span class="mr-16">12/14/2021</span>
-							<span class="mr-5">To:</span><span>12/15/2021</span>
+						<div v-if="filter.date_from.length && filter.date_to.length" class="d-flex flex-row justify-content-center text-primary-dark">
+							<span class="mr-5">From:</span><span class="mr-16">{{filter.date_from.replaceAll('-','/')}}</span>
+							<span class="mr-5">To:</span><span>{{filter.date_to.replaceAll('-','/')}}</span>
 						</div>
 					</div>
 					<section class="d-flex flex-column mb-16">
@@ -466,50 +241,20 @@
 								<th>Type</th>
 							</thead>
 							<tbody>
-							<tr>
-									<td>Gabriel, Julio A.</td>
-									<td>12/15/21</td>
-									<td>720</td>
-									<td>3,500.00</td>
-									<td>70.66</td>
-									<td>26.25</td>
-									<td>236.00</td>
-									<td>100.00</td>
-									<td>0.00</td>
-									<td>0.00</td>
-									<td>0.00</td>
-									<td>3,607.00</td>
-									<td>CSH</td>
-								</tr>
-								<tr>
-									<td>Lagahit, Mario A.</td>
-									<td>12/15/21</td>
-									<td>720</td>
-									<td>3,500.00</td>
-									<td>70.66</td>
-									<td>26.25</td>
-									<td>236.00</td>
-									<td>100.00</td>
-									<td>0.00</td>
-									<td>0.00</td>
-									<td>0.00</td>
-									<td>3,607.00</td>
-									<td>CSH</td>
-								</tr>
-								<tr>
-									<td>Marco, Georgia A.</td>
-									<td>12/15/21</td>
-									<td>720</td>
-									<td>3,500.00</td>
-									<td>70.66</td>
-									<td>26.25</td>
-									<td>236.00</td>
-									<td>100.00</td>
-									<td>0.00</td>
-									<td>0.00</td>
-									<td>0.00</td>
-									<td>3,607.00</td>
-									<td>CSH</td>
+								<tr v-for="t,i in transactions.client.release" :key="i">
+									<td>{{t.borrower}}</td>
+									<td>{{t.date_loan.replaceAll('-','/')}}</td>
+									<td>{{t.term}}</td>
+									<td>{{formatToCurrency(t.amount_loan)}}</td>
+									<td>{{formatToCurrency(t.filing_fee)}}</td>
+									<td>{{formatToCurrency(t.document_stamp)}}</td>
+									<td>{{formatToCurrency(t.insurance)}}</td>
+									<td>{{formatToCurrency(t.notarial_fee)}}</td>
+									<td>{{formatToCurrency(t.affidavit_fee)}}</td>
+									<td>{{formatToCurrency(t.deduction)}}</td>
+									<td>{{formatToCurrency(t.prepaid_interest)}}</td>
+									<td>{{formatToCurrency(t.net_proceeds)}}</td>
+									<td>{{t.type.toUpperCase()}}</td>
 								</tr>
 								<tr class="border-cell-gray-7">
 									<td></td>
@@ -530,15 +275,7 @@
 									<td>TOTAL</td>
 									<td></td>
 									<td></td>
-									<td>9,500.00</td>
-									<td>210.00</td>
-									<td>26.00</td>
-									<td>236.66</td>
-									<td>100.00</td>
-									<td>0.00</td>
-									<td>0.00</td>
-									<td>0.00</td>
-									<td>3,607.00</td>
+									<td v-for="c,i in totalReleasesClient" :key="i">{{formatToCurrency(c)}}</td>
 									<td></td>
 								</tr>
 							</tbody>
@@ -550,27 +287,27 @@
 										<span class="flex-1">TOTAL CASH RELEASE</span>
 										<span>:</span>
 									</div>
-									<span class="flex-1">6,347.00</span>
+									<span class="flex-1">{{formatToCurrency(totalCashClient)}}</span>
 								</div>
 								<div class="d-flex flex-row flex-1 mb-5">
 									<div class="d-flex flex-row justify-content-between flex-2 mr-24">
 										<span class="flex-1">TOTAL CHECK RELEASE</span>
 										<span>:</span>
 									</div>
-									<span class="flex-1">0.00</span>
+									<span class="flex-1">{{formatToCurrency(totalCheckClient)}}</span>
 								</div>
 								<div class="d-flex flex-row flex-1">
 									<div class="d-flex flex-row justify-content-between flex-2 mr-24">
 										<span class="flex-1">TOTAL MEMO RELEASE</span>
 										<span>:</span>
 									</div>
-									<span class="flex-1">1,484.00</span>
+									<span class="flex-1">{{formatToCurrency(totalMemoClient)}}</span>
 								</div>
 							</div>
 							<div class="d-flex flex-column flex-1">
 								<div class="info-display">
 									<span class="text-primary-dark">TOTAL RELEASES</span>
-									<span class="text-primary-dark">17,000.00</span>
+									<span class="text-primary-dark">{{formatToCurrency(totalCashClient + totalCheckClient + totalMemoClient)}}</span>
 								</div>
 							</div>
 							<div class="flex-2"></div>
@@ -594,173 +331,19 @@
 								<th>Type</th>
 							</thead>
 							<tbody>
-								<tr>
-									<td>Gabriel, Julio A.</td>
-									<td>12/15/21</td>
-									<td>720</td>
-									<td>3,500.00</td>
-									<td>70.66</td>
-									<td>26.25</td>
-									<td>236.00</td>
-									<td>100.00</td>
-									<td>0.00</td>
-									<td>0.00</td>
-									<td>0.00</td>
-									<td>CSH</td>
-								</tr>
-								<tr>
-									<td>Lagahit, Mario A.</td>
-									<td>12/15/21</td>
-									<td>720</td>
-									<td>3,500.00</td>
-									<td>70.66</td>
-									<td>26.25</td>
-									<td>236.00</td>
-									<td>100.00</td>
-									<td>0.00</td>
-									<td>0.00</td>
-									<td>0.00</td>
-									<td>CSH</td>
-								</tr>
-								<tr>
-									<td>Marco, Georgia A.</td>
-									<td>12/15/21</td>
-									<td>720</td>
-									<td>3,500.00</td>
-									<td>70.66</td>
-									<td>26.25</td>
-									<td>236.00</td>
-									<td>100.00</td>
-									<td>0.00</td>
-									<td>0.00</td>
-									<td>0.00</td>
-									<td>CSH</td>
-								</tr>
-								<tr>
-									<td>Gabriel, Julio A.</td>
-									<td>12/15/21</td>
-									<td>720</td>
-									<td>3,500.00</td>
-									<td>70.66</td>
-									<td>26.25</td>
-									<td>236.00</td>
-									<td>100.00</td>
-									<td>0.00</td>
-									<td>0.00</td>
-									<td>0.00</td>
-									<td>CSH</td>
-								</tr>
-								<tr>
-									<td>Lagahit, Mario A.</td>
-									<td>12/15/21</td>
-									<td>720</td>
-									<td>3,500.00</td>
-									<td>70.66</td>
-									<td>26.25</td>
-									<td>236.00</td>
-									<td>100.00</td>
-									<td>0.00</td>
-									<td>0.00</td>
-									<td>0.00</td>
-									<td>CSH</td>
-								</tr>
-								<tr>
-									<td>Marco, Georgia A.</td>
-									<td>12/15/21</td>
-									<td>720</td>
-									<td>3,500.00</td>
-									<td>70.66</td>
-									<td>26.25</td>
-									<td>236.00</td>
-									<td>100.00</td>
-									<td>0.00</td>
-									<td>0.00</td>
-									<td>0.00</td>
-									<td>CSH</td>
-								</tr>
-								<tr>
-									<td>Gabriel, Julio A.</td>
-									<td>12/15/21</td>
-									<td>720</td>
-									<td>3,500.00</td>
-									<td>70.66</td>
-									<td>26.25</td>
-									<td>236.00</td>
-									<td>100.00</td>
-									<td>0.00</td>
-									<td>0.00</td>
-									<td>0.00</td>
-									<td>CSH</td>
-								</tr>
-								<tr>
-									<td>Lagahit, Mario A.</td>
-									<td>12/15/21</td>
-									<td>720</td>
-									<td>3,500.00</td>
-									<td>70.66</td>
-									<td>26.25</td>
-									<td>236.00</td>
-									<td>100.00</td>
-									<td>0.00</td>
-									<td>0.00</td>
-									<td>0.00</td>
-									<td>CSH</td>
-								</tr>
-								<tr>
-									<td>Marco, Georgia A.</td>
-									<td>12/15/21</td>
-									<td>720</td>
-									<td>3,500.00</td>
-									<td>70.66</td>
-									<td>26.25</td>
-									<td>236.00</td>
-									<td>100.00</td>
-									<td>0.00</td>
-									<td>0.00</td>
-									<td>0.00</td>
-									<td>CSH</td>
-								</tr>
-								<tr>
-									<td>Gabriel, Julio A.</td>
-									<td>12/15/21</td>
-									<td>720</td>
-									<td>3,500.00</td>
-									<td>70.66</td>
-									<td>26.25</td>
-									<td>236.00</td>
-									<td>100.00</td>
-									<td>0.00</td>
-									<td>0.00</td>
-									<td>0.00</td>
-									<td>CSH</td>
-								</tr>
-								<tr>
-									<td>Lagahit, Mario A.</td>
-									<td>12/15/21</td>
-									<td>720</td>
-									<td>3,500.00</td>
-									<td>70.66</td>
-									<td>26.25</td>
-									<td>236.00</td>
-									<td>100.00</td>
-									<td>0.00</td>
-									<td>0.00</td>
-									<td>0.00</td>
-									<td>CSH</td>
-								</tr>
-								<tr>
-									<td>Marco, Georgia A.</td>
-									<td>12/15/21</td>
-									<td>720</td>
-									<td>3,500.00</td>
-									<td>70.66</td>
-									<td>26.25</td>
-									<td>236.00</td>
-									<td>100.00</td>
-									<td>0.00</td>
-									<td>0.00</td>
-									<td>0.00</td>
-									<td>CSH</td>
+								<tr v-for="t,i in transactions.client.collection" :key="i">
+									<td>{{t.borrower}}</td>
+									<td>{{t.date_paid.replaceAll('-','/')}}</td>
+									<td>{{t.or}}</td>
+									<td>{{formatToCurrency(t.principal)}}</td>
+									<td>{{formatToCurrency(t.interest)}}</td>
+									<td>{{formatToCurrency(t.pdi)}}</td>
+									<td>{{formatToCurrency(t.over)}}</td>
+									<td>{{formatToCurrency(t.discount)}}</td>
+									<td>{{formatToCurrency(t.total_payment)}}</td>
+									<td>{{formatToCurrency(t.net_int)}}</td>
+									<td>{{formatToCurrency(t.vat)}}</td>
+									<td></td>
 								</tr>
 								<tr class="border-cell-gray-7">
 									<td></td>
@@ -781,14 +364,7 @@
 									<td>TOTAL</td>
 									<td></td>
 									<td></td>
-									<td>9,500.00</td>
-									<td>210.00</td>
-									<td>26.00</td>
-									<td>236.66</td>
-									<td>100.00</td>
-									<td>0.00</td>
-									<td>0.00</td>
-									<td>0.00</td>
+									<td v-for="c,i in totalCollectionClient" :key="i">{{formatToCurrency(c)}}</td>
 									<td></td>
 								</tr>
 							</tbody>
@@ -801,7 +377,7 @@
 										<span class="flex-1">TOTAL CASH RELEASE</span>
 										<span>:</span>
 									</div>
-									<span class="flex-1">6,347.00</span>
+									<span class="flex-1">0.00</span>
 								</div>
 								<div class="d-flex flex-row flex-1 mb-5">
 									<div class="d-flex flex-row justify-content-between flex-2 mr-24">
@@ -815,55 +391,55 @@
 										<span class="flex-1">TOTAL MEMO RELEASE</span>
 										<span>:</span>
 									</div>
-									<span class="flex-1">1,484.00</span>
+									<span class="flex-1">0.00</span>
 								</div>
 								<div class="d-flex flex-row flex-1">
 									<div class="d-flex flex-row justify-content-between flex-2 mr-24">
 										<span class="flex-1 pl-24">DED BALANCE</span>
 										<span>:</span>
 									</div>
-									<span class="flex-1">14,852.00</span>
+									<span class="flex-1">0.00</span>
 								</div>
 								<div class="d-flex flex-row flex-1">
 									<div class="d-flex flex-row justify-content-between flex-2 mr-24">
 										<span class="flex-1 pl-24">OFFSET PF</span>
 										<span>:</span>
 									</div>
-									<span class="flex-1">14,852.00</span>
+									<span class="flex-1">0.00</span>
 								</div>
 								<div class="d-flex flex-row flex-1">
 									<div class="d-flex flex-row justify-content-between flex-2 mr-24">
 										<span class="flex-1 pl-24">OVER PAYMENT</span>
 										<span>:</span>
 									</div>
-									<span class="flex-1">14,852.00</span>
+									<span class="flex-1">0.00</span>
 								</div>
 								<div class="d-flex flex-row flex-1">
 									<div class="d-flex flex-row justify-content-between flex-2 mr-24">
 										<span class="flex-1 pl-24">DISCOUNT</span>
 										<span>:</span>
 									</div>
-									<span class="flex-1">14,852.00</span>
+									<span class="flex-1">0.00</span>
 								</div>
 								<div class="d-flex flex-row flex-1">
 									<div class="d-flex flex-row justify-content-between flex-2 mr-24">
 										<span class="flex-1 pl-24">CANCELLED</span>
 										<span>:</span>
 									</div>
-									<span class="flex-1">14,852.00</span>
+									<span class="flex-1">0.00</span>
 								</div>
 								<div class="d-flex flex-row flex-1">
 									<div class="d-flex flex-row justify-content-between flex-2 mr-24">
 										<span class="flex-1 pl-24">BRANCH</span>
 										<span>:</span>
 									</div>
-									<span class="flex-1">14,852.00</span>
+									<span class="flex-1">0.00</span>
 								</div>
 							</div>
 							<div class="d-flex flex-column flex-1">
 								<div class="info-display">
 									<span class="text-primary-dark">TOTAL RELEASES</span>
-									<span class="text-primary-dark">172,222.00</span>
+									<span class="text-primary-dark">0.00</span>
 								</div>
 							</div>
 							<div class="flex-2"></div>
@@ -895,11 +471,16 @@ export default {
 	data(){
 		return {
 			type:'product',
-			transactions:[],
+			transactions:{product:[],client:{release:[],collection:[]}},
 			filter:{
 				date_from:'',
 				date_to:'',
 				branch_id:'',
+			},
+			paymentSummaryTotal:{
+				cash:0,
+				check:0,
+				memo:0
 			}
 		}
 	},
@@ -926,13 +507,180 @@ export default {
 			target.innerHTML = content;
 			window.print();
 		},
-		
+		rowBorders:function(str){
+			if(str == ' '){
+				return 'border-cell-dashed';
+			}else if(str == '  '){
+				return 'border-cell-gray-7-dark'
+			}else if(str == 'TOTAL PRODUCT'){
+				return 'text-bold'
+			}
+		}
+	},
+	computed:{
+		totalReleases:function(){
+			var row = [0,0,0,0,0,0,0,0,0,0];
+			this.transactions.product.forEach(p=>{
+				row[0] += p.release.principal;
+				row[1] += p.release.interest;
+				row[2] += p.release.filing_fee;
+				row[3] += p.release.document_stamp;
+				row[4] += p.release.insurance;
+				row[5] += p.release.notarial_fee;
+				row[6] += p.release.affidavit_fee;
+				row[7] += p.release.total_deduction;
+				row[8] += p.release.prepaid_interest;
+				row[9] += p.release.net_proceeds;
+			})
+			return row;
+		},
+		totalReleasesClient:function(){
+			var row = [0,0,0,0,0,0,0,0,0];
+			this.transactions.client.release.forEach(p=>{
+				row[0] += p.amount_loan;
+				row[1] += p.filing_fee;
+				row[2] += p.document_stamp;
+				row[3] += p.insurance;
+				row[4] += p.notarial_fee;
+				row[5] += p.affidavit_fee;
+				row[6] += p.deduction;
+				row[7] += p.prepaid_interest;
+				row[8] += p.net_proceeds;
+			})
+			return row;
+		},
+		totalCollectionClient:function(){
+			var row = [0,0,0,0,0,0,0,0];
+			this.transactions.client.collection.forEach(p=>{
+				row[0] += p.principal;
+				row[1] += p.interest;
+				row[2] += p.pdi;
+				row[3] += p.over;
+				row[4] += p.discount;
+				row[5] += p.total_payment;
+				row[6] += p.net_int;
+				row[7] += p.vat;
+			})
+			return row;
+		},
+		totalCash:function(){
+			var amount = 0;
+			this.transactions.product.forEach(p=>{
+				amount += p.release.cash;
+			})
+			return amount;
+		},
+		totalCheck:function(){
+			var amount = 0;
+			this.transactions.product.forEach(p=>{
+				amount += p.release.check;
+			})
+			return amount;
+		},
+		totalMemo:function(){
+			var amount = 0;
+			this.transactions.product.forEach(p=>{
+				amount += p.release.memo;
+			})
+			return amount;
+		},
+		totalCashClient:function(){
+			var amount = 0;
+			this.transactions.client.release.forEach(p=>{
+				if(p.type == 'Cash'){
+					amount += p.net_proceeds;
+				}
+			})
+			return amount;
+		},
+		totalCheckClient:function(){
+			var amount = 0;
+			this.transactions.client.release.forEach(p=>{
+				if(p.type == 'Check'){
+					amount += p.net_proceeds;
+				}
+			})
+			return amount;
+		},
+		totalMemoClient:function(){
+			var amount = 0;
+			this.transactions.client.release.forEach(p=>{
+				if(p.type == 'Memo'){
+					amount += p.net_proceeds;
+				}
+			})
+			return amount;
+		},
+		totalCashClientCollection:function(){
+			var amount = 0;
+			this.transactions.client.collection.forEach(p=>{
+				if(p.type == 'Cash'){
+					amount += p.net_proceeds;
+				}
+			})
+			return amount;
+		},
+
+		paymentSummary:function(){
+			var result = [];
+			this.transactions.product.forEach((t,p)=>{
+				var totalRow = ['TOTAL PRODUCT', '',0,0,0,0,0,0,0,0];
+				var index = 2;
+				for(var i in t.payment){
+					i=='Cash Payment'? this.paymentSummaryTotal.cash += t.payment[i].total_payment:false;
+					i=='Check Payment'? this.paymentSummaryTotal.check += t.payment[i].total_payment:false;
+					i=='Memo Payment'? this.paymentSummaryTotal.memo += t.payment[i].total_payment:false;
+					var row = [];
+					row.push(!index==2?'':t.reference);
+					row.push(i.toUpperCase());
+					row.push(this.formatToCurrency(t.payment[i].principal));
+					totalRow[index] += t.payment[i].principal;
+					index++;
+					row.push(this.formatToCurrency(t.payment[i].interest));
+					totalRow[index] += t.payment[i].interest;
+					index++;
+					row.push(this.formatToCurrency(t.payment[i].pdi));
+					totalRow[index] += t.payment[i].pdi;
+					index++;
+					row.push(this.formatToCurrency(t.payment[i].over));
+					totalRow[index] += t.payment[i].over;
+					index++;
+					row.push(this.formatToCurrency(t.payment[i].discount));
+					totalRow[index] += t.payment[i].discount;
+					index++;
+					row.push(this.formatToCurrency(t.payment[i].total_payment));
+					totalRow[index] += t.payment[i].total_payment;
+					index++;
+					row.push(this.formatToCurrency(t.payment[i].net_int));
+					totalRow[index] += t.payment[i].net_int;
+					index++;
+					row.push(this.formatToCurrency(t.payment[i].vat));
+					result.push(row);
+				}
+				if(index != 2){
+					result.push([' ','','','','','','','','',''])
+					result.push(totalRow)
+					result.push(['  ','','','','','','','','',''])
+				}
+			})
+			return result;
+		}
+	},
+	watch:{
+		filter:{
+			handler(val){
+				if(val.date_from.length && val.date_to.length){
+					this.fetchTransactions();
+				}
+			},
+			deep:true
+		}
 	},
 	mounted(){
 		this.filter.branch_id = this.branch;
-		this.filter.date_from = '2022-08-01';
-		this.filter.date_to = '2022-28-11';
-		this.fetchTransactions();
+		// this.filter.date_from = '2022-08-01';
+		// this.filter.date_to = '2022-28-11';
+		// this.fetchTransactions();
 	}
 }
 </script>
