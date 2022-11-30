@@ -26,20 +26,19 @@
 				<section class="" id="clientSection">
 						<div class="d-flex flex-column mb-24">
 							<div class="d-flex flex-row align-items-center">
-								<div class="flex-1 d-flex flex-column">
+								<div v-if="filter.account_officer" class="flex-1 d-flex flex-column">
 									<span>Account Officer</span>
-									<span class="text-bold">001 - Jose Magbanua</span>
+									<span class="text-bold">{{branch.branch_code}} - {{accountOfficer.name}}</span>
 								</div>
 								<span class="font-30 text-bold text-primary-dark">COLLECTION SHEET REPORT</span>
 								<div class="flex-1 d-flex justify-content-end" style="padding-left:24px">
-									<span class="text-primary-dark mr-10">Tuesday 12/21/2021</span>
-									<span class="text-primary-dark">Time: 11:36 AM</span>
+									<span class="text-primary-dark mr-10">{{dateFullDay(new Date())}} {{dateToYMD(new Date()).split('-').join('/')}}</span>
+									<span class="text-primary-dark">Time: {{todayTime(new Date())}} {{(new Date()).getHours() > 12? 'PM':'AM'}}</span>
 								</div>
 							</div>
-							<span class="text-center text-primary-dark text-bold font-md mb-5">Butuan Branch (001)</span>
+							<span class="text-center text-primary-dark text-bold font-md mb-5">{{branch.branch_name + ' (' + branch.branch_code + ')'}}</span>
 							<div class="d-flex flex-row justify-content-center text-primary-dark">
-								<span class="mr-5">From:</span><span class="mr-16">12/14/2021</span>
-								<span class="mr-5">To:</span><span>12/15/2021</span>
+								<span class="mr-5">As of </span><span class="mr-16">{{dateToYMD(new Date()).replaceAll('-','/')}}</span>
 							</div>
 						</div>
 						<section class="d-flex flex-column mb-16">
@@ -204,9 +203,10 @@
 
 <script>
 export default {
-	props:['token','branch'],
+	props:['token','pbranch'],
 	data(){
 		return {
+			branch:{branch_id:null,branch_code:null,branch_name:null},
 			filter:{
 				branch_id:'',
 				account_officer:null,
@@ -282,6 +282,10 @@ export default {
 				row[4] += c.weekly_amortization;
 			})
 			return row;
+		},
+		accountOfficer:function(){
+			var aos = this.aos.filter(ao=>ao.ao_id==this.filter.account_officer);
+			return aos.length?aos[0]:[];
 		}
 	},
 	watch:{
@@ -295,7 +299,8 @@ export default {
 		}
 	},
 	mounted(){
-		this.filter.branch_id = this.branch;
+		this.branch = JSON.parse(this.pbranch)
+		this.filter.branch_id = this.branch.branch_id;
 		this.fetchAo();
 		this.fetchCenters();
 	}
