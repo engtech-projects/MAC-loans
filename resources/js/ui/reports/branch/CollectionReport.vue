@@ -1,45 +1,22 @@
 <template>
 	<div class="d-flex flex-column" style="flex:8;">
 		<div class="d-flex flex-row font-md align-items-center mb-16">
-			<span class="font-lg text-primary-dark" style="flex:3">Transaction</span>
+			<span class="font-lg text-primary-dark" style="flex:4">Transaction</span>
 			<div class="d-flex flex-row align-items-center mr-24" style="flex:2">
-				<span class="mr-10">From: </span>
-				<input type="date" class="form-control">
+				<!-- <span class="mr-10">Date: </span>
+				<input type="date" class="form-control"> -->
 			</div>
-			<div class="d-flex flex-row align-items-center mr-64" style="flex:2">
-				<span class="mr-10">To: </span>
-				<input type="date" class="form-control">
-			</div>
-			<div class="d-flex flex-row align-items-center mr-24" style="flex:3">
-				<span class="mr-10">Type: </span>
-				<select name="" id="selectProductClient" class="form-control">
-					<option value="all_records">All Records</option>
-					<option value="new_accounts">New Accounts</option>
-					<option value="">By Center</option>
-					<option value="">By Product</option>
-					<option value="">By Account Officer</option>
-				</select>
-			</div>
+			
 			<div class="d-flex flex-row align-items-center mr-24" style="flex:3">
 				<span class="mr-10">A.O: </span>
-				<select name="" id="selectProductClient" class="form-control">
-					<option value="">Allotment Loan</option>
-					<option value="">Micro Group</option>
-					<option value="">Micro Individual</option>
-					<option value="">Pension Emergency</option>
-					<option value="">Pension Loan</option>
-					<option value="">SME Loan</option>
+				<select v-model="filter.account_officer" name="" id="selectProductClient" class="form-control">
+					<option v-for="ao in aos" :key="ao.ao_id" :value="ao.ao_id">{{ao.name}}</option>
 				</select>
 			</div>
 			<div class="d-flex flex-row align-items-center" style="flex:3">
 				<span class="mr-10">Center: </span>
-				<select name="" id="selectProductClient" class="form-control">
-					<option value="">Allotment Loan</option>
-					<option value="">Micro Group</option>
-					<option value="">Micro Individual</option>
-					<option value="">Pension Emergency</option>
-					<option value="">Pension Loan</option>
-					<option value="">SME Loan</option>
+				<select v-model="filter.center" name="" id="selectProductClient" class="form-control">
+					<option v-for="center in centers" :key="center.center_id" :value="center.center_id">{{center.center}}</option>
 				</select>
 			</div>
 		</div>
@@ -84,174 +61,21 @@
 										<th>Sig</th>
 									</thead>
 									<tbody>
-										<tr>
-											<td>Gabriel, Julio A.</td>
-											<td>12/15/2022</td>
-											<td>12/15/2022</td>
-											<td>12,000.00</td>
-											<td>6,530.00</td>
-											<td>6,530.00</td>
-											<td>10,978.00</td>
-											<td>620.00</td>
-											<td>09265548721</td>
-											<td>Libertad, Butuan City</td>
+										<tr v-for="c,i in collections" :key="i">
+											<td>{{c.client}}</td>
+											<td>{{c.date_loan.replaceAll('-','/')}}</td>
+											<td>{{c.maturity_date.replaceAll('-','/')}}</td>
+											<td>{{formatToCurrency(c.amount_loan)}}</td>
+											<td>{{formatToCurrency(c.outstanding_balance)}}</td>
+											<td>{{formatToCurrency(c.principal_balance)}}</td>
+											<td>{{formatToCurrency(c.delinquent)}}</td>
+											<td>{{formatToCurrency(c.weekly_amortization)}}</td>
+											<td>{{c.contact}}</td>
+											<td>{{c.address}}</td>
 											<td style="border:1px solid #333"></td>
 											<td style="border:1px solid #333"></td>
 										</tr>
-										<tr>
-											<td>Gabriel, Julio A.</td>
-											<td>12/15/2022</td>
-											<td>12/15/2022</td>
-											<td>12,000.00</td>
-											<td>6,530.00</td>
-											<td>6,530.00</td>
-											<td>10,978.00</td>
-											<td>620.00</td>
-											<td>09265548721</td>
-											<td>Libertad, Butuan City</td>
-											<td style="border:1px solid #333"></td>
-											<td style="border:1px solid #333"></td>
-										</tr>
-										<tr>
-											<td>Gabriel, Julio A.</td>
-											<td>12/15/2022</td>
-											<td>12/15/2022</td>
-											<td>12,000.00</td>
-											<td>6,530.00</td>
-											<td>6,530.00</td>
-											<td>10,978.00</td>
-											<td>620.00</td>
-											<td>09265548721</td>
-											<td>Libertad, Butuan City</td>
-											<td style="border:1px solid #333"></td>
-											<td style="border:1px solid #333"></td>
-										</tr>
-										<tr>
-											<td>Gabriel, Julio A.</td>
-											<td>12/15/2022</td>
-											<td>12/15/2022</td>
-											<td>12,000.00</td>
-											<td>6,530.00</td>
-											<td>6,530.00</td>
-											<td>10,978.00</td>
-											<td>620.00</td>
-											<td>09265548721</td>
-											<td>Libertad, Butuan City</td>
-											<td style="border:1px solid #333"></td>
-											<td style="border:1px solid #333"></td>
-										</tr>
-										<tr>
-											<td>Gabriel, Julio A.</td>
-											<td>12/15/2022</td>
-											<td>12/15/2022</td>
-											<td>12,000.00</td>
-											<td>6,530.00</td>
-											<td>6,530.00</td>
-											<td>10,978.00</td>
-											<td>620.00</td>
-											<td>09265548721</td>
-											<td>Libertad, Butuan City</td>
-											<td style="border:1px solid #333"></td>
-											<td style="border:1px solid #333"></td>
-										</tr>
-										<tr>
-											<td>Gabriel, Julio A.</td>
-											<td>12/15/2022</td>
-											<td>12/15/2022</td>
-											<td>12,000.00</td>
-											<td>6,530.00</td>
-											<td>6,530.00</td>
-											<td>10,978.00</td>
-											<td>620.00</td>
-											<td>09265548721</td>
-											<td>Libertad, Butuan City</td>
-											<td style="border:1px solid #333"></td>
-											<td style="border:1px solid #333"></td>
-										</tr>
-										<tr>
-											<td>Gabriel, Julio A.</td>
-											<td>12/15/2022</td>
-											<td>12/15/2022</td>
-											<td>12,000.00</td>
-											<td>6,530.00</td>
-											<td>6,530.00</td>
-											<td>10,978.00</td>
-											<td>620.00</td>
-											<td>09265548721</td>
-											<td>Libertad, Butuan City</td>
-											<td style="border:1px solid #333"></td>
-											<td style="border:1px solid #333"></td>
-										</tr>
-										<tr>
-											<td>Gabriel, Julio A.</td>
-											<td>12/15/2022</td>
-											<td>12/15/2022</td>
-											<td>12,000.00</td>
-											<td>6,530.00</td>
-											<td>6,530.00</td>
-											<td>10,978.00</td>
-											<td>620.00</td>
-											<td>09265548721</td>
-											<td>Libertad, Butuan City</td>
-											<td style="border:1px solid #333"></td>
-											<td style="border:1px solid #333"></td>
-										</tr>
-										<tr>
-											<td>Gabriel, Julio A.</td>
-											<td>12/15/2022</td>
-											<td>12/15/2022</td>
-											<td>12,000.00</td>
-											<td>6,530.00</td>
-											<td>6,530.00</td>
-											<td>10,978.00</td>
-											<td>620.00</td>
-											<td>09265548721</td>
-											<td>Libertad, Butuan City</td>
-											<td style="border:1px solid #333"></td>
-											<td style="border:1px solid #333"></td>
-										</tr>
-										<tr>
-											<td>Gabriel, Julio A.</td>
-											<td>12/15/2022</td>
-											<td>12/15/2022</td>
-											<td>12,000.00</td>
-											<td>6,530.00</td>
-											<td>6,530.00</td>
-											<td>10,978.00</td>
-											<td>620.00</td>
-											<td>09265548721</td>
-											<td>Libertad, Butuan City</td>
-											<td style="border:1px solid #333"></td>
-											<td style="border:1px solid #333"></td>
-										</tr>
-										<tr>
-											<td>Gabriel, Julio A.</td>
-											<td>12/15/2022</td>
-											<td>12/15/2022</td>
-											<td>12,000.00</td>
-											<td>6,530.00</td>
-											<td>6,530.00</td>
-											<td>10,978.00</td>
-											<td>620.00</td>
-											<td>09265548721</td>
-											<td>Libertad, Butuan City</td>
-											<td style="border:1px solid #333"></td>
-											<td style="border:1px solid #333"></td>
-										</tr>
-										<tr>
-											<td>Gabriel, Julio A.</td>
-											<td>12/15/2022</td>
-											<td>12/15/2022</td>
-											<td>12,000.00</td>
-											<td>6,530.00</td>
-											<td>6,530.00</td>
-											<td>10,978.00</td>
-											<td>620.00</td>
-											<td>09265548721</td>
-											<td>Libertad, Butuan City</td>
-											<td style="border:1px solid #333"></td>
-											<td style="border:1px solid #333"></td>
-										</tr>
+										<tr v-if="!collections.length"><td><i>No data available.</i></td></tr>
 										<tr class="border-cell-gray-7">
 											<td></td>
 											<td></td>
@@ -283,12 +107,8 @@
 										<tr class="tr-py-7 text-bold bg-green-mint">
 											<td>TOTAL</td>
 											<td></td>
-											<td>15</td>
-											<td>9,500.00</td>
-											<td>210.00</td>
-											<td>26.00</td>
-											<td>236.66</td>
-											<td>100.00</td>
+											<td>{{collections.length}}</td>
+											<td v-for="t,i in total" :key="i">{{formatToCurrency(t)}}</td>
 											<td></td>
 											<td></td>
 											<td></td>
@@ -384,6 +204,20 @@
 
 <script>
 export default {
+	props:['token','branch'],
+	data(){
+		return {
+			filter:{
+				branch_id:'',
+				account_officer:null,
+				center:null,
+				type:'collection'
+			},
+			collections:[],
+			centers:[],
+			aos:[]
+		}
+	},
 	methods:{
 		print:function(){
 			var content = document.getElementById('printContent').innerHTML;
@@ -391,6 +225,79 @@ export default {
 			target.innerHTML = content;
 			window.print();
 		},
+		async fetchCollections(){
+			await axios.post(this.baseURL() + 'api/report/branch', this.filter, {
+				headers: {
+					'Authorization': 'Bearer ' + this.token,
+					'Content-Type': 'application/json',
+					'Accept': 'application/json'
+				}
+			})
+			.then(function (response) {
+				this.collections = response.data.data.data
+			}.bind(this))
+			.catch(function (error) {
+				console.log(error);
+			}.bind(this));
+		},
+		async fetchAo(){
+			await axios.get(this.baseURL() + 'api/accountofficer/', {
+				headers: {
+					'Authorization': 'Bearer ' + this.token,
+					'Content-Type': 'application/json',
+					'Accept': 'application/json'
+				}
+			})
+			.then(function (response) {
+				this.aos = response.data.data;
+			}.bind(this))
+			.catch(function (error) {
+				console.log(error);
+			}.bind(this));
+		},
+		async fetchCenters(){
+			await axios.get(this.baseURL() + 'api/center', {
+				headers: {
+					'Authorization': 'Bearer ' + this.token,
+					'Content-Type': 'application/json',
+					'Accept': 'application/json'
+				}
+			})
+			.then(function (response) {
+				this.centers = response.data.data;
+			}.bind(this))
+			.catch(function (error) {
+				console.log(error);
+			}.bind(this));
+		},
+	},
+	computed:{
+		total:function(){
+			var row = [0,0,0,0,0];
+			this.collections.forEach(c=>{
+				row[0] += c.amount_loan;
+				row[1] += c.outstanding_balance;
+				row[2] += c.principal_balance;
+				row[3] += c.delinquent;
+				row[4] += c.weekly_amortization;
+			})
+			return row;
+		}
+	},
+	watch:{
+		filter:{
+			handler(val){
+				if(val.account_officer&&val.center){
+					this.fetchCollections();
+				}
+			},
+			deep:true
+		}
+	},
+	mounted(){
+		this.filter.branch_id = this.branch;
+		this.fetchAo();
+		this.fetchCenters();
 	}
 }
 </script>
