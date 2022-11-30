@@ -4,31 +4,26 @@
 			<span class="font-lg text-primary-dark" style="flex:3">Transaction</span>
 			<div class="d-flex flex-row align-items-center mr-24" style="flex:2">
 				<span class="mr-10">From: </span>
-				<input type="date" class="form-control">
+				<input v-model="filter.date_from" type="date" class="form-control">
 			</div>
 			<div class="d-flex flex-row align-items-center mr-64" style="flex:2">
 				<span class="mr-10">To: </span>
-				<input type="date" class="form-control">
+				<input v-model="filter.date_to" type="date" class="form-control">
 			</div>
 			<div class="d-flex flex-row align-items-center mr-24" style="flex:2">
 				<span class="mr-10">Type: </span>
-				<select name="" id="selectProductClient" class="form-control">
-					<option value="all_records">All Records</option>
-					<option value="new_accounts">New Accounts</option>
-					<option value="">By Center</option>
-					<option value="">By Product</option>
-					<option value="">By Account Officer</option>
+				<select v-model="filter.type" name="" id="selectProductClient" class="form-control">
+					<option value="">All Records</option>
+					<option value="new">New Accounts</option>
+					<option value="center">By Center</option>
+					<option value="product">By Product</option>
+					<option value="account_officer">By Account Officer</option>
 				</select>
 			</div>
 			<div class="d-flex flex-row align-items-center" style="flex:2">
 				<span class="mr-10">Spec: </span>
-				<select name="" id="selectProductClient" class="form-control">
-					<option value="">Allotment Loan</option>
-					<option value="">Micro Group</option>
-					<option value="">Micro Individual</option>
-					<option value="">Pension Emergency</option>
-					<option value="">Pension Loan</option>
-					<option value="">SME Loan</option>
+				<select v-model="filter.spec" name="" id="selectProductClient" class="form-control">
+					<option v-for="p in products" :key="p.product_id" :value="p.product_id">{{p.product_name}}</option>
 				</select>
 			</div>
 		</div>
@@ -41,14 +36,14 @@
 						<div class="flex-1"></div>
 						<span class="font-30 text-bold text-primary-dark">SUMMARY OF LOAN RELEASE</span>
 						<div class="flex-1" style="padding-left:24px">
-							<span class="text-primary-dark mr-10">Tuesday 12/21/2021</span>
-							<span class="text-primary-dark">Time: 11:36 AM</span>
+							<span class="text-primary-dark mr-10">{{dateFullDay(new Date())}} {{dateToYMD(new Date()).split('-').join('/')}}</span>
+							<span class="text-primary-dark">Time: {{todayTime(new Date())}} {{(new Date()).getHours() > 12? 'PM':'AM'}}</span>
 						</div>
 					</div>
-					<span class="text-center text-primary-dark text-bold font-md mb-5">Butuan Branch (001)</span>
+					<span class="text-center text-primary-dark text-bold font-md mb-5">{{branch.branch_name + ' Branch (' + branch.branch_code + ')'}}</span>
 					<div class="d-flex flex-row justify-content-center text-primary-dark">
-						<span class="mr-5">From:</span><span class="mr-16">12/14/2021</span>
-						<span class="mr-5">To:</span><span>12/15/2021</span>
+						<span class="mr-5">From:</span><span class="mr-16">{{filter.date_from?filter.date_from:'---'}}</span>
+						<span class="mr-5">To:</span><span>{{filter.date_to?filter.date_to:'---'}}</span>
 					</div>
 				</div>
 				<section class="d-flex flex-column mb-16">
@@ -71,198 +66,23 @@
 							<th>Type</th>
 						</thead>
 						<tbody>
-							<tr>
-								<td>001-002-0012021</td>
-								<td>Gabriel, Julio A.</td>
-								<td>12/15/21</td>
-								<td>720</td>
-								<td>3,500.00</td>
-								<td>70.66</td>
-								<td>26.25</td>
-								<td>236.00</td>
-								<td>100.00</td>
-								<td>0.00</td>
-								<td>0.00</td>
-								<td>0.00</td>
-								<td>3,607.00</td>
-								<td>CSH</td>
+							<tr v-for="r,i in release" :key="i">
+								<td>{{r.account_num}}</td>
+								<td>{{r.borrower}}</td>
+								<td>{{r.date_loan}}</td>
+								<td>{{r.term}}</td>
+								<td>{{formatToCurrency(r.amount_loan)}}</td>
+								<td>{{formatToCurrency(r.filing_fee)}}</td>
+								<td>{{formatToCurrency(r.document_stamp)}}</td>
+								<td>{{formatToCurrency(r.insurance)}}</td>
+								<td>{{formatToCurrency(r.notarial_fee)}}</td>
+								<td>{{formatToCurrency(r.affidavit_fee)}}</td>
+								<td>{{formatToCurrency(r.deduction)}}</td>
+								<td>{{formatToCurrency(r.prepaid_interest)}}</td>
+								<td>{{formatToCurrency(r.net_proceeds)}}</td>
+								<td>{{r.type.toUpperCase()}}</td>
 							</tr>
-							<tr>
-								<td>001-002-0012022</td>
-								<td>Lagahit, Mario A.</td>
-								<td>12/15/21</td>
-								<td>720</td>
-								<td>3,500.00</td>
-								<td>70.66</td>
-								<td>26.25</td>
-								<td>236.00</td>
-								<td>100.00</td>
-								<td>0.00</td>
-								<td>0.00</td>
-								<td>0.00</td>
-								<td>3,607.00</td>
-								<td>CSH</td>
-							</tr>
-							<tr>
-								<td>001-002-0012023</td>
-								<td>Marco, Georgia A.</td>
-								<td>12/15/21</td>
-								<td>720</td>
-								<td>3,500.00</td>
-								<td>70.66</td>
-								<td>26.25</td>
-								<td>236.00</td>
-								<td>100.00</td>
-								<td>0.00</td>
-								<td>0.00</td>
-								<td>0.00</td>
-								<td>3,607.00</td>
-								<td>CSH</td>
-							</tr>
-							<tr>
-								<td>001-002-0012021</td>
-								<td>Gabriel, Julio A.</td>
-								<td>12/15/21</td>
-								<td>720</td>
-								<td>3,500.00</td>
-								<td>70.66</td>
-								<td>26.25</td>
-								<td>236.00</td>
-								<td>100.00</td>
-								<td>0.00</td>
-								<td>0.00</td>
-								<td>0.00</td>
-								<td>3,607.00</td>
-								<td>CSH</td>
-							</tr>
-							<tr>
-								<td>001-002-0012022</td>
-								<td>Lagahit, Mario A.</td>
-								<td>12/15/21</td>
-								<td>720</td>
-								<td>3,500.00</td>
-								<td>70.66</td>
-								<td>26.25</td>
-								<td>236.00</td>
-								<td>100.00</td>
-								<td>0.00</td>
-								<td>0.00</td>
-								<td>0.00</td>
-								<td>3,607.00</td>
-								<td>CSH</td>
-							</tr>
-							<tr>
-								<td>001-002-0012023</td>
-								<td>Marco, Georgia A.</td>
-								<td>12/15/21</td>
-								<td>720</td>
-								<td>3,500.00</td>
-								<td>70.66</td>
-								<td>26.25</td>
-								<td>236.00</td>
-								<td>100.00</td>
-								<td>0.00</td>
-								<td>0.00</td>
-								<td>0.00</td>
-								<td>3,607.00</td>
-								<td>CSH</td>
-							</tr>
-							<tr>
-								<td>001-002-0012021</td>
-								<td>Gabriel, Julio A.</td>
-								<td>12/15/21</td>
-								<td>720</td>
-								<td>3,500.00</td>
-								<td>70.66</td>
-								<td>26.25</td>
-								<td>236.00</td>
-								<td>100.00</td>
-								<td>0.00</td>
-								<td>0.00</td>
-								<td>0.00</td>
-								<td>3,607.00</td>
-								<td>CSH</td>
-							</tr>
-							<tr>
-								<td>001-002-0012022</td>
-								<td>Lagahit, Mario A.</td>
-								<td>12/15/21</td>
-								<td>720</td>
-								<td>3,500.00</td>
-								<td>70.66</td>
-								<td>26.25</td>
-								<td>236.00</td>
-								<td>100.00</td>
-								<td>0.00</td>
-								<td>0.00</td>
-								<td>0.00</td>
-								<td>3,607.00</td>
-								<td>CSH</td>
-							</tr>
-							<tr>
-								<td>001-002-0012023</td>
-								<td>Marco, Georgia A.</td>
-								<td>12/15/21</td>
-								<td>720</td>
-								<td>3,500.00</td>
-								<td>70.66</td>
-								<td>26.25</td>
-								<td>236.00</td>
-								<td>100.00</td>
-								<td>0.00</td>
-								<td>0.00</td>
-								<td>0.00</td>
-								<td>3,607.00</td>
-								<td>CSH</td>
-							</tr>
-							<tr>
-								<td>001-002-0012021</td>
-								<td>Gabriel, Julio A.</td>
-								<td>12/15/21</td>
-								<td>720</td>
-								<td>3,500.00</td>
-								<td>70.66</td>
-								<td>26.25</td>
-								<td>236.00</td>
-								<td>100.00</td>
-								<td>0.00</td>
-								<td>0.00</td>
-								<td>0.00</td>
-								<td>3,607.00</td>
-								<td>CSH</td>
-							</tr>
-							<tr>
-								<td>001-002-0012022</td>
-								<td>Lagahit, Mario A.</td>
-								<td>12/15/21</td>
-								<td>720</td>
-								<td>3,500.00</td>
-								<td>70.66</td>
-								<td>26.25</td>
-								<td>236.00</td>
-								<td>100.00</td>
-								<td>0.00</td>
-								<td>0.00</td>
-								<td>0.00</td>
-								<td>3,607.00</td>
-								<td>CSH</td>
-							</tr>
-							<tr>
-								<td>001-002-0012023</td>
-								<td>Marco, Georgia A.</td>
-								<td>12/15/21</td>
-								<td>720</td>
-								<td>3,500.00</td>
-								<td>70.66</td>
-								<td>26.25</td>
-								<td>236.00</td>
-								<td>100.00</td>
-								<td>0.00</td>
-								<td>0.00</td>
-								<td>0.00</td>
-								<td>3,607.00</td>
-								<td>CSH</td>
-							</tr>
+							
 							<tr class="border-cell-gray-7">
 								<td></td>
 								<td></td>
@@ -284,15 +104,7 @@
 								<td></td>
 								<td></td>
 								<td></td>
-								<td>9,500.00</td>
-								<td>210.00</td>
-								<td>26.00</td>
-								<td>236.66</td>
-								<td>100.00</td>
-								<td>0.00</td>
-								<td>0.00</td>
-								<td>0.00</td>
-								<td>3,607.00</td>
+								<td v-for="t,i in total" :key="i">{{formatToCurrency(t)}}</td>
 								<td></td>
 							</tr>
 						</tbody>
@@ -304,27 +116,27 @@
 									<span class="flex-1">TOTAL CASH RELEASE</span>
 									<span>:</span>
 								</div>
-								<span class="flex-1">6,347.00</span>
+								<span class="flex-1">{{formatToCurrency(totalCash)}}</span>
 							</div>
 							<div class="d-flex flex-row flex-1 mb-5">
 								<div class="d-flex flex-row justify-content-between flex-2 mr-24">
 									<span class="flex-1">TOTAL CHECK RELEASE</span>
 									<span>:</span>
 								</div>
-								<span class="flex-1">0.00</span>
+								<span class="flex-1">{{formatToCurrency(totalCheck)}}</span>
 							</div>
 							<div class="d-flex flex-row flex-1">
 								<div class="d-flex flex-row justify-content-between flex-2 mr-24">
 									<span class="flex-1">TOTAL MEMO RELEASE</span>
 									<span>:</span>
 								</div>
-								<span class="flex-1">1,484.00</span>
+								<span class="flex-1">{{formatToCurrency(totalMemo)}}</span>
 							</div>
 						</div>
 						<div class="d-flex flex-column flex-1">
 							<div class="info-display">
 								<span class="text-primary-dark">TOTAL RELEASES</span>
-								<span class="text-primary-dark">17,000.00</span>
+								<span class="text-primary-dark">{{formatToCurrency(totalCash + totalCheck + totalMemo)}}</span>
 							</div>
 						</div>
 						<div class="flex-2"></div>
@@ -340,9 +152,6 @@
 				<span class="flex-2 pb-24 text-bold darker-bb mr-64">Approved By:</span>
 				<span class="flex-1"></span>
 			</section>
-			<div class="d-flex mb-64">
-				<img src="dist/img/logo-footer.png" class="w-100" alt="">
-			</div>
 			<div class="d-flex mb-64" style="margin-top:auto">
 				<img :src="this.baseURL()+'/img/logo-footer.png'" class="w-100" alt="">
 			</div>
@@ -376,8 +185,8 @@
 						</div>
 						<span class="text-center text-primary-dark text-bold font-md mb-5">Butuan Branch (001)</span>
 						<div class="d-flex flex-row justify-content-center text-primary-dark">
-							<span class="mr-5">From:</span><span class="mr-16">12/14/2021</span>
-							<span class="mr-5">To:</span><span>12/15/2021</span>
+							<span class="mr-5">From:</span><span class="mr-16">{{filter.date_from?filter.date_from:'---'}}</span>
+							<span class="mr-5">To:</span><span>{{filter.date_to?filter.date_to:'---'}}</span>
 						</div>
 					</div>
 					<section class="d-flex flex-column mb-64">
@@ -467,13 +276,140 @@
 
 <script>
 export default {
+	props:['token', 'pbranch'],
+	data(){
+		return {
+			branch:{},
+			filter:{
+				date_from:'',
+				date_to:'',
+				branch_id:'',
+				type:'',
+				spec:'',
+				category:'client'
+			},
+			reports:[],
+			products:[],
+			dst:[]
+		}
+	},
 	methods:{
+		async fetchReports(){
+			await axios.post(this.baseURL() + 'api/report/release', this.filter, {
+				headers: {
+					'Authorization': 'Bearer ' + this.token,
+					'Content-Type': 'application/json',
+					'Accept': 'application/json'
+				}
+			})
+			.then(function (response) {
+				this.reports = response.data.data
+				console.log(response.data);
+			}.bind(this))
+			.catch(function (error) {
+				console.log(error);
+			}.bind(this));
+		},
+		async fetchDst(){
+			this.filter.category = 'dst';
+			await axios.post(this.baseURL() + 'api/report/release', this.filter, {
+				headers: {
+					'Authorization': 'Bearer ' + this.token,
+					'Content-Type': 'application/json',
+					'Accept': 'application/json'
+				}
+			})
+			.then(function (response) {
+				this.dst = response.data.data
+				console.log(response.data);
+			}.bind(this))
+			.catch(function (error) {
+				console.log(error);
+			}.bind(this));
+		},
+		async fetchProducts(){
+			await axios.get(this.baseURL() + 'api/product/', {
+				headers: {
+					'Authorization': 'Bearer ' + this.token,
+					'Content-Type': 'application/json',
+					'Accept': 'application/json'
+				}
+			})
+			.then(function (response) {
+				this.products = response.data.data;
+			}.bind(this))
+			.catch(function (error) {
+				console.log(error);
+			}.bind(this));
+		},
 		print:function(){
 			var content = document.getElementById('printContent').innerHTML;
 			var target = document.querySelector('.to-print');
 			target.innerHTML = content;
 			window.print();
 		},
+	},
+	watch:{
+		filter:{
+			handler(val){
+				if(val.branch_id&&val.date_from&&val.date_to&&val.category&&val.spec&&val.type){
+					this.fetchReports();
+				}
+			},
+			deep:true
+		}
+	},
+	computed:{
+		release:function(){
+			return this.reports.release?this.reports.release:[];
+		},
+		total:function(){
+			var row = [0,0,0,0,0,0,0,0,0];
+			this.release.forEach(r => {
+				row[0] += r.amount_loan;
+				row[1] += r.filing_fee;
+				row[2] += r.document_stamp;
+				row[3] += r.insurance;
+				row[4] += r.notarial_fee;
+				row[5] += r.affidavit_fee;
+				row[6] += r.deductions;
+				row[7] += r.prepaid_interest;
+				row[8] += r.net_proceeds;
+			});
+			return row;
+		},
+		totalCash:function(){
+			var amount = 0;
+			this.release.forEach(r=>{
+				if(r.type == 'Cash'){
+					amount+=r.amount_loan;
+				}
+			})
+			return amount;
+		},
+		totalCheck:function(){
+			var amount = 0;
+			this.release.forEach(r=>{
+				if(r.type == 'Check'){
+					amount+=r.amount_loan;
+				}
+			})
+			return amount;
+		},
+		totalMemo:function(){
+			var amount = 0;
+			this.release.forEach(r=>{
+				if(r.type == 'Memo'){
+					amount+=r.amount_loan;
+				}
+			})
+			return amount;
+		}
+	},
+	mounted(){
+		this.branch = JSON.parse(this.pbranch);
+		this.filter.branch_id = this.branch.branch_id;
+		this.fetchProducts();
 	}
 }
 </script>

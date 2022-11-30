@@ -4,42 +4,24 @@
 			<span class="font-lg text-primary-dark" style="flex:3">Transaction</span>
 			<div class="d-flex flex-row align-items-center mr-24" style="flex:2">
 				<span class="mr-10">From: </span>
-				<input type="date" class="form-control">
+				<input v-model="filter.due_from" type="date" class="form-control">
 			</div>
 			<div class="d-flex flex-row align-items-center mr-64" style="flex:2">
 				<span class="mr-10">To: </span>
-				<input type="date" class="form-control">
-			</div>
-			<div class="d-flex flex-row align-items-center mr-24" style="flex:3">
-				<span class="mr-10">Type: </span>
-				<select name="" id="selectProductClient" class="form-control">
-					<option value="all_records">All Records</option>
-					<option value="new_accounts">New Accounts</option>
-					<option value="">By Center</option>
-					<option value="">By Product</option>
-					<option value="">By Account Officer</option>
-				</select>
+				<input v-model="filter.due_to" type="date" class="form-control">
 			</div>
 			<div class="d-flex flex-row align-items-center mr-24" style="flex:3">
 				<span class="mr-10">A.O: </span>
-				<select name="" id="selectProductClient" class="form-control">
-					<option value="">Allotment Loan</option>
-					<option value="">Micro Group</option>
-					<option value="">Micro Individual</option>
-					<option value="">Pension Emergency</option>
-					<option value="">Pension Loan</option>
-					<option value="">SME Loan</option>
+				<select v-model="filter.account_officer" name="" id="selectProductClient" class="form-control">
+					<option v-for="ao in aos" :key="ao.ao_id" :value="ao.ao_id">{{ao.name}}</option>
+					<option value="all">All</option>
 				</select>
 			</div>
 			<div class="d-flex flex-row align-items-center" style="flex:3">
 				<span class="mr-10">Center: </span>
-				<select name="" id="selectProductClient" class="form-control">
-					<option value="">Allotment Loan</option>
-					<option value="">Micro Group</option>
-					<option value="">Micro Individual</option>
-					<option value="">Pension Emergency</option>
-					<option value="">Pension Loan</option>
-					<option value="">SME Loan</option>
+				<select v-model="filter.center" name="" id="selectProductClient" class="form-control">
+					<option v-for="center in centers" :key="center.center_id" :value="center.center_id">{{center.center}}</option>
+					<option value="all">All</option>
 				</select>
 			</div>
 		</div>
@@ -50,19 +32,19 @@
 						<div class="d-flex flex-column mb-24">
 							<div class="d-flex flex-row align-items-center">
 								<div class="flex-1 d-flex flex-column">
-									<span>Account Officer</span>
-									<span class="text-bold">001 - Jose Magbanua</span>
+									<span v-if="filter.account_officer">Account Officer</span>
+									<span v-if="filter.account_officer" class="text-bold">{{branch.branch_code}} - {{accountOfficer.name}}</span>
 								</div>
-								<span class="font-30 text-bold text-primary-dark">MATURITY REPORT</span>
+								<span class="font-30 text-bold text-primary-dark text-center">MATURITY REPORT</span>
 								<div class="flex-1 d-flex justify-content-end" style="padding-left:24px">
-									<span class="text-primary-dark mr-10">Tuesday 12/21/2021</span>
-									<span class="text-primary-dark">Time: 11:36 AM</span>
+									<span class="text-primary-dark mr-10">{{dateFullDay(new Date())}} {{dateToYMD(new Date()).split('-').join('/')}}</span>
+									<span class="text-primary-dark">Time: {{todayTime(new Date())}} {{(new Date()).getHours() > 12? 'PM':'AM'}}</span>
 								</div>
 							</div>
-							<span class="text-center text-primary-dark text-bold font-md mb-5">Butuan Branch (001)</span>
-							<div class="d-flex flex-row justify-content-center text-primary-dark">
-								<span class="mr-5">From:</span><span class="mr-16">12/14/2021</span>
-								<span class="mr-5">To:</span><span>12/15/2021</span>
+							<span class="text-center text-primary-dark text-bold font-md mb-5">{{branch.branch_name + ' (' + branch.branch_code + ')'}}</span>
+							<div v-if="filter.due_from&&filter.due_to" class="d-flex flex-row justify-content-center text-primary-dark">
+								<span class="mr-5">From:</span><span class="mr-16">{{dateToYMD(new Date(filter.due_from)).replaceAll('-','/')}}</span>
+								<span class="mr-5">To:</span><span>{{dateToYMD(new Date(filter.due_to)).replaceAll('-','/')}}</span>
 							</div>
 						</div>
 						<section class="d-flex flex-column mb-16">
@@ -77,101 +59,14 @@
 										<th>Center</th>
 									</thead>
 									<tbody>
-										<tr>
-											<td>Gabriel, Julio A.</td>
-											<td>12/15/2022</td>
-											<td>12/15/2022</td>
-											<td>2,845.00</td>
-											<td>0.00</td>
-											<td>NEEM TREE CENTER</td>
-										</tr>
-										<tr>
-											<td>Gabriel, Julio A.</td>
-											<td>12/15/2022</td>
-											<td>12/15/2022</td>
-											<td>2,845.00</td>
-											<td>0.00</td>
-											<td>NEEM TREE CENTER</td>
-										</tr>
-										<tr>
-											<td>Gabriel, Julio A.</td>
-											<td>12/15/2022</td>
-											<td>12/15/2022</td>
-											<td>2,845.00</td>
-											<td>0.00</td>
-											<td>NEEM TREE CENTER</td>
-										</tr>
-										<tr>
-											<td>Gabriel, Julio A.</td>
-											<td>12/15/2022</td>
-											<td>12/15/2022</td>
-											<td>2,845.00</td>
-											<td>0.00</td>
-											<td>NEEM TREE CENTER</td>
-										</tr>
-										<tr>
-											<td>Gabriel, Julio A.</td>
-											<td>12/15/2022</td>
-											<td>12/15/2022</td>
-											<td>2,845.00</td>
-											<td>0.00</td>
-											<td>NEEM TREE CENTER</td>
-										</tr>
-										<tr>
-											<td>Gabriel, Julio A.</td>
-											<td>12/15/2022</td>
-											<td>12/15/2022</td>
-											<td>2,845.00</td>
-											<td>0.00</td>
-											<td>NEEM TREE CENTER</td>
-										</tr>
-										<tr>
-											<td>Gabriel, Julio A.</td>
-											<td>12/15/2022</td>
-											<td>12/15/2022</td>
-											<td>2,845.00</td>
-											<td>0.00</td>
-											<td>NEEM TREE CENTER</td>
-										</tr>
-										<tr>
-											<td>Gabriel, Julio A.</td>
-											<td>12/15/2022</td>
-											<td>12/15/2022</td>
-											<td>2,845.00</td>
-											<td>0.00</td>
-											<td>NEEM TREE CENTER</td>
-										</tr>
-										<tr>
-											<td>Gabriel, Julio A.</td>
-											<td>12/15/2022</td>
-											<td>12/15/2022</td>
-											<td>2,845.00</td>
-											<td>0.00</td>
-											<td>NEEM TREE CENTER</td>
-										</tr>
-										<tr>
-											<td>Gabriel, Julio A.</td>
-											<td>12/15/2022</td>
-											<td>12/15/2022</td>
-											<td>2,845.00</td>
-											<td>0.00</td>
-											<td>NEEM TREE CENTER</td>
-										</tr>
-										<tr>
-											<td>Gabriel, Julio A.</td>
-											<td>12/15/2022</td>
-											<td>12/15/2022</td>
-											<td>2,845.00</td>
-											<td>0.00</td>
-											<td>NEEM TREE CENTER</td>
-										</tr>
-										<tr>
-											<td>Gabriel, Julio A.</td>
-											<td>12/15/2022</td>
-											<td>12/15/2022</td>
-											<td>2,845.00</td>
-											<td>0.00</td>
-											<td>NEEM TREE CENTER</td>
+										<tr v-if="!reports.length"><td><i>No data available.</i></td></tr>
+										<tr v-for="r,i in reports" :key="i">
+											<td>{{r.client}}</td>
+											<td>{{r.date_released.replaceAll('-','/')}}</td>
+											<td>{{r.due-date.replaceAll('-','/')}}</td>
+											<td>{{formatToCurrency(r.principal_balance)}}</td>
+											<td>{{formatToCurrency(r.interest_balance)}}</td>
+											<td>{{r.center}}</td>
 										</tr>
 										<tr class="border-cell-gray-7">
 											<td></td>
@@ -192,9 +87,8 @@
 										<tr class="tr-py-7 text-bold bg-green-mint">
 											<td>TOTAL</td>
 											<td></td>
-											<td>15</td>
-											<td>17,800.00</td>
-											<td>14,300.00</td>
+											<td>{{reports.length}}</td>
+											<td v-for="t,i in total" :key="i">{{formatToCurrency(t)}}</td>
 											<td></td>
 										</tr>
 									</tbody>
@@ -230,13 +124,105 @@
 
 <script>
 export default {
+	props:['token', 'pbranch'],
+	data(){
+		return {
+			reports:[],
+			filter:{
+				due_from:'',
+				due_to:'',
+				branch_id:'',
+				account_officer:null,
+				center:null,
+				type:'maturity'
+			},
+			branch:{},
+			aos:[],
+			centers:[]
+		}
+	},
 	methods:{
+		async fetchReports(){
+			await axios.post(this.baseURL() + 'api/report/branch', this.filter, {
+				headers: {
+					'Authorization': 'Bearer ' + this.token,
+					'Content-Type': 'application/json',
+					'Accept': 'application/json'
+				}
+			})
+			.then(function (response) {
+				this.reports = response.data.data
+			}.bind(this))
+			.catch(function (error) {
+				console.log(error);
+			}.bind(this));
+		},
+		async fetchAo(){
+			await axios.get(this.baseURL() + 'api/accountofficer/', {
+				headers: {
+					'Authorization': 'Bearer ' + this.token,
+					'Content-Type': 'application/json',
+					'Accept': 'application/json'
+				}
+			})
+			.then(function (response) {
+				this.aos = response.data.data;
+			}.bind(this))
+			.catch(function (error) {
+				console.log(error);
+			}.bind(this));
+		},
+		async fetchCenters(){
+			await axios.get(this.baseURL() + 'api/center', {
+				headers: {
+					'Authorization': 'Bearer ' + this.token,
+					'Content-Type': 'application/json',
+					'Accept': 'application/json'
+				}
+			})
+			.then(function (response) {
+				this.centers = response.data.data;
+			}.bind(this))
+			.catch(function (error) {
+				console.log(error);
+			}.bind(this));
+		},
 		print:function(){
 			var content = document.getElementById('printContent').innerHTML;
 			var target = document.querySelector('.to-print');
 			target.innerHTML = content;
 			window.print();
 		},
+	},
+	computed:{
+		total:function(){
+			var row = [0,0];
+			this.reports.forEach(r=>{
+				row[0] += r.principal_balance;
+				row[1] += r.interest_balance;
+			})
+			return row;
+		},
+		accountOfficer:function(){
+			var aos = this.aos.filter(ao=>ao.ao_id==this.filter.account_officer);
+			return aos.length?aos[0]:[];
+		}
+	},
+	watch:{
+		filter:{
+			handler(val){
+				if(val.account_officer&&val.center&&val.due_from&&val.due_to){
+					this.fetchReports();
+				}
+			},
+			deep:true
+		}
+	},
+	mounted(){
+		this.branch = JSON.parse(this.pbranch);
+		this.filter.branch_id = this.branch.branch_id;
+		this.fetchAo();
+		this.fetchCenters();
 	}
 }
 </script>

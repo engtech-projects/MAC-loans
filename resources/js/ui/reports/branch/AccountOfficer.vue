@@ -1,37 +1,31 @@
 <template>
 	<div class="d-flex flex-column" style="flex:8;">
 		<div class="d-flex flex-row font-md align-items-center mb-16">
-			<span class="font-lg text-primary-dark" style="flex:3">Transaction</span>
-			<div class="d-flex flex-row align-items-center mr-24" style="flex:2">
+			<span class="font-lg text-primary-dark" style="flex:3">Report</span>
+			<!-- <div class="d-flex flex-row align-items-center mr-24" style="flex:2">
 				<span class="mr-10">From: </span>
 				<input type="date" class="form-control">
 			</div>
 			<div class="d-flex flex-row align-items-center mr-64" style="flex:2">
 				<span class="mr-10">To: </span>
 				<input type="date" class="form-control">
-			</div>
-			<div class="d-flex flex-row align-items-center mr-24" style="flex:3">
-				<span class="mr-10">Type: </span>
-				<select name="" id="selectProductClient" class="form-control">
-					<option value="all_records">All Records</option>
-					<option value="new_accounts">New Accounts</option>
-					<option value="">By Center</option>
-					<option value="">By Product</option>
-					<option value="">By Account Officer</option>
+			</div> -->
+			<!-- <div class="d-flex flex-row align-items-center mr-24" style="flex:3">
+				<span class="mr-10 flex-1">Account Officer: </span>
+				<select v-model="filter.account_officer" name="" id="selectProductClient" class="form-control">
+					<option v-for="ao in aos" :key="ao.ao_id" :value="ao.ao_id">{{ao.name}}</option>
+					<option value="all">All</option>
+				</select>
+			</div> -->
+			<div class="d-flex flex-row align-items-center mr-24" style="flex:2">
+				<span class="mr-10">Report Type </span>
+				<select v-model="filter.group" name="" id="selectProductClient" class="form-control flex-1">
+					<option value="performance_report">Performance Report</option>
+					<option value="write_off">Write Off Report</option>
+					<option value="delinquent">Delinquent Report</option>
 				</select>
 			</div>
-			<div class="d-flex flex-row align-items-center mr-24" style="flex:3">
-				<span class="mr-10">A.O: </span>
-				<select name="" id="selectProductClient" class="form-control">
-					<option value="">Allotment Loan</option>
-					<option value="">Micro Group</option>
-					<option value="">Micro Individual</option>
-					<option value="">Pension Emergency</option>
-					<option value="">Pension Loan</option>
-					<option value="">SME Loan</option>
-				</select>
-			</div>
-			<div class="d-flex flex-row align-items-center" style="flex:3">
+			<!-- <div class="d-flex flex-row align-items-center" style="flex:3">
 				<span class="mr-10">Center: </span>
 				<select name="" id="selectProductClient" class="form-control">
 					<option value="">Allotment Loan</option>
@@ -41,7 +35,7 @@
 					<option value="">Pension Loan</option>
 					<option value="">SME Loan</option>
 				</select>
-			</div>
+			</div> -->
 		</div>
 		<div class="sep mb-45"></div>
 		<div id="printContent">
@@ -291,13 +285,84 @@
 
 <script>
 export default {
+	props:['token', 'pbranch'],
+	data(){
+		return {
+			aos:[],
+			branch:{},
+			filter:{
+				branch_id:'',
+				group:'',
+				type:'account_officer'
+			},
+			reports:[],
+		}
+	},
 	methods:{
+		async fetchReports(){
+			await axios.post(this.baseURL() + 'api/report/branch', this.filter, {
+				headers: {
+					'Authorization': 'Bearer ' + this.token,
+					'Content-Type': 'application/json',
+					'Accept': 'application/json'
+				}
+			})
+			.then(function (response) {
+				this.reports = response.data.data
+				console.log(response.data);
+			}.bind(this))
+			.catch(function (error) {
+				console.log(error);
+			}.bind(this));
+		},
+		async fetchAo(){
+			await axios.get(this.baseURL() + 'api/accountofficer/', {
+				headers: {
+					'Authorization': 'Bearer ' + this.token,
+					'Content-Type': 'application/json',
+					'Accept': 'application/json'
+				}
+			})
+			.then(function (response) {
+				this.aos = response.data.data;
+			}.bind(this))
+			.catch(function (error) {
+				console.log(error);
+			}.bind(this));
+		},
+		
 		print:function(){
 			var content = document.getElementById('printContent').innerHTML;
 			var target = document.querySelector('.to-print');
 			target.innerHTML = content;
 			window.print();
 		},
+	},
+	computed:{
+		total:function(){
+			var row = [0,0];
+			this.reports.forEach(r=>{
+				row[0] += r.principal_balance;
+				row[1] += r.interest_balance;
+			})
+			return row;
+		},
+		accountOfficer:function(){
+			var aos = this.aos.filter(ao=>ao.ao_id==this.filter.account_officer);
+			return aos.length?aos[0]:[];
+		}
+	},
+	watch:{
+		'filter.group'(val){
+			if(val){
+				this.fetchReports();
+			}
+		}
+	},
+	mounted(){
+		this.branch = JSON.parse(this.pbranch);
+		this.filter.branch_id = this.branch.branch_id;
+		this.fetchAo();
 	}
 }
 </script>

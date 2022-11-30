@@ -12,7 +12,7 @@
 			<div class="d-flex flex-row align-items-start">
 				@include('_includes/reportsnav')
 
-				<reports-release-client></reports-release-client>
+				<reports-release-client pbranch="{{Session::get('branch')}}" token="{{Session::get('token')}}"></reports-release-client>
 
 			</div>
 		</div>
