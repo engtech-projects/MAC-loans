@@ -185,7 +185,7 @@ export default {
 					row.push(this.groupTransaction[i][p].all.no_of_clients);
 					row.push(this.groupTransaction[i][p].all.num_of_payments);
 					row.push('');
-					row.push(i.toUpperCase());
+					row.push(i.toUpperCase().slice(0,3));
 					for(var w in weekly){
 						totalRow[c] = !totalRow[c]?0:totalRow[c];
 						row.push(weekly[w].num_of_payments);
@@ -218,7 +218,7 @@ export default {
 				row.push(parseInt(i) + 1);
 				row.push(data[i].borrower);
 				row.push(data[i].center);
-				row.push(data[i].centerSched.toUpperCase());
+				row.push(data[i].centerSched.toUpperCase().slice(0,3));
 				for(var w in data[i].weeklyData){
 					weeklyRow[index] = !weeklyRow[index]?0:weeklyRow[index];
 					weeklyRow[index] += data[i].weeklyData[w].total_paid;

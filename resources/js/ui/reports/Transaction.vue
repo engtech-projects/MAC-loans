@@ -520,47 +520,56 @@ export default {
 	computed:{
 		totalReleases:function(){
 			var row = [0,0,0,0,0,0,0,0,0,0];
-			this.transactions.product.forEach(p=>{
-				row[0] += p.release.principal;
-				row[1] += p.release.interest;
-				row[2] += p.release.filing_fee;
-				row[3] += p.release.document_stamp;
-				row[4] += p.release.insurance;
-				row[5] += p.release.notarial_fee;
-				row[6] += p.release.affidavit_fee;
-				row[7] += p.release.total_deduction;
-				row[8] += p.release.prepaid_interest;
-				row[9] += p.release.net_proceeds;
-			})
+			if(this.transactions.product){
+				this.transactions.product.forEach(p=>{
+					row[0] += p.release.principal;
+					row[1] += p.release.interest;
+					row[2] += p.release.filing_fee;
+					row[3] += p.release.document_stamp;
+					row[4] += p.release.insurance;
+					row[5] += p.release.notarial_fee;
+					row[6] += p.release.affidavit_fee;
+					row[7] += p.release.total_deduction;
+					row[8] += p.release.prepaid_interest;
+					row[9] += p.release.net_proceeds;
+				})
+			}
+			
 			return row;
 		},
 		totalReleasesClient:function(){
 			var row = [0,0,0,0,0,0,0,0,0];
-			this.transactions.client.release.forEach(p=>{
-				row[0] += p.amount_loan;
-				row[1] += p.filing_fee;
-				row[2] += p.document_stamp;
-				row[3] += p.insurance;
-				row[4] += p.notarial_fee;
-				row[5] += p.affidavit_fee;
-				row[6] += p.deduction;
-				row[7] += p.prepaid_interest;
-				row[8] += p.net_proceeds;
-			})
+			if(this.transactions.client.release){
+				this.transactions.client.release.forEach(p=>{
+					row[0] += p.amount_loan;
+					row[1] += p.filing_fee;
+					row[2] += p.document_stamp;
+					row[3] += p.insurance;
+					row[4] += p.notarial_fee;
+					row[5] += p.affidavit_fee;
+					row[6] += p.deduction;
+					row[7] += p.prepaid_interest;
+					row[8] += p.net_proceeds;
+				})
+			}
+			
 			return row;
 		},
 		totalCollectionClient:function(){
 			var row = [0,0,0,0,0,0,0,0];
-			this.transactions.client.collection.forEach(p=>{
-				row[0] += p.principal;
-				row[1] += p.interest;
-				row[2] += p.pdi;
-				row[3] += p.over;
-				row[4] += p.discount;
-				row[5] += p.total_payment;
-				row[6] += p.net_int;
-				row[7] += p.vat;
-			})
+			if(this.transactions.client.collection){
+				this.transactions.client.collection.forEach(p=>{
+					row[0] += p.principal;
+					row[1] += p.interest;
+					row[2] += p.pdi;
+					row[3] += p.over;
+					row[4] += p.discount;
+					row[5] += p.total_payment;
+					row[6] += p.net_int;
+					row[7] += p.vat;
+				})
+			}
+			
 			return row;
 		},
 		totalCash:function(){
