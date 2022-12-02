@@ -335,7 +335,7 @@ class LoanAccount extends Model
       }
 
 
-      if( $this->loan_status == LoanAccount::LOAN_PAID || $this->loan_status == LoanAccount::LOAN_WRITEOFF ){
+      if( $this->loan_status == LoanAccount::LOAN_PAID){
          return;
       }
 
@@ -343,11 +343,13 @@ class LoanAccount extends Model
 
       // check if past due
       $isPastDue = $this->checkPastDue($this->due_date);
-      if( $isPastDue && $amortization){
+      if( $isPastDue && $amortization ){
          // update loan status.
          // set current amortization status to delinquent/
          // var_dump($this->loan_account_id);
-         LoanAccount::where(['loan_account_id' => $this->loan_account_id])->update(['loan_status' => LoanAccount::LOAN_PASTDUE]);
+         if($this->loan_status == LoanAccount::LOAN_WRITEOFF){
+            LoanAccount::where(['loan_account_id' => $this->loan_account_id])->update(['loan_status' => LoanAccount::LOAN_PASTDUE]);
+         }
          $amortization->status = 'delinquent';
          $amortization->save();
 

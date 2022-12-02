@@ -39,7 +39,7 @@ Route::group(['middleware' => 'auth:borrowers'], function(){
 	Route::get('borrower_logout', [BorrowerLoginController::class, 'logout'])->name('logout');
 	Route::get('/borrower/personal_information', [ClientPortalInformationController::class, 'personalInformationDetails'])->name('borrower.personal_information');
 	Route::get('/borrower/account_statement', [ClientPortalInformationController::class, 'accountStatementDetails'])->name('borrower.account_statement');
-	Route::get('/borrower/balance_inquiry', [ClientPortalInformationController::class, 'personalInformationList'])->name('borrower.balance_inquiry');
+	Route::get('/borrower/balance_inquiry', [ClientPortalInformationController::class, 'balanceInquiry'])->name('borrower.balance_inquiry');
 });
 Route::group(['middleware' => 'auth'], function (){
 	Route::get('logout', [LoginController::class, 'logout']);

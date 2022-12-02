@@ -68,7 +68,7 @@
 			</li>
 		</ul>
 		<div class="d-flex flex-column align-items-center justify-content-center mt-120">
-			<img src="/img/logo-side.png" alt="">
+			<img src="<?=url('/img/logo-side.png');?>" alt="">
 		</div>
 	</nav>
 	<!-- /.sidebar-menu -->

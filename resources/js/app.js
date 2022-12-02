@@ -83,6 +83,9 @@
 
  Vue.component('endof-day', require('./ui/endofday/Endofday.vue').default);
 
+ Vue.component('borrower-balance-inquiry', require('./ui/client_portal_information/BalanceInquiry.vue').default);
+ Vue.component('borrower-personal-information', require('./ui/client_portal_information/PersonalInformation.vue').default);
+
  Vue.config.devtools = true;
  const app = new Vue({
 	 el: '#app',

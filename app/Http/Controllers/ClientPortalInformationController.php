@@ -37,6 +37,13 @@ class ClientPortalInformationController extends Controller
 			'title' => 'Edit Personal Information',
 		]);
 	}
+	public function balanceInquiry(){
+		return view('client_portal_information.balance_inquiry')->with([
+			'nav' => ['client information', 'balance inquiry'],
+			'title' => 'Balance Inquiry',
+			'id' => Session::get("id")
+		]);
+	}
 
 	public function accountStatementDetails(){
 		return view('client_portal_information.account_statement_details')->with([
