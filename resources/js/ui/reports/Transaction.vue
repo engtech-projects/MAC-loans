@@ -612,56 +612,69 @@ export default {
 		},
 		totalCashClient:function(){
 			var amount = 0;
-			this.transactions.client.release.forEach(p=>{
-				if(p.type == 'Cash'){
-					amount += p.net_proceeds;
-				}
-			})
+			if(this.transactions.client.release){
+				this.transactions.client.release.forEach(p=>{
+					if(p.type == 'Cash'){
+						amount += p.net_proceeds;
+					}
+				})
+			}
 			return amount;
 		},
 		totalCheckClient:function(){
 			var amount = 0;
-			this.transactions.client.release.forEach(p=>{
-				if(p.type == 'Check'){
-					amount += p.net_proceeds;
-				}
-			})
+			if(this.transactions.client.release){
+				this.transactions.client.release.forEach(p=>{
+					if(p.type == 'Check'){
+						amount += p.net_proceeds;
+					}
+				})
+			}
 			return amount;
 		},
 		totalMemoClient:function(){
 			var amount = 0;
-			this.transactions.client.release.forEach(p=>{
-				if(p.type == 'Memo'){
-					amount += p.net_proceeds;
-				}
-			})
+			if(this.transactions.client.release){
+				this.transactions.client.release.forEach(p=>{
+					if(p.type == 'Memo'){
+						amount += p.net_proceeds;
+					}
+				})
+			}
 			return amount;
 		},
 		totalCashClientCollection:function(){
 			var amount = 0;
-			this.transactions.client.collection.forEach(p=>{
-				if(p.payment_type == 'Cash Payment'){
-					amount += p.total_payment;
-				}
-			})
+			if(this.transactions.client.collection){
+				this.transactions.client.collection.forEach(p=>{
+					if(p.payment_type == 'Cash Payment'){
+						amount += p.total_payment;
+					}
+				})
+			}
+			
 			return amount;
 		},
 		totalCheckClientCollection:function(){
 			var amount = 0;
-			this.transactions.client.collection.forEach(p=>{
-				if(p.payment_type == 'Check Payment'){
-					amount += p.total_payment;
-				}
-			})
+			if(this.transactions.client.collection){
+				this.transactions.client.collection.forEach(p=>{
+					if(p.payment_type == 'Check Payment'){
+						amount += p.total_payment;
+					}
+				})
+			}
 			return amount;
 		},
 		totalMemoClientCollection:function(){
 			var amount = 0;
-			this.transactions.client.collection.forEach(p=>{
-				if(p.payment_type == 'Memo Payment'){
-					amount += p.total_payment;
-				}
-			})
+			if(this.transactions.client.collection){
+				this.transactions.client.collection.forEach(p=>{
+					if(p.payment_type == 'Memo Payment'){
+						amount += p.total_payment;
+					}
+				})
+			}
 			return amount;
 		},
 
