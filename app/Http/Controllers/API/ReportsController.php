@@ -178,8 +178,12 @@ class ReportsController extends BaseController
 			case 'account_officer':
 				$filters = [
 					'branch_id' => $request->input("branch_id"),
-					'group' => $request->input("group")
+					'group' => $request->input("group"),
+					'account_officer' => $request->input('account_officer'),
 				];
+				if($filters['account_officer'] == "all"){
+					unset($filters['account_officer']);
+				}
 				$branchReport = $report->branchAOReport($filters);
 				break;
 			case 'loan_listing':

@@ -45,16 +45,28 @@ class Reports extends Model
     	}
 
     	if( isset($filters['center']) && $filters['center'] ){
-    		$loanAccount->where([ 'loan_accounts.center_id' => $filters['center'] ]);
+            if($filters['center'] == "No Center"){
+                $loanAccount->whereNull('loan_accounts.center_id');
+            }else{
+                $loanAccount->where([ 'loan_accounts.center_id' => $filters['center'] ]);   
+            }
     	}
 
     	if( isset($filters['product']) && $filters['product'] ){
     		$loanAccount->where([ 'loan_accounts.product_id' => $filters['product'] ]);
     	}
 
-    	if( isset($filters['account_officer']) && $filters['account_officer'] ){
-    		$loanAccount->where([ 'loan_accounts.ao_id' => $filters['account_officer'] ]);
-    	}
+        if( isset($filters['account_officer']) && $filters['account_officer'] ){
+            $loanAccount->where([ 'loan_accounts.ao_id' => $filters['account_officer'] ]);
+        }
+
+        if( isset($filters['loan_status']) && $filters['loan_status'] ){
+            $loanAccount->where([ 'loan_accounts.loan_status' => $filters['loan_status'] ]);
+        }
+
+        if( isset($filters['payment_status']) && $filters['payment_status'] ){
+            $loanAccount->where([ 'loan_accounts.payment_status' => $filters['payment_status'] ]);
+        }
 
     	return $loanAccount->get([
 			'loan_accounts.loan_account_id',
@@ -80,6 +92,8 @@ class Reports extends Model
             'loan_accounts.cycle_no',
             'loan_accounts.memo',
             'loan_accounts.due_date',
+            'loan_accounts.payment_mode',
+            'loan_accounts.payment_status',
         ]);
     }
 
@@ -707,7 +721,47 @@ class Reports extends Model
         }else if($filters["group"] == Reports::BRANCH_AO_WRITEOFF){
             // WRITE OFF REPORTS
         }else if($filters["group"] == Reports::BRANCH_AO_DELINQUENT){
-            // DELINQUENT REPORTS
+            $accOfficers = AccountOfficer::where(["status"=> AccountOfficer::STATUS_ACTIVE, "branch_id" => $filters["branch_id"]]);
+            if(isset($filters["account_officer"]) && $filters["account_officer"]){
+                $accOfficers = $accOfficers->where(["ao_id"=>$filters["account_officer"]]);
+            }
+            $accOfficers = $accOfficers->get()->toArray();
+            $centers = Center::where(["status"=>"active"])
+                ->get()->toArray();
+            $centers[] = null;
+            foreach ($accOfficers as $aoKey => $value) {
+                $accOfficers[$aoKey]["data"] = [];
+                foreach ($centers as $centKey => $centVal) {
+                    $filtersCopy = $filters;
+                    $filtersCopy["payment_status"] = "delinquent";
+                    $centerName = $centVal ? $centVal["center"] : "No Center";
+                    if($centerName != "No Center"){
+                        $filtersCopy["center"] = $centVal["center_id"];
+                    }else{
+                        $filtersCopy["center"] = $centerName;
+                    }
+                    $accounts = $this->getLoanAccounts($filtersCopy);
+                    foreach ($accounts as $accKey => $account) {
+                        $accOfficers[$aoKey]["data"][$centerName] = [
+                            "borrower_name" => $account->borrower->fullname(),
+                            "account_num" => $account->account_num,
+                            "date_loan" => $account->date_release,
+                            "maturity" => $account->due_date,
+                            "amount_loan" => $account->loan_amount,
+                            "balance" => $account->outstandingBalance($account->loan_account_id),
+                            "principal_balance" => $account->remainingBalance()["principal"]["balance"],
+                            "interest_balance" => $account->remainingBalance()["interest"]["balance"],
+                            "amortization" => $account->amortization()["principal"] + $account->amortization()["interest"],
+                            "delinquent_amount" => $account->outstandingBalance($account->loan_account_id),
+                            "type" => $account->payment_mode,
+                            "missed_amortization" => $account->getCurrentAmortization()['delinquent'] ? sizeof($account->getCurrentAmortization()['delinquent']['missed']) : 0,
+                            "days_missed" => $account->getCurrentAmortization()['delinquent'] ? $account->daysMissed($account->getCurrentAmortization()['delinquent']['missed'], true) : 0,
+                            "status" => $account->payment_status
+                        ];
+                    }
+                }
+            }
+            $data = $accOfficers;
         }
         return $data;
     }

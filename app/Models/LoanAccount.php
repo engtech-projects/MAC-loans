@@ -71,6 +71,7 @@ class LoanAccount extends Model
    const LOAN_ONGOING = "Ongoing";
    const LOAN_PAID = "Paid";
    const LOAN_PASTDUE = "Past Due";
+   const LOAN_WRITEOFF = "Write Off";
 
    public static function generateAccountNum($branchCode, $productCode, $identifier = 1) {
       // compute for the document transaction
@@ -323,7 +324,7 @@ class LoanAccount extends Model
 
    public function getCurrentAmortization(){
 
-      if( strtolower($this->status) == 'pending' ){
+      if( $this->status == LoanAccount::STATUS_PENDING ){
          return false;
       }
 
@@ -334,7 +335,7 @@ class LoanAccount extends Model
       }
 
 
-      if( strtolower($this->loan_status) == 'paid' ){
+      if( $this->loan_status == LoanAccount::LOAN_PAID || $this->loan_status == LoanAccount::LOAN_WRITEOFF ){
          return;
       }
 
@@ -346,7 +347,7 @@ class LoanAccount extends Model
          // update loan status.
          // set current amortization status to delinquent/
          // var_dump($this->loan_account_id);
-         LoanAccount::where(['loan_account_id' => $this->loan_account_id])->update(['loan_status' => 'Past Due']);
+         LoanAccount::where(['loan_account_id' => $this->loan_account_id])->update(['loan_status' => LoanAccount::LOAN_PASTDUE]);
          $amortization->status = 'delinquent';
          $amortization->save();
 
@@ -647,12 +648,48 @@ class LoanAccount extends Model
       return $penalty;
    }
 
+   public function daysMissed($missed = [],$firstOnly = false) {
+
+      $missedDays = 0;
+
+      if( count($missed) ){
+
+         $currentDay = Carbon::createFromFormat('Y-m-d', Carbon::now()->format('Y-m-d'));
+         $amortizations = Amortization::whereIn('id', $missed)->orderBy('id', 'ASC')->get();
+
+         foreach ($amortizations as $amortization) {
+
+            $dateSched = Carbon::createFromFormat('Y-m-d', $amortization->amortization_date);
+            $dayDiff = $currentDay->diffInDays($dateSched);
+
+            if( $dayDiff > 10 ){
+               $missedDays += $dayDiff;
+               if($firstOnly){
+                  return $dayDiff;
+               }
+            }
+         }
+
+         
+      }
+
+      return $missedDays;
+   }
+
    public function outstandingBalance($loanAccountId) {
 
       $account = LoanAccount::where(['loan_account_id' => $loanAccountId])->first();
       $payment = $this->getPaymentTotalPrincipalInterest($loanAccountId);
 
       return ($account->loan_amount + $account->interest_amount) - $payment;
+   }
+
+   public function amortization(){
+      $account = LoanAccount::where(['loan_account_id' => $this->loan_account_id])->first();
+      return [
+         "principal" => ceil($account->loan_amount/$account->no_of_installment),
+         "interest" => ceil($account->interest_amount/$account->no_of_installment),
+      ];
    }
 
    public function remainingBalance() {

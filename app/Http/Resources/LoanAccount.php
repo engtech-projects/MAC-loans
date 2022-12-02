@@ -29,6 +29,7 @@ class LoanAccount extends JsonResource
             'interest_rate' => $this->interest_rate,
             'interest_amount' => $this->interest_amount,
             'no_of_installment' => $this->no_of_installment,
+            'amortization' => $this->amortization(),
             'due_date' => $this->due_date,
             'day_schedule' => $this->day_schedule,
             'co_borrower_name' => $this->co_borrower_name,
