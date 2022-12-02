@@ -667,6 +667,11 @@ export default {
 
 		paymentSummary:function(){
 			var result = [];
+			this.paymentSummaryTotal = {
+				cash:0,
+				check:0,
+				memo:0
+			}
 			this.transactions.product.forEach((t,p)=>{
 				var totalRow = ['TOTAL PRODUCT', '',0,0,0,0,0,0,0,0];
 				var index = 2;
@@ -699,6 +704,7 @@ export default {
 					totalRow[index] += t.payment[i].net_int;
 					index++;
 					row.push(this.formatToCurrency(t.payment[i].vat));
+					totalRow[index] += t.payment[i].vat;
 					result.push(row);
 				}
 				if(index != 2){
