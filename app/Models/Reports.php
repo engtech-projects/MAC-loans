@@ -281,6 +281,7 @@ class Reports extends Model
                 'borrower' => Borrower::find($borrower->borrower_id)->fullname(),
                 'date_paid' => Carbon::createFromFormat('Y-m-d H:i:s', $payment->created_at)->format('m/d/Y'),
                 'or' => $payment->or_no,
+                'payment_type' => $payment->payment_type,
                 'principal' => $payment->principal,
                 'interest' => $payment->interest,
                 'pdi' => $payment->pdi,
@@ -504,62 +505,59 @@ class Reports extends Model
 
     /* start repayment report */
     public function repaymentByProduct($filters = []) {
-
+       
         $products = Product::where([ 'status' => 'active' ])->get(['product_id', 'product_code', 'product_name', 'interest_rate']);
+        $paymentTypes = config('enums.payment_type');
 
         $data = [];
+
+        $memo = [];
 
         foreach ($products as $key => $value) {
             
             $data[$key]['reference'] = $value['product_code'] . '-' . $value['product_name'];
 
-            $payments = Payment::join('loan_accounts', 'payment.loan_account_id', '=', 'loan_accounts.loan_account_id')
-                    ->where(['loan_accounts.product_id' => $value['product_id'], 'payment.branch_id' => $filters['branch_id']])
-                    ->whereDate('payment.updated_at', '>=', $filters['date_from'])
-                    ->whereDate('payment.updated_at', '<=', $filters['date_to'])
-                    ->get([
-                        'payment.*',
-                    ]);
+            $filters['product_id'] = $value->product_id;
 
-            if( count($payments) > 0 ) {
+            $payments = $this->getPayments($filters);
 
-                foreach ($payments as $payment) {
-                        
-                    $type = null;
+            if( count($payments) ) {
 
-                    if( Str::contains(Str::lower($payment->payment_type), 'cash') ){ $type = 'cash'; }
-                    if( Str::contains(Str::lower($payment->payment_type), 'cheque') ){ $type = 'cheque'; }
-                    if( Str::contains(Str::lower($payment->payment_type), 'pos') ){ $type = 'pos'; }
-                    if( Str::contains(Str::lower($payment->payment_type), 'memo') ){ $type = 'memo'; }
+                foreach ($payments as $k => $payment) {
+                    
+                    foreach ($paymentTypes as $type) {
 
-                    if( !isset($data[$key][$type]) ){
-                        $data[$key][$type] = [
-                            'principal' => 0,
-                            'interest' => 0,
-                            'pdi' => 0,
-                            'overpayment' => 0,
-                            'rebates' => 0,
-                            'total' => 0,
-                            'net_interest' => 0,
-                            'vat' => 0
-                        ];
+                        if( $payment->payment_type == $type ){
+
+                            if( !isset($data[$key]['payment'][$type]) ){
+                                $data[$key]['payment'][$type] = [
+                                    'principal' => 0,
+                                    'interest' => 0,
+                                    'pdi' => 0,
+                                    'over' => 0,
+                                    'discount' => 0,
+                                    'total_payment' => 0,
+                                    'net_int' => 0,
+                                    'vat' => 0
+                                ];
+                            }
+
+                            $data[$key]['payment'][$type]['principal'] += $payment->principal;
+                            $data[$key]['payment'][$type]['interest'] += $payment->interest;
+                            $data[$key]['payment'][$type]['pdi'] += $payment->pdi;
+                            $data[$key]['payment'][$type]['over'] += $payment->over_payment;
+                            $data[$key]['payment'][$type]['discount'] += null;
+                            $data[$key]['payment'][$type]['total_payment'] += $payment->amount_applied;
+                            $data[$key]['payment'][$type]['net_int'] += null;
+                            $data[$key]['payment'][$type]['vat'] += $payment->vat;
+                        }
+
                     }
-
-
-                    if( !$type ) continue;
-
-                    $data[$key][$type]['principal'] += $payment->principal;
-                    $data[$key][$type]['interest'] += $payment->interest;
-                    $data[$key][$type]['pdi'] = 0;
-                    $data[$key][$type]['overpayment'] = 0;
-                    $data[$key][$type]['rebates'] += $payment->rebates;
-                    $data[$key][$type]['total'] = 0;
-                    $data[$key][$type]['net_interest'] = 0;
-                    $data[$key][$type]['vat'] = 0;
 
                 }
 
             }
+
 
         }
 
