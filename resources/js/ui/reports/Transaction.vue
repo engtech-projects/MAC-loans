@@ -377,21 +377,21 @@
 										<span class="flex-1">TOTAL CASH RELEASE</span>
 										<span>:</span>
 									</div>
-									<span class="flex-1">0.00</span>
+									<span class="flex-1">{{formatToCurrency(totalCashClientCollection)}}</span>
 								</div>
 								<div class="d-flex flex-row flex-1 mb-5">
 									<div class="d-flex flex-row justify-content-between flex-2 mr-24">
 										<span class="flex-1">TOTAL CHECK RELEASE</span>
 										<span>:</span>
 									</div>
-									<span class="flex-1">0.00</span>
+									<span class="flex-1">{{formatToCurrency(totalCheckClientCollection)}}</span>
 								</div>
 								<div class="d-flex flex-row flex-1">
 									<div class="d-flex flex-row justify-content-between flex-2 mr-24">
 										<span class="flex-1">TOTAL MEMO RELEASE</span>
 										<span>:</span>
 									</div>
-									<span class="flex-1">0.00</span>
+									<span class="flex-1">{{formatToCurrency(totalMemoClientCollection)}}</span>
 								</div>
 								<div class="d-flex flex-row flex-1">
 									<div class="d-flex flex-row justify-content-between flex-2 mr-24">
@@ -439,7 +439,7 @@
 							<div class="d-flex flex-column flex-1">
 								<div class="info-display">
 									<span class="text-primary-dark">TOTAL RELEASES</span>
-									<span class="text-primary-dark">0.00</span>
+									<span class="text-primary-dark">{{formatToCurrency(totalCashClientCollection + totalCheckClientCollection + totalMemoClientCollection)}}</span>
 								</div>
 							</div>
 							<div class="flex-2"></div>
@@ -514,6 +514,23 @@ export default {
 				return 'border-cell-gray-7-dark'
 			}else if(str == 'TOTAL PRODUCT'){
 				return 'text-bold'
+			}
+		},
+		collectionTotal:function(val){
+			var amount = 0;
+			if(this.transactions.client.collection){
+				this.transactions.client.collection.forEach(p=>{
+					// row[0] += p.principal;
+					// row[1] += p.interest;
+					// row[2] += p.pdi;
+					// row[3] += p.over;
+					// row[4] += p.discount;
+					// row[5] += p.total_payment;
+					// row[6] += p.net_int;
+					// row[7] += p.vat;
+					amount += p[val];
+				})
+				return amount;
 			}
 		}
 	},
@@ -623,8 +640,26 @@ export default {
 		totalCashClientCollection:function(){
 			var amount = 0;
 			this.transactions.client.collection.forEach(p=>{
-				if(p.type == 'Cash'){
-					amount += p.net_proceeds;
+				if(p.payment_type == 'Cash Payment'){
+					amount += p.total_payment;
+				}
+			})
+			return amount;
+		},
+		totalCheckClientCollection:function(){
+			var amount = 0;
+			this.transactions.client.collection.forEach(p=>{
+				if(p.payment_type == 'Check Payment'){
+					amount += p.total_payment;
+				}
+			})
+			return amount;
+		},
+		totalMemoClientCollection:function(){
+			var amount = 0;
+			this.transactions.client.collection.forEach(p=>{
+				if(p.payment_type == 'Memo Payment'){
+					amount += p.total_payment;
 				}
 			})
 			return amount;
