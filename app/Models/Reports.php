@@ -719,7 +719,33 @@ class Reports extends Model
             }
             $data = $accOfficers;
         }else if($filters["group"] == Reports::BRANCH_AO_WRITEOFF){
-            // WRITE OFF REPORTS
+            $writeoffAccounts = [];
+            $accOfficers = AccountOfficer::where(["status"=> AccountOfficer::STATUS_ACTIVE, "branch_id" => $filters["branch_id"]]);
+            if(isset($filters["account_officer"]) && $filters["account_officer"]){
+                $accOfficers = $accOfficers->where(["ao_id"=>$filters["account_officer"]]);
+            }
+            $accOfficers = $accOfficers->get()->toArray();
+            foreach ($accOfficers as $aoKey => $aoValue) {
+                $filtersCopy = $filters;
+                $filtersCopy["loan_status"] = LoanAccount::LOAN_WRITEOFF;
+                $filtersCopy["account_officer"] = $aoValue["ao_id"];
+                $accounts = $this->getLoanAccounts($filtersCopy);
+                $tempData = [
+                    "ao_id" => $aoValue["ao_id"],
+                    "ao_name" =>  $aoValue['name'],
+                    "num_of_accounts" => 0,
+                    "principal_balance" => 0,
+                    "pastdue" => 0,
+                    "pd_rate" => 100
+                ];
+                foreach ($accounts as $accKey => $account) {
+                    $tempData["num_of_accounts"] += 1;
+                    $tempData["principal_balance"] += $account->remainingBalance()["principal"]["balance"];
+                    $tempData["pastdue"] += $account->remainingBalance()["principal"]["balance"];
+                }
+                $writeoffAccounts[] = $tempData;
+            }
+            $data = $writeoffAccounts;
         }else if($filters["group"] == Reports::BRANCH_AO_DELINQUENT){
             $accOfficers = AccountOfficer::where(["status"=> AccountOfficer::STATUS_ACTIVE, "branch_id" => $filters["branch_id"]]);
             if(isset($filters["account_officer"]) && $filters["account_officer"]){
@@ -734,6 +760,7 @@ class Reports extends Model
                 foreach ($centers as $centKey => $centVal) {
                     $filtersCopy = $filters;
                     $filtersCopy["payment_status"] = "delinquent";
+                    $filtersCopy["account_officer"] = $aoKey;
                     $centerName = $centVal ? $centVal["center"] : "No Center";
                     if($centerName != "No Center"){
                         $filtersCopy["center"] = $centVal["center_id"];

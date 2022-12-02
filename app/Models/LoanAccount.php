@@ -71,7 +71,7 @@ class LoanAccount extends Model
    const LOAN_ONGOING = "Ongoing";
    const LOAN_PAID = "Paid";
    const LOAN_PASTDUE = "Past Due";
-   const LOAN_WRITEOFF = "Write Off";
+   const LOAN_WRITEOFF = "Write-Off";
 
    public static function generateAccountNum($branchCode, $productCode, $identifier = 1) {
       // compute for the document transaction
