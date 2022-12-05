@@ -251,7 +251,7 @@
 									<td>{{formatToCurrency(t.insurance)}}</td>
 									<td>{{formatToCurrency(t.notarial_fee)}}</td>
 									<td>{{formatToCurrency(t.affidavit_fee)}}</td>
-									<td>{{formatToCurrency(t.deduction)}}</td>
+									<td>{{formatToCurrency(t.memo)}}</td>
 									<td>{{formatToCurrency(t.prepaid_interest)}}</td>
 									<td>{{formatToCurrency(t.net_proceeds)}}</td>
 									<td>{{t.type.toUpperCase()}}</td>
@@ -564,7 +564,7 @@ export default {
 					row[3] += p.insurance;
 					row[4] += p.notarial_fee;
 					row[5] += p.affidavit_fee;
-					row[6] += p.deduction;
+					row[6] += p.memo;
 					row[7] += p.prepaid_interest;
 					row[8] += p.net_proceeds;
 				})
