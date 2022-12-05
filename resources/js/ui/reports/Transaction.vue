@@ -670,7 +670,7 @@ export default {
 			var amount = 0;
 			if(this.transactions.client.collection){
 				this.transactions.client.collection.forEach(p=>{
-					if(p.payment_type == 'Memo Payment'){
+					if(p.payment_type == 'Memo'){
 						amount += p.total_payment;
 					}
 				})
