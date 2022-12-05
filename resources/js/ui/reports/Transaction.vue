@@ -343,7 +343,7 @@
 									<td>{{formatToCurrency(t.total_payment)}}</td>
 									<td>{{formatToCurrency(t.net_int)}}</td>
 									<td>{{formatToCurrency(t.vat)}}</td>
-									<td></td>
+									<td>{{t.payment_type}}</td>
 								</tr>
 								<tr class="border-cell-gray-7">
 									<td></td>
