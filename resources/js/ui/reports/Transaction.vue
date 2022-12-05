@@ -64,7 +64,7 @@
 									<td>{{formatToCurrency(prod.release.insurance)}}</td>
 									<td>{{formatToCurrency(prod.release.notarial_fee)}}</td>
 									<td>{{formatToCurrency(prod.release.affidavit_fee)}}</td>
-									<td>{{formatToCurrency(prod.release.total_deduction)}}</td>
+									<td>{{formatToCurrency(prod.release.memo)}}</td>
 									<td>{{formatToCurrency(prod.release.prepaid_interest)}}</td>
 									<td>{{formatToCurrency(prod.release.net_proceeds)}}</td>
 								</tr>
@@ -546,7 +546,7 @@ export default {
 					row[4] += p.release.insurance;
 					row[5] += p.release.notarial_fee;
 					row[6] += p.release.affidavit_fee;
-					row[7] += p.release.total_deduction;
+					row[7] += p.release.memo;
 					row[8] += p.release.prepaid_interest;
 					row[9] += p.release.net_proceeds;
 				})
@@ -691,7 +691,7 @@ export default {
 				for(var i in t.payment){
 					i=='Cash Payment'? this.paymentSummaryTotal.cash += t.payment[i].total_payment:false;
 					i=='Check Payment'? this.paymentSummaryTotal.check += t.payment[i].total_payment:false;
-					i=='Memo Payment'? this.paymentSummaryTotal.memo += t.payment[i].total_payment:false;
+					i=='Memo'? this.paymentSummaryTotal.memo += t.payment[i].total_payment:false;
 					var row = [];
 					row.push(!index==2?'':t.reference);
 					row.push(i.toUpperCase());
