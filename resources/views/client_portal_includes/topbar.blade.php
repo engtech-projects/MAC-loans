@@ -111,7 +111,7 @@
     <span>{{Session::get('fullname')}}</span>
     <i class="fas fa-caret-down"></i>
     <div class="logoutDD" style="">
-      <a href="{{route('borrower.logout')}}">Sign Out</a>
+      <a href="{{route('logout')}}">Sign Out</a>
     </div>
   </div>
     </li>
