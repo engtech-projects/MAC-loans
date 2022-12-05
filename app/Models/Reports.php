@@ -215,7 +215,8 @@ class Reports extends Model
                                     'discount' => 0,
                                     'total_payment' => 0,
                                     'net_int' => 0,
-                                    'vat' => 0
+                                    'vat' => 0,
+                                    'memo_type' => ''
                                 ];
                             }
 
@@ -227,6 +228,7 @@ class Reports extends Model
                             $data[$key]['payment'][$type]['total_payment'] += $payment->amount_applied;
                             $data[$key]['payment'][$type]['net_int'] += null;
                             $data[$key]['payment'][$type]['vat'] += $payment->vat;
+                            $data[$key]['payment'][$type]['memo_type'] = $payment->memo_type;
                         }
 
                     }
@@ -290,7 +292,8 @@ class Reports extends Model
                 'discount' => null,
                 'total_payment' => $payment->amount_applied,
                 'net_int' => null,
-                'vat' => $payment->vat
+                'vat' => $payment->vat,
+                'memo_type' => $payment->memo_type
             ];
 
         }
