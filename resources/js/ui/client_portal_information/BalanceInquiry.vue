@@ -116,7 +116,6 @@ export default {
                     data.push(acc);
                 }
             }.bind(this));
-            console.log(data);
             return data;
         }
 	},
