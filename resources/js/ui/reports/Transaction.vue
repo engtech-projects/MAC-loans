@@ -398,14 +398,14 @@
 										<span class="flex-1 pl-24">DED BALANCE</span>
 										<span>:</span>
 									</div>
-									<span class="flex-1">0.00</span>
+									<span class="flex-1">{{formatToCurrency(totalDeductToBalanceMemo)}}</span>
 								</div>
 								<div class="d-flex flex-row flex-1">
 									<div class="d-flex flex-row justify-content-between flex-2 mr-24">
 										<span class="flex-1 pl-24">OFFSET PF</span>
 										<span>:</span>
 									</div>
-									<span class="flex-1">0.00</span>
+									<span class="flex-1">{{formatToCurrency(totalOffsetMemo)}}</span>
 								</div>
 								<div class="d-flex flex-row flex-1">
 									<div class="d-flex flex-row justify-content-between flex-2 mr-24">
@@ -419,7 +419,7 @@
 										<span class="flex-1 pl-24">DISCOUNT</span>
 										<span>:</span>
 									</div>
-									<span class="flex-1">0.00</span>
+									<span class="flex-1">{{formatToCurrency(totalRebatesDiscountMemo)}}</span>
 								</div>
 								<div class="d-flex flex-row flex-1">
 									<div class="d-flex flex-row justify-content-between flex-2 mr-24">
@@ -433,7 +433,7 @@
 										<span class="flex-1 pl-24">BRANCH</span>
 										<span>:</span>
 									</div>
-									<span class="flex-1">0.00</span>
+									<span class="flex-1">{{formatToCurrency(totalInterbranchMemo)}}</span>
 								</div>
 							</div>
 							<div class="d-flex flex-column flex-1">
@@ -727,7 +727,52 @@ export default {
 				}
 			})
 			return result;
-		}
+		},
+
+		totalDeductToBalanceMemo:function(){
+			var amount = 0;
+			if(this.transactions.client.collection){
+				this.transactions.client.collection.forEach(p=>{
+					if(p.memo_type && p.memo_type == 'deduct to balance'){
+						amount += p.total_payment;
+					}
+				})
+			}
+			return amount;
+		},
+		totalInterbranchMemo:function(){
+			var amount = 0;
+			if(this.transactions.client.collection){
+				this.transactions.client.collection.forEach(p=>{
+					if(p.memo_type && p.memo_type == 'Interbranch'){
+						amount += p.total_payment;
+					}
+				})
+			}
+			return amount;
+		},
+		totalOffsetMemo:function(){
+			var amount = 0;
+			if(this.transactions.client.collection){
+				this.transactions.client.collection.forEach(p=>{
+					if(p.memo_type && p.memo_type == 'Offset PF'){
+						amount += p.total_payment;
+					}
+				})
+			}
+			return amount;
+		},
+		totalRebatesDiscountMemo:function(){
+			var amount = 0;
+			if(this.transactions.client.collection){
+				this.transactions.client.collection.forEach(p=>{
+					if(p.memo_type && p.memo_type == 'Rebates and Discount'){
+						amount += p.total_payment;
+					}
+				})
+			}
+			return amount;
+		},
 	},
 	watch:{
 		filter:{
