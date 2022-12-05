@@ -215,7 +215,8 @@ class Reports extends Model
                                     'discount' => 0,
                                     'total_payment' => 0,
                                     'net_int' => 0,
-                                    'vat' => 0
+                                    'vat' => 0,
+                                    'memo_type' => ''
                                 ];
                             }
 
