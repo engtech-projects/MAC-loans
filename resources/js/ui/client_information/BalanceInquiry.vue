@@ -107,11 +107,11 @@ export default {
 	},
 	computed:{
 		borrowerPhoto:function(){
-			return this.borrower.photo? this.borrower.photo : this.baseURL()+'/img/user.png';
+			return this.borrower.photo? this.borrower.photo : this.baseURL()+'img/user.png';
 		},
         unpaidLoanAccounts:function(){
             let data = [];
-            this.borrower.loanAccounts.map(function(acc){
+            this.borrower.loan_accounts.map(function(acc){
                 if(acc.remainingBalance.memo.balance > 0){
                     data.push(acc);
                 }
@@ -120,8 +120,8 @@ export default {
         }
 	},
 	mounted(){
-		this.borrower = JSON.parse(this.pborrower);
-		// this.fetchBorrower();
+		// this.borrower = JSON.parse(this.pborrower);
+		this.fetchBorrower();
 	}
 }
 </script>

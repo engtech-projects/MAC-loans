@@ -53,22 +53,11 @@ class ClientInformationController extends Controller
 		]);
 	}
 	public function balanceInquiry($id){
-		$borrower = Borrower::find($id);
-		$borrower->loanAccounts = $borrower->loanAccounts();
-		if($borrower->loanAccounts){
-			foreach ($borrower->loanAccounts as $key => $value) {
-				$borrower->loanAccounts[$key]->amortization = $value->currentAmortization($value->loan_account_id);
-				$borrower->loanAccounts[$key]->current_amortization = $value->getCurrentAmortization();
-				$borrower->loanAccounts[$key]->collection_rate = $value->collectionRate();
-				$borrower->loanAccounts[$key]->outstandingBalance = $value->outstandingBalance($value->loan_account_id);
-			}
-		}
-		$borrower->photo = $borrower->getPhoto();
 		$this->checkAccess('view balance inquiry');
 		return view('client_information.balance_inquiry')->with([
 			'nav' => ['client information', 'balance inquiry'],
 			'title' => 'Balance Inquiry',
-			'borrower' => $borrower
+			'id' => $id
 		]);
 	}
 
