@@ -3,7 +3,7 @@
 @section('content')
     <!-- Main content -->
     <section class="content mb-45 app" id="app">
-		<statement-details borrower_id="{{$id}}" token="{{Session::get('token')}}"></statement-details>
+		<borrower-statement-details borrower_id="{{$id}}" token="{{Session::get('token')}}"></borrower-statement-details>
     </section>
     <!-- /.content -->
 	<!-- MODALS  -->

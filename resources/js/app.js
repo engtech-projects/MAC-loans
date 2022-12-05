@@ -48,6 +48,7 @@
  Vue.component('rejected-release-edit', require('./ui/transaction/rejected_release/RejectedReleaseEdit.vue').default);
  Vue.component('repayment-entry', require('./ui/transaction/repayment_entry/RepaymentEntry.vue').default);
  Vue.component('statement-details', require('./ui/client_information/StatementDetails.vue').default);
+ Vue.component('borrower-statement-details', require('./ui/client_portal_information/StatementDetails.vue').default);
 
  Vue.component('repayment-details', require('./ui/transaction/repayment_entry/RepaymentDetails.vue').default);
  Vue.component('override-payment', require('./ui/transaction/override_payment/OverridePayment.vue').default);

@@ -9,13 +9,13 @@
 
   <!-- Right navbar links -->
   <ul class="navbar-nav ml-auto" style="padding-top:7px">
-	<li class="nav-item">
-		<div class="d-flex align-items-center mr-45" style="height:100%">
-			<div class="text-20 text-primary-dark" style="margin-right:90px;" id="MyDateDisplay"></div>
-			<span class="text-20 text-primary-dark mr-5">Time:</span>
-			<div class="text-20 text-primary-dark" id="MyClockDisplay"></div>
-		</div>
-	</li>      
+  <li class="nav-item">
+    <div class="d-flex align-items-center mr-45" style="height:100%">
+      <div class="text-20 text-primary-dark" style="margin-right:90px;" id="MyDateDisplay"></div>
+      <span class="text-20 text-primary-dark mr-5">Time:</span>
+      <div class="text-20 text-primary-dark" id="MyClockDisplay"></div>
+    </div>
+  </li>      
     <!-- Notifications Dropdown Menu -->
     <li class="nav-item dropdown">
       <a class="nav-link" data-toggle="dropdown" href="#">
@@ -106,11 +106,14 @@
       </a>
     </li>
     <li class="nav-item">
-      <div class="flex right-profile flex-center-y">
-		<img src="{{ asset('img/user2-160x160.jpg')}}" class="img-circle elevation-2" alt="User Image">
-		<span>{{Session::get('fullname')}}</span>
-		<i class="fas fa-caret-down"></i>
-	</div>
+      <div class="flex right-profile flex-center-y logoutContainer" style="position:relative;">
+    <img src="{{ asset('img/user2-160x160.jpg')}}" class="img-circle elevation-2" alt="User Image">
+    <span>{{Session::get('fullname')}}</span>
+    <i class="fas fa-caret-down"></i>
+    <div class="logoutDD" style="">
+      <a href="{{route('borrower.logout')}}">Sign Out</a>
+    </div>
+  </div>
     </li>
   </ul>
 </nav>
