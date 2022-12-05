@@ -228,7 +228,7 @@ class Reports extends Model
                             $data[$key]['payment'][$type]['total_payment'] += $payment->amount_applied;
                             $data[$key]['payment'][$type]['net_int'] += null;
                             $data[$key]['payment'][$type]['vat'] += $payment->vat;
-                            $data[$key]['payment'][$type]['memo_type'] += $payment->memo_type;
+                            $data[$key]['payment'][$type]['memo_type'] = $payment->memo_type;
                         }
 
                     }
