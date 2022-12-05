@@ -323,7 +323,8 @@ class LoanAccount extends Model
    }
 
    public function getCurrentAmortization(){
-      $transactionDateNow = EndTransaction::getTransactionDate($this->branch->branch_id)->date_end;
+      $tranDate = new EndTransaction();
+      $transactionDateNow = $tranDate->getTransactionDate($this->branch->branch_id)->date_end;
 
       if( $this->status == LoanAccount::STATUS_PENDING ){
          return false;

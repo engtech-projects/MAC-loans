@@ -678,6 +678,7 @@ class Reports extends Model
     }
 
     public function branchAOReport($filters = []) {
+        $tranDate = new EndTransaction();
         $data = [];
         if($filters["group"] == Reports::BRANCH_AO_PERFORMANCE){
             $accOfficers =  AccountOfficer::where(["status" => AccountOfficer::STATUS_ACTIVE, "branch_id" => $filters["branch_id"]])
@@ -768,6 +769,8 @@ class Reports extends Model
                     }
                     $accounts = $this->getLoanAccounts($filtersCopy);
                     foreach ($accounts as $accKey => $account) {
+
+                        $transactionDate = $tranDate->getTransactionDate($account->branch->branch_id)->date_end;
                         $accOfficers[$aoKey]["data"][$centerName] = [
                             "borrower_name" => $account->borrower->fullname(),
                             "account_num" => $account->account_num,
@@ -781,7 +784,7 @@ class Reports extends Model
                             "delinquent_amount" => $account->outstandingBalance($account->loan_account_id),
                             "type" => $account->payment_mode,
                             "missed_amortization" => $account->getCurrentAmortization()['delinquent'] ? sizeof($account->getCurrentAmortization()['delinquent']['missed']) : 0,
-                            "days_missed" => $account->getCurrentAmortization()['delinquent'] ? $account->daysMissed($account->getCurrentAmortization()['delinquent']['missed'], EndTransaction::getTransactionDate($account->branch->branch_id)->date_end, true) : 0,
+                            "days_missed" => $account->getCurrentAmortization()['delinquent'] ? $account->daysMissed($account->getCurrentAmortization()['delinquent']['missed'], $transactionDate, true) : 0,
                             "status" => $account->payment_status
                         ];
                     }
