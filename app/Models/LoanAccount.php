@@ -298,10 +298,10 @@ class LoanAccount extends Model
       return $accounts->get();
    }
 
-   public function currentAmortization($loanAccountId) {
+   public function currentAmortization($loanAccountId, $dateNow) {
 
       // get current amortization
-      $amortization = Amortization::whereDate('amortization_date', '<=', Carbon::now()->format('Y-m-d'))
+      $amortization = Amortization::whereDate('amortization_date', '<=', $dateNow)
                      ->where('loan_account_id', $loanAccountId)
                      ->whereIn('status', ['open', 'delinquent', 'paid'])
                      ->orderBy('amortization_date', 'DESC')
@@ -311,7 +311,7 @@ class LoanAccount extends Model
 
       if( (isset($amortization->status) && $amortization->status == 'paid') || $amortization == null ){
 
-         $amortization = Amortization::whereDate('amortization_date', '>', Carbon::now()->format('Y-m-d'))
+         $amortization = Amortization::whereDate('amortization_date', '>', $dateNow)
                      ->where('loan_account_id', $loanAccountId)
                      ->whereIn('status', ['open', 'delinquent'])
                      ->orderBy('amortization_date', 'ASC')
@@ -323,6 +323,7 @@ class LoanAccount extends Model
    }
 
    public function getCurrentAmortization(){
+      $transactionDateNow = EndTransaction::getTransactionDate($this->branch->branch_id)->date_end;
 
       if( $this->status == LoanAccount::STATUS_PENDING ){
          return false;
@@ -339,10 +340,10 @@ class LoanAccount extends Model
          return;
       }
 
-      $amortization = $this->currentAmortization($this->loan_account_id);
+      $amortization = $this->currentAmortization($this->loan_account_id, $transactionDateNow);
 
       // check if past due
-      $isPastDue = $this->checkPastDue($this->due_date);
+      $isPastDue = $this->checkPastDue($this->due_date, $transactionDateNow);
       if( $isPastDue && $amortization ){
          // update loan status.
          // set current amortization status to delinquent/
@@ -362,7 +363,7 @@ class LoanAccount extends Model
       # get last payment
       if ( $amortization ) {
          // check and set previous schedule to delinquent if unpaid (missed)
-         $this->setDelinquent($this->loan_account_id, $amortization->id);
+         $this->setDelinquent($this->loan_account_id, $amortization->id, $transactionDateNow);
          // return $this->getMissedPayments($this->loan_account_id, $amortization->id);
 
          // get advance principal
@@ -388,7 +389,7 @@ class LoanAccount extends Model
             $amortization->short_penalty = $isPaid->short_penalty;
             $amortization->over_payment = $isPaid->over_payment;
          }
-         $currentDay = Carbon::createFromFormat('Y-m-d', Carbon::now()->format('Y-m-d'));
+         $currentDay = Carbon::createFromFormat('Y-m-d', $transactionDateNow);
          $dateSched = Carbon::createFromFormat('Y-m-d', $amortization->amortization_date);
          $dayDiff = $dateSched->diffInDays($currentDay, false);
          $penaltyMissed = $amortization->delinquent['missed'];
@@ -400,7 +401,7 @@ class LoanAccount extends Model
          if($dayDiff > 10 && !$isPaid && $amortization->advance_principal < $amortization->schedule_principal){
             $penaltyMissed = array_merge($amortization->delinquent['missed'], [$amortization->id]);
          }
-         $amortization->penalty = $this->getPenalty($penaltyMissed, ($amortization->schedule_principal + $amortization->schedule_interest));
+         $amortization->penalty = $this->getPenalty($penaltyMissed, ($amortization->schedule_principal + $amortization->schedule_interest), $transactionDateNow);
 
          // $amortization->penalty = $this->getPenalty($amortization->delinquent['missed'], ($amortization->principal + $amortization->interest));
          $amortization->total = ($amortization->principal + $amortization->interest) + ( $amortization->short_principal + $amortization->short_interest);
@@ -530,13 +531,12 @@ class LoanAccount extends Model
       ];
    }
 
-   public function setDelinquent($loanAccountId, $amortizationId){
-
+   public function setDelinquent($loanAccountId, $amortizationId, $currentDay){
+      $currentDay = Carbon::createFromFormat('Y-m-d', $currentDay);
       $amortizations = $this->getPrevAmortization($loanAccountId, $amortizationId);
 
       if( count($amortizations) > 0 ) {
 
-         $currentDay = Carbon::createFromFormat('Y-m-d', Carbon::now()->format('Y-m-d'));
          foreach ($amortizations as $amortization) {
 
             $schedDate = Carbon::createFromFormat('Y-m-d', $amortization->amortization_date);
@@ -589,9 +589,9 @@ class LoanAccount extends Model
       return $paymentTotal;
    }
 
-   public function checkPastDue($dueDate) {
+   public function checkPastDue($dueDate,$dateNow) {
 
-      $currentDay = Carbon::createFromFormat('Y-m-d', Carbon::now()->format('Y-m-d'));
+      $currentDay = Carbon::createFromFormat('Y-m-d', $dateNow);
       $dDate = Carbon::createFromFormat('Y-m-d', $dueDate);
 
       if ( $dDate->lt($currentDay) ){
@@ -624,13 +624,13 @@ class LoanAccount extends Model
       return round($perDay * $days);
    }
 
-   public function getPenalty($missed = [], $totalAmortization, $percent = 2) {
+   public function getPenalty($missed = [], $totalAmortization, $dateNow, $percent = 2) {
 
       $penalty = 0;
 
       if( count($missed) ){
 
-         $currentDay = Carbon::createFromFormat('Y-m-d', Carbon::now()->format('Y-m-d'));
+         $currentDay = Carbon::createFromFormat('Y-m-d', $dateNow);
          $amortizations = Amortization::whereIn('id', $missed)->orderBy('id', 'ASC')->get();
          $counter = 0;
 
@@ -650,13 +650,13 @@ class LoanAccount extends Model
       return $penalty;
    }
 
-   public function daysMissed($missed = [],$firstOnly = false) {
-
+   public function daysMissed($missed = [], $dateNow = '', $firstOnly = false) {
+      $dateNow = $dateNow ? $dateNow : Carbon::now()->format('Y-m-d');
       $missedDays = 0;
 
       if( count($missed) ){
 
-         $currentDay = Carbon::createFromFormat('Y-m-d', Carbon::now()->format('Y-m-d'));
+         $currentDay = Carbon::createFromFormat('Y-m-d', $dateNow);
          $amortizations = Amortization::whereIn('id', $missed)->orderBy('id', 'ASC')->get();
 
          foreach ($amortizations as $amortization) {

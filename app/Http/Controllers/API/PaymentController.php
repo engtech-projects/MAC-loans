@@ -91,7 +91,7 @@ class PaymentController extends BaseController
             # update amortization
             if( $payment->total_payable > $payment->amount_applied ){
 
-                $currentDay = Carbon::createFromFormat('Y-m-d', Carbon::now()->format('Y-m-d'));
+                $currentDay = Carbon::createFromFormat('Y-m-d', EndTransaction::getTransactionDate($payment->branch_id)->date_end);
                 $schedDate = Carbon::createFromFormat('Y-m-d', $amortization->amortization_date);
 
                 if( $currentDay->lt($schedDate) ){

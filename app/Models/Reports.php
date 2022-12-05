@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 use DB;
 use Illuminate\Support\Str;
+use App\Models\EndTransaction;
 
 class Reports extends Model
 {
@@ -780,7 +781,7 @@ class Reports extends Model
                             "delinquent_amount" => $account->outstandingBalance($account->loan_account_id),
                             "type" => $account->payment_mode,
                             "missed_amortization" => $account->getCurrentAmortization()['delinquent'] ? sizeof($account->getCurrentAmortization()['delinquent']['missed']) : 0,
-                            "days_missed" => $account->getCurrentAmortization()['delinquent'] ? $account->daysMissed($account->getCurrentAmortization()['delinquent']['missed'], true) : 0,
+                            "days_missed" => $account->getCurrentAmortization()['delinquent'] ? $account->daysMissed($account->getCurrentAmortization()['delinquent']['missed'], EndTransaction::getTransactionDate($account->branch->branch_id)->date_end, true) : 0,
                             "status" => $account->payment_status
                         ];
                     }
