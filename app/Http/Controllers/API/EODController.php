@@ -70,7 +70,7 @@ class EODController extends BaseController
 		$dateEnd = $endTransaction->getTransactionDate($branchId)->date_end;
 
 		$accounts = $account->overrideReleaseAccounts([ 'branch_id' => $branchId, 'created_at' => $dateEnd ]);
-		$payments = $payment->overridePaymentAccounts([ 'branch_id' => $branchId, 'created_at' => $dateEnd ]);
+		$payments = $payment->overridePaymentAccounts([ 'branch_id' => $branchId, 'transaction_date' => $dateEnd ]);
 
 
 		$accountsToOverrideCount = count($accounts);

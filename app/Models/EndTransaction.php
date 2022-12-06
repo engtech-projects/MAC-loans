@@ -206,7 +206,7 @@ class EndTransaction extends Model
 
 		$repaymentLedger = new GeneralLedger();
 		$branch = Branch::find($branchId);
-		$payments = Payment::where(['status' => 'paid', 'branch_id' => $branchId ])->whereDate('updated_at', $dateEnd)->get();
+		$payments = Payment::where(['status' => 'paid', 'branch_id' => $branchId ])->whereDate('transaction_date', $dateEnd)->get();
 
 		if( count($payments) > 0 ){
 
