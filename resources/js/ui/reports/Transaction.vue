@@ -374,21 +374,21 @@
 							<div class="d-flex flex-column flex-1 mr-64">
 								<div class="d-flex flex-row flex-1 mb-5">
 									<div class="d-flex flex-row justify-content-between flex-2 mr-24">
-										<span class="flex-1">TOTAL CASH RELEASE</span>
+										<span class="flex-1">TOTAL CASH RELEASES</span>
 										<span>:</span>
 									</div>
 									<span class="flex-1">{{formatToCurrency(totalCashClientCollection)}}</span>
 								</div>
 								<div class="d-flex flex-row flex-1 mb-5">
 									<div class="d-flex flex-row justify-content-between flex-2 mr-24">
-										<span class="flex-1">TOTAL CHECK RELEASE</span>
+										<span class="flex-1">TOTAL CHECK RELEASES</span>
 										<span>:</span>
 									</div>
 									<span class="flex-1">{{formatToCurrency(totalCheckClientCollection)}}</span>
 								</div>
 								<div class="d-flex flex-row flex-1">
 									<div class="d-flex flex-row justify-content-between flex-2 mr-24">
-										<span class="flex-1">TOTAL MEMO RELEASE</span>
+										<span class="flex-1">TOTAL MEMO RELEASES</span>
 										<span>:</span>
 									</div>
 									<span class="flex-1">{{formatToCurrency(totalMemoClientCollection)}}</span>
@@ -407,13 +407,7 @@
 									</div>
 									<span class="flex-1">{{formatToCurrency(totalOffsetMemo)}}</span>
 								</div>
-								<div class="d-flex flex-row flex-1">
-									<div class="d-flex flex-row justify-content-between flex-2 mr-24">
-										<span class="flex-1 pl-24">OVER PAYMENT</span>
-										<span>:</span>
-									</div>
-									<span class="flex-1">0.00</span>
-								</div>
+								
 								<div class="d-flex flex-row flex-1">
 									<div class="d-flex flex-row justify-content-between flex-2 mr-24">
 										<span class="flex-1 pl-24">DISCOUNT</span>
@@ -421,13 +415,7 @@
 									</div>
 									<span class="flex-1">{{formatToCurrency(totalRebatesDiscountMemo)}}</span>
 								</div>
-								<div class="d-flex flex-row flex-1">
-									<div class="d-flex flex-row justify-content-between flex-2 mr-24">
-										<span class="flex-1 pl-24">CANCELLED</span>
-										<span>:</span>
-									</div>
-									<span class="flex-1">0.00</span>
-								</div>
+								
 								<div class="d-flex flex-row flex-1">
 									<div class="d-flex flex-row justify-content-between flex-2 mr-24">
 										<span class="flex-1 pl-24">BRANCH</span>
@@ -689,6 +677,7 @@ export default {
 				var totalRow = ['TOTAL PRODUCT', '',0,0,0,0,0,0,0,0];
 				var index = 2;
 				for(var i in t.payment){
+					index = 2
 					i=='Cash Payment'? this.paymentSummaryTotal.cash += t.payment[i].total_payment:false;
 					i=='Check Payment'? this.paymentSummaryTotal.check += t.payment[i].total_payment:false;
 					i=='Memo'? this.paymentSummaryTotal.memo += t.payment[i].total_payment:false;
@@ -729,6 +718,33 @@ export default {
 			return result;
 		},
 
+		paymentSummaryTotalCash:function(){
+			var amount = 0;
+			this.transactions.product.forEach((t,p)=>{
+				for(var i in t.payment){
+					i=='Cash Payment'? amount += t.payment[i].total_payment:false;
+				}
+			})
+			return amount;
+		},
+		paymentSummaryTotalCheck:function(){
+			var amount = 0;
+			this.transactions.product.forEach((t,p)=>{
+				for(var i in t.payment){
+					i=='Check Payment'? amount += t.payment[i].total_payment:false;
+				}
+			})
+			return amount;
+		},
+		paymentSummaryTotalMemo:function(){
+			var amount = 0;
+			this.transactions.product.forEach((t,p)=>{
+				for(var i in t.payment){
+					i=='Memo'? amount += t.payment[i].total_payment:false;
+				}
+			})
+			return amount;
+		},
 		totalDeductToBalanceMemo:function(){
 			var amount = 0;
 			if(this.transactions.client.collection){
