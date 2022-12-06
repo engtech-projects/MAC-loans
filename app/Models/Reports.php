@@ -798,6 +798,59 @@ class Reports extends Model
         return $data;
     }
 
+    public function branchLoanListingReport($filters = []){
+        $accOfficers = AccountOfficer::where(["status"=> AccountOfficer::STATUS_ACTIVE, "branch_id" => $filters["branch_id"]]);
+        if(isset($filters["account_officer"]) && $filters["account_officer"]){
+            $accOfficers = $accOfficers->where(["ao_id"=>$filters["account_officer"]]);
+        }
+        $accOfficers = $accOfficers->get()->toArray();
+        $centers = Center::where(["status"=>"active"]);
+        if(isset($filters["center"]) && $filters["center"]){
+            $centers = $centers->where(["center_id"=>$filters["center"]]);
+            $centers = $centers->get()->toArray();  
+        }else{
+            $centers = $centers->get()->toArray();  
+            $centers[] = ["center"=>"No Center", "center_id" => "No Center"];
+        }
+        $products = Product::where(["status"=>"active"]);
+        if(isset($filters["product"]) && $filters["product"]){
+            $products = $products->where(["product_id"=>$filters["product"]]);
+        }
+        $products = $products->get()->toArray();
+        foreach ($accOfficers as $aoKey => $aoValue) {
+            foreach ($products as $prodKey => $prodValue) {
+                $accOfficers[$aoKey]["products"][$prodValue["product_name"]] = $prodValue;
+                foreach ($centers as $centKey => $centVal) {
+                    $accOfficers[$aoKey]["products"][$prodValue["product_name"]]["centers"][$centVal["center"]] = $centVal;
+                    $filtersCopy = $filters;
+                    $filtersCopy["account_officer"] = $aoValue["ao_id"];
+                    $filtersCopy["product"] = $prodValue["product_id"];
+                    $filtersCopy["center"] = $centVal["center_id"];
+                    $accounts = $this->getLoanAccounts($filtersCopy);
+                    foreach ($accounts as $accKey => $account) {
+                        $tranDate = new EndTransaction();
+                        $transactionDate = $tranDate->getTransactionDate($account->branch->branch_id)->date_end;
+                        $accOfficers[$aoKey]["products"][$prodValue["product_name"]]["centers"][$centVal["center"]] = [
+                            "borrower_name" => $account->borrower->fullname(),
+                            "account_num" => $account->account_num,
+                            "date_loan" => $account->date_release,
+                            "maturity" => $account->due_date,
+                            "amount_loan" => $account->loan_amount,
+                            "amount_due" => $account->outstandingBalance($account->loan_account_id),
+                            "principal_balance" => $account->remainingBalance()["principal"]["balance"],
+                            "interest_balance" => $account->remainingBalance()["interest"]["balance"],
+                            "amortization" => $account->amortization()["principal"] + $account->amortization()["interest"],
+                            "type" => $account->payment_mode,
+                            "loan_status" => $account->loan_status,
+                            "status" => $account->payment_status
+                        ];
+                    }
+                }
+            }
+        }
+        return $accOfficers;
+    }
+
     public function cancelledRepaymentByClient($filters = []) {
 
         $payments = Payment::join('loan_accounts', 'payment.loan_account_id', '=', 'loan_accounts.loan_account_id')
