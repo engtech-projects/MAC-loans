@@ -699,6 +699,33 @@ export default {
 						advance_principal:'',
 					}
 				},
+				remainingBalance:{
+					memo:{
+						debit:0,
+						credit:0,
+						balance:0
+					},
+					principal:{
+						debit:0,
+						credit:0,
+						balance:0
+					},
+					interest:{
+						debit:0,
+						credit:0,
+						balance:0
+					},
+					pdi:{
+						debit:0,
+						credit:0,
+						balance:0
+					},
+					penalty:{
+						debit:0,
+						credit:0,
+						balance:0
+					}
+				}
 			},
 			payment:{
 				payment_id:null,
@@ -850,6 +877,33 @@ export default {
 						advance_interest:'',
 						short_principal:'',
 						advance_principal:'',
+					}
+				},
+				remainingBalance:{
+					memo:{
+						debit:0,
+						credit:0,
+						balance:0
+					},
+					principal:{
+						debit:0,
+						credit:0,
+						balance:0
+					},
+					interest:{
+						debit:0,
+						credit:0,
+						balance:0
+					},
+					pdi:{
+						debit:0,
+						credit:0,
+						balance:0
+					},
+					penalty:{
+						debit:0,
+						credit:0,
+						balance:0
 					}
 				}
 			}
@@ -1125,10 +1179,10 @@ export default {
 			return this.payment.advance_principal + this.payment.advance_interest + this.payment.over_payment;
 		},
 		outstandingPrincipal:function(){
-			return this.loanAccount.current_amortization.principal_balance + this.duePrincipal - this.excessAdvancePrincipal;
+			return this.loanAccount.remainingBalance.principal.balance;
 		},
 		outstandingInterest:function(){
-			return this.loanAccount.current_amortization.interest_balance + this.dueInterest - this.excessAdvanceInterest;
+			return this.loanAccount.remainingBalance.interest.balance;
 		},
 		outstandingSurcharge: function(){
 			return this.duePdi + this.duePenalty;
@@ -1137,10 +1191,10 @@ export default {
 			return this.outstandingPrincipal + this.outstandingInterest + this.outstandingSurcharge;
 		},
 		outstandingPrincipalRemaining:function(){
-			return this.loanAccount.current_amortization.principal_balance + this.duePrincipal - this.payment.principal - this.excessAdvancePrincipal;
+			return this.loanAccount.remainingBalance.principal.balance - this.payment.principal;
 		},
 		outstandingInterestRemaining:function(){
-			return this.outstandingInterest - this.payment.interest - this.rebatesApplied;
+			return this.loanAccount.remainingBalance.interest.balance - this.payment.interest - this.rebatesApplied;
 		},
 		outstandingSurchargeRemaining: function(){
 			return this.duePdi + this.duePenalty - this.payment.penalty - this.payment.pdi;
