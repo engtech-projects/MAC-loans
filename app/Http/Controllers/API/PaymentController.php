@@ -18,7 +18,7 @@ use Illuminate\Support\Str;
 
 class PaymentController extends BaseController
 {
-    
+
 	/**
      * Display a listing of the resource.
      */
@@ -56,8 +56,8 @@ class PaymentController extends BaseController
 
         $payment = new Payment();
 
-        return $this->sendResponse( 
-            PaymentLoanAccountResource::collection($payment->overridePaymentAccounts($filters)), 
+        return $this->sendResponse(
+            PaymentLoanAccountResource::collection($payment->overridePaymentAccounts($filters)),
             'Payments'
         );
     }
@@ -89,7 +89,7 @@ class PaymentController extends BaseController
             $payment->save();
 
             # update amortization
-            if( $payment->total_payable > $payment->amount_applied ){
+            if( $amortization->principal_balance > $loanAccount->remainingBalance()["principal"]["balance"] && $amortization->interest_balance > $loanAccount->remainingBalance()["interest"]["balance"] ){
                 $tranDate = new EndTransaction();
                 $currentDay = Carbon::createFromFormat('Y-m-d', $tranDate->getTransactionDate($payment->branch_id)->date_end);
                 $schedDate = Carbon::createFromFormat('Y-m-d', $amortization->amortization_date);
@@ -97,7 +97,7 @@ class PaymentController extends BaseController
                 if( $currentDay->lt($schedDate) ){
                     $amortization->status = 'open';
                 }else{
-                    $amortization->status = 'delinquent';    
+                    $amortization->status = 'delinquent';
                 }
                 // $loanAccount->payment_status = 'delinquent';
                 // Amortization::find($payment->amortization_id)->update([ 'status' => 'delinquent' ]);
@@ -137,7 +137,7 @@ class PaymentController extends BaseController
         if( count($list) > 0 ){
             return $this->sendResponse(PaymentLoanAccountResource::collection($list), 'Payments');
         }
-        
+
         return false;
     }
 
@@ -150,7 +150,7 @@ class PaymentController extends BaseController
     }
 
     public function update(Request $request, Payment $payment) {
-        
+
         $payment->fill($request->input());
         $payment->save();
 
@@ -177,7 +177,7 @@ class PaymentController extends BaseController
 
             return $this->sendResponse(new PaymentResource($payment), 'Payment Cancelled.');
         }
-        
+
         return $this->sendResponse(new PaymentResource($payment), 'Payment Updated.');
     }
 
@@ -234,9 +234,9 @@ class PaymentController extends BaseController
             $borrower = Borrower::find($account->borrower_id);
             $account->borrower->photo = $borrower->getPhoto();
             $payment->account = $account;
-            
+
         }
-        
+
         return $payments;
     }
 }

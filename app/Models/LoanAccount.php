@@ -380,7 +380,7 @@ class LoanAccount extends Model
          $amortization->short_penalty = $amortization->delinquent['penalty'];
          // check if current amortization is paid partially.
          $isPaid = $this->getPayment($this->loan_account_id, $amortization->id)->last();
-         if( $isPaid ){
+         if( $isPaid && ($isPaid->short_principal || $isPaid->short_interest) ){
 
             $amortization->total = $amortization->total - ($amortization->principal + $amortization->interest);
             $amortization->principal = 0;

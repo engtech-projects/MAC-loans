@@ -1005,10 +1005,10 @@ export default {
 				}
 				this.payment.short_principal = this.duePrincipal - this.payment.principal;
 				// advance principal
-				if(amount + this.excessAdvancePrincipal > this.loanAccount.current_amortization.principal_balance){
-					this.payment.principal += this.loanAccount.current_amortization.principal_balance - this.excessAdvancePrincipal;
-					this.payment.advance_principal = this.loanAccount.current_amortization.principal_balance;
-					amount -= this.loanAccount.current_amortization.principal_balance - this.excessAdvancePrincipal;
+				if(amount + this.excessAdvancePrincipal > (this.loanAccount.remainingBalance.principal.balance - this.duePrincipal)){
+					this.payment.principal += (this.loanAccount.remainingBalance.principal.balance - this.duePrincipal) - this.excessAdvancePrincipal;
+					this.payment.advance_principal = (this.loanAccount.remainingBalance.principal.balance - this.duePrincipal);
+					amount -= (this.loanAccount.remainingBalance.principal.balance - this.duePrincipal) - this.excessAdvancePrincipal;
 				}else{
 					this.payment.principal += amount;
 					this.payment.advance_principal = amount + this.excessAdvancePrincipal;
@@ -1016,10 +1016,10 @@ export default {
 				}
 				// advance interest
 				amount += this.excessDueRebates;
-				if(amount + this.excessAdvanceInterest > this.loanAccount.current_amortization.interest_balance){
-					this.payment.interest += this.loanAccount.current_amortization.interest_balance - this.excessAdvanceInterest;
-					this.payment.advance_interest = this.loanAccount.current_amortization.interest_balance;
-					amount -= this.loanAccount.current_amortization.interest_balance - this.excessAdvanceInterest;
+				if(amount + this.excessAdvanceInterest > (this.loanAccount.remainingBalance.interest.balance - this.dueInterest)){
+					this.payment.interest += (this.loanAccount.remainingBalance.interest.balance - this.dueInterest) - this.excessAdvanceInterest;
+					this.payment.advance_interest = (this.loanAccount.remainingBalance.interest.balance - this.dueInterest);
+					amount -= (this.loanAccount.remainingBalance.interest.balance - this.dueInterest) - this.excessAdvanceInterest;
 				}else{
 					this.payment.interest += amount;
 					this.payment.advance_interest = amount + this.excessAdvanceInterest;

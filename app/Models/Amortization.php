@@ -15,13 +15,13 @@ class Amortization extends Model
     protected $primaryKey = 'id';
 
     protected $fillable = [
-    	'loan_account_id', 
-    	'amortization_date', 
+    	'loan_account_id',
+    	'amortization_date',
     	'principal',
-    	'interest', 
-    	'total', 
-    	'principal_balance', 
-    	'interest_balance', 
+    	'interest',
+    	'total',
+    	'principal_balance',
+    	'interest_balance',
     	'status'
     ];
 
@@ -67,7 +67,7 @@ class Amortization extends Model
             $days = 30;
         }
 
-        for ($i=0; $i < $installments; $i++) { 
+        for ($i=0; $i < $installments; $i++) {
 
             $amortizationDate = $amortizationDateStart->addDays($days);
             $total = $principal + $interest;
@@ -139,7 +139,7 @@ class Amortization extends Model
         $dateSched =  $this->getSpecialSched($amortizationDateStart);
         $schedules = $this->buildSched($dateSched, $installments);
 
-        for ($i=0; $i < $installments; $i++) { 
+        for ($i=0; $i < $installments; $i++) {
 
             $total = $principal + $interest;
             // principal balance
@@ -183,7 +183,7 @@ class Amortization extends Model
         $second = $dateRelease->addDays(12)->toDateString();
 
         return [ Carbon::createFromFormat('Y-m-d', $first) , Carbon::createFromFormat('Y-m-d', $second) ];
-    }    
+    }
 
     public function addMonthToSched(Carbon $schedDate, $initial = false, $initialDay) {
 
@@ -219,7 +219,7 @@ class Amortization extends Model
             return $schedDate->toDateString();
         }
 
-        $month = $schedDate->month; 
+        $month = $schedDate->month;
         $day = $schedDate->day;
 
         if( $month == 1 && $day > 28 ){
@@ -256,7 +256,7 @@ class Amortization extends Model
             );
             Amortization::create($data);
         }
-    
+
         return $amortizationSched;
     }
 }
