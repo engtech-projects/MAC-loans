@@ -89,7 +89,7 @@ class PaymentController extends BaseController
             $payment->save();
 
             # update amortization
-            if( $amortization->principal_balance > $loanAccount->remainingBalance()["principal"]["balance"] && $amortization->interest_balance > $loanAccount->remainingBalance()["interest"]["balance"] ){
+            if( $amortization->principal_balance < $loanAccount->remainingBalance()["principal"]["balance"] || $amortization->interest_balance < $loanAccount->remainingBalance()["interest"]["balance"] ){
                 $tranDate = new EndTransaction();
                 $currentDay = Carbon::createFromFormat('Y-m-d', $tranDate->getTransactionDate($payment->branch_id)->date_end);
                 $schedDate = Carbon::createFromFormat('Y-m-d', $amortization->amortization_date);
