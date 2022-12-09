@@ -392,12 +392,23 @@ class LoanAccount extends Model
          }
          $currentDay = Carbon::createFromFormat('Y-m-d', $transactionDateNow);
          $dateSched = Carbon::createFromFormat('Y-m-d', $amortization->amortization_date);
+         $dateSchedPension = Carbon::createFromFormat('Y-m-d', $amortization->amortization_date)->startOfMonth();
          $dayDiff = $dateSched->diffInDays($currentDay, false);
+         $dayDiffPension = $dateSchedPension->diffInDays($currentDay, false);
          $penaltyMissed = $amortization->delinquent['missed'];
          $amortization->day_late = $dayDiff;
-         if($dayDiff < 0 && $this->product->product_name != "Pension Loan"){
-            $amortization->principal = 0;
-            $amortization->interest = 0;
+         if($this->getPaymentTotal($this->loan_account_id)){ // condition that checks if not the first payment
+            if($this->product->product_name != "Pension Loan"){
+               if($dayDiff < 0){
+                  $amortization->principal = 0;
+                  $amortization->interest = 0;
+               }
+            }else{
+               if($dayDiffPension < 0){
+                  $amortization->principal = 0;
+                  $amortization->interest = 0;
+               }
+            }
          }
          if($dayDiff > 0 && !$isPaid && $amortization->advance_principal < $amortization->schedule_principal){
             Amortization::find($amortization->id)->update(['status' => 'delinquent']);
