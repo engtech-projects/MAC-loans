@@ -20,7 +20,7 @@ class Reports extends Model
     public function getLoanAccounts($filters = []) {
 
         $branch = Branch::find($filters['branch_id']);
-        
+
 
         $loanAccount = Loanaccount::where([ 'loan_accounts.status' => 'released', 'branch_code' => $branch->branch_code ]);
 
@@ -36,7 +36,7 @@ class Reports extends Model
             $loanAccount->whereDate('loan_accounts.due_date', '<=', $filters['due_to']);
         }
 
-    	
+
     	if( isset($filters['product_id']) && $filters['product_id'] ){
     		$loanAccount->where([ 'loan_accounts.product_id' => $filters['product_id'] ]);
     	}
@@ -49,7 +49,7 @@ class Reports extends Model
             if($filters['center'] == "No Center"){
                 $loanAccount->whereNull('loan_accounts.center_id');
             }else{
-                $loanAccount->where([ 'loan_accounts.center_id' => $filters['center'] ]);   
+                $loanAccount->where([ 'loan_accounts.center_id' => $filters['center'] ]);
             }
     	}
 
@@ -74,20 +74,20 @@ class Reports extends Model
 			'loan_accounts.account_num',
 			'loan_accounts.date_release',
 			'loan_accounts.terms',
-			'loan_accounts.loan_amount', 
-			'loan_accounts.interest_amount', 
-			'loan_accounts.document_stamp', 
-			'loan_accounts.filing_fee', 
-			'loan_accounts.insurance', 
-			'loan_accounts.notarial_fee', 
-			'loan_accounts.prepaid_interest', 
-			'loan_accounts.affidavit_fee', 
-			'loan_accounts.total_deduction', 
-			'loan_accounts.net_proceeds', 
+			'loan_accounts.loan_amount',
+			'loan_accounts.interest_amount',
+			'loan_accounts.document_stamp',
+			'loan_accounts.filing_fee',
+			'loan_accounts.insurance',
+			'loan_accounts.notarial_fee',
+			'loan_accounts.prepaid_interest',
+			'loan_accounts.affidavit_fee',
+			'loan_accounts.total_deduction',
+			'loan_accounts.net_proceeds',
 			'loan_accounts.borrower_id',
 			'loan_accounts.product_id',
-			'loan_accounts.ao_id', 
-			'loan_accounts.center_id', 
+			'loan_accounts.ao_id',
+			'loan_accounts.center_id',
 			'loan_accounts.branch_code',
             'loan_accounts.release_type',
             'loan_accounts.cycle_no',
@@ -135,11 +135,11 @@ class Reports extends Model
         // }else{
             $products = Product::where([ 'status' => 'active' ])->get(['product_id', 'product_code', 'product_name', 'interest_rate']);
         // }
-        
+
         $paymentTypes = config('enums.payment_type');
 
         $data = [];
-     
+
 
         foreach ($products as $key => $product) {
 
@@ -169,7 +169,7 @@ class Reports extends Model
 
             $accounts = $this->getLoanAccounts($filters);
             $payments = $this->getPayments($filters);
-           
+
             if( count($accounts) ){
 
                 foreach ($accounts as $account) {
@@ -196,18 +196,18 @@ class Reports extends Model
                 }
             }
 
-        
+
             if( count($payments) ) {
 
                 foreach ($payments as $k => $payment) {
-                    
+
                     foreach ($paymentTypes as $type) {
 
                         if( $payment->payment_type == $type ){
 
                             if( !isset($data[$key]['payment'][$type]) ){
                                 $data[$key]['payment'][$type] = [
-                                   
+
                                     'principal' => 0,
                                     'interest' => 0,
                                     'pdi' => 0,
@@ -215,8 +215,7 @@ class Reports extends Model
                                     'discount' => 0,
                                     'total_payment' => 0,
                                     'net_int' => 0,
-                                    'vat' => 0,
-                                    'memo_type' => ''
+                                    'vat' => 0
                                 ];
                             }
 
@@ -228,7 +227,12 @@ class Reports extends Model
                             $data[$key]['payment'][$type]['total_payment'] += $payment->amount_applied;
                             $data[$key]['payment'][$type]['net_int'] += null;
                             $data[$key]['payment'][$type]['vat'] += $payment->vat;
-                            $data[$key]['payment'][$type]['memo_type'] = $payment->memo_type;
+                            if($payment->memo_type){
+                                if(!isset($data[$key]['payment'][$type]["memo"][$payment->memo_type])){
+                                    $data[$key]['payment'][$type]["memo"][$payment->memo_type] = 0;
+                                }
+                                $data[$key]['payment'][$type]["memo"][$payment->memo_type] += $payment->amount_applied;
+                            }
                         }
 
                     }
@@ -247,8 +251,8 @@ class Reports extends Model
         $payments = $this->getPayments($filters);
 
         foreach ($accounts as $account) {
-            
-            $data['release'][] = [ 
+
+            $data['release'][] = [
                 'cycle_no' => $account->cycle_no,
                 'product_id' => $account->product_id,
                 'account_num' => $account->account_num,
@@ -277,7 +281,7 @@ class Reports extends Model
         }
 
         foreach ($payments as $payment) {
-            
+
             $borrower = LoanAccount::find($payment->loan_account_id);
 
             $data['collection'][] = [
@@ -299,8 +303,8 @@ class Reports extends Model
         }
 
         // foreach ($accounts as $account) {
-            
-        //     $client['summary'][] = [ 
+
+        //     $client['summary'][] = [
         //                 'account_num' => $account->account_num,
         //                 'borrower' => $account->borrower->fullname() ,
         //                 'date_loan' => $account->date_release,
@@ -367,7 +371,7 @@ class Reports extends Model
                     $filters[$type] = $filters['spec'];
                 }
 
-                
+
     			return $this->getReleaseByClient($filters, false);
     			break;
 
@@ -390,7 +394,7 @@ class Reports extends Model
             case 'insurance':
             return $this->releaseInsurance($filters);
                 break;
-    		
+
     		default:
     			# code...
     			break;
@@ -401,7 +405,7 @@ class Reports extends Model
         $accounts = $this->getLoanAccounts($filters);
         $releaseSummary = [];
         foreach ($accounts as $key => $value) {
-            
+
             $releaseSummary[$key]['cycle_no'] = $value->cycle_no;
             $releaseSummary[$key]['term'] = $value->terms;
             $releaseSummary[$key]['loan_amount'] = $value->loan_amount;
@@ -409,8 +413,8 @@ class Reports extends Model
         }
 
         return $releaseSummary;
-    }   
-    
+    }
+
     public function getReleaseByAccountOfficer($filters) {
 
         if( $filters['account_officer'] == 'all' ){
@@ -418,10 +422,10 @@ class Reports extends Model
         }else{
             $officers = AccountOfficer::where(['status' => 'active', 'ao_id' => $filters['account_officer'] ])->get();
         }
-        
+
         // if( $filters['type'] != 'all' ){
         //     $aoId = $filters['type'];
-        //     $officers = AccountOfficer::where(['status' => 'active', 'ao_id' => $aoId ])->get()->toArray();    
+        //     $officers = AccountOfficer::where(['status' => 'active', 'ao_id' => $aoId ])->get()->toArray();
         // }
 
         $products = Product::where([ 'status' => 'active' ])->get(['product_id', 'product_code', 'product_name', 'interest_rate']);
@@ -509,7 +513,7 @@ class Reports extends Model
 
     /* start repayment report */
     public function repaymentByProduct($filters = []) {
-       
+
         $products = Product::where([ 'status' => 'active' ])->get(['product_id', 'product_code', 'product_name', 'interest_rate']);
         $paymentTypes = config('enums.payment_type');
 
@@ -518,7 +522,7 @@ class Reports extends Model
         $memo = [];
 
         foreach ($products as $key => $value) {
-            
+
             $data[$key]['reference'] = $value['product_code'] . '-' . $value['product_name'];
 
             $filters['product_id'] = $value->product_id;
@@ -528,7 +532,7 @@ class Reports extends Model
             if( count($payments) ) {
 
                 foreach ($payments as $k => $payment) {
-                    
+
                     foreach ($paymentTypes as $type) {
 
                         if( $payment->payment_type == $type ){
@@ -613,7 +617,7 @@ class Reports extends Model
         $branch = Branch::find($filters['branch_id']);
 
         $accounts = LoanAccount::join('center', 'center.center_id', '=', 'loan_accounts.center_id');
-        
+
         if( isset($filters['account_officer']) && $filters['account_officer'] ){
             $accounts->where([ 'loan_accounts.ao_id' => $filters['account_officer'] ]);
         }
@@ -632,13 +636,13 @@ class Reports extends Model
         if( count($accounts) > 0 ) {
 
             foreach ($accounts as $key => $value) {
-                
+
                 $loanAccount = LoanAccount::find($value['loan_account_id']);
                 $currentAmortization = $loanAccount->getCurrentAmortization();
-                
+
                 $borrower = Borrower::find($value['borrower_id']);
                 $data[$key]['center'] = $value->center_id;
-                $data[$key]['account_officer'] = $value->ao_id; 
+                $data[$key]['account_officer'] = $value->ao_id;
                 $data[$key]['client'] = $borrower->fullname();
                 $data[$key]['date_loan'] = $value['date_release'];
                 $data[$key]['maturity_date'] = $value['due_date'];
@@ -693,7 +697,7 @@ class Reports extends Model
                     $tempProd = $prodValue;
                     $allAOProd = LoanAccount::where([
                         "status"=>LoanAccount::STATUS_RELEASED,
-                        "ao_id"=>$aoValue["ao_id"], 
+                        "ao_id"=>$aoValue["ao_id"],
                         "product_id"=>$prodValue["product_id"]
                     ])
                     ->whereNotIn("loan_status",[LoanAccount::LOAN_PAID])
@@ -807,9 +811,9 @@ class Reports extends Model
         $centers = Center::where(["status"=>"active"]);
         if(isset($filters["center"]) && $filters["center"]){
             $centers = $centers->where(["center_id"=>$filters["center"]]);
-            $centers = $centers->get()->toArray();  
+            $centers = $centers->get()->toArray();
         }else{
-            $centers = $centers->get()->toArray();  
+            $centers = $centers->get()->toArray();
             $centers[] = ["center"=>"No Center", "center_id" => "No Center"];
         }
         $products = Product::where(["status"=>"active"]);

@@ -83,7 +83,7 @@ class LoanAccount extends Model
          $series = explode('-', $num);
          $identifier = (int)$series[2] + 1;
       }
-      
+
       return $branchCode . '-' .$productCode . '-' . str_pad($identifier, 7, '0', STR_PAD_LEFT);
    }
 
@@ -395,6 +395,10 @@ class LoanAccount extends Model
          $dayDiff = $dateSched->diffInDays($currentDay, false);
          $penaltyMissed = $amortization->delinquent['missed'];
          $amortization->day_late = $dayDiff;
+         if($dayDiff < 0 && $this->product->product_name != "Pension Loan"){
+            $amortization->principal = 0;
+            $amortization->interest = 0;
+         }
          if($dayDiff > 0 && !$isPaid && $amortization->advance_principal < $amortization->schedule_principal){
             Amortization::find($amortization->id)->update(['status' => 'delinquent']);
             $amortization->delinquent = $this->getDelinquent($this->loan_account_id, $amortization->id, $amortization->advance_principal);
@@ -673,7 +677,7 @@ class LoanAccount extends Model
             }
          }
 
-         
+
       }
 
       return $missedDays;
