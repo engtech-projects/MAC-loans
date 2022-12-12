@@ -1007,7 +1007,7 @@ export default {
 				// advance principal
 				if(amount > (this.loanAccount.remainingBalance.principal.balance - this.duePrincipal)){
 					this.payment.principal += (this.loanAccount.remainingBalance.principal.balance - this.duePrincipal);
-					this.payment.advance_principal = (this.loanAccount.remainingBalance.principal.balance - this.duePrincipal);
+					this.payment.advance_principal = this.loanAccount.current_amortization.principal_balance;
 					amount -= (this.loanAccount.remainingBalance.principal.balance - this.duePrincipal);
 				}else{
 					this.payment.principal += amount;
@@ -1018,7 +1018,7 @@ export default {
 				amount += this.excessDueRebates;
 				if(amount > (this.loanAccount.remainingBalance.interest.balance - this.dueInterest)){
 					this.payment.interest += (this.loanAccount.remainingBalance.interest.balance - this.dueInterest);
-					this.payment.advance_interest = (this.loanAccount.remainingBalance.interest.balance - this.dueInterest);
+					this.payment.advance_interest = this.loanAccount.current_amortization.interest;
 					amount -= (this.loanAccount.remainingBalance.interest.balance - this.dueInterest);
 				}else{
 					this.payment.interest += amount;
@@ -1226,9 +1226,7 @@ export default {
 			}
 		},
 		'payment.amount_paid':function(newValue){
-			if(newValue != ''){
-				this.distribute();
-			}
+			this.distribute();
 		},
 		'loanAccount.loan_account_id':function(newValue){
 			this.payment.total_payable = this.totalDue;
