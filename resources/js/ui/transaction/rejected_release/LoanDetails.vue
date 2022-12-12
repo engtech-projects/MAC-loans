@@ -8,7 +8,7 @@
 				<div style="flex:18" class="mr-16"></div>
 				<div class="form-group mb-10" style="flex:7">
 					<label for="dateRelease" class="form-label">Date Release</label>
-					<input :value="dateToYMD(new Date)" disabled type="date" class="form-control form-input " id="dateRelease">
+					<input :value="transactionDate.date_end" disabled type="date" class="form-control form-input " id="dateRelease">
 				</div>
 			</div>
 			<div class="d-flex flex-row">
@@ -254,7 +254,7 @@
 
 <script>
 export default {
-	props:['token', 'loandetails', 'borrower', 'borrowerbday', 'saveloandetails'],
+	props:['token', 'loandetails', 'borrower', 'borrowerbday', 'saveloandetails','transactionDate'],
 	data(){
 		return {
 			baseUrl:this.baseURL(),
@@ -279,7 +279,7 @@ export default {
 				co_borrower_id_type : '',
 				co_borrower_id_number : '',
 				co_borrower_id_date_issued : '',
-				co_maker_name : '',  
+				co_maker_name : '',
 				co_maker_address : '',
 				co_maker_id_type : '',
 				co_maker_id_number : '',
@@ -357,7 +357,7 @@ export default {
 		submit:function(){
 			document.getElementById('warningBtn').click();
 		},
-		
+
 		notify:function(title, text, type){
 			this.$notify({
 				group: 'foo',

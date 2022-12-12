@@ -74,7 +74,7 @@
                                     " " +
                                     p.loan_details.borrower.lastname
                                 }}</a>
-                               
+
                                 <i
                                     v-if="!canOverride([p])"
                                     class="fa fa-exclamation-circle text-red relative overrideTooltip"
@@ -285,6 +285,7 @@
                 :token="token"
                 @reloadPayments="reloadPayments"
 				:candelete="candelete"
+                :transactionDate="transactionDate"
             ></overridepayment-details>
         </div>
         <overridepayment-view
@@ -339,6 +340,11 @@ export default {
     props: ["token", "pbranch", "candelete"],
     data() {
         return {
+			transactionDate: {
+				branch_id: this.pbranch,
+				status: 'closed',
+				date_end: '',
+			},
             paidPayments: [],
             payments: [],
             paymentsClone: [],
@@ -367,6 +373,21 @@ export default {
         };
     },
     methods: {
+		fetchTransactionDate:function(){
+			axios.get(this.baseURL() + 'api/eod/eodtransaction/'+this.pbranch, {
+			headers: {
+				'Authorization': 'Bearer ' + this.token,
+					'Content-Type': 'application/json',
+					'Accept': 'application/json'
+				}
+			})
+			.then(function (response) {
+				this.transactionDate = response.data.data;
+			}.bind(this))
+			.catch(function (error) {
+				console.log(error);
+			}.bind(this));
+		},
         async openPayments() {
             var data = this.preference;
             data.branch_id = this.pbranch;
@@ -786,6 +807,7 @@ export default {
     },
     mounted() {
         // this.fetchPayments();
+        this.fetchTransactionDate();
         this.overridePaymentDates();
         this.openPayments(this.preference);
         this.todaysPaidPayments();

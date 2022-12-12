@@ -12,7 +12,7 @@
 						<div style="flex:4"></div>
 						<div class="form-group mb-10" style="flex: 5">
 							<label for="transactionDate" class="form-label">Transaction Date</label>
-							<input disabled :value="this.dateToYMD(new Date)" type="date" class="form-control form-input text-right" id="transactionDate">
+							<input disabled :value="transactionDate.date_end" type="date" class="form-control form-input text-right" id="transactionDate">
 						</div>
 					</div>
 					<div class="form-group mb-5" style="flex: 5">
@@ -180,7 +180,7 @@
 
 <script>
 export default {
-	props:['ppayment', 'token', 'candelete'],
+	props:['ppayment', 'token', 'candelete','transactionDate'],
 	methods:{
 		override:function(){
 			axios.post(this.baseURL() + 'api/payment/override',[this.ppayment],{
@@ -241,10 +241,10 @@ export default {
 			return this.ppayment.over_payment?this.ppayment.over_payment:0;
 		}
 	}
-	
+
 }
 </script>
 
 <style lang="scss" scoped>
-	
+
 </style>

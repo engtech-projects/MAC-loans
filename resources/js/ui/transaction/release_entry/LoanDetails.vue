@@ -223,7 +223,7 @@
 			</div>
 			<div :hidden="!isComputed">
 				<label>Press compute to show Deductions</label>
-				
+
 			</div>
 			<!-- <div class="d-flex align-items-center" v-if="memoChecked">
 				<span class="mr-16 font-20" style="margin-top:10px">Account # and Balance</span>
@@ -319,7 +319,7 @@
 			<!-- <div style="flex:22"></div> -->
 		</div>
 	</div>
-	
+
 	</form>
 </template>
 
@@ -336,7 +336,8 @@ export default {
 		'releasetype',
 		'pbranch',
 		'loanaccounts',
-		'prejected'
+		'prejected',
+		'transactionDate'
 	],
 	data(){
 		return {
@@ -618,7 +619,7 @@ export default {
 				this.computeDeduction();
 				this.deductionComputation += 1;
 			}
-			
+
 		},
 		pay:function(accountId){
 			if(this.loanaccount.loan_account_id){
@@ -638,7 +639,8 @@ export default {
 					penalty:0,
 					total_payable: 0,
 					amount_applied: this.loanaccount.remainingBalance.principal.balance + (this.loanaccount.remainingBalance.interest.balance - this.loanaccount.remainingBalance.rebates.credit),
-					amortization_id: this.loanaccount.amortization_id
+					amortization_id: this.loanaccount.amortization_id,
+					transaction_date: this.transactionDate.date_end
 				}
 				axios.post(this.baseURL() + 'api/payment', payment, {
 				headers: {

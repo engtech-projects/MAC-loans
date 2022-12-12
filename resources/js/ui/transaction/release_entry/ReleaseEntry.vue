@@ -50,7 +50,14 @@
 						</ul>
 						<div class="tab-content" id="custom-content-below-tabContent">
 							<div class="tab-pane fade show active" id="custom-content-below-borrowerinfo" role="tabpanel" aria-labelledby="custom-content-below-home-tab">
-								<borrowers-info :idtype="idType" :loan_id="loanDetails.loan_account_id" @nextBorrower="nextBorrower" @borrowerCleared="clearData.borrower=0" @savedInfo="savedInfo" @saveBorrower="saveInfo=''" @clearBorrowerInfo="resetBorrower" :clear="clearData.borrower" :token="token" :pborrower="borrower" :psave="saveInfo"></borrowers-info>
+								<borrowers-info
+								:idtype="idType"
+								:loan_id="loanDetails.loan_account_id" @nextBorrower="nextBorrower" @borrowerCleared="clearData.borrower=0" @savedInfo="savedInfo" @saveBorrower="saveInfo=''" @clearBorrowerInfo="resetBorrower"
+								:clear="clearData.borrower"
+								:token="token"
+								:pborrower="borrower"
+								:psave="saveInfo"
+								:transactionDate="transactionDate"></borrowers-info>
 							</div>
 
 
@@ -59,7 +66,20 @@
 
 
 							<div class="tab-pane fade" id="custom-content-below-loaddetails" role="tabpanel" aria-labelledby="custom-content-below-messages-tab">
-								<loan-details :prejected="rejectid" :loanaccounts="pendingLoanAccounts" :releasetype="releasetype" :idtype="idtype" :saveloandetails="saveLoanDetails" :borrowerswitch="borrower.borrower_id" :borrowerbday="borrowerBirthdate" :borrower="bborrower" :token="token" :loandetails="loanDetails" :pbranch="pbranch"></loan-details>
+								<loan-details
+								:prejected="rejectid"
+								:loanaccounts="pendingLoanAccounts"
+								:releasetype="releasetype"
+								:idtype="idtype"
+								:saveloandetails="saveLoanDetails"
+								:borrowerswitch="borrower.borrower_id"
+								:borrowerbday="borrowerBirthdate"
+								:borrower="bborrower"
+								:token="token"
+								:loandetails="loanDetails"
+								:pbranch="pbranch"
+								:transactionDate="transactionDate"
+								></loan-details>
 							</div>
 
 
@@ -1133,7 +1153,7 @@
 			resetBorrower:function(){
 				this.borrower = {
 					borrower_id: null,
-					date_registered: this.dateToYMD(new Date()),
+					date_registered: this.transactionDate.date_end,
 					borrower_num:'',
 					firstname:'',
 					lastname:'',
@@ -1160,7 +1180,7 @@
 					householdMembers : [],
 					outstandingObligations : [],
 					loanAccounts:[],
-					created_at: this.dateToYMD(new Date()),
+					created_at: this.transactionDate.date_end,
 				};
 			},
 

@@ -35,7 +35,7 @@
 
 
 						<div class="tab-pane fade" id="custom-content-below-loaddetails" role="tabpanel" aria-labelledby="custom-content-below-messages-tab">
-							<rejected-loan-details @save="save" :token="token" :loandetails="rejectedAccount"></rejected-loan-details>
+							<rejected-loan-details @save="save" :token="token" :loandetails="rejectedAccount" :transactionDate="transactionDate"></rejected-loan-details>
 						</div>
 
 
@@ -97,7 +97,7 @@
 							<div class="tab-pane fade show active" id="dacion-en-pago" role="tabpanel" aria-labelledby="custom-content-below-home-tab">
 								<img :src="baseUrl+'/img/company_header.png'" style="width:100%" class="mb-16" alt="Company Header">
 								<div class="d-flex flex-column font-md" style="padding:0 35px;">
-									
+
 									<div class="d-flex flex-column title align-items-center mb-24">
 										<span class="font-26 text-bold text-primary-dark lh-1">DACION EN PAGO</span>
 									</div>
@@ -111,10 +111,10 @@
 										</p>
 										<p>WITNESSETH:</p>
 										<p>
-											That the FIRST PARTY hereby acknowledges to have been indebted to the SECOND PARTY in the sum of THIRTEEN THOUSAND PESOS (P13,000.00). Philippines currency, as of this date, since, he/she could no longer paid it in full by way of cash, hence, by presents the FIRST PARTY, voluntarily assign, transfer convey and set over unto the SECOND PARTY that certain PERSONAL property particularly describe as follows: 
+											That the FIRST PARTY hereby acknowledges to have been indebted to the SECOND PARTY in the sum of THIRTEEN THOUSAND PESOS (P13,000.00). Philippines currency, as of this date, since, he/she could no longer paid it in full by way of cash, hence, by presents the FIRST PARTY, voluntarily assign, transfer convey and set over unto the SECOND PARTY that certain PERSONAL property particularly describe as follows:
 										</p>
 										<p>
-											<span class="text-block">Description:</span> CR No.:283729891; Plate No.:1501-00000126137; Engine No.: KPY00E276322; Chassis No.: KPY00276400; Make: HONDA MOTOR WORLD, INC.; Series: CETI 25MSE; Body Type: MOTORCYCLE RED; XRM 125 DS 
+											<span class="text-block">Description:</span> CR No.:283729891; Plate No.:1501-00000126137; Engine No.: KPY00E276322; Chassis No.: KPY00276400; Make: HONDA MOTOR WORLD, INC.; Series: CETI 25MSE; Body Type: MOTORCYCLE RED; XRM 125 DS
 										</p>
 										<p>
 											<span class="text-block">of which the FIRST PARTY is registered owner, his/her property thereto being evidence by</span>
@@ -124,7 +124,7 @@
 											That the SECOND PARTY does hereby accept this assignment in payment of the total/partial obligation owing to him/her by the FIRST PARTY as above stated, (giving to the Second Party, however, the option to repurchase the above-describe property from the First Party for the sum of and after the date hereof, which right shall automatically be deemed cancelled, it not exercised within 15 days from the date hereof).
 										</p>
 										<p>
-											That by virtue of this presents, the indebtedness of FIRST PARTY as cited above is hereby paid and extinguished. 
+											That by virtue of this presents, the indebtedness of FIRST PARTY as cited above is hereby paid and extinguished.
 										</p>
 										<p>
 											IN WITNESS WHEREOF, the parties hereto have hereunto set their hands this_____________________________ at Butuan City, Philippines.
@@ -146,7 +146,7 @@
 										</div>
 
 										<p class="mb-64">
-											WITH MY MARITAL CONSENT: 
+											WITH MY MARITAL CONSENT:
 										</p>
 
 										<div class="d-flex flex-row align-items-end mb-36">
@@ -304,7 +304,7 @@
 														<span>01/01/00</span>
 													</div>
 												</div>
-												
+
 											</div>
 											<div class="flex-1"></div>
 										</div>
@@ -375,7 +375,7 @@
 		  </div>
 		</div>
 	</div>
-			
+
 	</div>
 </template>
 
@@ -384,6 +384,11 @@
 		props:['token', 'title', 'id'],
 		data(){
 			return {
+				transactionDate: {
+					branch_id: this.pbranch,
+					status: 'closed',
+					date_end: '',
+				},
 				rejectedAccounts:[],
 				baseUrl: this.baseURL(),
 				rejectedAccount:{
@@ -399,6 +404,21 @@
 			}
 		},
 		methods: {
+			fetchTransactionDate:function(){
+				axios.get(this.baseURL() + 'api/eod/eodtransaction/'+this.pbranch, {
+				headers: {
+					'Authorization': 'Bearer ' + this.token,
+						'Content-Type': 'application/json',
+						'Accept': 'application/json'
+					}
+				})
+				.then(function (response) {
+					this.transactionDate = response.data.data;
+				}.bind(this))
+				.catch(function (error) {
+					console.log(error);
+				}.bind(this));
+			},
 			fetchRejectedAccounts:function(){
 				axios.get(this.baseURL() + 'api/account/rejected/' + pbranch, {
 				headers: {
@@ -409,7 +429,7 @@
 				})
 				.then(function (response) {
 					this.rejectedAccounts = response.data.data;
-					
+
 					// console.log(response.data.data);
 					// this.setAccount;
 				}.bind(this))
@@ -453,11 +473,11 @@
 					console.log(error);
 				}.bind(this));
 			},
-			
+
 			navigate:function(tab){
 				document.getElementById(tab).click();
 			},
-			
+
 			nextCoborrower:function(data){
 				this.rejectedAccount = data;
 			},
@@ -492,7 +512,7 @@
 					co_borrower_id_type : '',
 					co_borrower_id_number : '',
 					co_borrower_id_date_issued : '',
-					co_maker_name : '',  
+					co_maker_name : '',
 					co_maker_address : '',
 					co_maker_id_type : '',
 					co_maker_id_number : '',
@@ -587,7 +607,7 @@
 				}.bind(this));
 			}
 		},
-        mounted() {	
+        mounted() {
 			this.fetchRejectedAccount();
 			this.fetchRejectedAccounts();
 			this.resetLoanDetails();

@@ -254,7 +254,7 @@
 				<div class="form-group mb-10 d-flex flex-column justify-content-end">
 					<button class="btn btn-success d-flex align-items-center" style="height:48px"><i class="fa fa-plus"></i></button>
 				</div>
-				
+
 			</div>
 			</form>
 		</section>
@@ -437,7 +437,7 @@
 
 <script>
     export default {
-		props:['token','pborrower', 'psave','clear','pclient','borrower_id', 'idtype', 'loan_id'],
+		props:['token','pborrower', 'psave','clear','pclient','borrower_id', 'idtype', 'loan_id', 'transactionDate'],
 		data(){
 			return {
 				baseUrl: this.baseURL(),
@@ -479,7 +479,7 @@
 					created_at: '',
 				},
 				data: {
-					outstandingObligations: { 
+					outstandingObligations: {
 						id: null,
 						creditor : '',
 						amount : 0,
@@ -504,7 +504,7 @@
 						contact_no : '' ,
 						years_employed : '' ,
 						position : '' ,
-						salary : '' 
+						salary : ''
 					},
 					businessInfo: {
 						id: null,
@@ -562,7 +562,7 @@
 							'Authorization': 'Bearer ' + this.token,
 							'Content-Type': 'aMpplication/json',
 							'Accept': 'application/json'
-						} 
+						}
 					})
 					.then(function (response) {
 						this.notify('',response.data.message, 'success');
@@ -573,7 +573,7 @@
 						console.log(error);
 					}.bind(this));
 				}
-				
+
 			},
 
 			submitForm:function(){
@@ -584,7 +584,7 @@
 					this.save();
 				}
 			},
-			
+
 			navigate:function(){
 				document.getElementById('custom-content-below-coborrowerinfo-tab').click();
 			},
@@ -651,8 +651,8 @@
 					businessInfo : [],
 					householdMembers : [],
 					outstandingObligations : [],
-					created_at: this.dateToYMD(new Date()),
-				};				
+					created_at: transactionDate.date_end,
+				};
 			},
 			notify:function(title, text, type){
 				this.$notify({
@@ -695,7 +695,7 @@
 					this.removeData(this.otherInfo.type, this.otherInfo.index);
 					this.notify('','Data has been deleted.', 'success');
 				}
-				
+
 			}
 		},
 		watch: {
@@ -717,7 +717,10 @@
 				}
 			},
 			'borrower.created_at'(newValue){
-				this.borrower.created_at = this.dateToYMD(new Date(newValue));
+				this.borrower.created_at = this.transactionDate.date_end;
+			},
+			'pborrower'(newValue){
+				this.borrower = this.pborrower;
 			},
 			'borrower.status'(newValue){
 				if(newValue!='married'){
@@ -760,13 +763,17 @@
 				}
 			}
 		},
-        mounted() {							
-			this.borrower.created_at = this.dateToYMD(new Date());
+        mounted() {
+			this.borrower.date_registered = this.transactionDate.date_end;
+			this.borrower.created_at = this.transactionDate.date_end;
 			// this.deleteOtherInfo();
 			if(this.pclient){
 				this.fetchBorrower();
 			}else{
 				this.borrower = this.pborrower;
+				if(this.pborrower.date_registered == ''){
+					this.borrower.date_registered = this.transactionDate.date_end
+				}
 			}
         }
     }
