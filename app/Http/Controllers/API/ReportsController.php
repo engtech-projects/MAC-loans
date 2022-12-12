@@ -11,16 +11,16 @@ use App\Models\Reports;
 
 class ReportsController extends BaseController
 {
-   
+
 	public function transactionReports(Request $request) {
 
-		$filters = [ 
+		$filters = [
 			'date_from' => $request->input('date_from'),
 			'date_to' => $request->input('date_to'),
 			'branch_id' => $request->input('branch_id')
 		];
 
-		
+
 		$report = new Reports();
 		return $this->sendResponse($report->transactionReports($filters), '');
 
@@ -34,8 +34,8 @@ class ReportsController extends BaseController
 
 		switch ($category) {
 			case 'product':
-				
-				// {	
+
+				// {
 				//     "date_from" : "2022-09-26",
 				//     "date_to" : "2022-10-27",
 				//     "branch_id" : 1,
@@ -59,7 +59,7 @@ class ReportsController extends BaseController
 				//     "account_officer" : 1,
 				//     "category" : "account_officer"
 				// }
-				
+
 				$filters = [
 					'date_from' => $request->input('date_from'),
 					'date_to' => $request->input('date_to'),
@@ -113,7 +113,7 @@ class ReportsController extends BaseController
 			'branch_id' => $request->input('branch_id'),
 			'type' => $request->input('type')
 		];
-		
+
 		$report = new Reports();
 
 		if( $type == 'client' ){
@@ -137,7 +137,7 @@ class ReportsController extends BaseController
 		switch ($type) {
 
 			case 'collection':
-				
+
 				$filters = [
 					'account_officer' => $request->input('account_officer'),
 					'center' => $request->input('center'),
@@ -148,7 +148,7 @@ class ReportsController extends BaseController
 				// return $this->sendResponse('Invalid Parameters', 'Could not load data');
 				break;
 			case 'maturity':
-				
+
 				$filters = [
 					'due_from' => $request->input('date_from'),
 					'due_to' => $request->input('date_to'),
@@ -277,11 +277,89 @@ class ReportsController extends BaseController
 
 	}
 
+	public function consolidatedReports(Request $request) {
+
+		$type = $request->input('type');
+		$filters = [];
+		$report = new Reports();
+
+		$branchReport = NULL;
+		switch ($type) {
+
+			case 'maturity':
+
+				$filters = [
+					'due_from' => $request->input('date_from'),
+					'due_to' => $request->input('date_to'),
+					'account_officer' => $request->input('account_officer'),
+					'center' => $request->input('center')
+				];
+				if($request->input('due_from')){
+					$filters["due_from"] = $request->input('due_from');
+				}
+				if($request->input('due_to')){
+					$filters["due_to"] = $request->input('due_to');
+				}
+				if($filters['center'] == "all"){
+					unset($filters['center']);
+				}
+				if($filters['account_officer'] == "all"){
+					unset($filters['account_officer']);
+				}
+
+				$branchReport = $report->branchMaturityReport($filters);
+
+				break;
+			case 'client_payment_status':
+				# code...
+				break;
+			case 'account_officer':
+				$filters = [
+					'group' => $request->input("group"),
+					'account_officer' => $request->input('account_officer'),
+				];
+				if($filters['account_officer'] == "all"){
+					unset($filters['account_officer']);
+				}
+				$branchReport = $report->branchAOReport($filters);
+				break;
+			case 'loan_listing':
+				$filters = [
+					'account_officer' => $request->input('account_officer'),
+					'product' => $request->input('account_officer'),
+					'center' => $request->input('account_officer'),
+				];
+				if($filters['account_officer'] == "all"){
+					unset($filters['account_officer']);
+				}
+				if($filters['center'] == "all"){
+					unset($filters['center']);
+				}
+				if($filters['product'] == "all"){
+					unset($filters['product']);
+				}
+				$branchReport = $report->branchLoanListingReport($filters);
+				break;
+			case 'loan_aging_summary':
+				# code...
+				break;
+			case 'revenue':
+				# code...
+				break;
+
+			default:
+				return $this->sendResponse('Invalid Parameters', 'Could not load data');
+				break;
+		}
+
+		return $this->sendResponse($branchReport,"Branch Report");
+	}
+
 
 
 	// public function releaseByClientReports(Request $request) {
 
-	// 	$filters = [ 
+	// 	$filters = [
 	// 		'date_from' => Carbon::createFromFormat('Y-m-d', $request->input('date_from')),
 	// 		'date_to' => Carbon::createFromFormat('Y-m-d', $request->input('date_to')),
 	// 		'type' => $request->input('type'),
@@ -291,7 +369,7 @@ class ReportsController extends BaseController
 
 	// public function repaymentReports(Request $request) {
 
-	// 	$filters = [ 
+	// 	$filters = [
 	// 		'date_from' => Carbon::createFromFormat('Y-m-d', $request->input('date_from')),
 	// 		'date_to' => Carbon::createFromFormat('Y-m-d', $request->input('date_to')),
 	// 		'type' => '',

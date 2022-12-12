@@ -688,8 +688,11 @@ class Reports extends Model
         $tranDate = new EndTransaction();
         $data = [];
         if($filters["group"] == Reports::BRANCH_AO_PERFORMANCE){
-            $accOfficers =  AccountOfficer::where(["status" => AccountOfficer::STATUS_ACTIVE, "branch_id" => $filters["branch_id"]])
-                ->get()->toArray();
+            $accOfficers = AccountOfficer::where(["status"=> AccountOfficer::STATUS_ACTIVE]);
+            if(isset($filters["branch_id"]) && $filters["branch_id"]){
+                $accOfficers = $accOfficers->where(["branch_id"=>$filters["branch_id"]]);
+            }
+            $accOfficers = $accOfficers->get()->toArray();
             $products = Product::where(["status" => Product::STATUS_ACTIVE])
                 ->get()->toArray();
             foreach ($accOfficers as $aoKey => $aoValue) {
@@ -727,7 +730,10 @@ class Reports extends Model
             $data = $accOfficers;
         }else if($filters["group"] == Reports::BRANCH_AO_WRITEOFF){
             $writeoffAccounts = [];
-            $accOfficers = AccountOfficer::where(["status"=> AccountOfficer::STATUS_ACTIVE, "branch_id" => $filters["branch_id"]]);
+            $accOfficers = AccountOfficer::where(["status"=> AccountOfficer::STATUS_ACTIVE]);
+            if(isset($filters["branch_id"]) && $filters["branch_id"]){
+                $accOfficers = $accOfficers->where(["branch_id"=>$filters["branch_id"]]);
+            }
             if(isset($filters["account_officer"]) && $filters["account_officer"]){
                 $accOfficers = $accOfficers->where(["ao_id"=>$filters["account_officer"]]);
             }
@@ -754,7 +760,10 @@ class Reports extends Model
             }
             $data = $writeoffAccounts;
         }else if($filters["group"] == Reports::BRANCH_AO_DELINQUENT){
-            $accOfficers = AccountOfficer::where(["status"=> AccountOfficer::STATUS_ACTIVE, "branch_id" => $filters["branch_id"]]);
+            $accOfficers = AccountOfficer::where(["status"=> AccountOfficer::STATUS_ACTIVE]);
+            if(isset($filters["branch_id"]) && $filters["branch_id"]){
+                $accOfficers = $accOfficers->where(["branch_id"=>$filters["branch_id"]]);
+            }
             if(isset($filters["account_officer"]) && $filters["account_officer"]){
                 $accOfficers = $accOfficers->where(["ao_id"=>$filters["account_officer"]]);
             }
@@ -803,7 +812,10 @@ class Reports extends Model
     }
 
     public function branchLoanListingReport($filters = []){
-        $accOfficers = AccountOfficer::where(["status"=> AccountOfficer::STATUS_ACTIVE, "branch_id" => $filters["branch_id"]]);
+        $accOfficers = AccountOfficer::where(["status"=> AccountOfficer::STATUS_ACTIVE]);
+        if(isset($filters["branch_id"]) && $filters["branch_id"]){
+            $accOfficers = $accOfficers->where(["branch_id"=>$filters["branch_id"]]);
+        }
         if(isset($filters["account_officer"]) && $filters["account_officer"]){
             $accOfficers = $accOfficers->where(["ao_id"=>$filters["account_officer"]]);
         }
