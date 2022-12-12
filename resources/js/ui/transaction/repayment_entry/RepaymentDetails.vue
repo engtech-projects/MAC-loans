@@ -1116,10 +1116,7 @@ export default {
 			return this.penaltyWaive + this.pdiWaive;
 		},
 		totalScheduledPayment:function(){
-			if(this.loanAccount.current_amortization.lastPayment){
-				return this.loanAccount.current_amortization.interest + this.loanAccount.current_amortization.principal + this.loanAccount.current_amortization.lastPayment.short_principal + this.loanAccount.current_amortization.lastPayment.short_interest;
-			}
-			return this.loanAccount.current_amortization.interest + this.loanAccount.current_amortization.principal;
+			return this.loanAccount.current_amortization.schedule_interest + this.loanAccount.current_amortization.schedule_principal;
 		},
 		borrowerPhoto:function(){
 			return this.pborrower.photo? this.pborrower.photo : this.baseURL()+'/img/user.png';
