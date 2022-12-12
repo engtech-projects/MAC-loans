@@ -48,7 +48,7 @@
 								</div>
 								<div class="form-group mb-10" style="flex: 4">
 									<label for="transactionDate" class="form-label">Transaction Date</label>
-									<input disabled :value="dateToYMD(new Date)" type="date" class="form-control form-input text-right" id="transactionDate">
+									<input disabled :value="transactionDate.date_end" type="date" class="form-control form-input text-right" id="transactionDate">
 								</div>
 							</div>
 							<div class="form-group mb-5" style="flex: 5">
@@ -144,7 +144,7 @@
 								<span class="flex-1 text-primary-dark">{{loanAccount.day_schedule}}</span>
 							</div>
 
-					
+
 							<div class="d-flex flex-row mb-12">
 								<div class="d-flex flex-row flex-1 justify-content-between pr-24">
 									<span class=""># of Installment</span>
@@ -253,7 +253,7 @@
 								<span class="flex-1 text-primary-dark">{{formatToCurrency(loanAccount.memo)}}</span>
 							</div>
 							<div class="d-flex flex-row mb-12 bb-dark-10">
-								
+
 							</div>
 							<div class="d-flex flex-row mb-12">
 								<div class="d-flex flex-row flex-1 justify-content-between pr-24">
@@ -452,7 +452,7 @@ export default {
 				co_borrower_id_type : '',
 				co_borrower_id_number : '',
 				co_borrower_id_date_issued : '',
-				co_maker_name : '',  
+				co_maker_name : '',
 				co_maker_address : '',
 				co_maker_id_type : '',
 				co_maker_id_number : '',
