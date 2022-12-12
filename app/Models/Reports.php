@@ -19,10 +19,14 @@ class Reports extends Model
 
     public function getLoanAccounts($filters = []) {
 
-        $branch = Branch::find($filters['branch_id']);
 
 
-        $loanAccount = Loanaccount::where([ 'loan_accounts.status' => 'released', 'branch_code' => $branch->branch_code ]);
+        $loanAccount = Loanaccount::where([ 'loan_accounts.status' => 'released']);
+
+    	if( isset($filters['branch_id']) && $filters['branch_id'] ){
+            $branch = Branch::find($filters['branch_id']);
+    		$loanAccount->where([ 'loan_accounts.branch_code' => $branch->branch_code ]);
+        }
 
         if( isset($filters['date_from']) && isset($filters['date_to']) ){
             /*$loanAccount = LoanAccount::whereBetween(DB::raw('date(loan_accounts.date_release)'), [ $filters['date_from'], $filters['date_to'] ]);*/
