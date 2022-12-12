@@ -1018,7 +1018,7 @@ export default {
 				amount += this.excessDueRebates;
 				if(amount > (this.loanAccount.remainingBalance.interest.balance - this.dueInterest)){
 					this.payment.interest += (this.loanAccount.remainingBalance.interest.balance - this.dueInterest);
-					this.payment.advance_interest = this.loanAccount.current_amortization.interest;
+					this.payment.advance_interest = this.loanAccount.current_amortization.interest_balance;
 					amount -= (this.loanAccount.remainingBalance.interest.balance - this.dueInterest);
 				}else{
 					this.payment.interest += amount;
