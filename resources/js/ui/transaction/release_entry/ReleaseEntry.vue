@@ -120,11 +120,10 @@
 										<li class="nav-item">
 											<a class="nav-link" id="doa-for-atm-tab" data-toggle="pill" href="#doa-for-atm" role="tab" aria-controls="custom-content-below-home" aria-selected="true">DACION EN PAGO</a>
 										</li>
-											<li class="nav-item">
+										<li class="nav-item">
 											<a class="nav-link" id="moa-for-sme-tab" data-toggle="pill" href="#moa-for-sme" role="tab" aria-controls="custom-content-below-home" aria-selected="true">MOA FOR SME</a>
 										</li>
-										<li>
-											<li class="nav-item">
+										<li class="nav-item">
 											<a class="nav-link" id="sme-schedule-tab" data-toggle="pill" href="#sme-schedule" role="tab" aria-controls="custom-content-below-home" aria-selected="true">SME Schedule</a>
 										</li>
 										<li class="nav-item">
@@ -1034,7 +1033,7 @@
 				}.bind(this));
 			},
 			fetchRejectedAccounts:function(){
-				
+
 				axios.get(this.baseURL() + 'api/account/rejected/' + this.pbranch, {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
@@ -1049,7 +1048,7 @@
 							console.log(data.loan_account_id);
 							this.rejectedAccounts.push(data);
 						}
-					}.bind(this));  
+					}.bind(this));
 					// console.log(response.data.data);
 					// this.setAccount;
 				}.bind(this))

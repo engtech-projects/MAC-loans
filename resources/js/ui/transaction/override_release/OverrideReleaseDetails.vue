@@ -13,7 +13,7 @@
 						<div style="flex:4"></div>
 						<div class="form-group mb-10" style="flex: 5">
 							<label for="transactionDate" class="form-label">Transaction Date</label>
-							<input disabled :value="dateToYMD(new Date)" type="date" class="form-control form-input text-right" id="transactionDate">
+							<input disabled :value="transactionDate.date_end" type="date" class="form-control form-input text-right" id="transactionDate">
 						</div>
 					</div>
 					<div class="form-group mb-5" style="flex: 5">
@@ -308,7 +308,7 @@
 								<span class="">{{loanaccount.co_maker_id_type}}</span>
 							</div>
 						</div>
-					</div>			
+					</div>
 
 					<section class="mb-24 d-flex flex-column">
 						<span class="text-bold bg-gray" style="padding:0 5px;">Schedules</span>
@@ -335,15 +335,15 @@
 									</tr>
 								</tbody>
 							</table>
-							
+
 						</div>
-						<div class="mb-45"></div>	
-						<div class="mb-45"></div>	
+						<div class="mb-45"></div>
+						<div class="mb-45"></div>
 						<div>
 							<p class="text-block text-center" style="line-height:0!important;">This statement is a system generated copy!</p>
 							<p class="text-block text-center">&lt; End of file &gt;</p>
 							<img :src="this.baseURL()+'/img/logo-footer.png'" class="w-100 page-footer" alt="">
-						</div>		
+						</div>
 					</section>
 					<div class="d-flex flex-row-reverse mb-45 no-print">
 						<a href="#" @click="printAmort()" class="btn btn-default min-w-150">Print</a>
@@ -483,11 +483,11 @@
 						<span class="flex-4">Prepared by:</span>
 						<span class="flex-4">Certified Corrected by:</span>
 						<span class="flex-4">Approved by:</span>
-						
+
 					</div>
 					<img :src="this.baseURL()+'/img/logo-footer.png'" class="w-100 page-footer display-on-print" alt="">
 					</div>
-					
+
 					<div class="d-flex flex-row-reverse">
 						<a href="#" @click="printOverride()" data-dismiss="modal" class="btn btn-default min-w-150">Print</a>
 						<!-- <a href="#" data-dismiss="modal" class="btn btn-success mr-16">Download to Excel</a> -->
@@ -674,7 +674,7 @@
 										<td></td>
 										<td>{{formatToCurrency(totalDebit)}}</td>
 										<td>{{formatToCurrency(totalCredit)}}</td>
-									</tr> 
+									</tr>
 								</tbody>
 							</table>
 
@@ -739,6 +739,11 @@ export default {
 	props:['ploanaccount', 'pdate', 'token', 'csrf', 'pbranch','pboverride', 'candelete', 'canreject'],
 	data(){
 		return {
+			transactionDate: {
+				branch_id: this.pbranch,
+				status: 'closed',
+				date_end: '',
+			},
 			filter:{ao_id:'all',center_id:'all',product_id:'all', created_at:''},
 			borrower:'',
 			loanDetails:'',
@@ -769,6 +774,21 @@ export default {
 		}
 	},
 	methods:{
+		fetchTransactionDate:function(){
+			axios.get(this.baseURL() + 'api/eod/eodtransaction/'+this.pbranch, {
+			headers: {
+				'Authorization': 'Bearer ' + this.token,
+					'Content-Type': 'application/json',
+					'Accept': 'application/json'
+				}
+			})
+			.then(function (response) {
+				this.transactionDate = response.data.data;
+			}.bind(this))
+			.catch(function (error) {
+				console.log(error);
+			}.bind(this));
+		},
 		fetchCashVoucher:function(){
 			this.vouchers = [];
 			axios.get(this.baseURL() + 'api/account/cashvoucher/' + this.loanaccount.loan_account_id, {
@@ -916,7 +936,7 @@ export default {
 			}.bind(this));
 		},
 		override: function(){
-			this.loanaccount.date_release = this.dateToYMD(new Date);
+			this.loanaccount.date_release = this.transactionDate.date_end;
 			axios.post(this.baseURL() + 'api/account/override', [this.loanaccount], {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
@@ -935,7 +955,7 @@ export default {
 			}.bind(this));
 		},
 		createAmortization: function(){
-			// this.loanaccount.date_release = this.dateToYMD(new Date);
+			// this.loanaccount.date_release = this.transactionDate.date_end;
 			axios.get(this.baseURL() + 'api/account/create-amortization/' + this.loanaccount.loan_account_id + '/', {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
@@ -944,13 +964,13 @@ export default {
 				}
 			})
 			.then(function (response) {
-				
+
 			}.bind(this))
 			.catch(function (error) {
 				console.log(error);
 			}.bind(this));
 		},
-		
+
 		reject: function(){
 			axios.put(this.baseURL() + 'api/account/reject/' + this.loanaccount.loan_account_id, this.loanaccount, {
 				headers: {
@@ -1214,12 +1234,12 @@ export default {
 	watch:{
 		'ploanaccount'(newData){
 			this.loanaccount = newData;
-			this.loanaccount.date_release = this.dateToYMD(new Date());
+			this.loanaccount.date_release = this.transactionDate.date_end;
 			this.loanaccount.loan_account_id?this.amortSched():null;
 			if(this.loanaccount.account_num){
 				this.fetchCashVoucher();
 			}
-			
+
 		},
 		'pboverride'(newData){
 			if(newData==1){
@@ -1235,6 +1255,7 @@ export default {
 
 	},
 	mounted(){
+		this.fetchTransactionDate();
 		this.fetchCenters();
 		this.fetchProducts();
 		this.fetchAo();

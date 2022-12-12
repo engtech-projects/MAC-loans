@@ -24,7 +24,7 @@
 						<option value="product">Product</option>
 					</select>
 				</div>
-				
+
 				<table class="table table-stripped table-hover" id="clientsList">
 					<thead>
 						<th>All</th>
@@ -122,14 +122,14 @@
 				</section>
 			</div>
 			<div style="flex:20">
-				<override-release-details @deleteAccount="fetchAccounts" 
-					@doneOverride="pbatchoverride=0" 
-					:pboverride="pbatchoverride" 
-					:pbranch="pbranch" 
-					@updateLoanAccounts="fetchAccounts();resetLoanAccount();" 
-					:csrf="csrf" 
-					:token="token" 
-					:ploanaccount="loanAccount" 
+				<override-release-details @deleteAccount="fetchAccounts"
+					@doneOverride="pbatchoverride=0"
+					:pboverride="pbatchoverride"
+					:pbranch="pbranch"
+					@updateLoanAccounts="fetchAccounts();resetLoanAccount();"
+					:csrf="csrf"
+					:token="token"
+					:ploanaccount="loanAccount"
 					:pdate="preference.date"
 					:canreject="canreject"
 					:candelete="candelete"
@@ -167,6 +167,11 @@ export default {
 	props:['token', 'csrf', 'pbranch', 'staff', 'branch_mgr','canreject','candelete'],
 	data(){
 		return {
+			transactionDate: {
+				branch_id: this.pbranch,
+				status: 'closed',
+				date_end: '',
+			},
 			loanAccounts:[],
 			preference:{date:'',specification:'',filter:'client'},
 			borrowers:[],
@@ -199,6 +204,21 @@ export default {
 		}
 	},
 	methods:{
+		fetchTransactionDate:function(){
+				axios.get(this.baseURL() + 'api/eod/eodtransaction/'+this.pbranch, {
+				headers: {
+					'Authorization': 'Bearer ' + this.token,
+						'Content-Type': 'application/json',
+						'Accept': 'application/json'
+					}
+				})
+				.then(function (response) {
+					this.transactionDate = response.data.data;
+				}.bind(this))
+				.catch(function (error) {
+					console.log(error);
+				}.bind(this));
+			},
 		setLoanAccount:function(account){
 			if(!account.current_amortization){
 				account.current_amortization = {
@@ -234,7 +254,7 @@ export default {
 			.catch(function (error) {
 				console.log(error);
 			}.bind(this));
-		}, 
+		},
 		todaysRelease:function(){
 			axios.get(this.baseURL() + 'transaction/todaysrelease')
 			.then(function (response) {
@@ -243,7 +263,7 @@ export default {
 			.catch(function (error) {
 				console.log(error);
 			}.bind(this));
-		},   
+		},
 		setCheckbox:function(data){
 			for(let i in data){
 				if(!data[i].current_amortization){
@@ -290,7 +310,7 @@ export default {
 				if(account.checked){
 					var dt = new Date();
 					dt.setDate(dt.getDate() + account.terms);
-					account.date_release = this.dateToYMD(new Date);
+					account.date_release = this.transactionDate.date_end;
 					account.due_date = this.dateToYMD(dt);
 					accounts.push(account);
 				}
@@ -331,7 +351,7 @@ export default {
 				co_borrower_id_type : '',
 				co_borrower_id_number : '',
 				co_borrower_id_date_issued : '',
-				co_maker_name : '',  
+				co_maker_name : '',
 				co_maker_address : '',
 				co_maker_id_type : '',
 				co_maker_id_number : '',
@@ -369,7 +389,7 @@ export default {
 				current_amortization:{
 					principal_balance:0,
 				}
-			};				
+			};
 		},
 		isActive:function(data){
 			if(data.loan_account_id == this.loanAccount.loan_account_id){
@@ -508,7 +528,7 @@ export default {
 							}
 						}
 					}
-				}.bind(this))			
+				}.bind(this))
 			}
 			return result;
 		},
@@ -531,6 +551,7 @@ export default {
 		}
 	},
 	mounted(){
+		this.fetchTransactionDate();
 		this.resetLoanAccount();
 		this.preference.date = this.dateToYMD(new Date);
 		this.fetchAccounts();
