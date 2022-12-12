@@ -494,14 +494,20 @@ class LoanAccount extends Model
             $ids[] = $delinquent->id;
 
             if( isset($delinquent->payments) && count($delinquent->payments) > 0 ) {
+               $isNotAdvancePayment = true;
                foreach ($delinquent->payments as $payment) {
                   $totalPrincipal += $payment->short_principal;
                   $totalInterest += $payment->short_interest;
                   $totalPdi += $payment->short_pdi;
                   $totalPenalty += $payment->short_penalty;
-                 break;
+                  $isNotAdvancePayment = (boolean)$payment->total_payable;
+                  break;
                }
-               break;
+               if(!$isNotAdvancePayment){ // if advanced payment only add principal and interest
+                  $totalPrincipal += $delinquent->principal;
+                  $totalInterest += $delinquent->interest;
+               }
+                  break;
             }else{
                $missed[] = $delinquent->id;
             }
