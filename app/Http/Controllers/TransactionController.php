@@ -61,7 +61,7 @@ class TransactionController extends Controller
 	}
 
 	public function overridePaymentDates(){
-		return \App\models\Payment::where('status','open')->orderBy('created_at', 'DESC')->select('created_at')->get();
+		return \App\models\Payment::where('status','open')->orderBy('transaction_date', 'DESC')->select('transaction_date')->get();
 	}
 
 	public function todaysRelease(){
@@ -69,7 +69,7 @@ class TransactionController extends Controller
 	}
 
 	public function openPayments(Request $request){
-		$payments['payments'] = \App\Models\Payment::with('loanDetails')->where('status','open')->where('branch_id', $request->branch_id)->whereDate('created_at', '=', date($request->created_at))->get();
+		$payments['payments'] = \App\Models\Payment::with('loanDetails')->where('status','open')->where('branch_id', $request->branch_id)->whereDate('transaction_date', '=', date($request->transaction_date))->get();
 		$payments['base'] = \App\Models\Payment::with('loanDetails')->where('status','open')->where('branch_id', $request->branch_id)->get();
 		foreach ($payments['payments'] as $key => $value) {
 			$payments['payments'][$key]->photo = $value->loanDetails->borrowerPhoto();

@@ -35,7 +35,7 @@ class EODController extends BaseController
 
 			if( !$hasRelease && !$hasRepayment ){
 				return $this->sendResponse(
-					'false', 
+					'false',
 					'No Transaction'
 				);
 			}
@@ -45,14 +45,14 @@ class EODController extends BaseController
 			$message = ($endTransaction->close($branchId)) ? 'successful' : 'unsuccessful';
 
 			return $this->sendResponse(
-				'End of day Transaction', 
+				'End of day Transaction',
 				$message
 			);
 
 		}else{
 
 			return $this->sendResponse(
-				'closed', 
+				'closed',
 				'End of Day Transaction is closed'
 			);
 
@@ -69,13 +69,13 @@ class EODController extends BaseController
 		# get transaction date
 		$dateEnd = $endTransaction->getTransactionDate($branchId)->date_end;
 
-		$accounts = $account->overrideReleaseAccounts([ 'branch_id' => $branchId, 'created_at' => $dateEnd ]);
+		$accounts = $account->overrideReleaseAccounts([ 'branch_id' => $branchId, 'transaction_date' => $dateEnd ]);
 		$payments = $payment->overridePaymentAccounts([ 'branch_id' => $branchId, 'transaction_date' => $dateEnd ]);
 
 
 		$accountsToOverrideCount = count($accounts);
 		$paymentToOverrideCount = count($payments);
-		
+
 		$msg = null;
 		$msg .= "{$accountsToOverrideCount} pending Loan Account/s";
 		$msg .= " & ";
@@ -96,7 +96,7 @@ class EODController extends BaseController
 		$endTransaction = new EndTransaction();
 
 		if( !$endTransaction->validate($transactionDate, $branchId) ){
-			
+
 			$data = EndTransaction::create([
 				'branch_id' => $branchId,
 				'date_end' => $transactionDate,

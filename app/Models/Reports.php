@@ -290,7 +290,7 @@ class Reports extends Model
 
             $data['collection'][] = [
                 'borrower' => Borrower::find($borrower->borrower_id)->fullname(),
-                'date_paid' => Carbon::createFromFormat('Y-m-d H:i:s', $payment->created_at)->format('m/d/Y'),
+                'date_paid' => Carbon::createFromFormat('Y-m-d H:i:s', $payment->transaction_date)->format('m/d/Y'),
                 'or' => $payment->or_no,
                 'payment_type' => $payment->payment_type,
                 'principal' => $payment->principal,
@@ -335,8 +335,8 @@ class Reports extends Model
 
         //             $client['collection'][] = [
         //                     'borrower' => $account->borrower->fullname(),
-        //                     // 'date_paid' => Carbon::createFromFormat('Y-m-d', $payment->created_at)->format('Y-m-d'),
-        //                     'date_paid' => Carbon::createFromFormat('Y-m-d H:i:s', $payment->created_at)->format('m/d/Y'),
+        //                     // 'date_paid' => Carbon::createFromFormat('Y-m-d', $payment->transaction_date)->format('Y-m-d'),
+        //                     'date_paid' => Carbon::createFromFormat('Y-m-d H:i:s', $payment->transaction_date)->format('m/d/Y'),
         //                     'or' => $payment->or_no,
         //                     'principal' => $payment->principal,
         //                     'interest' => $payment->interest,

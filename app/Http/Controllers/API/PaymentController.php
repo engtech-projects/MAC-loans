@@ -47,7 +47,7 @@ class PaymentController extends BaseController
     public function overridePaymentList(Request $request) {
 
         $filters = [
-            'created_at' => ($request->has('created_at')) ? $request->input('created_at') : false,
+            'transaction_date' => ($request->has('transaction_date')) ? $request->input('transaction_date') : false,
             'ao_id' => ($request->has('ao_id')) ? $request->input('ao_id') : false,
             'center_id' => ($request->has('center_id')) ? $request->input('center_id') : false,
             'product_id' => ($request->has('product_id')) ? $request->input('product_id') : false,

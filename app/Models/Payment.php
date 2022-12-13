@@ -143,8 +143,8 @@ class Payment extends Model
         $payments = Payment::join('loan_accounts', 'loan_accounts.loan_account_id', '=', 'payment.loan_account_id')
                             ->join('borrower_info', 'borrower_info.borrower_id', '=', 'loan_accounts.borrower_id');
 
-        if( isset($filters['created_at']) && $filters['created_at'] ){
-            $payments->whereDate('payment.created_at', '=', $filters['created_at']);
+        if( isset($filters['transaction_date']) && $filters['transaction_date'] ){
+            $payments->whereDate('payment.transaction_date', '=', $filters['transaction_date']);
         }
 
         if( isset($filters['ao_id']) && $filters['ao_id'] != 'all' ){

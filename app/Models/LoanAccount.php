@@ -279,8 +279,8 @@ class LoanAccount extends Model
       $branch = Branch::find($filters['branch_id']);
       $accounts = LoanAccount::where('status', '=', 'pending')->where(['branch_code' => $branch->branch_code]);
 
-      if( isset($filters['created_at']) && $filters['created_at'] ){
-         $accounts->whereDate('loan_accounts.created_at', '=', $filters['created_at'] );
+      if( isset($filters['transaction_date']) && $filters['transaction_date'] ){
+         $accounts->whereDate('loan_accounts.transaction_date', '=', $filters['transaction_date'] );
       }
 
       if( isset($filters['ao_id']) && $filters['ao_id'] != 'all' ){
