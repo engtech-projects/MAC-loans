@@ -334,7 +334,7 @@
 									</div>
 									<div class="d-flex mb-7">
 										<span class="mr-5">Amort: </span>
-										<span>{{formatToCurrency(loanAmortization)}}</span>
+										<span>{{formatToCurrency(loanDetails.amortization.total)}}</span>
 									</div>
 									<!-- <div class="d-flex mb-7">
 										<span class="mr-5">Group: </span>
@@ -839,7 +839,7 @@
 										<span class="flex-1 mw-150">Amortization</span>
 										<div class="d-flex flex-2">
 											<span class="mr-5">: </span>
-											<span> P {{formatToCurrency(loanAmortization)}}</span>
+											<span> P {{formatToCurrency(loanDetails.amortization.total)}}</span>
 										</div>
 									</div>
 								</div>
@@ -1363,7 +1363,7 @@
 									</div>
 									<div class="d-flex mb-7">
 										<span class="mr-5">Amort: </span>
-										<span>{{formatToCurrency(loanAmortization)}}</span>
+										<span>{{formatToCurrency(loanDetails.amortization.total)}}</span>
 									</div>
 									<div class="d-flex mb-7">
 										<span class="mr-5">&nbsp;</span>
@@ -1635,7 +1635,7 @@
 								</div>
 								<div class="d-flex mb-7">
 									<span class="mr-5">Amort: </span>
-									<span>{{formatToCurrency(loanAmortization)}}</span>
+									<span>{{formatToCurrency(loanDetails.amortization.total)}}</span>
 								</div>
 								<div class="d-flex mb-7">
 									<span class="mr-5">&nbsp;</span>
@@ -1846,6 +1846,11 @@
 				accounts:[],
 				img:this.baseURL()+'/img/user.png',
 				loanDetails: {
+					amortization:{
+						principal:0,
+						interest:0,
+						total:0,
+					},
 					loan_account_id:null,
 					cycle_no : 1,
 					ao_id : '',
@@ -2193,9 +2198,6 @@
 				}
 				return this.accounts;
 			},
-			loanAmortization:function(){
-				return Math.ceil( (this.loanDetails.loan_amount/this.loanDetails.no_of_installment) + (this.loanDetails.interest_amount/this.loanDetails.no_of_installment) );
-			}
 		},
 		mounted(){
 			// console.log(this.extractFileName("http://mac-loans.test/storage/borrowers/1/12/hello.pdf"));

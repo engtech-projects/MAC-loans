@@ -713,6 +713,7 @@ class LoanAccount extends Model
       return [
          "principal" => ceil($account->loan_amount/$account->no_of_installment),
          "interest" => ceil($account->interest_amount/$account->no_of_installment),
+         "total" => ceil($account->interest_amount/$account->no_of_installment) + ceil($account->loan_amount/$account->no_of_installment),
       ];
    }
 

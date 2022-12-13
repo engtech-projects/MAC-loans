@@ -19,7 +19,7 @@ class Borrower extends Authenticatable
     protected $table = 'borrower_info';
     protected $primaryKey = 'borrower_id';
 	public static $snakeAttributes = false;
-	
+
     protected $fillable = [
     	'borrower_id',
 		'borrower_num',
@@ -96,7 +96,7 @@ class Borrower extends Authenticatable
 
         $dirs = $this->directories();
         $files = Storage::files('public/' . $dirs['photo']);
-  
+
         if( count($files) > 0 ){
             return url(Str::replace('public', 'storage', $files[0]));
         }
@@ -128,25 +128,25 @@ class Borrower extends Authenticatable
         $dirs = $this->directories();
 
         $files = Storage::files('public/' . $dirs['docs']);
-        $docs = [];  
+        $docs = [];
         if( count($files) > 0 ){
 
             foreach ($files as $file) {
                 $docs[] = url(Str::replace('public', 'storage', $file));
             }
-            
+
             return $docs;
         }
 
         return false;
-    }    
+    }
 
     public function setDocs($files) {
 
         $dirs = $this->directories();
 
         foreach ($files as $file) {
-            
+
             $name = $file->getClientOriginalName();
 
             $file->storeAs('public/' . $dirs['docs'], $name);
@@ -181,7 +181,7 @@ class Borrower extends Authenticatable
                 // $value->outstandingBalance = $loanAccount->outstandingBalance($value->loan_account_id);
                 $account->current_amortization = $account->getCurrentAmortization();
                 $account->amortization_id = Amortization::select('id')->where(['loan_account_id' => $account->loan_account_id])->orderBy('id', 'DESC')->first()->id;
-                 
+                $account->amortization = $account->amortization();
                 // $value->totalPaid = $value->getPaymentTotal($value->loan_account_id);
             }
             return $activeAccounts;

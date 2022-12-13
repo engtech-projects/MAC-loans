@@ -214,7 +214,8 @@ class LoanAccountController extends BaseController
                 'term' => $account->terms,
                 'collection_rate' => $account->collectionRate(),
                 'payment_history' => $account->payment_status,
-                'loan_status' => $account->loan_status
+                'loan_status' => $account->loan_status,
+                'amortization' => $account->amortization,
             ];
 
         }
