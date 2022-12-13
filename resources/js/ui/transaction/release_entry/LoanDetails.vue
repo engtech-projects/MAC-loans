@@ -8,7 +8,7 @@
 				<div style="flex:18" class="mr-16"></div>
 				<div class="form-group mb-10" style="flex:7">
 					<label for="dateRelease" class="form-label">Loan Created</label>
-					<input :value="dateToYMD(new Date)" disabled type="date" class="form-control form-input " id="dateRelease">
+					<input :value="dateToYMD(new Date(loanDetails.transaction_date))" disabled type="date" class="form-control form-input " id="dateRelease">
 				</div>
 			</div>
 			<div class="d-flex flex-row">
@@ -538,6 +538,7 @@ export default {
 			this.loanDetails.status = 'pending';
 			this.loanDetails.branch_id = this.branch
 			this.loanDetails.transaction_date = this.transactionDate.date_end
+			this.loanDetails.documents.date_release = this.transactionDate.date_end
 			if(this.loanDetails.loan_account_id){
 				axios.post(this.baseURL() + 'api/account/update/' + this.loanDetails.loan_account_id, this.loanDetails, {
 					headers: {
