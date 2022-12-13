@@ -21,6 +21,7 @@
 
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper" id="app">
+	<current-transactiondate branch="{{Session::get('branch')->branch_id}}" token="{{Session::get('token')}}"></current-transactiondate>
     @yield('content')
   </div>
   <!-- /.content-wrapper -->

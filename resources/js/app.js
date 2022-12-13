@@ -12,7 +12,8 @@
  
  window.Vue = require('vue').default;
  Vue.use(Notifications);
-
+ 
+ Vue.component('current-transactiondate', require('./components/TransactionDate.vue').default);
  Vue.component('login', require('./components/Login.vue').default);
  Vue.component('borrower-login', require('./components/BorrowerLogin.vue').default);
  Vue.component('branch', require('./components/Branch.vue').default);

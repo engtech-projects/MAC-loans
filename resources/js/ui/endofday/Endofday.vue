@@ -1,5 +1,6 @@
 <template>
 	<div class="container-fluid" style="padding:0!important">
+		<notifications group="foo" />
 		<div v-if="loading" class="black-screen d-flex flex-column align-items-center justify-content-center" style="padding-left:0px;">
 			<div class="loading-container d-flex align-items-center justify-content-center mb-36">
 				<span class="loading-text">LOADING</span>
@@ -16,7 +17,16 @@
 		<div class="ml-16 mb-24 bb-primary-dark pb-7 text-block d-flex justify-content-between">
 			<h1 class="m-0 font-35">End of Day</h1>
 		</div><!-- /.col -->
-		<div v-if="!failed && !success && !loading" class="d-flex flex-column align-items-center p-16 " style="padding-top:65px">
+		<form action="" @submit.prevent="createTransactionDate">
+		<div v-if="newDay" class="d-flex flex-column align-items-center" style="padding-top:95px">
+			<img :src="baseURL() + 'img/company_logo.png'" class="mb-36" alt="">
+			<span class="text-lg text-bold text-primary-dark">You are able to open today's transaction,</span>
+			<span class="text-lg text-bold text-primary-dark mb-24">kindly set up the date below.</span>
+			<input type="date" v-model="newTransactionDate" style="max-width:450px;" class="form-control mb-45" required>
+			<button class="btn btn-primary-dark btn-wide">Save</button>
+		</div>
+		</form>
+		<div v-if="!newDay&&!failed && !success && !loading" class="d-flex flex-column align-items-center p-16 " style="padding-top:65px">
 			<p class="text-center lh-1 text-lg">You are about to end the transaction dated <span class="text-green">{{dateToMDY(new Date(transactionDate))}}</span></p>
 			<p class="text-red text-xl text-center mb-24" style="max-width:575px">You will not be able to do any transactions after End of Day.</p>
 			<p class="font-lg text-center lh-1 mb-45">How would you like to end the transaction?</p>
@@ -83,9 +93,36 @@ export default {
 			success:false,
 			transactionDate:this.dateToYMD(new Date),
 			pendingResponse:'',
+			newDay:false,
+			newTransactionDate:'',
 		}
 	},
 	methods:{
+		async createTransactionDate(){
+			var data = {
+				transaction_date: this.newTransactionDate,
+				branch_id: this.branch.branch_id
+			}
+			await axios.post(this.baseURL() + 'api/eod/eodtransaction/create',data,{
+				headers: {
+					'Authorization': 'Bearer ' + this.token,
+					'Content-Type': 'application/json',
+					'Accept': 'application/json'
+					}
+				})
+				.then(function (response) {
+					console.log(response.data);
+					if(response.data.data == 'Current Transaction date is still active'){
+						this.notify('',response.data.message + ', ' + response.data.data, 'error');
+					}else{
+						this.notify('','Transaction date has been set successfully', 'success');
+					}
+					
+				}.bind(this))
+				.catch(function (error) {
+					console.log(error);
+				}.bind(this));
+		},
 		async fetchTransactionDate(){
 			await axios.get(this.baseURL() + 'api/eod/eodtransaction/' + this.branch.branch_id,{
 			headers: {
@@ -95,9 +132,10 @@ export default {
 				}
 			})
 			.then(function (response) {
-				// console.log(response.data.data);
+				console.log(response.data.data);
 				this.transactionDate = response.data.data.date_end;
 				this.success = response.data.data.status == 'open' ? false : true;
+				this.newDay = response.data.data.status == 'open' ? false : true;
 			}.bind(this))
 			.catch(function (error) {
 				console.log(error);
@@ -114,6 +152,7 @@ export default {
 				}
 			})
 			.then(function (response) {
+				console.log(response.data);
 				this.loading = false;
 				if(response.data.data == 0){
 					this.loading = false;
@@ -165,7 +204,15 @@ export default {
 				this.loading = false;
 				console.log(error);
 			}.bind(this));
-		}
+		},
+		notify:function(title, text, type){
+			this.$notify({
+				group: 'foo',
+				title: title,
+				text: text,
+				type: type,
+			});
+		},
 	},
 	watch:{
 		'pbranch':function(newValue){
@@ -175,6 +222,7 @@ export default {
 	mounted(){
 		// this.checkEOD();
 		this.branch = JSON.parse(this.pbranch);
+		// this.checkPendingTransactions();
 		this.fetchTransactionDate();
 	}
 }

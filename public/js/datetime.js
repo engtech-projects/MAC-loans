@@ -2,7 +2,7 @@ const months = ["January", "February", "March", "April", "May", "June", "July", 
 const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
 function showTime(){
-    var date = new Date();
+    var date = new Date(document.getElementById("currentTransactionDate").value);
     var h = date.getHours(); // 0 - 23
     var m = date.getMinutes(); // 0 - 59
     var s = date.getSeconds(); // 0 - 59
