@@ -11,17 +11,17 @@
             <div style="flex: 9">
                 <div class="mb-12">
                     <div class="d-flex">
-                        <div class="form-group mr-7 flex-1">
+                        <!-- <div class="form-group mr-7 flex-1"> -->
                             <!-- <select class="form-control select2 select2-hidden-accessible" data-select2-id="1" tabindex="-1" aria-hidden="true">
 								<option value="">2022/11/11</option>
 							</select> -->
-                            <input
+                            <!-- <input
                                 v-model="preference.transaction_date"
                                 type="date"
                                 class="form-control"
                                 placeholder="Pick a date"
-                            />
-                        </div>
+                            /> -->
+                        <!-- </div> -->
                         <div class="form-group flex-2 mr-7">
                             <input
                                 v-model="preference.specification"
@@ -390,6 +390,7 @@ export default {
 			}.bind(this));
 		},
         async openPayments() {
+            this.preference.transaction_date = this.transactionDate.date_end;
             var data = this.preference;
             data.branch_id = this.pbranch;
             await axios
@@ -456,6 +457,7 @@ export default {
             };
         },
         fetchPayments: function () {
+            this.preference.transaction_date = this.transactionDate.date_end;
             axios
                 .post(this.baseURL() + "api/payment/list", this.preference, {
                     headers: {
@@ -800,17 +802,17 @@ export default {
         },
     },
     watch: {
-        "preference.transaction_date": function (newValue) {
+        "transactionDate": function (newValue) {
+            this.fetchPayments();
+            this.openPayments(this.preference);
+        },
+        "preference": function (newValue) {
             this.fetchPayments();
             this.openPayments(this.preference);
         },
     },
     async mounted() {
-        // this.fetchPayments();
         await this.fetchTransactionDate();
-        this.preference.transaction_date = this.transactionDate.date_end;
-        this.overridePaymentDates();
-        this.openPayments(this.preference);
         this.todaysPaidPayments();
     },
 };
