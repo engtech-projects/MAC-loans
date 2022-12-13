@@ -14,7 +14,7 @@
 		<day-ended v-else></day-ended>
 
 
-		
+
 	</div>
 </template>
 
@@ -58,10 +58,9 @@ export default {
 					businessInfo : [],
 					householdMembers : [],
 					outstandingObligations : [],
-					created_at: this.dateToYMD(new Date()),
 					loanAccounts:[],
 					loan_accounts:[],
-				},				
+				},
 		}
 	},
 	methods:{
@@ -118,7 +117,7 @@ export default {
 							flag = true
 							return;
 						}
-					}.bind(this))	
+					}.bind(this))
 				}
 			}.bind(this))
 			return filteredData;

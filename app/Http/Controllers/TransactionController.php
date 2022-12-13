@@ -27,7 +27,7 @@ class TransactionController extends Controller
 			'title' => 'Override Release',
 		]);
 	}
-	
+
 	public function rejectedRelease(){
 		$this->checkAccess('view rejected release');
 		return view('transaction.rejected_release')->with([
@@ -83,7 +83,7 @@ class TransactionController extends Controller
 	}
 
 	public function paidTodayPayments(Request $request){
-		$payments = \App\Models\Payment::with('loanDetails')->where('status','paid')->whereDate('updated_at', '=', Carbon::now())->get();
+		$payments = \App\Models\Payment::with('loanDetails')->where('status','paid')->whereDate('transaction_date', '=', Carbon::now())->get();
 		return $payments;
 	}
 

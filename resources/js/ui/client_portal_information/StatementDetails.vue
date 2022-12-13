@@ -1337,7 +1337,7 @@
 							<span class="text-center text-block dark-bb pb-10 text-bold font-lg mb-16">STATEMENT OF ACCOUNT</span>
 
 							<div class="d-flex flex-row mb-24">
-								
+
 								<div class="d-flex flex-column flex-2">
 									<div class="d-flex mb-7">
 										<span class="mr-5 text-primary-dark text-bold">Name: </span>
@@ -1486,7 +1486,7 @@
 									</thead>
 									<tbody>
 										<tr v-for="(py,x) in loanDetails.payments" :key="x">
-											<td>{{dateToYMD(new Date(py.created_at)).split('-').join('/')}}</td>
+											<td>{{dateToYMD(new Date(py.transaction_date)).split('-').join('/')}}</td>
 											<td>{{py.or_no}}</td>
 											<td>{{py.transaction_number}}</td>
 											<td></td>

@@ -744,7 +744,7 @@ export default {
 				status: 'closed',
 				date_end: '',
 			},
-			filter:{ao_id:'all',center_id:'all',product_id:'all', created_at:''},
+			filter:{ao_id:'all',center_id:'all',product_id:'all', transaction_date:''},
 			borrower:'',
 			loanDetails:'',
 			loanaccount:{
@@ -914,7 +914,7 @@ export default {
 		fetchFilteredOverride: function(base){
 			this.filteredOverrides = [];
 			let filter = {
-				created_at:this.pdate,
+				transaction_date:this.pdate,
 				ao_id:this.filter.ao_id=='all'?null:this.filter.ao_id,
 				center_id:this.filter.center_id=='all'?null:this.filter.center_id,
 				product_id:this.filter.product_id=='all'?null:this.filter.product_id,

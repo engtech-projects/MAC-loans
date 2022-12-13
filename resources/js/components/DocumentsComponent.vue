@@ -129,7 +129,7 @@
 													<!-- <button data-dismiss="modal" id="excelBtn" class="btn btn-success min-w-150 mr-24">Download Excel</button> -->
 												</div>
 											</div>
-											
+
 										</div>
 									</div>
 
@@ -297,11 +297,11 @@
 												</div>
 
 												<p class="mb-16">Please give this letter your utmost concern to avoid complications in the future.
-													Trusting that you will see your way through. Thank you very much. 
+													Trusting that you will see your way through. Thank you very much.
 												</p>
 
 												<p>(Disregard this notice if payment/s has been made.)</p>
-												
+
 											</div>
 											<div class="truly-yours d-flex flex-column mb-64">
 												<span class="mb-36">Very truly yours,</span>
@@ -403,7 +403,7 @@
 														</div>
 														<div class="d-flex justify-content-between">
 															<div class="flex-1 text-bold d-flex">
-																
+
 															</div>
 															<div class="flex-1 text-bold d-flex justify-content-between">
 																<b class="flex-1"></b>
@@ -431,7 +431,7 @@
 												</p>
 
 												<p>Visit  the undersigned  counsel or to my  client office to effect the payment.</p>
-												
+
 											</div>
 											<div class="truly-yours d-flex flex-column mb-64">
 												<span class="mb-36">Very truly yours,</span>
@@ -510,7 +510,7 @@
 													<span class="mr-24">Reason</span>
 												</div>
 
-												
+
 												<p class="mb-16">
 													Kindly make good or redeem the said  returned check(s) with its Cash
 													equivalent winthin  FIVE (5)  banking days from your receipt hereof,
@@ -522,7 +522,7 @@
 													To avoid  unnecessary  additional  expenses  and  dire consequences,
      												please give this matter your preferential attention
 												</p>
-												
+
 											</div>
 											<div class="truly-yours d-flex flex-column mb-64">
 												<span class="mb-36">Very truly yours,</span>
@@ -592,8 +592,8 @@
 											<b style="text-decoration:underline" class="mb-36">Dear <i>Sir/Madam</i></b>
 
 											<p>
-												Please be informed that our client,  Micro Access Loans Corporation has endorsed to us for appropriate legal action for your accountability amounting to <i class="text-underlined"><b>{{numToWords(loanDetails.remaining_balance.memo.balance)}} ( Php {{formatToCurrency(loanDetails.remaining_balance.memo.balance)}})</b></i> representing your total unpaid obligation to our said client as of 
-												<i class="text-underlined"><b>{{dateToMDY(new Date)}}</b></i>. 
+												Please be informed that our client,  Micro Access Loans Corporation has endorsed to us for appropriate legal action for your accountability amounting to <i class="text-underlined"><b>{{numToWords(loanDetails.remaining_balance.memo.balance)}} ( Php {{formatToCurrency(loanDetails.remaining_balance.memo.balance)}})</b></i> representing your total unpaid obligation to our said client as of
+												<i class="text-underlined"><b>{{dateToMDY(new Date)}}</b></i>.
 											</p>
 
 											<p>
@@ -629,7 +629,7 @@
 											</div>
 										</div>
 									</div>
-									
+
 
 									<div  class="tab-pane fade" id="bouncing-check" role="tabpanel" aria-labelledby="custom-content-below-home-tab">
 										<img :src="this.baseURL()+'/img/company_header.png'" style="width:100%" class="mb-16" alt="Company Header">
@@ -660,7 +660,7 @@
 													<div class="d-flex flex-column mr-24"><span>Amount</span><span>0.00</span></div>
 													<span class="mr-24">Reason</span>
 												</div>
-												
+
 												<p class="mb-16">
 													Otherwise,  we will commence and persistently  pursue, to its ultimate
 													conclusion, the appropriate criminal cases with claim for damages, and
@@ -678,7 +678,7 @@
 													Visit  the undersigned  counsel or to my  client office to  effect the
      												payment.
 												</p>
-												
+
 											</div>
 											<div class="truly-yours d-flex flex-column mb-64">
 												<span class="mb-36">Very truly yours,</span>
@@ -713,7 +713,7 @@
 									</div>
 
 
-									
+
 									<div  class="tab-pane fade" id="dacion-en-pago" role="tabpanel" aria-labelledby="custom-content-below-home-tab">
 										<img :src="baseUrl+'/img/company_header.png'" style="width:100%" class="mb-16" alt="Company Header">
 										<div class="d-flex flex-column font-md justify-content-between" style="padding:0 35px;min-height:420mm">
@@ -731,7 +731,7 @@
 													</p>
 													<p>WITNESSETH:</p>
 													<p>
-														That the <b>FIRST PARTY</b> hereby acknowledges to have been indebted to the SECOND PARTY in the sum of <span class="text-underlined allcaps text-bold">{{numToWords(loanDetails.loan_amount)}}</span> <b>(P{{formatToCurrency(loanDetails.loan_amount)}})</b>. Philippines currency, as of this date, since, he/she could no longer paid it in full by way of cash, hence, by presents the <b>FIRST PARTY</b>, voluntarily assign, transfer convey and set over unto the <b>SECOND PARTY</b> that certain PERSONAL property particularly describe as follows: 
+														That the <b>FIRST PARTY</b> hereby acknowledges to have been indebted to the SECOND PARTY in the sum of <span class="text-underlined allcaps text-bold">{{numToWords(loanDetails.loan_amount)}}</span> <b>(P{{formatToCurrency(loanDetails.loan_amount)}})</b>. Philippines currency, as of this date, since, he/she could no longer paid it in full by way of cash, hence, by presents the <b>FIRST PARTY</b>, voluntarily assign, transfer convey and set over unto the <b>SECOND PARTY</b> that certain PERSONAL property particularly describe as follows:
 													</p>
 													<p>
 														<span class="text-block">Description:</span> <b>{{loanDetails.documents.description}}</b>
@@ -744,7 +744,7 @@
 														That the SECOND PARTY does hereby accept this assignment in payment of the total/partial obligation owing to him/her by the <b>FIRST PARTY</b> as above stated, (giving to the Second Party, however, the option to repurchase the above-describe property from the <b>FIRST PARTY</b> for the sum of and after the date hereof, which right shall automatically be deemed cancelled, it not exercised within 15 days from the date hereof).
 													</p>
 													<p>
-														That by virtue of this presents, the indebtedness of <b>FIRST PARTY</b> as cited above is hereby paid and extinguished. 
+														That by virtue of this presents, the indebtedness of <b>FIRST PARTY</b> as cited above is hereby paid and extinguished.
 													</p>
 													<p>
 														IN WITNESS WHEREOF, the parties hereto have hereunto set their hands this {{dacionDate()}} at Butuan City, Philippines.
@@ -766,7 +766,7 @@
 													</div>
 
 													<p class="mb-24 text-bold">
-														WITH MY MARITAL CONSENT: 
+														WITH MY MARITAL CONSENT:
 													</p>
 
 													<div class="d-flex flex-row align-items-end mb-36">
@@ -820,7 +820,7 @@
 												<section style="font-size:16px!important;line-height:1.4em">
 													<span class="text-block mb-24 text-bold">KNOW ALL MEN BY THESE PRESENTS:</span>
 													<p>
-														That I, <b><u> {{fullName(borrower.firstname, borrower.middlename,borrower.lastname)}} </u></b> Filipino, of legal age, married/single and a resident of <b> <u> {{borrower.address}}</u> </b> herein known as the <b>ASSIGNOR;</b> 
+														That I, <b><u> {{fullName(borrower.firstname, borrower.middlename,borrower.lastname)}} </u></b> Filipino, of legal age, married/single and a resident of <b> <u> {{borrower.address}}</u> </b> herein known as the <b>ASSIGNOR;</b>
 													</p>
 													<b class="text-center text-block allcaps mb-24">-AND-</b>
 													<p>
@@ -905,7 +905,7 @@
 													<p class="mb-24">
 														<center>IN WITNESS WHEREOF, I have set my hand and affixed my Notarial Seal on date place above written.</center>
 													</p>
-													
+
 													<div class="d-flex align-items-end mb-36">
 														<div class="d-flex flex-column mb-24 flex-3">
 															<span>Doc. No.___________</span>
@@ -944,9 +944,9 @@
 												</div>
 												<section style="font-size:16px!important;line-height:1.3em!important">
 													<span class="text-block mb-24">KNOW ALL MEN BY THESE PRESENTS:</span>
-													
+
 													<p class="mb-24">
-														This AGREEMENT made and entered into this      th day of          at MICRO ACCESS LOANS CORPORATION Butuan City, Philippines by and among the undersigned borrowers under the loan program of  Micro Access Loans Corporation. 
+														This AGREEMENT made and entered into this      th day of          at MICRO ACCESS LOANS CORPORATION Butuan City, Philippines by and among the undersigned borrowers under the loan program of  Micro Access Loans Corporation.
 
 													</p>
 
@@ -1089,7 +1089,7 @@
 													<p class="mb-24">
 														WITNESS MY HAND AND SEAL on this  ________ day of ___________ at the place first written above.
 													</p>
-													
+
 													<div class="d-flex align-items-end mb-24">
 														<div class="d-flex flex-column mb-24 flex-3">
 															<span>Doc. No.___________</span>
@@ -1298,7 +1298,7 @@
 																	<span>{{dateToYMD(new Date(loanDetails.co_borrower_id_date_issued)).split('-').join('/')}}</span>
 																</div>
 																</div>
-															
+
 														</div>
 														<div class="flex-1"></div>
 													</div>
@@ -1463,7 +1463,6 @@ export default {
 					householdMembers : [],
 					outstandingObligations : [],
 					loanAccounts:[],
-					created_at: this.dateToYMD(new Date()),
 			},
 			amortizationSched:[],
 			dueDate:'',
@@ -1553,7 +1552,7 @@ export default {
 		totalPayable:function(){
 			return this.totalPrincipal + this.totalInterest;
 		},
-		
+
 	},
 	watch:{
 		'loanDetails.loan_account_id':function(newValue){

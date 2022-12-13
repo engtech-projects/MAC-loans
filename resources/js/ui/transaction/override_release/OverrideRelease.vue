@@ -432,7 +432,7 @@ export default {
 			var amount = 0;
 			this.loanAccounts.map(function(account){
 				if(account.checked){
-					if(this.dateToYMD(new Date(account.created_at)) == this.dateToYMD(new Date(this.preference.date))){
+					if(this.dateToYMD(new Date(account.transaction_date)) == this.dateToYMD(new Date(this.preference.date))){
 						amount += account.net_proceeds;
 					}
 				}
@@ -451,7 +451,7 @@ export default {
 			var amount = 0;
 			this.loanAccounts.map(function(account){
 				if(!account.checked){
-					if(this.dateToYMD(new Date(account.created_at)) == this.dateToYMD(new Date(this.preference.date))){
+					if(this.dateToYMD(new Date(account.transaction_date)) == this.dateToYMD(new Date(this.preference.date))){
 						amount += account.net_proceeds;
 					}
 				}
@@ -461,7 +461,7 @@ export default {
 		totalProceeds:function(){
 			var amount = 0;
 			this.loanAccounts.map(function(account){
-				if(this.dateToYMD(new Date(account.created_at)) == this.dateToYMD(new Date(this.preference.date))){
+				if(this.dateToYMD(new Date(account.transaction_date)) == this.dateToYMD(new Date(this.preference.date))){
 					amount += account.net_proceeds;
 				}
 			}.bind(this));
@@ -503,7 +503,7 @@ export default {
 			var result = [];
 			if(this.preference.date != ''){
 				this.loanAccounts.map(function(val){
-					if(this.dateToYMD(new Date(val.created_at)) == this.dateToYMD(new Date(this.preference.date))){
+					if(this.dateToYMD(new Date(val.transaction_date)) == this.dateToYMD(new Date(this.preference.date))){
 						if(this.preference.specification == ''){
 							result.push(val);
 							return
@@ -534,7 +534,7 @@ export default {
 		},
 		setDates:function(){
 			this.loanAccounts.map(function(data){
-				let date = this.dateToYMD(new Date(data.created_at));
+				let date = this.dateToYMD(new Date(data.transaction_date));
 				if(!this.dates.includes(date)){
 					this.dates.push(date);
 				}

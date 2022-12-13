@@ -953,7 +953,6 @@
 					householdMembers : [],
 					outstandingObligations : [],
 					loanAccounts:[],
-					created_at: this.dateToYMD(new Date()),
 				},
 				baseUrl: this.baseURL(),
 				borrowers:[],
@@ -1180,7 +1179,6 @@
 					householdMembers : [],
 					outstandingObligations : [],
 					loanAccounts:[],
-					created_at: this.transactionDate.date_end,
 				};
 			},
 

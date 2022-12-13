@@ -16,7 +16,7 @@
 								<option value="">2022/11/11</option>
 							</select> -->
                             <input
-                                v-model="preference.created_at"
+                                v-model="preference.date"
                                 type="date"
                                 class="form-control"
                                 placeholder="Pick a date"
@@ -350,7 +350,7 @@ export default {
             paymentsClone: [],
             paymentsBase: [],
             preference: {
-                created_at: this.dateToYMD(new Date()),
+                date: this.transactionDate.date_end,
                 specification: "",
                 filter: "client",
             },
@@ -709,12 +709,12 @@ export default {
         },
         filterClient: function () {
             var result = [];
-            if (this.preference.created_at != "") {
+            if (this.preference.date != "") {
                 this.payments.map(
                     function (val) {
                         if (
-                            this.dateToYMD(new Date(val.created_at)) ==
-                            this.dateToYMD(new Date(this.preference.created_at))
+                            this.dateToYMD(new Date(val.transactionDate)) ==
+                            this.dateToYMD(new Date(this.preference.date))
                         ) {
                             if (this.preference.specification == "") {
                                 result.push(val);
@@ -800,7 +800,7 @@ export default {
         },
     },
     watch: {
-        "preference.created_at": function (newValue) {
+        "preference.date": function (newValue) {
             this.fetchPayments();
             this.openPayments(this.preference);
         },

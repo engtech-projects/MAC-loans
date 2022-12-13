@@ -1216,7 +1216,7 @@ export default {
         lastTransaction: function () {
             return this.loanAccount.payments && this.loanAccount.payments.length
                 ? this.dateToMDY(
-                      new Date(this.loanAccount.payments[0].created_at)
+                      new Date(this.loanAccount.payments[0].transaction_date)
                   )
                 : "None";
         },

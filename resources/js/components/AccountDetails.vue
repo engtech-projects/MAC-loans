@@ -179,7 +179,7 @@
 							</thead>
 							<tbody>
 								<tr v-for="(p,pi) in loanDetails.payments" :key="pi">
-									<td>{{dateToMDY(new Date(p.created_at))}}</td>
+									<td>{{dateToMDY(new Date(p.transaction_date))}}</td>
 									<td>{{p.or_no}}</td>
 									<td>{{p.transaction_number}}</td>
 									<td>{{p.reference_no}}</td>
@@ -334,22 +334,22 @@
 								</div>
 							</div>
 							<div class="flex-1 px-16 br-primary-dark d-flex flex-column justify-content-between">
-								
+
 							</div>
 							<div class="flex-1 px-16 d-flex flex-column justify-content-between">
-								
+
 							</div>
 							<div class="flex-1 px-16"></div>
 						</div>
 					</div>
 
 				</div>
-				
+
 			</div>
 
 		</div>
 	</section>
-	
+
 </template>
 
 <script>

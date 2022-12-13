@@ -151,7 +151,7 @@ class LoanAccountController extends BaseController
 
         $account->status = 'rejected';
         $account->save();
-        
+
         return $this->sendResponse(['status' => 'rejected'], 'Rejected');
     }
 
@@ -221,6 +221,6 @@ class LoanAccountController extends BaseController
         return $accountDetails;
     }
 
-     
+
 
 }
