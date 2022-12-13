@@ -350,7 +350,7 @@ export default {
             paymentsClone: [],
             paymentsBase: [],
             preference: {
-                date: this.transactionDate.date_end,
+                date: '',
                 specification: "",
                 filter: "client",
             },
@@ -805,9 +805,10 @@ export default {
             this.openPayments(this.preference);
         },
     },
-    mounted() {
+    async mounted() {
         // this.fetchPayments();
-        this.fetchTransactionDate();
+        await this.fetchTransactionDate();
+        this.preference.date = this.transactionDate.date_end;
         this.overridePaymentDates();
         this.openPayments(this.preference);
         this.todaysPaidPayments();
