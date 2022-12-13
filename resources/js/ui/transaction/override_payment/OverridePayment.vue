@@ -16,7 +16,7 @@
 								<option value="">2022/11/11</option>
 							</select> -->
                             <input
-                                v-model="preference.date"
+                                v-model="preference.transaction_date"
                                 type="date"
                                 class="form-control"
                                 placeholder="Pick a date"
@@ -350,7 +350,7 @@ export default {
             paymentsClone: [],
             paymentsBase: [],
             preference: {
-                date: '',
+                transaction_date: '',
                 specification: "",
                 filter: "client",
             },
@@ -709,12 +709,12 @@ export default {
         },
         filterClient: function () {
             var result = [];
-            if (this.preference.date != "") {
+            if (this.preference.transaction_date != "") {
                 this.payments.map(
                     function (val) {
                         if (
                             this.dateToYMD(new Date(val.transactionDate)) ==
-                            this.dateToYMD(new Date(this.preference.date))
+                            this.dateToYMD(new Date(this.preference.transaction_date))
                         ) {
                             if (this.preference.specification == "") {
                                 result.push(val);
@@ -800,7 +800,7 @@ export default {
         },
     },
     watch: {
-        "preference.date": function (newValue) {
+        "preference.transaction_date": function (newValue) {
             this.fetchPayments();
             this.openPayments(this.preference);
         },
@@ -808,7 +808,7 @@ export default {
     async mounted() {
         // this.fetchPayments();
         await this.fetchTransactionDate();
-        this.preference.date = this.transactionDate.date_end;
+        this.preference.transaction_date = this.transactionDate.date_end;
         this.overridePaymentDates();
         this.openPayments(this.preference);
         this.todaysPaidPayments();
