@@ -366,7 +366,7 @@
 					<div class="d-flex flex-row">
 						<div class="d-flex font-md mr-24 align-items-center">
 							<span class="mr-5">Date:</span>
-							<span>{{dateToMDY2(new Date(pdate)).split('-').join('/')}}</span>
+							<span>{{dateToMDY(new Date(transactionDate.date_end))}}</span>
 						</div>
 						<div class="d-flex font-md align-items-center mr-45">
 							<span class="mr-5">Time:</span>
@@ -736,14 +736,9 @@
 
 <script>
 export default {
-	props:['ploanaccount', 'pdate', 'token', 'csrf', 'pbranch','pboverride', 'candelete', 'canreject'],
+	props:['ploanaccount', 'pdate', 'token', 'csrf', 'pbranch','pboverride', 'candelete', 'canreject', "transactionDate"],
 	data(){
 		return {
-			transactionDate: {
-				branch_id: this.pbranch,
-				status: 'closed',
-				date_end: '',
-			},
 			filter:{ao_id:'all',center_id:'all',product_id:'all', transaction_date:''},
 			borrower:'',
 			loanDetails:'',
@@ -774,21 +769,6 @@ export default {
 		}
 	},
 	methods:{
-		fetchTransactionDate:function(){
-			axios.get(this.baseURL() + 'api/eod/eodtransaction/'+this.pbranch, {
-			headers: {
-				'Authorization': 'Bearer ' + this.token,
-					'Content-Type': 'application/json',
-					'Accept': 'application/json'
-				}
-			})
-			.then(function (response) {
-				this.transactionDate = response.data.data;
-			}.bind(this))
-			.catch(function (error) {
-				console.log(error);
-			}.bind(this));
-		},
 		fetchCashVoucher:function(){
 			this.vouchers = [];
 			axios.get(this.baseURL() + 'api/account/cashvoucher/' + this.loanaccount.loan_account_id, {
@@ -1255,7 +1235,6 @@ export default {
 
 	},
 	mounted(){
-		this.fetchTransactionDate();
 		this.fetchCenters();
 		this.fetchProducts();
 		this.fetchAo();

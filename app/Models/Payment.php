@@ -147,19 +147,19 @@ class Payment extends Model
             $payments->whereDate('payment.transaction_date', '=', $filters['transaction_date']);
         }
 
-        if( isset($filters['ao_id']) && $filters['ao_id'] != 'all' ){
+        if( isset($filters['ao_id']) && $filters['ao_id'] != 'all' && $filters['ao_id']){
             $payments->where('loan_accounts.ao_id', '=', $filters['ao_id']);
         }
 
-        if( isset($filters['center_id']) && $filters['center_id'] != 'all' ){
+        if( isset($filters['center_id']) && $filters['center_id'] != 'all' && $filters['center_id']){
             $payments->where('loan_accounts.center_id', '=', $filters['center_id']);
         }
 
-        if( isset($filters['product_id']) && $filters['product_id'] != 'all' ){
+        if( isset($filters['product_id']) && $filters['product_id'] != 'all' && $filters['product_id']){
             $payments->where('loan_accounts.product_id', '=', $filters['product_id']);
         }
 
-        if( isset($filters['branch_id']) ){
+        if( isset($filters['branch_id'])){
             $payments->where('payment.branch_id', '=', $filters['branch_id']);
         }
 

@@ -133,6 +133,7 @@
 					:pdate="preference.date"
 					:canreject="canreject"
 					:candelete="candelete"
+					:transactionDate="transactionDate"
 				>
 				</override-release-details>
 			</div>

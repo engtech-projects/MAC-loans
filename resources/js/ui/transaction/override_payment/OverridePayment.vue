@@ -291,6 +291,7 @@
         <overridepayment-view
             :pbranch="pbranch"
             :ppayments="paymentsBase"
+            :transactionDate="transactionDate"
         ></overridepayment-view>
 
         <div class="modal" id="warningModal" tabindex="-1" role="dialog">
@@ -712,10 +713,9 @@ export default {
             if (this.preference.transaction_date != "") {
                 this.payments.map(
                     function (val) {
-                        if (
-                            this.dateToYMD(new Date(val.transactionDate)) ==
-                            this.dateToYMD(new Date(this.preference.transaction_date))
-                        ) {
+                        console.log(this.dateToYMD(new Date(val.transaction_date)))
+                        console.log(this.dateToYMD(new Date(this.preference.transaction_date)))
+                        if ( this.dateToYMD(new Date(val.transaction_date)) == this.dateToYMD(new Date(this.preference.transaction_date)) ) {
                             if (this.preference.specification == "") {
                                 result.push(val);
                                 return;
