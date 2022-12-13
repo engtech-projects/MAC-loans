@@ -80,11 +80,10 @@
 									<li class="nav-item">
 										<a class="nav-link" id="doa-for-atm-tab" data-toggle="pill" href="#doa-for-atm" role="tab" aria-controls="custom-content-below-home" aria-selected="true">DACION EN PAGO</a>
 									</li>
-										<li class="nav-item">
+									<li class="nav-item">
 										<a class="nav-link" id="moa-for-sme-tab" data-toggle="pill" href="#moa-for-sme" role="tab" aria-controls="custom-content-below-home" aria-selected="true">MOA FOR SME</a>
 									</li>
-									<li>
-										<li class="nav-item">
+									<li class="nav-item">
 										<a class="nav-link" id="sme-schedule-tab" data-toggle="pill" href="#sme-schedule" role="tab" aria-controls="custom-content-below-home" aria-selected="true">SME Schedule</a>
 									</li>
 									<li class="nav-item">
@@ -1347,7 +1346,7 @@
 														<span>Butuan City</span>
 													</div>
 													<p>
-														SUBSCRIBE AND SWORN before me this _______, day of __________ </b> and tax identetification number written above,
+														SUBSCRIBE AND SWORN before me this _______, day of __________ and tax identetification number written above,
 														Known to me and to me known to be the same person who executed the foregoing Promissory Note and they Acknowledged to me that the same is their own free and voluntary act and as well as the free and voluntary act and deed of the entitles herein represented with full power so to do and for the uses and purposes thereon set forth.
 													</p>
 													<p>

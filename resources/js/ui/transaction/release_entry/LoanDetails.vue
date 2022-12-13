@@ -537,6 +537,7 @@ export default {
 			this.setPrepaidInterest();
 			this.loanDetails.status = 'pending';
 			this.loanDetails.branch_id = this.branch
+			this.loanDetails.transaction_date = this.transactionDate.date_end
 			if(this.loanDetails.loan_account_id){
 				axios.post(this.baseURL() + 'api/account/update/' + this.loanDetails.loan_account_id, this.loanDetails, {
 					headers: {
