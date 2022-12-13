@@ -85,7 +85,6 @@ export default {
 				outstandingObligations : [],
                 loanAccounts:[],
                 loan_accounts:[],
-				created_at: '',
 			}
 		}
 	},

@@ -1122,7 +1122,7 @@ export default {
 			return this.pborrower.photo? this.pborrower.photo : this.baseURL()+'/img/user.png';
 		},
 		lastTransactionDate:function(){
-			return this.loanAccount.payments.length > 0 ? this.dateToMDY2(new Date(this.loanAccount.payments[this.loanAccount.payments.length-1].updated_at)) : 'None';
+			return this.loanAccount.payments.length > 0 ? this.dateToMDY2(new Date(this.loanAccount.payments[this.loanAccount.payments.length-1].transaction_date)) : 'None';
 		},
 		amountDistributed:function(){
 			return parseFloat(this.payment.amount_paid) + parseFloat(this.loanAccount.current_amortization.advance_principal)

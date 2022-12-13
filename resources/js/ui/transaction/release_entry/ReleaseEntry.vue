@@ -953,7 +953,6 @@
 					householdMembers : [],
 					outstandingObligations : [],
 					loanAccounts:[],
-					created_at: this.dateToYMD(new Date()),
 				},
 				baseUrl: this.baseURL(),
 				borrowers:[],
@@ -1180,7 +1179,6 @@
 					householdMembers : [],
 					outstandingObligations : [],
 					loanAccounts:[],
-					created_at: this.transactionDate.date_end,
 				};
 			},
 
@@ -1246,8 +1244,9 @@
 					release_type : '',
 					interest_rate:null,
 					interest_amount:'',
+					transaction_date: this.transactionDate.date_end,
 					documents: {
-						date_release: this.dateToYMD(new Date),
+						date_release: this.transactionDate.date_end,
 						description: '',
 						bank: '',
 						account_no: '',

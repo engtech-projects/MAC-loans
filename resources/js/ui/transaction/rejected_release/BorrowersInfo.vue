@@ -251,7 +251,7 @@
 				<div class="form-group mb-10 d-flex flex-column justify-content-end">
 					<button class="btn btn-success d-flex align-items-center" style="height:48px"><i class="fa fa-plus"></i></button>
 				</div>
-				
+
 			</div>
 			</form>
 		</section>
@@ -443,10 +443,9 @@
 					householdMembers : [],
 					outstandingObligations : [],
 					loanAccounts:[],
-					created_at: '',
 				},
 				data: {
-					outstandingObligations: { 
+					outstandingObligations: {
 						id: null,
 						creditor : '',
 						amount : 0,
@@ -471,7 +470,7 @@
 						contact_no : '' ,
 						years_employed : '' ,
 						position : '' ,
-						salary : '' 
+						salary : ''
 					},
 					businessInfo: {
 						id: null,
@@ -520,13 +519,13 @@
 						console.log(error);
 					}.bind(this));
 				}
-				
+
 			},
 
 			submitForm:function(){
 				document.getElementById('borrowerBtn').click();
 			},
-			
+
 			navigate:function(){
 				this.$emit('nextBorrower', this.borrower)
 				document.getElementById('custom-content-below-coborrowerinfo-tab').click();
@@ -588,10 +587,9 @@
 					businessInfo : [],
 					householdMembers : [],
 					outstandingObligations : [],
-					created_at: this.dateToYMD(new Date()),
-				};				
+				};
 			},
-			
+
 			dateToYMD:function(date) {
 				var d = date.getDate();
 				var m = date.getMonth() + 1;
@@ -603,13 +601,9 @@
 			'pborrower'(newValue) {
 				this.borrower = newValue;
 			},
-			
-			'borrower.created_at'(newValue){
-				this.borrower.created_at = this.dateToYMD(new Date(newValue));
-			},
+
 		},
-        mounted() {							
-			this.borrower.created_at = this.dateToYMD(new Date());
+        mounted() {
         }
     }
 </script>

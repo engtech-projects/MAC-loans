@@ -11,17 +11,17 @@
             <div style="flex: 9">
                 <div class="mb-12">
                     <div class="d-flex">
-                        <div class="form-group mr-7 flex-1">
+                        <!-- <div class="form-group mr-7 flex-1"> -->
                             <!-- <select class="form-control select2 select2-hidden-accessible" data-select2-id="1" tabindex="-1" aria-hidden="true">
 								<option value="">2022/11/11</option>
 							</select> -->
-                            <input
-                                v-model="preference.created_at"
+                            <!-- <input
+                                v-model="preference.transaction_date"
                                 type="date"
                                 class="form-control"
                                 placeholder="Pick a date"
-                            />
-                        </div>
+                            /> -->
+                        <!-- </div> -->
                         <div class="form-group flex-2 mr-7">
                             <input
                                 v-model="preference.specification"
@@ -291,6 +291,7 @@
         <overridepayment-view
             :pbranch="pbranch"
             :ppayments="paymentsBase"
+            :transactionDate="transactionDate"
         ></overridepayment-view>
 
         <div class="modal" id="warningModal" tabindex="-1" role="dialog">
@@ -350,7 +351,7 @@ export default {
             paymentsClone: [],
             paymentsBase: [],
             preference: {
-                created_at: this.dateToYMD(new Date()),
+                transaction_date: '',
                 specification: "",
                 filter: "client",
             },
@@ -389,6 +390,7 @@ export default {
 			}.bind(this));
 		},
         async openPayments() {
+            this.preference.transaction_date = this.transactionDate.date_end;
             var data = this.preference;
             data.branch_id = this.pbranch;
             await axios
@@ -455,6 +457,7 @@ export default {
             };
         },
         fetchPayments: function () {
+            this.preference.transaction_date = this.transactionDate.date_end;
             axios
                 .post(this.baseURL() + "api/payment/list", this.preference, {
                     headers: {
@@ -709,13 +712,12 @@ export default {
         },
         filterClient: function () {
             var result = [];
-            if (this.preference.created_at != "") {
+            if (this.preference.transaction_date != "") {
                 this.payments.map(
                     function (val) {
-                        if (
-                            this.dateToYMD(new Date(val.created_at)) ==
-                            this.dateToYMD(new Date(this.preference.created_at))
-                        ) {
+                        console.log(this.dateToYMD(new Date(val.transaction_date)))
+                        console.log(this.dateToYMD(new Date(this.preference.transaction_date)))
+                        if ( this.dateToYMD(new Date(val.transaction_date)) == this.dateToYMD(new Date(this.preference.transaction_date)) ) {
                             if (this.preference.specification == "") {
                                 result.push(val);
                                 return;
@@ -800,16 +802,17 @@ export default {
         },
     },
     watch: {
-        "preference.created_at": function (newValue) {
+        "transactionDate": function (newValue) {
+            this.fetchPayments();
+            this.openPayments(this.preference);
+        },
+        "preference": function (newValue) {
             this.fetchPayments();
             this.openPayments(this.preference);
         },
     },
-    mounted() {
-        // this.fetchPayments();
-        this.fetchTransactionDate();
-        this.overridePaymentDates();
-        this.openPayments(this.preference);
+    async mounted() {
+        await this.fetchTransactionDate();
         this.todaysPaidPayments();
     },
 };

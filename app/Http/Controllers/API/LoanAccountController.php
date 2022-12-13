@@ -103,7 +103,7 @@ class LoanAccountController extends BaseController
     // get override release accounts
     public function overrideAccountList(Request $request) {
         $filters = [
-            'created_at' => ($request->has('date')) ? $request->input('date') : false,
+            'transaction_date' => ($request->has('date')) ? $request->input('date') : false,
             'ao_id' => ($request->has('ao_id')) ? $request->input('ao_id') : false,
             'center_id' => ($request->has('center_id')) ? $request->input('center_id') : false,
             'product_id' => ($request->has('product_id')) ? $request->input('product_id') : false,
@@ -151,7 +151,7 @@ class LoanAccountController extends BaseController
 
         $account->status = 'rejected';
         $account->save();
-        
+
         return $this->sendResponse(['status' => 'rejected'], 'Rejected');
     }
 
@@ -214,13 +214,14 @@ class LoanAccountController extends BaseController
                 'term' => $account->terms,
                 'collection_rate' => $account->collectionRate(),
                 'payment_history' => $account->payment_status,
-                'loan_status' => $account->loan_status
+                'loan_status' => $account->loan_status,
+                'amortization' => $account->amortization,
             ];
 
         }
         return $accountDetails;
     }
 
-     
+
 
 }

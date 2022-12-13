@@ -8,11 +8,11 @@
 					<div class="d-flex flex-row">
 						<div class="d-flex font-md mr-24 align-items-center">
 							<span class="mr-5">Date:</span>
-							<span>12/12/2021</span>
+							<span>{{dateToMDY(new Date(transactionDate.date_end))}}</span>
 						</div>
 						<div class="d-flex font-md align-items-center mr-45">
 							<span class="mr-5">Time:</span>
-							<span>12:00 PM</span>
+							<span>{{todayTime(new Date) + ' ' + amPm(new Date)}}</span>
 						</div>
 						<div class="d-flex flex-row align-items-center mr-24">
 							<span class="mr-10 flex-1">Account Officer : </span>
@@ -232,7 +232,7 @@
 
 <script>
 export default {
-	props:['ppayments', 'pbranch'],
+	props:['ppayments', 'pbranch', 'transactionDate'],
 	data(){
 		return {
 			filter:{
@@ -463,7 +463,7 @@ export default {
 		},
 		filteredPayments:function(){
 			var payments = [];
-			if(this.filter.ao == 'all' && this.filter.center == 'all' && this.filter.product == 'all'){				
+			if(this.filter.ao == 'all' && this.filter.center == 'all' && this.filter.product == 'all'){
 				return this.ppayments;
 			}else{
 				this.ppayments.map(function(data){
@@ -502,7 +502,7 @@ export default {
 							payments.push(data);
 						}
 					}
-					
+
 				}.bind(this));
 			}
 			return payments

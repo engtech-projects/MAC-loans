@@ -522,6 +522,9 @@ export default {
         },
     },
     watch: {
+        "transactionDate": function(){
+            this.searchDate = this.dateToYMD(new Date(this.transactionDate.date_end));
+        },
         "selectedBorrower.borrower_id": function (newValue) {
             this.selectedPayment = { payment_id: null };
             if (newValue && this.selectedBorrower.loan_accounts) {
@@ -531,7 +534,7 @@ export default {
                 }
             }
         },
-        searchDate: function () {
+        "searchDate": function () {
             this.fetchAccounts();
         },
     },

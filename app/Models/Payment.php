@@ -55,7 +55,7 @@ class Payment extends Model
         'deduct' => 'MDB',
         'interbranch' => 'MBP',
         'offset' => 'MPF',
-        'rebates' => 'MEM' 
+        'rebates' => 'MEM'
     ];
 
 	public function loanDetails(){
@@ -104,13 +104,13 @@ class Payment extends Model
 
         if( $payment->interest > 0 || $payment->pdi > 0 || $payment->penalty > 0 ) {
             $pdi = 0;
-            $penalty = 0; 
+            $penalty = 0;
             if( $payment->pdi > 0 && !$payment->pdi_approval_no){
-                $pdi = $payment->pdi; 
+                $pdi = $payment->pdi;
             }
 
             if( $payment->penalty > 0 && !$payment->penalty_approval_no){
-                $penalty = $payment->penalty; 
+                $penalty = $payment->penalty;
             }
 
             $vat = ($payment->interest + $pdi + $penalty) / 1.12 * 0.12;
@@ -122,10 +122,10 @@ class Payment extends Model
 
         if( $payment->payment_id ){
             $payment->transaction_number = $this->generateTransactionNumber($payment->payment_id, $payment->payment_type, $payment->memo_type);
-            $payment->save();    
+            $payment->save();
         }
 
-        
+
         // $amortization = Amortization::find( $payment->amortization_id );
         // $amortization->status = 'paid';
 
@@ -143,23 +143,23 @@ class Payment extends Model
         $payments = Payment::join('loan_accounts', 'loan_accounts.loan_account_id', '=', 'payment.loan_account_id')
                             ->join('borrower_info', 'borrower_info.borrower_id', '=', 'loan_accounts.borrower_id');
 
-        if( isset($filters['created_at']) && $filters['created_at'] ){
-            $payments->whereDate('payment.created_at', '=', $filters['created_at']);
+        if( isset($filters['transaction_date']) && $filters['transaction_date'] ){
+            $payments->whereDate('payment.transaction_date', '=', $filters['transaction_date']);
         }
 
-        if( isset($filters['ao_id']) && $filters['ao_id'] != 'all' ){
+        if( isset($filters['ao_id']) && $filters['ao_id'] != 'all' && $filters['ao_id']){
             $payments->where('loan_accounts.ao_id', '=', $filters['ao_id']);
         }
 
-        if( isset($filters['center_id']) && $filters['center_id'] != 'all' ){
+        if( isset($filters['center_id']) && $filters['center_id'] != 'all' && $filters['center_id']){
             $payments->where('loan_accounts.center_id', '=', $filters['center_id']);
         }
 
-        if( isset($filters['product_id']) && $filters['product_id'] != 'all' ){
+        if( isset($filters['product_id']) && $filters['product_id'] != 'all' && $filters['product_id']){
             $payments->where('loan_accounts.product_id', '=', $filters['product_id']);
         }
 
-        if( isset($filters['branch_id']) ){
+        if( isset($filters['branch_id'])){
             $payments->where('payment.branch_id', '=', $filters['branch_id']);
         }
 
@@ -174,7 +174,7 @@ class Payment extends Model
                             ->join('borrower_info', 'borrower_info.borrower_id', '=', 'loan_accounts.borrower_id');
 
         if( isset($filters['transaction_date']) && $filters['transaction_date'] ){
-            $payments->whereDate('payment.updated_at', '=', $filters['transaction_date']);
+            $payments->whereDate('payment.transaction_date', '=', $filters['transaction_date']);
         }
 
         if( isset($filters['branch_id']) ){
@@ -188,7 +188,7 @@ class Payment extends Model
 
     public function paymentList($transDate, $branchId) {
 
-        return Payment::whereDate('payment.updated_at', '=', $transDate)
+        return Payment::whereDate('payment.transaction_date', '=', $transDate)
                         ->where([ 'branch_id' => $branchId ])
                         ->get();
     }
@@ -242,6 +242,6 @@ class Payment extends Model
     }
 
     public function cancelPayment() {}
-        
+
 
 }

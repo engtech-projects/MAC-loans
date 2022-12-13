@@ -9,12 +9,12 @@
 		<div class="d-flex flex-column flex-xl-row p-16">
 			<div style="flex:9;">
 				<div class="d-flex">
-					<div class="form-group mr-7 flex-1">
-						<select v-model="preference.date" class="form-control select2 select2-hidden-accessible" data-select2-id="1" tabindex="-1" aria-hidden="true">
+					<!-- <div class="form-group mr-7 flex-1"> -->
+						<!-- <select v-model="preference.date" class="form-control select2 select2-hidden-accessible" data-select2-id="1" tabindex="-1" aria-hidden="true">
 							<option v-for="(date, d) in dates" :key="d" :value="dateToYMD(new Date(date))" data-select2-id="42">{{date.replace(/-/g,'/')}}</option>
-						</select>
+						</select> -->
 						<!-- <input v-model="preference.date" type="date" class="form-control" placeholder="Pick a date"> -->
-					</div>
+					<!-- </div> -->
 					<div class="form-group flex-2 mr-7">
 						<input v-model="preference.specification" type="text" class="form-control" placeholder="Specifications">
 					</div>
@@ -133,6 +133,7 @@
 					:pdate="preference.date"
 					:canreject="canreject"
 					:candelete="candelete"
+					:transactionDate="transactionDate"
 				>
 				</override-release-details>
 			</div>
@@ -432,7 +433,7 @@ export default {
 			var amount = 0;
 			this.loanAccounts.map(function(account){
 				if(account.checked){
-					if(this.dateToYMD(new Date(account.created_at)) == this.dateToYMD(new Date(this.preference.date))){
+					if(this.dateToYMD(new Date(account.transaction_date)) == this.dateToYMD(new Date(this.preference.date))){
 						amount += account.net_proceeds;
 					}
 				}
@@ -451,7 +452,7 @@ export default {
 			var amount = 0;
 			this.loanAccounts.map(function(account){
 				if(!account.checked){
-					if(this.dateToYMD(new Date(account.created_at)) == this.dateToYMD(new Date(this.preference.date))){
+					if(this.dateToYMD(new Date(account.transaction_date)) == this.dateToYMD(new Date(this.preference.date))){
 						amount += account.net_proceeds;
 					}
 				}
@@ -461,7 +462,7 @@ export default {
 		totalProceeds:function(){
 			var amount = 0;
 			this.loanAccounts.map(function(account){
-				if(this.dateToYMD(new Date(account.created_at)) == this.dateToYMD(new Date(this.preference.date))){
+				if(this.dateToYMD(new Date(account.transaction_date)) == this.dateToYMD(new Date(this.preference.date))){
 					amount += account.net_proceeds;
 				}
 			}.bind(this));
@@ -503,7 +504,7 @@ export default {
 			var result = [];
 			if(this.preference.date != ''){
 				this.loanAccounts.map(function(val){
-					if(this.dateToYMD(new Date(val.created_at)) == this.dateToYMD(new Date(this.preference.date))){
+					if(this.dateToYMD(new Date(val.transaction_date)) == this.dateToYMD(new Date(this.preference.date))){
 						if(this.preference.specification == ''){
 							result.push(val);
 							return
@@ -534,7 +535,7 @@ export default {
 		},
 		setDates:function(){
 			this.loanAccounts.map(function(data){
-				let date = this.dateToYMD(new Date(data.created_at));
+				let date = this.dateToYMD(new Date(data.transaction_date));
 				if(!this.dates.includes(date)){
 					this.dates.push(date);
 				}
@@ -546,16 +547,18 @@ export default {
 		}
 	},
 	watch:{
-		'preference.date':function(newValue){
+		'preference':function(newValue){
 			this.todaysRelease();
-		}
+		},
+		'transactionDate':function(newValue){
+			this.preference.date = this.transactionDate.date_end;
+			this.todaysRelease();
+		},
 	},
-	mounted(){
-		this.fetchTransactionDate();
+	async mounted(){
+		await this.fetchTransactionDate();
 		this.resetLoanAccount();
-		this.preference.date = this.dateToYMD(new Date);
 		this.fetchAccounts();
-		this.preference.date = this.dateToYMD(new Date());
 	}
 }
 </script>

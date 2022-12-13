@@ -18,6 +18,18 @@ class TestDataSeeder extends Seeder
     public function run()
     {
         $fake = Faker::create();
+
+        DB::table('end_transaction')->insert([
+            [
+                'id' => "1",
+                'branch_id' => "1",
+                'date_end' => Carbon::now()->format("Y-m-d"),
+                'status' => "open",
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+        ]);
+
         DB::table('branch')->insert([
             [
                 'branch_code' => "001",
@@ -185,7 +197,8 @@ class TestDataSeeder extends Seeder
         DB::table('loan_accounts')->insert([
             [
                 'account_num' => '001-001-0000001',
-                'date_release' => '2022-07-27',
+                'date_release' => Carbon::now()->format('Y-m-d'),
+                'transaction_date' => Carbon::now()->format("Y-m-d"),
                 'cycle_no' => '1',
                 'ao_id' => '1',
                 'product_id' => '1',

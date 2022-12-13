@@ -23,7 +23,7 @@
 								<div class="col-xl-3 col-lg-6">
 									<div class="info-display">
 										<span class="font-blue">Amortization</span>
-										<span>P {{formatToCurrency(loanAmortization)}}</span>
+										<span>P {{formatToCurrency(loanDetails.amortization.total)}}</span>
 									</div>
 								</div>
 								<div class="col-xl-3 col-lg-6">
@@ -179,7 +179,7 @@
 							</thead>
 							<tbody>
 								<tr v-for="(p,pi) in loanDetails.payments" :key="pi">
-									<td>{{dateToMDY(new Date(p.created_at))}}</td>
+									<td>{{dateToMDY(new Date(p.transaction_date))}}</td>
 									<td>{{p.or_no}}</td>
 									<td>{{p.transaction_number}}</td>
 									<td>{{p.reference_no}}</td>
@@ -276,26 +276,26 @@
 											<span>Principal Balance</span>
 											<span>:</span>
 										</div>
-										<span class="flex-3 pl-10">P {{formatToCurrency(outstandingPrincipalRemaining)}}</span>
+										<span class="flex-3 pl-10">P {{formatToCurrency(loanDetails.remainingBalance.principal.balance)}}</span>
 									</div>
 									<div class="d-flex justify-content-between py-5 text-primary-dark">
 										<div class="flex-4 d-flex justify-content-between">
 											<span>Interest Balance</span>
 											<span>:</span>
 										</div>
-										<span class="flex-3 pl-10">P {{formatToCurrency(outstandingInterestRemaining)}}</span>
+										<span class="flex-3 pl-10">P {{formatToCurrency(loanDetails.remainingBalance.interest.balance)}}</span>
 									</div>
 									<div class="d-flex justify-content-between py-5 text-primary-dark">
 										<div class="flex-4 d-flex justify-content-between">
 											<span>Surcharge</span>
 											<span>:</span>
 										</div>
-										<span class="flex-3 pl-10">P {{formatToCurrency(outstandingSurchargeRemaining)}}</span>
+										<span class="flex-3 pl-10">P {{formatToCurrency(loanDetails.remainingBalance.pdi.balance + loanDetails.remainingBalance.penalty.balance)}}</span>
 									</div>
 								</div>
 								<div>
 									<span class="text-lg text-bold text-primary-dark">TOTAL</span>
-									<span class="text-block bg-primary-dark text-white px-16 text-45 mr-36">P {{formatToCurrency(outstandingTotalRemaining)}}</span>
+									<span class="text-block bg-primary-dark text-white px-16 text-45 mr-36">P {{formatToCurrency(loanDetails.remainingBalance.memo.balance)}}</span>
 								</div>
 							</div>
 							<div class="flex-1 px-16"></div>
@@ -334,22 +334,22 @@
 								</div>
 							</div>
 							<div class="flex-1 px-16 br-primary-dark d-flex flex-column justify-content-between">
-								
+
 							</div>
 							<div class="flex-1 px-16 d-flex flex-column justify-content-between">
-								
+
 							</div>
 							<div class="flex-1 px-16"></div>
 						</div>
 					</div>
 
 				</div>
-				
+
 			</div>
 
 		</div>
 	</section>
-	
+
 </template>
 
 <script>
@@ -399,14 +399,8 @@
 				}.bind(this));
 				return amount;
 			},
-			loanAmortization:function(){
-				return Math.ceil( (this.loanDetails.loan_amount/this.loanDetails.no_of_installment) + (this.loanDetails.interest_amount/this.loanDetails.no_of_installment) );
-			},
 			totalScheduledPayment:function(){
-				if(this.loanDetails.current_amortization.lastPayment){
-					return this.loanDetails.current_amortization.interest + this.loanDetails.current_amortization.principal + this.loanDetails.current_amortization.lastPayment.short_principal + this.loanDetails.current_amortization.lastPayment.short_interest;
-				}
-				return this.loanDetails.current_amortization.interest + this.loanDetails.current_amortization.principal;
+				return this.loanDetails.current_amortization.schedule_interest + this.loanDetails.current_amortization.schedule_principal;
 			},
 			totalInterest:function(){
 				return this.loanDetails.current_amortization.interest + this.loanDetails.current_amortization.short_interest;

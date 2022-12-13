@@ -290,7 +290,7 @@ class Reports extends Model
 
             $data['collection'][] = [
                 'borrower' => Borrower::find($borrower->borrower_id)->fullname(),
-                'date_paid' => Carbon::createFromFormat('Y-m-d H:i:s', $payment->created_at)->format('m/d/Y'),
+                'date_paid' => Carbon::createFromFormat('Y-m-d H:i:s', $payment->transaction_date)->format('m/d/Y'),
                 'or' => $payment->or_no,
                 'payment_type' => $payment->payment_type,
                 'principal' => $payment->principal,
@@ -335,8 +335,8 @@ class Reports extends Model
 
         //             $client['collection'][] = [
         //                     'borrower' => $account->borrower->fullname(),
-        //                     // 'date_paid' => Carbon::createFromFormat('Y-m-d', $payment->created_at)->format('Y-m-d'),
-        //                     'date_paid' => Carbon::createFromFormat('Y-m-d H:i:s', $payment->created_at)->format('m/d/Y'),
+        //                     // 'date_paid' => Carbon::createFromFormat('Y-m-d', $payment->transaction_date)->format('Y-m-d'),
+        //                     'date_paid' => Carbon::createFromFormat('Y-m-d H:i:s', $payment->transaction_date)->format('m/d/Y'),
         //                     'or' => $payment->or_no,
         //                     'principal' => $payment->principal,
         //                     'interest' => $payment->interest,
@@ -580,9 +580,9 @@ class Reports extends Model
 
         $payments = Payment::join('loan_accounts', 'payment.loan_account_id', '=', 'loan_accounts.loan_account_id')
                         ->where(['payment.branch_id' => $filters['branch_id'], 'payment.status' => 'paid'])
-                        ->whereDate('payment.updated_at', '>=', $filters['date_from'])
-                        ->whereDate('payment.updated_at', '<=', $filters['date_to'])
-                        ->orderBy('payment.updated_at', 'ASC')
+                        ->whereDate('payment.transaction_date', '>=', $filters['date_from'])
+                        ->whereDate('payment.transaction_date', '<=', $filters['date_to'])
+                        ->orderBy('payment.transaction_date', 'ASC')
                         ->get([
                             'payment.*', 'loan_accounts.borrower_id',
                         ]);
@@ -593,7 +593,7 @@ class Reports extends Model
 
             $data[] = [
                 'borrower' => Borrower::find($payment->borrower_id)->fullname(),
-                'payment_date' => $payment->updated_at,
+                'payment_date' => $payment->transaction_date,
                 'or' => $payment->or_no,
                 'principal' => $payment->principal,
                 'interest' => $payment->interest,
@@ -875,9 +875,9 @@ class Reports extends Model
 
         $payments = Payment::join('loan_accounts', 'payment.loan_account_id', '=', 'loan_accounts.loan_account_id')
                         ->where(['payment.branch_id' => $filters['branch_id'], 'payment.status' => 'cancelled'])
-                        ->whereDate('payment.updated_at', '>=', $filters['date_from'])
-                        ->whereDate('payment.updated_at', '<=', $filters['date_to'])
-                        ->orderBy('payment.updated_at', 'ASC')
+                        ->whereDate('payment.transaction_date', '>=', $filters['date_from'])
+                        ->whereDate('payment.transaction_date', '<=', $filters['date_to'])
+                        ->orderBy('payment.transaction_date', 'ASC')
                         ->get([
                             'payment.*', 'loan_accounts.borrower_id', 'loan_accounts.account_num',
                         ]);
@@ -887,11 +887,11 @@ class Reports extends Model
         foreach ($payments as $payment) {
 
             $data[] = [
-                'date_cancelled' => Carbon::createFromFormat('Y-m-d H:i:s', $payment->updated_at)->format('m/d/Y'),
+                'date_cancelled' => Carbon::createFromFormat('Y-m-d H:i:s', $payment->transaction_date)->format('m/d/Y'),
                 'cancelled_by' => '[backend_get_cancelled_by]',
                 'account_num' => $payment->account_num,
                 'borrower' => Borrower::find($payment->borrower_id)->fullname(),
-                'payment_date' => Carbon::createFromFormat('Y-m-d H:i:s', $payment->updated_at)->format('m/d/Y'),
+                'payment_date' => Carbon::createFromFormat('Y-m-d H:i:s', $payment->transaction_date)->format('m/d/Y'),
                 'or' => $payment->or_no,
                 'transaction_number' => $payment->transaction_number,
                 'principal' => $payment->principal,

@@ -279,8 +279,8 @@ class LoanAccount extends Model
       $branch = Branch::find($filters['branch_id']);
       $accounts = LoanAccount::where('status', '=', 'pending')->where(['branch_code' => $branch->branch_code]);
 
-      if( isset($filters['created_at']) && $filters['created_at'] ){
-         $accounts->whereDate('loan_accounts.created_at', '=', $filters['created_at'] );
+      if( isset($filters['transaction_date']) && $filters['transaction_date'] ){
+         $accounts->whereDate('loan_accounts.transaction_date', '=', $filters['transaction_date'] );
       }
 
       if( isset($filters['ao_id']) && $filters['ao_id'] != 'all' ){
@@ -713,6 +713,7 @@ class LoanAccount extends Model
       return [
          "principal" => ceil($account->loan_amount/$account->no_of_installment),
          "interest" => ceil($account->interest_amount/$account->no_of_installment),
+         "total" => ceil($account->interest_amount/$account->no_of_installment) + ceil($account->loan_amount/$account->no_of_installment),
       ];
    }
 

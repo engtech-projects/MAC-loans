@@ -436,7 +436,7 @@
 </template>
 
 <script>
-    export default {
+	export default {
 		props:['token','pborrower', 'psave','clear','pclient','borrower_id', 'idtype', 'loan_id', 'transactionDate'],
 		data(){
 			return {
@@ -476,7 +476,6 @@
 					householdMembers : [],
 					outstandingObligations : [],
 					loanAccounts:[],
-					created_at: '',
 				},
 				data: {
 					outstandingObligations: {
@@ -651,7 +650,6 @@
 					businessInfo : [],
 					householdMembers : [],
 					outstandingObligations : [],
-					created_at: transactionDate.date_end,
 				};
 			},
 			notify:function(title, text, type){
@@ -716,9 +714,6 @@
 					this.$emit('saveBorrower')
 				}
 			},
-			'borrower.created_at'(newValue){
-				this.borrower.created_at = this.transactionDate.date_end;
-			},
 			'pborrower'(newValue){
 				this.borrower = this.pborrower;
 			},
@@ -763,9 +758,8 @@
 				}
 			}
 		},
-        mounted() {
+		mounted() {
 			this.borrower.date_registered = this.transactionDate.date_end;
-			this.borrower.created_at = this.transactionDate.date_end;
 			// this.deleteOtherInfo();
 			if(this.pclient){
 				this.fetchBorrower();
@@ -775,6 +769,6 @@
 					this.borrower.date_registered = this.transactionDate.date_end
 				}
 			}
-        }
-    }
+		}
+	}
 </script>
