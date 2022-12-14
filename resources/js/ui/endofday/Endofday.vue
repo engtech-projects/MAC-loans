@@ -93,7 +93,7 @@ export default {
 			success:false,
 			transactionDate:this.dateToYMD(new Date),
 			pendingResponse:'',
-			newDay:false,
+			newDay:true,
 			newTransactionDate:'',
 		}
 	},
@@ -116,7 +116,7 @@ export default {
 					}else{
 						this.notify('','Transaction date has been set successfully', 'success');
 						this.fetchTransactionDate();
-						document.getElementById("currentTransactionDate").value = this.transaction_date;
+						document.getElementById("currentTransactionDate").value = this.newTransactionDate;
 					}
 					
 				}.bind(this))
