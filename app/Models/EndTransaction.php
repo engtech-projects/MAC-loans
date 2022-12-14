@@ -11,90 +11,100 @@ use Illuminate\Support\Arr;
 
 class EndTransaction extends Model
 {
-    use HasFactory;
-    protected $table = 'end_transaction';
-    protected $primaryKey = 'id';
-    protected $fillable = [
-    	'branch_id',
-    	'date_end',
-    	'status'
-    ];
+	use HasFactory;
+	protected $table = 'end_transaction';
+	protected $primaryKey = 'id';
+	protected $fillable = [
+		'branch_id',
+		'date_end',
+		'status'
+	];
 
-    /*
-    	fetch transaction date by branch that has an open status
-    	open status means an End of day transaction has not been performed yet
-    */
-    // public function getTransactionDate($branchId) {
+	/*
+		fetch transaction date by branch that has an open status
+		open status means an End of day transaction has not been performed yet
+	*/
+	// public function getTransactionDate($branchId) {
 
-    	// # get current date
-    	// $currentDate = Carbon::now()->format('Y-m-d');
-    	// $transactionDate = EndTransaction::where([ 'branch_id' => $branchId, 'status' => 'open' ])->get()->last();
+		// # get current date
+		// $currentDate = Carbon::now()->format('Y-m-d');
+		// $transactionDate = EndTransaction::where([ 'branch_id' => $branchId, 'status' => 'open' ])->get()->last();
 
-    	// if( !$transactionDate ){
+		// if( !$transactionDate ){
 
-    	// 	$hasCurrentDate = EndTransaction::where([ 'branch_id' => $branchId, 'status' => 'closed' ])->get()->last();
-
-
-    	// 	if( $hasCurrentDate && ($hasCurrentDate->date_end == $currentDate)) {
-    	// 		return $hasCurrentDate;
-    	// 	}
-
-    	// 	# create transaction date based on current date.
-    	// 	return EndTransaction::create(array(
-    	// 		'branch_id' => $branchId,
-    	// 		'date_end' => Carbon::now()->format('Y-m-d'),
-    	// 		'status' => 'open',
-    	// 	));
-    		
-    	// }
-
-    	// return $transactionDate;
-    // }
-
-    public function getTransactionDate($branchId) {
-
-    	$eod = EndTransaction::where([ 'branch_id' => $branchId, 'status' => 'open' ])->get()->last();
-
-    	if( !$eod ) {
-    		$eod = EndTransaction::where([ 'branch_id' => $branchId ])->get()->last();
-    	}
-
-    	return $eod;
-    }
-
-   	public function verify($branchId) {
-
-   		$transactionDate = EndTransaction::where([ 'branch_id' => $branchId, 'status' => 'open' ])->get()->last();
-
-   		if( $transactionDate ){
-   			return true;
-   		}
-   		return false;
-   	}
-
-   	public function exists($dateEnd, $branchId) {
-
-   		$transactionDate = EndTransaction::where(['date_end' => $dateEnd, 'branch_id' => $branchId ])->first();
-
-   		if( $transactionDate ) {
-   			return true;
-   		}
-   		return false;
-   	}
-
-    public function validate($dateEnd, $branchId) {
-
-    	if( $this->verify($branchId) ) {
-    		return true;
-    	}
-
-    	if( $this->exists($dateEnd, $branchId) ) {
-    		return true;
-    	}
+		// 	$hasCurrentDate = EndTransaction::where([ 'branch_id' => $branchId, 'status' => 'closed' ])->get()->last();
 
 
-    	
-    }
+		// 	if( $hasCurrentDate && ($hasCurrentDate->date_end == $currentDate)) {
+		// 		return $hasCurrentDate;
+		// 	}
+
+		// 	# create transaction date based on current date.
+		// 	return EndTransaction::create(array(
+		// 		'branch_id' => $branchId,
+		// 		'date_end' => Carbon::now()->format('Y-m-d'),
+		// 		'status' => 'open',
+		// 	));
+
+		// }
+
+		// return $transactionDate;
+	// }
+
+	public function getTransactionDate($branchId) {
+
+		$eod = EndTransaction::where([ 'branch_id' => $branchId, 'status' => 'open' ])->get()->last();
+
+		if( !$eod ) {
+			$eod = EndTransaction::where([ 'branch_id' => $branchId ])->get()->last();
+		}
+
+		return $eod;
+	}
+
+	public function verify($branchId) {
+
+		$transactionDate = EndTransaction::where([ 'branch_id' => $branchId, 'status' => 'open' ])->get()->last();
+
+		if( $transactionDate ){
+			return true;
+		}
+		return false;
+	}
+
+	public function exists($dateEnd, $branchId) {
+
+		$transactionDate = EndTransaction::where(['date_end' => $dateEnd, 'branch_id' => $branchId ])->first();
+
+		if( $transactionDate ) {
+			return true;
+		}
+		return false;
+	}
+
+	public function existOld($dateEnd, $branchId) {
+
+		$transactionDate = EndTransaction::where([ 'branch_id' => $branchId ])->whereDate('date_end', ">=",$dateEnd)->get();
+
+		if( $transactionDate ) {
+			return true;
+		}
+		return false;
+	}
+
+	public function validate($dateEnd, $branchId) {
+
+		if( $this->verify($branchId) ) {
+			return true;
+		}
+
+		if( $this->exists($dateEnd, $branchId) ) {
+			return true;
+		}
+
+
+
+	}
 
 	public function releasing($dateEnd, $branchId, $status = 'unposted') {
 
@@ -102,7 +112,7 @@ class EndTransaction extends Model
 
 		$branch = Branch::find($branchId);
 		$loanAccounts = loanAccount::where(['status' => 'released', 'branch_code' => $branch->branch_code, 'date_release' => $dateEnd ])->get();
-		
+
 
 		if( count($loanAccounts) > 0 ) {
 
@@ -110,10 +120,10 @@ class EndTransaction extends Model
 
 			$netProceeds = 0;
 			foreach ($loanAccounts as $account) {
-				
+
 				$netProceeds += $account->net_proceeds;
 				foreach ($ledger as $key => $value) {
-					
+
 					switch ($value['reference']) {
 						case 'Loan Receivable':
 							$ledger[$key]['debit'] += $account->loan_amount;
@@ -126,17 +136,17 @@ class EndTransaction extends Model
 
 							break;
 						case 'Cash':
-							
+
 							if( $account->release_type == 'Cash' || $account->release_type == 'Cash Release' ){
 								$ledger[$key]['credit'] += $account->net_proceeds;
 							}
 
 							break;
 						case 'Filing Fee':
-							 $ledger[$key]['credit'] += $account->filing_fee;
+							$ledger[$key]['credit'] += $account->filing_fee;
 							break;
 						case 'Documentary Stamp':
-							 $ledger[$key]['credit'] += $account->document_stamp;
+							$ledger[$key]['credit'] += $account->document_stamp;
 							break;
 						case 'Insurance':
 							$ledger[$key]['credit'] += $account->insurance;
@@ -145,7 +155,7 @@ class EndTransaction extends Model
 							$ledger[$key]['credit'] += $account->notarial_fee;
 							break;
 						case 'Prepaid':
-							 $ledger[$key]['credit'] += $account->prepaid_interest;
+							$ledger[$key]['credit'] += $account->prepaid_interest;
 							break;
 						case 'Others':
 							$ledger[$key]['credit'] += $account->affidavit_fee;
@@ -176,7 +186,7 @@ class EndTransaction extends Model
 
 			$entryData = [];
 			foreach ($ledger as $key => $value) {
-				
+
 				if( $value['debit'] > 0 || $value['credit'] > 0 ){
 
 					$entryData[] = [
@@ -196,7 +206,7 @@ class EndTransaction extends Model
 
 			return JournalEntryDetails::insert($entryData);
 			// return $ledger;
-		} 
+		}
 
 		return false;
 
@@ -214,10 +224,10 @@ class EndTransaction extends Model
 
 			$amountApplied = 0;
 			foreach ($payments as $payment) {
-				
+
 				$amountApplied += $payment->amount_applied;
 				foreach ($ledger as $key => $value) {
-					
+
 					switch ($value['reference']) {
 						case 'Loan Receivable':
 							$ledger[$key]['credit'] += $payment->principal;
@@ -230,7 +240,7 @@ class EndTransaction extends Model
 
 							break;
 						case 'Cash':
-							
+
 							if( Str::contains(Str::lower($payment->payment_type), 'cash') ){
 								$ledger[$key]['debit'] += $payment->amount_applied;
 							}
@@ -241,7 +251,7 @@ class EndTransaction extends Model
 							if( $payment->rebates > 0 && $payment->rebates_approval_no ) {
 								$ledger[$key]['debit'] += $payment->rebates;
 							}
-							
+
 							break;
 						case 'Interest Income':
 							// rebates
@@ -273,7 +283,7 @@ class EndTransaction extends Model
 						// 	// $ledger[$key]['credit'] = $payment->;
 						// 	break;
 						case 'Memo':
-				
+
 							if( Str::contains(Str::lower($payment->payment_type), 'memo') ){
 								$ledger[$key]['debit'] += $payment->amount_applied;
 							}
@@ -281,7 +291,7 @@ class EndTransaction extends Model
 							break;
 
 						case 'POS':
-				
+
 							if( Str::contains(Str::lower($payment->payment_type), 'pos') ){
 								$ledger[$key]['debit'] += $payment->amount_applied;
 							}
@@ -296,7 +306,7 @@ class EndTransaction extends Model
 			}
 
 			foreach ($ledger as $k => $v) {
-			
+
 				switch ($v['reference']) {
 					case 'VAT':
 						$rebates = $repaymentLedger->getDataFromLedger($ledger, 'Rebates');
@@ -313,7 +323,7 @@ class EndTransaction extends Model
 
 					case 'PDI':
 						$pdi = $repaymentLedger->getDataFromLedger($ledger, 'Pastdue Interest', 'credit');
-						$ledger[$k]['debit'] = round($pdi / 1.12 * 0.12, 2);	
+						$ledger[$k]['debit'] = round($pdi / 1.12 * 0.12, 2);
 					break;
 				}
 			}
@@ -337,7 +347,7 @@ class EndTransaction extends Model
 
 			$entryData = [];
 			foreach ($ledger as $key => $value) {
-				
+
 				if( $value['debit'] > 0 || $value['credit'] > 0 ){
 
 					$entryData[] = [
@@ -364,24 +374,24 @@ class EndTransaction extends Model
 
 	public function getJournalNo($id) {
 
-        $book = DB::connection('mysql2')->table("journal_book")
-            ->leftJoin("journal_entry", function($join){
-                $join->on("journal_book.book_id", "=", "journal_entry.book_id");
-            })
-            ->selectRaw("journal_book.*, COUNT(journal_entry.journal_id) as ccount")
-            ->where(['journal_book.book_id' => $id])
-            ->groupBy("journal_book.book_id")
-            ->first();
+		$book = DB::connection('mysql2')->table("journal_book")
+			->leftJoin("journal_entry", function($join){
+				$join->on("journal_book.book_id", "=", "journal_entry.book_id");
+			})
+			->selectRaw("journal_book.*, COUNT(journal_entry.journal_id) as ccount")
+			->where(['journal_book.book_id' => $id])
+			->groupBy("journal_book.book_id")
+			->first();
 
-        return $book->book_code . '-' . str_pad($book->ccount+1, 7, '0', STR_PAD_LEFT);
-    }
+		return $book->book_code . '-' . str_pad($book->ccount+1, 7, '0', STR_PAD_LEFT);
+	}
 
-    public function close($branchId) {
+	public function close($branchId) {
 
-    	$transactionDate = EndTransaction::where([ 'branch_id' => $branchId, 'status' => 'open' ])->get()->last();
-    	$transactionDate->status = 'closed';
-    	return $transactionDate->save();
+		$transactionDate = EndTransaction::where([ 'branch_id' => $branchId, 'status' => 'open' ])->get()->last();
+		$transactionDate->status = 'closed';
+		return $transactionDate->save();
 
-    }
+	}
 
 }

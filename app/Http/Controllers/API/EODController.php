@@ -94,19 +94,17 @@ class EODController extends BaseController
 		$branchId = $request->branch_id;
 
 		$endTransaction = new EndTransaction();
-
-		if( !$endTransaction->validate($transactionDate, $branchId) ){
-
+		if($endTransaction->existOld($transactionDate, $branchId) ){
+			return $this->sendError("Error!", "Date supplied is a previous date","Cannot create Transaction date before ".$endTransaction->getTransactionDate($branchId)->date_end, 200);
+		}else if( $endTransaction->validate($transactionDate, $branchId) ){
+			return $this->sendError("Error!", "Current Transaction date is still active","Cannot create Transaction date", 200);
+		}else{
 			$data = EndTransaction::create([
 				'branch_id' => $branchId,
 				'date_end' => $transactionDate,
 				'status' => 'open'
 			]);
-
 			return $this->sendResponse($data, "Transaction date has been created");
-
-		}else{
-			return $this->sendResponse("Current Transaction date is still active","Cannot create Transaction date");
 		}
 
 	}
