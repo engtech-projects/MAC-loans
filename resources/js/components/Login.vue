@@ -90,7 +90,7 @@ export default {
 		makeAuth:function(){
 			axios.post(this.baseURL() + 'login', this.data)
 			.then(function (response) {
-				window.location.replace(this.baseURL() + 'dashboard');
+				window.location.replace(this.baseURL() + 'endofday');
 			}.bind(this))
 			.catch(function (error) {
 				console.log(error);
