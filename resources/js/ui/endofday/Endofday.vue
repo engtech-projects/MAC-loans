@@ -111,11 +111,12 @@ export default {
 					}
 				})
 				.then(function (response) {
-					console.log(response.data);
 					if(response.data.data == 'Current Transaction date is still active'){
 						this.notify('',response.data.message + ', ' + response.data.data, 'error');
 					}else{
 						this.notify('','Transaction date has been set successfully', 'success');
+						this.fetchTransactionDate();
+						document.getElementById("currentTransactionDate").value = this.transaction_date;
 					}
 					
 				}.bind(this))

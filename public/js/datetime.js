@@ -3,9 +3,10 @@ const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", 
 
 function showTime(){
     var date = new Date(document.getElementById("currentTransactionDate").value);
-    var h = date.getHours(); // 0 - 23
-    var m = date.getMinutes(); // 0 - 59
-    var s = date.getSeconds(); // 0 - 59
+	var timeDate = new Date;
+    var h = timeDate.getHours(); // 0 - 23
+    var m = timeDate.getMinutes(); // 0 - 59
+    var s = timeDate.getSeconds(); // 0 - 59
 	var M = months[date.getMonth()];
 	var D = days[date.getDay()]; 
 	var d = date.getDate();
