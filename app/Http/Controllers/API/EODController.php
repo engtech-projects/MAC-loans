@@ -34,8 +34,8 @@ class EODController extends BaseController
 			$hasRepayment = $endTransaction->repayment($eod->date_end, $branchId, $status);
 
 			if( !$hasRelease && !$hasRepayment ){
-				return $this->sendResponse(
-					'false',
+				return $this->sendError(
+					'Stopped End of Day, No Transactions have been conducted during the day.',
 					'No Transaction'
 				);
 			}
