@@ -96,13 +96,7 @@ class EndTransaction extends Model
 		if( $this->verify($branchId) ) {
 			return true;
 		}
-
-		if( $this->exists($dateEnd, $branchId) ) {
-			return true;
-		}
-
-
-
+		return false;
 	}
 
 	public function releasing($dateEnd, $branchId, $status = 'unposted') {
