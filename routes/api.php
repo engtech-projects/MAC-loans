@@ -101,6 +101,7 @@ Route::middleware(['auth:sanctum'])->group( function () {
     Route::post('eod/eodtransaction/create', [EODController::class, 'createTransactionDate']);
     Route::post('eod/eodtransaction/check', [EODController::class, 'checkPendingTransctions']);
     Route::post('eod/eodtransaction/exec', [EODController::class, 'endOfTransaction']);
+    Route::post('eod/eodtransaction/closewithouttransactions', [EODController::class, 'endDayWithoutTransactions']);
 
     Route::post('deduction/calculate', [DeductionController::class, 'calculateDeductions']);
 

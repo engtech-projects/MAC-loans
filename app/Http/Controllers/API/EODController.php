@@ -59,6 +59,33 @@ class EODController extends BaseController
 		}
 	}
 
+	public function endDayWithoutTransactions(Request $request) {
+
+		$branchId = $request->input('branch_id');
+
+		$endTransaction = new EndTransaction();
+		$eod = $endTransaction->getTransactionDate($branchId);
+
+
+		if( $eod->status == 'open' ) {
+
+			$message = ($endTransaction->close($branchId)) ? 'successful' : 'unsuccessful';
+
+			return $this->sendResponse(
+				'End of day Transaction',
+				$message
+			);
+
+		}else{
+
+			return $this->sendResponse(
+				'closed',
+				'End of Day Transaction is closed'
+			);
+
+		}
+	}
+
 	public function checkPendingTransctions(Request $request) {
 
 		$branchId = $request->input('branch_id');

@@ -56,7 +56,7 @@ class EndTransaction extends Model
 		$eod = EndTransaction::where([ 'branch_id' => $branchId, 'status' => 'open' ])->get()->last();
 
 		if( !$eod ) {
-			$eod = EndTransaction::where([ 'branch_id' => $branchId ])->get()->last();
+			$eod = EndTransaction::where([ 'branch_id' => $branchId ])->orderBy("date_end",'DESC')->first();
 		}
 
 		return $eod;
