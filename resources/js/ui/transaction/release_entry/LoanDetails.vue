@@ -8,7 +8,7 @@
 				<div style="flex:18" class="mr-16"></div>
 				<div class="form-group mb-10" style="flex:7">
 					<label for="dateRelease" class="form-label">Loan Created</label>
-					<input :value="dateToYMD(new Date(loanDetails.transaction_date?loanDetails.transaction_date:transactionDate.date_end))" disabled type="date" class="form-control form-input " id="dateRelease">
+					<input v-model="loanDetails.transaction_date" disabled type="date" class="form-control form-input " id="dateRelease">
 				</div>
 			</div>
 			<div class="d-flex flex-row">
@@ -276,7 +276,7 @@
 					<span class="align-self-end text-bold">Description</span>
 					<div class="d-flex align-items-center">
 						<span class="flex-1 mr-10 text-bold">Date Release</span>
-						<input :value="dateToYMD(new Date(loanDetails.documents.date_release))" type="date" class="form-control form-input flex-1">
+						<input v-model="loanDetails.documents.date_release" type="date" class="form-control form-input flex-1">
 					</div>
 				</div>
 				<textarea v-model="loanDetails.documents.description" class="form-control form-input no-resize" style="height:120px!important;"></textarea>
@@ -536,8 +536,8 @@ export default {
 		save: function(){
 			this.setPrepaidInterest();
 			this.loanDetails.status = 'pending';
-			this.loanDetails.branch_id = this.branch
-			this.loanDetails.transaction_date = this.transactionDate.date_end
+			this.loanDetails.branch_id = this.branch;
+			this.loanDetails.transaction_date = this.transactionDate.date_end;
 			if(this.loanDetails.loan_account_id){
 				axios.post(this.baseURL() + 'api/account/update/' + this.loanDetails.loan_account_id, this.loanDetails, {
 					headers: {
@@ -710,11 +710,6 @@ export default {
 			}
 			this.deductionComputation = 0;
 		},
-		'loanDetails.documents.date_release'(newValue){
-			if(newValue ==""){
-				this.loandetails.documents.date_release = this.transactionDate.date_end;
-			}
-		},
 		'loanDetails.terms'(){
 			this.deductionComputation = 0;
 		},
@@ -869,6 +864,14 @@ export default {
 		this.fetchCenters();
 		this.loanDetails = this.loandetails;
 		this.setInterestRate();
+
+		if(this.loandetails.documents.date_release == ""){
+			this.loandetails.documents.date_release = this.transactionDate.date_end;
+		}
+
+		if(this. loanDetails.transaction_date == ""){
+			this.loanDetails.transaction_date = this.transactionDate.date_end;
+		}
 	}
 }
 </script>
