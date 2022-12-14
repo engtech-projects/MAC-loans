@@ -8,7 +8,7 @@
 				<div style="flex:18" class="mr-16"></div>
 				<div class="form-group mb-10" style="flex:7">
 					<label for="dateRelease" class="form-label">Loan Created</label>
-					<input :value="dateToYMD(new Date(loanDetails.transaction_date))" disabled type="date" class="form-control form-input " id="dateRelease">
+					<input :value="dateToYMD(new Date(loanDetails.transaction_date?loanDetails.transaction_date:transactionDate.date_end))" disabled type="date" class="form-control form-input " id="dateRelease">
 				</div>
 			</div>
 			<div class="d-flex flex-row">

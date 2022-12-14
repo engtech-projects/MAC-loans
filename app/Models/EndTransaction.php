@@ -84,8 +84,7 @@ class EndTransaction extends Model
 
 	public function existOld($dateEnd, $branchId) {
 
-		$transactionDate = EndTransaction::where([ 'branch_id' => $branchId ])->whereDate('date_end', ">=",$dateEnd)->get();
-
+		$transactionDate = EndTransaction::where([ 'branch_id' => $branchId ])->whereDate('date_end', ">=",$dateEnd)->get()->last();
 		if( $transactionDate ) {
 			return true;
 		}
