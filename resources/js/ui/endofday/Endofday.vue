@@ -111,7 +111,7 @@ export default {
 					}
 				})
 				.then(function (response) {
-					if(response.data.data == 'Current Transaction date is still active'){
+					if(response.data.success == 'false'){
 						this.notify('',response.data.message + ', ' + response.data.data, 'error');
 					}else{
 						this.notify('','Transaction date has been set successfully', 'success');
@@ -121,6 +121,7 @@ export default {
 					
 				}.bind(this))
 				.catch(function (error) {
+					this.notify('',error.response.data.data, 'error');
 					console.log(error);
 				}.bind(this));
 		},
