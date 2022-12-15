@@ -256,7 +256,7 @@ export default {
 			}.bind(this));
 		},
 		todaysRelease:function(){
-			axios.post(this.baseURL() + 'api/account/releasedaccounts', {release_date:this.transactionDate.date_end, branch_id:this.pbranch})
+			axios.post(this.baseURL() + 'api/account/releasedaccounts', {date_release:this.transactionDate.date_end, branch_id:this.pbranch})
 			.then(function (response) {
 				this.todaysReleases = response.data.data;
 			}.bind(this))
