@@ -75,7 +75,27 @@
 				</div>
 			</div>
 		</div>
+		<div class="modal" id="noTransactionsModal" tabindex="-1" role="dialog">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+				<div class="modal-body">
+					<div class="d-flex flex-column" style="min-height:200px;padding:16px;">
+						<div class="d-flex flex-1 justify-content-center align-items-center">
+						<p class="text-24 text-center">Stopped end of day. No transactions have been conducted during this day. Do you still want to proceed with the end of day?</p>
+						</div>
+						<div class="d-flex flex-row">
+							<div style="flex:2"></div>
+							<button @click="endWithoutTransactions()" data-dismiss="modal" class="btn btn-lg btn-success mr-24" style="flex:3">Yes</button>
+							<button data-dismiss="modal" class="btn btn-lg btn-success" style="flex:3">No</button>
+							<div style="flex:2"></div>
+						</div>
+					</div>
+				</div>
+				</div>
+			</div>
+		</div>
 		<button class="hide" id="eodModalBtn" data-toggle="modal" data-target="#eodModal">eod</button>
+		<button class="hide" id="noTransactionsBtn" data-toggle="modal" data-target="#noTransactionsModal">No Transactions</button>
 	</div>
 </template>
 
@@ -159,7 +179,6 @@ export default {
 				if(response.data.data == 0){
 					this.loading = false;
 					this.endOfDay();
-					this.endWithoutTransactions();
 				}else{
 					this.pendingResponse = response.data.message;
 					this.failed = true;
@@ -207,6 +226,10 @@ export default {
 			}.bind(this))
 			.catch(function (error) {
 				console.log(error);
+				if(error.response.data == 'No Transaction'){
+					var btn = document.getElementById('noTransactionsBtn');
+					btn.click();
+				}
 				this.loading = false;
 			}.bind(this));
 		},
