@@ -414,8 +414,8 @@ class LoanAccount extends Model
             $amortization->short_penalty = $isPaid->short_penalty;
             $amortization->over_payment = $isPaid->over_payment;
          }
-         $currentDay = Carbon::createFromFormat('Y-m-d', $transactionDateNow);
-         $dateSched = Carbon::createFromFormat('Y-m-d', $amortization->amortization_date);
+         $currentDay = Carbon::createFromFormat('Y-m-d', $transactionDateNow)->startOfDay();
+         $dateSched = Carbon::createFromFormat('Y-m-d', $amortization->amortization_date)->startOfDay();
          $dateSchedPension = Carbon::createFromFormat('Y-m-d', $amortization->amortization_date)->startOfMonth();
          $dayDiff = $dateSched->diffInDays($currentDay, false);
          $dayDiffPension = $dateSchedPension->diffInDays($currentDay, false);
