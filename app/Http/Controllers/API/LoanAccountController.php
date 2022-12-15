@@ -119,7 +119,7 @@ class LoanAccountController extends BaseController
     // get released accounts
     public function releasedAccountList(Request $request) {
         $filters = [
-            'date_release' => ($request->has('date')) ? $request->input('date_release') : 'all',
+            'date_release' => ($request->has('date_release')) ? $request->input('date_release') : 'all',
             'ao_id' => ($request->has('ao_id')) ? $request->input('ao_id') : 'all',
             'center_id' => ($request->has('center_id')) ? $request->input('center_id') : 'all',
             'product_id' => ($request->has('product_id')) ? $request->input('product_id') : 'all',
