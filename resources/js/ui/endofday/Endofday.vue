@@ -93,7 +93,7 @@ export default {
 			success:false,
 			transactionDate:this.dateToYMD(new Date),
 			pendingResponse:'',
-			newDay:true,
+			newDay:false,
 			newTransactionDate:'',
 		}
 	},
@@ -154,11 +154,12 @@ export default {
 				}
 			})
 			.then(function (response) {
-				console.log(response.data);
+				console.log(response.data.data);
 				this.loading = false;
 				if(response.data.data == 0){
 					this.loading = false;
 					this.endOfDay();
+					this.endWithoutTransactions();
 				}else{
 					this.pendingResponse = response.data.message;
 					this.failed = true;
@@ -167,6 +168,26 @@ export default {
 			.catch(function (error) {
 				this.loading = false;
 				console.log(error);
+			}.bind(this));
+		},
+		async endWithoutTransactions(){
+			this.loading = true;
+			await axios.post(this.baseURL() + 'api/eod/eodtransaction/closewithouttransactions',{status:this.posted?'posted':'unposted', branch_id:this.branch.branch_id},{
+			headers: {
+				'Authorization': 'Bearer ' + this.token,
+				'Content-Type': 'application/json',
+				'Accept': 'application/json'
+				}
+			})
+			.then(function (response) {
+				this.loading = false;
+				document.getElementById('eodModalBtn').click();
+				this.success = true;
+				this.newDay = true;
+			}.bind(this))
+			.catch(function (error) {
+				console.log(error);
+				this.loading = false;
 			}.bind(this));
 		},
 		async endOfDay(){
@@ -182,6 +203,7 @@ export default {
 				this.loading = false;
 				document.getElementById('eodModalBtn').click();
 				this.success = true;
+				this.newDay = true;
 			}.bind(this))
 			.catch(function (error) {
 				console.log(error);
