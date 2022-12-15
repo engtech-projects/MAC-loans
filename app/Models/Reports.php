@@ -287,10 +287,9 @@ class Reports extends Model
         foreach ($payments as $payment) {
 
             $borrower = LoanAccount::find($payment->loan_account_id);
-
             $data['collection'][] = [
                 'borrower' => Borrower::find($borrower->borrower_id)->fullname(),
-                'date_paid' => Carbon::createFromFormat('Y-m-d H:i:s', $payment->transaction_date)->format('m/d/Y'),
+                'date_paid' => $payment->transaction_date,
                 'or' => $payment->or_no,
                 'payment_type' => $payment->payment_type,
                 'principal' => $payment->principal,
@@ -336,7 +335,7 @@ class Reports extends Model
         //             $client['collection'][] = [
         //                     'borrower' => $account->borrower->fullname(),
         //                     // 'date_paid' => Carbon::createFromFormat('Y-m-d', $payment->transaction_date)->format('Y-m-d'),
-        //                     'date_paid' => Carbon::createFromFormat('Y-m-d H:i:s', $payment->transaction_date)->format('m/d/Y'),
+        //                     'date_paid' => Carbon::createFromFormat('Y-m-d', $payment->transaction_date)->format('m/d/Y'),
         //                     'or' => $payment->or_no,
         //                     'principal' => $payment->principal,
         //                     'interest' => $payment->interest,
@@ -887,11 +886,11 @@ class Reports extends Model
         foreach ($payments as $payment) {
 
             $data[] = [
-                'date_cancelled' => Carbon::createFromFormat('Y-m-d H:i:s', $payment->transaction_date)->format('m/d/Y'),
+                'date_cancelled' => Carbon::createFromFormat('Y-m-d', $payment->transaction_date)->format('m/d/Y'),
                 'cancelled_by' => '[backend_get_cancelled_by]',
                 'account_num' => $payment->account_num,
                 'borrower' => Borrower::find($payment->borrower_id)->fullname(),
-                'payment_date' => Carbon::createFromFormat('Y-m-d H:i:s', $payment->transaction_date)->format('m/d/Y'),
+                'payment_date' => Carbon::createFromFormat('Y-m-d', $payment->transaction_date)->format('m/d/Y'),
                 'or' => $payment->or_no,
                 'transaction_number' => $payment->transaction_number,
                 'principal' => $payment->principal,
