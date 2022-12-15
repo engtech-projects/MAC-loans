@@ -416,6 +416,7 @@ export default {
                 );
         },
         async todaysPaidPayments() {
+            this.preference.transaction_date = this.transactionDate.date_end;
             await axios
                 .post(
                     this.baseURL() + "transaction/payments/paidtoday",
@@ -715,8 +716,6 @@ export default {
             if (this.preference.transaction_date != "") {
                 this.payments.map(
                     function (val) {
-                        console.log(this.dateToYMD(new Date(val.transaction_date)))
-                        console.log(this.dateToYMD(new Date(this.preference.transaction_date)))
                         if ( this.dateToYMD(new Date(val.transaction_date)) == this.dateToYMD(new Date(this.preference.transaction_date)) ) {
                             if (this.preference.specification == "") {
                                 result.push(val);
@@ -805,6 +804,7 @@ export default {
         "transactionDate": function (newValue) {
             this.fetchPayments();
             this.openPayments(this.preference);
+            this.todaysPaidPayments();
         },
         "preference": function (newValue) {
             this.fetchPayments();
@@ -813,7 +813,6 @@ export default {
     },
     async mounted() {
         await this.fetchTransactionDate();
-        this.todaysPaidPayments();
     },
 };
 </script>

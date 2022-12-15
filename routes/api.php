@@ -74,6 +74,7 @@ Route::middleware(['auth:sanctum'])->group( function () {
 
     // override release
     Route::post('account/overrrideaccounts', [LoanAccountController::class, 'overrideAccountList']);
+    Route::post('account/releasedaccounts', [LoanAccountController::class, 'releasedAccountList']);
     // cash voucher
     Route::get('account/cashvoucher/{account}', [LoanAccountController::class, 'cashVoucher']);
 

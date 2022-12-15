@@ -298,6 +298,30 @@ class LoanAccount extends Model
       return $accounts->get();
    }
 
+   public function releasedAccounts($filters = array()) {
+
+      $branch = Branch::find($filters['branch_id']);
+      $accounts = LoanAccount::where('status', '=', 'released')->where(['branch_code' => $branch->branch_code]);
+
+      if( isset($filters['release_date']) && $filters['release_date'] ){
+         $accounts->whereDate('loan_accounts.date_release', '=', $filters['release_date'] );
+      }
+
+      if( isset($filters['ao_id']) && $filters['ao_id'] != 'all' ){
+         $accounts->where('loan_accounts.ao_id', '=', $filters['ao_id']);
+      }
+
+      if( isset($filters['center_id']) && $filters['center_id'] != 'all' ){
+         $accounts->where('loan_accounts.center_id', '=', $filters['center_id']);
+      }
+
+      if( isset($filters['product_id']) && $filters['product_id'] != 'all' ){
+         $accounts->where('loan_accounts.product_id', '=', $filters['product_id']);
+      }
+
+      return $accounts->get();
+   }
+
    public function currentAmortization($loanAccountId, $dateNow) {
 
       // get current amortization

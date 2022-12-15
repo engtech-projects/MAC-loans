@@ -239,7 +239,6 @@ export default {
 		},
 		fetchAccounts:function(){
 			this.filter.branch_id = this.pbranch;
-			console.log(this.filter);
 			axios.post(this.baseURL() + 'api/account/overrrideaccounts', this.filter, {
 			headers: {
 				'Authorization': 'Bearer ' + this.token,
@@ -257,9 +256,9 @@ export default {
 			}.bind(this));
 		},
 		todaysRelease:function(){
-			axios.get(this.baseURL() + 'transaction/todaysrelease')
+			axios.post(this.baseURL() + 'api/account/releasedaccounts', {release_date:this.transactionDate.date_end, branch_id:this.pbranch})
 			.then(function (response) {
-				this.todaysReleases = response.data;
+				this.todaysReleases = response.data.data;
 			}.bind(this))
 			.catch(function (error) {
 				console.log(error);

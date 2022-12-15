@@ -103,15 +103,31 @@ class LoanAccountController extends BaseController
     // get override release accounts
     public function overrideAccountList(Request $request) {
         $filters = [
-            'transaction_date' => ($request->has('date')) ? $request->input('date') : false,
-            'ao_id' => ($request->has('ao_id')) ? $request->input('ao_id') : false,
-            'center_id' => ($request->has('center_id')) ? $request->input('center_id') : false,
-            'product_id' => ($request->has('product_id')) ? $request->input('product_id') : false,
-            'branch_id' => ($request->has('branch_id')) ? $request->input('branch_id') : false,
+            'transaction_date' => ($request->has('date')) ? $request->input('date') : 'all',
+            'ao_id' => ($request->has('ao_id')) ? $request->input('ao_id') : 'all',
+            'center_id' => ($request->has('center_id')) ? $request->input('center_id') : 'all',
+            'product_id' => ($request->has('product_id')) ? $request->input('product_id') : 'all',
+            'branch_id' => ($request->has('branch_id')) ? $request->input('branch_id') : 'all',
         ];
 
         $accounts = new LoanAccount();
         $accounts = $accounts->overrideReleaseAccounts($filters);
+        return $this->sendResponse(LoanAccountResource::collection($accounts), 'List.');
+    }
+
+    // yyyy-mm-dd format
+    // get released accounts
+    public function releasedAccountList(Request $request) {
+        $filters = [
+            'transaction_date' => ($request->has('date')) ? $request->input('date') : 'all',
+            'ao_id' => ($request->has('ao_id')) ? $request->input('ao_id') : 'all',
+            'center_id' => ($request->has('center_id')) ? $request->input('center_id') : 'all',
+            'product_id' => ($request->has('product_id')) ? $request->input('product_id') : 'all',
+            'branch_id' => ($request->has('branch_id')) ? $request->input('branch_id') : 'all',
+        ];
+
+        $accounts = new LoanAccount();
+        $accounts = $accounts->releasedAccounts($filters);
         return $this->sendResponse(LoanAccountResource::collection($accounts), 'List.');
     }
 
