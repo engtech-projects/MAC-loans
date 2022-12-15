@@ -1067,6 +1067,7 @@ export default {
 				}.bind(this))
 				.catch(function (error) {
 					console.log(error);
+					this.notify('',error.response.data.data, 'error');
 				}.bind(this));
 			}else if(!this.checkRebates()){
 				this.notify('','Rebates amount must not be zero or below.', 'error');

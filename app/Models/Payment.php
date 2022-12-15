@@ -243,5 +243,11 @@ class Payment extends Model
 
     public function cancelPayment() {}
 
+    public function getOngoingPayment($request = array()){
+        return Payment::where([
+            'loan_account_id'=>$request['loan_account_id'],
+            'status'=>'open'
+            ])->get()->first();
+    }
 
 }

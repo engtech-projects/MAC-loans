@@ -39,6 +39,12 @@ class PaymentController extends BaseController
     	// $request->merge(['branch_id' => 2]);
 
         // $payment->addPayment($request);
+
+        $pendingPayment = $payment->getOngoingPayment($request->input());
+        if($pendingPayment){
+            $message = "There is still a pending payment for this account, please override " . ($pendingPayment->or_no ? "OR #: ".$pendingPayment->or_no  : "Ref. #: ".$pendingPayment->reference_no);
+            return $this->sendError("Failed to save payment.", $message);
+        }
     	return $this->sendResponse(new PaymentResource($payment->addPayment($request)), 'Payment');
         // return $request->input();
     }
