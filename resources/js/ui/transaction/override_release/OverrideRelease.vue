@@ -256,13 +256,15 @@ export default {
 			}.bind(this));
 		},
 		todaysRelease:function(){
-			axios.post(this.baseURL() + 'api/account/releasedaccounts', {date_release:this.transactionDate.date_end, branch_id:this.pbranch})
-			.then(function (response) {
-				this.todaysReleases = response.data.data;
-			}.bind(this))
-			.catch(function (error) {
-				console.log(error);
-			}.bind(this));
+			if(this.transactionDate.date_end != ''){
+				axios.post(this.baseURL() + 'api/account/releasedaccounts', {date_release:this.transactionDate.date_end, branch_id:this.pbranch})
+				.then(function (response) {
+					this.todaysReleases = response.data.data;
+				}.bind(this))
+				.catch(function (error) {
+					console.log(error);
+				}.bind(this));
+			}
 		},
 		setCheckbox:function(data){
 			for(let i in data){
