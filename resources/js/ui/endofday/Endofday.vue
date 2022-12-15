@@ -138,7 +138,7 @@ export default {
 						this.fetchTransactionDate();
 						document.getElementById("currentTransactionDate").value = this.newTransactionDate;
 					}
-					
+
 				}.bind(this))
 				.catch(function (error) {
 					this.notify('',error.response.data.data, 'error');
@@ -226,7 +226,7 @@ export default {
 			}.bind(this))
 			.catch(function (error) {
 				console.log(error);
-				if(error.response.data == 'No Transaction'){
+				if(error.response.data.data == 'No Transaction'){
 					var btn = document.getElementById('noTransactionsBtn');
 					btn.click();
 				}
