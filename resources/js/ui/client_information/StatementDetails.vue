@@ -1491,7 +1491,7 @@
 											<td>{{dateToYMD(new Date(py.transaction_date)).split('-').join('/')}}</td>
 											<td>{{py.or_no}}</td>
 											<td>{{py.transaction_number}}</td>
-											<td></td>
+											<td>{{py.reference_no}}</td>
 											<td>{{formatToCurrency(py.principal)}}</td>
 											<td>{{formatToCurrency(py.interest)}}</td>
 											<td>{{formatToCurrency(py.pdi)}}</td>

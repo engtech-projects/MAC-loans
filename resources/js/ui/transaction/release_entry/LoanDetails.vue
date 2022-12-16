@@ -566,7 +566,7 @@ export default {
 					}
 				})
 				.then(function (response) {
-					console.log(response.data.data);
+					// console.log(response.data.data);
 					this.notify('',response.data.message, 'success');
 					this.pay(response.data.data.loan_account_id);
 					this.$emit('savedInfo', response.data.data)
@@ -778,6 +778,17 @@ export default {
 			}
 			this.calculateMemo
 		},
+		'loanDetails.transaction_date':function(){
+			if(this.loandetails.documents.date_release == "" || this.prejected){
+				console.log(this.prejected);
+				this.loandetails.documents.date_release = this.transactionDate.date_end;
+			}
+			if(this. loanDetails.transaction_date == "" || this.prejected){
+				console.log(this.prejected);
+				this.loanDetails.transaction_date = this.transactionDate.date_end;
+			}
+		},
+
 	},
 	computed: {
 		isComputed:function(){
@@ -864,14 +875,7 @@ export default {
 		this.fetchCenters();
 		this.loanDetails = this.loandetails;
 		this.setInterestRate();
-
-		if(this.loandetails.documents.date_release == ""){
-			this.loandetails.documents.date_release = this.transactionDate.date_end;
-		}
-
-		if(this. loanDetails.transaction_date == ""){
-			this.loanDetails.transaction_date = this.transactionDate.date_end;
-		}
+		console.log(this.prejected);
 	}
 }
 </script>

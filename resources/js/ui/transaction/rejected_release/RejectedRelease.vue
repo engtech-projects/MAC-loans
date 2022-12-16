@@ -48,7 +48,7 @@
 								</div>
 								<div class="form-group mb-10" style="flex: 4">
 									<label for="transactionDate" class="form-label">Transaction Date</label>
-									<input disabled :value="transactionDate.date_end" type="date" class="form-control form-input text-right" id="transactionDate">
+									<input disabled :value="loanAccount.transaction_date" type="date" class="form-control form-input text-right" id="transactionDate">
 								</div>
 							</div>
 							<div class="form-group mb-5" style="flex: 5">

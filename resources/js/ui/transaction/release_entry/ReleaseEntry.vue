@@ -1064,7 +1064,7 @@
 					// this.rejectedAccounts = response.data.data;
 					response.data.data.map(function(data){
 						if(data.loan_account_id == this.rejectid){
-							console.log(data.loan_account_id);
+							// console.log(data.loan_account_id);
 							this.rejectedAccounts.push(data);
 						}
 					}.bind(this));
