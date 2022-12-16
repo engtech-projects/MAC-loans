@@ -5,39 +5,40 @@
 				<div class="modal-body p-24">
 					<div class="container">
 						<h2>Current Camera</h2>
-						<code v-if="device">{{ device.label }}</code>
+						<!-- <code v-if="device">{{ device.label }}</code> -->
 						<web-cam ref="webcam"
-								:device-id="deviceId"
-								width="100%"
-								@started="onStarted" 
-								@stopped="onStopped" 
-								@error="onError"
-								@cameras="onCameras"
-								@camera-change="onCameraChange"
-								style="background-color:#000"
-								class="mb-16" />
-							<div class="d-flex">
-								<select v-model="camera" class="form-control flex-1 mr-16">
-								<option>-- Select Device --</option>
-								<option v-for="device in devices" 
-										:key="device.deviceId" 
-										:value="device.deviceId">{{ device.label }}</option>
-								</select>
-								<input id="selectImage" type="file" accept="image/*" class="hide" @change="encodeImageFileAsURL()">
-								<button type="button" 
-										class="btn btn-success mr-10" 
-										@click="selectImage()">Upload File</button>
-								<button type="button" 
-										class="btn btn-primary mr-10" 
-										@click="onCapture">Capture Photo</button>
-								<button type="button" 
-										class="btn btn-danger" 
-										data-dismiss="modal"
-										>Close</button>
-							</div>
-							
-							<!-- <button type="button" 
-									class="btn btn-success" 
+							:device-id="deviceId"
+							width="100%"
+							@started="onStarted"
+							@stopped="onStopped"
+							@error="onError"
+							@cameras="onCameras"
+							@camera-change="onCameraChange"
+							style="background-color:#000"
+							class="mb-16" />
+						<div class="d-flex">
+							<select v-model="camera" class="form-control flex-1 mr-16">
+							<option>-- Select Device --</option>
+							<option v-for="device in devices"
+									:key="device.deviceId"
+									:value="device.deviceId">{{ device.label }}</option>
+							<option v-if="!devices">-- No Camera Detected --</option>
+							</select>
+							<input id="selectImage" type="file" accept="image/*" class="hide" @change="encodeImageFileAsURL()">
+							<button type="button"
+									class="btn btn-success mr-10"
+									@click="selectImage()">Upload File</button>
+							<button type="button"
+									class="btn btn-primary mr-10"
+									@click="onCapture">Capture Photo</button>
+							<button type="button"
+									class="btn btn-danger"
+									data-dismiss="modal"
+									>Close</button>
+						</div>
+
+							<!-- <button type="button"
+									class="btn btn-success"
 									@click="onStart">Start Camera</button> -->
 						<!-- <h2>Captured Image</h2>
 						<figure class="figure">
@@ -79,11 +80,12 @@ export default {
     },
     devices: function() {
       // Once we have a list select the first one
-      let first = head(this.devices);
-      if (first) {
-        this.camera = first.deviceId;
-        this.deviceId = first.deviceId;
-      }
+
+    //   let first = head(this.devices);
+    //   if (first) {
+    //     this.camera = first.deviceId;
+    //     this.deviceId = first.deviceId;
+    //   }
     }
   },
   methods: {
