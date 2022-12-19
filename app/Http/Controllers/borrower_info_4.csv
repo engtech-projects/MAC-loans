@@ -1,0 +1,251 @@
+CUSTNUM,DATEREG,FNAME,MIDDLE,LNAME,ADRS1,ADRS2,ADRS3,DATEBIRTH,GENDER,STAT,TELNO,IDTYPE,IDNUM,IDDATE,SPLNAME,SPFNAME,SPMIDDLE,SPDBIRTH,ABSENT,CNTNAME,GRPNAME,LEADER,MB_ACCNO,REGISTERBY,DATEREGIS,UPDATEBY,DATEUPDATE
+1000751,2017-09-25,Luisita,A,Sabuero,"P-1A Consuelo, Magsaysay","Misamis Oriental",,1964-09-19,F,MARRIED,"0936 814 7954","Voter's ID",4317-0025A-C1964LAS200000,,Sabuero,Ellan,A,1900-01-01,0,,,3,,220,2017-09-25,220,2018-03-14
+1000752,2017-09-25,Lota,B,Melitares,"P-3 Consuelo, MAgsaysay","Misamis Oriental",,1969-06-09,F,MARRIED,"0905 830 8926",,,,Melitares,Domingo,Q,1900-01-01,0,,,3,,220,2017-09-25,220,2018-03-13
+1000753,2017-09-25,Arcilie,A,Morales,"Candiis 1, Magsaysay","Misamis Oriental",,1989-01-05,F,,"0948 367 9331",,,,Morales,,,1900-01-01,0,,,3,,220,2017-09-25,220,2018-02-21
+1000754,2017-09-25,Lecila,G,Paculba,"P-3 Bonifacio Aquino","MAgsaysay, Misamis",Oriental,1976-06-30,F,MARRIED,"0906 672 5006","0926 567 8494",,,Paculba,Joel,F,1900-01-01,0,,,3,,220,2017-09-25,220,2018-03-13
+1000755,2017-09-25,Liezl,G,Arbilon,"P-1 Artadi, Magsaysay","Misamis Oriental",,1975-05-17,F,SINGLE,"0926 762 5378",TIN,481-582-991-000,2016-02-24,Arbilon,,,1900-01-01,0,,,3,,220,2017-09-25,220,2018-06-11
+1000756,2017-09-25,Mylinda,P,Luneta,"D-2 Aclan Nasipit Agusan","del Norte",,1973-07-11,F,SINGLE,09219747348/09481609728,SSS,06-1339538-0,,,,,1900-01-01,0,,,3,,210,2017-09-25,210,2018-08-07
+1000757,2017-09-25,Leilaniamor,S,Canonoy,"Brgy.7 Nasipit Agusan del",Norte,,1982-08-07,F,,9129127609,,,,Canonoy,Andrew,B,1980-12-11,0,,,3,,210,2017-09-25,,
+1000758,2017-09-25,Rowena,U,Abao,"P-18 Tungao","Butuan City",,1900-01-01,F,,,,,,,,,1900-01-01,0,,,3,,220,2017-09-25,200,2017-10-07
+1000759,2017-09-25,Lorna,U,Abestano,"P-3 Dulag","Butuan City",,1970-12-19,F,,9356390727,,,,Abestano,Rene,E,1900-01-01,0,,,3,,220,2017-09-25,200,2017-10-07
+1000760,2017-09-25,Miguel,E,"Serde?a jr","D-Tiga Talisay, Nasipit A","Gusan del Norte",,1953-07-07,M,MARRIED,9107915392,SSS,03-6404341-5,,"Serde?a jr",Jocelyn,S,1955-01-15,0,,,3,,210,2017-09-25,210,2019-04-09
+1000761,2017-09-25,Angelita,M,Abian,"P-6 Brgy.17 Port Poyohon","Butuan City",,1963-04-04,F,MARRIED,,"Voter's ID",0202-0076B-D2863AMA20000,,Abian,Jonathan,M,1900-01-01,0,,,3,,220,2017-09-25,200,2018-04-06
+1000762,2017-09-25,Creste,M,Acebido,"P-12 Upper Doongan","Butuan City",,1981-02-26,F,SINGLE,,,,,Acebido,,,1900-01-01,0,,,3,,220,2017-09-25,200,2018-03-16
+1000763,2017-09-25,Shirly,B,Agoncillo,"P-7 Dumalagan","Butuan City",,1974-01-27,F,MARRIED,9486863657,,,,Agoncillo,,,1900-01-01,0,,,3,,220,2017-09-25,200,2018-03-16
+1000764,2017-09-25,Editha,P,Aguison,"P-12 Cegla Pagatpatan","Butuan City",,1967-08-09,F,SINGLE,9102105079,,,,Aguison,,,1900-01-01,0,,,3,,220,2017-09-25,200,2018-03-16
+1000765,2017-09-25,Luz,T,Ahon,"P-2 Kinamlutan","Butuan City",,1957-12-17,F,MARRIED,,,,,Ahon,,,1900-01-01,0,,,3,,220,2017-09-25,200,2018-03-16
+1000766,2017-09-25,Flora,C,Ledesma,"433 Iglesias St., Nasipit","Agusan del Norte",,1956-12-22,F,,,,,,,,,1900-01-01,0,,,3,,210,2017-09-25,,
+1000767,2017-09-25,Buenafe,V,Ajero,"P-10 Tungao","Butuan City",,1970-07-14,F,,,,,,Ajero,"Allan Rey",L,1900-01-01,0,,,3,,220,2017-09-25,200,2017-11-24
+1000768,2017-09-25,Corazon,C,Aladad,"P-5 Platinum Pagatpatan","Butuan City",,1956-08-28,F,MARRIED,9097263439,"Voter's ID",0202-0328A-H2856CCA200011,,Aladad,Galeleo,T,1900-01-01,0,"Orange Center",,3,,220,2017-09-25,200,2018-06-06
+1000769,2017-09-25,"John michael",C,Sale,"P-6D NewParadise Libertad","Butuan City",,1900-01-01,M,SINGLE,,,,,Sale,,,1900-01-01,0,,,3,,200,2017-09-25,200,2018-08-25
+1000770,2017-09-25,Juliet,G,Sale,"P-6D NewParadise Libertad","Butuan City",,1900-01-01,F,SINGLE,,,,,Sale,,,1900-01-01,0,,,3,,200,2017-09-25,200,2018-08-25
+1000771,2017-09-25,Jessielyn,B,Seman,"P-2A Sumilihon","Butuan City",,1900-01-01,F,SINGLE,,,,,Seman,,,1900-01-01,0,,,3,,200,2017-09-25,200,2018-08-25
+1000772,2017-09-25,Lucia,O,Seniel,,,,1900-01-01,F,,,,,,,,,1900-01-01,0,,,3,,200,2017-09-25,,
+1000773,2017-09-25,Diosdada,L,Alas,"P-1 Dankias","Butuan City",,1951-10-09,F,WIDOWED,9483442564,CTC,25623105,,,,,1900-01-01,0,,,3,,220,2017-09-25,200,2018-11-17
+1000774,2017-09-25,"Alma may",S,Alas,"P-1 Dankias Butuan City",,,1995-05-17,F,SINGLE,9076051089,Philhealth,18-050128627-1,,Mendez,Felix,Y,1900-01-01,0,,,3,,220,2017-09-25,200,2018-06-05
+1000775,2017-09-25,Janet,C,Solis,"P-3 PAGATPATAN","Butuan City",,1975-06-15,F,SEPARATED,09120771799/09635497093,"Voter's ID",0202-0327A-F1575JCS100011,,Solis,,,1900-01-01,0,,,3,,200,2017-09-25,112,2021-11-09
+1000776,2017-09-25,"Reah flor",P,Solonia,"P-8 Brgy.18 Obrero","Butuan City",,1900-01-01,F,SINGLE,,,,,Solonia,,,1900-01-01,0,,,3,,200,2017-09-25,200,2018-08-25
+1000777,2017-09-25,Rosalie,S,Alawiran,"P-4 Masao","Butuan City",,1965-02-12,F,MARRIED,09474103862/09165287717,CTC,1635783,,Alawiran,Benjamin,C,1900-01-01,0,,,3,,220,2017-09-25,112,2021-11-26
+1000778,2017-09-25,"Eve marie",C,Alawiran,"P-3 Masao","Butuan City",,1985-01-02,F,SINGLE,9097409565,BrgyTreasurer,16020206711-A,,Dumo,Ervin,L,1900-01-01,0,,,3,,220,2017-09-25,200,2018-05-31
+1000779,2017-09-25,Danica,S,Aldojesa,"P-7 Pag-asa Pagatpatan","Butuan City",,1994-02-20,F,,9466632656,,,,Calderon,"June marl",,1900-01-01,0,,,3,,220,2017-09-25,200,2018-01-25
+1000780,2017-09-25,Jovelyn,B,Alejandre,"P-Sari sari Golden Ribbon","Butuan City",,1985-09-29,F,MARRIED,,,,,Alejandre,Tirso,A,1900-01-01,0,,,3,,220,2017-09-25,200,2018-03-16
+1000781,2017-09-25,Jocelyn,M,Alesing,"P-3A Pigdaulan","Butuan City",,1975-01-02,F,,9128361244,,,,Guinalang,Danilo,S,1900-01-01,0,,,3,,220,2017-09-25,200,2017-10-30
+1000782,2017-09-25,Emelita,N,Almeda,"P-2A Bonbon","Butuan City",,1970-01-31,F,MARRIED,9107516417,4P's,160202025-0127-00041,,Almeda,Zacarias,C,1900-01-01,0,,,3,,220,2017-09-25,200,2018-06-19
+1000783,2017-09-25,Maribel,T,Andaya,"P-5 Lower Bonbon","Butuan City",,1995-11-06,F,SINGLE,9481576247,,,,Andaya,,,1900-01-01,0,,,3,,220,2017-09-25,200,2018-03-16
+1000784,2017-09-25,Melody,L,Aneran,"P-7B Upper Tagabaca","Butuan City",,1990-03-06,F,MARRIED,9265402547,4P's,160202082-1714-00018,,Aneran,Renato,F,1900-01-01,0,,,3,,220,2017-09-25,200,2018-04-06
+1000785,2017-09-25,Margelyn,S,Angatong,"P-12 B19 L2 Cigla","Pagatpatan Butuan City",,1983-05-23,F,MARRIED,9106559142,"Voter's ID",0202-0081A-E2383MSA200028,,Angatong,Kamar,L,1978-08-29,0,,,3,,220,2017-09-25,200,2018-07-25
+1000786,2017-09-25,Editha,D,Anggot,"P-5 Tungao","Butuan City",,1967-09-21,F,MARRIED,9502249297,"Voter's ID",0202-0383C-J3064ESA20000,,Anggot,Vicente,L,1900-01-01,0,,,3,,220,2017-09-25,200,2018-03-17
+1000787,2017-09-25,Delilah,T,Antigua,"P-4A Alubihid Buenavista","Agusan del Norte",,1969-01-07,F,MARRIED,9309593688,9127596545,,,Antigua,Victorio,M,1900-01-01,0,,,3,,220,2017-09-25,300,2018-11-02
+1000788,2017-09-25,Lilibeth,M,Antipuesto,"P-4 Orchids Pagatpatan","Butuan City",,1969-01-01,F,MARRIED,,BrgyIdentificat,2-0146,,Antipuesto,Job,H,1900-01-01,0,,,3,,220,2017-09-25,200,2018-08-16
+1000789,2017-09-25,Angelita,H,Antivo,"P-5 Bonbon","Butuan City",,1968-03-08,F,MARRIED,,,,,Antivo,,,1900-01-01,0,,,3,,220,2017-09-25,200,2018-05-09
+1000790,2017-09-25,Leoncia,H,Arguedo,"P-5A Bonbon BUtuan City",,,1965-09-12,F,MARRIED,"0912 278 6136","Voter's ID",0202-0247A-I1265LHA20000,,Arguedo,Rolando,H,1900-01-01,0,,,3,,220,2017-09-25,200,2018-08-15
+1000791,2017-09-25,Lyn,Q,Ariola,"P-7 Fort Poyohon","Butuan City",,1968-03-12,F,SINGLE,,,,,Ariola,,,1900-01-01,0,,,3,,220,2017-09-25,200,2018-05-09
+1000792,2017-09-25,Nhelvi,L,Armilla,"P-1 Bonbon","Butuan City",,1986-10-29,F,SINGLE,9126305869,Philhealth,18-025170942-2,,Cabalse,"June Anthony",A,1900-01-01,0,"Cashew II Center",,3,,220,2017-09-25,200,2018-10-09
+1000793,2017-09-25,Marissa,P,Asaytona,"P-4A Lower Doongan","Butuan City",,1900-01-01,F,MARRIED,,,,,Asaytona,,,1900-01-01,0,,,3,,220,2017-09-25,200,2018-07-02
+1000794,2017-09-25,Veronica,T,Asuncion,"Durano St. Golden Ribbon","Butuan City",,1970-02-04,F,MARRIED,9194368686,UMID,0008-1024365-9,,,,,1900-01-01,0,,,3,,220,2017-09-25,200,2018-03-21
+1000795,2017-09-25,Myrna,O,Mandawe,"P-3 Guerra Drive Ambangan","Ambago Butuan City",,1972-02-13,F,,9466811949,,,,,,,1900-01-01,0,,,3,,200,2017-09-25,,
+1000796,2017-09-25,"Mary grace",C,Avila,"P-6 Amparo","Butuan City",,1987-10-15,F,,9126296198,,,,Alcala,Alben,A,1900-01-01,0,"Cranberry Center",,3,,220,2017-09-25,200,2017-10-27
+1000797,2017-09-25,Jocelyn,L,Aya,"P-5 Lower Bonbon","Butuan City",,1989-09-23,F,,9129845626,,,,Aya,"John Nico",",",1900-01-01,0,,,3,,220,2017-09-25,200,2017-12-08
+1000798,2017-09-25,Jovelyn,S,Ayala,"P-15 Upper Mandacpan","Butuan City",,1983-09-17,F,,9203213165,,,,Ayala,Jeremie,S,1900-01-01,0,,,3,,220,2017-09-25,200,2017-10-07
+1000799,2017-09-25,Marilou,H,Bacalso,"P-A San Mateo","Butuan City",,1900-01-01,F,MARRIED,,,,,Bacalso,,,1900-01-01,0,,,3,,220,2017-09-25,200,2018-07-02
+1000800,2017-09-25,Ricky,E,Azura,"P-12 Upper Doongan","Butuan City",,1973-07-09,F,MARRIED,9383048491,"Voter's ID",0202-0258A-G0973REA100010,,Azura,Ronilda,O,1900-01-01,0,,,3,,220,2017-09-25,200,2018-05-28
+1000801,2017-09-25,Rogelyn,P,Baclaan,"P-2A Bonbon","Butuan City",,1900-01-01,F,MARRIED,,,,,Baclaan,,,1900-01-01,0,,,3,,220,2017-09-25,200,2018-07-02
+1000802,2017-09-25,Norma,K,Balagon,"Sibuyas Golden Ribbon","Butuan City",,1900-01-01,F,MARRIED,,,,,Balagon,,,1900-01-01,0,,,3,,220,2017-09-25,200,2018-07-02
+1000803,2017-09-25,Jovy,B,Balcos,"P-1 Mabungahon Pagatpatan","Butuan City",,1973-06-10,F,MARRIED,9302169182,"Brgy.ID Card",Jan-71,,,,,1900-01-01,0,,,3,,220,2017-09-25,200,2018-10-17
+1000804,2017-09-25,Delia,T,Balderama,"P-5A Libertad","Butuan City",,1900-01-01,F,MARRIED,,,,,Balderama,,,1900-01-01,0,,,3,,220,2017-09-25,200,2018-07-02
+1000805,2017-09-25,Marcelina,R,Balingit,"P-5 Lower Doongan","Butuan City",,1968-03-14,F,SINGLE,9126187727,Philhealth,18-200501201-6,,,,,1900-01-01,0,,,3,,220,2017-09-25,200,2018-03-21
+1000806,2017-09-25,Rosalyn,B,Balus,,,,1900-01-01,F,,,,,,,,,1900-01-01,0,,,3,,220,2017-09-25,,
+1000807,2017-09-25,Lolita,C,Banate,"P-3B Holy Redeemer","Butuan City",,1900-01-01,F,MARRIED,,,,,Banate,,,1900-01-01,0,"Canistel Center",,3,,220,2017-09-25,200,2018-07-02
+1000808,2017-09-25,Marlyn,Q,Banate,"Beth Brown Pagatpatan","Butuan City",,1976-08-10,F,MARRIED,9508097378,Brgy.ID,18-1959,,,,,1900-01-01,0,,,3,,220,2017-09-25,200,2018-08-16
+1000809,2017-09-25,Rosenda,T,Banggoy,"P-5 Alubihid Buenavista","Agusan del Norte",,1970-08-05,F,MARRIED,9463050725,"Voter's ID",0201-0059A-H0570RTB20000,,Bangoy,Dante,C,1900-01-01,0,,,3,,220,2017-09-25,200,2018-06-21
+1000810,2017-09-25,Eden,T,Banggoy,"P-5 Alubihid Buenavista","Agusan del Norte",,1992-11-12,F,SINGLE,9463050725,Philhealth,18-050106739-1,,,,,1900-01-01,0,,,3,,220,2017-09-25,200,2018-06-29
+1000811,2017-09-25,Glendie,G,Banug,"P-1 Upper Doongan","Butuan City",,1990-11-17,F,,,,,,Pulido,Neri,S,1952-05-05,0,,,3,,220,2017-09-25,220,2018-02-13
+1000812,2017-09-25,Camela,B,Banzon,"P-10 Tungao","Butuan City",,1968-07-18,F,,9123584254,,,,Banzon,,,1900-01-01,0,,,3,,220,2017-09-25,200,2017-12-06
+1000813,2017-09-25,Mercy,P,Baqueran,"P-5A Millennium Bonbon","Butuan City",,1986-10-19,F,,946012001,,,,,,,1900-01-01,0,,,3,,220,2017-09-25,200,2017-12-06
+1000814,2017-09-25,Analyn,B,Baquiran,"P-5A Bonbon","Butuan City",,1986-01-17,F,,9091229560,,,,,,,1900-01-01,0,,,3,,220,2017-09-25,200,2017-11-07
+1000815,2017-09-25,Chona,M,Baslot,"P-9 Upper Tagabaca","Butuan City",,1972-06-22,F,,9073669129,,,,Baslot,,,1900-01-01,0,,,3,,220,2017-09-25,200,2017-12-06
+1000816,2017-09-25,Michelle,V,Baslot,"P-9 Upper Tagabaca","Butuan City",,1992-10-19,F,,9298760672,,,,Baslot,Jorgie,B,1900-01-01,0,,,3,,220,2017-09-25,200,2017-10-07
+1000817,2017-09-25,Lorena,M,Bautista,"P-6B Bliss Libertad","Butuan City",,1900-01-01,F,MARRIED,,,,,Bautista,,,1900-01-01,0,,,3,,220,2017-09-25,200,2018-07-02
+1000818,2017-09-25,Ana,T,Bautista,"P-4 Orchids Pagatpatan","Butuan City",,1977-08-10,F,MARRIED,9500020704,BrgyIdentificat,Apr-15,,Bautista,Ricardo,G,1900-01-01,0,,,3,,220,2017-09-25,112,2021-11-15
+1000819,2017-09-25,Rinaliza,A,Bequibel,"P-2A Bonbon","Butuan City",,1955-02-28,F,,,,,,,,,1900-01-01,0,,,3,,220,2017-09-25,200,2017-11-29
+1000820,2017-09-25,Merlina,G,Besande,"P-7 Brgy.17 R. Calo St.","Butuan City",,1900-01-01,F,MARRIED,,,,,Besande,,,1900-01-01,0,"Mangostene Center",,3,,220,2017-09-25,200,2018-07-02
+1000821,2017-09-25,Rotchel,B,Besmanos,"P-18 Tungao","Butuan City",,1900-01-01,F,MARRIED,,,,,Besmanos,,,1900-01-01,0,,,3,,220,2017-09-25,200,2018-07-02
+1000822,2017-09-25,Roselyn,B,Taman,"P-2A Sumilihon","Butuan City",,1900-01-01,F,SINGLE,,,,,Taman,,,1900-01-01,0,,,3,,200,2017-09-25,200,2018-08-25
+1000823,2017-09-25,Ghanerose,B,Taman,"P-2A Sumilihon","Butuan City",,1900-01-01,F,SINGLE,,,,,Taman,,,1900-01-01,0,"Palm Tree Center",,3,,200,2017-09-25,200,2018-08-25
+1000824,2017-09-25,Gloria,G,Betalas,"P-9 Upper Doongan","Butuan City",,1954-04-04,F,,,,,,Betalas,Dulcesimo,M,1900-01-01,0,,,3,,220,2017-09-25,200,2017-12-27
+1000825,2017-09-25,Adella,O,Temple,"P-2A Sumilihon","Butuan City",,1982-11-27,F,MARRIED,,,,,Temple,,,1900-01-01,0,,,3,,200,2017-09-25,200,2018-11-19
+1000826,2017-09-25,Glenda,P,Bingga,"P-10 Pag-asa Pagatpatan","Butuan City",,1900-01-01,F,MARRIED,,,,,Bingga,,,1900-01-01,0,,,3,,220,2017-09-25,200,2018-07-02
+1000827,2017-09-25,Gina,A,Bisaya,"P-5 Platinum Pagatpatan","Butuan City",,1900-01-01,F,MARRIED,,,,,Bisaya,,,1900-01-01,0,,,3,,220,2017-09-25,200,2018-07-02
+1000828,2017-09-25,Lyn,T,Bitor,"P-2A Bonbon","Butuan City",,1965-08-24,F,MARRIED,9485109186,"Voter's ID",0202-0244B-H2465LTB200012,,,,,1900-01-01,0,,,3,,220,2017-09-25,200,2018-05-22
+1000829,2017-09-25,Joyce,T,Bonzo,"P-12 Tungao","Butuan City",,1977-04-21,F,MARRIED,9128292677,Philhealth,18-000051572-6,,Bonzo,Joel,A,1900-01-01,0,,,3,,220,2017-09-25,200,2018-03-20
+1000830,2017-09-25,Yolanda,H,Borden,"P-4 Brgy.17 Port Poyohon","Butuan City",,1979-08-23,F,SINGLE,9487194421,"Voter's ID",0202-0077A-H2379YHB20000,,,,,1900-01-01,0,"Orange Center",,3,,220,2017-09-25,200,2018-04-06
+1000831,2017-09-25,Lotis,R,Borres,"P-5 Dumalagan","Butuan City",,1900-01-01,F,MARRIED,,,,,Borres,,,1900-01-01,0,,,3,,220,2017-09-25,200,2018-07-02
+1000832,2017-09-25,Amelita,D,Bualat,"P-4A Lower Doongan","Butuan City",,1900-01-01,F,MARRIED,,,,,Bualat,,,1900-01-01,0,,,3,,220,2017-09-25,200,2018-07-02
+1000833,2017-09-25,Maribeth,M,Buar,"P-3A Pigdaulan","Butuan City",,1987-05-17,F,,9461193535,,,,Maur,Ramil,M,1900-01-01,0,,,3,,220,2017-09-25,200,2017-11-07
+1000834,2017-09-25,Angelita,B,Buque,"P-6 Sampaguita Pagatpatan","Butuan City",,1967-12-12,F,MARRIED,9203200202,"Voter's ID",0204-0024A-L1263ABB20000,,Buque,,,1900-01-01,0,,,3,,220,2017-09-25,200,2018-11-21
+1000835,2017-09-25,Josephine,A,Burdeos,"J.F Burdeos St. Bonbon","Butuan City",,1900-01-01,F,SINGLE,,,,,Burdeos,,,1900-01-01,0,,,3,,220,2017-09-25,200,2018-07-02
+1000836,2017-09-25,Margarita,M,Burdeos,"P-6 Sampaguita Pagatpatan","Butuan City",,1970-04-04,F,,,,,,Burdeos,,,1900-01-01,0,"Pear Center",,3,,220,2017-09-25,200,2017-10-25
+1000837,2017-09-25,Luvisminda,S,Buyan,"P-Mabungahon 1","PAgatpatan Butuan City",,1974-09-25,F,,"0950 217 9026",,,,Buyan,"Josefino Jr.",N,1900-01-01,0,,,3,,220,2017-09-25,220,2018-02-16
+1000838,2017-09-25,Charlyn,E,Cabag,"P-1 Bonbon","Butuan City",,1900-01-01,F,MARRIED,,,,,,,,1900-01-01,0,,,3,,220,2017-09-25,200,2018-08-18
+1000839,2017-09-25,Marissa,M,Loayon,"P-5 Amparo","Butuan City",,1982-02-05,F,MARRIED,9306205193,"Voter's Cert.",0202-0173E-I0582MML200005,,Loayon,Nelson,L,1972-12-26,0,,,3,,200,2017-09-25,200,2018-06-05
+1000840,2017-09-25,Merlyn,B,Agbayani,"P-5 Amparo","Butuan City",,1959-11-14,F,,9297762191,,,,Agbayani,Elmer,G,1958-01-01,0,,,3,,200,2017-09-25,,
+1000841,2017-09-25,Frances,T,Cabaltera,"P-3B Alubihid Buenavista","Agusan del Norte",,1991-02-15,F,MARRIED,09354430854/09481760540,"Postal ID",L62160012661-8,,Cabaltera,Arnel,J,1900-01-01,0,,,3,,220,2017-09-25,220,2018-11-28
+1000842,2017-09-25,Marjorie,R,Cabarrubias,"P-7 Pag-asa Pagatpatan","Butuan City",,1964-03-28,F,MARRIED,,"Voter's ID",0202-0328B-C2864MRC200011,,Cabarrubias,Leonilo,S,1900-01-01,0,,,3,,220,2017-09-25,200,2018-10-03
+1000843,2017-09-25,Jovelyn,,Cabas,"P-10 Pag-asa, Pagatpatan","Butuan City",,1982-04-21,F,,,,,,Cabas,Edna,B,1900-01-01,0,,,3,,220,2017-09-25,220,2018-02-05
+1000844,2017-09-25,Estrellita,G,Cabusao,"P-Orchids Pagatpatan","Butuan City",,1976-02-23,F,,,,,,Cabusao,Marcelino,N,1900-01-01,0,,,3,,220,2017-09-25,200,2017-10-25
+1000845,2017-09-25,Lita,P,Caguil,"P-12 Upper Doongan","Butuan City",,1962-05-25,F,SINGLE,9079356603,,,,Caguil,Felipe,T,1900-01-01,0,,,3,,220,2017-09-25,125,2021-11-04
+1000846,2017-09-25,Cheryl,A,Cahilog,"P-2A Bonbon","Butuan City",,1988-10-15,F,MARRIED,,,,,,,,1900-01-01,0,,,3,,220,2017-09-25,200,2018-08-18
+1000847,2017-09-26,"Marie ann",B,Cairo,"P-1 Upper Doongan","Butuan City",,1900-01-01,F,SINGLE,,,,,,,,1900-01-01,0,,,3,,220,2017-09-26,200,2018-08-18
+1000848,2017-09-26,Emelda,B,Cal,"P-8 Tungao Butuan City",,,1900-01-01,F,MARRIED,,,,,,,,1900-01-01,0,"Passion Fruit Center",,3,,220,2017-09-26,200,2018-08-18
+1000849,2017-09-26,Junelyn,B,Cal,,,,1900-01-01,F,,,,,,,,,1900-01-01,0,,,3,,220,2017-09-26,,
+1000850,2017-09-26,Rosemarie,V,Calo,"P-9 Upper Tagabaca","Butuan City",,1900-01-01,F,MARRIED,,,,,,,,1900-01-01,0,,,3,,220,2017-09-26,200,2018-08-18
+1000851,2017-09-26,Welita,A,Ca?al,"P-17 Mauswagon Pagatpatan","Butuan City",,1900-01-01,F,MARRIED,,,,,,,,1900-01-01,0,,,3,,220,2017-09-26,200,2018-08-18
+1000852,2017-09-26,Concepcion,L,Canatoy,"P-5 Amparo","Butuan City",,1956-05-21,F,,9072532891,,,,,,,1900-01-01,0,,,3,,220,2017-09-26,200,2017-12-18
+1000853,2017-09-26,Maria,A,Casas,"P-4A Lower Doongan","Butuan City",,1988-05-03,F,,9129945612,,,,Casas,Randy,M,1900-01-01,0,,,3,,220,2017-09-26,200,2017-11-20
+1000854,2017-09-26,Anamie,S,Castro,"P-10 Pag-asa Pagatpatan","Butuan City",,1900-01-01,F,SINGLE,,,,,Castro,,,1900-01-01,0,,,3,,220,2017-09-26,200,2018-08-18
+1000855,2017-09-26,"Mitzie ruth",G,Castroverde,"P-5 Bading Villueva Vill.","Butuan City",,1900-01-01,F,MARRIED,,,,,Castroverde,Michael,A,1900-01-01,0,,,3,,220,2017-09-26,200,2018-08-18
+1000856,2017-09-26,Dalia,N,Catipay,"P-4 Orchids Pagatpatan","Butuan City",,1977-06-23,F,,,,,,,,,1900-01-01,0,,,3,,220,2017-09-26,200,2017-11-30
+1000857,2017-09-26,Junah,R,Cayumo,"P-21A Landing Tungao","Butuan City",,1971-09-01,F,,,,,,Cayumo,Juliveto,C,1900-01-01,0,,,3,,220,2017-09-26,200,2017-11-03
+1000858,2017-09-26,Elizabeth,A,Cebreros,"P-18 Tungao","Butuan City",,1900-01-01,F,MARRIED,,,,,,,,1900-01-01,0,,,3,,220,2017-09-26,200,2018-08-18
+1000859,2017-09-26,Bebelyn,E,Celeres,"P-9 Upper Doongan","Butuan City",,1980-05-01,F,MARRIED,9484219616,CTC,1674087,,Celeres,Joel,S,1900-01-01,0,,,3,,220,2017-09-26,630,2021-05-28
+1000860,2017-09-26,Carolyn,M,Cempron,"P-3B Alubihid","Butuan City",,1988-01-05,F,MARRIED,9100254930,Brgy.ID,13020100301-010,,Cempron,Dionnie,V,1900-01-01,0,,,3,,220,2017-09-26,300,2018-10-25
+1000861,2017-09-26,Elecia,L,Chavit,"P-7 Pag-asa Pagatpatan","Butuan City",,1989-03-05,F,SINGLE,9073069566,Philhealth,18-025142033-3,,Secuya,Juliven,S,1900-01-01,0,,,3,,220,2017-09-26,200,2019-02-11
+1000862,2017-09-26,Jasmen,O,Cinco,"P-3 Dulag","Butuan City",,1982-08-26,F,,9056508571,,,,Cinco,Rex,M,1900-01-01,0,,,3,,220,2017-09-26,200,2018-03-01
+1000863,2017-09-26,Elina,L,Cobrado,"P-7 Pag-asa Pagatpatan","Butuan City",,1965-11-28,F,MARRIED,9055994457,"Voter's ID",0202-0328G-K2865ELC20000,,Cobrado,Domingo,B,1900-01-01,0,,,3,,220,2017-09-26,200,2018-06-22
+1000864,2017-09-26,Paquita,L,Codilla,"P-12 Upper Doongan","Butuan City",,1972-04-26,F,,,,,,,,,1900-01-01,0,,,3,,220,2017-09-26,200,2018-01-10
+1000865,2017-09-26,Ligaya,O,Colon,"P-5 Manapa Buenavista",ADN,,1972-12-05,F,,,,,,Colon,"Delfin Jr.",L,1900-01-01,0,,,3,,220,2017-09-26,200,2017-09-29
+1000866,2017-09-26,"Divina fe",C,Consigna,"P-2A Bonbon","Butuan City",,1983-12-01,F,,9076524234,,,,"Bequibel Jr.",Horacio,A,1900-01-01,0,,,3,,220,2017-09-26,200,2017-10-04
+1000867,2017-09-26,Era,A,Tindugan,,,,1900-01-01,F,,,,,,,,,1900-01-01,0,"Palm Tree Center",,3,,200,2017-09-26,,
+1000868,2017-09-26,Gina,M,Cruiz,"P-4 Kinamlutan","Butuan City",,1900-01-01,F,MARRIED,,,,,Cruiz,,,1900-01-01,0,,,3,,220,2017-09-26,200,2018-08-18
+1000869,2017-09-26,Myrna,G,Torres,"P-7 Brgy.17 Port Poyohon","Butuan City",,1974-09-14,F,MARRIED,,,,,Torres,,,1900-01-01,0,,,3,,200,2017-09-26,200,2018-11-19
+1000870,2017-09-26,Concepcion,O,Cuajotor,"P-8 Pag-asa Pagatpatan","Butuan City",,1975-12-08,F,MARRIED,9502249323,BrgyIdentificat,Aug-23,,,,,1900-01-01,0,,,3,,220,2017-09-26,200,2018-06-19
+1000871,2017-09-26,Concepcion,M,Valmoria,,,,1900-01-01,F,,,,,,,,,1900-01-01,0,,,3,,200,2017-09-26,,
+1000872,2017-09-26,Elizabeth,A,Culbo,"P-10 New Asia","Butuan City",,1987-10-07,F,MARRIED,09101407764/09203099768,HFMP,4639,,Culbo,Ian,C,1900-01-01,0,"Lychee III Center",,3,,220,2017-09-26,630,2021-08-30
+1000873,2017-09-26,"Babie jane",C,Vestal,"P-2A Sumilihon","Butuan City",,1900-01-01,F,SINGLE,,,,,Vestal,,,1900-01-01,0,,,3,,200,2017-09-26,200,2019-09-13
+1000874,2017-09-26,Beverly,C,Culob,"P-Sarisari Golden Ribbon","Butuan City",,1900-01-01,F,MARRIED,,,,,Culob,,,1900-01-01,0,,,3,,220,2017-09-26,200,2018-08-18
+1000875,2017-09-26,"Mary joy",D,Villa-real,,,,1900-01-01,F,,,,,,,,,1900-01-01,0,,,3,,200,2017-09-26,,
+1000876,2017-09-26,Aida,C,Vistal,"P-2A Sumilihon","Butuan City",,1900-01-01,F,SINGLE,,,,,Vistal,,,1900-01-01,0,,,3,,200,2017-09-26,200,2019-09-13
+1000877,2017-09-26,Merissa,A,Custodio,"P-10 Brgy.17 Port Poyohon","Butuan City",,1900-01-01,F,MARRIED,,,,,Custodio,,,1900-01-01,0,,,3,,220,2017-09-26,200,2018-08-18
+1000878,2017-09-26,"Ma. teresa",C,Daal,"P-7 Pag-asa Pagatpatan","Butuan City",,1900-01-01,F,SINGLE,,,,,Daal,,,1900-01-01,0,,,3,,220,2017-09-26,200,2018-08-18
+1000879,2017-09-26,Jenevieve,R,Acaso,"P-1 Ong Yiu","Butuan City",,1978-03-05,F,MARRIED,9303067130,,,,Acaso,,,1900-01-01,0,,,3,,200,2017-09-26,200,2018-03-16
+1000880,2017-09-26,"Judy ann",T,Dagatan,"P-12 Tungao","Butuan City",,1982-11-11,F,MARRIED,9483603116,"Voter's ID",0202-0386B-K1182JTD20000,,Dagatan,Arnold,A,1900-01-01,0,,,3,,220,2017-09-26,200,2018-03-20
+1000881,2017-09-26,Roselyn,P,Alferez,"P-5 Brgy.22 Bading","Butuan City",,1975-02-03,F,SINGLE,9073581800,,,,Alferez,,,1900-01-01,0,,,3,,200,2017-09-26,200,2018-03-16
+1000882,2017-09-26,Alma,A,Dalauta,"Blk.1 Lt.2 P-Orchids","Pagatpatan Butuan City",,1961-02-15,F,SINGLE,9090038997,Philhealth,19-052779516-1,,,,,1900-01-01,0,,,3,,220,2017-09-26,200,2018-03-21
+1000883,2017-09-26,Jonalyn,E,Alleras,"P-3 Kamunggay Maon","Butuan City",,1983-06-22,F,,9464433572,,,,,,,1900-01-01,0,,,3,,200,2017-09-26,200,2017-12-19
+1000884,2017-09-26,Eschel,D,Lasala,"P-9 Upper Doongan","Butuan City",,1992-05-18,F,MARRIED,09383776728/09504731268,Philhealth,18-050085217,,Lasala,Jake,S,1900-01-01,0,,,3,,220,2017-09-26,630,2021-08-30
+1000885,2017-09-26,Marchi,C,Dayot,"P-9 Donhai Doongan","Butuan City",,1900-01-01,F,SINGLE,,,,,Dayot,,,1900-01-01,0,,,3,,220,2017-09-26,200,2018-08-18
+1000886,2017-09-26,Arlene,N,"De vera","P-Mabungahon1 Pagatpatan","Butuan City",,1972-06-14,F,,9305100437,,,,,,,1900-01-01,0,,,3,,220,2017-09-26,200,2017-10-25
+1000887,2017-09-26,Helen,B,"De veyra","P-1 Mabungahon Pagatpatan","Butuan City",,1900-01-01,F,MARRIED,,,,,"De vera",,,1900-01-01,0,"Apricot Center",,3,,220,2017-09-26,200,2018-08-18
+1000888,2017-09-26,"Eligio jr.",A,Aluag,"P-2 Lemon","Butuan City",,1968-10-11,F,MARRIED,9216740272,"Voter's ID",0202-0273A-J1168EAA100012,,Aluag,Nory,N,1900-01-01,0,"Rubber Tree Center",,3,,200,2017-09-26,200,2018-07-19
+1000889,2017-09-26,Helen,B,"De vera",,,,1900-01-01,F,SINGLE,,,,,"De veyra",,,1900-01-01,0,,,3,,220,2017-09-26,200,2018-08-18
+1000890,2017-09-26,Arsenia,M,Amista,"P-1 Brgy.16 Ong Yiu","Butuan City",,1954-01-13,F,MARRIED,9464116720,"Senior Citizen",8600-28182,2016-01-12,,,,1900-01-01,0,"Ipil-Ipil Center",,3,,200,2017-09-26,200,2018-08-01
+1000891,2017-09-26,Lucinda,N,Decena,"P-3 Brgy.21 Mahogany","Butuan City",,1900-01-01,F,MARRIED,,,,,Decena,,,1900-01-01,0,,,3,,220,2017-09-26,200,2018-08-18
+1000892,2017-09-26,Teresita,D,Amplayo,"P-6 Baan Amamaylan","Butuan City",,1964-11-28,F,MARRIED,9477686007,,,,Amplayo,Dindo,A,1900-01-01,0,,,3,,200,2017-09-26,200,2018-03-16
+1000893,2017-09-26,Aida,N,"Dela cruz","P-4 Tungao","Butuan City",,1975-06-16,F,,9197496275,,,,,,,1900-01-01,0,"Lansones Center",,3,,220,2017-09-26,200,2018-03-07
+1000894,2017-09-26,Editha,P,Delima,"P-4A Lower Doongan","Butuan City",,1900-01-01,F,WIDOWED,,,,,Delima,,,1900-01-01,0,,,3,,220,2017-09-26,200,2018-08-20
+1000895,2017-09-26,Jemarie,R,Deloso,"P-5A Millenium Bonbon","Butuan City",,1900-01-01,F,SINGLE,,,,,Deloso,,,1900-01-01,0,,,3,,220,2017-09-26,200,2018-08-20
+1000896,2017-09-26,Ester,M,Demata,"P-Pag-asa Pagatpatan","Butuan City",,1966-08-09,F,MARRIED,,Philhealth,18-200468190-9,,Demata,Roel,M,1900-01-01,0,,,3,,220,2017-09-26,200,2018-07-12
+1000897,2017-09-26,Rizalina,L,Llamera,"P-3 Gosoon Carmen Agusan","del Norte",,1967-06-19,F,WIDOWED,9099783900,VOTERS,204-0022A-F1961RLL2000,,,,,1900-01-01,0,,,3,,210,2017-09-26,210,2019-03-19
+1000898,2017-09-26,Marie,P,Doblas,"P-4 Masao","Butuan City",,1900-01-01,F,MARRIED,,,,,Doblas,,,1900-01-01,0,,,3,,220,2017-09-26,200,2018-08-20
+1000899,2017-09-26,Genalyn,P,Dobluis,"P-4 Orchids Pagatpatan","Butuan City",,1983-04-26,F,MARRIED,,BrgyIdentificat,4-0218,,Dobluis,"Mark Cecelio",E,1900-01-01,0,,,3,,220,2017-09-26,200,2018-07-04
+1000900,2017-09-26,Ronnielyn,C,Docdoc,"P-6 Masao","Butuan City",,1900-01-01,F,SINGLE,,,,,Docdoc,,,1900-01-01,0,"Apricot Center",,3,,220,2017-09-26,200,2018-08-20
+1000901,2017-09-26,"Shella mae",C,Doce,"P-3 Bonbon","Butuan City",,1900-01-01,F,MARRIED,,,,,Doce,,,1900-01-01,0,,,3,,220,2017-09-26,200,2018-08-20
+1000902,2017-09-26,Jemelyn,S,Donoso,"P-12 Upper Doongan","Butuan City",,1980-11-01,F,,9461257466,,,,Ganzon,Jayson,T,1900-01-01,0,,,3,,220,2017-09-26,200,2017-11-13
+1000903,2017-09-26,Chariema,N,Dumaog,"P-6 Brgy.17 Port Poyohon","Butuan City",,1987-09-18,F,SINGLE,,4P's,160202069-2347-00152,,Hipanao,Wendrick,R,1900-01-01,0,,,3,,220,2017-09-26,200,2018-04-06
+1000904,2017-09-26,Luisa,G,Dumaplin,"P-3 Bonbon","Butuan City",,1963-03-08,F,,,,,,Dumaplin,Raul,G,1900-01-01,0,,,3,,220,2017-09-26,200,2017-11-16
+1000905,2017-09-26,Estrella,P,Durban,"F. Durano St.Golden Ribbo","n Butuan City",,1900-01-01,F,SINGLE,,,,,Durban,,,1900-01-01,0,"Grapes Center",,3,,220,2017-09-26,200,2018-08-20
+1000906,2017-09-26,Luzminda,B,Eala,"P-1 Ambago","Butuan City",,1900-01-01,F,SINGLE,,,,,Eala,,,1900-01-01,0,,,3,,220,2017-09-26,200,2018-08-20
+1000907,2017-09-26,Flora,B,Eda,"P-2 Sari-sari Golden Ribb","on Butuan City",,1900-01-01,F,SINGLE,,,,,Eda,,,1900-01-01,0,,,3,,220,2017-09-26,200,2018-08-20
+1000908,2017-09-26,Crislyn,O,Eda?o,"P-1 Bonbon","Butuan City",,1992-09-05,F,,9757079029,,,,Jandayan,"John Jay",E,1900-01-01,0,,,3,,220,2017-09-26,200,2017-10-27
+1000909,2017-09-26,Marife,S,Ednilan,"P-7A Upper Tagabaca","Butuan City",,1985-09-16,F,,,,,,Ednilan,Ruel,N,1900-01-01,0,,,3,,220,2017-09-26,200,2017-11-20
+1000910,2017-09-26,Nelly,C,Endrio,"P-10 Pag-asa Pagatpatan","Butuan City",,1900-01-01,F,SINGLE,,,,,Endrio,,,1900-01-01,0,,,3,,220,2017-09-26,200,2018-08-20
+1000911,2017-09-26,Lilibeth,M,Tenio,"115 T. Salado St., Nasipi","t Agusan del Norte",,1971-04-01,F,MARRIED,9105178127,SSS,08-0967076-7,,Tenio,Daniel,N,1971-08-25,0,,,3,,210,2017-09-26,210,2018-10-30
+1000912,2017-09-26,Menchu,G,Erlano,"P-8 Ambago","Butuan City",,1900-01-01,F,SINGLE,,,,,Erlano,,,1900-01-01,0,,,3,,220,2017-09-26,200,2018-08-20
+1000913,2017-09-26,Marialyn,M,Amplayo,"P-2B Baan Km.3","Butuan City",,1979-11-15,F,MARRIED,9465847742,,,,Amplayo,,,1900-01-01,0,,,3,,200,2017-09-26,200,2018-03-16
+1000914,2017-09-26,Diosdada,G,Escobido,"P-2 Brgy.17 R.Calo St.","Port Poyohon Butuan City",,1900-01-01,F,SINGLE,,,,,Escobido,,,1900-01-01,0,,,3,,220,2017-09-26,200,2018-08-20
+1000915,2017-09-26,Evelyn,B,Amplayo,"P-3B Ampayon","Butuan City",,1986-12-21,F,MARRIED,9464205286,DonBascoNetwork,DB-000400,,,,,1900-01-01,0,,,3,,200,2017-09-26,200,2018-06-22
+1000916,2017-09-26,Leonora,D,Andig,"P-25 Acacia Baan Km.3","Butuan City",,1971-09-05,F,MARRIED,9126860606,,,,Andig,,,1900-01-01,0,,,3,,200,2017-09-26,200,2018-05-09
+1000917,2017-09-26,Adelyn,G,Fabian,,"P-Sari-sari Golden Ribbon","Butuan City",1900-01-01,F,SINGLE,,,,,Fabian,,,1900-01-01,0,,,3,,220,2017-09-26,200,2018-08-20
+1000918,2017-09-26,Maribel,A,Angeles,"P-13 Tabon-tabon Sibagat","Agusan del Sur",,1996-03-08,F,SINGLE,9098040812,,,,,,,1900-01-01,0,,,3,,200,2017-09-26,200,2018-08-17
+1000919,2017-09-26,Epifania,C,Felecio,"P-10A San Mateo","Butuan City",,1900-01-01,F,SINGLE,,,,,Felecio,,,1900-01-01,0,,,3,,220,2017-09-26,200,2018-08-20
+1000920,2017-09-26,Lujean,B,Anit,"P-4 Brgy.3 Agao","Butuan City",,1971-07-15,F,SINGLE,9309074227,"Voter's ID",0202-0017B-G1571LBA200033,,Anit,Jacinto,C,1900-01-01,0,,,3,,200,2017-09-26,200,2018-04-27
+1000921,2017-09-26,Hazel,R,Aparente,"P-2 Lemon","Butuan City",,1989-10-26,F,SINGLE,9174845758,,,,Aparente,,,1900-01-01,0,,,3,,200,2017-09-26,200,2018-05-09
+1000922,2017-09-26,Rosalia,R,Aparente,"P-2 Lemon","Butuan City",,1965-02-20,F,MARRIED,9128081185,,,,Aparente,,,1900-01-01,0,"Ipil-Ipil Center",,3,,200,2017-09-26,200,2018-05-09
+1000923,2017-09-26,Reynilda,R,Arguta,"P-Sari-sari Golden Ribbon","Butuan City",,1975-05-18,F,SINGLE,9100172685,,,,Arguta,,,1900-01-01,0,,,3,,200,2017-09-26,200,2018-05-09
+1000924,2017-09-26,Jocelyn,L,Arayan,"P-4 Ampayon","Butuan City",,1969-03-13,F,,9488341490,,,,,,,1900-01-01,0,,,3,,200,2017-09-26,200,2017-12-14
+1000925,2017-09-26,Joel,P,Felicilda,"P-8 Dumalagan","Butuan City",,1979-06-25,F,,9486151048,,,,Felicilda,,,1900-01-01,0,"Jack Fruit Center",,3,,220,2017-09-26,200,2018-01-29
+1000926,2017-09-26,Editha,G,Avenido,"P-5 Ong Yiu","Butuan City",,1964-07-01,F,MARRIED,9302374532,"Voter's ID",0202-0067A-G0164EGA200016,,Avenido,Edelmiro,L,1900-01-01,0,,,3,,200,2017-09-26,200,2018-08-01
+1000927,2017-09-26,"Mary jane",J,Awatin,"P-2 SUMILIHON BTA A.D.N",,,1973-03-30,F,,,,,,Awatin,,,1900-01-01,0,,,3,,200,2017-09-26,310,2018-05-29
+1000928,2017-09-26,Elgie,B,Felicilda,"P-12 Doongan","Butuan City",,1900-01-01,F,SINGLE,,,,,Felicilda,,,1900-01-01,0,,,3,,220,2017-09-26,200,2018-08-20
+1000929,2017-09-26,Honoria,S,Ayog,"P-10 Los Angeles","Butuan City",,1900-01-01,F,MARRIED,,,,,Ayog,,,1900-01-01,0,,,3,,200,2017-09-26,200,2018-07-02
+1000930,2017-09-26,Rosanna,A,Felizarta,"P-2 Brgy.17 Port Poyohon","Butuan City",,1967-10-02,F,MARRIED,09125840232/09101148239,"Voter's ID",0202-0076A-I2369RAF200011,,,,,1900-01-01,0,,,3,,220,2017-09-26,200,2018-10-23
+1000931,2017-09-26,Nenita,V,Fernandez,"P-9 Upper Doongan","Butuan City",,1963-04-01,F,MARRIED,9300560056,"TTC Mission Inc",13617,,Fernandez,Jesus,C,1900-01-01,0,"Cashew II Center",,3,,220,2017-09-26,200,2018-05-07
+1000932,2017-09-26,Thelma,E,Fernandez,"Phil Match Golden Ribbon","Butuan City",,1966-12-10,F,,9082143368,,,,Fernandez,,,1900-01-01,0,,,3,,220,2017-09-26,200,2017-10-18
+1000933,2017-09-26,Katherine,O,Ayuban,"P-2 Lemon","Butuan City",,1989-03-09,F,SINGLE,9398758905,UMID,0111-0952209-3,,,,,1900-01-01,0,"Oak Tree Center",,3,,200,2017-09-26,200,2018-06-14
+1000934,2017-09-26,Charlita,C,Baclor,"P-8 Brgy.16 Ong Yiu","Butuan City",,1964-02-08,F,MARRIED,9087477125,"Voter's ID",0202-0072A-B0884CCB200013,,Baclor,Jose,B,1900-01-01,0,,,3,,200,2017-09-26,200,2018-05-17
+1000935,2017-09-26,Josefina,M,Iglesias,"P-Jasmine Brgy.5 Nasipit","Agusan del Norte",,1945-05-25,F,,,,,,,,,1900-01-01,0,,,3,,210,2017-09-26,,
+1000936,2017-09-26,Araceli,L,Bagol,"P-2 Tiniwisan","Butuan City",,1963-01-21,F,,9075547229,,,,Bagol,Renato,A,1900-01-01,0,,,3,,200,2017-09-26,200,2018-01-30
+1000937,2017-09-26,Virgilio,S,"Espina sr.","Triangulo, Nasipit Agsuan","del Norte",,1945-05-13,M,,,,,,Espina,ANdresa,G,1950-07-11,0,,,3,,210,2017-09-26,,
+1000938,2017-09-26,Julieta,T,Bagtasos,"P-4 Upper Lemon","Butuan City",,1957-05-15,F,MARRIED,9383162749,Philhealth,18-200254741-5,,,,,1900-01-01,0,,,3,,200,2017-09-26,200,2018-05-25
+1000939,2017-09-26,Fernando,M,Tabanao,"P-5 Sta. Cruz","Butuan City",,1960-07-25,M,MARRIED,9058102186,,,,Fernando,Evangeline,V,1900-01-01,0,,,3,,220,2017-09-26,200,2018-06-12
+1000940,2017-09-26,"Ma. aiza robie rose",D,Floreno,"P-Pechay A Brgy.2 Golden","Ribbon Butuan City",,1989-07-07,F,MARRIED,,TIN,445-817-502-000,2014-01-13,Floreno,Gilnarh,P,1900-01-01,0,,,3,,220,2017-09-26,200,2018-03-22
+1000941,2017-09-26,"Ma. cheryl",A,Flores,"P-Sari-sari Golden Ribbon","Butuan City",,1900-01-01,F,SINGLE,,,,,Flores,,,1900-01-01,0,,,3,,220,2017-09-26,200,2018-08-20
+1000942,2017-09-26,"Mary jean",P,Bagtasos,"P-4 Upper Lemon","Butuan City",,1900-01-01,F,MARRIED,,,,,Bagtasos,,,1900-01-01,0,,,3,,200,2017-09-26,200,2018-07-02
+1000943,2017-09-26,Mercedita,H,Forsuelo,"P-1 Brgy.17 Port Poyohon","Butuan City",,1965-04-09,F,,9486185525,,,,Forsuelo,,,1900-01-01,0,,,3,,220,2017-09-26,200,2017-10-04
+1000944,2017-09-26,Arlene,M,Forsuelo,"P-2 Port POyohon","Butuan City",,1972-02-08,F,,9105048593,,,,Forsuelo,Rudolfo,B,1900-01-01,0,,,3,,220,2017-09-26,200,2017-10-04
+1000945,2017-09-26,Nova,A,Fuentes,"P-2A Bonbon","Butuan City",,1900-01-01,F,SINGLE,,,,,Fuentes,,,1900-01-01,0,,,3,,220,2017-09-26,200,2018-08-20
+1000946,2017-09-26,Yolanda,D,Funesto,"P-1 Masao","Butuan City",,1900-01-01,F,SINGLE,,,,,Funesto,,,1900-01-01,0,,,3,,220,2017-09-26,200,2018-08-20
+1000947,2017-09-26,Rosita,M,Quezona,"P-4 Baybay Manapa Buenavi","sta Agusan del Norte",,1950-07-25,F,WIDOWED,,"SENIOR CITIZEN","AND 0001899",,,,,1900-01-01,0,,,3,,210,2017-09-26,210,2018-06-19
+1000948,2017-09-26,Melanie,T,Gabor,"P-5 Bonbon","Butuan City",,1900-01-01,F,SINGLE,,,,,Gabor,,,1900-01-01,0,"Blueberry Center",,3,,220,2017-09-26,200,2018-08-20
+1000949,2017-09-26,Glenda,O,Gabriel,"P-8 Pagatpatan","Butuan City",,1900-01-01,F,SINGLE,,,,,Gabriel,,,1900-01-01,0,,,3,,220,2017-09-26,200,2018-08-20
+1000950,2017-09-26,"Maria laarni",M,Gacrama,"P-4 Bonbon","Butuan City",,1986-02-19,F,,9469088141,,,,"Albiso Jr.",Loreto,D,1900-01-01,0,,,3,,220,2017-09-26,200,2018-01-24
+1000951,2017-09-26,"Maria liza",M,Gacrama,"P-1 Kinamlutan","Butuan City",,1900-01-01,F,SINGLE,,,,,Gacrama,,,1900-01-01,0,,,3,,220,2017-09-26,200,2018-08-20
+1000952,2017-09-26,"Kaye anne",C,Gagelonia,"P-3A Pigdaulan","Butuan City",,1996-04-24,F,SINGLE,9481476010,Philhealth,18-025248220-0,,Salteras,Julie,R,1900-01-01,0,,,3,,220,2017-09-26,200,2018-04-06
+1000953,2017-09-26,Jennet,M,Galindo,"P-6 Sta Cruz Mla de","Bugabos Butuan city",,1976-05-25,F,SINGLE,9364414842,"Voter's ID",0202-0321B-E2576JMG20000,,Galindo,Ronnie,P,1900-01-01,0,,,3,,220,2017-09-26,200,2018-11-14
+1000954,2017-09-26,Thelma,P,Gantala,"Sari-sari B Golden Ribbon","Butuan City",,1900-01-01,F,SINGLE,,,,,Gantala,,,1900-01-01,0,,,3,,220,2017-09-26,200,2018-08-20
+1000955,2017-09-26,Nelly,C,Garan,"P-2 Masao","Butuan City",,1963-03-30,F,MARRIED,9100909761,UMID,0009-0644091-3,,Garan,Lorencio,M,1900-01-01,0,,,3,,220,2017-09-26,200,2018-07-13
+1000956,2017-09-26,"Catherine ann",C,Garcia,"P-12 Tungao","Butuan City",,1900-01-01,F,SINGLE,,,,,Garcia,,,1900-01-01,0,,,3,,220,2017-09-26,200,2018-08-20
+1000957,2017-09-26,Melody,B,Garcia,"P-3 Masao","Butuan City",,1900-01-01,F,SINGLE,,,,,Garcia,,,1900-01-01,0,,,3,,220,2017-09-26,200,2018-08-20
+1000958,2017-09-26,"Sonny boy",J,Garcia,"P-4A Lower Doongan","Butuan City",,1900-01-01,F,SINGLE,,,,,Garcia,,,1900-01-01,0,,,3,,220,2017-09-26,200,2018-08-20
+1000959,2017-09-26,Elena,P,Garrido,"P-8 Pag-asa Pagatpatan","Butuan City",,1962-12-27,F,MARRIED,9093188010,UMID,0008-2116938-2,,Garrido,,,1900-01-01,0,,,3,,220,2017-09-26,200,2018-08-11
+1000960,2017-09-26,Rowena,L,Gausin,"P-10 San Mateo","Butuan City",,1900-01-01,F,SINGLE,,,,,Gausin,,,1900-01-01,0,,,3,,220,2017-09-26,200,2018-08-20
+1000961,2017-09-26,Jovy,N,Gavero,"P-1 Salvacion","Butuan City",,1976-01-07,F,,9099110781,,,,Penguet,Marlou,F,1900-01-01,0,,,3,,220,2017-09-26,200,2018-01-22
+1000962,2017-09-26,Elma,A,Gemida,"P-4 Bonbon","Butuan City",,1900-01-01,F,SINGLE,,,,,Gemida,,,1900-01-01,0,,,3,,220,2017-09-26,200,2018-08-20
+1000963,2017-09-26,Emeline,D,Generalao,"P-12 Upper Doongan","Butuan City",,1900-01-01,F,SINGLE,,,,,Generalao,,,1900-01-01,0,,,3,,220,2017-09-26,200,2018-08-20
+1000964,2017-09-26,Elena,C,Gerogalin,"P-6 Masao","Butuan City",,1900-01-01,F,SINGLE,,,,,Gerogalin,,,1900-01-01,0,,,3,,220,2017-09-26,200,2018-08-20
+1000965,2017-09-26,Maria,C,Gumanit,"P-2A Bonbon","Butuan City",,1900-01-01,F,SINGLE,,,,,Gumanit,,,1900-01-01,0,,,3,,220,2017-09-26,200,2018-08-20
+1000966,2017-09-26,Marilou,Y,Gumanit,"P-2A Bonbon","Butuan City",,1900-01-01,F,SINGLE,,,,,Gumanit,,,1900-01-01,0,,,3,,220,2017-09-26,200,2018-08-20
+1000967,2017-09-26,Elisa,C,Gumanit,"P-1 Bonbon","Butuan City",,1955-01-06,F,MARRIED,9075187424,TIN,461-751-519-000,2014-12-12,Gumanit,Eduardo,C,1900-01-01,0,,,3,,220,2017-09-26,200,2018-08-14
+1000968,2017-09-26,Erlinda,E,Gumapac,"P-1 Bonbon","Butuan City",,1970-01-20,F,SINGLE,09079914928/09306120456,SSS,33-2234236-2,,Gumapac,,,1900-01-01,0,,,3,,220,2017-09-26,112,2021-11-30
+1000969,2017-09-26,Novilla,F,Gutierrez,"P-1 Brgy.17 Port Poyohon","Butuan City",,1964-11-08,F,WIDOWED,9105705072,Philhealth,18-200521917-6,,Gutierrez,,,1900-01-01,0,,,3,,220,2017-09-26,200,2018-08-02
+1000970,2017-09-26,Jazel,D,Hantud,"P-1 Kinamlutan","Butuan City",,1900-01-01,F,SINGLE,,,,,Hantud,,,1900-01-01,0,"Cashew Fruit I Cntr",,3,,220,2017-09-26,200,2018-08-20
+1000971,2017-09-26,Jovelyn,M,Hilot,"P-5 Lower Bonbon","Butuan City",,1900-01-01,F,MARRIED,,,,,Hilot,,,1900-01-01,0,,,3,,220,2017-09-26,200,2018-08-20
+1000972,2017-09-26,Divimae,E,Jaguing,"P-10 San Mateo","Butuan City",,1995-09-04,F,SINGLE,9484695155,"Red Cross ID",PB0433458,,Lucero,Michael,R,1900-01-01,0,,,3,,220,2017-09-26,200,2018-07-23
+1000973,2017-09-26,Almira,C,Jalandoni,"P-5 Sta. Cruz Mla de","Bugabos Butuan City",,1900-01-01,F,MARRIED,9972539755,,,,Jalandoni,,,1900-01-01,0,,,3,,220,2017-09-26,200,2018-08-20
+1000974,2017-09-26,"Apple jane",B,Jamen,"P-5 Km.12 Manapa","Buenavista Agusan del",Norte,1900-01-01,F,SINGLE,,,,,Jamen,,,1900-01-01,0,,,3,,220,2017-09-26,200,2018-08-20
+1000975,2017-09-26,Belinda,B,Jamen,"P-5 Alubihid Buenavista","Agusan del Norte",,1974-02-24,F,MARRIED,9488510128,"Voter's ID",0201-0059A-D2476BBJ20000,,Jamen,Apolonio,T,1900-01-01,0,"Pineapple Center",,3,,220,2017-09-26,200,2018-05-11
+1000976,2017-09-26,Roselyn,R,Jordan,"P-8 Pag-asa Pagatpatan","Butuan City",,1900-01-01,F,SINGLE,,,,,Jordan,,,1900-01-01,0,,,3,,220,2017-09-26,200,2018-08-20
+1000977,2017-09-26,Victoria,D,Josue,"P-3A Pigdaulan","Butuan City",,1974-06-11,F,MARRIED,9109855561,4P's,160202103-8751-00008,,Josue,Sonny,B,1900-01-01,0,,,3,,220,2017-09-26,200,2018-07-13
+1000978,2017-09-26,Jennifer,M,Joven,"P-5 Amparo","Butuan City",,1978-11-23,F,MARRIED,09127039876/09632810715,"Passport ID",EC165825,2014-06-19,Joven,Wilky,B,1900-01-01,0,,,3,,220,2017-09-26,630,2021-08-30
+1000979,2017-09-26,Rolinda,D,Lagapa,"P-5 Lower Doongan","Butuan City",,1900-01-01,F,SINGLE,,,,,Lagapa,,,1900-01-01,0,,,3,,220,2017-09-26,200,2018-08-20
+1000980,2017-09-26,"Mary jane",I,Lamay,"P-18 Tungao","Butuan City",,1900-01-01,F,SINGLE,,,,,Lamay,,,1900-01-01,0,,,3,,220,2017-09-26,200,2018-08-20
+1000981,2017-09-26,Anita,G,Lazaga,"P-2 Dulag","Butuan City",,1956-09-01,F,MARRIED,9153769887,"Postal ID",3540953,,Lazaga,Anecio,T,1900-01-01,0,,,3,,220,2017-09-26,200,2018-07-12
+1000982,2017-09-26,Jenelyn,T,Lebadesos,Kinamlutan,"Butuan City",,1900-01-01,F,SINGLE,,,,,Lebadesos,,,1900-01-01,0,,,3,,220,2017-09-26,200,2018-08-20
+1000983,2017-09-26,"Ana liza",S,Lecias,"P-6 Alubihid Buenavista","Agusan del Norte",,1971-04-27,F,,9092827714,,,,,,,1900-01-01,0,"Star Apple Center",,3,,220,2017-09-26,200,2018-01-19
+1000984,2017-09-26,Rebecca,B,Ledesma,"P-5 Bonbon","Butuan City",,1900-01-01,F,SINGLE,,,,,Ledesma,,,1900-01-01,0,,,3,,220,2017-09-26,200,2018-08-20
+1000985,2017-09-26,Aires,L,Libres,"P-8 Upper Tagabaca","Butuan City",,1986-09-22,F,,9283858079,,,,Libres,Jake,M,1900-01-01,0,"Grapes I Center",,3,,220,2017-09-26,200,2017-12-05
+1000986,2017-09-26,Avelina,B,Llagas,"P-6 Masao","Butuan City",,1900-01-01,F,SINGLE,,,,,Llagas,,,1900-01-01,0,,,3,,220,2017-09-26,200,2018-08-22
+1000987,2017-09-26,Maurisia,N,Llagas,"P-6 Masao","Butuan City",,1959-07-08,F,MARRIED,9096556385,"Voter's ID",0202-0323C-G0859MNL200029,,Llagas,Ricardo,P,1900-01-01,0,,,3,,220,2017-09-26,200,2018-08-09
+1000988,2017-09-26,Elvira,C,Llagas,"P-2 Brgy.17 R. Calo St.","Butuan City",,1900-01-01,F,SINGLE,,,,,Llagas,,,1900-01-01,0,,,3,,220,2017-09-26,200,2018-08-22
+1000989,2017-09-26,Elisa,T,Llanto,"P-7 Dumalagan Butuan City","/P-3 Buhang Magallanes","Agusan del Norte",1985-03-28,F,MARRIED,9093287356,UMID,CRN-021-1107-5635-3,,Llanto,Andy,B,1985-08-10,0,,,3,,220,2017-09-26,200,2019-05-29
+1000990,2017-09-26,Merlita,M,Lumiguid,,"P-5 Pigdaulan Butuan City",,1961-04-15,F,,,,,,Lumiguid,Oscar,K,1900-01-01,0,,,3,,220,2017-09-26,200,2017-11-03
+1000991,2017-09-26,Cecilia,T,Bajan,"P-1 Lemon","Butuan City",,1966-11-08,F,,9309745230,,,,Bajan,Romulo,C,1959-07-06,0,,,3,,200,2017-09-26,200,2018-02-21
+1000992,2017-09-26,Glenda,C,Baldo,,,,1900-01-01,F,,,,,,,,,1900-01-01,0,,,3,,200,2017-09-26,,
+1000993,2017-09-26,Roselyn,C,Balisbis,"P-1A Tiniwisan","Butuan City",,1994-10-16,F,,,,,,Arsolon,Randy,B,1900-01-01,0,,,3,,200,2017-09-26,200,2017-11-22
+1000994,2017-09-26,Norma,C,Balisbis,"P-1A Tiniwisan","Butuan City",,1962-11-23,F,,9126819471,,,,Balisbis,Ceriaco,R,1900-01-01,0,,,3,,200,2017-09-26,200,2017-11-22
+1000995,2017-09-26,Wendelyn,C,Luyahan,"P-6 Brgy.17 Port Poyohon","Butuan City",,1979-08-21,F,SINGLE,9092078601,4P's,160202069-1-90202720,,Sanico,Ronnie,G,1900-01-01,0,,,3,,220,2017-09-26,200,2018-04-06
+1000996,2017-09-26,Rosemarie,P,Banquil,"P-9 Tabon-tabon Sibagat","Agusan del Sur",,1900-01-01,F,MARRIED,,,,,Banquil,,,1900-01-01,0,,,3,,200,2017-09-26,200,2018-07-02
+1000997,2017-09-26,Maricel,D,Barcelona,"P-11 Los Angeles","Butuan City",,1988-11-27,F,,9483683726,,,,Altoveros,Salvador,B,1900-01-01,0,,,3,,200,2017-09-26,200,2017-10-07
+1000998,2017-09-26,Rafcels,T,Maclay,"P-Mabungahon 2 Pagatpatan","Butuan City",,1989-02-11,F,MARRIED,9095272015,Philhealth,16-050493164-9,,Maclay,"Daril John",P,1900-01-01,0,,,3,,220,2017-09-26,200,2018-07-18
+1000999,2017-09-26,Gloria,P,Basalo,"P-4 Lemon","Butuan City",,1975-04-21,F,MARRIED,,"Voter's ID",0202-0272C-D2275GPB200017,,Basalo,Rico,S,1900-01-01,0,"Oak Tree Center",,3,,200,2017-09-26,200,2018-09-26
+1001000,2017-09-26,Annabelle,M,Madjos,"P-9 Upper Tagabaca","Butuan City",,1987-01-04,F,MARRIED,9079674890,"Voter's ID",0210-0019B-A0487AMM200000,,Madjos,Joselito,M,1900-01-01,0,,,3,,220,2017-09-26,200,2018-06-29

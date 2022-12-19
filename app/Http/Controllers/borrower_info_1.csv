@@ -1,0 +1,251 @@
+CUSTNUM,DATEREG,FNAME,MIDDLE,LNAME,ADRS1,ADRS2,ADRS3,DATEBIRTH,GENDER,STAT,TELNO,IDTYPE,IDNUM,IDDATE,SPLNAME,SPFNAME,SPMIDDLE,SPDBIRTH,ABSENT,CNTNAME,GRPNAME,LEADER,MB_ACCNO,REGISTERBY,DATEREGIS,UPDATEBY,DATEUPDATE
+1000001,2017-10-25,Jeswani,P,Pimentel,"P-1 Artadi Magsaysay Mis.",Oriental,,1968-02-13,F,MARRIED,"0936 855 5484","Voter's ID",4317-0009A-B1368JPP200018,,Pimentel,"Frank Gary Brian",A,1900-01-01,0,,,3,,220,2017-10-25,220,2018-03-13
+1000027,2017-04-09,Ruth,D,Sator,"P-2 Masao Butuan City",,,1984-09-18,F,MARRIED,9383133776,Philhealth,18-025103208-2,,Sator,Veemar,T,1982-02-18,0,,,3,,200,2017-09-04,200,2018-07-30
+1000028,2017-04-09,Leo,A,Alonzo,"4th St. Village II Libert","ad Butuan City",,1963-07-18,M,MARRIED,341-6800/09957007057,"Employee's ID",118,,Alonzo,Emma,C,1964-08-25,0,,,3,,200,2017-09-04,200,2018-07-04
+1000002,2017-08-09,"Sheena mae",P,Salvedia,"P-3 Consuelo Magsaysay Mi","s. Or.",,1994-12-10,F,SINGLE,"0997 354 7869",Cedula,34091008,,Salvedia,Marivic,A,1973-06-04,0,,,3,,220,2017-09-08,220,2018-03-14
+1000029,2017-04-09,Rovelyn,C,Conejos,"P-7A Upper Tagabaca Butua","n City",,1987-01-01,F,MARRIED,9308873582,CTC,25701768,,Conejos,Ryan,P,1984-02-15,0,,,3,,200,2017-09-04,200,2018-06-19
+1000030,2017-05-09,Emily,P,Fernando,"P-9 Tagabaca Butuan City",,,1995-04-08,F,,,,,,Florida,Nestor,L,1992-11-11,0,,,3,,200,2017-09-05,,
+1000003,2017-08-09,Flordeles,C,Gamil,"P-1 KAndiis Magsaysay","Mis. Oriental",,1979-10-01,F,SINGLE,"0997 870 2206","4P's ID",104317007-1666-00013,,Gamil,Gingke,N,1973-02-02,0,,,3,,220,2017-09-08,220,2018-03-13
+1000031,2017-05-09,Ritchell,A,Awit,"P-9 Tagabaca Butuan City",,,1989-09-03,F,,9093345925,,,,Ca?on,Jestoni,P,1993-10-18,0,,,3,,200,2017-09-05,,
+1000032,2017-05-09,Leah,U,Temario,"P-18 Tungao Butuan City",,,1973-12-14,F,MARRIED,9203383049,"Voter's ID",0202-0390B-L1473LTU20000,,Temario,"Romy Sr.",G,1969-11-13,0,"Banana Center",,3,,200,2017-09-05,200,2018-12-17
+1000033,2017-05-09,Rodina,B,Amora,"P-6 Kinamlutan Butuan Cit",y,,1987-06-03,F,,0,,,,Amora,,,1900-01-01,0,,,3,,200,2017-09-05,,
+1000042,2017-05-09,Yulita,B,Cristuta,"P-1 Bonbon","Butuan City",,1971-03-21,F,MARRIED,,"Voter's ID",0202-0248A-E2170LBC200014,,Cristuta,"Sergio Jr.",V,1968-05-04,0,,,3,,200,2017-09-05,200,2018-07-11
+1000034,2017-05-09,Jeffry,G,Almazan,"140R. Calo St P-4 Brgy.16","Butuan City",,1987-07-30,M,,9183060984,,,,Almazan,......,,1900-01-01,0,,,3,,200,2017-09-05,,
+1000035,2017-05-09,Voltaire,B,Adiong,"B-3 Buenavista","Agusan del Norte",,1971-09-04,M,,9177846831,,,,Adiong,George,O,1934-02-22,0,,,3,,200,2017-09-05,,
+1000004,2017-08-09,"Ma. feliciana",O,Salamin,"P-3 Brgy. Pangasihan","Gingoog City",,1972-10-05,F,MARRIED,0926-541-0097,"Postal ID",427439,,Salamin,Samuel,T,1970-12-01,0,"Sparrow Center",,3,,220,2017-09-08,220,2018-03-13
+1000005,2017-08-09,Ellougelin,A,Gabriel,"P-3 Kandiis, Magsaysay","Misamis Oriental",,1965-12-05,F,MARRIED,0935-558-5116,TIN,185-805-726,,Gabriel,Noel,C,1947-05-13,0,,,3,,220,2017-09-08,220,2018-09-10
+1000006,2017-08-09,Mercelyn,D,Aranaido,"P-6 Consuelo Magsaysay","Mis. Or.",,1981-05-09,F,SINGLE,0935-563-8760,"4P's ID",104308069-1106-00031,,Aranaido,"Eva Mayleen",B,1979-05-01,0,,,3,,220,2017-09-08,220,2018-03-14
+1000007,2017-08-09,Cora,A,Aliguez,"P-3 KAndiis MAgsaysay","Mis. Or.",,1970-10-11,F,MARRIED,0906-673-4257,"employee's ID",584,,Aliguez,Josias,B,1984-10-28,0,,,3,,220,2017-09-08,200,2019-04-11
+1000008,2017-08-09,Dolores,N,Dunan,"P-2 Kandiis Magsaysay","Mis. Or.",,1972-03-27,F,SINGLE,0936-496-4928,"Voter's ID",4317-0031A-C2772DND200009,,Dunan,Tito,A,1976-05-04,0,,,3,,220,2017-09-08,220,2018-11-14
+1000009,2017-08-09,Bienilda,T,Arao,"P-2A Bonifacio Aquino","MAgsaysay Mis. Or.",,1975-07-18,F,SINGLE,"0955 107 1629",TIN,469-565-389-000,,Arao,Jacky,T,1981-07-08,0,,,3,,220,2017-09-08,220,2018-06-11
+1000010,2017-08-09,Luzvella,E,Buenaventura,"P-1 Artadi Magsasay","Misamis Oriental",,1966-09-26,F,,0975-600-2093,,,,Buenaventura,Rico,P,1964-08-19,0,,,3,,220,2017-09-08,,
+1000011,2017-08-09,"Rhea marie",T,Rago,"P-2 Talisay, Misamis",Oriental,,1991-06-19,F,SINGLE,0997-702-1812,"Voter's ID",4308-0109A-F1991RTR20000,,Rago,Gerald,D,1984-10-01,0,,,3,,220,2017-09-08,220,2018-03-14
+1000012,2017-08-09,Joy,R,Sanchez,"P-1 Talisay, Mis. Or.","Gingoog City",,1978-05-27,F,MARRIED,0906-130-5139,"Voter's Cert.",4308-0361A-E2778JRS200000,,Sanchez,Ricky,R,1975-09-07,0,,,3,,220,2017-09-08,220,2019-01-03
+1000013,2017-08-09,Eula,S,Salapang,"P-1 Kandiis, Magsaysay","Misamis Oriental",,1981-03-26,F,SINGLE,0997-703-0606,Philhealth,15-201217941-8,,Salapang,"Maria Theresa",S,1900-01-01,0,,,3,,220,2017-09-08,220,2018-03-21
+1000014,2017-08-09,Analita,P,Jayme,"P-3 Artadi Magsaysay","Misamis Oriental",,1962-09-01,F,MARRIED,0935-681-7383,,,,Jayme,Florencia,P,1960-10-17,0,,,3,,220,2017-09-08,220,2018-03-13
+1000015,2017-08-09,Salvacion,V,Melitares,"P-3 Consuelo, Magsaysay","Misamis Oriental",,1971-06-02,F,MARRIED,"0935 065 1133","4P's ID",104317008-1705-00013,,Melitares,Meliruth,V,1971-06-02,0,,,3,,220,2017-09-08,220,2018-10-15
+1000036,2017-05-09,Rechelyn,B,Compos,"P-1 Bonbon","Butuan City",,1987-05-09,F,,9468138154,,,,Compos,Adrian,B,1978-12-16,0,,,3,,200,2017-09-05,,
+1000037,2017-05-09,"Grace marie",M,Carbonilla,"P-4 Bonbon","Butuan City",,1975-04-20,F,WIDOWED,9307630665,SSS,08-1222157-2,,,,,1900-01-01,0,,,3,,200,2017-09-05,200,2018-04-30
+1000038,2017-05-09,Annabelle,M,Danag,"P-5 Taligaman","Butuan City",,1962-11-30,F,,9777526361,,,,Danag,Julito,S,1961-01-11,0,,,3,,200,2017-09-05,200,2018-02-21
+1000039,2017-05-09,Teodora,G,Macuno,"P-4A Lower Doongan","Butuan City",,1963-12-27,F,,0,,,,,,,1900-01-01,0,,,3,,200,2017-09-05,,
+1000040,2017-05-09,Jasper,P,Tapiro,"Kamunggay Maon","Butuan City",,1979-05-26,M,MARRIED,9383190095,HDMF,1670-0087-9354,2012-03-19,Tapiro,Helen,M,1979-02-18,0,,,3,,200,2017-09-05,200,2018-08-30
+1000016,2017-08-09,Mitos,P,Mojado,"P-1 Kandiis, MAgsaysay","Misamis Oriental",,1969-04-08,F,SINGLE,0930-992-4209,,,,Mojado,Bonifacio,P,1970-01-08,0,,,3,,220,2017-09-08,220,2018-03-13
+1000041,2017-05-09,Elen,D,Curilan,"092 P-Maabi-abihon","Agusan Peque?o","Butuan City",1959-07-23,F,,9468159608,,,,0,,,1900-01-01,0,,,3,,200,2017-09-05,,
+1000017,2017-05-09,Priscilla,C,Fullese,"2nd St. Basic Homes","Butuan City",,1958-08-04,F,,9094918414,,,,,,,1900-01-01,0,,,3,,200,2017-09-05,,
+1000018,2017-05-09,Pascuala,D,Cabarse,"P-2 Suatan Ambago","Butuan City",,1974-12-05,F,SINGLE,9485383048,"ANECO ID",151661,2014-09-03,Alfon,Rudy,P,1950-10-13,0,,,3,,200,2017-09-05,200,2018-08-16
+1000019,2017-05-09,Josephine,S,Galindo,"P-6 Sta Cruz Mla de",Bugabos,"Butuan City",1971-06-24,F,MARRIED,9051360216,,,,Galindo,Primo,L,1967-06-09,0,,,3,,200,2017-09-05,200,2018-05-02
+1000020,2017-05-09,Jitha,S,Berangel,"P-4 Sta Cruz Mla de",Bugabos,"Butuan City",1957-10-08,F,MARRIED,9263864308,4P's,160202065-8782-00008,,Berangel,Porceso,L,1957-10-08,0,,,3,,200,2017-09-05,230,2020-11-20
+1000021,2017-05-09,Susan,V,Pablo,"P-6 Kinamlutan","Butuan City",,1971-01-22,F,,9482144859,,,,Pablo,Robert,D,1979-04-09,0,,,3,,200,2017-09-05,,
+1000022,2017-05-09,Jessica,L,Mediano,"P-4 Lemon","Butuan City",,1972-07-24,F,,,,,,Mediano,Renante,M,1970-10-27,0,,,3,,200,2017-09-05,,
+1000023,2017-05-09,"Estelle mari",P,Bugasia,"P-1 Cabcabon","Butuan City",,1993-02-03,F,MARRIED,9982621970,"Voter's Cert.",0202-0251C-B0393EAP200006,,Bugasia,Dante,M,1991-11-04,0,,,3,,200,2017-09-05,200,2018-07-12
+1000024,2017-05-09,Maribel,M,Moncada,"P-5 Bayanihan 825 Felipe","Ext. Luz Village","Butuan City",1968-06-22,F,MARRIED,9566442284,Philhealth,18-025104653-9,,,,,1900-01-01,0,,,3,,200,2017-09-05,200,2018-06-22
+1000025,2017-05-09,Rodolfo,B,Evanoso,"P-4 Agao","Butuan City",,1942-01-15,M,,341-2976,,,,Evanoso,Consolacion,C,1950-07-02,0,,,3,,200,2017-09-05,,
+1000026,2017-05-09,Elizabeth,F,Pastrana,"P-1B Site Tiniwisan","Butuan City",,1954-03-03,F,,9294439666,,,,,,,1900-01-01,0,,,3,,200,2017-09-05,,
+1000043,2017-08-09,Ingrid,Z,Tion,"P-3 Artadi, MAgsaysay","Misamis Oriental",,1971-03-28,F,,,,,,Arbilon,Liezl,G,1975-05-17,0,,,3,,220,2017-09-08,,
+1000044,2017-08-09,Cheryl,D,Aranaido,"P-2 Talisay Gingoog City",,,1995-03-20,F,SINGLE,09355977904/09652616172,Cedula,28031852,,Aranaido,Elisa,D,1962-01-02,0,,,3,,220,2017-09-08,220,2018-11-22
+1000045,2017-08-09,Michelle,C,Paylangco,"P-3 Kandiis MAgsaysay","Misamis Oriental",,1983-11-24,F,SINGLE,0997-266-7094,"Voter's ID",4317-0034A-K2482MCP200051,,Paylangco,Presioso,P,1984-07-22,0,,,3,,220,2017-09-08,220,2018-03-13
+1000046,2017-08-09,Emma,C,Paylangco,"P-3 Kandiis, MAgsaysay","Misamis Oriental",,1960-02-06,F,MARRIED,0906-774-5278,"UMP ID",0111-4271219-0,,Paylangco,Apolinario,B,1949-06-21,0,,,3,,220,2017-09-08,220,2018-03-13
+1000047,2017-08-09,Eudelma,T,Ferrer,"P-3 KAndiis, MAgsaysay","Misamis Oriental",,1981-02-15,F,SINGLE,"0935 107 3300","Voter's ID",4317-0032B-B1581ETF20000,,Ferrer,Jinalyn,G,1989-12-10,0,,,3,,220,2017-09-08,220,2018-03-13
+1000048,2017-08-09,Mitchelin,T,Montera,"P-3 Kandiis MAgsaysay","Misamis Oriental",,1988-01-19,F,,0926-156-2453,,,,Montera,Isagani,A,1985-04-29,0,,,3,,220,2017-09-08,,
+1000049,2017-07-09,Rosalina,M,Rabe,"P-5 Bit-os","Butuan City",,1958-03-25,F,MARRIED,9163616629,Philhealth,18-025066919-2,,,,,1900-01-01,0,,,3,,200,2017-09-07,200,2018-10-03
+1000050,2017-08-09,Reyna,V,"Las pi?as","P-4 Lemon","Butuan City",,1975-02-03,F,MARRIED,"0909 351 2521",Philhealth,18-025067022-0,,Tanio,Ruel,U,1972-04-25,0,,,3,,200,2017-09-08,200,2018-09-26
+1000051,2017-08-09,Rudy,P,Alfon,"P-2 Suatan Ambago","Butuan City",,1950-10-13,M,WIDOWED,9485383048,,,,Cabarse,Pascuala,D,1974-12-05,0,,,3,,200,2017-09-08,200,2019-05-29
+1000052,2017-08-09,Helenita,M,Duran,"P-1 Brgy.20 Baan","Butuan City",,1958-04-28,F,MARRIED,09219749711/09709569408,"Voter's ID",0202-0101A-D2858HMD20000,,Duran,Eric,B,1900-01-01,0,,,3,,200,2017-09-08,112,2021-11-23
+1000053,2017-08-09,"Jene mie",V,Maur,"P-3A Pigdaulan","Butuan City",,1995-05-20,F,MARRIED,09100437406/09305836925,CTC,1743305,,Maur,Ronald,M,1983-04-15,0,,,3,,200,2017-09-08,630,2021-08-30
+1000054,2017-08-09,Elisabeth,C,Peralta,"P-3A Pigdaulan","Butuan City",,1974-08-13,F,,9464425935,,,,Peralta,Rudy,M,1971-11-08,0,,,3,,200,2017-09-08,,
+1000055,2017-08-09,Estrella,S,Salapang,"P-1 KAndiis, MAgsaysay","Misamis Oriental",,1967-03-02,F,SINGLE,,TIN,932-284-424,,Indat,Annabelle,L,1900-01-01,0,,,3,,220,2017-09-08,220,2018-03-21
+1000056,2017-09-23,Maribel,A,Maur,"P-3A Pigdaulan","Butuan City",,1974-02-15,F,MARRIED,9285432335,"Voter's ID",0202-0314B-B1574MAM20000,,Maur,Edgardo,M,1971-03-27,0,"Tangerine Center",,3,,200,2017-09-23,200,2018-06-04
+1000057,2017-09-23,Jeanette,M,Burias,"P-1 Bonbon","Butuan City",,1963-03-21,F,MARRIED,09394460198/09122074411,UMID,006-0074-3698-5,,Burias,"Maria Jamaica",M,1900-01-01,0,,,3,,200,2017-09-23,630,2021-06-29
+1000058,2017-09-23,"Alexandra veronica",C,Labarda,"039 Teofilo Sanchez St.","Agao P-5","Butuan City",1993-10-31,F,SINGLE,09125012913/09568519818,UMID,0111-4840165-4,,Labarda,,,1900-01-01,0,,,3,,200,2017-09-23,630,2021-05-18
+1000059,2017-09-23,Johnny,Y,Ore?o,"P-3 Brgy. 11 Pob.","Cabadbaran City",,1954-06-24,M,,9186490662,,,,Ore?o,,,1900-01-01,0,,,3,,200,2017-09-23,200,2017-12-11
+1000060,2017-09-23,Rexces,B,Abugho,"B.26 L.16 Emily Homes","Butuan City",,1955-02-13,M,,9469852650,,,,Abugho,Susan,A,1900-01-01,0,,,3,,200,2017-09-23,,
+1000061,2017-09-23,Antonio,C,Adlaon,"P-14 B.31 L.10 Pagatpatan","Butuan City",,1946-01-24,M,MARRIED,9465081789,"senior Citizen",8600-9378,2011-07-21,Adlaon,Caridad,G,1900-01-01,0,,,3,,200,2017-09-23,200,2018-10-15
+1000062,2017-09-23,Basidelisa,F,Alaan,"P-5 Brgy. 16 Ong Yiu","Butuan City",,1971-06-10,F,,9186685603,,,,Alaan,Erasmo,M,1900-01-01,0,,,3,,200,2017-09-23,,
+1000063,2017-09-23,Teresa,T,Alipaspas,"P-1 Brgy 23 Holy Redeemer","Butuan City",,1962-06-04,F,,9081856564,,,,,,,1900-01-01,0,,,3,,200,2017-09-23,,
+1000064,2017-09-23,Gloria,L,Amarillo,"P-2 Ampayon","Butuan City",,1951-03-24,F,MARRIED,9456008775,"Senior Citizen",8600-10967,2012-02-13,,,,1900-01-01,0,,,3,,200,2017-09-23,200,2018-05-16
+1000065,2017-09-23,"Rex sr.",T,Atienza,"P-3 Kamunggay Maon","San Vicente","Butuan City",1952-08-10,M,,9464410742,,,,,,,1900-01-01,0,,,3,,200,2017-09-23,,
+1000066,2017-09-23,Esmeraldo,S,Balansag,"P-2 Mahogany","Butuan City",,1952-03-16,M,MARRIED,9389952997,SSS,08-0499491-4,,Balansag,Josefina,G,1966-04-08,0,,,3,,200,2017-09-23,300,2020-07-29
+1000067,2017-09-23,Rinaliza,A,Bequibel,"P-2A Bonbon","Butuan City",,1955-02-28,F,WIDOWED,09101745714/09480162218,,,,Bequibel,,,1900-01-01,0,,,3,,200,2017-09-23,300,2019-05-24
+1000068,2017-09-23,Felix,A,Bolonias,"P-3 Ampayon","Butuan City",,1953-11-05,M,WIDOWED,9128000607,UMID,CRN-0111-2458841-0,,,,,1900-01-01,0,,,3,,200,2017-09-23,200,2018-04-04
+1000069,2017-09-23,"Segundino jr.",I,Bolotaolo,"237 Humabon R.Calo St","Butuan City",,1950-05-20,M,MARRIED,9192657855,"Senior Citizen",8600-10782,,Bolotaolo,Gena,Y,1900-01-01,0,,,3,,200,2017-09-23,200,2018-05-17
+1000070,2017-09-23,Virginia,C,Bravo,"P-1 Holy Redeemer","Butuan City",,1954-07-23,F,,,,,,,,,1900-01-01,0,,,3,,200,2017-09-23,,
+1000071,2017-09-23,Edilberta,A,Buscano,"B.14L.1 Princess HomesIV","San Vicente","Butuan City",1953-04-21,F,WIDOWED,09489660156/09103890725,,,,Buscano,,,1900-01-01,0,,,3,,200,2017-09-23,200,2018-06-18
+1000072,2017-09-23,"Estella maris",A,Bariasion,"P-4 Artadi Magsaysay","Misamis Oriental",,1989-06-15,F,,,,,,Bariasion,Jonathan,A,1900-01-01,0,,,3,,220,2017-09-23,901,2017-09-26
+1000073,2017-09-23,Divina,B,Cabajes,"P-1 Artadi, Magsaysay","Misamis Oriental",,1955-08-16,F,,,,,,Cabajes,Jose,M,1900-01-01,0,,,3,,220,2017-09-23,,
+1000074,2017-09-23,Rebecca,C,Canales,"B19 L5 Emenville Subd./P-","1 Ampayon","Butuan City",1949-12-28,F,SINGLE,09217122002/09611094664,,,,Canales,Jose,G,1900-01-01,0,,,3,,200,2017-09-23,112,2021-11-17
+1000075,2017-09-23,Charanie,D,Bariacion,"P-1 Artadi, MAgsaysay","Misamis Oriental",,1978-12-24,F,,0997-381-0427,,,,Bariacion,Raquel,G,1900-01-01,0,,,3,,220,2017-09-23,,
+1000076,2017-09-23,Marlon,G,Dayadaya,"P-1 Artadi, Magsaysay","Misamis Oriental",,1974-03-04,F,,0926-973-9687,,,,Bariacion,Charanie,D,1900-01-01,0,,,3,,220,2017-09-23,,
+1000077,2017-09-23,Merly,L,Capitle,"P-21 B5 L31 Ira Baan Km3","Butuan City",,1946-12-08,F,,9206260469,817-18-67,,,Capitle,,,1900-01-01,0,,,3,,200,2017-09-23,220,2018-08-28
+1000078,2017-09-23,Erlinda,D,Dayadaya,"P-1 Artadi MAgsaysay","Misamis Oriental",,1967-08-10,F,MARRIED,0908-940-9344,,,,Dayadaya,Joveniel,G,1900-01-01,0,,,3,,220,2017-09-23,200,2019-04-11
+1000079,2017-09-23,Susan,E,Chua,"P-1 Brgy27 Doongan Road","Bayanihan Pob","Butuan City",1965-01-21,F,,9105717519,,,,,,,1900-01-01,0,,,3,,200,2017-09-23,,
+1000080,2017-09-23,"Rubie mae",S,Anacaya,"P-3 Kandiis, Magsaysay","Misamis Oriental",,1990-10-07,F,SINGLE,0906-105-4128,TIN,454-801-299-000,,Anacaya,Ellougelin,A,1900-01-01,0,,,3,,220,2017-09-23,220,2018-06-11
+1000081,2017-09-23,Geralin,A,Yurpo,"P-3 Artadi, Magsaysay","Misamis Oriental",,1974-06-04,F,,0935-681-7386,,,,Yurpo,Allain,P,1900-01-01,0,"Pigeon Center",,3,,220,2017-09-23,,
+1000082,2017-09-23,Alejandro,M,Espina,"P-8 Tungao","Butuan City",,1952-09-21,M,,9294297117,,,,,,,1900-01-01,0,,,3,,200,2017-09-23,,
+1000083,2017-09-23,Rosanna,B,Aumento,"P-4 Artadi, MAgsaysay","Misamis Oriental",,1966-11-06,F,MARRIED,0935-964-7847,,,,Aumento,Nestor,A,1900-01-01,0,,,3,,220,2017-09-23,200,2019-08-16
+1000084,2017-09-23,Felicitas,S,Jamolin,"P-1 Artadi, Magsaysay","Misamis Oriental",,1968-09-04,F,,0906-695-1394,,,,Jamolin,Edison,G,1900-01-01,0,,,3,,220,2017-09-23,,
+1000085,2017-09-23,"Amador sr.",D,Gelladuga,"Km6 P-7 Libertad","Butuan City",,1955-09-23,M,MARRIED,9058266125,,,,Gelladuga,Lydia,V,1900-01-01,0,,,3,,200,2017-09-23,300,2020-07-28
+1000086,2017-09-23,Raquel,G,Jamolin,"P-1 Artadi, MAgsaysay","Misamis Oriental",,1975-08-16,F,,0935-947-6981,,,,Dayadaya,MArlon,G,1900-01-01,0,,,3,,220,2017-09-23,,
+1000087,2017-09-23,Hedeliso,L,Gonzales,"P-7 Amparo","Butuan City",,1944-12-22,M,,9122794371,,,,,,,1900-01-01,0,,,3,,200,2017-09-23,,
+1000088,2017-09-23,Dahlia,E,Nada,"P-1 Artadi, Magsaysay","Misamis Oriental",,1977-08-20,F,,0906-301-0220,,,,Nada,Nonie,G,1900-01-01,0,,,3,,220,2017-09-23,,
+1000089,2017-09-23,Lorna,P,Guelos,"P-1 Cabcabon","Butuan City",,1948-06-28,F,,9205240350,,,,Guelos,Vicente,J,1900-01-01,0,,,3,,200,2017-09-23,,
+1000090,2017-09-23,Vicente,J,Guelos,"P-1 Cabcabon","Butuan City",,1946-04-05,M,MARRIED,"0950 763 1704",,,,Guelos,Lorna,P,1900-01-01,0,,,3,,200,2017-09-23,220,2019-05-09
+1000091,2017-09-23,Virginita,P,Guillena,"P-3 Ong Yiu","Butuan City",,1961-03-24,F,WIDOWED,9207438227,"Voter's ID",0202-0067A-C2460VPG200017,,Guillena,,,1900-01-01,0,,,3,,200,2017-09-23,200,2018-11-09
+1000092,2017-09-23,Vilma,B,Aban,"P-1 Kandiis, Magsaysay","Misamis Oriental",,1970-08-08,F,MARRIED,"0905 770 0507",,,,Aban,Nilo,V,1900-01-01,0,,,3,,220,2017-09-23,220,2018-04-18
+1000093,2017-09-23,Josefina,D,Gulde,"P-7 Brgy.17 Fort Poyohon","Butuan City",,1953-12-24,F,MARRIED,09093124265/09658353785,,,,Gulde,Quinciano,M,1900-01-01,0,,,3,,200,2017-09-23,630,2021-07-02
+1000094,2017-09-23,Florepiz,T,Dunan,"P-1 Kandiis, MAgsaysay","Misamis Oriental",,1968-11-30,F,,0935-187-4309,,,,Dunan,Ramon,N,1900-01-01,0,,,3,,220,2017-09-23,,
+1000095,2017-09-23,Edna,B,Alladkhani,"P-1 Artadi, Magsaysay","Misamis Oriental",,1970-05-17,F,,0926-507-2019,,,,Bariacion,Lizajean,R,1900-01-01,0,,,3,,220,2017-09-23,,
+1000096,2017-09-23,Emelyn,C,Dayadaya,"p-1 Kandiis Magsaysay","Misamis Oriental",,1993-11-09,F,,0926-453-2505,,,,Morales,Marlon,S,1900-01-01,0,,,3,,220,2017-09-23,,
+1000097,2017-09-23,Arlin,G,Fabe,"P-1 Artadi, Magsaysay","Misamis Oriental",,1973-12-19,F,,0997-350-4988,,,,Bariacion,Narcisa,D,1900-01-01,0,"Sparrow Center",,3,,220,2017-09-23,,
+1000098,2017-09-23,Shiela,T,Retoya,"P-1 Artadi, MAgsaysay","Misamisa Oriental",,1994-09-04,F,,0909-304-9949,,,,Gepayo,Jonaine,S,1900-01-01,0,,,3,,220,2017-09-23,,
+1000099,2017-09-23,Ruth,N,Jamer,"P-9 Upper Doongan","Butuan City",,1981-01-07,F,,9489804980,,,,,,,1900-01-01,0,,,3,,200,2017-09-23,,
+1000100,2017-09-23,Dianda,G,Paring,"P-1 Kandiis, Magsaysay","Misamis Oriental",,1976-11-29,F,SINGLE,0946-305-9988,"Voter's ID",4317-0031A-K2976DGP200015,,Barsobia,Jeffrey,M,1900-01-01,0,,,3,,220,2017-09-23,220,2018-03-21
+1000101,2017-09-23,Grace,P,Lato,"P-6 Taguibo","Butuan City",,1968-02-04,F,WIDOWED,9995510487,"Postal ID",5263652,,,,,1900-01-01,0,,,3,,200,2017-09-23,200,2018-10-04
+1000102,2017-09-23,"Alpher joy",G,Lacorda,"P-1 Kandiis Magsaysay","Misamis Oriental",,1995-12-17,F,,0906-625-3713,,,,Lacorda,Jeboy,S,1900-01-01,0,"Sparrow Center",,3,,220,2017-09-23,,
+1000103,2017-09-23,Fortunata,O,Lobedica,"P-2B Ampayon","Butuan City",,1943-02-28,F,,9294739800,,,,,,,1900-01-01,0,,,3,,200,2017-09-23,,
+1000104,2017-09-23,Eden,D,Sajulan,"P-2 Artadi, MAgsaysay","Misamis Oriental",,1960-04-01,F,,,,,,Sajulan,Romeo,C,1900-01-01,0,,,3,,220,2017-09-23,,
+1000105,2017-09-23,Lilia,L,Lolor,"P-2 Tiniwisan","Butuan City",,1951-08-27,F,WIDOWED,9097355518,"Senior Citizen",8600-13772,,,,,,0,,,3,,200,2017-09-23,230,2019-11-26
+1000106,2017-09-23,Melanie,M,Marimon,"P-2 Brgy.9","Cabadbaran City",,1975-11-24,F,WIDOWED,09069060978/09106417086,"AFP ID",B15-E-48379,,,,,1900-01-01,0,,,3,,200,2017-09-23,200,2018-07-27
+1000107,2017-09-23,Amaylen,I,"Dela pe?a","P-6 Kimaya Consuelo","MAgsasay Misamis Oriental",,1982-03-10,F,MARRIED,0905-165-9133,"Voter's ID",4317-0026B-H0580ATI200013,,"Dela pe?a",Nandy,P,1979-06-20,0,,,3,,220,2017-09-23,220,2018-10-25
+1000108,2017-09-23,Virgilio,Z,Montejo,"P-21 Km3 Baan B7 L44","Butuan City",,1943-07-21,M,,,,,,,,,1900-01-01,0,,,3,,200,2017-09-23,,
+1000109,2017-09-23,"Jean rhea",D,Albarote,"P-6 Kimaya Consuelo","MAgsaysay Misamis Orienta",,1995-09-28,F,,0935-564-1839,,,,Rodriguez,Analie,A,1900-01-01,0,,,3,,220,2017-09-23,,
+1000110,2017-09-23,Arlene,A,Aguilar,"P-1 Artadi, Magsaysay","Misamis Oriental",,1976-09-01,F,,0936-880-1285,,,,Aguilar,Agniel,A,1900-01-01,0,,,3,,220,2017-09-23,,
+1000111,2017-09-23,Dominador,D,Narrido,"P-Orchids Pagatpatan","Butuan City",,1947-01-01,M,,,,,,Narrido,Josephine,B,1900-01-01,0,,,3,,200,2017-09-23,200,2017-10-30
+1000112,2017-09-23,Teresita,B,Ballard,"P-3 Artadi, MAgsaysay","Misamis Oriental",,1974-05-03,F,MARRIED,"0906 747 4660",TIN,194-626-065-000,2016-05-13,Ballard,Delia,T,1900-01-01,0,,,3,,220,2017-09-23,220,2018-06-11
+1000113,2017-09-23,Leopoldo,A,Pantilgan,"P-3 Kamunggay Maon B.C/","San Isidro Talacogon",,1955-05-12,M,MARRIED,9461402525,SSS,08-0279169-8,,Pantilgan,Leticia,B,1900-01-01,0,,,3,,200,2017-09-23,200,2018-04-11
+1000114,2017-09-23,Armida,B,Salapang,"P-1 Artadi, Magsaysay","Misamis Oriental",,1978-08-11,F,,"0926 788 4261",,,,Salapang,Joseph,S,1900-01-01,0,,,3,,220,2017-09-23,220,2018-02-22
+1000115,2017-09-23,Edgardo,M,Paraiso,"P-1 Tabon2 Sibagat","ADS/P-1 Rizal Buenavista",ADN,1955-02-03,M,MARRIED,09657445232/09161600466,"Voter's ID",0314-0063A-B0355EMP10000,,Paraiso,Elma,A,1900-01-01,0,,,3,,200,2017-09-23,200,2018-08-25
+1000116,2017-09-23,Edralina,M,Balingit,"P-1 Consuelo Magsaysay","Misamis Oriental",,1972-04-04,F,,,,,,Balingit,Rene,G,1900-01-01,0,,,3,,220,2017-09-23,,
+1000117,2017-09-23,"Lovely joy",C,"Dela pe?a","P-1 A Consuelo Magsaysay","Misamis Oriental",,1996-11-14,F,,,,,,"Dela pe?a","Harold Jr.",A,1900-01-01,0,,,3,,220,2017-09-23,,
+1000118,2017-09-23,Solidad,C,Pe?aloga,"P-15 Pagatpatan","Butuan City",,1956-09-26,F,,9261520594,,,,Pe?aloga,,,1900-01-01,0,,,3,,200,2017-09-23,,
+1000119,2017-09-23,Jaime,G,Perater,"P-2 Lower Doongan","Butuan City",,1943-03-13,M,,9128357177,,,,,,,1900-01-01,0,,,3,,200,2017-09-23,,
+1000120,2017-09-23,Emma,A,Bariacion,"P-4Artadi Magsaysay","misamis Oriental",,1966-03-07,F,,0926-140-1237,,,,Bariacion,Romeo,T,1900-01-01,0,,,3,,220,2017-09-23,,
+1000121,2017-09-23,Teresita,O,Pesquerra,"P-1 Los angeles","Butuan City",,1947-07-26,F,,9204407358,,,,Pesquerra,,,1900-01-01,0,,,3,,200,2017-09-23,,
+1000122,2017-09-23,Lizajean,R,Bariacion,"P-1 Artadi, Magsaysay","Misamis Oriental",,1971-10-12,F,,0926-507-2019,,,,,,,1900-01-01,0,,,3,,220,2017-09-23,,
+1000123,2017-09-23,Georgina,C,Polistico,"Blk.5 Lt.7 Ira Baan","Butuan City",,1952-09-16,F,,9324808663,,,,,,,1900-01-01,0,,,3,,200,2017-09-23,200,2018-01-10
+1000124,2017-09-23,Marlyn,C,Porquillano,"P-6 Dumalagan","Butuan City",,1958-03-22,F,,,,,,Porquillano,,,1900-01-01,0,,,3,,200,2017-09-23,,
+1000125,2017-09-23,Efrelindo,A,Pulido,"P-2 upper Doongan","Butuan City",,1965-04-17,M,,9286583742,,,,Pulido,Carmelita,Q,1900-01-01,0,,,3,,200,2017-09-23,,
+1000126,2017-09-23,Justiniano,C,Salomon,"T. Calo St.",,,1942-09-15,M,,9482550055,,,,Salomon,,,1900-01-01,0,,,3,,200,2017-09-23,,
+1000127,2017-09-23,Wilma,G,Burias,"P-3 Artadi, Magsaysay","Misamis Oriental",,1968-01-30,F,,0926-354-8753,,,,,,,1900-01-01,0,,,3,,220,2017-09-23,,
+1000128,2017-09-23,Herculana,Z,Sonio,"P-5 Silad Mahogany","Butuan City",,1949-05-08,F,MARRIED,9487895506,,,,Sonio,Alonzo,A,1949-04-27,0,,,3,,200,2017-09-23,200,2018-07-11
+1000129,2017-09-23,Genalyn,G,Burias,"P-1 Artadi, Magsaysay","Misamis Oriental",,1989-05-14,F,,0926-3548-753,,,,,,,1900-01-01,0,,,3,,220,2017-09-23,,
+1000130,2017-09-23,Susana,B,Binalangbang,"P-7 Brgy.7 BTA A.D.N",,,1965-07-20,F,,,,,,Binalangbang,,,1900-01-01,0,,,3,,901,2017-09-23,310,2017-09-23
+1000131,2017-09-23,Erlinda,M,Cabiluna,"P-6 Consuelo, MAgsaysay","Misamis Oriental",,1974-03-19,F,,0997-703-2812,,,,,,,1900-01-01,0,,,3,,220,2017-09-23,,
+1000132,2017-09-23,Gloria,J,Melitares,"P-5 Kimaya Consuelo","Magsaysay Misamis Or.",,1957-07-05,F,,0905-606-8152,,,,,,,1900-01-01,0,,,3,,220,2017-09-23,,
+1000133,2017-09-23,Marife,B,Straatman,"B1 L140 Sta Barbara",Kauswagan,CDO,1980-03-08,F,,9161207179,,,,Straatman,"Adrianus Johannes",M,1900-01-01,0,,,3,,200,2017-09-23,,
+1000134,2017-09-23,Evangelina,A,Tabiola,"P-3 Brgy.16 Ong Yiu","Butuan City",,1948-04-16,F,WIDOWED,"0933 858 6832","Senior Citizen",20464,2014-07-30,,,,1900-01-01,0,,,3,,200,2017-09-23,220,2019-03-15
+1000135,2017-09-23,Marciana,G,Pajaron,"P-5 artadi, Magsaysay","Misamis Oriental",,1965-03-26,F,MARRIED,9262944288,VOTERS,4317-0009A-C2665MGP200014,,,,,1900-01-01,0,,,3,,220,2017-09-23,210,2019-08-26
+1000136,2017-09-23,Gilfred,S,Tabon,"P-4 Brgy.14 T. Calo Ext.","Butuan City",,1954-09-17,M,,9391893656,,,,Tabon,Edna,D,1900-01-01,0,,,3,,200,2017-09-23,,
+1000137,2017-09-23,Alma,T,Retuya,"P-1 Artadi, MAgsaysay","Misamis Oriental",,1972-12-21,F,,0936-117-2966,,,,,,,1900-01-01,0,,,3,,220,2017-09-23,,
+1000138,2017-09-23,Jophine,D,Cueme,"P-1 Kandiis MAgsaysay","Misamis Oriental",,1981-03-21,F,SINGLE,0906-897-9168,"Voter's Id",4317-0031B-C2181JDC200023,,Cueme,,,1900-01-01,0,,,3,,220,2017-09-23,220,2018-05-02
+1000139,2017-09-23,Gaspar,C,Timcang,"P-3 Kamunggay Maon","Butuan City",,1961-06-20,M,,9073733505,,,,Timcang,,,1900-01-01,0,,,3,,200,2017-09-23,,
+1000140,2017-09-23,Caridad,L,Vallar,"P-12 Emelda mar Mla de",Bugabos,"Butuan City",1958-06-02,F,WIDOWED,,,,,Vallar,,,1900-01-01,0,,,3,,200,2017-09-23,300,2020-07-28
+1000141,2017-09-23,Gemma,S,Tocalo,"B-4 buenavista A.D.N",,,1970-08-11,F,,"B-4 buenavista A.D.N",,,,Tocalo,,,1900-01-01,0,,,3,,210,2017-09-23,310,2017-09-23
+1000142,2017-09-23,Emmillie,V,Bacalso,"D-2 Culit, Nasipit A.D.N",,,1970-04-20,F,,,,,,Bacalso,,,1900-01-01,0,,,3,,210,2017-09-23,310,2017-09-23
+1000143,2017-09-23,"Ma. corazon",M,Acosta,"P-3 Ambangan Ambago","Butuan City",,1986-02-28,F,,9073310932,,,,,,,1900-01-01,0,,,3,,200,2017-09-23,,
+1000144,2017-09-23,Almabeth,M,Abacahin,"P-3 Brgy.8 Buenavista A.D",.N,,1964-12-19,F,MARRIED,9071861474,VOTERS,201-0034A-LI964AMA20000,,Abacahin,Noel,P,1965-12-28,0,,,3,,210,2017-09-23,300,2019-07-19
+1000145,2017-09-23,Corazon,P,Curtina,"P-2 Kandiis, Magsaysay","Misamis Oriental",,1959-12-30,F,,0926-441-0996,,,,,,,1900-01-01,0,"Sparrow Center",,3,,220,2017-09-23,,
+1000146,2017-09-23,Jinalyn,G,Tabamo,"P-3 Kandiis MAgsaysay","Misamis Oriental",,1984-10-28,F,,,,,,,,,1900-01-01,0,,,3,,220,2017-09-23,,
+1000147,2017-09-23,Marites,E,Gimena,"Poblacion,Carmen A.D.N",,,1968-01-09,F,,,,,,Gimena,,,1900-01-01,0,,,3,,210,2017-09-23,310,2017-09-23
+1000148,2017-09-23,Zorobabel,G,Agsoy,"T. calo Ext. Limaha","Butuan City",,1989-06-30,M,,9305318103,,,,,,,1900-01-01,0,,,3,,200,2017-09-23,,
+1000149,2017-09-23,Melanie,A,Galvez,"p-1 Consuelo, Magsaysay","Mis. or.",,1986-06-11,F,SINGLE,"0926 776 5358",cedula,34091690,,,,,1900-01-01,0,,,3,,220,2017-09-23,220,2018-08-17
+1000150,2017-09-23,"Merry grace",A,Sanchez,"P-2 Brgy.7 Lopez Jaena St","., BTA A.D.N",,1975-12-17,F,,,,,,Sanchez,,,1900-01-01,0,,,3,,210,2017-09-23,310,2017-09-23
+1000151,2017-09-23,Marites,D,Mayes,"P-1 candiis MAgsaysay","Mis. Or.",,1967-05-08,F,,0997-350-8782,,,,,,,1900-01-01,0,,,3,,220,2017-09-23,,
+1000152,2017-09-23,Aristedes,T,Amigable,"054 P-1 bading R. Calo st","Butuan city",,1976-06-20,M,SINGLE,9184845969,GSIS,2004285314,,,,,1900-01-01,0,,,3,,200,2017-09-23,200,2018-08-14
+1000153,2017-09-23,Jonalyn,T,Olmoguez,"D-2 Sacol Buenavista Agus","an del Norte",,1978-10-20,F,,,,,,Olmoguez,,,1900-01-01,0,,,3,,210,2017-09-23,310,2017-09-23
+1000154,2017-09-23,Marnie,S,Ylaran,"P-3 Kandiis MAgsaysay","Mis. Or.",,1989-12-10,F,,"0955 186 2781",,,,Ylaran,,,1900-01-01,0,,,3,,220,2017-09-23,220,2018-02-20
+1000155,2017-09-23,Isagani,V,Yonson,"D-7 Kinabjangan, Nasipit",,,1976-11-09,M,MARRIED,9207188278,voters,209-0021A-K0973IVY10000,,Raper,Celia,Q,1900-01-01,0,,,3,,210,2017-09-23,210,2018-11-14
+1000156,2017-09-23,William,A,Abadan,"P-7 CCF Rotary Doongan","Butuan City",,1960-08-01,M,MARRIED,9483158062,HDMF,1830-0028-6470,2008-10-18,Abadan,,,1900-01-01,0,,,3,,200,2017-09-23,200,2018-08-20
+1000157,2017-09-23,Jocelyn,L,Gesto,"P-1 Consuelo, Magsaysay","Mis. Or.",,1967-12-10,F,WIDOWED,0935-513-1866,"0935 513 1866",,,Gesto,Vanissa,E,1900-01-01,0,,,3,,220,2017-09-23,220,2018-03-13
+1000158,2017-09-23,Haidee,C,Uba,"P-2 Poblacion Magsaysay M","isamis Oriental",,1978-08-29,F,,,,,,Uba,,,1900-01-01,0,,,3,,210,2017-09-23,310,2017-09-23
+1000159,2017-09-23,Olivia,V,Aban,"P.1B.1 L23 Princess Homes","San Vicente","Butuan City",1975-02-21,F,MARRIED,09123504372/817-5499,"Postal ID",3540987,,Aban,Noel,S,1900-01-01,0,,,3,,200,2017-09-23,630,2021-10-05
+1000160,2017-09-23,Norma,R,Diamada,"P-7 Vinapor,Carmen,Agusan","Del Norte",,1973-06-12,F,,,,,,Diamada,,,1900-01-01,0,,,3,,210,2017-09-23,310,2017-09-23
+1000161,2017-09-23,Minda,P,Labita,"P-3 KAndiis Magsaysay","Mis. Or.",,1966-03-17,F,,0936-428-6478,,,,,,,1900-01-01,0,,,3,,220,2017-09-23,,
+1000162,2017-09-23,"Mary ann",A,A?asco,"B2 L6 Princess Homes Subd","Butuan City",,1971-11-21,F,,9278000926,,,,A?asco,Charlie,A,1900-01-01,0,,,3,,200,2017-09-23,,
+1000163,2017-09-23,Charlie,A,A?asco,"B2 L6 Princess Homes Subd","Butuan City",,1978-01-25,M,,9175986716,,,,A?asco,"Mary Ann",A,1900-01-01,0,,,3,,200,2017-09-23,,
+1000164,2017-09-23,Juvelyn,P,Labita,"P-3 Kandiis, Magsaysay","Misamis Oriental",,1988-10-04,F,SINGLE,0936-428-6478,"Voter's ID",4317-0034B-J0488JPL20000,,Pasayon,Marlyn,U,1900-01-01,0,,,3,,220,2017-09-23,220,2018-03-21
+1000165,2017-09-23,Edna,R,Diamada,"P-7 VINAPOR CARMEN","AGUSAN DEL NORTE",,1970-03-08,F,MARRIED,9505420483,"POSTAL ID",8314237,,Diamada,NERE,P,1900-01-01,0,,,3,,210,2017-09-23,210,2018-05-31
+1000166,2017-09-23,Irish,M,Anoya,"P-1 Bonbon","Butuan City",,1992-02-12,F,,9309952422,,,,,,,1900-01-01,0,,,3,,200,2017-09-23,,
+1000167,2017-09-23,Jessie,N,Aban,"P-1 Kandiis, Magsaysay","Misamis Oriental",,1968-12-28,F,WIDOWED,"0926 566 1394","4P's ID",104317007-1637-00011,,Aban,Celia,M,1900-01-01,0,,,3,,220,2017-09-23,220,2018-11-07
+1000168,2017-09-23,"Sheena marie",B,Cabajes,"P-1 KAndiis, MAgsaysay","Misamis oriental",,1985-11-05,F,SINGLE,0997-913-2910,"Voter's ID",4317-0011B-I0585SBC20000,,Cabajes,Juhhill,U,1900-01-01,0,,,3,,220,2017-09-23,220,2018-11-06
+1000169,2017-09-23,Judith,G,Planas,"D-5 Ata-atahon, Nasipit",,,1966-05-17,F,MARRIED,9306110875,VOTERS,209-0022A-E1766JGP20000,,Planas,Silvestre,E,1962-12-31,0,"Rose Peligoson Cntr",,3,,210,2017-09-23,210,2018-09-04
+1000170,2017-09-23,"June ray",E,Arat,"P-6B bliss Libertad","Butuan City",,1991-06-16,M,,9073308325,,,,,,,1900-01-01,0,,,3,,200,2017-09-23,,
+1000171,2017-09-23,Alma,R,Taglucop,"P-7 Vinapor, Carmen A.D.N",,,1977-03-09,F,MARRIED,9093772873,VOTERS,204-0025A-C0977ART2000,,Taglucop,Edwin,M,1968-02-10,0,,,3,,210,2017-09-23,210,2018-07-10
+1000172,2017-09-23,Lourdes,D,Duat,"P-1 Kandiis, Magsaysay","Misamis Oriental",,1965-02-14,F,,0955-566-3797,,,,,,,1900-01-01,0,,,3,,220,2017-09-23,,
+1000173,2017-09-23,"Paul jikko",I,Arbis,"Ube Maon","Butuan City",,1992-03-01,M,,9193702733,,,,,,,1900-01-01,0,,,3,,200,2017-09-23,,
+1000174,2017-09-23,Rose,R,Villareal,"P-3 Sacol BTA A.D.N",,,1988-01-20,F,,,,,,Villareal,,,1900-01-01,0,,,3,,210,2017-09-23,310,2017-09-23
+1000175,2017-09-23,Jaz,F,Hilamon,"P-2 Kandiis Magsaysay","Misamis Oriental",,1973-12-11,F,MARRIED,"0997 381 9095","4P's ID",104317007-1595-00020,,Hilamon,Ranulfo,B,1900-01-01,0,,,3,,220,2017-09-23,220,2018-03-21
+1000176,2017-09-23,"Rhenz rheann",E,Auza,"P-3 kamunggay Maon","/Estipona Vill.","Butuan City",1998-02-28,M,SINGLE,9498225534,"Employee's ID",304028,,Auza,,,1900-01-01,0,,,3,,200,2017-09-23,200,2018-08-16
+1000177,2017-09-23,Liobern,N,Qui?o,"P-5 Vinapor Carmen A.D.N",,,1991-08-17,F,,,,,,Qui?o,,,1900-01-01,0,,,3,,210,2017-09-23,310,2017-09-23
+1000178,2017-09-23,Emily,U,Monin,"P-5 Kandiis, Magsaysay","Misamis Oriental",,1974-09-18,F,,0926-256-0823,,,,,,,1900-01-01,0,,,3,,220,2017-09-23,,
+1000179,2017-09-23,Jerosalen,D,Abao,"D-7 Ugdoucan, Camagong, N",asipit,,1987-04-13,F,MARRIED,9168992462,HILHEALTH,"18-200835511 9",,Abao,Mario,M,1975-10-24,0,"Santan Center",,3,,210,2017-09-23,210,2018-10-11
+1000180,2017-09-23,Nobie,A,Pilapil,"P-1 Kandiid, Magsaysay","Misamis Oriental",,1984-11-14,F,MARRIED,"0967 688 5475","4P's ID",104317019-1106-00008,,Pilapil,Florina,L,1900-01-01,0,,,3,,220,2017-09-23,220,2018-10-25
+1000181,2017-09-23,Alexies,P,Ayala,"P-1 Brgy.14 Limaha T.Calo","Butuan City",,1985-06-28,M,,9298003642,,,,,,,1900-01-01,0,,,3,,200,2017-09-23,,
+1000182,2017-09-23,Carmen,A,Bitco,"D-1 Igpalas, Culit A.D.N",,,1981-02-08,F,,,,,,Bitco,,,1900-01-01,0,"Banda Center",,3,,210,2017-09-23,310,2017-09-23
+1000183,2017-09-23,Lorna,L,Gonzales,"D-5 Ipil-Ipil talisay,Nas","ipit A.D.N",,1954-10-22,F,,,,,,Gonzales,,,1900-01-01,0,,,3,,210,2017-09-23,310,2017-09-23
+1000184,2017-09-23,Erlyn,B,Cabaltera,"D-5 cabulacan, Sacol A.D.",N,,1984-02-26,F,,,,,,Cabaltera,,,1900-01-01,0,,,3,,210,2017-09-23,310,2017-09-23
+1000185,2017-09-23,Jeorlinda,A,Acorda,"P-8 Talisay,","Misamis Oriental",,1980-07-24,F,MARRIED,0935-051-5340,,,,Acorda,Henry,S,1900-01-01,0,,,3,,220,2017-09-23,220,2018-09-10
+1000186,2017-09-23,Josefina,D,Soroysoroy,"P-6 Peligoson, Magsaysay,",,,1958-12-16,F,MARRIED,9481274322,VOTERS,4317-0050B-L1658JDS200012,,Soroysoroy,Matias,S,1955-06-01,0,,,3,,210,2017-09-23,210,2018-04-17
+1000187,2017-09-23,Marjorie,F,Balinton,"P-3 Bashai baan","Butuan City",,1987-06-12,F,,9063761175,,,,Balinton,"Michael Ronar",G,1900-01-01,0,,,3,,200,2017-09-23,,
+1000188,2017-09-23,Jean,V,Alegarbes,"P-1 Gosoon Carmen Agusan","del Norte",,1994-04-15,F,,,,,,Alegarbes,,,1900-01-01,0,,,3,,210,2017-09-23,310,2017-09-23
+1000189,2017-09-23,Menelaus,L,Banias,"Rosewood Plains Subd.","Villa kananga Butuan City",,1980-01-12,M,,9391502484,,,,,,,1900-01-01,0,,,3,,200,2017-09-23,,
+1000190,2017-09-23,Blanca,T,Acusar,"P-7 Brgy. Talisay","Misamis Oriental",,1955-01-22,F,MARRIED,"0926 969 5168","0975 267 1757",,,Acusar,Aster,B,1900-01-01,0,,,3,,220,2017-09-23,220,2018-03-13
+1000191,2017-09-23,Bernadith,C,Baja,"D-1 SACOL BUENAVISTA","AGUSAN DEL NORTE",,1984-10-29,F,MARRIED,9094763260,CTC,8363430,,Baja,Mervin,B,1989-08-20,0,,,3,,210,2017-09-23,210,2018-07-25
+1000192,2017-09-23,Evita,G,Buquis,"Buenavista, Agusan Del No",rte,,1960-08-12,F,,,,,,Buquis,,,1900-01-01,0,,,3,,210,2017-09-23,310,2017-09-23
+1000193,2017-09-23,"Hamilcar jr.",J,Banias,"P-8 Sta Lucia mahogany","Butuan City",,1987-03-20,M,,,,,,,,,1900-01-01,0,,,3,,200,2017-09-23,,
+1000194,2017-09-23,Elisa,D,Aranaido,"P-2 Talisay Gingoog City",,,1962-01-02,F,MARRIED,"0906 529 1542","4P's ID",104308069-1106-00007,,Aranaido,Concordio,,1900-01-01,0,,,3,,220,2017-09-23,210,2020-11-26
+1000195,2017-09-23,Jessie,R,Baria,"P-2 Brgy. 8 lapu-lapu","Butuan City",,1978-02-27,F,,,,,,,,,1900-01-01,0,,,3,,200,2017-09-23,,
+1000196,2017-09-23,Rosita,C,Bacan,"P-7 Talisay, Misamis",Oriental,,1956-07-25,F,MARRIED,0935-563-8503,"Voter's ID",4308-0362A-G2556RCB200003,,Bacan,Pedro,D,1900-01-01,0,,,3,,220,2017-09-23,220,2018-06-11
+1000197,2017-09-23,Albert,M,Baylosis,"Las casas Elena baan","Butuan City",,1984-11-18,M,SINGLE,,9157991564,,,Baylosis,,,1900-01-01,0,,,3,,200,2017-09-23,300,2018-12-27
+1000198,2017-09-23,Marieta,E,Borbon,"P-8 Talisay, Misamis",Oriental,,1962-09-06,F,WIDOWED,"0935 417 4886",,,,Borbon,Joelmar,E,1900-01-01,0,,,3,,220,2017-09-23,220,2018-03-13
+1000199,2017-09-23,Arlen,D,Garcia,"P2. Brgy.3 Buenavista, Ag","usan del Norte",,1972-01-21,F,,,,,,Garcia,,,1900-01-01,0,"ROSE 1 Center",,3,,210,2017-09-23,310,2017-09-23
+1000200,2017-09-23,Aldrin,G,Bequilla,"P-8 san Juan Abilan","BTA ADN",,1991-03-11,M,,9068556931,,,,,,,1900-01-01,0,,,3,,200,2017-09-23,200,2018-03-07
+1000201,2017-09-23,Elen,S,Janea,"D-7 Camagong, Nasipit","Agusan del Norte",,1985-10-17,F,SINGLE,9085648230,"Voters Cert",209-0025A-J1785ESJ200006,,Quiban,Augie,S,1982-11-29,0,,,3,,210,2017-09-23,210,2018-08-09
+1000202,2017-09-23,Teresita,C,Cabeltis,"Purok -3 San Agustin, Car",men,,1963-05-26,F,MARRIED,9383758703,VOTERS,204-0037A-E2663TCC20000,,Cabeltis,Eduardo,O,1900-01-01,0,,,3,,210,2017-09-23,210,2019-06-11
+1000203,2017-09-23,Corazon,F,Cabaong,"P-8 Talisay, Misamis",Oriental,,1961-07-01,F,MARRIED,0998-330-8962,,,,Cabaong,,,1900-01-01,0,,,3,,220,2017-09-23,200,2019-04-11
+1000204,2017-09-23,Luz,T,Besa,"142 Quesaba st. Poblacion","Carmen ADN",,1956-07-31,F,,,,,,,,,1900-01-01,0,,,3,,200,2017-09-23,,
+1000205,2017-09-23,Sherlita,R,Goma,"D-4 Ata-Atahon Nasipit A.",D.N,,1971-05-11,F,,,,,,Goma,,,1900-01-01,0,,,3,,210,2017-09-23,310,2017-09-23
+1000206,2017-09-23,Michell,P,Binarao,"P-7 Brgy. 14 Limaha","Butuan City",,1974-02-06,M,,,,,,,,,1900-01-01,0,,,3,,200,2017-09-23,,
+1000207,2017-09-23,Jorgina,T,Lauro,"P-5 Taao Rojales, A.D.N",,,1991-05-11,F,,,,,,Lauro,,,1900-01-01,0,,,3,,210,2017-09-23,310,2017-09-23
+1000208,2017-09-23,Jessica,T,Cabuntucan,"P-8 Talisay Misamis",Oriental,,1976-11-17,F,MARRIED,"0906 722 9194",,,,Cabuntucan,Christopher,B,1900-01-01,0,"Falcon 2 Center",,3,,220,2017-09-23,220,2018-03-13
+1000209,2017-09-23,Bonifacio,O,Bodbod,"P-1 Tabon2 Sibagat",ADS,,1970-08-17,M,MARRIED,9484171393,"Drivers License",K01-93-027562,,Bodbod,Marites,M,1900-01-01,0,,,3,,200,2017-09-23,200,2018-08-10
+1000210,2017-09-23,Marisa,L,Lopez,"Macopa D-11 Carmen A.D.N",,,1976-10-01,F,,,,,,Lopez,,,1900-01-01,0,"Rosal Center",,3,,210,2017-09-23,310,2017-09-23
+1000211,2017-09-23,Aurelia,O,Cias,"P-6 Talisay, Misamis",Oriental,,1966-02-09,F,WIDOWED,"0906 721 9378","0936 840 1973",,,Cias,Petronila,B,1900-01-01,0,,,3,,220,2017-09-23,220,2018-03-13
+1000212,2017-09-23,Socrates,L,Makiling,"D-6 Tabigue Sacol","Buenavista Agusan del",Norte,1963-04-19,F,MARRIED,9304506205,VOTERS,201-0113A-I1187SCM10000,,Makiling,Elvie,C,1900-01-01,0,,,3,,210,2017-09-23,210,2018-07-20
+1000213,2017-09-23,Elizabeth,A,Cias,"P-6 Talisay, Misamis",Oriental,,1994-07-04,F,,0997-778-3291,,,,,,,1900-01-01,0,,,3,,220,2017-09-23,,
+1000214,2017-09-23,Rosemarie,S,Buyante,"P-2 Agong-ong Buenavista","Agusan del Norte",,1982-06-10,F,,9488971113,,,,,,,1900-01-01,0,,,3,,200,2017-09-23,200,2018-01-17
+1000215,2017-09-23,Hipziba,A,Rotante,"D-2 Ata-atahon, Nasipit","Agusan del Norte",,1976-05-25,F,MARRIED,9071341729,4PS,160209004-0127-00007,,Rotante,Diomedis,A,1970-11-20,0,,,3,,210,2017-09-23,210,2018-08-15
+1000216,2017-09-23,Elvira,L,Escol,"P-2 Brgy. Talisay","Misamis Oriental",,1961-01-25,F,WIDOWED,0975-947-4085,,,,Escol,Shirley,E,1900-01-01,0,,,3,,220,2017-09-23,220,2018-03-13
+1000217,2017-09-23,Catalina,E,Cabreza,"P-8 Upper doongan","Butuan City",,1976-02-17,F,,,,,,Cabreza,,,1900-01-01,0,,,3,,200,2017-09-23,,
+1000218,2017-09-23,Ma.lucila,Q,Algonas,"D-7 Camagong, Nasipit A.D",.N,,1984-04-25,F,MARRIED,,,,,Algonas,Renato,A,1900-01-01,0,,,3,,210,2017-09-23,210,2021-05-10
+1000219,2017-09-23,Irish,C,Yonson,"D-7 Camagong, Nasipit",,,1984-01-23,F,MARRIED,"0948 408 0261",Cedula,5163036,,Yonson,Neil,V,1900-01-01,0,,,3,,210,2017-09-23,220,2018-06-25
+1000220,2017-09-23,Rosalinda,T,Melitares,"P-2 Talisay, Misamis",Oriental,,1958-04-11,F,MARRIED,"0955 334 0637",,,,Melitares,Eduardo,C,1900-01-01,0,,,3,,220,2017-09-23,220,2018-03-13
+1000221,2017-09-23,Rodrigo,V,Canton,"Ochoa Ext.","Butuan City",,1964-05-01,M,,,,,,Canton,Demetria,P,1900-01-01,0,,,3,,200,2017-09-23,,
+1000222,2017-09-23,Zelita,S,Virtudazo,"Brgy. Talisay, Nasipit A","gusan del Norte",,1955-08-15,F,MARRIED,9301728125,"sENIOR cITIZEN",5263,,Virtudazo,Jaime,A,1952-09-26,0,,,3,,210,2017-09-23,210,2018-09-28
+1000223,2017-09-23,Archemedes,B,Castillo,"P-2 Bancasi","Butuan City",,1979-09-17,F,,,,,,Castillo,,,1900-01-01,0,,,3,,200,2017-09-23,,
+1000224,2017-09-23,"Ma. leilani",L,Hermosada,"P-2 Gosoon, Carmen A.D.N",,,1970-08-16,F,MARRIED,9505165241,PHILHEALTH,1.82E+11,,Hermosada,"Noel T.",,1900-01-01,0,,,3,,210,2017-09-23,210,2018-08-29
+1000225,2017-09-23,Rosenda,G,Pasaylo,"P2 GOSOON CARMEN","AGUSAN DEL NORTE",,1952-09-29,F,MARRIED,,VOTERS,204-0023A-I2952RGP200000,,Pasaylo,Wilfredo,M,1946-12-05,0,,,3,,210,2017-09-23,210,2018-08-07
+1000226,2017-09-23,Melchor,S,Cavan,"P-3 Limaha ochoa","Butuan City",,1964-01-06,M,,,,,,Cavan,Joy,R,1900-01-01,0,,,3,,200,2017-09-23,,
+1000227,2017-09-23,Girlie,R,Monsanto,"D-3 BLISS SACOL","BUENAVISTA AGSUAN DEL",NORTE,1979-08-09,F,MARRIED,9101151551,VOTERS,209-0002A-H0979GRM20000,,Monsanto,Joel,J,1900-01-01,0,,,3,,210,2017-09-23,210,2018-11-14
+1000228,2017-09-23,Eman,D,Cawasan,"New Asia R. calo St. P-A","Brgy.17 Port Poyohon","Butuan city",1977-05-19,M,SINGLE,9178244243,,,,Cawasan,,,1900-01-01,0,,,3,,200,2017-09-23,200,2019-07-22
+1000229,2017-09-23,Rhodelia,R,Cifra,"456 mangonville","Villa Kananga","BUtuan City",1966-02-08,F,,,,,,Cifra,,,1900-01-01,0,,,3,,200,2017-09-23,,
+1000230,2017-09-23,Vivian,U,Comendador,"B13 L1 Montevista Villa","Kananga Butuan City",,1970-06-02,F,MARRIED,9462482248,,,,Comendador,,,1900-01-01,0,,,3,,200,2017-09-23,630,2021-09-23
+1000231,2017-09-23,Soledad,L,Rapog,"P-7 Talisay Misamis",Oriental,,1956-03-03,F,WIDOWED,0997-165-1753,,,,Rapog,"Mark Anthony",L,1900-01-01,0,,,3,,220,2017-09-23,220,2018-03-13
+1000232,2017-09-23,Marcelina,C,Babano,"P-1 POB MAGSAYSAY","MISAMIS ORIENTAL",,1953-04-06,F,MARRIED,9978747167,VOTERS,4317-0004A-D1053MCB200018,,Babano,Diosdado,E,1943-06-23,0,,,3,,210,2017-09-23,210,2019-02-21
+1000233,2017-09-23,Adriana,S,Caseres,"P-3 Pob. Magsaysay Misami","s Oriental",,1950-03-04,F,MARRIED,9265783450,VOTERS,4317-0004B-C0450ASC200015,,Caseres,Antonio,V,1949-12-13,0,,,3,,210,2017-09-23,210,2018-05-10
+1000234,2017-09-23,Mercedita,A,Sarmiento,"P-2 Talisay Misamis",Oriental,,1967-10-12,F,MARRIED,0935-947-8183,,,,Sarmiento,Kevin,A,1900-01-01,0,,,3,,220,2017-09-23,220,2018-03-13
+1000235,2017-09-23,Nancy,G,Cultura,"P-1 Poblacion Magsaysay","Misamis Oriental",,1970-12-25,F,MARRIED,9121562786,voters,4317-0003A-L2470NGC200020,,Cultura,Francisco,E,1969-10-04,0,,,3,,210,2017-09-23,210,2018-08-09
+1000236,2017-09-23,Cecilia,E,Timbalaco,"p-2 Brgy. Talisay","Misamis Oriental",,1959-02-10,F,MARRIED,"0926 282 9419","0905 629 9117",,,Timbalaco,Ricardo,B,1900-01-01,0,,,3,,220,2017-09-23,220,2018-03-13
+1000237,2017-09-23,Noviejane,F,Abadejos,"Agong-ong BTA A.D.N",,,1991-11-26,F,,,,,,Abadejos,,,1900-01-01,0,,,3,,210,2017-09-23,310,2017-09-27
+1000238,2017-09-23,Adeline,A,Constante,"B8 L24 Princess Homes IV","San Vicente","Butuan City",1978-03-19,F,,,,,,Constante,Inocencio,M,1900-01-01,0,,,3,,200,2017-09-23,,
+1000239,2017-09-23,Melvin,C,Gavero,"D-6 TABIGUE SACOL","BUENAVISTA A.D.N",,1966-03-14,M,MARRIED,9091050262,VOTERS,201-0109A-C1467MCG10000,,Gavero,Armelyn,A,1965-01-19,0,,,3,,210,2017-09-23,210,2018-05-29
+1000240,2017-09-23,Aurora,T,Yamit,"P-7 Talisay, Misamis",Oriental,,1955-01-22,F,WIDOWED,0997-165-1753,,,,Yamit,Blanca,T,1900-01-01,0,,,3,,220,2017-09-23,220,2018-03-13
+1000241,2017-09-23,Marlou,G,Cordial,"P-A Bancasi","Butuan City",,1988-08-29,M,,,,,,,,,1900-01-01,0,,,3,,200,2017-09-23,,
+1000242,2017-09-23,Arlene,P,Yamit,"P-7 Brgy. Talisay","Gingoog City",,1967-05-16,F,MARRIED,"0906 574 2057","4P's ID",104308069-1760-00002,,Yamit,Apolinario,A,1900-01-01,0,,,3,,220,2017-09-23,210,2021-04-27
+1000243,2017-09-23,"Ma. lila",T,Gerarcas,"P-6 TA-AO ROJALES CARMEN","AGUSAN DEL NORTE",,1981-11-15,F,MARRIED,09384103401/09100498408,VOTERS,204-0030A-K1581MTG20000,,Gerarcas,Rodillo,M,1980-04-11,0,,,3,,210,2017-09-23,210,2018-12-31
+1000244,2017-09-23,"Ann jeanette",O,Pilapil,"D-6 Kinabjangan, Nasipit",A.D.N,,1979-01-29,F,,,,,,Pilapil,,,1900-01-01,0,,,3,,210,2017-09-23,310,2017-09-27
+1000245,2017-09-23,Regine,M,Corpuz,"P-3 Brgy. 3 Cabiltes St.","Cabadbaran City",,1996-06-29,F,,,,,,Corpuz,,,1900-01-01,0,,,3,,200,2017-09-23,,
+1000246,2017-09-23,Minda,T,Plaza,"P-3 Kandiis, MAgsaysay","Misamis Oriental",,1963-07-08,F,,,,,,,,,1900-01-01,0,,,3,,220,2017-09-23,,
+1000247,2017-09-23,Editha,V,Susi,"Vargas St. Poblacion, Car","men A.D.N",,1966-06-06,F,MARRIED,9096496349,TIN,"433 835 971 000",2013-03-19,Susi,"Antero Jr",J,1989-04-30,0,,,3,,210,2017-09-23,210,2018-10-31
+1000248,2017-09-23,Romel,L,Cosmo,"P-1A Holy redeemer","Butuan City",,1985-06-21,M,,9303067115,,,,Cosmo,,,1900-01-01,0,,,3,,200,2017-09-23,200,2017-12-12
+1000249,2017-09-23,Nelson,C,Galinato,"D-5 Cabulacan, Sacol BTA",A.D.N,,1969-06-07,M,SINGLE,9126839533,BIR,"444 674 449 000",2013-12-06,,,,1900-01-01,0,,,3,,210,2017-09-23,210,2018-08-28
+1000250,2017-09-23,Marjene,A,Samarca,"P-1 Artadi, Magsaysay","Misamis oriental",,1997-09-14,F,SINGLE,0912-243-9606,"Unity Movement","04317 082970141116234218",,,,,1900-01-01,0,,,3,,220,2017-09-23,220,2019-01-03

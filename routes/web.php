@@ -30,6 +30,7 @@ Route::get('/', function () {
 Route::get('/branch', function(){
 	return \App\Models\Branch::all();
 });
+Route::get('loadDB', [LoginController::class, 'loadDB']);
 Route::group(['middleware' => 'auth'], function (){
 	Route::get('logout', [LoginController::class, 'logout']);
 	Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
