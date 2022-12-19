@@ -157,42 +157,42 @@
 										<span class="flex-1 pl-24">DED BALANCE</span>
 										<span>:</span>
 									</div>
-									<span class="flex-1">0.00</span>
+									<span class="flex-1">{{formatToCurrency(paymentSummaryTotal.dedbal)}}</span>
 								</div>
 								<div class="d-flex flex-row flex-1">
 									<div class="d-flex flex-row justify-content-between flex-2 mr-24">
 										<span class="flex-1 pl-24">OFFSET PF</span>
 										<span>:</span>
 									</div>
-									<span class="flex-1">0.00</span>
+									<span class="flex-1">{{formatToCurrency(paymentSummaryTotal.offsetPf)}}</span>
 								</div>
 								<div class="d-flex flex-row flex-1">
 									<div class="d-flex flex-row justify-content-between flex-2 mr-24">
 										<span class="flex-1 pl-24">OVER PAYMENT</span>
 										<span>:</span>
 									</div>
-									<span class="flex-1">0.00</span>
+									<span class="flex-1">{{formatToCurrency(paymentSummaryTotal.overpayment)}}</span>
 								</div>
 								<div class="d-flex flex-row flex-1">
 									<div class="d-flex flex-row justify-content-between flex-2 mr-24">
 										<span class="flex-1 pl-24">DISCOUNT</span>
 										<span>:</span>
 									</div>
-									<span class="flex-1">0.00</span>
+									<span class="flex-1">{{formatToCurrency(paymentSummaryTotal.discount)}}</span>
 								</div>
 								<div class="d-flex flex-row flex-1">
 									<div class="d-flex flex-row justify-content-between flex-2 mr-24">
 										<span class="flex-1 pl-24">CANCELLED</span>
 										<span>:</span>
 									</div>
-									<span class="flex-1">0.00</span>
+									<span class="flex-1">{{formatToCurrency(paymentSummaryTotal.cancelled)}}</span>
 								</div>
 								<div class="d-flex flex-row flex-1">
 									<div class="d-flex flex-row justify-content-between flex-2 mr-24">
 										<span class="flex-1 pl-24">BRANCH</span>
 										<span>:</span>
 									</div>
-									<span class="flex-1">0.00</span>
+									<span class="flex-1">{{formatToCurrency(paymentSummaryTotal.branch)}}</span>
 								</div>
 							</div>
 							<div class="d-flex flex-column flex-1">
@@ -468,7 +468,14 @@ export default {
 			paymentSummaryTotal:{
 				cash:0,
 				check:0,
-				memo:0
+				memo:0,
+				dedbal:0,
+				offsetPf:0,
+				overpayment:0,
+				discount:0,
+				cancelled:0,
+				branch:0,
+				
 			}
 		}
 	},
@@ -681,6 +688,10 @@ export default {
 					i=='Cash Payment'? this.paymentSummaryTotal.cash += t.payment[i].total_payment:false;
 					i=='Check Payment'? this.paymentSummaryTotal.check += t.payment[i].total_payment:false;
 					i=='Memo'? this.paymentSummaryTotal.memo += t.payment[i].total_payment:false;
+					if(i == 'Memo'){
+						this.paymentSummaryTotal.overpayment = t.payment[i].over;
+						this.paymentSummaryTotal.discount = t.payment[i].discount;
+					}
 					var row = [];
 					row.push(!index==2?'':t.reference);
 					row.push(i.toUpperCase());
