@@ -26,7 +26,7 @@
 				</select>
 			</div>
 			<!-- <div class="d-flex flex-row align-items-center" style="flex:3">
-				<span class="mr-10">Center: </span>
+				<span class="mr-10">AO: </span>
 				<select name="" id="selectProductClient" class="form-control">
 					<option value="">Allotment Loan</option>
 					<option value="">Micro Group</option>
@@ -51,8 +51,8 @@
 									
 								</div>
 							</div>
-							<span class="text-center text-primary-dark text-bold">As of 12/12/2021</span>
-							<span class="text-center text-primary-dark text-bold font-md mb-5">Butuan Branch (001)</span>
+							<span class="text-center text-primary-dark text-bold">As of {{dateToYMD(new Date).replaceAll('-','/')}}</span>
+							<span class="text-center text-primary-dark text-bold font-md mb-5">{{branch.branch_name}} Branch ({{branch.branch_code}})</span>
 						</div>
 						<section class="d-flex flex-column mb-16">
 							<div class="p-10 light-border">
@@ -70,7 +70,11 @@
 										<th>PD Rate</th>
 									</thead>
 									<tbody>
-										<tr>
+										<tr v-if="!filteredResult.length"><td><i>No data available.</i></td></tr>
+										<tr v-for="fr,i in filteredResult" :key="i" :class="fr[0]=='OFFICER SUB-TOTAL'?'bbt-8-light text-primary-dark text-bold':''">
+											<td v-for="r,k in fr" :key="k">{{r}}</td>
+										</tr>
+										<!-- <tr>
 											<td>001 - John Mark Bacenas</td>
 											<td>002 - Micro Group</td>
 											<td>663</td>
@@ -249,7 +253,7 @@
 											<td class="text-primary-dark text-bold">421</td>
 											<td class="text-primary-dark text-bold">145,123,456.00</td>
 											<td class="text-primary-dark text-bold">100%</td>
-										</tr>
+										</tr> -->
 									</tbody>
 								</table>
 							</div>
@@ -350,6 +354,41 @@ export default {
 		accountOfficer:function(){
 			var aos = this.aos.filter(ao=>ao.ao_id==this.filter.account_officer);
 			return aos.length?aos[0]:[];
+		},
+		filteredResult:function(){
+			var result = [];
+			this.reports.forEach(r=>{
+				var total = ['OFFICER SUB-TOTAL','',0,0,0,0,0,0,0,0];
+				r.products.forEach((p,i)=>{
+					var row = [0,0,0,0,0,0,0,0,0,0];
+					row[0] = i==0?r.name:'';
+					row[1] = p.product_code + '-' + p.product_name;
+					row[2] = p.all.count;
+					total[2] += p.all.count;
+					row[3] = this.formatToCurrency(p.all.amount);
+					total[3] += p.all.amount;
+					row[4] = p.delinquent.count;
+					total[4] += p.delinquent.count;
+					row[5] = this.formatToCurrency(p.delinquent.amount);
+					total[5] += p.delinquent.amount;
+					row[6] = p.delinquent.rate + '%';
+					total[6] += p.delinquent.rate;
+					row[7] = p.pastdue.count;
+					total[7] += p.pastdue.count;
+					row[8] = this.formatToCurrency(p.pastdue.amount);
+					total[8] += p.pastdue.amount;
+					row[9] = p.pastdue.rate + '%';
+					total[9] += p.pastdue.rate;
+					result.push(row);
+				});
+				total[3] = this.formatToCurrency(total[3]);
+				total[5] = this.formatToCurrency(total[5]);
+				total[8] = this.formatToCurrency(total[8]);
+				total[6] = total[6] + '%';
+				total[9] = total[9] + '%';
+				result.push(total);
+			})
+			return result;
 		}
 	},
 	watch:{
