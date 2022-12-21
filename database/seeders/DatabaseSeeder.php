@@ -18,7 +18,6 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             UserSeeder::class,
-            TestDataSeeder::class,
             AccessibilitySeeder::class,
             GLSeeder::class,
             DeductionFeesSeeder::class,

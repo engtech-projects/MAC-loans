@@ -187,5 +187,47 @@ class UserSeeder extends Seeder
                 'updated_at' => Carbon::now(),
             ],
         ]);
+
+        DB::table('branch')->insert([
+            [
+                'branch_code' => "001",
+                'branch_name' => "Butuan City",
+                'branch_manager' => "Janine L. Descallar",
+                'branch_address' => "Butuan City",
+                'status' => "active",
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],[
+                'branch_code' => "002",
+                'branch_name' => "Nasipit",
+                'branch_manager' => "Jomel T. Gallanero",
+                'branch_address' => "Nasipit",
+                'status' => "active",
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],[
+                'branch_code' => "003",
+                'branch_name' => "Gingoog",
+                'branch_manager' => "Mark",
+                'branch_address' => "Gingoog City",
+                'status' => "active",
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ]
+        ]);
+
+        DB::table('user_branch')->insert([
+            [
+                'id' => "1",
+                'branch_id' => "1",
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],[
+                'id' => "2",
+                'branch_id' => "2",
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ]
+        ]);
     }
 }
