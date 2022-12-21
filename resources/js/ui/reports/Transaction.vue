@@ -133,21 +133,21 @@
 							<div class="d-flex flex-column flex-1 mr-64">
 								<div class="d-flex flex-row flex-1 mb-5">
 									<div class="d-flex flex-row justify-content-between flex-2 mr-24">
-										<span class="flex-1">TOTAL CASH RELEASE</span>
+										<span class="flex-1">TOTAL CASH PAYMENT</span>
 										<span>:</span>
 									</div>
 									<span class="flex-1">{{formatToCurrency(paymentSummaryTotal.cash)}}</span>
 								</div>
 								<div class="d-flex flex-row flex-1 mb-5">
 									<div class="d-flex flex-row justify-content-between flex-2 mr-24">
-										<span class="flex-1">TOTAL CHECK RELEASE</span>
+										<span class="flex-1">TOTAL CHECK PAYMENT</span>
 										<span>:</span>
 									</div>
 									<span class="flex-1">{{formatToCurrency(paymentSummaryTotal.check)}}</span>
 								</div>
 								<div class="d-flex flex-row flex-1">
 									<div class="d-flex flex-row justify-content-between flex-2 mr-24">
-										<span class="flex-1">TOTAL MEMO RELEASE</span>
+										<span class="flex-1">TOTAL MEMO PAYMENT</span>
 										<span>:</span>
 									</div>
 									<span class="flex-1">{{formatToCurrency(paymentSummaryTotal.memo)}}</span>
@@ -166,13 +166,13 @@
 									</div>
 									<span class="flex-1">{{formatToCurrency(paymentSummaryTotal.offsetPf)}}</span>
 								</div>
-								<div class="d-flex flex-row flex-1">
+								<!-- <div class="d-flex flex-row flex-1">
 									<div class="d-flex flex-row justify-content-between flex-2 mr-24">
 										<span class="flex-1 pl-24">OVER PAYMENT</span>
 										<span>:</span>
 									</div>
 									<span class="flex-1">{{formatToCurrency(paymentSummaryTotal.overpayment)}}</span>
-								</div>
+								</div> -->
 								<div class="d-flex flex-row flex-1">
 									<div class="d-flex flex-row justify-content-between flex-2 mr-24">
 										<span class="flex-1 pl-24">DISCOUNT</span>
@@ -180,13 +180,13 @@
 									</div>
 									<span class="flex-1">{{formatToCurrency(paymentSummaryTotal.discount)}}</span>
 								</div>
-								<div class="d-flex flex-row flex-1">
+								<!-- <div class="d-flex flex-row flex-1">
 									<div class="d-flex flex-row justify-content-between flex-2 mr-24">
 										<span class="flex-1 pl-24">CANCELLED</span>
 										<span>:</span>
 									</div>
 									<span class="flex-1">{{formatToCurrency(paymentSummaryTotal.cancelled)}}</span>
-								</div>
+								</div> -->
 								<div class="d-flex flex-row flex-1">
 									<div class="d-flex flex-row justify-content-between flex-2 mr-24">
 										<span class="flex-1 pl-24">BRANCH</span>
@@ -197,7 +197,7 @@
 							</div>
 							<div class="d-flex flex-column flex-1">
 								<div class="info-display">
-									<span class="text-primary-dark">TOTAL RELEASES</span>
+									<span class="text-primary-dark">TOTAL PAYMENT</span>
 									<span class="text-primary-dark">{{formatToCurrency(paymentSummaryTotal.cash + paymentSummaryTotal.check + paymentSummaryTotal.memo)}}</span>
 								</div>
 							</div>
