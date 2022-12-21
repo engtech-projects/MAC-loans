@@ -145,6 +145,13 @@
 									</div>
 									<span class="flex-1">{{formatToCurrency(paymentSummaryTotal.check)}}</span>
 								</div>
+								<!-- <div class="d-flex flex-row flex-1 mb-5">
+									<div class="d-flex flex-row justify-content-between flex-2 mr-24">
+										<span class="flex-1">TOTAL POS PAYMENT</span>
+										<span>:</span>
+									</div>
+									<span class="flex-1">{{formatToCurrency(paymentSummaryTotal.pos)}}</span>
+								</div> -->
 								<div class="d-flex flex-row flex-1">
 									<div class="d-flex flex-row justify-content-between flex-2 mr-24">
 										<span class="flex-1">TOTAL MEMO PAYMENT</span>
@@ -423,11 +430,18 @@
 									</div>
 									<span class="flex-1">{{formatToCurrency(totalInterbranchMemo)}}</span>
 								</div>
+								<div class="d-flex flex-row flex-1 mb-5">
+									<div class="d-flex flex-row justify-content-between flex-2 mr-24">
+										<span class="flex-1">TOTAL POS RELEASES</span>
+										<span>:</span>
+									</div>
+									<span class="flex-1">{{formatToCurrency(totalPosClientCollection)}}</span>
+								</div>
 							</div>
 							<div class="d-flex flex-column flex-1">
 								<div class="info-display">
 									<span class="text-primary-dark">TOTAL RELEASES</span>
-									<span class="text-primary-dark">{{formatToCurrency(totalCashClientCollection + totalCheckClientCollection + totalMemoClientCollection)}}</span>
+									<span class="text-primary-dark">{{formatToCurrency(totalCashClientCollection + totalCheckClientCollection + totalMemoClientCollection + totalPosClientCollection)}}</span>
 								</div>
 							</div>
 							<div class="flex-2"></div>
@@ -475,7 +489,7 @@ export default {
 				discount:0,
 				cancelled:0,
 				branch:0,
-				
+				pos:0
 			}
 		}
 	},
@@ -661,6 +675,17 @@ export default {
 			}
 			return amount;
 		},
+		totalPosClientCollection:function(){
+			var amount = 0;
+			if(this.transactions.client.collection){
+				this.transactions.client.collection.forEach(p=>{
+					if(p.payment_type == 'POS'){
+						amount += p.total_payment;
+					}
+				})
+			}
+			return amount;
+		},
 		totalMemoClientCollection:function(){
 			var amount = 0;
 			if(this.transactions.client.collection){
@@ -688,6 +713,7 @@ export default {
 					i=='Cash Payment'? this.paymentSummaryTotal.cash += t.payment[i].total_payment:false;
 					i=='Check Payment'? this.paymentSummaryTotal.check += t.payment[i].total_payment:false;
 					i=='Memo'? this.paymentSummaryTotal.memo += t.payment[i].total_payment:false;
+					i=='POS'? this.paymentSummaryTotal.pos += t.payment[i].total_payment:false;
 					if(i == 'Memo'){
 						this.paymentSummaryTotal.overpayment = t.payment[i].over;
 						this.paymentSummaryTotal.discount = t.payment[i].discount;
