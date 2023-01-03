@@ -8,22 +8,29 @@
 			<input v-model="filter" type="text" class="form-control" id="searchBar" placeholder="Search">
 			<div><i class="fa fa-search"></i></div>
 		</div>
-		<table class="table table-stripped" id="clientsList">
-			<thead>
-				<th>Account #</th>
-				<th>Client Name</th>
-				<th>Contact Number</th>
-				<th>Address</th>
-			</thead>
-			<tbody>
-				<tr v-for="(borrower, i) in filteredBorrowers" :key="i">
-					<td>{{borrower.borrower_num}}</td>
-					<td><a :href="url.replace(':id', borrower.borrower_id)">{{borrower.firstname + ' ' + borrower.lastname}}</a></td>
-					<td>{{borrower.contact_number}}</td>
-					<td>{{borrower.address}}</td>
-				</tr>
-			</tbody>
-		</table>
+		<div class="">
+			<table class="table table-stripped" id="clientsList">
+				<thead>
+					<th>Account #</th>
+					<th>Client Name</th>
+					<th>Contact Number</th>
+					<th>Address</th>
+				</thead>
+				<tbody>
+					<tr v-for="(borrower, i) in paginate" :key="i">
+						<td>{{borrower.borrower_num}}</td>
+						<td><a :href="url.replace(':id', borrower.borrower_id)">{{borrower.firstname + ' ' + borrower.lastname}}</a></td>
+						<td>{{borrower.contact_number}}</td>
+						<td>{{borrower.address}}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div v-if="filteredBorrowers.length > pagination.range" class="d-flex justify-content-end">
+			<div class="d-flex pagination">
+				<span @click="pagination.page=i" :class="i==pagination.page?'active':''" v-for="i in Math.ceil(filteredBorrowers.length/pagination.range)" :key="i">{{i}}</span>
+			</div>
+		</div>
 	</div>
 </template>
 
@@ -34,6 +41,10 @@ export default {
 		return {
 			borrowers:[],
 			filter:'',
+			pagination:{
+				page: 1,
+				range: 12
+			}
 		}
 	},
 	methods:{
@@ -57,6 +68,7 @@ export default {
 	computed:{
 		filteredBorrowers:function(){
 			var borrowers = [];
+			this.pagination.page = 1;
 			if(this.filter.length > 0){
 				this.borrowers.map(function(data){
 					if(data.borrower_num.toLowerCase().includes(this.filter.toLowerCase()) || data.firstname.toLowerCase().includes(this.filter.toLowerCase()) || data.lastname.toLowerCase().includes(this.filter.toLowerCase()) || (data.firstname + ' ' + data.lastname).toLowerCase().includes(this.filter.toLowerCase()) || (data.lastname + ' ' + data.firstname).toLowerCase().includes(this.filter.toLowerCase())){
@@ -67,10 +79,45 @@ export default {
 				borrowers = this.borrowers;
 			}
 			return borrowers;
+		},
+		paginate:function(){
+			var result = [];
+			var start = (this.pagination.page - 1) * this.pagination.range;
+			var end = 0;
+			for(var i = start; i < this.filteredBorrowers.length; i++){
+				if(end < this.pagination.range){
+					result.push(this.filteredBorrowers[i]);
+				}
+				end++;
+			}
+			return result;
 		}
 	},
 	mounted(){
+		console.log(Math.ceil(7 / 3));
 		this.fetchBorrowers();
 	}
 }
 </script>
+
+<style scoped>
+	.pagination span {
+		font-weight: bold;
+		font-size: 14px;
+		border: 1px solid #ddd;
+		width:35px;
+		height:35px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		margin-right: 5px;
+		cursor: pointer;
+	}
+	.pagination span:hover {
+		border: 1px solid #293f54;
+	}
+	.pagination span.active {
+		background: #293f54;
+		color: #fff;
+	}
+</style>
