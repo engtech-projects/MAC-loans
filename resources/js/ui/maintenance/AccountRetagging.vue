@@ -33,7 +33,7 @@
                     </thead>
                     <tbody>
                         <tr
-                            v-for="account in filteredAccounts"
+                            v-for="account in paginate"
                             :key="account.loan_account_id"
                         >
                             <td>
@@ -78,6 +78,11 @@
                         </tr>
                     </tbody>
                 </table>
+				<div v-if="filteredAccounts.length > pagination.range" class="d-flex justify-content-end">
+					<div class="d-flex pagination">
+						<span @click="pagination.page=i" :class="i==pagination.page?'active':''" v-for="i in Math.ceil(filteredAccounts.length/pagination.range)" :key="i">{{i}}</span>
+					</div>
+				</div>
                 <div class="d-flex justify-content-between align-items-center">
                     <div class="d-flex flex-column">
                         <span style="margin-bottom: 12px" class="text-lg"
@@ -947,6 +952,10 @@ export default {
     props: ["pbranch", "token",'ploanstatus'],
     data() {
         return {
+			pagination:{
+				page: 1,
+				range: 10
+			},
 			retaggingField:'',
 			retagValue:null,
             filter: "",
@@ -1253,6 +1262,18 @@ export default {
                         .includes(this.filter.toLowerCase())
             );
         },
+		paginate:function(){
+			var result = [];
+			var start = (this.pagination.page - 1) * this.pagination.range;
+			var end = 0;
+			for(var i = start; i < this.filteredAccounts.length; i++){
+				if(end < this.pagination.range){
+					result.push(this.filteredAccounts[i]);
+				}
+				end++;
+			}
+			return result;
+		},
     },
     mounted() {
         this.fetchBorrowers();

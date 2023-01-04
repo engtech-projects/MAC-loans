@@ -3,7 +3,7 @@
 		<div class="mb-16"></div>
 		<div class="mb-24 bb-primary-dark pb-7 text-block">
 			<h1 class="m-0 font-35">{{title}}</h1>
-		</div><!-- /.col -->
+		</div>
 		<div class="search-bar">
 			<input v-model="filter" type="text" class="form-control" id="searchBar" placeholder="Search">
 			<div><i class="fa fa-search"></i></div>
@@ -43,7 +43,7 @@ export default {
 			filter:'',
 			pagination:{
 				page: 1,
-				range: 12
+				range: 10
 			}
 		}
 	},
@@ -57,7 +57,6 @@ export default {
 				}
 			})
 			.then(function (response) {
-				// console.log(response.data);
 				this.borrowers = response.data.data;
 			}.bind(this))
 			.catch(function (error) {
@@ -94,13 +93,12 @@ export default {
 		}
 	},
 	mounted(){
-		console.log(Math.ceil(7 / 3));
 		this.fetchBorrowers();
 	}
 }
 </script>
 
-<style scoped>
+<style>
 	.pagination span {
 		font-weight: bold;
 		font-size: 14px;
@@ -112,6 +110,10 @@ export default {
 		justify-content: center;
 		margin-right: 5px;
 		cursor: pointer;
+	}
+	.pagination.pagination-mini span{
+		width:25px;
+		height:25px;
 	}
 	.pagination span:hover {
 		border: 1px solid #293f54;

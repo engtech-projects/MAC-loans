@@ -16,7 +16,7 @@
 					<td></td>
 					<td></td>
 				</tr>
-				<tr class="client-item" :class="isActive(b)" v-for="(b, i) in filterClient" :key="i">
+				<tr class="client-item" :class="isActive(b)" v-for="(b, i) in paginate" :key="i">
 					<td>{{b.borrower_num}}</td>
 					<td><a href="#">{{b.firstname + ' ' + b.lastname}}</a></td>
 					<td><span @click="$emit('selectBorrower',b.borrower_id);borrower=b" class="text-green c-pointer">select</span></td>
@@ -35,13 +35,23 @@
 					<td></td>
 					<td></td>
 				</tr>
-				<tr class="client-item" :class="isActiveAccount(b )" v-for="(b,i) in filterAccount" :key="i">
+				<tr class="client-item" :class="isActiveAccount(b )" v-for="(b,i) in paginate" :key="i">
 					<td>{{b.borrower.borrower_num}}</td>
 					<td><a href="#">{{b.borrower.firstname + ' ' + b.borrower.lastname}}</a></td>
 					<td><span @click="$emit('selectAccount',b)" class="text-green c-pointer">select</span></td>
 				</tr>
 			</tbody>
 		</table>
+		<div v-if="filterClient.length > pagination.range" class="d-flex justify-content-end">
+			<div class="d-flex pagination pagination-mini">
+				<span @click="pagination.page=i" :class="i==pagination.page?'active':''" v-for="i in Math.ceil(filterClient.length/pagination.range)" :key="i">{{i}}</span>
+			</div>
+		</div>
+		<div v-if="account && filterAccount.length > pagination.range" class="d-flex justify-content-end">
+			<div class="d-flex pagination pagination-mini">
+				<span @click="pagination.page=i" :class="i==pagination.page?'active':''" v-for="i in Math.ceil(filterClient.length/pagination.range)" :key="i">{{i}}</span>
+			</div>
+		</div>
 	</div>
 </template>
 
@@ -53,6 +63,10 @@ export default {
 			filter:'',
 			borrower:{
 				borrower_id:'',
+			},
+			pagination:{
+				page: 1,
+				range: 10
 			}
 		}
 	},
@@ -94,6 +108,19 @@ export default {
 				}.bind(this));
 			}else{
 				result = this.pborrowers;
+			}
+			return result;
+		},
+		paginate:function(){
+			var arr = this.account?this.filterAccount:this.filterClient;
+			var result = [];
+			var start = (this.pagination.page - 1) * this.pagination.range;
+			var end = 0;
+			for(var i = start; i < arr.length; i++){
+				if(end < this.pagination.range){
+					result.push(arr[i]);
+				}
+				end++;
 			}
 			return result;
 		}

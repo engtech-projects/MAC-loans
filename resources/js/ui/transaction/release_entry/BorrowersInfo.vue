@@ -110,7 +110,7 @@
 					<label for="spouseMiddleName" class="form-label">Middle Name</label>
 					<input v-model="borrower.spouse_middlename" type="text" required class="form-control form-input " id="spouseMiddleName">
 				</div>
-				<div class="form-group mb-10 mr-16" style="flex: 3">
+				<div class="form-group mb-10" style="flex: 3">
 					<label for="spouseLastName" class="form-label">Last Name</label>
 					<input v-model="borrower.spouse_lastname" type="text" required class="form-control form-input " id="spouseLastName">
 				</div>

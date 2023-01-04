@@ -45,7 +45,7 @@
                             <td></td>
                         </tr>
                         <tr
-                            v-for="borrower in filteredBorrowers"
+                            v-for="borrower in paginate"
                             :key="borrower.borrower_id"
                             :class="
                                 borrower.borrower_id ==
@@ -70,6 +70,11 @@
                         </tr>
                     </tbody>
                 </table>
+				<div v-if="filteredBorrowers.length > pagination.range" class="d-flex justify-content-end">
+					<div class="d-flex pagination pagination-mini">
+						<span @click="pagination.page=i" :class="i==pagination.page?'active':''" v-for="i in Math.ceil(filteredBorrowers.length/pagination.range)" :key="i">{{i}}</span>
+					</div>
+				</div>
             </div>
             <div style="flex: 20">
                 <section class="mb-24" style="flex: 21; padding-left: 16px">
@@ -247,6 +252,10 @@ export default {
     props: ["branch", "token"],
     data() {
         return {
+			pagination:{
+				page: 1,
+				range: 10
+			},
             transactionDate: {
                 branch_id: this.branch,
                 status: 'closed',
@@ -504,6 +513,18 @@ export default {
             }
             return borrowers;
         },
+		paginate:function(){
+			var result = [];
+			var start = (this.pagination.page - 1) * this.pagination.range;
+			var end = 0;
+			for(var i = start; i < this.filteredBorrowers.length; i++){
+				if(end < this.pagination.range){
+					result.push(this.filteredBorrowers[i]);
+				}
+				end++;
+			}
+			return result;
+		},
         filteredPayments: function () {
             if (this.paymentFilter.length > 0) {
                 return this.selectedBorrower.payments.filter(
