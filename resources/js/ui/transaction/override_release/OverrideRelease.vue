@@ -39,7 +39,7 @@
 							<td></td>
 							<td></td>
 						</tr>
-						<tr v-for="(b, i) in filterClient" :key="i" class="loan-item" :class="isActive(b)">
+						<tr v-for="(b, i) in paginate" :key="i" class="loan-item" :class="isActive(b)">
 							<td><input v-model="b.checked" type="checkbox" class="form-control form-box"></td>
 							<td>{{b.account_num}}</td>
 							<td><a href="#">{{b.borrower.firstname + ' ' + b.borrower.lastname}}</a></td>
@@ -47,6 +47,11 @@
 						</tr>
 					</tbody>
 				</table>
+				<div v-if="filterClient.length > pagination.range" class="d-flex justify-content-end mb-24">
+					<div class="d-flex pagination pagination-mini">
+						<span @click="pagination.page=i" :class="i==pagination.page?'active':''" v-for="i in Math.ceil(filterClient.length/pagination.range)" :key="i">{{i}}</span>
+					</div>
+				</div>
 				<div class="d-flex flex-row-reverse sep-thin pb-10 mb-16" style="border-bottom-color:#CCC!important;">
 					<a v-if="enableBatchOverride > 1" href="#" data-toggle="modal" data-target="#warningModal" class="btn btn-success">Batch Override</a>
 					<a href="#" data-toggle="modal" data-target="#overrideReleaseModal" class="btn btn-primary min-w-150 mr-16">View</a>
@@ -168,6 +173,10 @@ export default {
 	props:['token', 'csrf', 'pbranch', 'staff', 'branch_mgr','canreject','candelete'],
 	data(){
 		return {
+			pagination:{
+				page: 1,
+				range: 10
+			},
 			transactionDate: {
 				branch_id: this.pbranch,
 				status: 'closed',
@@ -531,6 +540,18 @@ export default {
 						}
 					}
 				}.bind(this))
+			}
+			return result;
+		},
+		paginate:function(){
+			var result = [];
+			var start = (this.pagination.page - 1) * this.pagination.range;
+			var end = 0;
+			for(var i = start; i < this.filterClient.length; i++){
+				if(end < this.pagination.range){
+					result.push(this.filterClient[i]);
+				}
+				end++;
 			}
 			return result;
 		},

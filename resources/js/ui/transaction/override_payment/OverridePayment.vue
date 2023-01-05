@@ -42,7 +42,7 @@
                         </select>
                     </div>
                 </div>
-                <table class="table table-stripped mb-10" id="clientsList">
+                <table class="table table-stripped mb-24" id="clientsList">
                     <thead>
                         <th>All</th>
                         <th>Account #</th>
@@ -51,7 +51,7 @@
                     </thead>
                     <tbody>
                         <tr
-                            v-for="p in filterClient"
+                            v-for="p in paginate"
                             :key="p.payment_id"
                             class="client-item"
                             :class="
@@ -106,6 +106,11 @@
                         </tr>
                     </tbody>
                 </table>
+				<div v-if="filterClient.length > pagination.range" class="d-flex justify-content-end mb-24">
+					<div class="d-flex pagination pagination-mini">
+						<span @click="pagination.page=i" :class="i==pagination.page?'active':''" v-for="i in Math.ceil(filterClient.length/pagination.range)" :key="i">{{i}}</span>
+					</div>
+				</div>
                 <div
                     class="d-flex flex-row-reverse sep-thin pb-10 mb-16"
                     style="border-bottom-color: #ccc !important"
@@ -341,6 +346,10 @@ export default {
     props: ["token", "pbranch", "candelete"],
     data() {
         return {
+			pagination:{
+				page: 1,
+				range: 10
+			},
 			transactionDate: {
 				branch_id: this.pbranch,
 				status: 'closed',
@@ -799,6 +808,18 @@ export default {
             }
             return result;
         },
+		paginate:function(){
+			var result = [];
+			var start = (this.pagination.page - 1) * this.pagination.range;
+			var end = 0;
+			for(var i = start; i < this.filterClient.length; i++){
+				if(end < this.pagination.range){
+					result.push(this.filterClient[i]);
+				}
+				end++;
+			}
+			return result;
+		},
     },
     watch: {
         "transactionDate": function (newValue) {
