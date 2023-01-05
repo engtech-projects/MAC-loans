@@ -103,7 +103,7 @@ class LoanAccountController extends BaseController
     // get override release accounts
     public function overrideAccountList(Request $request) {
         $filters = [
-            'transaction_date' => ($request->has('date')) ? $request->input('date') : 'all',
+            'transaction_date' => ($request->has('transaction_date')) ? $request->input('transaction_date') : 'all',
             'ao_id' => ($request->has('ao_id')) ? $request->input('ao_id') : 'all',
             'center_id' => ($request->has('center_id')) ? $request->input('center_id') : 'all',
             'product_id' => ($request->has('product_id')) ? $request->input('product_id') : 'all',

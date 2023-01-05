@@ -279,7 +279,7 @@ class LoanAccount extends Model
       $branch = Branch::find($filters['branch_id']);
       $accounts = LoanAccount::where('status', '=', 'pending')->where(['branch_code' => $branch->branch_code]);
 
-      if( isset($filters['transaction_date']) && $filters['transaction_date'] ){
+      if( isset($filters['transaction_date']) && $filters['transaction_date'] != 'all'){
          $accounts->whereDate('loan_accounts.transaction_date', '=', $filters['transaction_date'] );
       }
 
@@ -303,7 +303,7 @@ class LoanAccount extends Model
       $branch = Branch::find($filters['branch_id']);
       $accounts = LoanAccount::where('status', '=', 'released')->where(['branch_code' => $branch->branch_code]);
 
-      if( isset($filters['date_release']) && $filters['date_release'] ){
+      if( isset($filters['date_release']) && $filters['date_release'] != 'all' ){
          $accounts->whereDate('loan_accounts.date_release', '=', $filters['date_release'] );
       }
 
