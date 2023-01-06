@@ -89,7 +89,7 @@
 						<div class="col-xl-2 col-lg-6">
 							<div class="info-display">
 								<span class="font-blue">Status</span>
-								<span>{{loanDetailsStatus}}</span>
+								<span>{{loanDetails.loan_status_view}}</span>
 							</div>
 						</div>
 						<div class="col-xl-2 col-lg-6">
@@ -363,14 +363,6 @@
 
 		},
 		computed:{
-			loanDetailsStatus:function(){
-				if(this.loanDetails.current_amortization){
-					if(this.loanDetails.current_amortization.delinquent.ids.length > 0){
-						return "Delinquent";
-					}
-				}
-				return "Current";
-			},
 			totalAmountBalance:function(){
 				var amount = this.loanDetails.loan_amount;
 				this.loanDetails.payments.map(function(val){

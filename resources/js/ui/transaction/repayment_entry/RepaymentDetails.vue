@@ -725,7 +725,8 @@ export default {
 						credit:0,
 						balance:0
 					}
-				}
+				},
+				loan_status_view:'',
 			},
 			payment:{
 				payment_id:null,
@@ -905,7 +906,8 @@ export default {
 						credit:0,
 						balance:0
 					}
-				}
+				},
+				loan_status_view:''
 			}
 		},
 		fetchTransactionDate:function(){
@@ -1084,14 +1086,7 @@ export default {
 	},
 	computed:{
 		loanAccountStatus:function(){
-			if(this.loanAccount.current_amortization){
-				if(this.duePdi > 0){
-					return "Past Due";
-				}else if((this.loanAccount.current_amortization.principal > 0 && this.loanAccount.current_amortization.short_principal > 0 && this.duePrincipal > 0) || (this.duePrincipal > 0 && this.loanAccount.current_amortization.day_late >= 1)){
-					return "Delinquent";
-				}
-			}
-			return "Current";
+			return this.loanAccount.loan_status_view;
 		},
 		loanAccountStatusColor:function(){
 			if(this.loanAccountStatus == "Past Due"){

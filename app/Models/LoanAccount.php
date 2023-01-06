@@ -373,7 +373,7 @@ class LoanAccount extends Model
          // update loan status.
          // set current amortization status to delinquent/
          // var_dump($this->loan_account_id);
-         if($this->loan_status == LoanAccount::LOAN_WRITEOFF){
+         if($this->loan_status == LoanAccount::LOAN_ONGOING){
             LoanAccount::where(['loan_account_id' => $this->loan_account_id])->update(['loan_status' => LoanAccount::LOAN_PASTDUE]);
          }
          $amortization->status = 'delinquent';
@@ -824,6 +824,13 @@ class LoanAccount extends Model
 
    public function collectionRate(){
       return round( ( ($this->remainingBalance()['principal']['credit'] + $this->remainingBalance()['interest']['credit'] + $this->remainingBalance()['rebates']['credit']) / ($this->remainingBalance()['principal']['debit'] + $this->remainingBalance()['interest']['debit']) ) * 100);
+   }
+
+   public function getStatusView(){
+      if($this->loan_status == "Ongoing"){
+         return $this->payment_status;
+      }
+      return $this->loan_status;
    }
 
 }
