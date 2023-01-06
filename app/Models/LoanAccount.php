@@ -374,10 +374,10 @@ class LoanAccount extends Model
          // set current amortization status to delinquent/
          // var_dump($this->loan_account_id);
          if($this->loan_status == LoanAccount::LOAN_ONGOING){
-            // LoanAccount::where(['loan_account_id' => $this->loan_account_id])->update(['loan_status' => LoanAccount::LOAN_PASTDUE]);
+            LoanAccount::where(['loan_account_id' => $this->loan_account_id])->update(['loan_status' => LoanAccount::LOAN_PASTDUE]);
             $this->payment_status = LoanAccount::PAYMENT_DELINQUENT;
             $this->loan_status = LoanAccount::LOAN_PASTDUE;
-            $this->save();
+            // $this->save();
          }
          $amortization->status = 'delinquent';
          $amortization->save();
