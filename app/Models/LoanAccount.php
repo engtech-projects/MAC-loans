@@ -830,7 +830,7 @@ class LoanAccount extends Model
       if($this->loan_status == "Ongoing"){
          return $this->payment_status;
       }
-      return $this->loan_status;
+      return $this->loan_status ? $this->loan_status : 'Current';
    }
 
 }
