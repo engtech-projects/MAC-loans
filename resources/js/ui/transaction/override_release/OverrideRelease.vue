@@ -47,11 +47,12 @@
 						</tr>
 					</tbody>
 				</table>
-				<div v-if="filterClient.length > pagination.range" class="d-flex justify-content-end mb-24">
+				<mac-pagination v-if="filterClient.length > pagination.range" @setpage="setPage" :pdata="filterClient" :ppage="pagination.page" :prange="pagination.range" class="mb-24"></mac-pagination>
+				<!-- <div v-if="filterClient.length > pagination.range" class="d-flex justify-content-end mb-24">
 					<div class="d-flex pagination pagination-mini">
 						<span @click="pagination.page=i" :class="i==pagination.page?'active':''" v-for="i in Math.ceil(filterClient.length/pagination.range)" :key="i">{{i}}</span>
 					</div>
-				</div>
+				</div> -->
 				<div class="d-flex flex-row-reverse sep-thin pb-10 mb-16" style="border-bottom-color:#CCC!important;">
 					<a v-if="enableBatchOverride > 1" href="#" data-toggle="modal" data-target="#warningModal" class="btn btn-success">Batch Override</a>
 					<a href="#" data-toggle="modal" data-target="#overrideReleaseModal" class="btn btn-primary min-w-150 mr-16">View</a>
@@ -214,6 +215,9 @@ export default {
 		}
 	},
 	methods:{
+		setPage:function(page){
+			this.pagination.page = page;
+		},
 		fetchTransactionDate:function(){
 				axios.get(this.baseURL() + 'api/eod/eodtransaction/'+this.pbranch, {
 				headers: {

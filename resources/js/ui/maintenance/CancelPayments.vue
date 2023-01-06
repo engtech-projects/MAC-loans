@@ -70,11 +70,12 @@
                         </tr>
                     </tbody>
                 </table>
-				<div v-if="filteredBorrowers.length > pagination.range" class="d-flex justify-content-end">
+				<mac-pagination v-if="filteredBorrowers.length > pagination.range" @setpage="setPage" :pdata="filteredBorrowers" :ppage="pagination.page" :prange="pagination.range" class="mb-24"></mac-pagination>
+				<!-- <div v-if="filteredBorrowers.length > pagination.range" class="d-flex justify-content-end">
 					<div class="d-flex pagination pagination-mini">
 						<span @click="pagination.page=i" :class="i==pagination.page?'active':''" v-for="i in Math.ceil(filteredBorrowers.length/pagination.range)" :key="i">{{i}}</span>
 					</div>
-				</div>
+				</div> -->
             </div>
             <div style="flex: 20">
                 <section class="mb-24" style="flex: 21; padding-left: 16px">
@@ -283,7 +284,9 @@ export default {
         };
     },
     methods: {
-
+		setPage:function(page){
+			this.pagination.page = page;
+		},
         fetchTransactionDate:function(){
             axios.get(this.baseURL() + 'api/eod/eodtransaction/'+this.branch, {
             headers: {

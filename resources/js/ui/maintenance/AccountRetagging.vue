@@ -78,11 +78,12 @@
                         </tr>
                     </tbody>
                 </table>
-				<div v-if="filteredAccounts.length > pagination.range" class="d-flex justify-content-end">
+				<mac-pagination v-if="filteredAccounts.length > pagination.range" @setpage="setPage" :pdata="filteredAccounts" :ppage="pagination.page" :prange="pagination.range" class="mb-24"></mac-pagination>
+				<!-- <div v-if="filteredAccounts.length > pagination.range" class="d-flex justify-content-end">
 					<div class="d-flex pagination">
 						<span @click="pagination.page=i" :class="i==pagination.page?'active':''" v-for="i in Math.ceil(filteredAccounts.length/pagination.range)" :key="i">{{i}}</span>
 					</div>
-				</div>
+				</div> -->
                 <div class="d-flex justify-content-between align-items-center">
                     <div class="d-flex flex-column">
                         <span style="margin-bottom: 12px" class="text-lg"
@@ -1058,6 +1059,9 @@ export default {
         };
     },
     methods: {
+		setPage:function(page){
+			this.pagination.page = page;
+		},
 		async retag(account){
 			await axios.post(this.baseURL() + 'api/account/update/' + account.loan_account_id, account, {
 				headers: {

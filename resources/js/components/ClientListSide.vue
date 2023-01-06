@@ -42,7 +42,9 @@
 				</tr>
 			</tbody>
 		</table>
-		<div v-if="filterClient.length > pagination.range" class="d-flex justify-content-end">
+		<mac-pagination v-if="account" @setpage="setPage" :pdata="filterAccount" :ppage="pagination.page" :prange="pagination.range" class="mb-24"></mac-pagination>
+		<mac-pagination v-else @setpage="setPage" :pdata="filterClient" :ppage="pagination.page" :prange="pagination.range" class="mb-24"></mac-pagination>
+		<!-- <div v-if="filterClient.length > pagination.range" class="d-flex justify-content-end">
 			<div class="d-flex pagination pagination-mini">
 				<span @click="pagination.page=i" :class="i==pagination.page?'active':''" v-for="i in Math.ceil(filterClient.length/pagination.range)" :key="i">{{i}}</span>
 			</div>
@@ -51,7 +53,7 @@
 			<div class="d-flex pagination pagination-mini">
 				<span @click="pagination.page=i" :class="i==pagination.page?'active':''" v-for="i in Math.ceil(filterClient.length/pagination.range)" :key="i">{{i}}</span>
 			</div>
-		</div>
+		</div> -->
 	</div>
 </template>
 
@@ -71,6 +73,9 @@ export default {
 		}
 	},
 	methods:{
+		setPage:function(page){
+			this.pagination.page = page;
+		},
 		isActive:function(borrower){
 			if(borrower.borrower_id == this.id || borrower.borrower_id == this.borrower.borrower_id){
 				return 'active';

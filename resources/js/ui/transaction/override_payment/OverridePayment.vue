@@ -106,11 +106,12 @@
                         </tr>
                     </tbody>
                 </table>
-				<div v-if="filterClient.length > pagination.range" class="d-flex justify-content-end mb-24">
+				<!-- <div v-if="filterClient.length > pagination.range" class="d-flex justify-content-end mb-24">
 					<div class="d-flex pagination pagination-mini">
 						<span @click="pagination.page=i" :class="i==pagination.page?'active':''" v-for="i in Math.ceil(filterClient.length/pagination.range)" :key="i">{{i}}</span>
 					</div>
-				</div>
+				</div> -->
+				<mac-pagination @setpage="setPage" :pdata="filterClient" :ppage="pagination.page" :prange="pagination.range" class="mb-24"></mac-pagination>
                 <div
                     class="d-flex flex-row-reverse sep-thin pb-10 mb-16"
                     style="border-bottom-color: #ccc !important"
@@ -383,6 +384,9 @@ export default {
         };
     },
     methods: {
+		setPage:function(page){
+			this.pagination.page = page;
+		},
 		fetchTransactionDate:function(){
 			axios.get(this.baseURL() + 'api/eod/eodtransaction/'+this.pbranch, {
 			headers: {
@@ -721,6 +725,7 @@ export default {
             return amount;
         },
         filterClient: function () {
+			this.pagination.page = 1;
             var result = [];
             if (this.preference.transaction_date != "") {
                 this.payments.map(

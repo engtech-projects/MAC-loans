@@ -26,11 +26,12 @@
 				</tbody>
 			</table>
 		</div>
-		<div v-if="filteredBorrowers.length > pagination.range" class="d-flex justify-content-end">
+		<mac-pagination v-if="filteredBorrowers.length > pagination.range" @setpage="setPage" :pdata="filteredBorrowers" :ppage="pagination.page" :prange="pagination.range" class="mb-24"></mac-pagination>
+		<!-- <div v-if="filteredBorrowers.length > pagination.range" class="d-flex justify-content-end">
 			<div class="d-flex pagination">
 				<span @click="pagination.page=i" :class="i==pagination.page?'active':''" v-for="i in Math.ceil(filteredBorrowers.length/pagination.range)" :key="i">{{i}}</span>
 			</div>
-		</div>
+		</div> -->
 	</div>
 </template>
 
@@ -48,6 +49,9 @@ export default {
 		}
 	},
 	methods:{
+		setPage:function(page){
+			this.pagination.page = page;
+		},
 		fetchBorrowers:function(){
 			axios.get(this.baseURL() + 'api/borrower/list/' + this.pbranch, {
 			headers: {
