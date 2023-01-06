@@ -374,11 +374,12 @@ class LoanAccount extends Model
          // set current amortization status to delinquent/
          // var_dump($this->loan_account_id);
          if($this->loan_status == LoanAccount::LOAN_ONGOING){
-            LoanAccount::where(['loan_account_id' => $this->loan_account_id])->update(['loan_status' => LoanAccount::LOAN_PASTDUE]);
+            // LoanAccount::where(['loan_account_id' => $this->loan_account_id])->update(['loan_status' => LoanAccount::LOAN_PASTDUE]);
+            $this->payment_status = LoanAccount::PAYMENT_DELINQUENT;
             $this->loan_status = LoanAccount::LOAN_PASTDUE;
+            $this->save();
          }
          $amortization->status = 'delinquent';
-         $this->payment_status = LoanAccount::PAYMENT_DELINQUENT;
          $amortization->save();
 
          $amortization->pdi = $this->getPDI($this->loan_amount, $this->interest_rate, $isPastDue);
@@ -829,10 +830,11 @@ class LoanAccount extends Model
    }
 
    public function getStatusView(){
-      if($this->loan_status == "Ongoing"){
-         return $this->payment_status ? $this->payment_status : "Current";
+      $lAcc = LoanAccount::find($this->loan_account_id);
+      if($lAcc->loan_status == "Ongoing"){
+         return $lAcc->payment_status ? $lAcc->payment_status : "Current";
       }
-      return $this->loan_status;
+      return $lAcc->loan_status;
    }
 
 }
