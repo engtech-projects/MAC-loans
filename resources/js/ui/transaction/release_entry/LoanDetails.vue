@@ -631,7 +631,7 @@ export default {
 					reference_no: this.memoRefNo,
 					reference_id: accountId,
 					memo_type: 'deduct to balance',
-					amortization_id: this.loanaccount.amortization_id,
+					amortization_id: this.loanaccount.current_amortization.id,
 					principal: this.loanaccount.remainingBalance.principal.balance,
 					interest: (this.loanaccount.remainingBalance.interest.balance - this.loanaccount.remainingBalance.rebates.credit) - this.loanaccount.remainingBalance.rebates.balance,
 					rebates: this.loanaccount.remainingBalance.rebates.balance,
@@ -640,7 +640,6 @@ export default {
 					penalty:0,
 					total_payable: 0,
 					amount_applied: this.loanaccount.remainingBalance.principal.balance + (this.loanaccount.remainingBalance.interest.balance - this.loanaccount.remainingBalance.rebates.credit),
-					amortization_id: this.loanaccount.amortization_id,
 					transaction_date: this.transactionDate.date_end
 				}
 				axios.post(this.baseURL() + 'api/payment', payment, {
