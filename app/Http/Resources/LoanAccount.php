@@ -15,6 +15,7 @@ class LoanAccount extends JsonResource
     public function toArray($request)
     {
         return [
+            'current_amortization' => $this->getCurrentAmortization(),
             'loan_account_id' => $this->loan_account_id,
             'account_num' => $this->account_num,
             'date_release' => $this->date_release,
@@ -72,7 +73,6 @@ class LoanAccount extends JsonResource
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'cash_voucher' => $this->cashVoucher(),
-            'current_amortization' => $this->getCurrentAmortization(),
             'remaining_balance' => $this->remainingBalance(),
             'collection_rate' => $this->collectionRate()
         ];

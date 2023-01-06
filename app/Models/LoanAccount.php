@@ -375,13 +375,15 @@ class LoanAccount extends Model
          // var_dump($this->loan_account_id);
          if($this->loan_status == LoanAccount::LOAN_ONGOING){
             LoanAccount::where(['loan_account_id' => $this->loan_account_id])->update(['loan_status' => LoanAccount::LOAN_PASTDUE]);
+            $this->loan_status = LoanAccount::LOAN_PASTDUE;
          }
          $amortization->status = 'delinquent';
+         $this->payment_status = LoanAccount::PAYMENT_DELINQUENT;
          $amortization->save();
 
          $amortization->pdi = $this->getPDI($this->loan_amount, $this->interest_rate, $isPastDue);
       }
-      
+
       # compute for total payables
       # compute for total payments
       # get last payment
