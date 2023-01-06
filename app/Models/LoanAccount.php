@@ -828,9 +828,9 @@ class LoanAccount extends Model
 
    public function getStatusView(){
       if($this->loan_status == "Ongoing"){
-         return $this->payment_status;
+         return $this->payment_status ? $this->payment_status : "Current";
       }
-      return $this->loan_status ? $this->loan_status : 'Current';
+      return $this->loan_status;
    }
 
 }
