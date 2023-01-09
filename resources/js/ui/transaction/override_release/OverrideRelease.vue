@@ -269,8 +269,21 @@ export default {
 			}.bind(this));
 		},
 		todaysRelease:function(){
+			var data = {
+				date_release:this.transactionDate.date_end,
+				branch_id:this.pbranch,
+				ao_id:null,
+				center_id:null,
+				product_id:null
+			}
 			if(this.transactionDate.date_end != ''){
-				axios.post(this.baseURL() + 'api/account/releasedaccounts', {date_release:this.transactionDate.date_end, branch_id:this.pbranch})
+				axios.post(this.baseURL() + 'api/account/releasedaccounts', data,{
+					headers: {
+						'Authorization': 'Bearer ' + this.token,
+						'Content-Type': 'application/json',
+						'Accept': 'application/json'
+					}
+				})
 				.then(function (response) {
 					this.todaysReleases = response.data.data;
 				}.bind(this))
