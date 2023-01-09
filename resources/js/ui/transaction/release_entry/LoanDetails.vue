@@ -704,7 +704,9 @@ export default {
 		},
 		'loanDetails.product_id'(newValue){
 			this.setInterestRate();
-			this.fetchPromissoryNo();
+			if(!prejected){
+				this.fetchPromissoryNo();
+			}
 			this.deductionComputation = 0;
 		},
 		'loanDetails.terms'(){
