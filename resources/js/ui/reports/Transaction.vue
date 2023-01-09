@@ -381,21 +381,21 @@
 							<div class="d-flex flex-column flex-1 mr-64">
 								<div class="d-flex flex-row flex-1 mb-5">
 									<div class="d-flex flex-row justify-content-between flex-2 mr-24">
-										<span class="flex-1">TOTAL CASH RELEASES</span>
+										<span class="flex-1">TOTAL CASH PAYMENT</span>
 										<span>:</span>
 									</div>
 									<span class="flex-1">{{formatToCurrency(totalCashClientCollection)}}</span>
 								</div>
 								<div class="d-flex flex-row flex-1 mb-5">
 									<div class="d-flex flex-row justify-content-between flex-2 mr-24">
-										<span class="flex-1">TOTAL CHECK RELEASES</span>
+										<span class="flex-1">TOTAL CHECK PAYMENT</span>
 										<span>:</span>
 									</div>
 									<span class="flex-1">{{formatToCurrency(totalCheckClientCollection)}}</span>
 								</div>
 								<div class="d-flex flex-row flex-1">
 									<div class="d-flex flex-row justify-content-between flex-2 mr-24">
-										<span class="flex-1">TOTAL MEMO RELEASES</span>
+										<span class="flex-1">TOTAL MEMO PAYMENT</span>
 										<span>:</span>
 									</div>
 									<span class="flex-1">{{formatToCurrency(totalMemoClientCollection)}}</span>
@@ -432,7 +432,7 @@
 								</div>
 								<div class="d-flex flex-row flex-1 mb-5">
 									<div class="d-flex flex-row justify-content-between flex-2 mr-24">
-										<span class="flex-1">TOTAL POS RELEASES</span>
+										<span class="flex-1">TOTAL POS PAYMENT</span>
 										<span>:</span>
 									</div>
 									<span class="flex-1">{{formatToCurrency(totalPosClientCollection)}}</span>
@@ -440,7 +440,7 @@
 							</div>
 							<div class="d-flex flex-column flex-1">
 								<div class="info-display">
-									<span class="text-primary-dark">TOTAL RELEASES</span>
+									<span class="text-primary-dark">TOTAL PAYMENT</span>
 									<span class="text-primary-dark">{{formatToCurrency(totalCashClientCollection + totalCheckClientCollection + totalMemoClientCollection + totalPosClientCollection)}}</span>
 								</div>
 							</div>

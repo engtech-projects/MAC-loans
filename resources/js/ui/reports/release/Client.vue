@@ -13,7 +13,7 @@
 			<div class="d-flex flex-row align-items-center mr-24" style="flex:2">
 				<span class="mr-10">Type: </span>
 				<select v-model="filter.type" name="" id="selectProductClient" class="form-control">
-					<option value="">All Records</option>
+					<option value="all">All Records</option>
 					<option value="new">New Accounts</option>
 					<option value="center">By Center</option>
 					<option value="product">By Product</option>
@@ -284,7 +284,7 @@ export default {
 				date_from:'',
 				date_to:'',
 				branch_id:'',
-				type:'',
+				type:'all',
 				spec:'',
 				category:'client'
 			},
@@ -304,7 +304,7 @@ export default {
 			})
 			.then(function (response) {
 				this.reports = response.data.data
-				console.log(response.data);
+				// console.log(response.data);
 			}.bind(this))
 			.catch(function (error) {
 				console.log(error);
@@ -321,7 +321,7 @@ export default {
 			})
 			.then(function (response) {
 				this.dst = response.data.data
-				console.log(response.data);
+				// console.log(response.data);
 			}.bind(this))
 			.catch(function (error) {
 				console.log(error);
