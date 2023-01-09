@@ -83,7 +83,7 @@ class TransactionController extends Controller
 	}
 
 	public function paidTodayPayments(Request $request){
-		$payments = \App\Models\Payment::with('loanDetails')->where('status','paid')->whereDate('transaction_date', '=', date($request->transaction_date))->get();
+		$payments = \App\Models\Payment::with('loanDetails')->where(['status'=>'paid', 'branch_id'=>$request->branch_id])->whereDate('transaction_date', '=', date($request->transaction_date))->get();
 		return $payments;
 	}
 
