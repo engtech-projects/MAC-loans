@@ -110,7 +110,7 @@ class Reports extends Model
         $payments = Payment::where([ 'payment.status' => 'paid', 'branch_id' => $branch->branch_id ]);
 
         if( isset($filters['product_id']) ){
-            $payments = Payment::join('loan_accounts', 'loan_accounts.loan_account_id', '=', 'payment.loan_account_id');
+            $payments->join('loan_accounts', 'loan_accounts.loan_account_id', '=', 'payment.loan_account_id');
             $payments->where([ 'loan_accounts.product_id' => $filters['product_id'] ]);
         }
 
