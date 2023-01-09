@@ -101,7 +101,7 @@
 							<div class="d-flex flex-column flex-1">
 								<div class="info-display">
 									<span class="text-primary-dark">TOTAL RELEASES</span>
-									<span class="text-primary-dark">{{formatToCurrency(totalCash + totalCheck)}}</span>
+									<span class="text-primary-dark">{{formatToCurrency(totalCash + totalCheck + totalMemo)}}</span>
 								</div>
 							</div>
 							<div class="flex-2"></div>
@@ -201,11 +201,18 @@
 									</div>
 									<span class="flex-1">{{formatToCurrency(paymentSummaryTotal.branch)}}</span>
 								</div>
+								<div class="d-flex flex-row flex-1 mb-5">
+									<div class="d-flex flex-row justify-content-between flex-2 mr-24">
+										<span class="flex-1">TOTAL POS PAYMENT</span>
+										<span>:</span>
+									</div>
+									<span class="flex-1">{{formatToCurrency(paymentSummaryTotal.pos)}}</span>
+								</div>
 							</div>
 							<div class="d-flex flex-column flex-1">
 								<div class="info-display">
 									<span class="text-primary-dark">TOTAL PAYMENT</span>
-									<span class="text-primary-dark">{{formatToCurrency(paymentSummaryTotal.cash + paymentSummaryTotal.check + paymentSummaryTotal.memo)}}</span>
+									<span class="text-primary-dark">{{formatToCurrency(paymentSummaryTotal.cash + paymentSummaryTotal.check + paymentSummaryTotal.memo + paymentSummaryTotal.pos)}}</span>
 								</div>
 							</div>
 							<div class="flex-2"></div>
@@ -703,7 +710,8 @@ export default {
 			this.paymentSummaryTotal = {
 				cash:0,
 				check:0,
-				memo:0
+				memo:0,
+				pos:0
 			}
 			this.transactions.product.forEach((t,p)=>{
 				var totalRow = ['TOTAL PRODUCT', '',0,0,0,0,0,0,0,0];
