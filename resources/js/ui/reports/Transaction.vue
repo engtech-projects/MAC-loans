@@ -32,7 +32,7 @@
 								<span class="text-primary-dark">Time: {{todayTime(new Date())}} {{(new Date()).getHours() > 12? 'PM':'AM'}}</span>
 							</div>
 						</div>
-						<span class="text-center text-primary-dark text-bold font-md mb-5">Butuan Branch (001)</span>
+						<span class="text-center text-primary-dark text-bold font-md mb-5">{{branch_name + ' Branch (' + branch_code + ')'}}</span>
 						<div v-if="filter.date_from.length && filter.date_to.length" class="d-flex flex-row justify-content-center text-primary-dark">
 							<span class="mr-5">From:</span><span class="mr-16">{{filter.date_from.replaceAll('-','/')}}</span>
 							<span class="mr-5">To:</span><span>{{filter.date_to.replaceAll('-','/')}}</span>
@@ -230,7 +230,7 @@
 								<span class="text-primary-dark">Time: 11:36 AM</span>
 							</div>
 						</div>
-						<span class="text-center text-primary-dark text-bold font-md mb-5">Butuan Branch (001)</span>
+						<span class="text-center text-primary-dark text-bold font-md mb-5">{{branch_name + ' Branch (' + branch_code + ')'}}</span>
 						<div v-if="filter.date_from.length && filter.date_to.length" class="d-flex flex-row justify-content-center text-primary-dark">
 							<span class="mr-5">From:</span><span class="mr-16">{{filter.date_from.replaceAll('-','/')}}</span>
 							<span class="mr-5">To:</span><span>{{filter.date_to.replaceAll('-','/')}}</span>
@@ -476,7 +476,7 @@
 
 <script>
 export default {
-	props:['token','branch'],
+	props:['token','branch','branch_name','branch_code'],
 	data(){
 		return {
 			type:'product',
@@ -652,9 +652,7 @@ export default {
 			var amount = 0;
 			if(this.transactions.client.release){
 				this.transactions.client.release.forEach(p=>{
-					if(p.type == 'Memo'){
-						amount += p.net_proceeds;
-					}
+					amount += p.memo;
 				})
 			}
 			return amount;
@@ -711,6 +709,12 @@ export default {
 				cash:0,
 				check:0,
 				memo:0,
+				dedbal:0,
+				offsetPf:0,
+				overpayment:0,
+				discount:0,
+				cancelled:0,
+				branch:0,
 				pos:0
 			}
 			this.transactions.product.forEach((t,p)=>{
@@ -723,8 +727,11 @@ export default {
 					i=='Memo'? this.paymentSummaryTotal.memo += t.payment[i].total_payment:false;
 					i=='POS'? this.paymentSummaryTotal.pos += t.payment[i].total_payment:false;
 					if(i == 'Memo'){
-						this.paymentSummaryTotal.overpayment = t.payment[i].over;
-						this.paymentSummaryTotal.discount = t.payment[i].discount;
+						this.paymentSummaryTotal.overpayment += t.payment[i].over;
+						this.paymentSummaryTotal.discount += t.payment[i].memo["Rebates and Discount"];
+						this.paymentSummaryTotal.dedbal += t.payment[i].memo["deduct to balance"];
+						this.paymentSummaryTotal.offsetPf += t.payment[i].memo["Offset PF"];
+						this.paymentSummaryTotal.branch += t.payment[i].memo["Interbranch"];
 					}
 					var row = [];
 					row.push(!index==2?'':t.reference);
