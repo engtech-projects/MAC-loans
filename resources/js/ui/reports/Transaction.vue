@@ -729,10 +729,18 @@ export default {
 					i=='POS'? this.paymentSummaryTotal.pos += t.payment[i].total_payment:false;
 					if(i == 'Memo'){
 						this.paymentSummaryTotal.overpayment += t.payment[i].over;
-						this.paymentSummaryTotal.discount += t.payment[i].memo["Rebates and Discount"];
-						this.paymentSummaryTotal.dedbal += t.payment[i].memo["deduct to balance"];
-						this.paymentSummaryTotal.offsetPf += t.payment[i].memo["Offset PF"];
-						this.paymentSummaryTotal.branch += t.payment[i].memo["Interbranch"];
+						if(t.payment[i].memo["Rebates and Discount"]){
+							this.paymentSummaryTotal.discount += t.payment[i].memo["Rebates and Discount"];
+						}
+						if(t.payment[i].memo["deduct to balance"]){
+							this.paymentSummaryTotal.dedbal += t.payment[i].memo["deduct to balance"];
+						}
+						if(t.payment[i].memo["Offset PF"]){
+							this.paymentSummaryTotal.offsetPf += t.payment[i].memo["Offset PF"];
+						}
+						if(t.payment[i].memo["Interbranch"]){
+							this.paymentSummaryTotal.branch += t.payment[i].memo["Interbranch"];
+						}
 					}
 					var row = [];
 					row.push(!refIndex==0?'':t.reference);
