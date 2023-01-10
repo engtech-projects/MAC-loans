@@ -29,9 +29,9 @@ class TestDataSeeder extends Seeder
                 'updated_at' => Carbon::now(),
             ],
         ]);
-
         DB::table('product')->insert([
             [
+                'product_id' => '0',
                 'product_code' => '000',
                 'product_name' => 'Unknown Product',
                 'interest_rate' => '0',
@@ -39,6 +39,8 @@ class TestDataSeeder extends Seeder
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ],
+        ]);
+        DB::table('product')->insert([
             [
                 'product_code' => '001',
                 'product_name' => 'Micro Individual',
