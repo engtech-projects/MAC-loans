@@ -227,9 +227,9 @@ class Reports extends Model
                             $data[$key]['payment'][$type]['interest'] += $payment->interest;
                             $data[$key]['payment'][$type]['pdi'] += $payment->pdi;
                             $data[$key]['payment'][$type]['over'] += $payment->over_payment;
-                            $data[$key]['payment'][$type]['discount'] += null;
+                            $data[$key]['payment'][$type]['discount'] += $payment->rebates;
                             $data[$key]['payment'][$type]['total_payment'] += $payment->amount_applied;
-                            $data[$key]['payment'][$type]['net_int'] += null;
+                            $data[$key]['payment'][$type]['net_int'] += $payment->rebates;
                             $data[$key]['payment'][$type]['vat'] += $payment->vat;
                             if($payment->memo_type){
                                 if(!isset($data[$key]['payment'][$type]["memo"][$payment->memo_type])){
@@ -296,9 +296,9 @@ class Reports extends Model
                 'interest' => $payment->interest,
                 'pdi' => $payment->pdi,
                 'over' => $payment->over_payment,
-                'discount' => null,
+                'discount' => $payment->rebates,
                 'total_payment' => $payment->amount_applied,
-                'net_int' => null,
+                'net_int' => $payment->interest,
                 'vat' => $payment->vat,
                 'memo_type' => $payment->memo_type
             ];
@@ -387,15 +387,11 @@ class Reports extends Model
     			break;
 
             case 'dst':
-                $type = $filters['type'];
-                if( $type == 'new' ){
-                    $filters['cycle_no'] = 1;
-                }
                 return $this->getReleaseByDST($filters);
                 break;
 
             case 'insurance':
-            return $this->releaseInsurance($filters);
+                return $this->releaseInsurance($filters);
                 break;
 
     		default:
@@ -406,16 +402,16 @@ class Reports extends Model
 
     public function getReleaseByDST($filters) {
         $accounts = $this->getLoanAccounts($filters);
-        $releaseSummary = [];
-        foreach ($accounts as $key => $value) {
-
-            $releaseSummary[$key]['cycle_no'] = $value->cycle_no;
-            $releaseSummary[$key]['term'] = $value->terms;
-            $releaseSummary[$key]['loan_amount'] = $value->loan_amount;
+        // $branches = Branch::get();
+        $dstSummary = [];
+        foreach ($accounts as $value) {
+            dd($value);
+            $dstSummary[$value->terms]['term'] = $value->terms;
+            $dstSummary[$value->terms][$value->branch->id] = $value->loan_amount;
 
         }
 
-        return $releaseSummary;
+        return $dstSummary;
     }
 
     public function getReleaseByAccountOfficer($filters) {
