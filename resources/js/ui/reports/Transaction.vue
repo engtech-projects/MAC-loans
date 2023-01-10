@@ -50,7 +50,7 @@
 								<th>Insurance</th>
 								<th>Notarial</th>
 								<th>Affidavit</th>
-								<th>Deduct Bal</th>
+								<th>Memo</th>
 								<th>Prepaid</th>
 								<th>Net Proceeds</th>
 							</thead>
@@ -720,6 +720,7 @@ export default {
 			this.transactions.product.forEach((t,p)=>{
 				var totalRow = ['TOTAL PRODUCT', '',0,0,0,0,0,0,0,0];
 				var index = 2;
+				var refIndex = 0;
 				for(var i in t.payment){
 					index = 2
 					i=='Cash Payment'? this.paymentSummaryTotal.cash += t.payment[i].total_payment:false;
@@ -734,7 +735,8 @@ export default {
 						this.paymentSummaryTotal.branch += t.payment[i].memo["Interbranch"];
 					}
 					var row = [];
-					row.push(!index==2?'':t.reference);
+					row.push(!refIndex==0?'':t.reference);
+					refIndex++
 					row.push(i.toUpperCase());
 					row.push(this.formatToCurrency(t.payment[i].principal));
 					totalRow[index] += t.payment[i].principal;

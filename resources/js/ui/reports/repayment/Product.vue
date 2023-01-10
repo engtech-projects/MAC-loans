@@ -4,11 +4,11 @@
 			<span class="font-lg text-primary-dark" style="flex:3">Transaction</span>
 			<div class="d-flex flex-row align-items-center mr-24" style="flex:2">
 				<span class="mr-10">From: </span>
-				<input type="date" class="form-control">
+				<input @change="filter.date_from&&filter.date_to?fetchReports():0" v-model="filter.date_from" type="date" class="form-control">
 			</div>
 			<div class="d-flex flex-row align-items-center" style="flex:2">
 				<span class="mr-10">To: </span>
-				<input type="date" class="form-control">
+				<input @change="filter.date_from&&filter.date_to?fetchReports():0" v-model="filter.date_to" type="date" class="form-control">
 			</div>
 			<div class="d-flex flex-row align-items-center mr-24 hide" style="flex:2">
 				<span class="mr-10">Type: </span>
@@ -42,17 +42,132 @@
 						<div class="flex-1"></div>
 						<span class="font-30 text-bold text-primary-dark">SUMMARY RELEASE AND PAYMENT BY PRODUCT</span>
 						<div class="flex-1" style="padding-left:24px">
-							<span class="text-primary-dark mr-10">Tuesday 12/21/2021</span>
-							<span class="text-primary-dark">Time: 11:36 AM</span>
+							<span class="text-primary-dark mr-10">{{dateFullDay(new Date())}} {{dateToYMD(new Date()).split('-').join('/')}}</span>
+							<span class="text-primary-dark">Time: {{todayTime(new Date())}} {{(new Date()).getHours() > 12? 'PM':'AM'}}</span>
 						</div>
 					</div>
-					<span class="text-center text-primary-dark text-bold font-md mb-5">Butuan Branch (001)</span>
-					<div class="d-flex flex-row justify-content-center text-primary-dark">
-						<span class="mr-5">From:</span><span class="mr-16">12/14/2021</span>
-						<span class="mr-5">To:</span><span>12/15/2021</span>
+					<span class="text-center text-primary-dark text-bold font-md mb-5">{{branch.branch_name + ' Branch (' + branch.branch_code + ')'}}</span>
+					<div v-if="filter.date_from&&filter.date_to" class="d-flex flex-row justify-content-center text-primary-dark">
+						<span class="mr-5">From:</span><span class="mr-16">{{dateToMDY2(new Date(filter.date_from)).split('-').join('/')}}</span>
+						<span class="mr-5">To:</span><span>{{dateToMDY2(new Date(filter.date_to)).split('-').join('/')}}</span>
+					</div>
+					<div v-else class="d-flex flex-row justify-content-center text-primary-dark">
+						<span class="mr-5">From:</span><span class="mr-16">---</span>
+						<span class="mr-5">To:</span><span>---</span>
 					</div>
 				</div>
-				<section class="d-flex flex-column mb-72">
+				<section class="d-flex flex-column flex-1">
+					<span class="text-bold bg-skyblue" style="padding:2px 5px;">PAYMENT SUMMARY</span>
+						<table class="table td-nb table-thin">
+							<thead>
+								<th>Reference</th>
+								<th>Payment Type</th>
+								<th>Principal</th>
+								<th>Interest</th>
+								<th>PD Int.</th>
+								<th>Over</th>
+								<th>Discount</th>
+								<th>Total Payment</th>
+								<th>Net Int.</th>
+								<th>VAT</th>
+							</thead>
+							<tbody>
+								<tr :class="rowBorders(p[0])" v-for="p,i in paymentSummary" :key="i">
+									<td v-for="j,k in p" :key="k">{{p[0]=='TOTAL PRODUCT'&&k>1?formatToCurrency(j):j}}</td>
+								</tr>
+							</tbody>
+						</table>
+
+						<div class="d-flex flex-row bg-skyblue p-10 align-items-center mb-72">
+							<div class="d-flex flex-column flex-1 mr-64">
+								<div class="d-flex flex-row flex-1 mb-5">
+									<div class="d-flex flex-row justify-content-between flex-2 mr-24">
+										<span class="flex-1">TOTAL CASH PAYMENT</span>
+										<span>:</span>
+									</div>
+									<span class="flex-1">{{formatToCurrency(paymentSummaryTotal.cash)}}</span>
+								</div>
+								<div class="d-flex flex-row flex-1 mb-5">
+									<div class="d-flex flex-row justify-content-between flex-2 mr-24">
+										<span class="flex-1">TOTAL CHECK PAYMENT</span>
+										<span>:</span>
+									</div>
+									<span class="flex-1">{{formatToCurrency(paymentSummaryTotal.check)}}</span>
+								</div>
+								<!-- <div class="d-flex flex-row flex-1 mb-5">
+									<div class="d-flex flex-row justify-content-between flex-2 mr-24">
+										<span class="flex-1">TOTAL POS PAYMENT</span>
+										<span>:</span>
+									</div>
+									<span class="flex-1">{{formatToCurrency(paymentSummaryTotal.pos)}}</span>
+								</div> -->
+								<div class="d-flex flex-row flex-1">
+									<div class="d-flex flex-row justify-content-between flex-2 mr-24">
+										<span class="flex-1">TOTAL MEMO PAYMENT</span>
+										<span>:</span>
+									</div>
+									<span class="flex-1">{{formatToCurrency(paymentSummaryTotal.memo)}}</span>
+								</div>
+								<div class="d-flex flex-row flex-1">
+									<div class="d-flex flex-row justify-content-between flex-2 mr-24">
+										<span class="flex-1 pl-24">DED BALANCE</span>
+										<span>:</span>
+									</div>
+									<span class="flex-1">{{formatToCurrency(paymentSummaryTotal.dedbal)}}</span>
+								</div>
+								<div class="d-flex flex-row flex-1">
+									<div class="d-flex flex-row justify-content-between flex-2 mr-24">
+										<span class="flex-1 pl-24">OFFSET PF</span>
+										<span>:</span>
+									</div>
+									<span class="flex-1">{{formatToCurrency(paymentSummaryTotal.offsetPf)}}</span>
+								</div>
+								<!-- <div class="d-flex flex-row flex-1">
+									<div class="d-flex flex-row justify-content-between flex-2 mr-24">
+										<span class="flex-1 pl-24">OVER PAYMENT</span>
+										<span>:</span>
+									</div>
+									<span class="flex-1">{{formatToCurrency(paymentSummaryTotal.overpayment)}}</span>
+								</div> -->
+								<div class="d-flex flex-row flex-1">
+									<div class="d-flex flex-row justify-content-between flex-2 mr-24">
+										<span class="flex-1 pl-24">DISCOUNT</span>
+										<span>:</span>
+									</div>
+									<span class="flex-1">{{formatToCurrency(paymentSummaryTotal.discount)}}</span>
+								</div>
+								<!-- <div class="d-flex flex-row flex-1">
+									<div class="d-flex flex-row justify-content-between flex-2 mr-24">
+										<span class="flex-1 pl-24">CANCELLED</span>
+										<span>:</span>
+									</div>
+									<span class="flex-1">{{formatToCurrency(paymentSummaryTotal.cancelled)}}</span>
+								</div> -->
+								<div class="d-flex flex-row flex-1">
+									<div class="d-flex flex-row justify-content-between flex-2 mr-24">
+										<span class="flex-1 pl-24">BRANCH</span>
+										<span>:</span>
+									</div>
+									<span class="flex-1">{{formatToCurrency(paymentSummaryTotal.branch)}}</span>
+								</div>
+								<div class="d-flex flex-row flex-1 mb-5">
+									<div class="d-flex flex-row justify-content-between flex-2 mr-24">
+										<span class="flex-1">TOTAL POS PAYMENT</span>
+										<span>:</span>
+									</div>
+									<span class="flex-1">{{formatToCurrency(paymentSummaryTotal.pos)}}</span>
+								</div>
+							</div>
+							<div class="d-flex flex-column flex-1">
+								<div class="info-display">
+									<span class="text-primary-dark">TOTAL PAYMENT</span>
+									<span class="text-primary-dark">{{formatToCurrency(paymentSummaryTotal.cash + paymentSummaryTotal.check + paymentSummaryTotal.memo + paymentSummaryTotal.pos)}}</span>
+								</div>
+							</div>
+							<div class="flex-2"></div>
+						</div>
+					</section>
+				<!-- <section class="d-flex flex-column mb-72">
 					<span class="text-bold bg-yellow-light" style="padding:2px 5px;">RELEASES SUMMARY</span>
 					<table class="table td-nb table-thin">
 						<thead>
@@ -168,7 +283,7 @@
 						</div>
 						<div class="flex-2"></div>
 					</div>
-				</section>
+				</section> -->
 				
 			</section>
 			<div class="d-flex mb-64 mt-auto">
@@ -187,13 +302,141 @@
 
 <script>
 export default {
+	props:['pbranch','token'],
+	data(){
+		return {
+			paymentSummaryTotal:{
+				cash:0,
+				check:0,
+				memo:0,
+				dedbal:0,
+				offsetPf:0,
+				overpayment:0,
+				discount:0,
+				cancelled:0,
+				branch:0,
+				pos:0
+			},
+			filter:{
+				date_from:null,
+				date_to:null,
+				type:'product',
+				branch_id:''
+			},
+			branch:{
+				branch_id:null,
+				branch_name:'',
+				branch_code:''
+			},
+			reports:[],
+		}
+	},
 	methods:{
+		async fetchReports(){
+			await axios.post(this.baseURL() + 'api/report/repayment', this.filter, {
+				headers: {
+					'Authorization': 'Bearer ' + this.token,
+					'Content-Type': 'application/json',
+					'Accept': 'application/json'
+				}
+			})
+			.then(function (response) {
+				this.reports = response.data
+				console.log(response.data);
+			}.bind(this))
+			.catch(function (error) {
+				console.log(error);
+			}.bind(this));
+		},
 		print:function(){
 			var content = document.getElementById('printContent').innerHTML;
 			var target = document.querySelector('.to-print');
 			target.innerHTML = content;
 			window.print();
 		},
+		rowBorders:function(str){
+			if(str == ' '){
+				return 'border-cell-dashed';
+			}else if(str == '  '){
+				return 'border-cell-gray-7-dark'
+			}else if(str == 'TOTAL PRODUCT'){
+				return 'text-bold'
+			}
+		},
+	},
+	computed:{
+		paymentSummary:function(){
+			var result = [];
+			this.paymentSummaryTotal = {
+				cash:0,
+				check:0,
+				memo:0,
+				dedbal:0,
+				offsetPf:0,
+				overpayment:0,
+				discount:0,
+				cancelled:0,
+				branch:0,
+				pos:0
+			}
+			this.reports.forEach((t,p)=>{
+				var totalRow = ['TOTAL PRODUCT', '',0,0,0,0,0,0,0,0];
+				var index = 2;
+				var refIndex = 0;
+				for(var i in t.payment){
+					index = 2
+					i=='Cash Payment'? this.paymentSummaryTotal.cash += t.payment[i].total_payment:false;
+					i=='Check Payment'? this.paymentSummaryTotal.check += t.payment[i].total_payment:false;
+					i=='Memo'? this.paymentSummaryTotal.memo += t.payment[i].total_payment:false;
+					i=='POS'? this.paymentSummaryTotal.pos += t.payment[i].total_payment:false;
+					if(i == 'Memo'){
+						// this.paymentSummaryTotal.overpayment += t.payment[i].over;
+						// this.paymentSummaryTotal.discount += t.payment[i].memo["Rebates and Discount"];
+						// this.paymentSummaryTotal.dedbal += t.payment[i].memo["deduct to balance"];
+						// this.paymentSummaryTotal.offsetPf += t.payment[i].memo["Offset PF"];
+						// this.paymentSummaryTotal.branch += t.payment[i].memo["Interbranch"];
+					}
+					var row = [];
+					row.push(!refIndex==0?'':t.reference);
+					refIndex++
+					row.push(i.toUpperCase());
+					row.push(this.formatToCurrency(t.payment[i].principal));
+					totalRow[index] += t.payment[i].principal;
+					index++;
+					row.push(this.formatToCurrency(t.payment[i].interest));
+					totalRow[index] += t.payment[i].interest;
+					index++;
+					row.push(this.formatToCurrency(t.payment[i].pdi));
+					totalRow[index] += t.payment[i].pdi;
+					index++;
+					row.push(this.formatToCurrency(t.payment[i].over));
+					totalRow[index] += t.payment[i].over;
+					index++;
+					row.push(this.formatToCurrency(t.payment[i].discount));
+					totalRow[index] += t.payment[i].discount;
+					index++;
+					row.push(this.formatToCurrency(t.payment[i].total_payment));
+					totalRow[index] += t.payment[i].total_payment;
+					index++;
+					row.push(this.formatToCurrency(t.payment[i].net_int));
+					totalRow[index] += t.payment[i].net_int;
+					index++;
+					row.push(this.formatToCurrency(t.payment[i].vat));
+					totalRow[index] += t.payment[i].vat;
+					result.push(row);
+				}
+				if(index != 2){
+					result.push([' ','','','','','','','','',''])
+					result.push(totalRow)
+					result.push(['  ','','','','','','','','',''])
+				}
+			})
+			return result;
+		},
+	},
+	mounted(){
+		this.branch = JSON.parse(this.pbranch);
+		this.filter.branch_id = this.branch.branch_id;
 	}
 }
 </script>
