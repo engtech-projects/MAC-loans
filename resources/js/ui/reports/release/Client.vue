@@ -352,7 +352,7 @@ export default {
 	watch:{
 		filter:{
 			handler(val){
-				if(val.branch_id&&val.date_from&&val.date_to&&val.category&&val.spec&&val.type){
+				if(val.branch_id&&val.date_from&&val.date_to&&val.category&&val.type){
 					this.fetchReports();
 				}
 			},

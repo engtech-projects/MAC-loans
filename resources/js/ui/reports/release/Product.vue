@@ -65,7 +65,7 @@
 								<th>Insurance</th>
 								<th>Notarial</th>
 								<th>Affidavit</th>
-								<th>Deduct Bal</th>
+								<th>Memo</th>
 								<th>Prepaid</th>
 								<th>Net Proceeds</th>
 							</thead>
