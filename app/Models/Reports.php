@@ -229,7 +229,7 @@ class Reports extends Model
                             $data[$key]['payment'][$type]['over'] += $payment->over_payment;
                             $data[$key]['payment'][$type]['discount'] += $payment->rebates;
                             $data[$key]['payment'][$type]['total_payment'] += $payment->amount_applied;
-                            $data[$key]['payment'][$type]['net_int'] += $payment->rebates;
+                            $data[$key]['payment'][$type]['net_int'] += $payment->interest;
                             $data[$key]['payment'][$type]['vat'] += $payment->vat;
                             if($payment->memo_type){
                                 if(!isset($data[$key]['payment'][$type]["memo"][$payment->memo_type])){
@@ -402,12 +402,30 @@ class Reports extends Model
 
     public function getReleaseByDST($filters) {
         $accounts = $this->getLoanAccounts($filters);
-        // $branches = Branch::get();
+        $branches = Branch::where("status","active")->get();
+        $branchIds = [];
+        foreach($branches as $brnch){
+            if(!isset( $branchIds[$brnch->branch_code] )){
+                 $branchIds[$brnch->branch_code] = $brnch->branch_id;
+            }
+        }
         $dstSummary = [];
         foreach ($accounts as $value) {
-            dd($value);
+
+            if(!isset($dstSummary[$value->terms])){
+                $dstSummary[$value->terms] = [];
+            }
+            if(!isset($dstSummary[$value->terms][$branchIds[$value->branch_code]])){
+                $dstSummary[$value->terms][$branchIds[$value->branch_code]] = 0;
+            }
+            if(!isset($dstSummary[$value->terms]['total_amount'])){
+                $dstSummary[$value->terms]['total_amount'] = 0;
+            }
             $dstSummary[$value->terms]['term'] = $value->terms;
-            $dstSummary[$value->terms][$value->branch->id] = $value->loan_amount;
+            $dstSummary[$value->terms][$branchIds[$value->branch_code]] += $value->loan_amount;
+            $dstSummary[$value->terms]['total_amount'] += $value->loan_amount;
+            $dstSummary[$value->terms]['amount'] = $value->terms <= 360 ? round($dstSummary[$value->terms]['total_amount']*1.5/200*$value->terms/365 , 2) : round($dstSummary[$value->terms]['total_amount'] *1.5/200);
+            dd($dstSummary);
 
         }
 
