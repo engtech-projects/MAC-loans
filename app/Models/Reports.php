@@ -404,9 +404,13 @@ class Reports extends Model
         $accounts = $this->getLoanAccounts($filters);
         $branches = Branch::where("status","active")->get();
         $branchIds = [];
+        $branchId2 = [];
         foreach($branches as $brnch){
             if(!isset( $branchIds[$brnch->branch_code] )){
                  $branchIds[$brnch->branch_code] = $brnch->branch_id;
+            }
+            if(!isset( $branchId2[$brnch->branch_id] )){
+                 $branchId2[$brnch->branch_id] = 0;
             }
         }
         $dstSummary = [];
@@ -414,15 +418,13 @@ class Reports extends Model
 
             if(!isset($dstSummary[$value->terms])){
                 $dstSummary[$value->terms] = [];
-            }
-            if(!isset($dstSummary[$value->terms][$branchIds[$value->branch_code]])){
-                $dstSummary[$value->terms][$branchIds[$value->branch_code]] = 0;
+                $dstSummary[$value->terms]['branches'] = $branchId2;
             }
             if(!isset($dstSummary[$value->terms]['total_amount'])){
                 $dstSummary[$value->terms]['total_amount'] = 0;
             }
             $dstSummary[$value->terms]['term'] = $value->terms;
-            $dstSummary[$value->terms][$branchIds[$value->branch_code]] += $value->loan_amount;
+            $dstSummary[$value->terms]['branches'][$branchIds[$value->branch_code]] += $value->loan_amount;
             $dstSummary[$value->terms]['total_amount'] += $value->loan_amount;
             $dstSummary[$value->terms]['amount'] = $value->terms <= 360 ? round($dstSummary[$value->terms]['total_amount']*1.5/200*$value->terms/365 , 2) : round($dstSummary[$value->terms]['total_amount'] *1.5/200);
             dd($dstSummary);
