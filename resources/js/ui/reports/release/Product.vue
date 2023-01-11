@@ -79,7 +79,7 @@
 									<td>{{formatToCurrency(a.release.insurance)}}</td>
 									<td>{{formatToCurrency(a.release.notarial_fee)}}</td>
 									<td>{{formatToCurrency(a.release.affidavit_fee)}}</td>
-									<td>{{formatToCurrency(a.release.total_deduction)}}</td>
+									<td>{{formatToCurrency(a.release.memo)}}</td>
 									<td>{{formatToCurrency(a.release.prepaid_interest)}}</td>
 									<td>{{formatToCurrency(a.release.net_proceeds)}}</td>
 								</tr>
