@@ -22,8 +22,10 @@
 			</div>
 			<div class="d-flex flex-row align-items-center" style="flex:2">
 				<span class="mr-10">Spec: </span>
-				<select v-model="filter.spec" name="" id="selectProductClient" class="form-control">
-					<option v-for="p in products" :key="p.product_id" :value="p.product_id">{{p.product_name}}</option>
+				<select v-if="filter.type=='all'||filter.type=='new'" disabled v-model="filter.spec" name="" id="selectProductClient" class="form-control">
+				</select>
+				<select v-else v-model="filter.spec" name="" id="selectProductClient" class="form-control">
+					<option v-for="p in filteredProducts" :key="p.product_id" :value="p.product_id">{{p.product_name}}</option>
 				</select>
 			</div>
 		</div>
@@ -361,7 +363,13 @@ export default {
 	},
 	computed:{
 		release:function(){
-			return this.reports.release?this.reports.release:[];
+			if(this.reports.release){
+				return this.filter.type=='new'?this.reports.release.filter(r=>r.cycle_no==1):this.reports.release;
+			}
+			return [];
+		},
+		filteredProducts:function(){
+			return this.products.filter(p=>p.status=='active');
 		},
 		total:function(){
 			var row = [0,0,0,0,0,0,0,0,0];
@@ -372,7 +380,7 @@ export default {
 				row[3] += r.insurance;
 				row[4] += r.notarial_fee;
 				row[5] += r.affidavit_fee;
-				row[6] += r.deductions;
+				row[6] += r.deduction;
 				row[7] += r.prepaid_interest;
 				row[8] += r.net_proceeds;
 			});
@@ -382,7 +390,7 @@ export default {
 			var amount = 0;
 			this.release.forEach(r=>{
 				if(r.type == 'Cash'){
-					amount+=r.amount_loan;
+					amount+=r.net_proceeds;
 				}
 			})
 			return amount;
@@ -391,7 +399,7 @@ export default {
 			var amount = 0;
 			this.release.forEach(r=>{
 				if(r.type == 'Check'){
-					amount+=r.amount_loan;
+					amount+=r.net_proceeds;
 				}
 			})
 			return amount;
@@ -399,9 +407,7 @@ export default {
 		totalMemo:function(){
 			var amount = 0;
 			this.release.forEach(r=>{
-				if(r.type == 'Memo'){
-					amount+=r.amount_loan;
-				}
+				amount+=r.memo;
 			})
 			return amount;
 		}

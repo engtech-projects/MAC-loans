@@ -46,7 +46,7 @@
 							<span class="text-primary-dark">Time: 11:36 AM</span>
 						</div>
 					</div>
-					<span class="text-center text-primary-dark text-bold font-md mb-5">Butuan Branch (001)</span>
+					<span class="text-center text-primary-dark text-bold font-md mb-5">{{branch.branch_name + ' Branch (' + branch.branch_code + ')'}}</span>
 					<div class="d-flex flex-row justify-content-center text-primary-dark">
 						<span class="mr-5">From:</span><span class="mr-16">12/14/2021</span>
 						<span class="mr-5">To:</span><span>12/15/2021</span>

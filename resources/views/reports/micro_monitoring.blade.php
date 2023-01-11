@@ -11,7 +11,7 @@
 			</div>
 			<div class="d-flex flex-row align-items-start">
 				@include('_includes/reportsnav')
-				<reports-micromonitoring token="{{Session::get('token')}}" branch="{{Session::get('branch')->branch_id}}"></reports-micromonitoring>
+				<reports-micromonitoring token="{{Session::get('token')}}" branch="{{Session::get('branch')->branch_id}}" branch_name="{{Session::get('branch')->branch_name}}" branch_code="{{Session::get('branch')->branch_code}}"></reports-micromonitoring>
 			</div>
 		</div>
     </section>

@@ -24,7 +24,7 @@
 						<span class="text-primary-dark">Time: {{todayTime(new Date())}} {{(new Date()).getHours() > 12? 'PM':'AM'}}</span>
 					</div>
 				</div>
-				<span class="text-center text-primary-dark text-bold font-md mb-5">Butuan Branch (001)</span>
+				<span class="text-center text-primary-dark text-bold font-md mb-5">{{branch_name + ' Branch (' + branch_code + ')'}}</span>
 				<div class="d-flex flex-row justify-content-center text-primary-dark">
 					<span class="mr-16">{{this.dateToFullMonth(new Date(filter.date)) + ' ' + new Date(filter.date).getFullYear()}}</span>
 				</div>
@@ -99,7 +99,7 @@
 
 <script>
 export default {
-	props:['token', 'branch'],
+	props:['token', 'branch', 'branch_name', 'branch_code'],
 	data(){
 		return {
 			transactions:{schedule:[],group:[],individual:[]},
@@ -242,7 +242,7 @@ export default {
 	},
 	mounted(){
 		this.filter.branch_id = this.branch;
-		this.filter.date = '2022-11';
+		this.filter.date = this.dateToYM(new Date);
 	}
 }
 </script>

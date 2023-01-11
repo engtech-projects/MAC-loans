@@ -11,8 +11,8 @@
 				<input v-model="filter.date_to" type="date" class="form-control">
 			</div>
 			<div class="d-flex flex-row align-items-center mr-24" style="flex:2">
-				<span class="mr-10">Type: </span>
-				<select v-model="filter.type" name="" id="selectProductClient" class="form-control">
+				<span class="mr-10">AO: </span>
+				<select v-model="filter.account_officer" name="" id="selectProductClient" class="form-control">
 					<option value="all">All Records</option>
 					<option v-for="a in ao" :key="a.ao_id" :value="a.ao_id">{{a.name}}</option>
 				</select>
@@ -161,7 +161,7 @@
 
 <script>
 export default {
-	props:['token'],
+	props:['token', 'branch_id'],
 	data(){
 		return {
 			ao:[],
@@ -169,7 +169,8 @@ export default {
 			filter:{
 				date_from: null,
 				date_to: null,
-				type:'all',
+				account_officer:'all',
+				branch_id:'',
 				category:'account_officer',
 			},
 		}
@@ -186,7 +187,6 @@ export default {
 			.then(function (response) {
 				this.accounts = [];
 				this.accounts = response.data.data;
-				console.log(response.data);
 			}.bind(this))
 			.catch(function (error) {
 				console.log(error);
@@ -250,7 +250,7 @@ export default {
 	watch:{
 		filter: {
 			handler(val){
-				if(val.date_from && val.date_to && val.type){
+				if(val.date_from && val.date_to && val.account_officer){
 					this.fetchAccounts();
 				}
 			},
@@ -318,6 +318,7 @@ export default {
 		}
 	},
 	mounted(){
+		this.filter.branch_id = this.branch_id;
 		this.fetchOfficers();
 	}
 }
