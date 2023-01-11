@@ -936,7 +936,8 @@ class Reports extends Model
                 $data[$weekDay][$centerVal->center]["all"]["account_officer"]  = "test_data_api_result_ACCOUNT_OFFICER";
                 $data[$weekDay][$centerVal->center]["all"]["area_of_operation"]  = "test_data_api_result_AREA_OPERATION";
                 $no_of_clients = LoanAccount::join("product", 'loan_accounts.product_id', '=', 'product.product_id')
-                    ->where(["loan_accounts.center_id"=>$centerVal->center_id, "product.product_name"=>'micro group'])
+                    ->join("branch", "branch.branch_code", "loan_accounts.branch_code")
+                    ->where(["loan_accounts.center_id"=>$centerVal->center_id, "product.product_name"=>'micro group', "branch.branch_id"=>$filters["branch_id"]])
                     ->groupBy("loan_accounts.center_id")
                     ->select([DB::raw("ifnull(count(loan_accounts.loan_account_id),0) as no_of_clients")])
                     ->first();
@@ -945,7 +946,8 @@ class Reports extends Model
                 $data[$weekDay][$centerVal->center]["all"]["end"] = $monthEnd;
                 $monthPayments = Payment::join("loan_accounts", 'payment.loan_account_id', '=', 'loan_accounts.loan_account_id')
                     ->join("product", 'loan_accounts.product_id', '=', 'product.product_id')
-                    ->where(["loan_accounts.center_id"=>$centerVal->center_id, "product.product_name"=>'micro group'])
+                    ->join("branch", "branch.branch_code", "loan_accounts.branch_code")
+                    ->where(["loan_accounts.center_id"=>$centerVal->center_id, "product.product_name"=>'micro group', "branch.branch_id"=>$filters["branch_id"]])
                     ->whereDate('payment.transaction_date', '>=', $monthStart)
                     ->whereDate('payment.transaction_date', '<=', $monthEnd)
                     ->groupBy("loan_accounts.loan_account_id")
@@ -964,7 +966,8 @@ class Reports extends Model
                     $data[$weekDay][$centerVal->center]["weeklyData"][$week]["end"] = $weekData['end'];
                     $loanAccounts = Payment::join("loan_accounts", 'payment.loan_account_id', '=', 'loan_accounts.loan_account_id')
                         ->join("product", 'loan_accounts.product_id', '=', 'product.product_id')
-                        ->where(["loan_accounts.center_id"=>$centerVal->center_id, "product.product_name"=>'micro group'])
+                        ->join("branch", "branch.branch_code", "loan_accounts.branch_code")
+                        ->where(["loan_accounts.center_id"=>$centerVal->center_id, "product.product_name"=>'micro group', "branch.branch_id"=>$filters["branch_id"]])
                         ->whereDate('payment.transaction_date', '>=', $weekData['start'])
                         ->whereDate('payment.transaction_date', '<=', $weekData['end'])
                         ->groupBy("loan_accounts.loan_account_id")
@@ -985,7 +988,8 @@ class Reports extends Model
         $data = Payment::join("loan_accounts", 'payment.loan_account_id', '=', 'loan_accounts.loan_account_id')
             ->join("center", "loan_accounts.center_id", "=", "center.center_id")
             ->join("product", 'loan_accounts.product_id', '=', 'product.product_id')
-            ->where(["product.product_name"=>'micro individual'])
+            ->join("branch", "branch.branch_code", "loan_accounts.branch_code")
+            ->where(["product.product_name"=>'micro individual',"branch.branch_id"=>$filters["branch_id"]])
             ->whereDate('payment.transaction_date', '>=', $monthStart)
             ->whereDate('payment.transaction_date', '<=', $monthEnd)
             ->groupBy("loan_accounts.borrower_id", "loan_accounts.center_id", "center.center", "center.day_sched", "loan_accounts.day_schedule")
@@ -996,7 +1000,13 @@ class Reports extends Model
             foreach($weeksAndDays as $week => $weekData){
                 $loanAccounts = Payment::join("loan_accounts", 'payment.loan_account_id', '=', 'loan_accounts.loan_account_id')
                     ->join("product", 'loan_accounts.product_id', '=', 'product.product_id')
-                    ->where(["loan_accounts.center_id"=>$paymentData['center_id'], "loan_accounts.borrower_id"=>$paymentData['borrower_id'], "product.product_name"=>'micro individual'])
+                    ->join("branch", "branch.branch_code", "loan_accounts.branch_code")
+                    ->where([
+                        "loan_accounts.center_id"=>$paymentData['center_id'],
+                        "loan_accounts.borrower_id"=>$paymentData['borrower_id'],
+                        "product.product_name"=>"micro individual",
+                        "branch.branch_id"=>$filters["branch_id"]
+                        ])
                     ->whereDate('payment.transaction_date', '>=', $weekData['start'])
                     ->whereDate('payment.transaction_date', '<=', $weekData['end'])
                     ->groupBy("loan_accounts.borrower_id", "loan_accounts.center_id")
