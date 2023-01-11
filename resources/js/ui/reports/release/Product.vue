@@ -65,7 +65,7 @@
 								<th>Insurance</th>
 								<th>Notarial</th>
 								<th>Affidavit</th>
-								<th>Memo</th>
+								<th>Deduct Bal</th>
 								<th>Prepaid</th>
 								<th>Net Proceeds</th>
 							</thead>
@@ -108,7 +108,7 @@
 									<td>{{formatToCurrency(total('insurance'))}}</td>
 									<td>{{formatToCurrency(total('notarial_fee'))}}</td>
 									<td>{{formatToCurrency(total('affidavit_fee'))}}</td>
-									<td>{{formatToCurrency(total('total_deduction'))}}</td>
+									<td>{{formatToCurrency(total('memo'))}}</td>
 									<td>{{formatToCurrency(total('prepaid_interest'))}}</td>
 									<td>{{formatToCurrency(total('net_proceeds'))}}</td>
 								</tr>
