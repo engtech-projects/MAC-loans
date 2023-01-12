@@ -374,7 +374,7 @@ class ReportsController extends BaseController
         // you can specify any other database version from TableType
         $header = HeaderFactory::create(TableType::DBASE_III_PLUS_NOMEMO);
         $filename = 'BIR_'.Carbon::now()->timestamp.'.dbf';
-        $filepath = 'bir_reports\\'.$filename;
+        $filepath = 'bir_reports/'.$filename;
         // $filepath = "BIR.dbf";
 
         $tableCreator = new TableCreator($filepath, $header);
@@ -454,10 +454,10 @@ class ReportsController extends BaseController
             $table->writeRecord();
         }
         $table->save()->close();
-        // $downloadfilepath = public_path($filepath);
+        $downloadfilepath = public_path($filepath);
         // return Response::download($downloadfilepath);
 
-		return $this->sendResponse(["entries"=>$taxEntries, "downloadURL"=>$filepath],"BIR Tax Report");
+		return $this->sendResponse(["entries"=>$taxEntries, "downloadURL"=>url('/'.$filepath)],"BIR Tax Report");
     }
 
 	// public function releaseByClientReports(Request $request) {
