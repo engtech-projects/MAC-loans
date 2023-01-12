@@ -572,9 +572,9 @@ class Reports extends Model
                             $data[$key]['payment'][$type]['interest'] += $payment->interest;
                             $data[$key]['payment'][$type]['pdi'] += $payment->pdi;
                             $data[$key]['payment'][$type]['over'] += $payment->over_payment;
-                            $data[$key]['payment'][$type]['discount'] += null;
+                            $data[$key]['payment'][$type]['discount'] += $payment->rebates;
                             $data[$key]['payment'][$type]['total_payment'] += $payment->amount_applied;
-                            $data[$key]['payment'][$type]['net_int'] += null;
+                            $data[$key]['payment'][$type]['net_int'] += $payment->interest;
                             $data[$key]['payment'][$type]['vat'] += $payment->vat;
                         }
 
@@ -612,11 +612,11 @@ class Reports extends Model
                 'principal' => $payment->principal,
                 'interest' => $payment->interest,
                 'pdi' => ($payment->pdi_approval_no) ? $payment->pdi : 0,
-                'overpayment' => 0,
+                'overpayment' => $payment->over_payment,
                 'rebates' => $payment->rebates,
                 'total' => $payment->amount_applied,
-                'net_interest' => 0,
-                'vat' => 0,
+                'net_interest' => $payment->interest,
+                'vat' => $payment->vat,
                 'payment_type' => $payment->payment_type
             ];
 
