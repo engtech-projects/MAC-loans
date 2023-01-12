@@ -24,8 +24,14 @@
 				<span class="mr-10">Spec: </span>
 				<select v-if="filter.type=='all'||filter.type=='new'" disabled v-model="filter.spec" name="" id="selectProductClient" class="form-control">
 				</select>
-				<select v-else v-model="filter.spec" name="" id="selectProductClient" class="form-control">
+				<select v-if="filter.type=='product'" v-model="filter.spec" name="" id="selectProductClient" class="form-control">
 					<option v-for="p in filteredProducts" :key="p.product_id" :value="p.product_id">{{p.product_name}}</option>
+				</select>
+				<select v-if="filter.type=='center'" v-model="filter.spec" name="" id="selectProductClient" class="form-control">
+					<option v-for="c in centers.filter(cc=>cc.status=='active')" :key="c.center_id" :value="c.center_id">{{c.center}}</option>
+				</select>
+				<select v-if="filter.type=='account_officer'" v-model="filter.spec" name="" id="selectProductClient" class="form-control">
+					<option v-for="a in accountOfficers.filter(aa=>aa.status=='active')" :key="a.ao_id" :value="a.ao_id">{{a.name}}</option>
 				</select>
 			</div>
 		</div>
@@ -79,7 +85,7 @@
 								<td>{{formatToCurrency(r.insurance)}}</td>
 								<td>{{formatToCurrency(r.notarial_fee)}}</td>
 								<td>{{formatToCurrency(r.affidavit_fee)}}</td>
-								<td>{{formatToCurrency(r.deduction)}}</td>
+								<td>{{formatToCurrency(r.memo)}}</td>
 								<td>{{formatToCurrency(r.prepaid_interest)}}</td>
 								<td>{{formatToCurrency(r.net_proceeds)}}</td>
 								<td>{{r.type.toUpperCase()}}</td>
@@ -292,6 +298,8 @@ export default {
 			},
 			reports:[],
 			products:[],
+			centers:[],
+			accountOfficers:[],
 			dst:[]
 		}
 	},
@@ -344,6 +352,36 @@ export default {
 				console.log(error);
 			}.bind(this));
 		},
+		async fetchCenters(){
+			await axios.get(this.baseURL() + 'api/center', {
+				headers: {
+					'Authorization': 'Bearer ' + this.token,
+					'Content-Type': 'application/json',
+					'Accept': 'application/json'
+				}
+			})
+			.then(function (response) {
+				this.centers = response.data.data;
+			}.bind(this))
+			.catch(function (error) {
+				console.log(error);
+			}.bind(this));
+		},
+		async fetchAo(){
+			await axios.get(this.baseURL() + 'api/accountofficer/', {
+				headers: {
+					'Authorization': 'Bearer ' + this.token,
+					'Content-Type': 'application/json',
+					'Accept': 'application/json'
+				}
+			})
+			.then(function (response) {
+				this.accountOfficers = response.data.data;
+			}.bind(this))
+			.catch(function (error) {
+				console.log(error);
+			}.bind(this));
+		},
 		print:function(){
 			var content = document.getElementById('printContent').innerHTML;
 			var target = document.querySelector('.to-print');
@@ -352,14 +390,23 @@ export default {
 		},
 	},
 	watch:{
+		'filter.type':function(val){
+			this.filter.spec='';
+		},
 		filter:{
 			handler(val){
-				if(val.branch_id&&val.date_from&&val.date_to&&val.category&&val.type){
-					this.fetchReports();
+				if(val.type=='all' || val.type=='new'){
+					if(val.branch_id&&val.date_from&&val.date_to&&val.category&&val.type){
+						this.fetchReports();
+					}
+				}else{
+					if(val.branch_id&&val.date_from&&val.date_to&&val.category&&val.type&&val.spec){
+						this.fetchReports();
+					}
 				}
 			},
 			deep:true
-		}
+		},
 	},
 	computed:{
 		release:function(){
@@ -380,7 +427,7 @@ export default {
 				row[3] += r.insurance;
 				row[4] += r.notarial_fee;
 				row[5] += r.affidavit_fee;
-				row[6] += r.deduction;
+				row[6] += r.memo;
 				row[7] += r.prepaid_interest;
 				row[8] += r.net_proceeds;
 			});
@@ -416,6 +463,9 @@ export default {
 		this.branch = JSON.parse(this.pbranch);
 		this.filter.branch_id = this.branch.branch_id;
 		this.fetchProducts();
+		this.fetchCenters();
+		this.fetchAo();
+		
 	}
 }
 </script>
