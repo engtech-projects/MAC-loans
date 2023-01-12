@@ -564,7 +564,7 @@ class Reports extends Model
                                     'discount' => 0,
                                     'total_payment' => 0,
                                     'net_int' => 0,
-                                    'vat' => 0
+                                    'vat' => 0,
                                 ];
                             }
 
@@ -576,6 +576,13 @@ class Reports extends Model
                             $data[$key]['payment'][$type]['total_payment'] += $payment->amount_applied;
                             $data[$key]['payment'][$type]['net_int'] += $payment->interest;
                             $data[$key]['payment'][$type]['vat'] += $payment->vat;
+                            $data[$key]['payment'][$type]['vat'] += $payment->vat;
+                            if($payment->memo_type){
+                                if(!isset($data[$key]['payment'][$type]["memo"][$payment->memo_type])){
+                                    $data[$key]['payment'][$type]["memo"][$payment->memo_type] = 0;
+                                }
+                                $data[$key]['payment'][$type]["memo"][$payment->memo_type] += $payment->amount_applied;
+                            }
                         }
 
                     }
