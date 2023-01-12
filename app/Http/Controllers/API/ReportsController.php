@@ -13,8 +13,6 @@ use XBase\Header\Column;
 use XBase\Header\HeaderFactory;
 use XBase\TableCreator;
 use XBase\TableEditor;
-// use File;
-use Response;
 
 
 class ReportsController extends BaseController
@@ -438,12 +436,11 @@ class ReportsController extends BaseController
             'type'   => FieldType::CHAR,
             'length' => 20,
         ]))
-            ->save(); //creates file
+        ->save(); //creates file
 
         $table = new TableEditor($filepath);
         $report = new Reports();
         $taxEntries = $report->birTaxReport($request);
-        // dd($taxEntries);
         foreach($taxEntries as $seqNo => $taxEntry){
             $record = $table->appendRecord();
             $record->set('TAX_MONTH', Carbon::createFromDate($request->input("date_to")));
@@ -454,9 +451,6 @@ class ReportsController extends BaseController
             $table->writeRecord();
         }
         $table->save()->close();
-        $downloadfilepath = public_path($filepath);
-        // return Response::download($downloadfilepath);
-
 		return $this->sendResponse(["entries"=>$taxEntries, "downloadURL"=>url('/'.$filepath)],"BIR Tax Report");
     }
 
