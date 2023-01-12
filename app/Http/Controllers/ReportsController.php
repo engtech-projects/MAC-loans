@@ -41,6 +41,13 @@ class ReportsController extends Controller
 		]);
 	}
 
+	public function releaseInsurance(){
+		return view('reports.release.insurance')->with([
+			'nav' => ['reports', 'insurance',''],
+			'title' => 'Reports - Release',
+		]);
+	}
+
 	public function repaymentProduct(){
 		return view('reports.repayment.product')->with([
 			'nav' => ['reports', 'repayment',''],

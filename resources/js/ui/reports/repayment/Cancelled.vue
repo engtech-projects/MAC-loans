@@ -46,7 +46,7 @@
 							<span class="text-primary-dark">Time: {{todayTime(new Date())}} {{(new Date()).getHours() > 12? 'PM':'AM'}}</span>
 						</div>
 					</div>
-					<span class="text-center text-primary-dark text-bold font-md mb-5">Butuan Branch (001)</span>
+					<span class="text-center text-primary-dark text-bold font-md mb-5">{{branch.branch_name + ' Branch (' + branch.branch_code + ')'}}</span>
 					<div class="d-flex flex-row justify-content-center text-primary-dark">
 						<span class="mr-5">From:</span><span class="mr-16">{{dateToMDY2(new Date(filter.date_from)).split('-').join('/')}}</span>
 						<span class="mr-5">To:</span><span>{{dateToMDY2(new Date(filter.date_to)).split('-').join('/')}}</span>
@@ -73,6 +73,7 @@
 							<th>Remarks</th>
 						</thead>
 						<tbody>
+							<tr v-if="!accounts.length"><td colspan="4"><i>No records found.</i></td></tr>
 							<tr v-for="(a, i) in accounts" :key="i">
 								<td>{{a.date_cancelled}}</td>
 								<td>{{a.cancelled_by}}</td>
@@ -174,20 +175,22 @@
 
 <script>
 export default {
-	props:['token'],
+	props:['token', 'pbranch'],
 	data(){
 		return {
 			filter:{
 				date_from: null,
 				date_to: null,
 				type:'cancelled',
-				branch_id:1,
+				branch_id:null,
 			},
+			branch:{},
 			accounts:[],
 		}
 	},
 	methods:{
 		fetchAccounts:function(){
+			this.filter.branch_id = this.branch.branch_id;
 			axios.post(this.baseURL() + 'api/report/repayment', this.filter, {
 			headers: {
 				'Authorization': 'Bearer ' + this.token,
@@ -197,7 +200,6 @@ export default {
 			})
 			.then(function (response) {
 				this.accounts = response.data;
-				console.log(response.data);
 			}.bind(this))
 			.catch(function (error) {
 				console.log(error);
@@ -265,6 +267,7 @@ export default {
 		}
 	},
 	mounted(){
+		this.branch = JSON.parse(this.pbranch);
 		this.total('principal');
 	}
 }

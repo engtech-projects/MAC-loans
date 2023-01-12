@@ -457,7 +457,7 @@ export default {
 				amount+=r.memo;
 			})
 			return amount;
-		}
+		},
 	},
 	mounted(){
 		this.branch = JSON.parse(this.pbranch);

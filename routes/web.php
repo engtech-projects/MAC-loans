@@ -81,6 +81,7 @@ Route::group(['middleware' => 'auth'], function (){
 	Route::get('/reports/release/product', [ReportsController::class, 'releaseProduct'])->name('reports.release.product');
 	Route::get('/reports/release/client', [ReportsController::class, 'releaseClient'])->name('reports.release.client');
 	Route::get('/reports/release/ao', [ReportsController::class, 'releaseAo'])->name('reports.release.ao');
+	Route::get('/reports/release/insurance', [ReportsController::class, 'releaseInsurance'])->name('reports.release.insurance');
 
 	Route::get('/reports/repayment/product', [ReportsController::class, 'repaymentProduct'])->name('reports.repayment.product');
 	Route::get('/reports/repayment/client', [ReportsController::class, 'repaymentClient'])->name('reports.repayment.client');

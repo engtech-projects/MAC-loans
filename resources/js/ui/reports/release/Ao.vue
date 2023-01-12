@@ -27,17 +27,17 @@
 					<div class="d-flex flex-row align-items-center">
 						<div class="flex-1 d-flex flex-column">
 							<span>Account Officer</span>
-							<span v-if="filter.type!='all'" class="text-bold">{{accountOfficer}}</span>
-							<span v-if="filter.type=='all'" class="text-bold">All Records</span>
+							<span v-if="filter.account_officer!='all'" class="text-bold">{{accountOfficer}}</span>
+							<span v-if="filter.account_officer=='all'" class="text-bold">All Records</span>
 						</div>
-						<span class="font-30 text-bold text-primary-dark">ACCOUNT OFFICER RELEASE SUMMARY REPORT</span>
+						<span class="font-30 text-bold text-primary-dark">ACCOUNT OFFICER SUMMARY REPORT</span>
 						<div class="flex-1 d-flex justify-content-end" style="padding-left:24px">
 							<span class="text-primary-dark mr-10">{{dateFullDay(new Date())}} {{dateToYMD(new Date()).split('-').join('/')}}</span>
 							<span class="text-primary-dark">Time: {{todayTime(new Date())}} {{(new Date()).getHours() > 12? 'PM':'AM'}}</span>
 						</div>
 					</div>
-					<span v-if="filter.type!='all'" class="text-center text-primary-dark text-bold font-md mb-5">{{branchName}}</span>
-					<span v-if="filter.type=='all'" class="text-center text-primary-dark text-bold font-md mb-5">All Branches</span>
+					<span v-if="filter.account_officer!='all'" class="text-center text-primary-dark text-bold font-md mb-5">{{branchName}}</span>
+					<span v-if="filter.account_officer=='all'" class="text-center text-primary-dark text-bold font-md mb-5">All Branches</span>
 					<div v-if="filter.date_from&&filter.date_to" class="d-flex flex-row justify-content-center text-primary-dark">
 						<span class="mr-5">From:</span><span class="mr-16">{{dateToMDY2(new Date(filter.date_from)).split('-').join('/')}}</span>
 						<span class="mr-5">To:</span><span>{{dateToMDY2(new Date(filter.date_to)).split('-').join('/')}}</span>
@@ -60,7 +60,10 @@
 							<th>Total Released</th>
 						</thead>
 						<tbody>
-							<tr v-for="(account, a) in accounts" :key="a">
+							<tr v-if="!accounts.length">
+								<td><i>No records found.</i></td>
+							</tr>
+							<tr v-else v-for="(account, a) in accounts" :key="a">
 								<td>{{productsReference(account.products)}}</td>
 								<td>{{newAccounts(account.products)}}</td>
 								<td>{{formatToCurrency(newAccountsReleased(account.products))}}</td>
@@ -260,9 +263,9 @@ export default {
 	computed:{
 		accountOfficer:function(){
 			var result = '';
-			if(this.filter.type != 'all'){
+			if(this.filter.account_officer != 'all'){
 				this.ao.map(function(data){
-					if(this.filter.type == data.ao_id){
+					if(this.filter.account_officer == data.ao_id){
 						result += data.branch.branch_code + ' - ' +data.name;
 					}
 				}.bind(this));
@@ -271,9 +274,9 @@ export default {
 		},
 		branchName:function(){
 			var result = '';
-			if(this.filter.type != 'all'){
+			if(this.filter.account_officer != 'all'){
 				this.ao.map(function(data){
-					if(this.filter.type == data.ao_id){
+					if(this.filter.account_officer == data.ao_id){
 						result += data.branch.branch_name + ' (' + data.branch.branch_code + ')';
 					}
 				}.bind(this));

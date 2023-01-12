@@ -362,6 +362,12 @@
 
 <script>
 export default {
+	props:['pbranch','token'],
+	data(){
+		return {
+			branch:{}
+		}
+	},
 	methods:{
 		print:function(){
 			var content = document.getElementById('printContent').innerHTML;
@@ -369,6 +375,9 @@ export default {
 			target.innerHTML = content;
 			window.print();
 		},
+	},
+	mounted(){
+		this.branch = JSON.parse(this.pbranch);
 	}
 }
 </script>
