@@ -54,7 +54,7 @@ class User extends Authenticatable
 
     public function branch() {
         return $this->hasManyThrough(
-            Branch::class, 
+            Branch::class,
             UserBranch::class, 'id', 'branch_id', 'id', 'branch_id'
         );
     }
@@ -76,8 +76,12 @@ class User extends Authenticatable
 
     public function accessibility() {
         return $this->hasManyThrough(
-            Accessibility::class, 
+            Accessibility::class,
             UserAccessibility::class, 'id', 'access_id', 'id', 'access_id'
         );
+    }
+
+    public function fullname(){
+        return $this->firstname . ' ' . $this->middlename . ' ' . $this->lastname;
     }
 }

@@ -59,6 +59,14 @@ class EndTransaction extends Model
 			$eod = EndTransaction::where([ 'branch_id' => $branchId ])->orderBy("date_end",'DESC')->first();
 		}
 
+		if( !$eod ) {
+            // if there is no transaction date. create a fake closed transaction date yesterday.
+			$eod = new EndTransaction();
+            $eod->branch_id = $branchId;
+            $eod->date_end = Carbon::now()->addDay(-1)->format('Y-m-d');
+            $eod->status = 'closed';
+		}
+
 		return $eod;
 	}
 

@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
-use DB;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use App\Models\EndTransaction;
 
@@ -902,7 +902,7 @@ class Reports extends Model
 
             $data[] = [
                 'date_cancelled' => Carbon::createFromFormat('Y-m-d', $payment->transaction_date)->format('m/d/Y'),
-                'cancelled_by' => '[backend_get_cancelled_by]',
+                'cancelled_by' => $payment->cancelled_by ? User::find($payment->cancelled_by)->fullname() : "N/A",
                 'account_num' => $payment->account_num,
                 'borrower' => Borrower::find($payment->borrower_id)->fullname(),
                 'payment_date' => Carbon::createFromFormat('Y-m-d', $payment->transaction_date)->format('m/d/Y'),

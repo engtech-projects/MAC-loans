@@ -8,8 +8,8 @@ use Illuminate\Support\Str;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-use Storage;
-use File;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Hash;
 
 class Borrower extends Authenticatable
@@ -72,7 +72,6 @@ class Borrower extends Authenticatable
         $identifier = $this->borrower_id . '/';
         $photo = 'photo/';
         $docs = 'docs/';
-
         // if borrowers folder does not exist. create folder
         if( !File::isDirectory(($root . $main)) ){
             // create folder
