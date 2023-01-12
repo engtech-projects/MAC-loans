@@ -7,6 +7,16 @@ use App\Http\Controllers\API\BaseController as BaseController;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use App\Models\Reports;
+// use org\majkel\dbase\Builder;
+// use org\majkel\dbase\Format;
+// use org\majkel\dbase\Field;
+// use org\majkel\dbase\Record;
+use XBase\Enum\FieldType;
+use XBase\Enum\TableType;
+use XBase\Header\Column;
+use XBase\Header\HeaderFactory;
+use XBase\TableCreator;
+use XBase\TableEditor;
 
 
 class ReportsController extends BaseController
@@ -361,7 +371,92 @@ class ReportsController extends BaseController
 		return $this->sendResponse($branchReport,"Branch Report");
 	}
 
+    public function birTaxReport(Request $request){
+        //TEST USING hisamu/php-xbase
+        // you can specify any other database version from TableType
+        $header = HeaderFactory::create(TableType::DBASE_III_PLUS_NOMEMO);
+        $filename = 'BIR_'.Carbon::now()->timestamp.'.dbf';
+        $filepath = 'bir_reports/'.$filename;
+        // $filepath = "BIR.dbf";
 
+        $tableCreator = new TableCreator($filepath, $header);
+        $tableCreator->addColumn(new Column([
+            'name'   => 'TAX_MONTH',
+            'type'   => FieldType::DATE,
+            'length' => 20,
+        ]))
+        ->addColumn(new Column([
+            'name'   => 'SEQ_NO',
+            'type'   => FieldType::NUMERIC,
+            'length' => 20,
+        ]))
+        ->addColumn(new Column([
+            'name'   => 'LAST_NAME',
+            'type'   => FieldType::CHAR,
+            'length' => 20,
+        ]))
+        ->addColumn(new Column([
+            'name'   => 'FIRST_NAME',
+            'type'   => FieldType::CHAR,
+            'length' => 20,
+        ]))
+        ->addColumn(new Column([
+            'name'   => 'MIDDLE_NAM',
+            'type'   => FieldType::CHAR,
+            'length' => 20,
+        ]))
+        ->addColumn(new Column([
+            'name'   => 'ADDRESS',
+            'type'   => FieldType::CHAR,
+            'length' => 20,
+        ]))
+        ->addColumn(new Column([
+            'name'   => 'ADDRESS2',
+            'type'   => FieldType::CHAR,
+            'length' => 20,
+        ]))
+        ->addColumn(new Column([
+            'name'   => 'GSALES',
+            'type'   => FieldType::CHAR,
+            'length' => 20,
+        ]))
+        ->addColumn(new Column([
+            'name'   => 'GTSALES',
+            'type'   => FieldType::CHAR,
+            'length' => 20,
+        ]))
+        ->addColumn(new Column([
+            'name'   => 'GESALES',
+            'type'   => FieldType::CHAR,
+            'length' => 20,
+        ]))
+        ->addColumn(new Column([
+            'name'   => 'TOUTTAX',
+            'type'   => FieldType::CHAR,
+            'length' => 20,
+        ]))
+        ->addColumn(new Column([
+            'name'   => 'TAX_RATE',
+            'type'   => FieldType::CHAR,
+            'length' => 20,
+        ]))
+            ->save(); //creates file
+
+        $table = new TableEditor($filepath);
+        $report = new Reports();
+        $taxEntries = $report->birTaxReport($request);
+        // dd($taxEntries);
+        foreach($taxEntries as $seqNo => $taxEntry){
+            $record = $table->appendRecord();
+            $record->set('SEQ_NO', $seqNo);
+            foreach($taxEntry as $title => $value){
+                $record->set($title, $value);
+            }
+            $table->writeRecord()
+            ->save()
+            ->close();
+        }
+    }
 
 	// public function releaseByClientReports(Request $request) {
 
