@@ -1030,8 +1030,8 @@ class Reports extends Model
         ->select([
             // DB::raw("'".$filters["date_to"]."' as TAX_MONTH"),
             // DB::raw("'' as SEQ_NO"),
-            DB::raw("borrower_info.lastname as LAST_NAME"),
-            DB::raw("borrower_info.firstname as FIRST_NAME"),
+            DB::raw("REPLACE(REPLACE(REPLACE(borrower_info.lastname,'ñ','n'),'Ñ','N'),'-',' ') as LAST_NAME"),
+            DB::raw("REPLACE(REPLACE(REPLACE(borrower_info.firstname,'ñ','n'),'Ñ','N'),'-',' ') as FIRST_NAME"),
             DB::raw("UPPER(SUBSTRING(borrower_info.middlename,1,1)) as MIDDLE_NAM"),
             DB::raw("'' as ADDRESS"),
             DB::raw("'' as ADDRESS2"),
