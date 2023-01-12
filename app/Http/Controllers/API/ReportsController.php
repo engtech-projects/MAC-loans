@@ -7,16 +7,14 @@ use App\Http\Controllers\API\BaseController as BaseController;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use App\Models\Reports;
-// use org\majkel\dbase\Builder;
-// use org\majkel\dbase\Format;
-// use org\majkel\dbase\Field;
-// use org\majkel\dbase\Record;
 use XBase\Enum\FieldType;
 use XBase\Enum\TableType;
 use XBase\Header\Column;
 use XBase\Header\HeaderFactory;
 use XBase\TableCreator;
 use XBase\TableEditor;
+// use File;
+use Response;
 
 
 class ReportsController extends BaseController
@@ -376,7 +374,7 @@ class ReportsController extends BaseController
         // you can specify any other database version from TableType
         $header = HeaderFactory::create(TableType::DBASE_III_PLUS_NOMEMO);
         $filename = 'BIR_'.Carbon::now()->timestamp.'.dbf';
-        $filepath = 'bir_reports/'.$filename;
+        $filepath = 'bir_reports\\'.$filename;
         // $filepath = "BIR.dbf";
 
         $tableCreator = new TableCreator($filepath, $header);
@@ -448,14 +446,18 @@ class ReportsController extends BaseController
         // dd($taxEntries);
         foreach($taxEntries as $seqNo => $taxEntry){
             $record = $table->appendRecord();
+            $record->set('TAX_MONTH', Carbon::createFromDate($request->input("date_to")));
             $record->set('SEQ_NO', $seqNo);
             foreach($taxEntry as $title => $value){
                 $record->set($title, $value);
             }
-            $table->writeRecord()
-            ->save()
-            ->close();
+            $table->writeRecord();
         }
+        $table->save()->close();
+        // $downloadfilepath = public_path($filepath);
+        // return Response::download($downloadfilepath);
+
+		return $this->sendResponse(["entries"=>$taxEntries, "downloadURL"=>$filepath],"BIR Tax Report");
     }
 
 	// public function releaseByClientReports(Request $request) {

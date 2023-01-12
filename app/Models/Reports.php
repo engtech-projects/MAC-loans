@@ -1023,13 +1023,13 @@ class Reports extends Model
     public function birTaxReport($filters=[]){
         $data = Payment::join("loan_accounts", 'payment.loan_account_id', '=', 'loan_accounts.loan_account_id')
         ->join("borrower_info", 'loan_accounts.borrower_id', '=', 'borrower_info.borrower_id')
-        ->where(["branch_id"=>$filters["branch_id"]])
+        ->where(["payment.branch_id"=>$filters["branch_id"], "payment.status"=>"paid"])
         ->whereDate('payment.transaction_date', '>=', $filters['date_from'])
         ->whereDate('payment.transaction_date', '<=', $filters['date_to'])
         ->groupBy("borrower_info.firstname","borrower_info.middlename","borrower_info.lastname",)
         ->select([
-            DB::raw("'".$filters["date_to"]."' as TAX_MONTH"),
-            DB::raw("'' as SEQ_NO"),
+            // DB::raw("'".$filters["date_to"]."' as TAX_MONTH"),
+            // DB::raw("'' as SEQ_NO"),
             DB::raw("borrower_info.lastname as LAST_NAME"),
             DB::raw("borrower_info.firstname as FIRST_NAME"),
             DB::raw("UPPER(SUBSTRING(borrower_info.middlename,1,1)) as MIDDLE_NAM"),
