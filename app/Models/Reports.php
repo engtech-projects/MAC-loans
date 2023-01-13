@@ -105,18 +105,21 @@ class Reports extends Model
     public function getPayments($filters = []) {
 
 
-        $branch = Branch::find($filters['branch_id']);
 
-        $payments = Payment::where([ 'payment.status' => 'paid', 'branch_id' => $branch->branch_id ]);
+        $payments = Payment::where([ 'payment.status' => 'paid']);
 
+    	if( isset($filters['branch_id']) && $filters['branch_id'] ){
+            $branch = Branch::find($filters['branch_id']);
+    		$payments->where([ 'payment.branch_id' => $branch->branch_code ]);
+        }
         if( isset($filters['product_id']) ){
             $payments->join('loan_accounts', 'loan_accounts.loan_account_id', '=', 'payment.loan_account_id');
             $payments->where([ 'loan_accounts.product_id' => $filters['product_id'] ]);
         }
 
-        if( isset($filters['ao_id']) ){
+        if( isset($filters['account_officer']) ){
             $payments->join('loan_accounts', 'loan_accounts.loan_account_id', '=', 'payment.loan_account_id');
-            $payments->where([ 'loan_accounts.ao_id' => $filters['ao_id'] ]);
+            $payments->where([ 'loan_accounts.ao_id' => $filters['account_officer'] ]);
         }
 
         if( isset($filters['date_from']) && isset($filters['date_to']) ){
@@ -902,21 +905,30 @@ class Reports extends Model
         if(isset($filters["branch_id"]) && $filters["branch_id"]){
             $accOfficers = $accOfficers->where(["branch_id"=>$filters["branch_id"]]);
         }
-        $accOfficers->get()->toArray();
+        $accOfficers = $accOfficers->get()->toArray();
         $report = [];
         foreach($accOfficers as $aoValue){
-            $loanAccounts = $this->getLoanAccounts(["ao_id" => $aoValue->ao_id]);
+            $loanAccounts = $this->getLoanAccounts(["account_officer" => $aoValue['ao_id']]);
             $outstanding_loan_portfolio = 0;
             $filing_fee = 0;
             $interest_income = 0;
             $penalty = 0;
             $pdi = 0;
             foreach($loanAccounts as $loanAccount){
-                $outstanding_loan_portfolio += $loanAccount->principal_balance;
-                $payments = $this->getPayments(array_merge($filters,["ao_id" => $aoValue->ao_id, ""=>0]));
+                $outstanding_loan_portfolio += $loanAccount->remainingBalance()['principal']['balance'];
+            }
+            $loanAccountsDate = $this->getLoanAccounts( array_merge($filters,["account_officer" => $aoValue['ao_id']]) );
+            foreach($loanAccountsDate as $loanAccount){
+                $filing_fee += $loanAccount->filing_fee;
+            }
+            $payments = $this->getPayments(array_merge($filters,["account_officer" => $aoValue['ao_id']]));
+            foreach($payments as $payment){
+                $interest_income += $payment->interest;
+                $penalty += $payment->penalty_approval_no ? 0 : $payment->penalty;
+                $pdi += $payment->pdi_approval_no ? 0 : $payment->pdi;
             }
             $report[] = [
-                "account_officer" => $aoValue->name,
+                "account_officer" => $aoValue['name'],
                 "outstanding_loan_portfolio" => $outstanding_loan_portfolio,
                 "filing_fee" => $filing_fee,
                 "interest_income" => $interest_income,
@@ -924,7 +936,7 @@ class Reports extends Model
                 "pdi" => $pdi
             ];
         }
-
+        return $report;
     }
 
     public function cancelledRepaymentByClient($filters = []) {

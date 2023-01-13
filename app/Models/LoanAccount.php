@@ -5,11 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
-use DB;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
-use Storage;
-use File;
-
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 
 class LoanAccount extends Model
 {
@@ -161,6 +160,7 @@ class LoanAccount extends Model
       $dir = $main . $identifier . $folder;
 
       // check if folder exists
+
       if( !File::isDirectory($root . $dir) ){
          // create folder
          File::makeDirectory($root . $dir, 0777, true, true);
