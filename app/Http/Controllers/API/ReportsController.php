@@ -395,7 +395,7 @@ class ReportsController extends BaseController
 				break;
 		}
 
-		return $this->sendResponse($branchReport,"Branch Report");
+		return $this->sendResponse($branchReport,"Consolidated Report");
 	}
 
     public function birTaxReport(Request $request){
