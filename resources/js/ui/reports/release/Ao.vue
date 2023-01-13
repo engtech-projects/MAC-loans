@@ -63,33 +63,9 @@
 							<tr v-if="!accounts.length">
 								<td><i>No records found.</i></td>
 							</tr>
-							<tr v-else v-for="(account, a) in accounts" :key="a">
-								<td>{{productsReference(account.products)}}</td>
-								<td>{{newAccounts(account.products)}}</td>
-								<td>{{formatToCurrency(newAccountsReleased(account.products))}}</td>
-								<td>{{repeatAccount(account.products)}}</td>
-								<td>{{formatToCurrency(repeatAccountReleased(account.products))}}</td>
-								<td>{{formatToCurrency(newAccountsReleased(account.products) + repeatAccountReleased(account.products))}}</td>
-								
+							<tr v-else v-for="t,i in tableData" :key="i">
+								<td v-for="j,k in t" :key="k">{{j}}</td>
 							</tr>
-							<!-- <tr>
-								<td>004-Micro Group</td>
-								<td>0</td>
-								<td>25,214.00</td>
-								<td>2</td>
-								<td>22,000.00</td>
-								<td>22,000.00</td>
-								
-							</tr>
-							<tr>
-								<td>005-Salary Loan</td>
-								<td>0</td>
-								<td>25,214.00</td>
-								<td>2</td>
-								<td>22,000.00</td>
-								<td>22,000.00</td>
-								
-							</tr> -->
 							<tr class="border-cell-gray-7">
 								<td></td>
 								<td></td>
@@ -100,11 +76,11 @@
 							</tr>
 							<tr v-if="accounts.length > 0" class="tr-pt-7 text-bold bg-skyblue">
 								<td>TOTAL RELEASES</td>
-								<td>{{totalNewAccounts}}</td>
-								<td>{{formatToCurrency(totalNewAccountsReleased)}}</td>
-								<td>{{totalRepeatAccount}}</td>
-								<td>{{formatToCurrency(totalRepeatAccountReleased)}}</td>
-								<td>{{formatToCurrency(totalNewAccountsReleased + totalRepeatAccountReleased)}}</td>
+								<td>{{totalReleases.newAccount}}</td>
+								<td>{{formatToCurrency(totalReleases.newAccountAmount)}}</td>
+								<td>{{totalReleases.repAccount}}</td>
+								<td>{{formatToCurrency(totalReleases.repAccountReleased)}}</td>
+								<td>{{formatToCurrency(totalReleases.totalReleased)}}</td>
 							</tr>
 						</tbody>
 					</table>
@@ -173,9 +149,15 @@ export default {
 				date_from: null,
 				date_to: null,
 				account_officer:'all',
-				branch_id:'',
 				category:'account_officer',
 			},
+			totalReleases:{
+				newAccount:0,
+				newAccountAmount:0,
+				repAccount:0,
+				repAccountReleased:0,
+				totalReleased:0
+			}
 		}
 	},
 	methods:{
@@ -318,10 +300,56 @@ export default {
 				}.bind(this));
 			}.bind(this));
 			return amount;
+		},
+		references:function(){
+			var ref = [];
+			this.accounts.forEach(a => {
+				a.products.forEach(p => {
+					if(!ref.includes(p.reference)){
+						ref.push(p.reference);
+					}
+				})
+			})
+			return ref;
+		},
+		tableData:function(){
+			var totalReleases = {
+				newAccount:0,
+				newAccountAmount:0,
+				repAccount:0,
+				repAccountReleased:0,
+				totalReleased:0
+			};
+			var rows = [];
+			this.references.forEach(td => {
+				var row = [td,0,0,0,0,0];
+				this.accounts.forEach(a => {
+					a.products.forEach(p => {
+						if(td == p.reference){
+							row[1] += p.new_account?p.new_account:0;
+							row[2] += p.new_account_amount_released?p.new_account_amount_released:0;
+							row[3] += p.repeat_account?p.repeat_account:0;
+							row[4] += p.repeat_account_amount_released?p.repeat_account_amount_released:0;
+							row[5] += p.total_released?p.total_released:0;
+
+							totalReleases.newAccount += p.new_account?p.new_account:0;
+							totalReleases.newAccountAmount += p.new_account_amount_released?p.new_account_amount_released:0;
+							totalReleases.repAccount += p.repeat_account?p.repeat_account:0;
+							totalReleases.repAccountReleased += p.repeat_account_amount_released?p.repeat_account_amount_released:0;
+							totalReleases.totalReleased += p.total_released?p.total_released:0;
+						}
+					});
+				});
+				row[2] = this.formatToCurrency(row[2]);
+				row[4] = this.formatToCurrency(row[4]);
+				row[5] = this.formatToCurrency(row[5]);
+				rows.push(row);
+				this.totalReleases = totalReleases;
+			});
+			return rows;
 		}
 	},
 	mounted(){
-		this.filter.branch_id = this.branch_id;
 		this.fetchOfficers();
 	}
 }
