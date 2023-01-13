@@ -45,7 +45,9 @@ class Payment extends Model
         'reference_id',
         'remarks',
         'transaction_number',
-        'transaction_date'
+        'transaction_date',
+        'cancelled_date',
+        'cancelled_by',
     ];
 
     public $pCodes = [
