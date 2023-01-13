@@ -220,12 +220,14 @@ class ReportsController extends BaseController
 				# code...
 				break;
 			case 'revenue':
+
 				$filters = [
+                    'branch_id' => $request->input("branch_id"),
 					'date_from' => $request->input('date_from'),
 					'date_to' => $request->input('date_to'),
 				];
+                $branchReport = $report->aoRevenueReport($filters);
 				break;
-
 			default:
 				return $this->sendResponse('Invalid Parameters', 'Could not load data');
 				break;
@@ -359,7 +361,11 @@ class ReportsController extends BaseController
 				# code...
 				break;
 			case 'revenue':
-				# code...
+				$filters = [
+					'date_from' => $request->input('date_from'),
+					'date_to' => $request->input('date_to'),
+				];
+                $branchReport = $report->aoRevenueReport($filters);
 				break;
 
 			default:
