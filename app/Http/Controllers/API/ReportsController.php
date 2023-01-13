@@ -217,10 +217,21 @@ class ReportsController extends BaseController
 				$branchReport = $report->branchLoanListingReport($filters);
 				break;
 			case 'loan_aging_summary':
-				# code...
+				$filters = [
+					'branch_id' => $request->input('branch_id'),
+					'account_officer' => $request->input('account_officer'),
+					'product' => $request->input('product'),
+					'as_of' => $request->input('as_of'),
+				];
+				if($filters['account_officer'] == "all"){
+					unset($filters['account_officer']);
+				}
+				if($filters['product'] == "all"){
+					unset($filters['product']);
+				}
+                $branchReport = $report->loanAgingReport($filters);
 				break;
 			case 'revenue':
-
 				$filters = [
                     'branch_id' => $request->input("branch_id"),
 					'date_from' => $request->input('date_from'),
@@ -358,7 +369,18 @@ class ReportsController extends BaseController
 				$branchReport = $report->branchLoanListingReport($filters);
 				break;
 			case 'loan_aging_summary':
-				# code...
+				$filters = [
+					'account_officer' => $request->input('account_officer'),
+					'product' => $request->input('product'),
+					'as_of' => $request->input('as_of'),
+				];
+				if($filters['account_officer'] == "all"){
+					unset($filters['account_officer']);
+				}
+				if($filters['product'] == "all"){
+					unset($filters['product']);
+				}
+                $branchReport = $report->loanAgingReport($filters);
 				break;
 			case 'revenue':
 				$filters = [

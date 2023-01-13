@@ -99,6 +99,7 @@ class Reports extends Model
             'loan_accounts.due_date',
             'loan_accounts.payment_mode',
             'loan_accounts.payment_status',
+            'loan_accounts.loan_status',
         ]);
     }
 
@@ -641,7 +642,6 @@ class Reports extends Model
     }
     /* end repayment report */
 
-
     public function repaymentByAccountOfficer($filters = []) {
     }
 
@@ -937,6 +937,141 @@ class Reports extends Model
             ];
         }
         return $report;
+    }
+
+    public function loanAgingReport($filters = []){
+        $loanAccounts = $this->getLoanAccounts($filters);
+        $data = [];
+        foreach($loanAccounts as $loanAccount){
+            if($loanAccount->loan_status == LoanAccount::LOAN_PAID){
+                continue;
+            }
+            $curAmort = $loanAccount->getCurrentAmortization();
+            $remBal = $loanAccount->remainingBalance();
+            $dueAmt = $curAmort->short_principal + $curAmort->principal + $curAmort->interest + $curAmort->short_interest;
+            $bal = $remBal["memo"]["balance"];
+            $late = $loanAccount->daysMissed($loanAccount->getCurrentAmortization()['delinquent']['missed'], $filters['as_of'], true);
+            if($loanAccount->loan_status == LoanAccount::LOAN_ONGOING && $loanAccount->payment_status != LoanAccount::PAYMENT_DELINQUENT){
+                // Here for Current Accounts
+                if(!isset($data["current"])){
+                    $data["current"] = [
+                        "num_accts" => 0,
+                        "loan_amt" => 0,
+                        "balance" => 0,
+                        "due_amt" => 0
+                    ];
+                }
+                $data["current"]["num_accts"] += 1;
+                $data["current"]["loan_amt"] += $loanAccount->loan_amount;
+                $data["current"]["balance"] += $bal;
+                $data["current"]["due_amt"] += $dueAmt;
+            }else if($loanAccount->loan_status == LoanAccount::LOAN_ONGOING && $loanAccount->payment_status == LoanAccount::PAYMENT_DELINQUENT){
+                // Here for Delinquent Accounts
+                if(!isset($data["delinquent"])){
+                    $data["delinquent"] = [
+                        "1 to 30" => [
+                            "num_accts" => 0,
+                            "loan_amt" => 0,
+                            "balance" => 0,
+                            "due_amt" => 0
+                        ],
+                        "31 to 60" => [
+                            "num_accts" => 0,
+                            "loan_amt" => 0,
+                            "balance" => 0,
+                            "due_amt" => 0
+                        ],
+                        "61 to 90" => [
+                            "num_accts" => 0,
+                            "loan_amt" => 0,
+                            "balance" => 0,
+                            "due_amt" => 0
+                        ],
+                        "91 to 180" => [
+                            "num_accts" => 0,
+                            "loan_amt" => 0,
+                            "balance" => 0,
+                            "due_amt" => 0
+                        ],
+                        "180 above" => [
+                            "num_accts" => 0,
+                            "loan_amt" => 0,
+                            "balance" => 0,
+                            "due_amt" => 0
+                        ],
+                    ];
+                }
+                $day = "";
+                if($late >= 1 && $late <= 30){
+                    $day = "1 to 30";
+                }else if($late >= 31 && $late <= 60){
+                    $day = "31 to 60";
+                }else if($late >= 61 && $late <= 90){
+                    $day = "61 to 90";
+                }else if($late >= 91 && $late <= 180){
+                    $day = "91 to 180";
+                }else if($late > 180){
+                    $day = "180 above";
+                }
+                $data["delinquent"][$day]["num_accts"] += 1;
+                $data["delinquent"][$day]["loan_amt"] += $loanAccount->loan_amount;
+                $data["delinquent"][$day]["balance"] += $bal;
+                $data["delinquent"][$day]["due_amt"] += $dueAmt;
+            }else{
+                // Here for other Statuses
+                if(!isset($data[$loanAccount->loan_status])){
+                    $data[$loanAccount->loan_status] = [
+                        "1 to 30" => [
+                            "num_accts" => 0,
+                            "loan_amt" => 0,
+                            "balance" => 0,
+                            "due_amt" => 0
+                        ],
+                        "31 to 60" => [
+                            "num_accts" => 0,
+                            "loan_amt" => 0,
+                            "balance" => 0,
+                            "due_amt" => 0
+                        ],
+                        "61 to 90" => [
+                            "num_accts" => 0,
+                            "loan_amt" => 0,
+                            "balance" => 0,
+                            "due_amt" => 0
+                        ],
+                        "91 to 180" => [
+                            "num_accts" => 0,
+                            "loan_amt" => 0,
+                            "balance" => 0,
+                            "due_amt" => 0
+                        ],
+                        "180 above" => [
+                            "num_accts" => 0,
+                            "loan_amt" => 0,
+                            "balance" => 0,
+                            "due_amt" => 0
+                        ],
+                    ];
+                }
+                $day = "";
+                if($late >= 1 && $late <= 30){
+                    $day = "1 to 30";
+                }else if($late >= 31 && $late <= 60){
+                    $day = "31 to 60";
+                }else if($late >= 61 && $late <= 90){
+                    $day = "61 to 90";
+                }else if($late >= 91 && $late <= 180){
+                    $day = "91 to 180";
+                }else if($late > 180){
+                    $day = "180 above";
+                }
+                $data[$loanAccount->loan_status][$day]["num_accts"] += 1;
+                $data[$loanAccount->loan_status][$day]["loan_amt"] += $loanAccount->loan_amount;
+                $data[$loanAccount->loan_status][$day]["balance"] += $bal;
+                $data[$loanAccount->loan_status][$day]["due_amt"] += $dueAmt;
+            }
+        }
+        return $data;
     }
 
     public function cancelledRepaymentByClient($filters = []) {
