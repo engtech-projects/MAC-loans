@@ -114,6 +114,11 @@ class Reports extends Model
             $payments->where([ 'loan_accounts.product_id' => $filters['product_id'] ]);
         }
 
+        if( isset($filters['ao_id']) ){
+            $payments->join('loan_accounts', 'loan_accounts.loan_account_id', '=', 'payment.loan_account_id');
+            $payments->where([ 'loan_accounts.ao_id' => $filters['ao_id'] ]);
+        }
+
         if( isset($filters['date_from']) && isset($filters['date_to']) ){
             $payments->whereDate('payment.transaction_date', '>=', $filters['date_from']);
             $payments->whereDate('payment.transaction_date', '<=', $filters['date_to']);
@@ -893,6 +898,32 @@ class Reports extends Model
     }
 
     public function aoRevenueReport($filters = []){
+        $accOfficers = AccountOfficer::where(["status"=> AccountOfficer::STATUS_ACTIVE]);
+        if(isset($filters["branch_id"]) && $filters["branch_id"]){
+            $accOfficers = $accOfficers->where(["branch_id"=>$filters["branch_id"]]);
+        }
+        $accOfficers->get()->toArray();
+        $report = [];
+        foreach($accOfficers as $aoValue){
+            $loanAccounts = $this->getLoanAccounts(["ao_id" => $aoValue->ao_id]);
+            $outstanding_loan_portfolio = 0;
+            $filing_fee = 0;
+            $interest_income = 0;
+            $penalty = 0;
+            $pdi = 0;
+            foreach($loanAccounts as $loanAccount){
+                $outstanding_loan_portfolio += $loanAccount->principal_balance;
+                $payments = $this->getPayments(array_merge($filters,["ao_id" => $aoValue->ao_id, ""=>0]));
+            }
+            $report[] = [
+                "account_officer" => $aoValue->name,
+                "outstanding_loan_portfolio" => $outstanding_loan_portfolio,
+                "filing_fee" => $filing_fee,
+                "interest_income" => $interest_income,
+                "penalty" => $penalty,
+                "pdi" => $pdi
+            ];
+        }
 
     }
 
@@ -900,8 +931,8 @@ class Reports extends Model
 
         $payments = Payment::join('loan_accounts', 'payment.loan_account_id', '=', 'loan_accounts.loan_account_id')
                         ->where(['payment.branch_id' => $filters['branch_id'], 'payment.status' => 'cancelled'])
-                        ->whereDate('payment.transaction_date', '>=', $filters['date_from'])
-                        ->whereDate('payment.transaction_date', '<=', $filters['date_to'])
+                        ->whereDate('payment.cancelled_date', '>=', $filters['date_from'])
+                        ->whereDate('payment.cancelled_date', '<=', $filters['date_to'])
                         ->orderBy('payment.transaction_date', 'ASC')
                         ->get([
                             'payment.*', 'loan_accounts.borrower_id', 'loan_accounts.account_num',
