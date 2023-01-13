@@ -624,9 +624,9 @@ class Reports extends Model
                 'total' => $payment->amount_applied,
                 'net_interest' => $payment->interest,
                 'vat' => $payment->vat,
-                'payment_type' => $payment->payment_type
+                'payment_type' => $payment->payment_type,
+                'memo_type' => $payment->memo_type
             ];
-
         }
 
         return $data;
@@ -890,6 +890,10 @@ class Reports extends Model
             }
         }
         return $accOfficers;
+    }
+
+    public function aoRevenueReport($filters = []){
+
     }
 
     public function cancelledRepaymentByClient($filters = []) {

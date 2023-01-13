@@ -220,7 +220,10 @@ class ReportsController extends BaseController
 				# code...
 				break;
 			case 'revenue':
-				# code...
+				$filters = [
+					'date_from' => $request->input('date_from'),
+					'date_to' => $request->input('date_to'),
+				];
 				break;
 
 			default:
