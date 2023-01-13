@@ -160,7 +160,6 @@ class LoanAccount extends Model
       $dir = $main . $identifier . $folder;
 
       // check if folder exists
-
       if( !File::isDirectory($root . $dir) ){
          // create folder
          File::makeDirectory($root . $dir, 0777, true, true);
