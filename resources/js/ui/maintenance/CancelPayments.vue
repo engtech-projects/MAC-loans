@@ -250,7 +250,7 @@
 
 <script>
 export default {
-    props: ["branch", "token"],
+    props: ["branch", "token", 'userid'],
     data() {
         return {
 			pagination:{
@@ -423,12 +423,16 @@ export default {
                 over_payment: payment.over_payment,
                 status: payment.status,
                 remarks: payment.remarks,
+				cancelled_by: payment.cancelled_by,
+				cancelled_date: payment.cancelled_date
             };
             return data;
         },
         async cancelPayment() {
             this.selectedPayment.status = "cancelled";
             this.selectedPayment.remarks = this.remarks;
+			this.selectedPayment.cancelled_by = this.userid;
+			this.selectedPayment.cancelled_date = this.transactionDate.date_end;
             var payment = this.preparePayment(this.selectedPayment);
             await axios
                 .put(
