@@ -87,6 +87,7 @@ class Reports extends Model
 			'loan_accounts.prepaid_interest',
 			'loan_accounts.affidavit_fee',
 			'loan_accounts.total_deduction',
+			'loan_accounts.no_of_installment',
 			'loan_accounts.net_proceeds',
 			'loan_accounts.borrower_id',
 			'loan_accounts.product_id',
@@ -714,6 +715,57 @@ class Reports extends Model
         }
         return $matureLoans;
 
+    }
+
+    public function clientPaymentStatus($filters = []){
+        $data = [
+            "ongoing" => [],
+            "closed" => []
+        ];
+        $closedLoanAccounts = Loanaccount::where([ 'loan_accounts.status' => 'released', "borrower_id" => $filters["borrower_id"], "loan_accounts.loan_status" => LoanAccount::LOAN_PAID])->get();
+        $ongoingLoanAccounts = Loanaccount::where([ 'loan_accounts.status' => 'released', "borrower_id" => $filters["borrower_id"] ])->where("loan_accounts.loan_status", "!=", LoanAccount::LOAN_PAID)->get();
+        foreach($closedLoanAccounts as $closedKey => $account){
+            $amort = $account->amortizationStatusReport($filters["as_of"]);
+            $maxLate = 0;
+            $paidAmort = 0;
+            foreach ($amort as $key => $value) {
+                $maxLate = $maxLate < $value["days_late"] ? $value["days_late"] : $maxLate;
+                $paidAmort += in_array($value['amor_status'], ["Paid", "Paid Late"]) ? 1 : 0;
+            }
+            $tempData = [
+                "cumulative_loan" => $account->cycle_no,
+                "account_num" => $account->account_num,
+                "date_loaned" => $account->date_release,
+                "amt_loan" => $account->loan_amount,
+                "no_of_amort" => $account->no_of_installment,
+                "max_late" => $maxLate,
+                "amort_ontime" => round( (($paidAmort / $account->no_of_installment) * 100), 2),
+                "business_activity" => 0
+            ];
+            $data["closed"][] = $tempData;
+        }
+        foreach($ongoingLoanAccounts as $ongoingKey => $account){
+            $amort = $account->amortizationStatusReport($filters["as_of"]);
+            $maxLate = 0;
+            $paidAmort = 0;
+            foreach ($amort as $key => $value) {
+                $maxLate = $maxLate < $value["days_late"] ? $value["days_late"] : $maxLate;
+                $paidAmort += in_array($value['amor_status'], ["Paid", "Paid Late"]) ? 1 : 0;
+            }
+            $tempData = [
+                "cumulative_loan" => $account->cycle_no,
+                "account_num" => $account->account_num,
+                "date_loaned" => $account->date_release,
+                "amt_loan" => $account->loan_amount,
+                "no_of_amort" => $account->no_of_installment,
+                "max_late" => $maxLate,
+                "amort_ontime" => round( (($paidAmort / $account->no_of_installment) * 100), 2),
+                "business_activity" => 0,
+                "amortizations" => $amort
+            ];
+            $data["ongoing"][] = $tempData;
+        }
+        return $data;
     }
 
     public function branchAOReport($filters = []) {

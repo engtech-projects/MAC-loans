@@ -186,6 +186,11 @@ class ReportsController extends BaseController
 				break;
 			case 'client_payment_status':
 				# code...
+                $filters = [
+                    "borrower_id" => $request->input("borrower_id"),
+                    "as_of" => $request->input("as_of")
+                ];
+                $branchReport = $report->clientPaymentStatus($filters);
 				break;
 			case 'account_officer':
 				$filters = [
@@ -340,6 +345,7 @@ class ReportsController extends BaseController
 				break;
 			case 'client_payment_status':
 				# code...
+                //  no consolidated client payment status
 				break;
 			case 'account_officer':
 				$filters = [

@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
+use PhpParser\Node\Expr\Cast\Object_;
 
 class LoanAccount extends Model
 {
@@ -834,6 +835,63 @@ class LoanAccount extends Model
          return $lAcc->payment_status ? $lAcc->payment_status : "Current";
       }
       return $lAcc->loan_status;
+   }
+
+    public function amortizationStatusReport($date){
+        $amortizations = [];
+        $accAmort = Amortization::where(["loan_account_id"=> $this->loan_account_id])
+            ->orderBy('amortization_date', 'DESC')
+            ->get();
+        $payment = null;
+        $paidDate = null;
+        $maxDayLate = 0;
+        foreach($accAmort as $key => $amort){
+            $curPayments = Payment::where(["amortization_id"=>$amort->id, "status"=>"paid"])
+            ->latest("payment_id")
+            ->first();
+            if($curPayments){
+                $payment = $curPayments;
+                // Need to process payments for partial payments
+                $paidDate = Carbon::createFromFormat("Y-m-d",$payment->transaction_date)->startOfDay();
+            }
+            $amortDate = Carbon::createFromFormat("Y-m-d", $amort->amortization_date)->startOfDay();
+            $asOfDate = Carbon::createFromFormat("Y-m-d", $date)->startOfDay();
+            $dayLate = $amortDate->diffInDays($asOfDate, false); // Days Late as of now
+            /* STATUSES
+            Paid
+            Paid Late
+            Overdue
+            Shorts
+            Approaching
+            */
+            $amort_status = "";
+            if($payment){
+                // Possible dates if there is payment: Paid, Paid Late, Short
+                $dayLate = $amortDate->diffInDays($paidDate, false); // Days Late as of now
+                if(($payment->short_penalty+$payment->short_pdi+$payment->short_principal+$payment->short_interest) > 0 ){
+                    $amort_status = "Short";
+                }else if($dayLate > 0){
+                    $amort_status = "Paid Late";
+                }else{
+                    $amort_status = "Paid";
+                }
+            }else{
+                // Here need to check if Overdue or Approching
+                $amort_status = $dayLate > 0 ? "Overdue" : "Approaching";
+            }
+
+            $dayLate = $dayLate < 0 ? 0 : $dayLate; // Zero out if negative
+            $tempAmort = [
+                "amort_no" => ($this->no_of_installment - $key),
+                "amort_amt" => $amort->total,
+                "amort_due_date" => $amort->amortization_date,
+                "amort_paid_date" => $payment ? $payment->transaction_date : "",
+                "amor_status" => $amort_status,
+                "days_late" =>$dayLate
+            ];
+            $amortizations[] = $tempAmort;
+        }
+        return $amortizations;
    }
 
 }
