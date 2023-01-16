@@ -585,7 +585,6 @@ class Reports extends Model
                             $data[$key]['payment'][$type]['total_payment'] += $payment->amount_applied;
                             $data[$key]['payment'][$type]['net_int'] += $payment->interest;
                             $data[$key]['payment'][$type]['vat'] += $payment->vat;
-                            $data[$key]['payment'][$type]['vat'] += $payment->vat;
                             if($payment->memo_type){
                                 if(!isset($data[$key]['payment'][$type]["memo"][$payment->memo_type])){
                                     $data[$key]['payment'][$type]["memo"][$payment->memo_type] = 0;
