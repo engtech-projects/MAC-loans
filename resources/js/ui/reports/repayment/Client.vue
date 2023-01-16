@@ -101,7 +101,7 @@
 								<td></td>
 							</tr>
 							<tr class="tr-pt-7 text-bold">
-								<td v-for="t,p in total" :key="p">{{(t!=''&&t!='TOTAL')?formatToCurrency(t):t}}</td>
+								<td v-for="t,p in total" :key="p">{{(t!==''&&t!=='TOTAL')?formatToCurrency(parseFloat(t)):t}}</td>
 							</tr>
 						</tbody>
 					</table>
@@ -143,13 +143,13 @@
 								</div>
 								<span class="flex-1">{{formatToCurrency(overall.offsetPf)}}</span>
 							</div>
-							<div class="d-flex flex-row flex-1">
+							<!-- <div class="d-flex flex-row flex-1">
 								<div class="d-flex flex-row justify-content-between flex-2 mr-24">
 									<span class="flex-1 pl-24">OVER PAYMENT</span>
 									<span>:</span>
 								</div>
 								<span class="flex-1">{{formatToCurrency(overall.overPayment)}}</span>
-							</div>
+							</div> -->
 							<div class="d-flex flex-row flex-1">
 								<div class="d-flex flex-row justify-content-between flex-2 mr-24">
 									<span class="flex-1 pl-24">DISCOUNT</span>
@@ -157,13 +157,13 @@
 								</div>
 								<span class="flex-1">{{formatToCurrency(overall.discount)}}</span>
 							</div>
-							<div class="d-flex flex-row flex-1">
+							<!-- <div class="d-flex flex-row flex-1">
 								<div class="d-flex flex-row justify-content-between flex-2 mr-24">
 									<span class="flex-1 pl-24">CANCELLED</span>
 									<span>:</span>
 								</div>
 								<span class="flex-1">{{formatToCurrency(overall.cancelled)}}</span>
-							</div>
+							</div> -->
 							<div class="d-flex flex-row flex-1">
 								<div class="d-flex flex-row justify-content-between flex-2 mr-24">
 									<span class="flex-1 pl-24">BRANCH</span>
@@ -288,6 +288,15 @@ export default {
 					result.check += r.total;
 				}else if(r.payment_type=='Memo'){
 					result.memo += r.total;
+					if(r.memo_type == 'deduct to balance'){
+						result.dedBalance += r.total
+					}else if(r.memo_type == 'Rebates and Discount'){
+						result.discount += r.total
+					}else if(r.memo_type == 'Offset PF'){
+						result.offsetPf += r.total
+					}else if(r.memo_type == 'Interbranch'){
+						result.branch += r.total
+					}
 				}else{
 					result.pos += r.total;
 				}

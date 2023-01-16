@@ -87,7 +87,7 @@ Vue.mixin({
 			return parseFloat(currency.toString().split(',').join(''));
 		},
 		sentenceCase(value){
-			return value.replace(/(?:^|\s|-)\S/g, x => x.toUpperCase());
+			return value?value.replace(/(?:^|\s|-)\S/g, x => x.toUpperCase()):'';
 		},
 		numToWords:function(s){
 			s = s + '';

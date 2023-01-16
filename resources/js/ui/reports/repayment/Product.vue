@@ -48,7 +48,9 @@
 					</div>
 					<span class="text-center text-primary-dark text-bold font-md mb-5">{{branch.branch_name + ' Branch (' + branch.branch_code + ')'}}</span>
 					<div v-if="filter.date_from&&filter.date_to" class="d-flex flex-row justify-content-center text-primary-dark">
-						<span class="mr-5">From:</span><span class="mr-16">{{dateToMDY2(new Date(filter.date_from)).split('-').join('/')}}</span>
+						<span class="mr-5">From:</span><span class="mr-16">1233
+							3
+						</span>
 						<span class="mr-5">To:</span><span>{{dateToMDY2(new Date(filter.date_to)).split('-').join('/')}}</span>
 					</div>
 					<div v-else class="d-flex flex-row justify-content-center text-primary-dark">
@@ -390,11 +392,11 @@ export default {
 					i=='Memo'? this.paymentSummaryTotal.memo += t.payment[i].total_payment:false;
 					i=='POS'? this.paymentSummaryTotal.pos += t.payment[i].total_payment:false;
 					if(i == 'Memo'){
-						// this.paymentSummaryTotal.overpayment += t.payment[i].over;
-						// this.paymentSummaryTotal.discount += t.payment[i].memo["Rebates and Discount"];
-						// this.paymentSummaryTotal.dedbal += t.payment[i].memo["deduct to balance"];
-						// this.paymentSummaryTotal.offsetPf += t.payment[i].memo["Offset PF"];
-						// this.paymentSummaryTotal.branch += t.payment[i].memo["Interbranch"];
+						this.paymentSummaryTotal.overpayment += t.payment[i].over;
+						this.paymentSummaryTotal.discount += t.payment[i].memo["Rebates and Discount"]?t.payment[i].memo["Rebates and Discount"]:0;
+						this.paymentSummaryTotal.dedbal += t.payment[i].memo["deduct to balance"]?t.payment[i].memo["deduct to balance"]:0;
+						this.paymentSummaryTotal.offsetPf += t.payment[i].memo["Offset PF"]?t.payment[i].memo["Offset PF"]:0;
+						this.paymentSummaryTotal.branch += t.payment[i].memo["Interbranch"]?t.payment[i].memo["Interbranch"]:0;
 					}
 					var row = [];
 					row.push(!refIndex==0?'':t.reference);

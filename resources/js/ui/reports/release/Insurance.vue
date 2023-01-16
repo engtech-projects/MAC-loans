@@ -45,6 +45,7 @@
 								<th>Gender</th>
 								<th>Status</th>
 								<th>Amount Loan</th>
+								<th>Insurance</th>
 								<th>Date Loan</th>
 								<th>Due Date</th>
 								<th>Term</th>
@@ -58,6 +59,7 @@
 									<td>{{upperFirst(a.gender)}}</td>
 									<td>{{upperFirst(a.marital_status)}}</td>
 									<td>{{formatToCurrency(a.amount_loan)}}</td>
+									<td>{{formatToCurrency(a.insurance)}}</td>
 									<td>{{dateToMDY(new Date(a.date_loan))}}</td>
 									<td>{{dateToMDY(new Date(a.due_date))}}</td>
 									<td>{{a.term / 30}} Mos</td>
