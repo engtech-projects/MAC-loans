@@ -7,11 +7,11 @@
                 style="flex: 1"
             >
                 <span class="mr-10">Date From: </span>
-                <input type="date" class="form-control flex-1" />
+                <input v-model="filter.date_from" type="date" class="form-control flex-1" />
             </div>
             <div class="d-flex flex-row align-items-center" style="flex: 1">
                 <span class="mr-10">Date To: </span>
-                <input type="date" class="form-control flex-1" />
+                <input v-model="filter.date_to" type="date" class="form-control flex-1" />
             </div>
         </div>
         <div class="sep mb-45"></div>
@@ -26,18 +26,18 @@
                         >Loan Interest Collected From Microfinance Unit</span
                     >
                     <div class="flex-1 d-flex justify-content-end">
-                        <span class="text-primary-dark font-md"
-                            >Tuesday 02/15/2021</span
-                        >
+                        <span class="text-primary-dark mr-10">{{dateFullDay(new Date())}} {{dateToYMD(new Date()).split('-').join('/')}}</span>
+						<span class="text-primary-dark">Time: {{todayTime(new Date())}} {{(new Date()).getHours() > 12? 'PM':'AM'}}</span>
                     </div>
                 </div>
-                <span class="text-center text-primary-dark text-bold"
+                <!-- <span class="text-center text-primary-dark text-bold"
                     >As of 12/12/2021</span
-                >
-                <span
-                    class="text-center text-primary-dark text-bold font-md mb-5"
-                    >Butuan Branch (001)</span
-                >
+                > -->
+                <span class="text-center text-primary-dark text-bold font-md mb-5">{{branch.branch_name + ' Branch (' + branch.branch_code + ')'}}</span>
+				<div class="d-flex flex-row justify-content-center text-primary-dark">
+					<span class="mr-5">From:</span><span class="mr-16">{{filter.date_from?dateToMDY2(new Date(filter.date_from)).split('-').join('/'):'---'}}</span>
+					<span class="mr-5">To:</span><span>{{filter.date_to?dateToMDY2(new Date(filter.date_to)).split('-').join('/'):'---'}}</span>
+				</div>
             </div>
             <section class="d-flex flex-column mb-16 p-10 light-border">
                 <div class="d-flex bg-yellow-verylight mb-5">
@@ -47,93 +47,29 @@
                 <table class="table table-stripped mb-24">
                     <thead>
                         <th class="col-md-2">Account Officer</th>
-                        <th class="text-center">
-                            Outstanding Loan Portfolio (Beginning date range)
+                        <th>
+                            Outstanding Loan Portfolio
                         </th>
-                        <th class="text-center">
-                            Outstanding Loan Portfolio (End date range)
+                        <th>
+                            Filing Fee
                         </th>
-                        <th class="text-center">
-                            Interest Income (During Period)
+                        <th>
+                            Interest Income
                         </th>
-                        <th class="text-center">
-                            Fees & Other Charges (During Period)
+                        <th>
+                            Penalty
                         </th>
-                        <th class="text-center">Total Revenue</th>
-                        <th class="text-center">Yield %</th>
+                        <th>PDI</th>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>Aplayo, Marialyn M.</td>
-                            <td>2,171,211.00</td>
-                            <td>2,171,211.00</td>
-                            <td>0.00</td>
-                            <td>0.00</td>
-                            <td>0.00</td>
-                            <td>0.00%</td>
-                        </tr>
-                        <tr>
-                            <td>Aplayo, Marialyn M.</td>
-                            <td>2,171,211.00</td>
-                            <td>2,171,211.00</td>
-                            <td>0.00</td>
-                            <td>0.00</td>
-                            <td>0.00</td>
-                            <td>0.00%</td>
-                        </tr>
-                        <tr>
-                            <td>Aplayo, Marialyn M.</td>
-                            <td>2,171,211.00</td>
-                            <td>2,171,211.00</td>
-                            <td>0.00</td>
-                            <td>0.00</td>
-                            <td>0.00</td>
-                            <td>0.00%</td>
-                        </tr>
-                        <tr>
-                            <td>Aplayo, Marialyn M.</td>
-                            <td>2,171,211.00</td>
-                            <td>2,171,211.00</td>
-                            <td>0.00</td>
-                            <td>0.00</td>
-                            <td>0.00</td>
-                            <td>0.00%</td>
-                        </tr>
-                        <tr>
-                            <td>Aplayo, Marialyn M.</td>
-                            <td>2,171,211.00</td>
-                            <td>2,171,211.00</td>
-                            <td>0.00</td>
-                            <td>0.00</td>
-                            <td>0.00</td>
-                            <td>0.00%</td>
-                        </tr>
-                        <tr>
-                            <td>Aplayo, Marialyn M.</td>
-                            <td>2,171,211.00</td>
-                            <td>2,171,211.00</td>
-                            <td>0.00</td>
-                            <td>0.00</td>
-                            <td>0.00</td>
-                            <td>0.00%</td>
-                        </tr>
-                        <tr>
-                            <td>Aplayo, Marialyn M.</td>
-                            <td>2,171,211.00</td>
-                            <td>2,171,211.00</td>
-                            <td>0.00</td>
-                            <td>0.00</td>
-                            <td>0.00</td>
-                            <td>0.00%</td>
-                        </tr>
-                        <tr class="bg-skyblue text-bold">
-                            <td>CURRENT SUB-TOTAL</td>
-                            <td>2,171,211.00</td>
-                            <td>2,171,211.00</td>
-                            <td>0.00</td>
-                            <td>0.00</td>
-                            <td>0.00</td>
-                            <td>0.00%</td>
+						<tr v-if="!reports.length"><td><i>No records found.</i></td></tr>
+                        <tr v-for="r,i in reports" :key="i">
+                            <td>{{r.account_officer}}</td>
+                            <td>{{formatToCurrency(r.outstanding_loan_portfolio)}}</td>
+                            <td>{{formatToCurrency(r.filing_fee)}}</td>
+                            <td>{{formatToCurrency(r.interest_income)}}</td>
+                            <td>{{formatToCurrency(r.penalty)}}</td>
+                            <td>{{formatToCurrency(r.pdi)}}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -166,7 +102,37 @@
 
 <script>
 export default {
+	props:['pbranch','token'],
+	data(){
+		return {
+			branch:{},
+			reports:[],
+			filter:{
+				date_from:'',
+				date_to:'',
+				branch_id:'',
+				type:'revenue'
+			}
+		}
+	},
     methods: {
+		async fetchReports(){
+			this.filter.branch_id = this.branch.branch_id;
+			await axios.post(this.baseURL() + 'api/report/branch', this.filter, {
+				headers: {
+					'Authorization': 'Bearer ' + this.token,
+					'Content-Type': 'application/json',
+					'Accept': 'application/json'
+				}
+			})
+			.then(function (response) {
+				this.reports = response.data.data
+				// console.log(response.data);
+			}.bind(this))
+			.catch(function (error) {
+				console.log(error);
+			}.bind(this));
+		},
         print: function () {
             var content = document.getElementById("printContent").innerHTML;
             var target = document.querySelector(".to-print");
@@ -174,5 +140,18 @@ export default {
             window.print();
         },
     },
+	watch:{
+		 filter: {
+			handler(val){
+				if(val.date_from && val.date_to){
+					this.fetchReports();   
+				}
+			},
+			deep: true
+		}
+	},
+	mounted(){
+		this.branch = JSON.parse(this.pbranch);
+	}
 };
 </script>
