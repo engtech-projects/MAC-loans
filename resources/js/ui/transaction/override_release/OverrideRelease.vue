@@ -336,9 +336,9 @@ export default {
 			var accounts = [];
 			this.loanAccounts.map(function(account){
 				if(account.checked){
-					var dt = new Date();
-					dt.setDate(dt.getDate() + account.terms);
-					account.date_release = this.transactionDate.date_end;
+                    account.date_release = this.transactionDate.date_end;
+					var dt = new Date(this.account.date_release);
+                    dt.setDate(dt.getDate() + account.terms);
 					account.due_date = this.dateToYMD(dt);
 					accounts.push(account);
 				}
