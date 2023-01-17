@@ -683,7 +683,7 @@ class Reports extends Model
                 $data[$key]['outstanding_balance'] = $currentAmortization->outstandingBalance;
                 $data[$key]['principal_balance'] = $currentAmortization->principal_balance;
                 $data[$key]['delinquent'] = $currentAmortization->total;
-                $data[$key]['weekly_amortization'] = $value['total'];
+                $data[$key]['weekly_amortization'] = $value->amortization()['total'];
                 $data[$key]['contact'] = $borrower->contact_number;
                 $data[$key]['address'] = $borrower->address;
 

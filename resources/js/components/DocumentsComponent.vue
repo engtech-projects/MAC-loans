@@ -41,7 +41,7 @@
 								<div @click="switchTab('moa-for-sme-tab')" class="pxy-25 light-bb hover-light" :class="isActive('moa-for-sme-tab',activeTab)" data-tab="">
 									<span class="text-20">MOA For SME</span>
 								</div>
-								<div v-if="!statement" @click="switchTab('sme-schedule-tab')" class="pxy-25 light-bb hover-light" :class="isActive('sme-schedule-tab',activeTab)" data-tab="">
+								<div v-if="ploanDetails.product.product_name.toLowerCase().includes('sme')" @click="switchTab('sme-schedule-tab')" class="pxy-25 light-bb hover-light" :class="isActive('sme-schedule-tab',activeTab)" data-tab="">
 									<span class="text-20">SME Schedule</span>
 								</div>
 								<div v-if="!statement" @click="switchTab('promissory-note-tab')" class="pxy-25 hover-light" :class="isActive('promissory-note-tab',activeTab)" data-tab="promissory-note-tab">
@@ -567,7 +567,7 @@
 											<div class="d-flex letter-head align-items-center mb-24">
 												<img :src="baseURL() + 'img/lamigo_logo.png'" class="mr-16" style="max-height:140px" alt="">
 												<div class="d-flex flex-column">
-													<span style="font-weight:bold;font-size:48px;font-family:'Bookman Old Style';line-height:1">LAMIGO LAW OFFICE</span>
+													<span style="font-weight:bold;font-size:48px;font-family:'Bookman Old Style';line-height:1;">LAMIGO LAW OFFICE</span>
 													<span style="font-size:24px">J. Satorre Street (City Hall Rotunda) Butuan City 8600</span>
 													<span style="font-size:24px">Tel. No. (085) 817-13-74</span>
 												</div>
@@ -1482,7 +1482,7 @@ export default {
 		},
 		amortSched:function(){
 			this.amortizationSched = [];
-			axios.post(this.baseURL() + 'api/account/generate-amortization', this.loanDetails, {
+			axios.post(this.baseURL() + 'api/account/generate-sme', this.loanDetails, {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
 					'Content-Type': 'application/json',

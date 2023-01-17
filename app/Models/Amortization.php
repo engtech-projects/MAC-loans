@@ -27,20 +27,6 @@ class Amortization extends Model
 
     public function createAmortizationSched(LoanAccount $account, $dateRelease = null) {
 
-
-        $product = Product::find($account->product_id);
-
-        if( Str::contains(strtolower($product->product_name), 'sme') ){
-
-            $dr = $account->date_release;
-
-            if( $dateRelease ){
-                $dr = $dateRelease;
-            }
-
-            return $this->specialSchedule($account, $dr);
-        }
-
         $interestAmount = $account->interest_amount;
         $installments = $account->no_of_installment;
 
@@ -65,6 +51,8 @@ class Amortization extends Model
             $days = 15;
         }else if( $account->payment_mode == "Monthly" ) {
             $days = 30;
+        }else if( $account->payment_mode == "Lumpsum") {
+            $days = $account->terms;
         }
 
         for ($i=0; $i < $installments; $i++) {
@@ -99,15 +87,14 @@ class Amortization extends Model
 
                 $total = $total + $totalAmount;
             }
-
             $amortization[] = [
                 'loan_account_id' => $account->loan_account_id,
                 'amortization_date' => $amortizationDate->toDateString(),
                 'principal' => number_format($principal, 2),
-                'interest' => number_format($interest, 2),
-                'total' => number_format($total, 2),
+                'interest' => number_format(strtolower($account->type) != "prepaid" ? $interest : 0, 2),
+                'total' => number_format(strtolower($account->type) != "prepaid" ? $total : $principal, 2),
                 'principal_balance' => number_format($principalBalance, 2),
-                'interest_balance' => number_format($interestBalance, 2),
+                'interest_balance' => number_format(strtolower($account->type) != "prepaid" ? $interestBalance : 0, 2),
                 'status' => 'open',
             ];
 
