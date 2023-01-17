@@ -86,6 +86,7 @@ class Amortization extends Model
                 $total = $total + $totalAmount;
             }
             if(strtolower($account->type) == "prepaid"){
+                $total = $principal;
                 $interest = 0;
                 $interestBalance = 0;
             }
