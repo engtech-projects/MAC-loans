@@ -27,20 +27,6 @@ class Amortization extends Model
 
     public function createAmortizationSched(LoanAccount $account, $dateRelease = null) {
 
-
-        $product = Product::find($account->product_id);
-
-        if( Str::contains(strtolower($product->product_name), 'sme') ){
-
-            $dr = $account->date_release;
-
-            if( $dateRelease ){
-                $dr = $dateRelease;
-            }
-
-            return $this->specialSchedule($account, $dr);
-        }
-
         $interestAmount = $account->interest_amount;
         $installments = $account->no_of_installment;
 
@@ -99,7 +85,10 @@ class Amortization extends Model
 
                 $total = $total + $totalAmount;
             }
-
+            if(strtolower($account->type) == "prepaid"){
+                $interest = 0;
+                $interestBalance = 0;
+            }
             $amortization[] = [
                 'loan_account_id' => $account->loan_account_id,
                 'amortization_date' => $amortizationDate->toDateString(),

@@ -86,6 +86,7 @@ Route::middleware(['auth:sanctum'])->group( function () {
     Route::get('account/rejected/{branch_id}', [LoanAccountController::class, 'rejectedAccountList']);
     // Route::get('account/create-amortization/{account}', [LoanAccountController::class, 'createAmortizationSched']);
     Route::post('account/generate-amortization/', [LoanAccountController::class, 'generateAmortizationSched']);
+    Route::post('account/generate-sme/', [LoanAccountController::class, 'generateSMESched']);
     // promissory number
     Route::post('account/promissoryno/', [LoanAccountController::class, 'getPromissoryNo']);
 
