@@ -1,219 +1,502 @@
 <template>
-    <div class="d-flex flex-column" style="flex: 8">
-        <div class="d-flex flex-row font-md mb-16">
-            <!-- <span class="font-lg text-primary-dark flex-1 mr-45"></span> -->
-            <div
-                class="d-flex flex-row align-items-center mr-24"
-                style="flex: 1"
-            >
-                <span class="mr-10">As of: </span>
-                <input type="date" class="form-control flex-1" />
-            </div>
-            <div
-                class="d-flex flex-row align-items-center mr-24 justify-content-start flex-1"
-            >
-                <span class="mr-10 text-block">Acc. Officer: </span>
-                <select
-                    name=""
-                    id="selectProductClient"
-                    class="form-control flex-1"
-                >
-                    <option value="">John Mark Bacenas</option>
-                </select>
-            </div>
-            <div
-                class="d-flex flex-row align-items-center mr-24 justify-content-start flex-1"
-            >
-                <span class="mr-10 text-block">Product: </span>
-                <select
-                    name=""
-                    id="selectProductClient"
-                    class="form-control flex-1"
-                >
-                    <option value="">Pension</option>
-                </select>
-            </div>
-            <div
-                class="d-flex flex-row align-items-center mr-24 justify-content-start flex-1"
-            >
-                <span class="mr-10 text-block">Center: </span>
-                <select
-                    name=""
-                    id="selectProductClient"
-                    class="form-control flex-1"
-                >
-                    <option value="">Accasia</option>
-                </select>
-            </div>
-            <div
-                class="d-flex flex-row align-items-center justify-content-start flex-1"
-            >
-                <span class="mr-10 text-block">Status: </span>
-                <select
-                    name=""
-                    id="selectProductClient"
-                    class="form-control flex-1"
-                >
-                    <option value="">Delinquent</option>
-                    <option value="">Past Due</option>
-                </select>
-            </div>
-        </div>
-        <div class="sep mb-45"></div>
-        <img :src="this.baseURL()+'/img/company_header_fit.png'" class="mb-24" alt="">
+   <div class="d-flex flex-column" style="flex:8;">
+		<div class="d-flex flex-row font-md mb-16">
+			<span class="flex-2"></span>
+			<div class="d-flex flex-row align-items-center mr-24" style="flex:1">
+				<span class="mr-10">As of: </span>
+				<input v-model="filter.as_of" type="date" class="form-control flex-1">
+			</div>
+			<div class="d-flex flex-row align-items-center mr-24" style="flex:1">
+				<span class="mr-10">Acc. Officer: </span>
+				<select v-model="filter.account_officer" name="" id="selectProductClient" class="form-control flex-1">
+					<option v-for="ao in aos" :key="ao.ao_id" :value="ao.ao_id">{{ao.name}}</option>
+					<option value="all">All</option>
+				</select>
+			</div>	
+			<div class="d-flex flex-row align-items-center mr-24" style="flex:1">
+				<span class="mr-10">Product: </span>
+				<select v-model="filter.product" name="" id="selectProductClient" class="form-control flex-1">
+					<option v-for="product in products" :key="product.product_id" :value="product.product_id">{{product.product_name}}</option>
+					<option value="all">All</option>
+				</select>
+			</div>				
+		</div>
+		<div class="sep mb-45"></div>
+		<img :src="this.baseURL()+'/img/company_header_fit.png'" class="mb-24" alt="">
 
-        <section class="mb-72" id="performanceReport">
-            <div class="d-flex flex-column mb-24">
-                <div class="d-flex flex-row align-items-center">
-                    <div class="flex-1 d-flex flex-column"></div>
-                    <span
-                        class="font-30 text-bold text-primary-dark text-center"
-                        >Loan Aging Summary</span
-                    >
-                    <div class="flex-1 d-flex justify-content-end">
-                        <span class="text-primary-dark font-md"
-                            >Tuesday 02/15/2021</span
-                        >
-                    </div>
-                </div>
-                <span class="text-center text-primary-dark text-bold"
-                    >As of 12/12/2021</span
-                >
-                <span
-                    class="text-center text-primary-dark text-bold font-md mb-5"
-                    >Butuan Branch (001)</span
-                >
-            </div>
-            <section class="d-flex flex-column mb-16 p-10 light-border">
-                <div class="d-flex bg-yellow-verylight mb-5">
-                    <span class="text-primary-dark font-20">CURRENT</span>
-                </div>
-                <div class="bb-dark-8"></div>
-                <table class="table table-stripped mb-24">
-                    <thead>
-                        <th>DAYS</th>
-                        <th># Acct.</th>
-                        <th>Amnt. Loan</th>
-                        <th>Balance</th>
-                        <th>Amnt. Due</th>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Aplayo, Marialyn M.</td>
-                            <td>05/10/2017</td>
-                            <td>11/06/2017</td>
-                            <td>7.000.00</td>
-                            <td>2,960.00</td>
-                            <td>0.00</td>
-                            <td>362.00</td>
-                            <td>2,956.00</td>
-                            <td>1,561.00</td>
-                            <td>PAST DUE</td>
-                        </tr>
-                        <tr>
-                            <td>Aplayo, Marialyn M.</td>
-                            <td>05/10/2017</td>
-                            <td>11/06/2017</td>
-                            <td>7.000.00</td>
-                            <td>2,960.00</td>
-                            <td>0.00</td>
-                            <td>362.00</td>
-                            <td>2,956.00</td>
-                            <td>1,561.00</td>
-                            <td>PAST DUE</td>
-                        </tr>
-                        <tr>
-                            <td>Aplayo, Marialyn M.</td>
-                            <td>05/10/2017</td>
-                            <td>11/06/2017</td>
-                            <td>7.000.00</td>
-                            <td>2,960.00</td>
-                            <td>0.00</td>
-                            <td>362.00</td>
-                            <td>2,956.00</td>
-                            <td>1,561.00</td>
-                            <td>PAST DUE</td>
-                        </tr>
-                        <tr>
-                            <td>Aplayo, Marialyn M.</td>
-                            <td>05/10/2017</td>
-                            <td>11/06/2017</td>
-                            <td>7.000.00</td>
-                            <td>2,960.00</td>
-                            <td>0.00</td>
-                            <td>362.00</td>
-                            <td>2,956.00</td>
-                            <td>1,561.00</td>
-                            <td>PAST DUE</td>
-                        </tr>
-                        <tr>
-                            <td>Aplayo, Marialyn M.</td>
-                            <td>05/10/2017</td>
-                            <td>11/06/2017</td>
-                            <td>7.000.00</td>
-                            <td>2,960.00</td>
-                            <td>0.00</td>
-                            <td>362.00</td>
-                            <td>2,956.00</td>
-                            <td>1,561.00</td>
-                            <td>PAST DUE</td>
-                        </tr>
-                        <tr>
-                            <td>Aplayo, Marialyn M.</td>
-                            <td>05/10/2017</td>
-                            <td>11/06/2017</td>
-                            <td>7.000.00</td>
-                            <td>2,960.00</td>
-                            <td>0.00</td>
-                            <td>362.00</td>
-                            <td>2,956.00</td>
-                            <td>1,561.00</td>
-                            <td>PAST DUE</td>
-                        </tr>
-                        <tr class="bg-skyblue text-bold">
-                            <td>CENTER SUB-TOTAL</td>
-                            <td></td>
-                            <td>22,222.00</td>
-                            <td>4,338.00</td>
-                            <td>0.00</td>
-                            <td></td>
-                            <td></td>
-                            <td>4,338.00</td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </section>
-        </section>
 
-        <section class="d-flex flex-row mb-72">
-            <span class="flex-2 pb-24 text-bold darker-bb mr-64"
-                >Prepared By:</span
-            >
-            <span class="flex-2 pb-24 text-bold darker-bb mr-64"
-                >Certified Corrected By:</span
-            >
-            <span class="flex-2 pb-24 text-bold darker-bb mr-64"
-                >Approved By:</span
-            >
-            <span class="flex-1"></span>
-        </section>
+		<section class="mb-72" id="performanceReport">
+			<div class="d-flex flex-column mb-24">
+				<div class="d-flex flex-row align-items-center">
+					<div class="flex-1 d-flex flex-column">
+					
+					</div>
+					<span class="font-30 text-bold text-primary-dark text-center">Loan Aging Summary</span>
+					<div class="flex-1 d-flex justify-content-end">
+						<span class="text-primary-dark font-md">Tuesday 02/15/2021</span>
+					</div>
+				</div>
+				<span class="text-center text-primary-dark text-bold">As of 12/12/2021</span>
+				<span class="text-center text-primary-dark text-bold font-md mb-5">Butuan Branch (001)</span>
+			</div>
+			<section class="d-flex flex-column mb-16 p-10 light-border">
+				<table class="table table-stripped mb-24">
+					<thead>
+						<th>STATUS</th>
+						<th>DAYS</th>
+						<th># Acct.</th>
+						<th>Amnt. Loan</th>
+						<th>Balance</th>
+						<th>Amnt. Due</th>
+					</thead>
+					<tbody>
+						<tr>
+							<td>CURRENT</td>
+							<td>1-30</td>
+							<td>74</td>
+							<td>2,106,000.00</td>
+							<td>1,384,805.00</td>
+							<td>-63,428.00</td>
+						</tr>
+						<tr>
+							<td></td>
+							<td>31-60</td>
+							<td>20</td>
+							<td>287,000.00</td>
+							<td>136,399.00</td>
+							<td>14,461.00</td>
+						</tr>
+						<tr>
+							<td></td>
+							<td>61-90</td>
+							<td>7</td>
+							<td>119,000.00</td>
+							<td>76,453.00</td>
+							<td>-58,219.00</td>
+						</tr>
+						<tr>
+							<td></td>
+							<td>91-180</td>
+							<td>5</td>
+							<td>95,000.00</td>
+							<td>58,420.00</td>
+							<td>3,748.00</td>
+						</tr>
+						<tr>
+							<td></td>
+							<td>180 Above</td>
+							<td>3</td>
+							<td>184,000.00</td>
+							<td>159,634.00</td>
+							<td>1,810.00</td>
+						</tr>
+						<tr class="text-bold bg-skyblue">
+							<td>Current TOTAL</td>
+							<td></td>
+							<td>80</td>
+							<td>4,338.00</td>
+							<td>1,810.00</td>
+							<td>4,338.00</td>
+						</tr>
 
-        <div class="d-flex flex-row justify-content-end mb-45">
-            <div class="d-flex flex-row-reverse">
-                <a href="#" class="btn btn-default min-w-150">Print</a>
-                <a href="#" class="btn btn-success min-w-150 mr-24"
-                    >Download Excel</a
-                >
-            </div>
-        </div>
-    </div>
+
+						<tr>
+							<td>DELINQUENT</td>
+							<td>1-30</td>
+							<td>74</td>
+							<td>2,106,000.00</td>
+							<td>1,384,805.00</td>
+							<td>-63,428.00</td>
+						</tr>
+						<tr>
+							<td></td>
+							<td>31-60</td>
+							<td>20</td>
+							<td>287,000.00</td>
+							<td>136,399.00</td>
+							<td>14,461.00</td>
+						</tr>
+						<tr>
+							<td></td>
+							<td>61-90</td>
+							<td>7</td>
+							<td>119,000.00</td>
+							<td>76,453.00</td>
+							<td>-58,219.00</td>
+						</tr>
+						<tr>
+							<td></td>
+							<td>91-180</td>
+							<td>5</td>
+							<td>95,000.00</td>
+							<td>58,420.00</td>
+							<td>3,748.00</td>
+						</tr>
+						<tr>
+							<td></td>
+							<td>180 Above</td>
+							<td>3</td>
+							<td>184,000.00</td>
+							<td>159,634.00</td>
+							<td>1,810.00</td>
+						</tr>
+						<tr class="text-bold bg-skyblue">
+							<td>Delinquent TOTAL</td>
+							<td></td>
+							<td>80</td>
+							<td>4,338.00</td>
+							<td>1,810.00</td>
+							<td>4,338.00</td>
+						</tr>
+
+
+						<tr>
+							<td>PAST DUE</td>
+							<td>1-30</td>
+							<td>74</td>
+							<td>2,106,000.00</td>
+							<td>1,384,805.00</td>
+							<td>-63,428.00</td>
+						</tr>
+						<tr>
+							<td></td>
+							<td>31-60</td>
+							<td>20</td>
+							<td>287,000.00</td>
+							<td>136,399.00</td>
+							<td>14,461.00</td>
+						</tr>
+						<tr>
+							<td></td>
+							<td>61-90</td>
+							<td>7</td>
+							<td>119,000.00</td>
+							<td>76,453.00</td>
+							<td>-58,219.00</td>
+						</tr>
+						<tr>
+							<td></td>
+							<td>91-180</td>
+							<td>5</td>
+							<td>95,000.00</td>
+							<td>58,420.00</td>
+							<td>3,748.00</td>
+						</tr>
+						<tr>
+							<td></td>
+							<td>180 Above</td>
+							<td>3</td>
+							<td>184,000.00</td>
+							<td>159,634.00</td>
+							<td>1,810.00</td>
+						</tr>
+						<tr class="text-bold bg-skyblue">
+							<td>Past Due TOTAL</td>
+							<td></td>
+							<td>80</td>
+							<td>4,338.00</td>
+							<td>1,810.00</td>
+							<td>4,338.00</td>
+						</tr>
+
+
+						<tr>
+							<td>RESTRUCTED</td>
+							<td>1-30</td>
+							<td>74</td>
+							<td>2,106,000.00</td>
+							<td>1,384,805.00</td>
+							<td>-63,428.00</td>
+						</tr>
+						<tr>
+							<td></td>
+							<td>31-60</td>
+							<td>20</td>
+							<td>287,000.00</td>
+							<td>136,399.00</td>
+							<td>14,461.00</td>
+						</tr>
+						<tr>
+							<td></td>
+							<td>61-90</td>
+							<td>7</td>
+							<td>119,000.00</td>
+							<td>76,453.00</td>
+							<td>-58,219.00</td>
+						</tr>
+						<tr>
+							<td></td>
+							<td>91-180</td>
+							<td>5</td>
+							<td>95,000.00</td>
+							<td>58,420.00</td>
+							<td>3,748.00</td>
+						</tr>
+						<tr>
+							<td></td>
+							<td>180 Above</td>
+							<td>3</td>
+							<td>184,000.00</td>
+							<td>159,634.00</td>
+							<td>1,810.00</td>
+						</tr>
+						<tr class="text-bold bg-skyblue">
+							<td>Restructed TOTAL</td>
+							<td></td>
+							<td>80</td>
+							<td>4,338.00</td>
+							<td>1,810.00</td>
+							<td>4,338.00</td>
+						</tr>
+
+
+						<tr>
+							<td>RES WO / PDI</td>
+							<td>1-30</td>
+							<td>74</td>
+							<td>2,106,000.00</td>
+							<td>1,384,805.00</td>
+							<td>-63,428.00</td>
+						</tr>
+						<tr>
+							<td></td>
+							<td>31-60</td>
+							<td>20</td>
+							<td>287,000.00</td>
+							<td>136,399.00</td>
+							<td>14,461.00</td>
+						</tr>
+						<tr>
+							<td></td>
+							<td>61-90</td>
+							<td>7</td>
+							<td>119,000.00</td>
+							<td>76,453.00</td>
+							<td>-58,219.00</td>
+						</tr>
+						<tr>
+							<td></td>
+							<td>91-180</td>
+							<td>5</td>
+							<td>95,000.00</td>
+							<td>58,420.00</td>
+							<td>3,748.00</td>
+						</tr>
+						<tr>
+							<td></td>
+							<td>180 Above</td>
+							<td>3</td>
+							<td>184,000.00</td>
+							<td>159,634.00</td>
+							<td>1,810.00</td>
+						</tr>
+						<tr class="text-bold bg-skyblue">
+							<td>Res Wo/ PDI TOTAL</td>
+							<td></td>
+							<td>80</td>
+							<td>4,338.00</td>
+							<td>1,810.00</td>
+							<td>4,338.00</td>
+						</tr>
+
+
+						<tr>
+							<td>CASE FILED</td>
+							<td>1-30</td>
+							<td>74</td>
+							<td>2,106,000.00</td>
+							<td>1,384,805.00</td>
+							<td>-63,428.00</td>
+						</tr>
+						<tr>
+							<td></td>
+							<td>31-60</td>
+							<td>20</td>
+							<td>287,000.00</td>
+							<td>136,399.00</td>
+							<td>14,461.00</td>
+						</tr>
+						<tr>
+							<td></td>
+							<td>61-90</td>
+							<td>7</td>
+							<td>119,000.00</td>
+							<td>76,453.00</td>
+							<td>-58,219.00</td>
+						</tr>
+						<tr>
+							<td></td>
+							<td>91-180</td>
+							<td>5</td>
+							<td>95,000.00</td>
+							<td>58,420.00</td>
+							<td>3,748.00</td>
+						</tr>
+						<tr>
+							<td></td>
+							<td>180 Above</td>
+							<td>3</td>
+							<td>184,000.00</td>
+							<td>159,634.00</td>
+							<td>1,810.00</td>
+						</tr>
+						<tr class="text-bold bg-skyblue">
+							<td>Case Filed TOTAL</td>
+							<td></td>
+							<td>80</td>
+							<td>4,338.00</td>
+							<td>1,810.00</td>
+							<td>4,338.00</td>
+						</tr>
+
+
+						<tr>
+							<td>LITIGATED</td>
+							<td>1-30</td>
+							<td>74</td>
+							<td>2,106,000.00</td>
+							<td>1,384,805.00</td>
+							<td>-63,428.00</td>
+						</tr>
+						<tr>
+							<td></td>
+							<td>31-60</td>
+							<td>20</td>
+							<td>287,000.00</td>
+							<td>136,399.00</td>
+							<td>14,461.00</td>
+						</tr>
+						<tr>
+							<td></td>
+							<td>61-90</td>
+							<td>7</td>
+							<td>119,000.00</td>
+							<td>76,453.00</td>
+							<td>-58,219.00</td>
+						</tr>
+						<tr>
+							<td></td>
+							<td>91-180</td>
+							<td>5</td>
+							<td>95,000.00</td>
+							<td>58,420.00</td>
+							<td>3,748.00</td>
+						</tr>
+						<tr>
+							<td></td>
+							<td>180 Above</td>
+							<td>3</td>
+							<td>184,000.00</td>
+							<td>159,634.00</td>
+							<td>1,810.00</td>
+						</tr>
+						<tr class="text-bold bg-skyblue">
+							<td>Litigated TOTAL</td>
+							<td></td>
+							<td>80</td>
+							<td>4,338.00</td>
+							<td>1,810.00</td>
+							<td>4,338.00</td>
+						</tr>
+						<tr>
+							<td style="padding:45px"></td>
+						</tr>
+						<tr class="text-bold font-20" style="background-color:#bfffff">
+							<td>TOTAL</td>
+							<td></td>
+							<td>2</td>
+							<td>22,000.00</td>
+							<td>4,338.00</td>
+							<td>4,338.00</td>
+						</tr>
+					</tbody>
+				</table>
+
+			</section>
+		</section>
+
+		<section class="d-flex flex-row mb-72">
+			<span class="flex-2 pb-24 text-bold darker-bb mr-64">Prepared By:</span>
+			<span class="flex-2 pb-24 text-bold darker-bb mr-64">Certified Corrected By:</span>
+			<span class="flex-2 pb-24 text-bold darker-bb mr-64">Approved By:</span>
+			<span class="flex-1"></span>
+		</section>
+
+		<div class="d-flex flex-row justify-content-end mb-45">
+			<div class="d-flex flex-row-reverse">
+				<a href="#" class="btn btn-default min-w-150">Print</a>
+				<a href="#" class="btn btn-success min-w-150 mr-24">Download Excel</a>
+			</div>
+		</div>
+	</div>
 </template>
 
 <script>
 export default {
+	props:['pbranch','token'],
+	data(){
+		return {
+			branch:{},
+			filter:{
+				account_officer:'all',
+				product:'all',
+				as_of:'',
+				branch_id:'',
+				type:'loan_aging_summary'
+			},
+			reports:[],
+			products:[],
+			aos:[]
+		}
+	},
     methods: {
+		async fetchReports(){
+			await axios.post(this.baseURL() + 'api/report/branch', this.filter, {
+				headers: {
+					'Authorization': 'Bearer ' + this.token,
+					'Content-Type': 'application/json',
+					'Accept': 'application/json'
+				}
+			})
+			.then(function (response) {
+				this.reports = response.data.data;
+				console.log(this.reports);
+			}.bind(this))
+			.catch(function (error) {
+				console.log(error);
+			}.bind(this));
+		},
+		async fetchProducts(){
+			await axios.get(this.baseURL() + 'api/product/', {
+				headers: {
+					'Authorization': 'Bearer ' + this.token,
+					'Content-Type': 'application/json',
+					'Accept': 'application/json'
+				}
+			})
+			.then(function (response) {
+				this.products = response.data.data;
+				this.fetchAo();
+			}.bind(this))
+			.catch(function (error) {
+				console.log(error);
+			}.bind(this));
+		},
+		async fetchAo(){
+			await axios.get(this.baseURL() + 'api/accountofficer/', {
+				headers: {
+					'Authorization': 'Bearer ' + this.token,
+					'Content-Type': 'application/json',
+					'Accept': 'application/json'
+				}
+			})
+			.then(function (response) {
+				this.aos = response.data.data;
+			}.bind(this))
+			.catch(function (error) {
+				console.log(error);
+			}.bind(this));
+		},
         print: function () {
             var content = document.getElementById("printContent").innerHTML;
             var target = document.querySelector(".to-print");
@@ -221,5 +504,20 @@ export default {
             window.print();
         },
     },
+	watch:{
+		 filter: {
+			handler(val){
+				if(val.as_of && val.product && val.account_officer){
+					this.fetchReports();
+				}
+			},
+			deep: true
+		}
+	},
+	mounted(){
+		this.branch = JSON.parse(this.pbranch);
+		this.filter.branch_id = this.branch.branch_id;
+		this.fetchProducts();
+	}
 };
 </script>

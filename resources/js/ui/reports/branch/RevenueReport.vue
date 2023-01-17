@@ -71,6 +71,14 @@
                             <td>{{formatToCurrency(r.penalty)}}</td>
                             <td>{{formatToCurrency(r.pdi)}}</td>
                         </tr>
+						<tr class="tr-py-7 text-bold">
+							<td>TOTAL</td>
+							<td>{{formatToCurrency(totalRevenue.outstandingLoanPortfolio)}}</td>
+							<td>{{formatToCurrency(totalRevenue.filingFee)}}</td>
+							<td>{{formatToCurrency(totalRevenue.interestIncome)}}</td>
+							<td>{{formatToCurrency(totalRevenue.penalty)}}</td>
+							<td>{{formatToCurrency(totalRevenue.pdi)}}</td>
+						</tr>
                     </tbody>
                 </table>
             </section>
@@ -127,7 +135,6 @@ export default {
 			})
 			.then(function (response) {
 				this.reports = response.data.data
-				// console.log(response.data);
 			}.bind(this))
 			.catch(function (error) {
 				console.log(error);
@@ -140,6 +147,25 @@ export default {
             window.print();
         },
     },
+	computed:{
+		totalRevenue:function(){
+			var total = {
+				outstandingLoanPortfolio:0,
+				filingFee:0,
+				interestIncome:0,
+				penalty:0,
+				pdi:0
+			}
+			this.reports.forEach(r => {
+				total.outstandingLoanPortfolio += r.outstanding_loan_portfolio;
+				total.filingFee += r.filing_fee;
+				total.interestIncome += r.interest_income;
+				total.penalty += r.penalty;
+				total.pdi += r.pdi;
+			})
+			return total;
+		}
+	},
 	watch:{
 		 filter: {
 			handler(val){

@@ -26,17 +26,17 @@
 				<section class="" id="clientSection">
 						<div class="d-flex flex-column mb-24">
 							<div class="d-flex flex-row align-items-center">
-								<div v-if="filter.account_officer" class="flex-1 d-flex flex-column">
-									<span>Account Officer</span>
-									<span class="text-bold">{{branch.branch_code}} - {{accountOfficer.name}}</span>
+								<div class="flex-1 d-flex flex-column">
+									<span v-if="filter.account_officer">Account Officer</span>
+									<span v-if="filter.account_officer" class="text-bold">{{branch.branch_code}} - {{accountOfficer.name}}</span>
 								</div>
-								<span class="font-30 text-bold text-primary-dark">COLLECTION SHEET REPORT</span>
+								<span class="font-30 text-bold text-center text-primary-dark flex-1">COLLECTION SHEET REPORT</span>
 								<div class="flex-1 d-flex justify-content-end" style="padding-left:24px">
 									<span class="text-primary-dark mr-10">{{dateFullDay(new Date())}} {{dateToYMD(new Date()).split('-').join('/')}}</span>
 									<span class="text-primary-dark">Time: {{todayTime(new Date())}} {{(new Date()).getHours() > 12? 'PM':'AM'}}</span>
 								</div>
 							</div>
-							<span class="text-center text-primary-dark text-bold font-md mb-5">{{branch.branch_name + ' (' + branch.branch_code + ')'}}</span>
+							<span class="text-center text-primary-dark text-bold font-md mb-5">{{branch.branch_name + ' Branch (' + branch.branch_code + ')'}}</span>
 							<div class="d-flex flex-row justify-content-center text-primary-dark">
 								<span class="mr-5">As of </span><span class="mr-16">{{dateToYMD(new Date()).replaceAll('-','/')}}</span>
 							</div>
@@ -234,6 +234,7 @@ export default {
 				}
 			})
 			.then(function (response) {
+				console.log(response);
 				this.collections = response.data.data.data
 			}.bind(this))
 			.catch(function (error) {

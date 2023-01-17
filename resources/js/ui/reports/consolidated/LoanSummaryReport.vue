@@ -144,6 +144,17 @@
 
 <script>
 export default {
+	props:['pbranch','token'],
+	data(){
+		return {
+			branch:{},
+			filter:{
+				due_from:'',
+				due_to:'',
+				type:''
+			}
+		}
+	},
     methods: {
         print: function () {
             var content = document.getElementById("printContent").innerHTML;
@@ -152,5 +163,8 @@ export default {
             window.print();
         },
     },
+	mounted(){
+		this.branch = JSON.parse(this.pbranch);
+	}
 };
 </script>
