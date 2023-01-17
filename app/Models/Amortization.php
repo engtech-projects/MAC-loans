@@ -91,10 +91,10 @@ class Amortization extends Model
                 'loan_account_id' => $account->loan_account_id,
                 'amortization_date' => $amortizationDate->toDateString(),
                 'principal' => number_format($principal, 2),
-                'interest' => number_format(strtolower($account->type) == "prepaid" ? $interest : 0, 2),
-                'total' => number_format(strtolower($account->type) == "prepaid" ? $total : $principal, 2),
+                'interest' => number_format(strtolower($account->type) != "prepaid" ? $interest : 0, 2),
+                'total' => number_format(strtolower($account->type) != "prepaid" ? $total : $principal, 2),
                 'principal_balance' => number_format($principalBalance, 2),
-                'interest_balance' => number_format(strtolower($account->type) == "prepaid" ? $interestBalance : 0, 2),
+                'interest_balance' => number_format(strtolower($account->type) != "prepaid" ? $interestBalance : 0, 2),
                 'status' => 'open',
             ];
 
