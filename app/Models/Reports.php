@@ -672,7 +672,7 @@ class Reports extends Model
 
                 $loanAccount = LoanAccount::find($value['loan_account_id']);
                 $currentAmortization = $loanAccount->getCurrentAmortization();
-                
+
                 $borrower = Borrower::find($value['borrower_id']);
                 $data[$key]['center'] = $value->center_id;
                 $data[$key]['account_officer'] = $value->ao_id;
@@ -683,7 +683,7 @@ class Reports extends Model
                 $data[$key]['outstanding_balance'] = $currentAmortization->outstandingBalance;
                 $data[$key]['principal_balance'] = $currentAmortization->principal_balance;
                 $data[$key]['delinquent'] = $currentAmortization->total;
-                $data[$key]['weekly_amortization'] = $currentAmortization->schedule_principal + $currentAmortization->schedule_interest;
+                $data[$key]['weekly_amortization'] = $value->amortization()['total'];
                 $data[$key]['contact'] = $borrower->contact_number;
                 $data[$key]['address'] = $borrower->address;
 
