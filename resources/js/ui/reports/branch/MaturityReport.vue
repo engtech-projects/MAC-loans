@@ -132,8 +132,8 @@ export default {
 				due_from:'',
 				due_to:'',
 				branch_id:'',
-				account_officer:null,
-				center:null,
+				account_officer:'all',
+				center:'all',
 				type:'maturity'
 			},
 			branch:{},
@@ -143,6 +143,7 @@ export default {
 	},
 	methods:{
 		async fetchReports(){
+			this.filter.branch_id = this.branch.branch_id;
 			await axios.post(this.baseURL() + 'api/report/branch', this.filter, {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
