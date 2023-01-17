@@ -526,7 +526,9 @@ export default {
 				row.push(this.reports.current.balance)
 				row.push(this.reports.current.due_amt)
 				rows.push(row);
-			}
+				var rowTotal = JSON.parse(JSON.stringify(row));
+				rowTotal[0] = 'CURRENT TOTAL';
+				rows.push(rowTotal);			}
 			for(var i in this.reports){
 				if(i != 'current'){
 					var rowTotal = [i.toUpperCase() + ' TOTAL', '', 0,0,0,0];
