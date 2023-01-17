@@ -51,6 +51,8 @@ class Amortization extends Model
             $days = 15;
         }else if( $account->payment_mode == "Monthly" ) {
             $days = 30;
+        }else if( $account->payment_mode == "Lumpsum") {
+            $days = $account->terms;
         }
 
         for ($i=0; $i < $installments; $i++) {
