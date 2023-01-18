@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<div class="report-main-item pxy-25 light-bb d-flex flex-column relative hover-light report-nav-item" :class="branchNav?'active':''">
+		<div class="report-main-item pxy-25 light-bb d-flex flex-column relative hover-light report-nav-item" >
 			<div @click="branchNav=!branchNav" class="nav-item-body d-flex justify-content-between align-items-center">
 				<a href="" @click.prevent class="text-20 base-link">Branch</a>
 				<i class="fa fa-caret-right" style="display:block"></i>

@@ -22,21 +22,21 @@ class ReportsController extends Controller
 
 	public function releaseProduct(){
 		return view('reports.release.product')->with([
-			'nav' => ['reports', 'release',''],
+			'nav' => ['reports', 'release','by product'],
 			'title' => 'Reports - Release',
 		]);
 	}
 
 	public function releaseClient(){
 		return view('reports.release.client')->with([
-			'nav' => ['reports', 'release',''],
+			'nav' => ['reports', 'release','by client'],
 			'title' => 'Reports - Release',
 		]);
 	}
 
 	public function releaseAo(){
 		return view('reports.release.ao')->with([
-			'nav' => ['reports', 'release',''],
+			'nav' => ['reports', 'release','by account officer'],
 			'title' => 'Reports - Release',
 		]);
 	}
@@ -50,14 +50,14 @@ class ReportsController extends Controller
 
 	public function repaymentProduct(){
 		return view('reports.repayment.product')->with([
-			'nav' => ['reports', 'repayment',''],
+			'nav' => ['reports', 'repayment','by product'],
 			'title' => 'Reports - Repayment',
 		]);
 	}
 
 	public function repaymentClient(){
 		return view('reports.repayment.client')->with([
-			'nav' => ['reports', 'repayment',''],
+			'nav' => ['reports', 'repayment','by client'],
 			'title' => 'Reports - Repayment',
 		]);
 	}
@@ -71,21 +71,21 @@ class ReportsController extends Controller
 
 	public function collectionClient(){
 		return view('reports.collection.client')->with([
-			'nav' => ['reports', 'collection',''],
+			'nav' => ['reports', 'collection','group by client status'],
 			'title' => 'Reports - Collection',
 		]);
 	}
 
 	public function collectionProduct(){
 		return view('reports.collection.product')->with([
-			'nav' => ['reports', 'collection',''],
+			'nav' => ['reports', 'collection','group by product status'],
 			'title' => 'Reports - Collection',
 		]);
 	}
 
 	public function collectionAo(){
 		return view('reports.collection.ao')->with([
-			'nav' => ['reports', 'collection',''],
+			'nav' => ['reports', 'collection','group by account officer'],
 			'title' => 'Reports - Collection',
 		]);
 	}

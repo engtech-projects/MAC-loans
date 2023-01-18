@@ -103,6 +103,10 @@
 								<td></td>
 								<td></td>
 								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
 							</tr>
 							<tr v-if="accounts.length > 0" class="tr-pt-7">
 								<td>TOTAL RELEASES</td>

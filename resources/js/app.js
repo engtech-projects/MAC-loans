@@ -25,6 +25,7 @@ Vue.component('overridepayment-view', require('./components/OverridePaymentView.
 Vue.component('warning-modal', require('./components/WarningModal.vue').default);
 Vue.component('account-details', require('./components/AccountDetails.vue').default);
 Vue.component('branch-nav', require('./components/BranchNav.vue').default);
+Vue.component('reports-nav', require('./components/ReportsNav.vue').default);
 Vue.component('day-ended', require('./components/DayEnded.vue').default);
 Vue.component('mac-pagination', require('./components/Pagination.vue').default);
 Vue.component('client-list', require('./ui/client_information/ClientList.vue').default);

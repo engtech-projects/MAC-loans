@@ -1372,6 +1372,10 @@
 	background-color: #ddd;
 }
 
+.report-item-nav.active {
+	background-color: #eee!important;
+}
+
 .report-nav > div > i {
 	display:none;
 }
@@ -1386,6 +1390,10 @@
 
 .sub-item-container {
 	display: none;
+}
+
+.report-main-item.active{
+	background-color: #eee;
 }
 
 .report-main-item.active .fa-caret-right {
