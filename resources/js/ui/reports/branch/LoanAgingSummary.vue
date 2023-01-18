@@ -435,7 +435,7 @@
 		<div class="d-flex flex-row justify-content-end mb-45">
 			<div class="d-flex flex-row-reverse">
 				<a href="#" class="btn btn-default min-w-150">Print</a>
-				<a href="#" class="btn btn-success min-w-150 mr-24">Download Excel</a>
+				<!-- <a href="#" class="btn btn-success min-w-150 mr-24">Download Excel</a> -->
 			</div>
 		</div>
 	</div>

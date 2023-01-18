@@ -1,7 +1,7 @@
 <template>
 	<div class="d-flex flex-column" style="flex:8;min-height:1600px;">
 		<div class="d-flex flex-row font-md align-items-center mb-16">
-			<span class="font-lg text-primary-dark" style="flex:7">Transaction</span>
+			<span class="font-lg text-primary-dark" style="flex:3">Transaction</span>
 			<div class="d-flex flex-row align-items-center mr-24" style="flex:2">
 				<span class="mr-10">From: </span>
 				<input v-model="filter.date_from" type="date" class="form-control">
@@ -10,27 +10,32 @@
 				<span class="mr-10">To: </span>
 				<input v-model="filter.date_to" type="date" class="form-control">
 			</div>
-			<!-- <div class="d-flex flex-row align-items-center mr-24" style="flex:2">
+			<div class="d-flex flex-row align-items-center mr-24" style="flex:2">
 				<span class="mr-10">Type: </span>
-				<select name="" id="selectProductClient" class="form-control">
-					<option value="all_records">All Records</option>
-					<option value="new_accounts">New Accounts</option>
-					<option value="">By Center</option>
-					<option value="">By Product</option>
-					<option value="">By Account Officer</option>
+				<select v-model="filter.specType" name="" id="selectProductClient" class="form-control">
+					<option value="all">All Records</option>
+					<option value="center">By Center</option>
+					<option value="product">By Product</option>
+					<option value="account_officer">By Account Officer</option>
 				</select>
 			</div>
 			<div class="d-flex flex-row align-items-center" style="flex:2">
 				<span class="mr-10">Spec: </span>
-				<select name="" id="selectProductClient" class="form-control">
-					<option value="">Allotment Loan</option>
-					<option value="">Micro Group</option>
-					<option value="">Micro Individual</option>
-					<option value="">Pension Emergency</option>
-					<option value="">Pension Loan</option>
-					<option value="">SME Loan</option>
+				<select v-if="filter.specType=='all'" name="" disabled id="selectProductClient" class="form-control">
 				</select>
-			</div> -->
+				<select v-if="filter.specType=='product'" v-model="filter.spec" name="" id="selectProductClient" class="form-control">
+					<option value="all">All Records</option>
+					<option v-for="p in products.filter(pp=>pp.status=='active')" :key="p.product_id" :value="p.product_id">{{p.product_name}}</option>
+				</select>
+				<select v-if="filter.specType=='center'" v-model="filter.spec" name="" id="selectProductClient" class="form-control">
+					<option value="all">All Records</option>
+					<option v-for="c in centers.filter(cc=>cc.status=='active')" :key="c.center_id" :value="c.center_id">{{c.center}}</option>
+				</select>
+				<select v-if="filter.specType=='account_officer'" v-model="filter.spec" name="" id="selectProductClient" class="form-control">
+					<option value="all">All Records</option>
+					<option v-for="a in accountOfficers.filter(aa=>aa.status=='active')" :key="a.ao_id" :value="a.ao_id">{{a.name}}</option>
+				</select>
+			</div>
 		</div>
 		<div class="sep mb-45"></div>
 		<div id="printContent">
@@ -214,9 +219,14 @@ export default {
 				date_from:null,
 				date_to:null,
 				type:'client',
-				branch_id:''
+				branch_id:'',
+				spec:'all',
+				specType:'all'
 			},
 			reports:[],
+			accountOfficers:[],
+			products:[],
+			centers:[]
 		}
 	},
 	methods:{
@@ -235,6 +245,53 @@ export default {
 				console.log(error);
 			}.bind(this));
 		},
+		async fetchProducts(){
+			await axios.get(this.baseURL() + 'api/product/', {
+				headers: {
+					'Authorization': 'Bearer ' + this.token,
+					'Content-Type': 'application/json',
+					'Accept': 'application/json'
+				}
+			})
+			.then(function (response) {
+				this.products = response.data.data;
+				this.fetchCenters();
+			}.bind(this))
+			.catch(function (error) {
+				console.log(error);
+			}.bind(this));
+		},
+		async fetchCenters(){
+			await axios.get(this.baseURL() + 'api/center', {
+				headers: {
+					'Authorization': 'Bearer ' + this.token,
+					'Content-Type': 'application/json',
+					'Accept': 'application/json'
+				}
+			})
+			.then(function (response) {
+				this.centers = response.data.data;
+				this.fetchAo();
+			}.bind(this))
+			.catch(function (error) {
+				console.log(error);
+			}.bind(this));
+		},
+		async fetchAo(){
+			await axios.get(this.baseURL() + 'api/accountofficer/', {
+				headers: {
+					'Authorization': 'Bearer ' + this.token,
+					'Content-Type': 'application/json',
+					'Accept': 'application/json'
+				}
+			})
+			.then(function (response) {
+				this.accountOfficers = response.data.data;
+			}.bind(this))
+			.catch(function (error) {
+				console.log(error);
+			}.bind(this));
+		},
 		print:function(){
 			var content = document.getElementById('printContent').innerHTML;
 			var target = document.querySelector('.to-print');
@@ -243,6 +300,9 @@ export default {
 		},
 	},
 	watch:{
+		'filter.specType':function(){
+			this.filter.spec = 'all';
+		},
 		 filter: {
 			handler(val){
 				if(val.date_from && val.date_to){
@@ -310,6 +370,7 @@ export default {
 	mounted(){
 		this.branch = JSON.parse(this.pbranch);
 		this.filter.branch_id = this.branch.branch_id;
+		this.fetchProducts();
 	}
 }
 </script>
