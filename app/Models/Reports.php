@@ -109,19 +109,24 @@ class Reports extends Model
 
 
         $payments = Payment::where([ 'payment.status' => 'paid']);
+        $payments->join('loan_accounts', 'loan_accounts.loan_account_id', '=', 'payment.loan_account_id');
 
     	if( isset($filters['branch_id']) && $filters['branch_id'] ){
             $branch = Branch::find($filters['branch_id']);
     		$payments->where([ 'payment.branch_id' => $branch->branch_code ]);
         }
+
+
         if( isset($filters['product_id']) ){
-            $payments->join('loan_accounts', 'loan_accounts.loan_account_id', '=', 'payment.loan_account_id');
             $payments->where([ 'loan_accounts.product_id' => $filters['product_id'] ]);
         }
 
         if( isset($filters['account_officer']) ){
-            $payments->join('loan_accounts', 'loan_accounts.loan_account_id', '=', 'payment.loan_account_id');
             $payments->where([ 'loan_accounts.ao_id' => $filters['account_officer'] ]);
+        }
+
+        if( isset($filters['center']) ){
+            $payments->where([ 'loan_accounts.center_id' => $filters['center'] ]);
         }
 
         if( isset($filters['date_from']) && isset($filters['date_to']) ){
@@ -436,7 +441,6 @@ class Reports extends Model
             $dstSummary[$value->terms]['branches'][$branchIds[$value->branch_code]] += $value->loan_amount;
             $dstSummary[$value->terms]['total_amount'] += $value->loan_amount;
             $dstSummary[$value->terms]['amount'] = $value->terms <= 360 ? round($dstSummary[$value->terms]['total_amount']*1.5/200*$value->terms/365 , 2) : round($dstSummary[$value->terms]['total_amount'] *1.5/200);
-            // dd($dstSummary);
 
         }
 
@@ -608,17 +612,11 @@ class Reports extends Model
 
     public function repaymentByClient($filters = []) {
 
-        $payments = Payment::join('loan_accounts', 'payment.loan_account_id', '=', 'loan_accounts.loan_account_id')
-                        ->where(['payment.branch_id' => $filters['branch_id'], 'payment.status' => 'paid'])
-                        ->whereDate('payment.transaction_date', '>=', $filters['date_from'])
-                        ->whereDate('payment.transaction_date', '<=', $filters['date_to'])
-                        ->orderBy('payment.transaction_date', 'ASC')
-                        ->get([
-                            'payment.*', 'loan_accounts.borrower_id',
-                        ]);
-
+        if( $filters["type"] == 'center' || $filters["type"] == 'product' || $filters["type"] == 'account_officer' ) {
+            $filters[$filters["type"]] = $filters['spec'];
+        }
+        $payments = $this->getPayments($filters);
         $data = [];
-
         foreach ($payments as $payment) {
 
             $data[] = [

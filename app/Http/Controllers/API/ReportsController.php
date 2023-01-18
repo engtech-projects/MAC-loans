@@ -117,22 +117,24 @@ class ReportsController extends BaseController
 
 	public function repaymentReports(Request $request) {
 
-		$type = $request->input('type');
+		$category = $request->input('category');
 
 		$filters = [
 			'date_from' => Carbon::createFromFormat('Y-m-d', $request->input('date_from')),
 			'date_to' => Carbon::createFromFormat('Y-m-d', $request->input('date_to')),
 			'branch_id' => $request->input('branch_id'),
-			'type' => $request->input('type')
+			'category' => $request->input('category'),
+			'type' => $request->input('type'),
+            'spec' => $request->input('spec'),
 		];
 
 		$report = new Reports();
 
-		if( $type == 'client' ){
+		if( $category == 'client' ){
 			return $report->repaymentByClient($filters);
-		}elseif( $type == 'product' ){
+		}elseif( $category == 'product' ){
 			return $report->repaymentByProduct($filters);
-		}elseif( $type == 'cancelled' ){
+		}elseif( $category == 'cancelled' ){
 			return $report->cancelledRepaymentByClient($filters);
 		}
 	}
