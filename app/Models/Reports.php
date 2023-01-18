@@ -1115,6 +1115,8 @@ class Reports extends Model
                     $day = "91 to 180";
                 }else if($late > 180){
                     $day = "180 above";
+                }else{
+                    continue;
                 }
                 $data[$loanAccount->loan_status][$day]["num_accts"] += 1;
                 $data[$loanAccount->loan_status][$day]["loan_amt"] += $loanAccount->loan_amount;
