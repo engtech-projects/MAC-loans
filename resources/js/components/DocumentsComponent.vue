@@ -567,7 +567,7 @@
 											<div class="d-flex letter-head align-items-center mb-24">
 												<img :src="baseURL() + 'img/lamigo_logo.png'" class="mr-16" style="max-height:140px" alt="">
 												<div class="d-flex flex-column">
-													<span style="font-weight:bold;font-size:48px;font-family:'Bookman Old Style';line-height:1;">LAMIGO LAW OFFICE</span>
+													<span style="font-weight:bold;font-size:48px; font-family:'Bookman Old Style'; line-height:1;">LAMIGO LAW OFFICE</span>
 													<span style="font-size:24px">J. Satorre Street (City Hall Rotunda) Butuan City 8600</span>
 													<span style="font-size:24px">Tel. No. (085) 817-13-74</span>
 												</div>

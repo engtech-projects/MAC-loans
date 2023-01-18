@@ -238,14 +238,14 @@ class Reports extends Model
                             $data[$key]['payment'][$type]['pdi'] += $payment->pdi;
                             $data[$key]['payment'][$type]['over'] += $payment->over_payment;
                             $data[$key]['payment'][$type]['discount'] += $payment->rebates;
-                            $data[$key]['payment'][$type]['total_payment'] += $payment->amount_applied;
+                            $data[$key]['payment'][$type]['total_payment'] += $payment->amount_applied-$payment->rebates;
                             $data[$key]['payment'][$type]['net_int'] += $payment->interest;
                             $data[$key]['payment'][$type]['vat'] += $payment->vat;
                             if($payment->memo_type){
                                 if(!isset($data[$key]['payment'][$type]["memo"][$payment->memo_type])){
                                     $data[$key]['payment'][$type]["memo"][$payment->memo_type] = 0;
                                 }
-                                $data[$key]['payment'][$type]["memo"][$payment->memo_type] += $payment->amount_applied;
+                                $data[$key]['payment'][$type]["memo"][$payment->memo_type] += $payment->amount_applied-$payment->rebates;
                             }
                         }
 
@@ -307,7 +307,7 @@ class Reports extends Model
                 'pdi' => $payment->pdi,
                 'over' => $payment->over_payment,
                 'discount' => $payment->rebates,
-                'total_payment' => $payment->amount_applied,
+                'total_payment' => $payment->amount_applied-$payment->rebates,
                 'net_int' => $payment->interest,
                 'vat' => $payment->vat,
                 'memo_type' => $payment->memo_type
@@ -352,7 +352,7 @@ class Reports extends Model
         //                     'pdi' => $payment->pdi,
         //                     'over' => $payment->over_payment,
         //                     'discount' => null,
-        //                     'total_payment' => $payment->amount_applied,
+        //                     'total_payment' => $payment->amount_applied-$payment->rebates,
         //                     'net_int' => null,
         //                     'vat' => $payment->vat
         //             ];
@@ -583,14 +583,14 @@ class Reports extends Model
                             $data[$key]['payment'][$type]['pdi'] += $payment->pdi;
                             $data[$key]['payment'][$type]['over'] += $payment->over_payment;
                             $data[$key]['payment'][$type]['discount'] += $payment->rebates;
-                            $data[$key]['payment'][$type]['total_payment'] += $payment->amount_applied;
+                            $data[$key]['payment'][$type]['total_payment'] += $payment->amount_applied-$payment->rebates;
                             $data[$key]['payment'][$type]['net_int'] += $payment->interest;
                             $data[$key]['payment'][$type]['vat'] += $payment->vat;
                             if($payment->memo_type){
                                 if(!isset($data[$key]['payment'][$type]["memo"][$payment->memo_type])){
                                     $data[$key]['payment'][$type]["memo"][$payment->memo_type] = 0;
                                 }
-                                $data[$key]['payment'][$type]["memo"][$payment->memo_type] += $payment->amount_applied;
+                                $data[$key]['payment'][$type]["memo"][$payment->memo_type] += $payment->amount_applied-$payment->rebates;
                             }
                         }
 
@@ -630,7 +630,7 @@ class Reports extends Model
                 'pdi' => ($payment->pdi_approval_no) ? $payment->pdi : 0,
                 'overpayment' => $payment->over_payment,
                 'rebates' => $payment->rebates,
-                'total' => $payment->amount_applied,
+                'total' => $payment->amount_applied-$payment->rebates,
                 'net_interest' => $payment->interest,
                 'vat' => $payment->vat,
                 'payment_type' => $payment->payment_type,
@@ -1158,7 +1158,7 @@ class Reports extends Model
                 'penalty_waive' => ($payment->penalty_approval_no) ? 0 : $payment->penalty,
                 'rebates' => $payment->rebates,
                 'overpayment' => $payment->over_payment,
-                'total' => $payment->amount_applied,
+                'total' => $payment->amount_applied-$payment->rebates,
                 'remarks' => $payment->remarks,
                 'payment_type' => $payment->payment_type
             ];
@@ -1193,7 +1193,7 @@ class Reports extends Model
                     ->whereDate('payment.transaction_date', '>=', $monthStart)
                     ->whereDate('payment.transaction_date', '<=', $monthEnd)
                     ->groupBy("loan_accounts.loan_account_id")
-                    ->select(["loan_accounts.loan_account_id",DB::raw("sum(payment.amount_applied) as total_paid")])
+                    ->select(["loan_accounts.loan_account_id",DB::raw("sum(payment.amount_applied-payment.rebates) as total_paid")])
                     ->get();
                 $data[$weekDay][$centerVal->center]["all"]["month_payments"] = $monthPayments;
                 $data[$weekDay][$centerVal->center]["all"]["num_of_payments"] = 0;
@@ -1213,7 +1213,7 @@ class Reports extends Model
                         ->whereDate('payment.transaction_date', '>=', $weekData['start'])
                         ->whereDate('payment.transaction_date', '<=', $weekData['end'])
                         ->groupBy("loan_accounts.loan_account_id")
-                        ->select([DB::raw("count(payment.payment_id) as num_of_payments"),DB::raw("sum(payment.amount_applied) as total_paid")])
+                        ->select([DB::raw("count(payment.payment_id) as num_of_payments"),DB::raw("sum(payment.amount_applied-payment.rebates) as total_paid")])
                         ->get();
                     foreach ($loanAccounts as $key => $value) {
                         $data[$weekDay][$centerVal->center]["weeklyData"][$week]["num_of_payments"] += 1;
@@ -1235,7 +1235,7 @@ class Reports extends Model
             ->whereDate('payment.transaction_date', '>=', $monthStart)
             ->whereDate('payment.transaction_date', '<=', $monthEnd)
             ->groupBy("loan_accounts.borrower_id", "loan_accounts.center_id", "center.center", "center.day_sched", "loan_accounts.day_schedule")
-            ->select([DB::raw("count(payment.payment_id) as num_of_payments"), DB::raw("sum(payment.amount_applied) as total_paid"), "loan_accounts.borrower_id", "loan_accounts.center_id", "center.center", "loan_accounts.day_schedule as loanSched", "center.day_sched as centerSched"])
+            ->select([DB::raw("count(payment.payment_id) as num_of_payments"), DB::raw("sum(payment.amount_applied-payment.rebates) as total_paid"), "loan_accounts.borrower_id", "loan_accounts.center_id", "center.center", "loan_accounts.day_schedule as loanSched", "center.day_sched as centerSched"])
             ->get()->toArray();
         foreach($data as $key => $paymentData) {
             $data[$key]["borrower"] = Borrower::find($paymentData['borrower_id'])->fullname();
@@ -1252,7 +1252,7 @@ class Reports extends Model
                     ->whereDate('payment.transaction_date', '>=', $weekData['start'])
                     ->whereDate('payment.transaction_date', '<=', $weekData['end'])
                     ->groupBy("loan_accounts.borrower_id", "loan_accounts.center_id")
-                    ->select([DB::raw("count(payment.payment_id) as num_of_payments"),DB::raw("sum(payment.amount_applied) as total_paid")])
+                    ->select([DB::raw("count(payment.payment_id) as num_of_payments"),DB::raw("sum(payment.amount_applied-payment.rebates) as total_paid")])
                     ->first();
                 $data[$key]["weeklyData"][$week] = $loanAccounts ? $loanAccounts : ["num_of_payments"=>0, "total_paid"=>0];
                 $data[$key]["weeklyData"][$week]["start"] = $weekData['start'];
