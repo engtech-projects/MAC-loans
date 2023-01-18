@@ -209,12 +209,10 @@ class Amortization extends Model
         $month = $schedDate->month;
         $day = $schedDate->day;
 
-        if( $month == 1 && $day > 28 ){
-            return $schedDate->addMonth()->subDay($day-28)->toDateString();
+        $schedDate->addMonthNoOverflow();
+        if($initialDay <= $schedDate->daysInMonth){
+            $schedDate->day = $initialDay;
         }
-
-        $schedDate->addMonth();
-        $schedDate->day = $initialDay;
 
         return $schedDate->toDateString();
     }
