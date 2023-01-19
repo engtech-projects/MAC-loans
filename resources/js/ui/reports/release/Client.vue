@@ -368,7 +368,7 @@ export default {
 			}.bind(this));
 		},
 		async fetchAo(){
-			await axios.get(this.baseURL() + 'api/accountofficer/', {
+			await axios.get(this.baseURL() + 'api/accountofficer/getActivesInBranch/' + this.branch.branch_id, {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
 					'Content-Type': 'application/json',
