@@ -221,7 +221,7 @@ export default {
 	},
 	computed:{
 		totalRelease:function(){
-			return this.total('cash') + this.total('check') + this.total('memo');
+			return this.total('cash') + this.total('check');
 		},
 		
 	},

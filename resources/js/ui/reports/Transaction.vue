@@ -101,7 +101,7 @@
 							<div class="d-flex flex-column flex-1">
 								<div class="info-display">
 									<span class="text-primary-dark">TOTAL RELEASES</span>
-									<span class="text-primary-dark">{{formatToCurrency(totalCash + totalCheck + totalMemo)}}</span>
+									<span class="text-primary-dark">{{formatToCurrency(totalCash + totalCheck)}}</span>
 								</div>
 							</div>
 							<div class="flex-2"></div>
@@ -321,7 +321,7 @@
 							<div class="d-flex flex-column flex-1">
 								<div class="info-display">
 									<span class="text-primary-dark">TOTAL RELEASES</span>
-									<span class="text-primary-dark">{{formatToCurrency(totalCashClient + totalCheckClient + totalMemoClient)}}</span>
+									<span class="text-primary-dark">{{formatToCurrency(totalCashClient + totalCheckClient)}}</span>
 								</div>
 							</div>
 							<div class="flex-2"></div>
