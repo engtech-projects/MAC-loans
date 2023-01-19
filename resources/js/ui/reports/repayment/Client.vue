@@ -299,11 +299,11 @@ export default {
 	watch:{
 		'filter.type':function(val){
 			this.filter.spec = 'all';
-			if(val=='account_officer'){
-				if(this.filteredAos.length == 1){
-					this.filter.spec = this.filteredAos[0].ao_id;
-				}
-			}
+			// if(val=='account_officer'){
+			// 	if(this.filteredAos.length == 1){
+			// 		this.filter.spec = this.filteredAos[0].ao_id;
+			// 	}
+			// }
 		},
 		 filter: {
 			handler(val){
