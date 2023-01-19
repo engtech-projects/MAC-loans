@@ -12,7 +12,7 @@
 			</div>
 			<div class="d-flex flex-row align-items-center mr-24" style="flex:2">
 				<span class="mr-10">Type: </span>
-				<select v-model="filter.specType" name="" id="selectProductClient" class="form-control">
+				<select v-model="filter.type" name="" id="selectProductClient" class="form-control">
 					<option value="all">All Records</option>
 					<option value="center">By Center</option>
 					<option value="product">By Product</option>
@@ -21,19 +21,19 @@
 			</div>
 			<div class="d-flex flex-row align-items-center" style="flex:2">
 				<span class="mr-10">Spec: </span>
-				<select v-if="filter.specType=='all'" name="" disabled id="selectProductClient" class="form-control">
+				<select v-if="filter.type=='all'" name="" disabled id="selectProductClient" class="form-control">
 				</select>
-				<select v-if="filter.specType=='product'" v-model="filter.spec" name="" id="selectProductClient" class="form-control">
+				<select v-if="filter.type=='product'" v-model="filter.spec" name="" id="selectProductClient" class="form-control">
 					<option value="all">All Records</option>
 					<option v-for="p in products.filter(pp=>pp.status=='active')" :key="p.product_id" :value="p.product_id">{{p.product_name}}</option>
 				</select>
-				<select v-if="filter.specType=='center'" v-model="filter.spec" name="" id="selectProductClient" class="form-control">
+				<select v-if="filter.type=='center'" v-model="filter.spec" name="" id="selectProductClient" class="form-control">
 					<option value="all">All Records</option>
 					<option v-for="c in centers.filter(cc=>cc.status=='active')" :key="c.center_id" :value="c.center_id">{{c.center}}</option>
 				</select>
-				<select v-if="filter.specType=='account_officer'" v-model="filter.spec" name="" id="selectProductClient" class="form-control">
-					<option value="all">All Records</option>
-					<option v-for="a in accountOfficers.filter(aa=>aa.status=='active')" :key="a.ao_id" :value="a.ao_id">{{a.name}}</option>
+				<select v-if="filter.type=='account_officer'" v-model="filter.spec" name="" id="selectProductClient" class="form-control">
+					<option v-if="filteredAos.length > 1" value="all">All Records</option>
+					<option v-for="a in filteredAos" :key="a.ao_id" :value="a.ao_id">{{a.name}}</option>
 				</select>
 			</div>
 		</div>
@@ -218,10 +218,10 @@ export default {
 			filter:{
 				date_from:null,
 				date_to:null,
-				type:'client',
+				category:'client',
 				branch_id:'',
 				spec:'all',
-				specType:'all'
+				type:'all'
 			},
 			reports:[],
 			accountOfficers:[],
@@ -300,8 +300,13 @@ export default {
 		},
 	},
 	watch:{
-		'filter.specType':function(){
+		'filter.type':function(val){
 			this.filter.spec = 'all';
+			if(val=='account_officer'){
+				if(this.filteredAos.length == 1){
+					this.filter.spec = this.filteredAos[0].ao_id;
+				}
+			}
 		},
 		 filter: {
 			handler(val){
@@ -313,6 +318,9 @@ export default {
 		}
 	},
 	computed:{
+		filteredAos:function(){
+			return this.accountOfficers.filter(ao=>ao.status=='active'&&ao.branch_id==this.branch.branch_id);
+		},
 		total:function(){
 			var result = ['TOTAL','','',0,0,0,0,0,0,0,0,'',''];
 			this.reports.forEach(r => {
