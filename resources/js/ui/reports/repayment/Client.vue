@@ -24,15 +24,12 @@
 				<select v-if="filter.type=='all'" name="" disabled id="selectProductClient" class="form-control">
 				</select>
 				<select v-if="filter.type=='product'" v-model="filter.spec" name="" id="selectProductClient" class="form-control">
-					<option value="all">All Records</option>
 					<option v-for="p in products.filter(pp=>pp.status=='active')" :key="p.product_id" :value="p.product_id">{{p.product_name}}</option>
 				</select>
 				<select v-if="filter.type=='center'" v-model="filter.spec" name="" id="selectProductClient" class="form-control">
-					<option value="all">All Records</option>
 					<option v-for="c in centers.filter(cc=>cc.status=='active')" :key="c.center_id" :value="c.center_id">{{c.center}}</option>
 				</select>
 				<select v-if="filter.type=='account_officer'" v-model="filter.spec" name="" id="selectProductClient" class="form-control">
-					<option v-if="filteredAos.length > 1" value="all">All Records</option>
 					<option v-for="a in filteredAos" :key="a.ao_id" :value="a.ao_id">{{a.name}}</option>
 				</select>
 			</div>
@@ -220,7 +217,7 @@ export default {
 				date_to:null,
 				category:'client',
 				branch_id:'',
-				spec:'all',
+				spec:'',
 				type:'all'
 			},
 			reports:[],
