@@ -257,7 +257,7 @@
 							<tbody>
 								<tr v-for="t,i in transactions.client.release" :key="i">
 									<td>{{t.borrower}}</td>
-									<td>{{t.date_loan.replaceAll('-','/')}}</td>
+									<td>{{t.date_loan}}</td>
 									<td>{{t.term}}</td>
 									<td>{{formatToCurrency(t.amount_loan)}}</td>
 									<td>{{formatToCurrency(t.filing_fee)}}</td>
@@ -347,7 +347,7 @@
 							<tbody>
 								<tr v-for="t,i in transactions.client.collection" :key="i">
 									<td>{{t.borrower}}</td>
-									<td>{{t.date_paid.replaceAll('-','/')}}</td>
+									<td>{{t.date_paid}}</td>
 									<td>{{t.or}}</td>
 									<td>{{formatToCurrency(t.principal)}}</td>
 									<td>{{formatToCurrency(t.interest)}}</td>
@@ -844,9 +844,10 @@ export default {
 			var amount = 0;
 			if(this.transactions.client.collection){
 				this.transactions.client.collection.forEach(p=>{
-					if(p.memo_type && p.memo_type == 'Rebates and Discount'){
-						amount += p.total_payment;
-					}
+					amount += p.discount;
+					// if(p.memo_type && p.memo_type == 'Rebates and Discount'){
+					// 	amount += p.total_payment;
+					// }
 				})
 			}
 			return amount;
