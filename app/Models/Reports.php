@@ -121,6 +121,10 @@ class Reports extends Model
             $payments->where([ 'loan_accounts.product_id' => $filters['product_id'] ]);
         }
 
+        if( isset($filters['product']) ){
+            $payments->where([ 'loan_accounts.product_id' => $filters['product'] ]);
+        }
+
         if( isset($filters['account_officer']) ){
             $payments->where([ 'loan_accounts.ao_id' => $filters['account_officer'] ]);
         }
