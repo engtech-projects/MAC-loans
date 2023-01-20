@@ -212,7 +212,7 @@
 							<div class="d-flex flex-column flex-1">
 								<div class="info-display">
 									<span class="text-primary-dark">TOTAL PAYMENT</span>
-									<span class="text-primary-dark">{{formatToCurrency(paymentSummaryTotal.cash + paymentSummaryTotal.check + paymentSummaryTotal.memo + paymentSummaryTotal.pos)}}</span>
+									<span class="text-primary-dark">{{formatToCurrency(paymentSummaryTotal.cash + paymentSummaryTotal.check + paymentSummaryTotal.pos)}}</span>
 								</div>
 							</div>
 							<div class="flex-2"></div>
@@ -448,7 +448,7 @@
 							<div class="d-flex flex-column flex-1">
 								<div class="info-display">
 									<span class="text-primary-dark">TOTAL PAYMENT</span>
-									<span class="text-primary-dark">{{formatToCurrency(totalCashClientCollection + totalCheckClientCollection + totalMemoClientCollection + totalPosClientCollection)}}</span>
+									<span class="text-primary-dark">{{formatToCurrency(totalCashClientCollection + totalCheckClientCollection + totalPosClientCollection)}}</span>
 								</div>
 							</div>
 							<div class="flex-2"></div>
@@ -729,9 +729,9 @@ export default {
 					i=='POS'? this.paymentSummaryTotal.pos += t.payment[i].total_payment:false;
 					if(i == 'Memo'){
 						this.paymentSummaryTotal.overpayment += t.payment[i].over;
-						if(t.payment[i].memo["Rebates and Discount"]){
-							this.paymentSummaryTotal.discount += t.payment[i].memo["Rebates and Discount"];
-						}
+						// if(t.payment[i].memo["Rebates and Discount"]){
+						// 	this.paymentSummaryTotal.discount += t.payment[i].memo["Rebates and Discount"];
+						// }
 						if(t.payment[i].memo["deduct to balance"]){
 							this.paymentSummaryTotal.dedbal += t.payment[i].memo["deduct to balance"];
 						}
@@ -742,6 +742,7 @@ export default {
 							this.paymentSummaryTotal.branch += t.payment[i].memo["Interbranch"];
 						}
 					}
+					this.paymentSummaryTotal.discount += t.payment[i].discount;
 					var row = [];
 					row.push(!refIndex==0?'':t.reference);
 					refIndex++
