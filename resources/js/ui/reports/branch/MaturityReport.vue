@@ -63,7 +63,7 @@
 										<tr v-for="r,i in reports" :key="i">
 											<td>{{r.client}}</td>
 											<td>{{r.date_released.replaceAll('-','/')}}</td>
-											<td>{{r.due-date.replaceAll('-','/')}}</td>
+											<td>{{r.due_date.replaceAll('-','/')}}</td>
 											<td>{{formatToCurrency(r.principal_balance)}}</td>
 											<td>{{formatToCurrency(r.interest_balance)}}</td>
 											<td>{{r.center}}</td>
@@ -153,6 +153,7 @@ export default {
 			})
 			.then(function (response) {
 				this.reports = response.data.data
+				console.log(response.data);
 			}.bind(this))
 			.catch(function (error) {
 				console.log(error);
