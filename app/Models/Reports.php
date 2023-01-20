@@ -19,8 +19,6 @@ class Reports extends Model
 
     public function getLoanAccounts($filters = []) {
 
-
-
         $loanAccount = Loanaccount::where([ 'loan_accounts.status' => 'released']);
 
     	if( isset($filters['branch_id']) && $filters['branch_id'] ){
@@ -35,8 +33,10 @@ class Reports extends Model
             $loanAccount->whereDate('loan_accounts.date_release', '<=', $filters['date_to']);
         }
 
-        if( isset($filters['due_from']) && isset($filters['due_to']) ){
+        if( isset($filters['due_from']) ){
             $loanAccount->whereDate('loan_accounts.due_date', '>=', $filters['due_from']);
+        }
+        if(isset($filters['due_to'])){
             $loanAccount->whereDate('loan_accounts.due_date', '<=', $filters['due_to']);
         }
 
@@ -72,6 +72,11 @@ class Reports extends Model
         if( isset($filters['payment_status']) && $filters['payment_status'] ){
             $loanAccount->where([ 'loan_accounts.payment_status' => $filters['payment_status'] ]);
         }
+ 
+        if( isset($filters['type']) && $filters['type'] ){
+            $loanAccount->where([ 'loan_accounts.type' => $filters['type'] ]);
+        }
+
 
     	return $loanAccount->get([
 			'loan_accounts.loan_account_id',
@@ -1287,6 +1292,63 @@ class Reports extends Model
         ])
         // ->toSql();
         ->get()->toArray();
+        return $data;
+    }
+
+    public function prepaidReport($filters=[]){
+        $loanAccounts = $this->getLoanAccounts($filters);
+        $data = [];
+        foreach ($loanAccounts as $key => $value) {
+            // return $value;
+            $monthly = ceil($value->prepaid_interest / ceil($value->terms / 30));
+            $balance = $value->prepaid_interest;
+            $loanMonth = new Carbon($value->date_release);
+            $loanMonth = $loanMonth->addMonthNoOverflow(1)->firstOfMonth()->startOfDay();
+            $currentMonth = new Carbon($filters["due_from"]);
+            $currentMonth = $currentMonth->firstOfMonth()->startOfDay();
+            $dueDate = new Carbon($value->due_date);
+            $dueDate = $dueDate->firstOfMonth()->startOfDay();
+            $history = [];
+            while($loanMonth->lte($dueDate)){
+                if(!isset($history[$loanMonth->format('Y')])){
+                    $history[$loanMonth->format('Y')] = [
+                        "01" => 0,
+                        "02" => 0,
+                        "03" => 0,
+                        "04" => 0,
+                        "05" => 0,
+                        "06" => 0,
+                        "07" => 0,
+                        "08" => 0,
+                        "09" => 0,
+                        "10" => 0,
+                        "11" => 0,
+                        "12" => 0,
+                    ];
+                }
+
+                if($loanMonth->lte($currentMonth)){
+                    $history[$loanMonth->format('Y')][$loanMonth->format('m')] = $monthly;
+                    $balance -= $monthly;
+                    if($balance < 0 ){
+                        $history[$loanMonth->format('Y')][$loanMonth->format('m')] = round($monthly + $balance, 2);
+                        $balance = 0;
+                    }
+                }
+                $loanMonth = $loanMonth->addMonth(1)->startOfDay();
+            }
+            $data[] = [
+                "client" => $value->borrower->fullname(),
+                "amount_loan" => $value->loan_amount,
+                "date_released" => $value->date_release,
+                "due_date" => $value->due_date,
+                "term" => $value->terms,
+                "total_uid" => $value->prepaid_interest,
+                "balance" => $balance,
+                "monthly_uid" => $monthly,
+                "history" => $history
+            ];
+        }
         return $data;
     }
 

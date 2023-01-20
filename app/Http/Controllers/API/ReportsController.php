@@ -493,6 +493,21 @@ class ReportsController extends BaseController
 		return $this->sendResponse(["entries"=>$taxEntries, "downloadURL"=>url('/'.$filepath)],"BIR Tax Report");
     }
 
+	public function prepaidReport(Request $request){
+		$dueDate = new Carbon($request->input('due_from'));
+		$filters = [
+			'due_from' => $dueDate->firstOfMonth(),
+			'type' => "prepaid",
+			
+		];
+		$report = new Reports();
+
+		$prepaid = $report->prepaidReport($filters);
+		
+		return $this->sendResponse($prepaid,"Consolidated Report");
+
+	}
+
 	// public function releaseByClientReports(Request $request) {
 
 	// 	$filters = [
