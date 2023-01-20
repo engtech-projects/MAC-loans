@@ -466,7 +466,10 @@
 										<span>Total Memo</span>
 										<span>:</span>
 									</div>
-									<span class="flex-1">{{formatToCurrency(totalMemo)}}</span>
+									<div class="flex-1 d-flex">
+										<span class="flex-1"></span>
+										<span class="flex-1">{{formatToCurrency(totalMemo)}}</span>
+									</div>
 								</div>
 								<div class="d-flex flex-row align-items-center">
 									<div class="d-flex flex-row justify-content-between flex-1 mr-16">

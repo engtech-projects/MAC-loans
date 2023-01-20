@@ -320,7 +320,7 @@ export default {
 			filter:{
 				date_from:null,
 				date_to:null,
-				type:'product',
+				category:'product',
 				branch_id:''
 			},
 			branch:{
@@ -391,11 +391,12 @@ export default {
 					i=='POS'? this.paymentSummaryTotal.pos += t.payment[i].total_payment:false;
 					if(i == 'Memo'){
 						this.paymentSummaryTotal.overpayment += t.payment[i].over;
-						this.paymentSummaryTotal.discount += t.payment[i].memo["Rebates and Discount"]?t.payment[i].memo["Rebates and Discount"]:0;
+						// this.paymentSummaryTotal.discount += t.payment[i].memo["Rebates and Discount"]?t.payment[i].memo["Rebates and Discount"]:0;
 						this.paymentSummaryTotal.dedbal += t.payment[i].memo["deduct to balance"]?t.payment[i].memo["deduct to balance"]:0;
 						this.paymentSummaryTotal.offsetPf += t.payment[i].memo["Offset PF"]?t.payment[i].memo["Offset PF"]:0;
 						this.paymentSummaryTotal.branch += t.payment[i].memo["Interbranch"]?t.payment[i].memo["Interbranch"]:0;
 					}
+					this.paymentSummaryTotal.discount += t.payment[i].discount;
 					var row = [];
 					row.push(!refIndex==0?'':t.reference);
 					refIndex++

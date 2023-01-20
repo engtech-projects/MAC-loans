@@ -212,7 +212,7 @@
 							<div class="d-flex flex-column flex-1">
 								<div class="info-display">
 									<span class="text-primary-dark">TOTAL PAYMENT</span>
-									<span class="text-primary-dark">{{formatToCurrency(paymentSummaryTotal.cash + paymentSummaryTotal.check + paymentSummaryTotal.pos)}}</span>
+									<span class="text-primary-dark">{{formatToCurrency(paymentSummaryTotal.cash + paymentSummaryTotal.check + paymentSummaryTotal.pos + paymentSummaryTotal.memo)}}</span>
 								</div>
 							</div>
 							<div class="flex-2"></div>
@@ -448,7 +448,7 @@
 							<div class="d-flex flex-column flex-1">
 								<div class="info-display">
 									<span class="text-primary-dark">TOTAL PAYMENT</span>
-									<span class="text-primary-dark">{{formatToCurrency(totalCashClientCollection + totalCheckClientCollection + totalPosClientCollection)}}</span>
+									<span class="text-primary-dark">{{formatToCurrency(totalCashClientCollection + totalCheckClientCollection + totalPosClientCollection + totalMemoClientCollection)}}</span>
 								</div>
 							</div>
 							<div class="flex-2"></div>
