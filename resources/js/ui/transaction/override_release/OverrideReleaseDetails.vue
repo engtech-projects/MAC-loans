@@ -453,19 +453,20 @@
 									</div>
 									<span class="flex-1">{{formatToCurrency(totalCash)}}</span>
 								</div>
+								
 								<div class="d-flex flex-row">
-									<div class="d-flex flex-row justify-content-between flex-1 mr-16">
-										<span>Total Memo</span>
-										<span>:</span>
-									</div>
-									<span class="flex-1">{{formatToCurrency(totalMemo)}}</span>
-								</div>
-								<div class="d-flex flex-row bb-dark-5 pb-7">
 									<div class="d-flex flex-row justify-content-between flex-1 mr-16">
 										<span>Total Check</span>
 										<span>:</span>
 									</div>
 									<span class="flex-1">{{formatToCurrency(totalCheque)}}</span>
+								</div>
+								<div class="d-flex flex-row bb-dark-5 pb-7">
+									<div class="d-flex flex-row justify-content-between flex-1 mr-16">
+										<span>Total Memo</span>
+										<span>:</span>
+									</div>
+									<span class="flex-1">{{formatToCurrency(totalMemo)}}</span>
 								</div>
 								<div class="d-flex flex-row align-items-center">
 									<div class="d-flex flex-row justify-content-between flex-1 mr-16">
@@ -1078,7 +1079,7 @@ export default {
 		},
 		totalRelease:function(){
 			var amount = 0;
-			return this.totalCash + this.totalMemo + this.totalCheque;
+			return this.totalCash + this.totalCheque;
 		},
 		borrowerPhoto:function(){
 			return this.loanaccount.borrower_photo? this.loanaccount.borrower_photo : this.baseURL()+'/img/user.png';
