@@ -713,7 +713,7 @@ class Reports extends Model
             // $matureLoans[$key]["balance"] = $value->remainingBalance();
             $matureLoans[$key]["principal_balance"] = $value->remainingBalance()["principal"]["balance"];
             $matureLoans[$key]["interest_balance"] = $value->remainingBalance()["interest"]["balance"];
-            $matureLoans[$key]["center"] = $value->center->center;
+            $matureLoans[$key]["center"] = $value->center_id ? $value->center->center : '';
         }
         return $matureLoans;
 
