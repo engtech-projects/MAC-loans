@@ -693,9 +693,9 @@ class Reports extends Model
                 $data[$key]['date_loan'] = $value['date_release'];
                 $data[$key]['maturity_date'] = $value['due_date'];
                 $data[$key]['amount_loan'] = $value['loan_amount'];
-                $data[$key]['outstanding_balance'] = $currentAmortization->outstandingBalance;
-                $data[$key]['principal_balance'] = $currentAmortization->principal_balance;
-                $data[$key]['delinquent'] = $currentAmortization->total;
+                $data[$key]['outstanding_balance'] = $loanAccount->remainingBalance()["memo"]["balance"];
+                $data[$key]['principal_balance'] = $loanAccount->remainingBalance()["principal"]["balance"];
+                $data[$key]['delinquent'] = $currentAmortization->short_principal + $currentAmortization->short_interest;
                 $data[$key]['weekly_amortization'] = $value->amortization()['total'];
                 $data[$key]['contact'] = $borrower->contact_number;
                 $data[$key]['address'] = $borrower->address;
