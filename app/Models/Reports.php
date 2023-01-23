@@ -484,12 +484,12 @@ class Reports extends Model
             foreach ($products as $k => $v) {
 
                 $data[$key]['products'][$k] = [
-                    'reference' => null,
-                    'new_account' => null,
-                    'new_account_amount_released' => null,
-                    'repeat_account' => null,
-                    'repeat_account_amount_released' => null,
-                    'total_released' => null,
+                    'reference' => $v['product_code'] . ' - ' . $v['product_name'],
+                    'new_account' => 0,
+                    'new_account_amount_released' => 0,
+                    'repeat_account' => 0,
+                    'repeat_account_amount_released' => 0,
+                    'total_released' => 0,
                 ];
 
                 $accounts = null;
@@ -499,14 +499,14 @@ class Reports extends Model
 
                 if( count($accounts) > 0 ) {
 
-                    $data[$key]['products'][$k] = [
-                        'reference' => $v['product_code'] . ' - ' . $v['product_name'],
-                        'new_account' => null,
-                        'new_account_amount_released' => null,
-                        'repeat_account' => null,
-                        'repeat_account_amount_released' => null,
-                        'total_released' => null,
-                    ];
+                    // $data[$key]['products'][$k] = [
+                    //     'reference' => $v['product_code'] . ' - ' . $v['product_name'],
+                    //     'new_account' => null,
+                    //     'new_account_amount_released' => null,
+                    //     'repeat_account' => null,
+                    //     'repeat_account_amount_released' => null,
+                    //     'total_released' => null,
+                    // ];
 
             //         $v['reference'] = $v['product_code'] . ' - ' . $v['product_name'];
             //         // $v['repeat_account'] = 0;
@@ -723,7 +723,7 @@ class Reports extends Model
             $matureLoans[$key]["due_date"] = $value->due_date;
             // $matureLoans[$key]["balance"] = $value->remainingBalance();
             $matureLoans[$key]["principal_balance"] = $value->remainingBalance()["principal"]["balance"];
-            $matureLoans[$key]["interest_balance"] = $value->remainingBalance()["interest"]["balance"];
+            $matureLoans[$key]["interest_balance"] = $value->remainingBalance()["interest"]["balance"] - $value->remainingBalance()["rebates"]["credit"];
             $matureLoans[$key]["center"] = $value->center_id ? $value->center->center : '';
         }
         return $matureLoans;
@@ -892,7 +892,7 @@ class Reports extends Model
                             "amount_loan" => $account->loan_amount,
                             "balance" => $account->outstandingBalance($account->loan_account_id),
                             "principal_balance" => $account->remainingBalance()["principal"]["balance"],
-                            "interest_balance" => $account->remainingBalance()["interest"]["balance"],
+                            "interest_balance" => $account->remainingBalance()["interest"]["balance"] - $account->remainingBalance()["rebates"]["credit"],
                             "amortization" => $account->amortization()["principal"] + $account->amortization()["interest"],
                             "delinquent_amount" => $account->outstandingBalance($account->loan_account_id),
                             "type" => $account->payment_mode,
@@ -951,7 +951,7 @@ class Reports extends Model
                             "amount_loan" => $account->loan_amount,
                             "amount_due" => $account->outstandingBalance($account->loan_account_id),
                             "principal_balance" => $account->remainingBalance()["principal"]["balance"],
-                            "interest_balance" => $account->remainingBalance()["interest"]["balance"],
+                            "interest_balance" => $account->remainingBalance()["interest"]["balance"] - $account->remainingBalance()["rebates"]["credit"],
                             "amortization" => $account->amortization()["principal"] + $account->amortization()["interest"],
                             "type" => $account->payment_mode,
                             "loan_status" => $account->loan_status,
