@@ -178,6 +178,7 @@ class Borrower extends Authenticatable
                 $account->current_amortization = $account->getCurrentAmortization();
                 $account->amortization = $account->amortization();
                 $account->loan_status_view = $account->getStatusView();
+                $account->collection_rate = $account->collectionRate();
             }
             return $activeAccounts;
         }
