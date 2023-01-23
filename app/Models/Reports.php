@@ -390,12 +390,18 @@ class Reports extends Model
     		case 'client':
 
     			$type = $filters['type'];
+                if( $type == 'all' ){
+                    unset($filters['type']);
+                }
+
     			if( $type == 'new' ){
     				$filters['cycle_no'] = 1;
     			}
 
                 if( $type == 'center' || $type == 'product' || $type == 'account_officer' ) {
                     $filters[$type] = $filters['spec'];
+                    unset($filters['spec']);
+                    unset($filters['type']);
                 }
 
 
