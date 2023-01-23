@@ -143,12 +143,19 @@
 								</div>
 								<span class="flex-1">{{formatToCurrency(totalCheck)}}</span>
 							</div>
-							<div class="d-flex flex-row flex-1">
+							<div class="d-flex flex-row flex-1 mb-5">
 								<div class="d-flex flex-row justify-content-between flex-2 mr-24">
 									<span class="flex-1">TOTAL MEMO CANCELLED</span>
 									<span>:</span>
 								</div>
 								<span class="flex-1">{{formatToCurrency(totalMemo)}}</span>
+							</div>
+							<div class="d-flex flex-row flex-1">
+								<div class="d-flex flex-row justify-content-between flex-2 mr-24">
+									<span class="flex-1">TOTAL POS CANCELLED</span>
+									<span>:</span>
+								</div>
+								<span class="flex-1">{{formatToCurrency(totalPos)}}</span>
 							</div>
 						</div>
 						<div class="d-flex flex-column flex-1">
@@ -185,7 +192,7 @@ export default {
 			filter:{
 				date_from: null,
 				date_to: null,
-				type:'cancelled',
+				category:'cancelled',
 				branch_id:null,
 			},
 			branch:{},
@@ -254,6 +261,15 @@ export default {
 			var amount = 0;
 			this.accounts.map(function(item){
 				if(item['payment_type'].toLowerCase().includes('memo')){
+					amount += parseFloat(item.total)
+				}
+			}.bind(this));
+			return amount;
+		},
+		totalPos:function(){
+			var amount = 0;
+			this.accounts.map(function(item){
+				if(item['payment_type'].toLowerCase().includes('pos')){
 					amount += parseFloat(item.total)
 				}
 			}.bind(this));
