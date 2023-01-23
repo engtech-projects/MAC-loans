@@ -58,7 +58,7 @@
 							<td>{{p.loan_details.account_num}}</td>
 							<td>{{p.loan_details.borrower.firstname + ' ' + p.loan_details.borrower.lastname}}</td>
 							<td>{{p.or_no}}</td>
-							<td>{{formatToCurrency(p.amount_applied)}}</td>
+							<td>{{formatToCurrency(p.amount_applied - p.rebates)}}</td>
 							<td>{{p.payment_type}}</td>
 							<td>{{formatToCurrency(p.principal)}}</td>
 							<td>{{formatToCurrency(p.interest)}}</td>
@@ -196,7 +196,7 @@
 									<span class="pl-24">Rebates & Disc.</span>
 									<span>:</span>
 								</div>
-								<span class="flex-3 text-primary-dark">P {{formatToCurrency(totalRebatesDiscount)}}</span>
+								<span class="flex-3 text-primary-dark">P {{formatToCurrency(totalRebates)}}</span>
 							</div>
 							<!-- <div class="d-flex flex-row">
 								<div class="d-flex flex-row flex-2 justify-content-between pr-24">
@@ -274,7 +274,7 @@ export default {
 			var amount = 0;
 			this.ppayments.map(function(payment){
 				if(payment.payment_type == 'Cash Payment'){
-					amount += payment.amount_applied;
+					amount += payment.amount_applied - payment.rebates;
 				}
 			});
 			return amount;
@@ -283,7 +283,7 @@ export default {
 			var amount = 0;
 			this.ppayments.map(function(payment){
 				if(payment.payment_type == 'Check Payment'){
-					amount += payment.amount_applied;
+					amount += payment.amount_applied - payment.rebates;
 				}
 			});
 			return amount;
@@ -292,7 +292,7 @@ export default {
 			var amount = 0;
 			this.ppayments.map(function(payment){
 				if(payment.payment_type == 'Memo'){
-					amount += payment.amount_applied;
+					amount += payment.amount_applied - payment.rebates;
 				}
 			});
 			return amount;
@@ -301,7 +301,7 @@ export default {
 			var amount = 0;
 			this.ppayments.map(function(payment){
 				if(payment.payment_type == 'POS'){
-					amount += payment.amount_applied;
+					amount += payment.amount_applied - payment.rebates;
 				}
 			});
 			return amount;
@@ -310,7 +310,7 @@ export default {
 			var amount = 0;
 			this.ppayments.map(function(payment){
 				if(payment.memo_type == 'deduct to balance'){
-					amount += payment.amount_applied;
+					amount += payment.amount_applied - payment.rebates;
 				}
 			});
 			return amount;
@@ -319,7 +319,7 @@ export default {
 			var amount = 0;
 			this.ppayments.map(function(payment){
 				if(payment.memo_type == 'Interbranch'){
-					amount += payment.amount_applied;
+					amount += payment.amount_applied - payment.rebates;
 				}
 			});
 			return amount;
@@ -328,7 +328,7 @@ export default {
 			var amount = 0;
 			this.ppayments.map(function(payment){
 				if(payment.memo_type == 'Offset PF'){
-					amount += payment.amount_applied;
+					amount += payment.amount_applied - payment.rebates;
 				}
 			});
 			return amount;
@@ -348,7 +348,7 @@ export default {
 		totalPayment:function(){
 			var amount = 0;
 			this.filteredPayments.map(function(payment){
-				amount += payment.amount_applied;
+				amount += payment.amount_applied - payment.rebates;
 			});
 			return amount;
 		},
