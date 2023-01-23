@@ -261,7 +261,7 @@
                             <span class="flex-3 text-primary-dark"
                                 >P
                                 {{
-                                    formatToCurrency(totalRebatesDiscount)
+                                    formatToCurrency(totalRebates)
                                 }}</span
                             >
                         </div>
@@ -610,7 +610,7 @@ export default {
             var amount = 0;
             this.paidPayments.map(function (payment) {
                 if (payment.payment_type == "Cash Payment") {
-                    amount += payment.amount_applied;
+                    amount += payment.amount_applied - payment.rebates;
                 }
             });
             return amount;
@@ -619,7 +619,7 @@ export default {
             var amount = 0;
             this.paidPayments.map(function (payment) {
                 if (payment.payment_type == "Check Payment") {
-                    amount += payment.amount_applied;
+                    amount += payment.amount_applied - payment.rebates;
                 }
             });
             return amount;
@@ -627,9 +627,9 @@ export default {
         totalRebates: function () {
             var amount = 0;
             this.paidPayments.map(function (payment) {
-                if (payment.payment_type == "Memo") {
+                // if (payment.payment_type == "Memo") {
                     amount += payment.rebates;
-                }
+                // }
             });
             return amount;
         },
@@ -637,7 +637,7 @@ export default {
             var amount = 0;
             this.paidPayments.map(function (payment) {
                 if (payment.payment_type == "Memo") {
-                    amount += payment.amount_applied;
+                    amount += payment.amount_applied - payment.rebates;
                 }
             });
             return amount;
@@ -646,7 +646,7 @@ export default {
             var amount = 0;
             this.paidPayments.map(function (payment) {
                 if (payment.payment_type == "POS") {
-                    amount += payment.amount_applied;
+                    amount += payment.amount_applied - payment.rebates;
                 }
             });
             return amount;
@@ -655,7 +655,7 @@ export default {
             var amount = 0;
             this.paidPayments.map(function (payment) {
                 if (payment.memo_type == "Offset PF") {
-                    amount += payment.amount_applied;
+                    amount += payment.amount_applied  - payment.rebates;
                 }
             });
             return amount;
@@ -664,7 +664,7 @@ export default {
             var amount = 0;
             this.paidPayments.map(function (payment) {
                 if (payment.memo_type == "deduct to balance") {
-                    amount += payment.amount_applied;
+                    amount += payment.amount_applied - payment.rebates;
                 }
             });
             return amount;
@@ -673,7 +673,7 @@ export default {
             var amount = 0;
             this.paidPayments.map(function (payment) {
                 if (payment.memo_type == "Interbranch") {
-                    amount += payment.amount_applied;
+                    amount += payment.amount_applied - payment.rebates;
                 }
             });
             return amount;
@@ -692,8 +692,7 @@ export default {
                 this.totalCash +
                 this.totalCheck +
                 this.totalPOS +
-                this.totalMemo -
-                this.totalRebates
+                this.totalMemo
             );
         },
         totalPrincipal: function () {

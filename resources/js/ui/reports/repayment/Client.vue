@@ -356,7 +356,7 @@ export default {
 					if(r.memo_type == 'deduct to balance'){
 						result.dedBalance += r.total
 					}else if(r.memo_type == 'Rebates and Discount'){
-						result.discount += r.total
+						// result.discount += r.total
 					}else if(r.memo_type == 'Offset PF'){
 						result.offsetPf += r.total
 					}else if(r.memo_type == 'Interbranch'){
