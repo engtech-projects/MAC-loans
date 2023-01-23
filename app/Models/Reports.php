@@ -400,9 +400,9 @@ class Reports extends Model
 
                 if( $type == 'center' || $type == 'product' || $type == 'account_officer' ) {
                     $filters[$type] = $filters['spec'];
-                    unset($filters['spec']);
-                    unset($filters['type']);
                 }
+                unset($filters['spec']);
+                unset($filters['type']);
 
 
     			return $this->getReleaseByClient($filters, false);
