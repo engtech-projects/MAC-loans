@@ -74,186 +74,6 @@
 										<tr v-for="fr,i in filteredResult" :key="i" :class="fr[0]=='OFFICER SUB-TOTAL'?'bbt-8-light text-primary-dark text-bold':''">
 											<td v-for="r,k in fr" :key="k">{{r}}</td>
 										</tr>
-										<!-- <tr>
-											<td>001 - John Mark Bacenas</td>
-											<td>002 - Micro Group</td>
-											<td>663</td>
-											<td>1,866,321,00</td>
-											<td>70</td>
-											<td>106,205.00</td>
-											<td>5.64%</td>
-											<td>537</td>
-											<td>1,477,405.00</td>
-											<td>78.45%</td>
-										</tr>
-										<tr>
-											<td></td>
-											<td>002 - Micro Group</td>
-											<td>663</td>
-											<td>1,866,321,00</td>
-											<td>70</td>
-											<td>106,205.00</td>
-											<td>5.64%</td>
-											<td>537</td>
-											<td>1,477,405.00</td>
-											<td>78.45%</td>
-										</tr>
-										<tr>
-											<td></td>
-											<td>002 - Micro Group</td>
-											<td>663</td>
-											<td>1,866,321,00</td>
-											<td>70</td>
-											<td>106,205.00</td>
-											<td>5.64%</td>
-											<td>537</td>
-											<td>1,477,405.00</td>
-											<td>78.45%</td>
-										</tr>
-										<tr>
-											<td></td>
-											<td>002 - Micro Group</td>
-											<td>663</td>
-											<td>1,866,321,00</td>
-											<td>70</td>
-											<td>106,205.00</td>
-											<td>5.64%</td>
-											<td>537</td>
-											<td>1,477,405.00</td>
-											<td>78.45%</td>
-										</tr>
-										<tr>
-											<td></td>
-											<td>002 - Micro Group</td>
-											<td>663</td>
-											<td>1,866,321,00</td>
-											<td>70</td>
-											<td>106,205.00</td>
-											<td>5.64%</td>
-											<td>537</td>
-											<td>1,477,405.00</td>
-											<td>78.45%</td>
-										</tr>
-										<tr>
-											<td></td>
-											<td>002 - Micro Group</td>
-											<td>663</td>
-											<td>1,866,321,00</td>
-											<td>70</td>
-											<td>106,205.00</td>
-											<td>5.64%</td>
-											<td>537</td>
-											<td>1,477,405.00</td>
-											<td>78.45%</td>
-										</tr>
-										<tr class="bbt-8-light">
-											<td class="text-primary-dark text-bold">OFFICER SUB-TOTAL</td>
-											<td class="text-primary-dark text-bold"></td>
-											<td class="text-primary-dark text-bold">665</td>
-											<td class="text-primary-dark text-bold">2,889,655.00</td>
-											<td class="text-primary-dark text-bold">70</td>
-											<td class="text-primary-dark text-bold">8,888,888.000</td>
-											<td class="text-primary-dark text-bold">58%</td>
-											<td class="text-primary-dark text-bold">421</td>
-											<td class="text-primary-dark text-bold">145,123,456.00</td>
-											<td class="text-primary-dark text-bold">100%</td>
-										</tr>
-										<tr>
-											<td>002 - Janine L. Descalar</td>
-											<td>002 - Micro Group</td>
-											<td>663</td>
-											<td>1,866,321,00</td>
-											<td>70</td>
-											<td>106,205.00</td>
-											<td>5.64%</td>
-											<td>537</td>
-											<td>1,477,405.00</td>
-											<td>78.45%</td>
-										</tr>
-										<tr>
-											<td></td>
-											<td>002 - Micro Group</td>
-											<td>663</td>
-											<td>1,866,321,00</td>
-											<td>70</td>
-											<td>106,205.00</td>
-											<td>5.64%</td>
-											<td>537</td>
-											<td>1,477,405.00</td>
-											<td>78.45%</td>
-										</tr>
-										<tr>
-											<td></td>
-											<td>002 - Micro Group</td>
-											<td>663</td>
-											<td>1,866,321,00</td>
-											<td>70</td>
-											<td>106,205.00</td>
-											<td>5.64%</td>
-											<td>537</td>
-											<td>1,477,405.00</td>
-											<td>78.45%</td>
-										</tr>
-										<tr>
-											<td></td>
-											<td>002 - Micro Group</td>
-											<td>663</td>
-											<td>1,866,321,00</td>
-											<td>70</td>
-											<td>106,205.00</td>
-											<td>5.64%</td>
-											<td>537</td>
-											<td>1,477,405.00</td>
-											<td>78.45%</td>
-										</tr>
-										<tr>
-											<td></td>
-											<td>002 - Micro Group</td>
-											<td>663</td>
-											<td>1,866,321,00</td>
-											<td>70</td>
-											<td>106,205.00</td>
-											<td>5.64%</td>
-											<td>537</td>
-											<td>1,477,405.00</td>
-											<td>78.45%</td>
-										</tr>
-										<tr>
-											<td></td>
-											<td>002 - Micro Group</td>
-											<td>663</td>
-											<td>1,866,321,00</td>
-											<td>70</td>
-											<td>106,205.00</td>
-											<td>5.64%</td>
-											<td>537</td>
-											<td>1,477,405.00</td>
-											<td>78.45%</td>
-										</tr>
-										<tr class="bbt-8-light">
-											<td class="text-primary-dark text-bold">OFFICER SUB-TOTAL</td>
-											<td class="text-primary-dark text-bold"></td>
-											<td class="text-primary-dark text-bold">665</td>
-											<td class="text-primary-dark text-bold">2,889,655.00</td>
-											<td class="text-primary-dark text-bold">70</td>
-											<td class="text-primary-dark text-bold">8,888,888.000</td>
-											<td class="text-primary-dark text-bold">58%</td>
-											<td class="text-primary-dark text-bold">421</td>
-											<td class="text-primary-dark text-bold">145,123,456.00</td>
-											<td class="text-primary-dark text-bold">100%</td>
-										</tr>
-										<tr class="bg-skyblue">
-											<td class="text-primary-dark text-bold">TOTAL</td>
-											<td class="text-primary-dark text-bold"></td>
-											<td class="text-primary-dark text-bold">665</td>
-											<td class="text-primary-dark text-bold">2,889,655.00</td>
-											<td class="text-primary-dark text-bold">70</td>
-											<td class="text-primary-dark text-bold">8,888,888.000</td>
-											<td class="text-primary-dark text-bold">58%</td>
-											<td class="text-primary-dark text-bold">421</td>
-											<td class="text-primary-dark text-bold">145,123,456.00</td>
-											<td class="text-primary-dark text-bold">100%</td>
-										</tr> -->
 									</tbody>
 								</table>
 							</div>
@@ -313,7 +133,7 @@ export default {
 			})
 			.then(function (response) {
 				this.reports = response.data.data
-				console.log(response.data);
+				console.log(this.reports);
 			}.bind(this))
 			.catch(function (error) {
 				console.log(error);
@@ -359,28 +179,30 @@ export default {
 			var result = [];
 			this.reports.forEach(r=>{
 				var total = ['OFFICER SUB-TOTAL','',0,0,0,0,0,0,0,0];
-				r.products.forEach((p,i)=>{
-					var row = [0,0,0,0,0,0,0,0,0,0];
-					row[0] = i==0?r.name:'';
-					row[1] = p.product_code + '-' + p.product_name;
-					row[2] = p.all.count;
-					total[2] += p.all.count;
-					row[3] = this.formatToCurrency(p.all.amount);
-					total[3] += p.all.amount;
-					row[4] = p.delinquent.count;
-					total[4] += p.delinquent.count;
-					row[5] = this.formatToCurrency(p.delinquent.amount);
-					total[5] += p.delinquent.amount;
-					row[6] = p.delinquent.rate + '%';
-					total[6] += p.delinquent.rate;
-					row[7] = p.pastdue.count;
-					total[7] += p.pastdue.count;
-					row[8] = this.formatToCurrency(p.pastdue.amount);
-					total[8] += p.pastdue.amount;
-					row[9] = p.pastdue.rate + '%';
-					total[9] += p.pastdue.rate;
-					result.push(row);
-				});
+				if(r.products){
+					r.products.forEach((p,i)=>{
+						var row = [0,0,0,0,0,0,0,0,0,0];
+						row[0] = i==0?r.name:'';
+						row[1] = p.product_code + '-' + p.product_name;
+						row[2] = p.all.count;
+						total[2] += p.all.count;
+						row[3] = this.formatToCurrency(p.all.amount);
+						total[3] += p.all.amount;
+						row[4] = p.delinquent.count;
+						total[4] += p.delinquent.count;
+						row[5] = this.formatToCurrency(p.delinquent.amount);
+						total[5] += p.delinquent.amount;
+						row[6] = p.delinquent.rate + '%';
+						total[6] += p.delinquent.rate;
+						row[7] = p.pastdue.count;
+						total[7] += p.pastdue.count;
+						row[8] = this.formatToCurrency(p.pastdue.amount);
+						total[8] += p.pastdue.amount;
+						row[9] = p.pastdue.rate + '%';
+						total[9] += p.pastdue.rate;
+						result.push(row);
+					});
+				}
 				total[3] = this.formatToCurrency(total[3]);
 				total[5] = this.formatToCurrency(total[5]);
 				total[8] = this.formatToCurrency(total[8]);

@@ -11,7 +11,7 @@
 			</div>
 			<div class="d-flex flex-row align-items-start">
 				@include('_includes/reportsnav')
-				<reports-branch-paymentstatus></reports-branch-paymentstatus>
+				<reports-branch-paymentstatus pbranch="{{Session::get('branch')}}" token="{{Session::get('token')}}"></reports-branch-paymentstatus>
 			</div>
 		</div>
     </section>
