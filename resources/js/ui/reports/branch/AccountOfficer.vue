@@ -46,7 +46,9 @@
 								<div class="flex-1 d-flex flex-column">
 								
 								</div>
-								<span class="font-30 text-bold text-primary-dark">Account Officer Performace Report</span>
+								<span v-if="filter.group=='performance_report'" class="font-30 text-bold text-primary-dark">ACCOUNT OFFICER PERFORMANCE REPORT</span>
+								<span v-else-if="filter.group=='write_off'" class="font-30 text-bold text-primary-dark">ACCOUNT OFFICER WRITE-OFF REPORT</span>
+								<span v-else class="font-30 text-bold text-primary-dark">ACCOUNT OFFICER DELINQUENT REPORT</span>
 								<div class="flex-1 d-flex justify-content-end" style="padding-left:24px">
 									
 								</div>
@@ -56,7 +58,9 @@
 						</div>
 						<section class="d-flex flex-column mb-16">
 							<div class="p-10 light-border">
-								<table class="table table-stripped th-blue th-nbt">
+								
+								<!-- Table for Performance Report  -->
+								<table v-if="filter.group == 'performance_report'" class="table table-stripped th-blue th-nbt">
 									<thead>
 										<th>Account Officer</th>
 										<th>Product</th>
@@ -73,6 +77,55 @@
 										<tr v-if="!filteredResult.length"><td><i>No data available.</i></td></tr>
 										<tr v-for="fr,i in filteredResult" :key="i" :class="fr[0]=='OFFICER SUB-TOTAL'?'bbt-8-light text-primary-dark text-bold':''">
 											<td v-for="r,k in fr" :key="k">{{r}}</td>
+										</tr>
+									</tbody>
+								</table>
+
+								<!-- Table for Write-off Report -->
+								<table v-if="filter.group == 'write_off'" class="table table-stripped th-blue th-nbt">
+									<thead>
+										<th>Account Officer</th>
+										<th># Acct.</th>
+										<th>Portfolio</th>
+										<th>Delinquent Amount</th>
+										<th>Principal Bal</th>
+										<th>Interest Bal</th>
+									</thead>
+									<tbody>
+										<tr v-if="!filteredResult.length"><td><i>No data available.</i></td></tr>
+										<tr v-for="fr,i in reports" :key="i">
+											<td>{{fr.ao_name}}</td>
+											<td>No backend data</td>
+											<td>No backend data</td>
+											<td>No backend data</td>
+											<td>{{formatToCurrency(fr.principal_balance)}}</td>
+											<td>No backend data</td>
+										</tr>
+									</tbody>
+								</table>
+
+								<!-- Table for Delinquent Report -->
+								<table v-if="filter.group == 'delinquent'" class="table table-stripped th-blue th-nbt">
+									<thead>
+										<th>Borrower's Name</th>
+										<th>Acct. #</th>
+										<th>Date Loan</th>
+										<th>Maturity</th>
+										<th>Amt. Loan</th>
+										<th>Balance</th>
+										<th>Principal Bal.</th>
+										<th>Interest Bal.</th>
+										<th>Amort Amt</th>
+										<th>Deli Amt</th>
+										<th>Type</th>
+										<th>Ms Amrt</th>
+										<th># of Days</th>
+										<th>Status</th>
+									</thead>
+									<tbody>
+										<tr v-if="!filteredResult.length"><td><i>No data available.</i></td></tr>
+										<tr v-for="fr,i in delinquentReport" :key="i">
+											<td v-for="row,j in fr" :key="j">{{row}}</td>
 										</tr>
 									</tbody>
 								</table>
@@ -116,7 +169,7 @@ export default {
 			branch:{},
 			filter:{
 				branch_id:'',
-				group:'',
+				group:'performance_report',
 				type:'account_officer'
 			},
 			reports:[],
@@ -211,6 +264,32 @@ export default {
 				result.push(total);
 			})
 			return result;
+		},
+		delinquentReport:function(){
+			var rows = [];
+			this.reports.forEach(r=>{
+				if(r.data){
+					for(var d in r.data){
+						var row = [];
+						row.push(r.data[d].borrower_name);
+						row.push(r.data[d].account_num);
+						row.push(r.data[d].date_loan);
+						row.push(r.data[d].maturity);
+						row.push(this.formatToCurrency(r.data[d].amount_loan));
+						row.push(this.formatToCurrency(r.data[d].balance));
+						row.push(this.formatToCurrency(r.data[d].principal_balance));
+						row.push(this.formatToCurrency(r.data[d].interest_balance));
+						row.push(this.formatToCurrency(r.data[d].amortization));
+						row.push(this.formatToCurrency(r.data[d].delinquent_amount));
+						row.push(r.data[d].type);
+						row.push(this.formatToCurrency(r.data[d].missed_amortization));
+						row.push(r.data[d].days_missed);
+						row.push(r.data[d].status);
+						rows.push(row);
+					}
+				}
+			});
+			return rows;
 		}
 	},
 	watch:{
@@ -224,6 +303,7 @@ export default {
 		this.branch = JSON.parse(this.pbranch);
 		this.filter.branch_id = this.branch.branch_id;
 		this.fetchAo();
+		this.fetchReports();
 	}
 }
 </script>
