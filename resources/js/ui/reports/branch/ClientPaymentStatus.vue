@@ -101,7 +101,7 @@
 												<td>{{oa.amort_no}}</td>
 												<td>{{oa.amort_amt?oa.amort_amt:0}}</td>
 												<td>{{oa.amort_due_date?oa.amort_due_date:0}}</td>
-												<td>{{oa.amort_date_paid?oa.amort_date_paid:0}}</td>
+												<td>{{oa.amort_paid_date?oa.amort_paid_date:0}}</td>
 												<td>{{oa.amor_status?oa.amor_status:0}}</td>
 												<td>{{oa.days_late?oa.days_late:0}}</td>
 											</tr>
