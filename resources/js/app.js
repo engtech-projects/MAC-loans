@@ -79,7 +79,7 @@ Vue.component('reports-branch-loanagingsummary', require('./ui/reports/branch/Lo
 Vue.component('reports-branch-revenuereport', require('./ui/reports/branch/RevenueReport.vue').default);
 
 Vue.component('reports-consolidated-loansummary', require('./ui/reports/consolidated/LoanSummaryReport.vue').default);
-Vue.component('reports-consolidated-loanaging', require('./ui/reports/consolidated/LoanAgingReport.vue').default);
+Vue.component('reports-consolidated-loanaging', require('./ui/reports/consolidated/LoanAgingReportConsolidated.vue').default);
 Vue.component('reports-consolidated-loanperformance', require('./ui/reports/consolidated/LoanPerformanceReport.vue').default);
 
 Vue.component('reports-micromonitoring', require('./ui/reports/MicroMonitoring.vue').default);
