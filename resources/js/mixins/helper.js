@@ -178,6 +178,12 @@ Vue.mixin({
 		},
 		checkVal:function(val){
 			return val?val:0;
+		},
+		isEmptyObj(object) { 
+			for(var i in object) { 
+				return false; 
+			} 
+			return true; 
 		}
 	}
 })
