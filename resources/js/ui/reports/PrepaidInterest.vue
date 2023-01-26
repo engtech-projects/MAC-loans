@@ -127,7 +127,7 @@ export default {
 	computed:{
 		filteredReports:function(){
 			var rows = [];
-			var overall = ['',0,'','',0,0,0,'',0,0,0,0,0,0,0,0,0,0,0,0,0];
+			var overall = ['TOTAL',0,'','',0,0,0,'',0,0,0,0,0,0,0,0,0,0,0,0,0];
 			this.reports.forEach(r=>{
 				if(!this.isEmptyObj(r.history)){
 					var counter = 0;
@@ -183,7 +183,7 @@ export default {
 			});
 			var finalOverall = [];
 			overall.forEach(ov=>{
-				if(ov!==''){
+				if(ov!==''&&ov!='TOTAL'){
 					finalOverall.push(this.formatToCurrency(ov))
 				}else{
 					finalOverall.push(ov);
