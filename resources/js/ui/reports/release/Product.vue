@@ -49,8 +49,8 @@
 						</div>
 						<span class="text-center text-primary-dark text-bold font-md mb-5">{{branch.branch_name + ' Branch (' + branch.branch_code + ')'}}</span>
 						<div class="d-flex flex-row justify-content-center text-primary-dark">
-							<span class="mr-5">From:</span><span class="mr-16">{{dateToMDY2(new Date(filter.date_from)).split('-').join('/')}}</span>
-							<span class="mr-5">To:</span><span>{{dateToMDY2(new Date(filter.date_to)).split('-').join('/')}}</span>
+							<span class="mr-5">From:</span><span class="mr-16">{{filter.date_from?filter.date_from:'---'}}</span>
+							<span class="mr-5">To:</span><span>{{filter.date_to?filter.date_to:'---'}}</span>
 						</div>
 					</div>
 					<section class="d-flex flex-column mb-72">
