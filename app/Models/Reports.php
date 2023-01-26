@@ -943,7 +943,7 @@ class Reports extends Model
                     foreach ($accounts as $accKey => $account) {
                         $tranDate = new EndTransaction();
                         $transactionDate = $tranDate->getTransactionDate($account->branch->branch_id)->date_end;
-                        $accOfficers[$aoKey]["products"][$prodValue["product_name"]]["centers"][$centVal["center"]] = [
+                        $accOfficers[$aoKey]["products"][$prodValue["product_name"]]["centers"][$centVal["center"]]['accounts'][] = [
                             "borrower_name" => $account->borrower->fullname(),
                             "account_num" => $account->account_num,
                             "date_loan" => $account->date_release,
