@@ -209,8 +209,8 @@ class ReportsController extends BaseController
 				$filters = [
 					'branch_id' => $request->input("branch_id"),
 					'account_officer' => $request->input('account_officer'),
-					'product' => $request->input('account_officer'),
-					'center' => $request->input('account_officer'),
+					'product' => $request->input('product'),
+					'center' => $request->input('center'),
 				];
 				if($filters['account_officer'] == "all"){
 					unset($filters['account_officer']);
