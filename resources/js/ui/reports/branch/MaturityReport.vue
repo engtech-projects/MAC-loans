@@ -13,15 +13,15 @@
 			<div class="d-flex flex-row align-items-center mr-24" style="flex:3">
 				<span class="mr-10">A.O: </span>
 				<select v-model="filter.account_officer" name="" id="selectProductClient" class="form-control">
-					<option v-for="ao in aos.filter(aa=>aa.status=='active'&&aa.branch_id==branch.branch_id)" :key="ao.ao_id" :value="ao.ao_id">{{ao.name}}</option>
 					<option value="all">All</option>
+					<option v-for="ao in aos.filter(aa=>aa.status=='active'&&aa.branch_id==branch.branch_id)" :key="ao.ao_id" :value="ao.ao_id">{{ao.name}}</option>
 				</select>
 			</div>
 			<div class="d-flex flex-row align-items-center" style="flex:3">
 				<span class="mr-10">Center: </span>
 				<select v-model="filter.center" name="" id="selectProductClient" class="form-control">
-					<option v-for="center in centers" :key="center.center_id" :value="center.center_id">{{center.center}}</option>
 					<option value="all">All</option>
+					<option v-for="center in centers" :key="center.center_id" :value="center.center_id">{{center.center}}</option>
 				</select>
 			</div>
 		</div>
@@ -36,15 +36,15 @@
 									<span v-if="filter.account_officer" class="text-bold">{{branch.branch_code}} - {{accountOfficer.name}}</span>
 								</div>
 								<span class="font-30 text-bold text-primary-dark text-center">MATURITY REPORT</span>
-								<div class="flex-1 d-flex justify-content-end" style="padding-left:24px">
+								<div class="flex-1 d-flex justify-content-end" style="padding-right:16px">
 									<current-transactiondate :branch="branch.branch_id" :token="token" :reports="true"></current-transactiondate>
 									<span class="text-primary-dark">Time: {{todayTime(new Date())}} {{(new Date()).getHours() > 12? 'PM':'AM'}}</span>
 								</div>
 							</div>
 							<span class="text-center text-primary-dark text-bold font-md mb-5">{{branch.branch_name + ' (' + branch.branch_code + ')'}}</span>
-							<div v-if="filter.due_from&&filter.due_to" class="d-flex flex-row justify-content-center text-primary-dark">
-								<span class="mr-5">From:</span><span class="mr-16">{{dateToYMD(new Date(filter.due_from)).replaceAll('-','/')}}</span>
-								<span class="mr-5">To:</span><span>{{dateToYMD(new Date(filter.due_to)).replaceAll('-','/')}}</span>
+							<div class="d-flex flex-row justify-content-center text-primary-dark">
+								<span class="mr-5">From:</span><span class="mr-16">{{filter.date_from?filter.date_from:'---'}}</span>
+								<span class="mr-5">To:</span><span>{{filter.date_to?filter.date_to:'---'}}</span>
 							</div>
 						</div>
 						<section class="d-flex flex-column mb-16">

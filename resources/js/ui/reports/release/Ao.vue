@@ -31,7 +31,7 @@
 							<span v-if="filter.account_officer=='all'" class="text-bold">All Records</span>
 						</div>
 						<span class="font-30 text-bold text-primary-dark">ACCOUNT OFFICER SUMMARY REPORT</span>
-						<div class="flex-1 d-flex justify-content-end" style="padding-left:24px">
+						<div class="flex-1 d-flex justify-content-end" style="padding-right:16px">
 							<current-transactiondate :branch="branch_id" :token="token" :reports="true"></current-transactiondate>
 							<span class="text-primary-dark">Time: {{todayTime(new Date())}} {{(new Date()).getHours() > 12? 'PM':'AM'}}</span>
 						</div>

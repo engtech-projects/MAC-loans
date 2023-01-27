@@ -42,7 +42,7 @@
 					<div class="d-flex flex-row align-items-center">
 						<div class="flex-1"></div>
 						<span class="font-30 text-bold text-primary-dark">SUMMARY OF LOAN RELEASE</span>
-						<div class="flex-1" style="padding-left:24px">
+						<div class="flex-1 d-flex justify-content-end" style="padding-right:16px">
 							<span class="text-primary-dark mr-10">{{dateFullDay(new Date())}} {{dateToYMD(new Date()).split('-').join('/')}}</span>
 							<span class="text-primary-dark">Time: {{todayTime(new Date())}} {{(new Date()).getHours() > 12? 'PM':'AM'}}</span>
 						</div>

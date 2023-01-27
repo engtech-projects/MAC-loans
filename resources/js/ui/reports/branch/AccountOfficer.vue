@@ -49,11 +49,12 @@
 								<span v-if="filter.group=='performance_report'" class="font-30 text-bold text-primary-dark">ACCOUNT OFFICER PERFORMANCE REPORT</span>
 								<span v-else-if="filter.group=='write_off'" class="font-30 text-bold text-primary-dark">ACCOUNT OFFICER WRITE-OFF REPORT</span>
 								<span v-else class="font-30 text-bold text-primary-dark">ACCOUNT OFFICER DELINQUENT REPORT</span>
-								<div class="flex-1 d-flex justify-content-end" style="padding-left:24px">
-									
+								<div class="flex-1 d-flex justify-content-end" style="padding-right:16px">
+									<current-transactiondate :branch="branch.branch_id" :token="token" :reports="true"></current-transactiondate>
+									<span class="text-primary-dark">Time: {{todayTime(new Date())}} {{(new Date()).getHours() > 12? 'PM':'AM'}}</span>
 								</div>
 							</div>
-							<span class="text-center text-primary-dark text-bold">As of {{dateToYMD(new Date).replaceAll('-','/')}}</span>
+							<span class="text-center text-primary-dark text-bold">As of {{filter.as_of?dateToMDY2(new Date(filter.as_of)).split('-').join('/'):'---'}}</span>
 							<span class="text-center text-primary-dark text-bold font-md mb-5">{{branch.branch_name}} Branch ({{branch.branch_code}})</span>
 						</div>
 						<section class="d-flex flex-column mb-16">
@@ -207,6 +208,21 @@ export default {
 				console.log(error);
 			}.bind(this));
 		},
+		async fetchTransactionDate(){
+			await axios.get(this.baseURL() + 'api/eod/eodtransaction/' + this.branch.branch_id,{
+				headers: {
+					'Authorization': 'Bearer ' + this.token,
+					'Content-Type': 'application/json',
+					'Accept': 'application/json'
+					}
+				})
+				.then(function (response) {
+					this.filter.as_of = response.data.data.date_end;
+				}.bind(this))
+				.catch(function (error) {
+					console.log(error);
+				}.bind(this));
+		},
 		
 		print:function(){
 			var content = document.getElementById('printContent').innerHTML;
@@ -304,6 +320,7 @@ export default {
 		this.filter.branch_id = this.branch.branch_id;
 		this.fetchAo();
 		this.fetchReports();
+		this.fetchTransactionDate();
 	}
 }
 </script>

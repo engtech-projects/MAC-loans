@@ -265,7 +265,7 @@ class AccessibilitySeeder extends Seeder
             [ 
                 'label' => 'Insurance',
                 'group' => 'Reports',
-                'permission' => 'view prepaid insurance report',
+                'permission' => 'view insurance report',
                 'description' => 'description',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(), 

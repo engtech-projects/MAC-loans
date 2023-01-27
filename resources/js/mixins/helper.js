@@ -55,7 +55,7 @@ Vue.mixin({
 		},
 		todayTime:function(date){
 			var hour = date.getHours() > 12? (date.getHours() - 12) : date.getHours();
-			return hour + ':' + date.getMinutes();
+			return hour + ':' + (date.getMinutes()<10?'0':'') + date.getMinutes();
 		},
 		amPm:function(date){
 			return date.getHours() > 12? 'PM' : 'AM';

@@ -10,7 +10,7 @@
 			<div class="d-flex flex-row align-items-center mr-24" style="flex:3">
 				<span class="mr-10">A.O: </span>
 				<select v-model="filter.account_officer" name="" id="selectProductClient" class="form-control">
-					<option v-for="ao in aos" :key="ao.ao_id" :value="ao.ao_id">{{ao.name}}</option>
+					<option v-for="ao in aos.filter(aa=>aa.status=='active'&&aa.branch_id==branch.branch_id)" :key="ao.ao_id" :value="ao.ao_id">{{ao.name}}</option>
 				</select>
 			</div>
 			<div class="d-flex flex-row align-items-center" style="flex:3">
@@ -31,14 +31,14 @@
 									<span v-if="filter.account_officer" class="text-bold">{{branch.branch_code}} - {{accountOfficer.name}}</span>
 								</div>
 								<span class="font-30 text-bold text-center text-primary-dark flex-1">COLLECTION SHEET REPORT</span>
-								<div class="flex-1 d-flex justify-content-end" style="padding-left:24px">
+								<div class="flex-1 d-flex justify-content-end" style="padding-right:16px">
 									<current-transactiondate :branch="branch.branch_id" :token="token" :reports="true"></current-transactiondate>
 									<span class="text-primary-dark">Time: {{todayTime(new Date())}} {{(new Date()).getHours() > 12? 'PM':'AM'}}</span>
 								</div>
 							</div>
 							<span class="text-center text-primary-dark text-bold font-md mb-5">{{branch.branch_name + ' Branch (' + branch.branch_code + ')'}}</span>
 							<div class="d-flex flex-row justify-content-center text-primary-dark">
-								<span class="mr-5">As of </span><span class="mr-16">{{dateToYMD(new Date()).replaceAll('-','/')}}</span>
+								<span class="text-center text-primary-dark text-bold">As of {{filter.as_of?dateToMDY2(new Date(filter.as_of)).split('-').join('/'):'---'}}</span>
 							</div>
 						</div>
 						<section class="d-flex flex-column mb-16">
@@ -241,6 +241,21 @@ export default {
 				console.log(error);
 			}.bind(this));
 		},
+		async fetchTransactionDate(){
+			await axios.get(this.baseURL() + 'api/eod/eodtransaction/' + this.branch.branch_id,{
+				headers: {
+					'Authorization': 'Bearer ' + this.token,
+					'Content-Type': 'application/json',
+					'Accept': 'application/json'
+					}
+				})
+				.then(function (response) {
+					this.filter.as_of = response.data.data.date_end;
+				}.bind(this))
+				.catch(function (error) {
+					console.log(error);
+				}.bind(this));
+		},
 		async fetchAo(){
 			await axios.get(this.baseURL() + 'api/accountofficer/', {
 				headers: {
@@ -304,6 +319,7 @@ export default {
 		this.filter.branch_id = this.branch.branch_id;
 		this.fetchAo();
 		this.fetchCenters();
+		this.fetchTransactionDate();
 	}
 }
 </script>

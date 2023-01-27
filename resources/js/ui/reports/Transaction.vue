@@ -27,15 +27,15 @@
 						<div class="d-flex flex-row align-items-center">
 							<div class="flex-1"></div>
 							<span class="font-30 text-bold text-primary-dark">SUMMARY RELEASE AND PAYMENT BY PRODUCT</span>
-							<div class="flex-1 d-flex" style="padding-left:24px">
+							<div class="flex-1 d-flex justify-content-end" style="padding-right:16px">
 								<current-transactiondate :branch="branch" :token="token" :reports="true"></current-transactiondate>
 								<span class="text-primary-dark">Time: {{todayTime(new Date())}} {{(new Date()).getHours() > 12? 'PM':'AM'}}</span>
 							</div>
 						</div>
 						<span class="text-center text-primary-dark text-bold font-md mb-5">{{branch_name + ' Branch (' + branch_code + ')'}}</span>
-						<div v-if="filter.date_from.length && filter.date_to.length" class="d-flex flex-row justify-content-center text-primary-dark">
-							<span class="mr-5">From:</span><span class="mr-16">{{filter.date_from.replaceAll('-','/')}}</span>
-							<span class="mr-5">To:</span><span>{{filter.date_to.replaceAll('-','/')}}</span>
+						<div class="d-flex flex-row justify-content-center text-primary-dark">
+							<span class="mr-5">From:</span><span class="mr-16">{{filter.date_from?filter.date_from:'---'}}</span>
+							<span class="mr-5">To:</span><span>{{filter.date_to?filter.date_to:'---'}}</span>
 						</div>
 					</div>
 					<section class="d-flex flex-column mb-16">
@@ -225,15 +225,15 @@
 						<div class="d-flex flex-row align-items-center">
 							<div class="flex-1"></div>
 							<span class="font-30 text-bold text-primary-dark">SUMMARY RELEASE AND PAYMENT BY CLIENT</span>
-							<div class="flex-1" style="padding-left:24px">
-								<span class="text-primary-dark mr-10">Tuesday 12/21/2021</span>
-								<span class="text-primary-dark">Time: 11:36 AM</span>
+							<div class="flex-1 d-flex justify-content-end" style="padding-right:16px">
+								<current-transactiondate :branch="branch" :token="token" :reports="true"></current-transactiondate>
+								<span class="text-primary-dark">Time: {{todayTime(new Date())}} {{(new Date()).getHours() > 12? 'PM':'AM'}}</span>
 							</div>
 						</div>
 						<span class="text-center text-primary-dark text-bold font-md mb-5">{{branch_name + ' Branch (' + branch_code + ')'}}</span>
-						<div v-if="filter.date_from.length && filter.date_to.length" class="d-flex flex-row justify-content-center text-primary-dark">
-							<span class="mr-5">From:</span><span class="mr-16">{{filter.date_from.replaceAll('-','/')}}</span>
-							<span class="mr-5">To:</span><span>{{filter.date_to.replaceAll('-','/')}}</span>
+						<div class="d-flex flex-row justify-content-center text-primary-dark">
+							<span class="mr-5">From:</span><span class="mr-16">{{filter.date_from?filter.date_from:'---'}}</span>
+							<span class="mr-5">To:</span><span>{{filter.date_to?filter.date_to:'---'}}</span>
 						</div>
 					</div>
 					<section class="d-flex flex-column mb-16">
