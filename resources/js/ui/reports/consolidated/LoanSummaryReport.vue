@@ -31,7 +31,7 @@
 					</div>
 					<span class="font-30 text-bold text-primary-dark text-center">Consolidated Loan Summary Report</span>
 					<div class="flex-1 d-flex justify-content-end">
-						<span class="text-primary-dark font-md">Tuesday 02/15/2021</span>
+						<current-transactiondate :branch="branch.branch_id" :token="token" :reports="true"></current-transactiondate>
 					</div>
 				</div>
 				<span class="text-center text-primary-dark text-bold">As of 12/12/2021</span>

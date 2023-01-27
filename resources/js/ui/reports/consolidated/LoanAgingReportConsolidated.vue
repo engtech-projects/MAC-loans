@@ -32,8 +32,8 @@
 					
 					</div>
 					<span class="font-30 text-bold text-primary-dark text-center">Loan Aging Report</span>
-					<div class="flex-1" style="padding-left:24px">
-						<span class="text-primary-dark mr-10">{{dateFullDay(new Date())}} {{dateToYMD(new Date()).split('-').join('/')}}</span>
+					<div class="flex-1 d-flex" style="padding-left:24px">
+						<current-transactiondate :branch="branch.branch_id" :token="token" :reports="true"></current-transactiondate>
 						<span class="text-primary-dark">Time: {{todayTime(new Date())}} {{(new Date()).getHours() > 12? 'PM':'AM'}}</span>
 					</div>
 				</div>

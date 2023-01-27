@@ -26,7 +26,7 @@
                         >Loan Interest Collected From Microfinance Unit</span
                     >
                     <div class="flex-1 d-flex justify-content-end">
-                        <span class="text-primary-dark mr-10">{{dateFullDay(new Date())}} {{dateToYMD(new Date()).split('-').join('/')}}</span>
+                        <current-transactiondate :branch="branch.branch_id" :token="token" :reports="true"></current-transactiondate>
 						<span class="text-primary-dark">Time: {{todayTime(new Date())}} {{(new Date()).getHours() > 12? 'PM':'AM'}}</span>
                     </div>
                 </div>
