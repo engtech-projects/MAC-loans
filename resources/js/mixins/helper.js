@@ -184,6 +184,14 @@ Vue.mixin({
 				return false; 
 			} 
 			return true; 
+		},
+		currentTransactionDate:function(){
+			var date = 'no date';
+			setTimeout(()=>{
+				date = document.getElementById('currentTransactionDate');
+				return date
+			},10000);
+			// return date;
 		}
 	}
 })

@@ -2,22 +2,22 @@
    <div class="d-flex flex-column" style="flex:8;">
 		<div class="d-flex flex-row font-md mb-16">
 			<span class="flex-2"></span>
-			<div class="d-flex flex-row align-items-center mr-24" style="flex:1">
+			<!-- <div class="d-flex flex-row align-items-center mr-24" style="flex:1">
 				<span class="mr-10">As of: </span>
 				<input v-model="filter.as_of" type="date" class="form-control flex-1">
-			</div>
+			</div> -->
 			<div class="d-flex flex-row align-items-center mr-24" style="flex:1">
 				<span class="mr-10">Acc. Officer: </span>
 				<select v-model="filter.account_officer" name="" id="selectProductClient" class="form-control flex-1">
-					<option v-for="ao in aos" :key="ao.ao_id" :value="ao.ao_id">{{ao.name}}</option>
 					<option value="all">All</option>
+					<option v-for="ao in aos.filter(aa=>aa.status=='active'&&aa.branch_id==branch.branch_id)" :key="ao.ao_id" :value="ao.ao_id">{{ao.name}}</option>
 				</select>
 			</div>	
 			<div class="d-flex flex-row align-items-center mr-24" style="flex:1">
 				<span class="mr-10">Product: </span>
 				<select v-model="filter.product" name="" id="selectProductClient" class="form-control flex-1">
-					<option v-for="product in products" :key="product.product_id" :value="product.product_id">{{product.product_name}}</option>
 					<option value="all">All</option>
+					<option v-for="product in products.filter(p=>p.status=='active')" :key="product.product_id" :value="product.product_id">{{product.product_name}}</option>
 				</select>
 			</div>				
 		</div>
@@ -492,6 +492,21 @@ export default {
 				console.log(error);
 			}.bind(this));
 		},
+		async fetchTransactionDate(){
+			await axios.get(this.baseURL() + 'api/eod/eodtransaction/' + this.branch.branch_id,{
+				headers: {
+					'Authorization': 'Bearer ' + this.token,
+					'Content-Type': 'application/json',
+					'Accept': 'application/json'
+					}
+				})
+				.then(function (response) {
+					this.filter.as_of = response.data.data.date_end;
+				}.bind(this))
+				.catch(function (error) {
+					console.log(error);
+				}.bind(this));
+		},
 		async fetchAo(){
 			await axios.get(this.baseURL() + 'api/accountofficer/', {
 				headers: {
@@ -568,6 +583,7 @@ export default {
 		this.branch = JSON.parse(this.pbranch);
 		this.filter.branch_id = this.branch.branch_id;
 		this.fetchProducts();
+		this.fetchTransactionDate();
 	}
 };
 </script>
