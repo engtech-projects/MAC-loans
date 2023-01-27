@@ -187,4 +187,11 @@ class ReportsController extends Controller
 			'title' => 'Reports - Performance Report',
 		]);
 	}
+
+	public function birReport(){
+		return view('reports.bir')->with([
+			'nav' => ['reports', 'bir',''],
+			'title' => 'Reports - Bir',
+		]);
+	}
 }

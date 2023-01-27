@@ -107,6 +107,7 @@ Route::group(['middleware' => 'auth'], function (){
 	Route::get('/reports/micro_monitoring', [ReportsController::class, 'reportsMicroMonitoring'])->name('reports.micromonitoring');
 	Route::get('/reports/prepaid_interest', [ReportsController::class, 'reportsPrepaidInterest'])->name('reports.prepaidinterest');
 	Route::get('/reports/performance_report', [ReportsController::class, 'reportsPerformanceReport'])->name('reports.performancereport');
+	Route::get('/reports/bir', [ReportsController::class, 'birReport'])->name('reports.bir');
 
 
 

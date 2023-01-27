@@ -85,6 +85,7 @@ Vue.component('reports-consolidated-loanperformance', require('./ui/reports/cons
 Vue.component('reports-micromonitoring', require('./ui/reports/MicroMonitoring.vue').default);
 Vue.component('reports-prepaidinterest', require('./ui/reports/PrepaidInterest.vue').default);
 Vue.component('reports-performancereport', require('./ui/reports/PerformanceReport.vue').default);
+Vue.component('reports-bir', require('./ui/reports/BirReport.vue').default);
 
 Vue.component('endof-day', require('./ui/endofday/Endofday.vue').default);
 
