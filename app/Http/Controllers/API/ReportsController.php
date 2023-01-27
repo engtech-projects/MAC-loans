@@ -498,7 +498,7 @@ class ReportsController extends BaseController
 		$filters = [
 			'due_from' => $dueDate->firstOfMonth(),
 			'type' => "prepaid",
-			
+			'branch_id' => $request->input("branch") ? $request->input("branch") : $request->input("branch_id")
 		];
 		$report = new Reports();
 
