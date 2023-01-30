@@ -40,7 +40,7 @@ class BorrowerController extends BaseController
                             ->distinct()
                             ->get();
 
-        return $this->sendResponse(BorrowerResource::collection($borrowers), 'Borrowers');
+        return $this->sendResponse($borrowers, 'Borrowers');
     }
 
      /**
