@@ -169,7 +169,7 @@ class Borrower extends Authenticatable
     }
 
     public function loanAccounts() {
-        $activeAccounts = LoanAccount::where(['borrower_id' => $this->borrower_id, 'status' => 'released'])->get();
+        $activeAccounts = LoanAccount::where(['borrower_id' => $this->borrower_id, 'status' => 'released'])->where("loan_status","!=",LoanAccount::LOAN_PAID)->get();
 
         if( count($activeAccounts) > 0 ){
 
