@@ -48,7 +48,7 @@ class Borrower extends JsonResource
             'docs' => $this->getDocs(),
             'created_at' => $this->created_at->format('m/d/Y'),
             'updated_at' => $this->updated_at->format('m/d/Y'),
-            'loan_accounts' => $this->loanAccounts(),
+            // 'loan_accounts' => $this->loanAccounts(),
             'username' => $this->username,
             'password' => $this->password,
         ];

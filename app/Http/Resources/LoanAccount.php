@@ -15,7 +15,7 @@ class LoanAccount extends JsonResource
     public function toArray($request)
     {
         return [
-            // 'current_amortization' => $this->getCurrentAmortization(),
+            'current_amortization' => $this->getCurrentAmortization(),
             'loan_account_id' => $this->loan_account_id,
             'account_num' => $this->account_num,
             'date_release' => $this->date_release,
@@ -30,7 +30,7 @@ class LoanAccount extends JsonResource
             'interest_rate' => $this->interest_rate,
             'interest_amount' => $this->interest_amount,
             'no_of_installment' => $this->no_of_installment,
-            // 'amortization' => $this->amortization(),
+            'amortization' => $this->amortization(),
             'due_date' => $this->due_date,
             'day_schedule' => $this->day_schedule,
             'co_borrower_name' => $this->co_borrower_name,
@@ -68,13 +68,13 @@ class LoanAccount extends JsonResource
             'docs' => $this->getDocs($this->borrower_id, $this->loan_account_id),
             'payment_status' => $this->payment_status,
             'loan_status' => $this->loan_status,
-            // 'loan_status_view' => $this->getStatusView(),
+            'loan_status_view' => $this->getStatusView(),
             'payments' => $this->payments,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
-            // 'cash_voucher' => $this->cashVoucher(),
-            // 'remaining_balance' => $this->remainingBalance(),
-            // 'collection_rate' => $this->collectionRate()
+            'cash_voucher' => $this->cashVoucher(),
+            'remaining_balance' => $this->remainingBalance(),
+            'collection_rate' => $this->collectionRate()
         ];
     }
 }

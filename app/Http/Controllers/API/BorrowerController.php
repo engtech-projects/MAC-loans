@@ -116,7 +116,6 @@ class BorrowerController extends BaseController
         return $this->sendResponse(new BorrowerResource($borrower), 'Borrower fetched.');
     }
 
-
     /**
      * Update the specified resource in storage.
      */

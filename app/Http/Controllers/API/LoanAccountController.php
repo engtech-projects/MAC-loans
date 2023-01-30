@@ -244,4 +244,7 @@ class LoanAccountController extends BaseController
         }
         return $accountDetails;
     }
+
+
+
 }
