@@ -16,7 +16,8 @@ class LoanAccount extends Model
    use HasFactory;
    protected $table = 'loan_accounts';
    protected $primaryKey = 'loan_account_id';
-   protected $with = ['documents', 'borrower', 'center', 'branch', 'product', 'accountOfficer', 'payments'];
+   // protected $with = ['documents', 'borrower', 'center', 'branch', 'product', 'accountOfficer', 'payments'];
+   protected $with = ['documents', 'center', 'branch', 'product', 'accountOfficer'];
 
    protected $fillable = [
       'account_num',
@@ -115,15 +116,15 @@ class LoanAccount extends Model
    //    return Borrower::with(['businessInfo','employmentInfo','householdMembers','outstandingObligations'])->find($this->borrower_id);
    // }
 
-   public function borrowerPhoto() {
+   // public function borrowerPhoto() {
 
-      $borrower = Borrower::find($this->borrower_id);
-      return $borrower->getPhoto();
-   }
+   //    $borrower = Borrower::find($this->borrower_id);
+   //    return $borrower->getPhoto();
+   // }
 
-   public function borrower(){
-      return $this->hasOne(Borrower::class, 'borrower_id', 'borrower_id');
-   }
+   // public function borrower(){
+      // return $this->hasOne(Borrower::class, 'borrower_id', 'borrower_id');
+   // }
 
    public function documents(){
      return $this->hasOne(Document::class, 'loan_account_id');
@@ -269,9 +270,9 @@ class LoanAccount extends Model
       return $cashVoucher;
    }
 
-   public function payments() {
-      return $this->hasMany(Payment::class, 'loan_account_id')->whereIn('status', ['paid', 'cancelled']);
-   }
+   // public function payments() {
+   //    return $this->hasMany(Payment::class, 'loan_account_id')->whereIn('status', ['paid', 'cancelled']);
+   // }
 
 
    public function overrideReleaseAccounts($filters = array()) {
