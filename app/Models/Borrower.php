@@ -188,5 +188,6 @@ class Borrower extends Authenticatable
         if( !count($activeAccounts) ) {
             return false;    
         }
+        return $activeAccounts;
     }
 }
