@@ -1202,12 +1202,14 @@ export default {
 		},
 		unpaidLoanAccounts:function(){
 			let filteredData = [];
-			this.pborrower.loan_accounts.map(function(data){
-				if(data.remainingBalance.memo.balance > 0){
-					filteredData.push(data);
-					// return;
-				}
-			}.bind(this))
+			if(this.pborrower.loan_accounts){
+				this.pborrower.loan_accounts.map(function(data){
+					if(data.remainingBalance.memo.balance > 0){
+						filteredData.push(data);
+						// return;
+					}
+				}.bind(this))
+			}
 			return filteredData;
 		}
 	},
