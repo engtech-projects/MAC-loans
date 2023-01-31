@@ -106,8 +106,8 @@ export default {
 			})
 			.then(function (response) {
 				// console.log(response.data.data);
-				// this.borrower = response.data.data;
-				this.amortSched(response.data.data);
+				this.borrower = response.data.data;
+				// this.amortSched(response.data.data);
 			}.bind(this))
 			.catch(function (error) {
 				console.log(error);

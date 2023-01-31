@@ -42,7 +42,7 @@
 						<th class="text-primary-dark">Balance</th>
 					</thead>
 					<tbody>
-						<tr v-for="account in unpaidLoanAccounts" @click="loanAccount=account;amortSched();" :key="account.loan_account_id" :class="isActive(account.loan_account_id)">
+						<tr v-for="account in unpaidLoanAccounts" @click="amortSched(account);" :key="account.loan_account_id" :class="isActive(account.loan_account_id)">
 							<td>{{account.account_num}}</td>
 							<td>{{dateToYMD(new Date(account.date_release))}}</td>
 							<td>P {{formatToCurrency(account.current_amortization ? account.current_amortization.outstandingBalance : 0)}}</td>
@@ -939,8 +939,8 @@ export default {
 			}
 			return '';
 		},
-		amortSched:function(){
-			axios.post(this.baseURL() + 'api/account/generate-amortization', this.loanAccount, {
+		amortSched:function(loan){
+			axios.post(this.baseURL() + 'api/account/generate-amortization', loan, {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
 					'Content-Type': 'application/json',
@@ -948,7 +948,9 @@ export default {
 				}
 			})
 			.then(function (response) {
+				loan.current_amortization = response.data.data;
 				this.amortizationSched = response.data.data;
+				this.loanAccount = loan;
 			}.bind(this))
 			.catch(function (error) {
 				console.log(error);
@@ -1213,10 +1215,10 @@ export default {
 		'pborrower.borrower_id':function(newValue){
 			this.resetPayment();
 			this.resetLoanAccount();
-			if(this.unpaidLoanAccounts.length){
-				this.loanAccount = this.unpaidLoanAccounts[0];
-				this.amortSched();
-			}
+			// if(this.unpaidLoanAccounts.length){
+			// 	this.loanAccount = this.unpaidLoanAccounts[0];
+			// 	this.amortSched();
+			// }
 		},
 		'payment.amount_paid':function(newValue){
 			this.distribute();
