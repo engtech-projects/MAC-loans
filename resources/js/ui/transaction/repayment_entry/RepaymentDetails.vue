@@ -1160,6 +1160,7 @@ export default {
 			return 0;
 		},
 		duePenalty:function(){
+			return 0;
 			return (this.loanAccount.current_amortization.penalty&&this.waive&&this.waive.penalty) ? 0 : this.loanAccount.current_amortization.penalty + this.loanAccount.current_amortization.short_penalty;
 		},
 		dueInterest:function(){
@@ -1242,7 +1243,9 @@ export default {
 			this.distribute();
 		},
 		'loanAccount.loan_account_id':function(newValue){
-			this.payment.total_payable = this.totalDue;
+			if(this.loanAccount.current_amortization.penalty){
+				this.payment.total_payable = this.totalDue;
+			}
 			this.payment.amortization_id = this.loanAccount.current_amortization.id;
 		},
 		'waive.pdi':function(newValue){
