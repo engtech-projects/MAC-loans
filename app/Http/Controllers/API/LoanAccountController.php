@@ -63,7 +63,7 @@ class LoanAccountController extends BaseController
             }
         }
 
-    	return $this->sendResponse(new LoanAccountResource($account), 'Account fetched.');
+    	return $this->sendResponse($account, 'Account fetched.');
 
     }
 
