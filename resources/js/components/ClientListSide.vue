@@ -91,6 +91,8 @@ export default {
 	},
 	computed:{
 		filterClient:function(){
+			this.pagination.page = 1;
+			this.page = 1;
 			var result = [];
 			if(this.pborrowers.length > 0 && !this.account){
 				this.pborrowers.map(function(data){
@@ -104,6 +106,8 @@ export default {
 			return result;
 		},
 		filterAccount:function(){
+			this.pagination.page = 1;
+			this.page = 1;
 			var result = [];
 			if(this.pborrowers.length > 0){
 				this.pborrowers.map(function(data){

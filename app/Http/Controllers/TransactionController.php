@@ -87,4 +87,15 @@ class TransactionController extends Controller
 		return $payments;
 	}
 
+	public function amortSched(Request $request){
+		$amorts = $request->all();
+		foreach ($request->all() as $key => $value) {
+			$amortization = new \App\Models\Amortization();
+			$dateRelease = $value['date_release']? $value['date_release'] : date('Y-m-d');
+			$account = \App\Models\LoanAccount::find($value['loan_account_id']);
+			$amorts[$key]['current_amortization'] = $amortization->createAmortizationSched($account, $dateRelease);
+		}
+		return $amorts;
+	}
+
 }

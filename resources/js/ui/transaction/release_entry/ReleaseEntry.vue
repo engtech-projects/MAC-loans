@@ -1032,6 +1032,21 @@
 			selectAccount:function(data){
 				this.fetchBorrower(data);
 			},
+			fetchBorrowerInfo:function(borrower){
+				axios.get(this.baseURL() + 'api/borrower/' + borrower, {
+					headers: {
+						'Authorization': 'Bearer ' + this.token,
+						'Content-Type': 'application/json',
+						'Accept': 'application/json'
+					}
+				})
+				.then(function (response) {
+					this.borrower = response.data.data;
+				}.bind(this))
+				.catch(function (error) {
+					console.log(error);
+				}.bind(this));
+			},
 			fetchBorrower:function(borrower){
 				axios.get(this.baseURL() + 'api/borrower/' + borrower.borrower.borrower_id, {
 					headers: {
@@ -1041,6 +1056,7 @@
 					}
 				})
 				.then(function (response) {
+					console.log(response.data.data);
 					borrower.borrower = response.data.data;
 					borrower.documents = borrower.document;
 					this.rejectedAccount = borrower;
@@ -1266,16 +1282,18 @@
 				this.loanDetails.cycle_no = this.loanDetails.loan_account_id ? this.loanDetails.cycle_no : parseInt(this.borrower.loan_accounts.length + 1);
 			},
 			selectBorrower:function(borrower){
-				if(this.borrower.borrower_id != borrower){
-					this.borrowers.map(function(data){
-						if(borrower == data.borrower_id){
-							this.borrower = data;
-							this.resetLoanDetails();
-							this.navigate('custom-content-below-borrowerinfo-tab');
-							this.setCycle();
-						}
-					}.bind(this));
-				}
+				this.fetchBorrowerInfo(borrower);
+				// if(this.borrower.borrower_id && this.borrower.borrower_id != borrower){
+				// 	this.fetchBorrower(borrower);
+				// 	// this.borrowers.map(function(data){
+				// 	// 	if(borrower == data.borrower_id){
+				// 	// 		this.borrower = data;
+				// 	// 		this.resetLoanDetails();
+				// 	// 		this.navigate('custom-content-below-borrowerinfo-tab');
+				// 	// 		this.setCycle();
+				// 	// 	}
+				// 	// }.bind(this));
+				// }
 			},
 
 			print:function(){

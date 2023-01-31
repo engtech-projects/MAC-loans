@@ -64,6 +64,23 @@ export default {
 		}
 	},
 	methods:{
+		amortSched:function(borrower){
+			axios.post(this.baseURL() + 'transaction/amortsched', borrower.loan_accounts, {
+				headers: {
+					'Authorization': 'Bearer ' + this.token,
+					'Content-Type': 'application/json',
+					'Accept': 'application/json'
+				}
+			})
+			.then(function (response) {
+				// console.log(response.data);
+				borrower.loan_accounts = response.data;
+				this.borrower = borrower;
+			}.bind(this))
+			.catch(function (error) {
+				console.log(error);
+			}.bind(this));
+		},
 		fetchBorrowers:function(){
 			axios.get(this.baseURL() + 'api/borrower/list/'+this.pbranch, {
 			headers: {
@@ -74,6 +91,23 @@ export default {
 			})
 			.then(function (response) {
 				this.borrowers = response.data.data;
+			}.bind(this))
+			.catch(function (error) {
+				console.log(error);
+			}.bind(this));
+		},
+		fetchBorrowerInfo:function(borrower){
+			axios.get(this.baseURL() + 'api/borrower/' + borrower, {
+				headers: {
+					'Authorization': 'Bearer ' + this.token,
+					'Content-Type': 'application/json',
+					'Accept': 'application/json'
+				}
+			})
+			.then(function (response) {
+				// console.log(response.data.data);
+				// this.borrower = response.data.data;
+				this.amortSched(response.data.data);
 			}.bind(this))
 			.catch(function (error) {
 				console.log(error);
@@ -95,32 +129,34 @@ export default {
 			}.bind(this));
 		},
 		selectBorrower:function(arg1){
-			this.unpaidBorrowers.map(function(data){
-				if(data.borrower_id == arg1){
-					this.borrower = data;
-				}
-			}.bind(this));
+			this.fetchBorrowerInfo(arg1);
+			// this.unpaidBorrowers.map(function(data){
+			// 	if(data.borrower_id == arg1){
+			// 		this.borrower = data;
+			// 	}
+			// }.bind(this));
 		}
 	},
 	computed:{
 		unpaidBorrowers:function(){
-			let filteredData = [];
-			this.borrowers.map(function(data){
-				let flag = false;
-				if(data.loan_accounts){
-					data.loan_accounts.map(function(data2){
-						if(flag){
-							return;
-						}
-						if(data2.remainingBalance.memo.balance > 0){
-							filteredData.push(data);
-							flag = true
-							return;
-						}
-					}.bind(this))
-				}
-			}.bind(this))
-			return filteredData;
+			return this.borrowers;
+			// let filteredData = [];
+			// this.borrowers.map(function(data){
+			// 	let flag = false;
+			// 	if(data.loan_accounts){
+			// 		data.loan_accounts.map(function(data2){
+			// 			if(flag){
+			// 				return;
+			// 			}
+			// 			if(data2.remainingBalance.memo.balance > 0){
+			// 				filteredData.push(data);
+			// 				flag = true
+			// 				return;
+			// 			}
+			// 		}.bind(this))
+			// 	}
+			// }.bind(this))
+			// return filteredData;
 		}
 	},
 	mounted(){
