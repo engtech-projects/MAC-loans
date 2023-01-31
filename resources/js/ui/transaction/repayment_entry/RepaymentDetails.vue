@@ -940,7 +940,6 @@ export default {
 			return '';
 		},
 		amortSched:function(loan){
-			console.log(loan);
 			axios.post(this.baseURL() + 'api/account/generate-amortization', loan, {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
@@ -967,7 +966,6 @@ export default {
 				}
 			})
 			.then(function (response) {
-				console.log(response.data.data);
 				this.loanAccount = response.data.data;
 			}.bind(this))
 			.catch(function (error) {
@@ -1162,25 +1160,25 @@ export default {
 			return 0;
 		},
 		duePenalty:function(){
-			return this.loanAccount.current_amortization&&this.waive&&this.waive.penalty ? 0 : this.loanAccount.current_amortization.penalty + this.loanAccount.current_amortization.short_penalty;
+			return (this.loanAccount.current_amortization.penalty&&this.waive&&this.waive.penalty) ? 0 : this.loanAccount.current_amortization.penalty + this.loanAccount.current_amortization.short_penalty;
 		},
 		dueInterest:function(){
-			return this.loanAccount.current_amortization&&this.totalInterest > this.loanAccount.current_amortization.advance_interest ? this.totalInterest - this.loanAccount.current_amortization.advance_interest : 0;
+			return (this.loanAccount.current_amortization&&this.totalInterest > this.loanAccount.current_amortization.advance_interest) ? this.totalInterest - this.loanAccount.current_amortization.advance_interest : 0;
 		},
 		dueInterestRebates:function(){
-			return this.dueInterest < this.rebatesApplied ? 0 : this.dueInterest - this.rebatesApplied;
+			return (this.dueInterest < this.rebatesApplied) ? 0 : this.dueInterest - this.rebatesApplied;
 		},
 		duePrincipal:function(){
-			return this.loanAccount.current_amortization&&this.totalPrincipal > this.loanAccount.current_amortization.advance_principal? this.totalPrincipal - this.loanAccount.current_amortization.advance_principal : 0;
+			return (this.loanAccount.current_amortization&&this.totalPrincipal > this.loanAccount.current_amortization.advance_principal)? this.totalPrincipal - this.loanAccount.current_amortization.advance_principal : 0;
 		},
 		totalDue:function(){
 			return this.duePrincipal + this.dueInterestRebates + this.duePdi + this.duePenalty;
 		},
 		excessAdvancePrincipal:function(){
-			return this.loanAccount.current_amortization&&this.loanAccount.current_amortization.advance_principal < this.totalPrincipal ? 0 : this.loanAccount.current_amortization.advance_principal - this.totalPrincipal;
+			return (this.loanAccount.current_amortization&&this.loanAccount.current_amortization.advance_principal < this.totalPrincipal) ? 0 : this.loanAccount.current_amortization.advance_principal - this.totalPrincipal;
 		},
 		excessAdvanceInterest:function(){
-			return this.loanAccount.current_amortization&&this.loanAccount.current_amortization.advance_interest < this.totalInterest ? 0 : this.loanAccount.current_amortization.advance_interest - this.totalInterest;
+			return (this.loanAccount.current_amortization&&this.loanAccount.current_amortization.advance_interest < this.totalInterest) ? 0 : this.loanAccount.current_amortization.advance_interest - this.totalInterest;
 		},
 		dueRebates:function(){
 			return this.dueInterest >= this.rebatesApplied ? this.rebatesApplied : this.dueInterest;
