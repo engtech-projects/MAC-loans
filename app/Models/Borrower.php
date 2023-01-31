@@ -173,21 +173,21 @@ class Borrower extends Authenticatable
                             ->where('loan_status', '!=', LoanAccount::LOAN_PAID)
                             ->get();
 
-        // if( count($activeAccounts) > 0 ){
+        if( count($activeAccounts) > 0 ){
 
-        //     foreach ($activeAccounts as $account) {
-        //         $account->remainingBalance = $account->remainingBalance();
+            foreach ($activeAccounts as $account) {
+                $account->remainingBalance = $account->remainingBalance();
         //         $account->current_amortization = $account->getCurrentAmortization();
         //         $account->amortization = $account->amortization();
         //         $account->loan_status_view = $account->getStatusView();
         //         $account->collection_rate = $account->collectionRate();
-        //     }
-        //     return $activeAccounts;
-        // }
-
-        if( !count($activeAccounts) ) {
-            return false;    
+            }
+            return $activeAccounts;
         }
-        return $activeAccounts;
+
+        // if( !count($activeAccounts) ) {
+            return false;    
+        // }
+        // return $activeAccounts;
     }
 }
