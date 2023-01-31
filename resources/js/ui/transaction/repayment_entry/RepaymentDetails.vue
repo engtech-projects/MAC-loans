@@ -45,7 +45,7 @@
 						<tr v-for="account in unpaidLoanAccounts" @click="amortSched(account);" :key="account.loan_account_id" :class="isActive(account.loan_account_id)">
 							<td>{{account.account_num}}</td>
 							<td>{{dateToYMD(new Date(account.date_release))}}</td>
-							<td>P {{formatToCurrency(account.current_amortization ? account.current_amortization.outstandingBalance : 0)}}</td>
+							<td>P {{formatToCurrency(account.remainingBalance.memo.balance ? account.remainingBalance.memo.balance : 0)}}</td>
 						</tr>
 					</tbody>
 				</table>
