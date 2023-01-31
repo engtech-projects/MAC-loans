@@ -940,6 +940,7 @@ export default {
 			return '';
 		},
 		amortSched:function(loan){
+			console.log(loan);
 			axios.post(this.baseURL() + 'api/account/generate-amortization', loan, {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
@@ -950,7 +951,24 @@ export default {
 			.then(function (response) {
 				loan.current_amortization = response.data.data;
 				this.amortizationSched = response.data.data;
-				this.loanAccount = loan;
+				// this.loanAccount = loan;
+				this.fetchAccount(loan.loan_account_id);
+			}.bind(this))
+			.catch(function (error) {
+				console.log(error);
+			}.bind(this));
+		},
+		fetchAccount:function(id){
+			axios.get(this.baseURL() + 'api/account/show/' + id, {
+			headers: {
+				'Authorization': 'Bearer ' + this.token,
+					'Content-Type': 'application/json',
+					'Accept': 'application/json'
+				}
+			})
+			.then(function (response) {
+				console.log(response.data.data);
+				this.loanAccount = response.data.data;
 			}.bind(this))
 			.catch(function (error) {
 				console.log(error);
@@ -1186,10 +1204,10 @@ export default {
 			return this.outstandingPrincipal + this.outstandingInterest + this.outstandingSurcharge;
 		},
 		outstandingPrincipalRemaining:function(){
-			return this.loanAccount.remainingBalance.principal.balance - this.payment.principal;
+			return this.loanAccount.remainingBalance?this.loanAccount.remainingBalance.principal.balance - this.payment.principal:0;
 		},
 		outstandingInterestRemaining:function(){
-			return this.loanAccount.remainingBalance.interest.balance - this.payment.interest - this.rebatesApplied;
+			return this.loanAccount.remainingBalance?this.loanAccount.remainingBalance.interest.balance - this.payment.interest - this.rebatesApplied:0;
 		},
 		outstandingSurchargeRemaining: function(){
 			return this.duePdi + this.duePenalty - this.payment.penalty - this.payment.pdi;
