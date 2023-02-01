@@ -220,7 +220,10 @@ class LoanAccountController extends BaseController
     }
 
     public function cashVoucher(LoanAccount $account) {
-        return $this->sendResponse(new LoanAccountResource($account), 'Account fetched.');
+
+        $account->cash_voucher = $account->cashVoucher();
+
+        return $this->sendResponse($account, 'Account fetched.');
     }
 
     public function statement(Borrower $borrower) {
