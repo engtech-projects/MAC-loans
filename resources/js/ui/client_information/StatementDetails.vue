@@ -21,7 +21,7 @@
 			<th>Current Loan Status</th>
 		</thead>
 		<tbody>
-			<tr @click="fetchAccountId(a.account_num);selected=i" v-for="(a, i) in filteredAccounts" :key="i" :class="i==selected?'account-active':''">
+			<tr @click="fetchAccountId (a.account_num);selected=i" v-for="(a, i) in filteredAccounts" :key="i" :class="i==selected?'account-active':''">
 				<td>{{a.account_num}}</td>
 				<td>{{a.loan_amount}}</td>
 				<td>{{dateToMDY(new Date(a.date_granted))}}</td>
@@ -179,7 +179,7 @@
 	<div class="info-display title mb-12">
 		<span>Account Details</span>
 	</div>
-	<account-details v-if="loanDetails.loan_account_id" :loanDetails="loanDetails" :showPayments="true"></account-details>
+	<account-details v-if="loanDetails.loan_account_id" :ploanDetails="loanDetails.loan_account_id" :showPayments="true" :token="token"></account-details>
 
 	<div class="mb-72"></div>
 	<div v-if="loanDetails.loan_account_id" class="d-flex flex-row mb-72 justify-content-between">
