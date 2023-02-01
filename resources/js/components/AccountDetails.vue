@@ -460,6 +460,7 @@
 		},
 		methods:{
 			fetchAccount:function(id){
+				this.$emit('load');
 				axios.get(this.baseURL() + 'api/account/show/' + id, {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
@@ -468,9 +469,11 @@
 					}
 				})
 				.then(function (response) {
+					this.$emit('unload');
 					this.loanDetails = response.data.data;
 				}.bind(this))
 				.catch(function (error) {
+					this.$emit('unload');
 					console.log(error);
 				}.bind(this));
 			},

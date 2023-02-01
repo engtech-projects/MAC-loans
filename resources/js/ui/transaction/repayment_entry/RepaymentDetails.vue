@@ -956,6 +956,7 @@ export default {
 			}.bind(this));
 		},
 		fetchAccount:function(id){
+			this.$emit('load');
 			axios.get(this.baseURL() + 'api/account/show/' + id, {
 			headers: {
 				'Authorization': 'Bearer ' + this.token,
@@ -964,11 +965,13 @@ export default {
 				}
 			})
 			.then(function (response) {
+				this.$emit('unload');
 				var loan = response.data.data;
 				loan.remainingBalance = response.data.data.remaining_balance;
 				this.loanAccount = loan;
 			}.bind(this))
 			.catch(function (error) {
+				this.$emit('unload');
 				console.log(error);
 			}.bind(this));
 		},
