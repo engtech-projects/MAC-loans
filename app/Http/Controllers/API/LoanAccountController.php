@@ -228,7 +228,7 @@ class LoanAccountController extends BaseController
         $accountDetails = [];
 
         foreach ($borrower->loanAccounts() as $account) {
-            $remBal = $account->remainingBalance();
+
             $accountDetails[] = [
                 "account_id" => $account->loan_account_id,
                 'account_num' => $account->account_num,
