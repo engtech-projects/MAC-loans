@@ -1234,10 +1234,6 @@ export default {
 		'pborrower.borrower_id':function(newValue){
 			this.resetPayment();
 			this.resetLoanAccount();
-			// if(this.unpaidLoanAccounts.length){
-			// 	this.loanAccount = this.unpaidLoanAccounts[0];
-			// 	this.amortSched();
-			// }
 		},
 		'payment.amount_paid':function(newValue){
 			this.distribute();
