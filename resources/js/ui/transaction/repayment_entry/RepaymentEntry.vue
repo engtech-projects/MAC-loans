@@ -96,11 +96,6 @@ export default {
 		},
 		selectBorrower:function(arg1){
 			this.fetchBorrowerInfo(arg1);
-			// this.unpaidBorrowers.map(function(data){
-			// 	if(data.borrower_id == arg1){
-			// 		this.borrower = data;
-			// 	}
-			// }.bind(this));
 		},
 		fetchBorrowerInfo:function(borrower){
 			axios.get(this.baseURL() + 'api/borrower/' + borrower, {
@@ -111,9 +106,7 @@ export default {
 				}
 			})
 			.then(function (response) {
-				// console.log(response.data.data);
 				this.borrower = response.data.data;
-				// this.amortSched(response.data.data);
 			}.bind(this))
 			.catch(function (error) {
 				console.log(error);
@@ -122,22 +115,6 @@ export default {
 	},
 	computed:{
 		unpaidBorrowers:function(){
-			// let filteredData = [];
-			// this.borrowers.map(function(data){
-			// 	let flag = false;
-			// 	if(data.loan_accounts){
-			// 		data.loan_accounts.map(function(data2){
-			// 			if(flag){
-			// 				return;
-			// 			}
-			// 			if(data2.remainingBalance.memo.balance > 0){
-			// 				filteredData.push(data);
-			// 				flag = true
-			// 				return;
-			// 			}
-			// 		}.bind(this))
-			// 	}
-			// }.bind(this))
 			return this.borrowers;
 		}
 	},
