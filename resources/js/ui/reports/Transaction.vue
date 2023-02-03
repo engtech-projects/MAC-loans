@@ -68,6 +68,19 @@
 									<td>{{formatToCurrency(prod.release.prepaid_interest)}}</td>
 									<td>{{formatToCurrency(prod.release.net_proceeds)}}</td>
 								</tr>
+								<tr class="border-cell-gray-7">
+									<td></td>
+									<td></td>
+									<td></td>
+									<td></td>
+									<td></td>
+									<td></td>
+									<td></td>
+									<td></td>
+									<td></td>
+									<td></td>
+									<td></td>
+								</tr>
 								<tr class="tr-pt-7 text-bold">
 									<td>TOTAL RELEASES</td>
 									<td v-for="t,i in totalReleases" :key="i">{{formatToCurrency(t)}}</td>
