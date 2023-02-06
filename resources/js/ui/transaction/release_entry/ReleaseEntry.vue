@@ -1,6 +1,13 @@
 <template>
 	<div class="container-fluid" style="padding:0!important">
 		<notifications group="foo" />
+		<div v-if="loading" class="black-screen d-flex flex-column align-items-center justify-content-center" style="padding-left:0px;">
+			<div class="loading-container d-flex align-items-center justify-content-center mb-36">
+				<span class="loading-text">LOADING</span>
+				<img :src="baseURL() + 'img/loading_default.png'" class="rotating" alt="" style="width:300px;height:300px">
+			</div>
+			<span class="font-lg" style="color:#ddd">Please wait until the process is complete</span>
+		</div>
 		<div class="mb-16"></div>
 		<div class="ml-16 mb-24 bb-primary-dark pb-7 text-block d-flex justify-content-between">
 			<h1 class="m-0 font-35">{{title}}</h1>
@@ -900,6 +907,7 @@
 		props:['token', 'idtype','rejectid','title', 'releasetype', 'pbranch', 'staff', 'branch_mgr'],
 		data(){
 			return {
+				loading:false,
 				transactionDate: {
 					branch_id: this.pbranch,
 					status: 'closed',
@@ -1033,6 +1041,7 @@
 				this.fetchBorrower(data);
 			},
 			fetchBorrowerInfo:function(borrower){
+				this.loading = true;
 				axios.get(this.baseURL() + 'api/borrower/' + borrower, {
 					headers: {
 						'Authorization': 'Bearer ' + this.token,
@@ -1042,9 +1051,11 @@
 				})
 				.then(function (response) {
 					this.borrower = response.data.data;
+					this.loading = false;
 				}.bind(this))
 				.catch(function (error) {
 					console.log(error);
+					this.loading = false;
 				}.bind(this));
 			},
 			fetchBorrower:function(borrower){
@@ -1142,6 +1153,7 @@
 				}.bind(this));
 			},
 			fetchBorrowers:function(){
+				this.loading=true;
 				axios.get(this.baseURL() + 'api/borrower/list/' + this.branch, {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
@@ -1151,9 +1163,11 @@
 				})
 				.then(function (response) {
 					this.borrowers = response.data.data;
+					this.loading = false;
 				}.bind(this))
 				.catch(function (error) {
 					console.log(error);
+					this.loading = false;
 				}.bind(this));
 			},
 			fetchLoanAccounts:function(){

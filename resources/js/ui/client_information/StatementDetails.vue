@@ -2103,6 +2103,7 @@
 					}
 				})
 				.then(function (response) {
+					console.log(response.data.data);
 					this.loanDetails = response.data.data;
 					this.loanDetails.documents = response.data.data.document;
 					this.amortSched();
