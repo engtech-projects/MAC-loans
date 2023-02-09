@@ -154,6 +154,10 @@ return [
 				'name' => 'Loan Aging Report',
 				'url' => 'reports/consolidated/loan_aging_report'
 			],
+			[
+				'name' => 'Generate DST',
+				'url' => 'reports/consolidated/generate_dst'
+			],
 		]
 	]
 ];
