@@ -42,7 +42,7 @@
 					</div>
 				</div>
 				<!-- <span class="text-center text-primary-dark text-bold">As of {{filter.as_of?dateToMDY2(new Date(filter.as_of)).split('-').join('/'):'---'}}</span> -->
-				<span class="text-center text-primary-dark text-bold font-md mb-5">{{branch.branch_name}} Branch ({{branch.branch_code}})</span>
+				<span class="text-center text-primary-dark text-bold font-md mb-5">All Branches</span>
 				<div class="d-flex flex-row justify-content-center text-primary-dark">
 					<span class="mr-5">From:</span><span class="mr-16">{{filter.date_from?filter.date_from:'---'}}</span>
 					<span class="mr-5">To:</span><span>{{filter.date_to?filter.date_to:'---'}}</span>
@@ -56,8 +56,8 @@
 						<th>Butuan</th>
 						<th>Nasipit</th>
 						<th>Gingoog</th>
-						<th>Total Amount</th>
-						<!-- <th>Amount</th> -->
+						<th>Total</th>
+						<th>Amount</th>
 					</thead>
 					<tbody>
 						<tr v-for="r,i in computedReports.rows" :key="i">
@@ -125,7 +125,7 @@ export default {
     },
 	computed:{
 		computedReports:function(){
-			var rows = {rows:[],total:['',0,0,0,0]};
+			var rows = {rows:[],total:['TOTAL',0,0,0,0,0]};
 			for(var i in this.reports){
 				var row = [];
 				var count = 1;
@@ -138,6 +138,8 @@ export default {
 					count++;
 				}
 				row.push(this.formatToCurrency(report.total_amount))
+				row.push(this.formatToCurrency(report.amount))
+				rows.total[5] += report.amount;
 				rows.total[4] += report.total_amount;
 				rows.rows.push(row);
 			}
@@ -145,6 +147,7 @@ export default {
 			rows.total[2] = this.formatToCurrency(rows.total[2]);
 			rows.total[3] = this.formatToCurrency(rows.total[3]);
 			rows.total[4] = this.formatToCurrency(rows.total[4]);
+			rows.total[5] = this.formatToCurrency(rows.total[5]);
 			return rows;
 		}
 	},
