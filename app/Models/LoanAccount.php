@@ -732,7 +732,12 @@ class LoanAccount extends Model
       $account = LoanAccount::where(['loan_account_id' => $loanAccountId])->first();
       $payment = $this->getPaymentTotalPrincipalInterest($loanAccountId);
 
-      return ($account->loan_amount + $account->interest_amount) - $payment;
+      if($account->type == 'Prepaid') {
+        return ($account->loan_amount) - $payment;
+      }
+
+        return ($account->loan_amount + $account->interest_amount) - $payment;
+
    }
 
    public function amortization(){
