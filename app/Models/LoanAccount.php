@@ -761,7 +761,7 @@ class LoanAccount extends Model
          ],
          'interest' => [
             'debit' => $account->interest_amount,
-            'credit' => 0,
+            'credit' => $account->prepaid_interest,
             'balance' => 0,
          ],
          'rebates' => [
@@ -793,6 +793,7 @@ class LoanAccount extends Model
          foreach ($payments as $payment) {
 
             $accountSummary['principal']['credit'] += $payment->principal;
+
             $accountSummary['interest']['credit'] += $payment->interest;
 
             if( !$payment->penalty_approval_no ) {
