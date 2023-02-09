@@ -72,7 +72,7 @@ class Reports extends Model
         if( isset($filters['payment_status']) && $filters['payment_status'] ){
             $loanAccount->where([ 'loan_accounts.payment_status' => $filters['payment_status'] ]);
         }
- 
+
         if( isset($filters['type']) && $filters['type'] ){
             $loanAccount->where([ 'loan_accounts.type' => $filters['type'] ]);
         }
@@ -1344,6 +1344,7 @@ class Reports extends Model
                 $loanMonth = $loanMonth->addMonth(1)->startOfDay();
             }
             $data[] = [
+                "branch_id" => $value->branch->branch_id,
                 "client" => $value->borrower->fullname(),
                 "amount_loan" => $value->loan_amount,
                 "date_released" => $value->date_release,
