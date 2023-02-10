@@ -695,8 +695,9 @@ class Reports extends Model
                 $data[$key]['amount_loan'] = $value['loan_amount'];
                 $data[$key]['outstanding_balance'] = $loanAccount->remainingBalance()["memo"]["balance"];
                 $data[$key]['principal_balance'] = $loanAccount->remainingBalance()["principal"]["balance"];
-                $data[$key]['delinquent'] = $currentAmortization['delinquent']['principal'] + $currentAmortization->interest;
+                $data[$key]['delinquent'] = ($currentAmortization->principal + $currentAmortization->interest) + $currentAmortization->short_principal;
                 $data[$key]['penalty'] = $currentAmortization->penalty + $currentAmortization->pdi;
+                $data[$key]['amount_due'] = $currentAmortization->total + ($currentAmortization->penalty + $currentAmortization->pdi);
                 $data[$key]['weekly_amortization'] = $value->amortization()['total'];
                 $data[$key]['contact'] = $borrower->contact_number;
                 $data[$key]['address'] = $borrower->address;
@@ -705,6 +706,7 @@ class Reports extends Model
 
         }
 
+        //return $currentAmortization;
         return $d = [
 
                     'name' =>  '',
