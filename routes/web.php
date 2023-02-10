@@ -103,6 +103,7 @@ Route::group(['middleware' => 'auth'], function (){
 	Route::get('/reports/consolidated/loan_summary_report', [ReportsController::class, 'consolidatedLoanSummaryReport'])->name('reports.consolidated.loansummaryreport');
 	Route::get('/reports/consolidated/loan_aging_report', [ReportsController::class, 'consolidatedLoanAgingReport'])->name('reports.consolidated.loanagingreport');
 	Route::get('/reports/consolidated/loan_performance_report', [ReportsController::class, 'consolidatedLoanPerformanceReport'])->name('reports.consolidated.loanperformancereport');
+	Route::get('/reports/consolidated/generate_dst', [ReportsController::class, 'consolidatedGenerateDst'])->name('reports.consolidated.generatedst');
 
 	Route::get('/reports/micro_monitoring', [ReportsController::class, 'reportsMicroMonitoring'])->name('reports.micromonitoring');
 	Route::get('/reports/prepaid_interest', [ReportsController::class, 'reportsPrepaidInterest'])->name('reports.prepaidinterest');

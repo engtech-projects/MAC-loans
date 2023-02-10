@@ -45,7 +45,7 @@
 						<tr v-for="account in unpaidLoanAccounts" @click="amortSched(account);" :key="account.loan_account_id" :class="isActive(account.loan_account_id)">
 							<td>{{account.account_num}}</td>
 							<td>{{dateToYMD(new Date(account.date_release))}}</td>
-							<td>P {{formatToCurrency(account.remainingBalance.memo.balance ? account.remainingBalance.memo.balance : 0)}}</td>
+							<td>P {{formatToCurrency(account.remainingBalance.memo?account.remainingBalance.memo.balance:0)}}</td>
 						</tr>
 					</tbody>
 				</table>
@@ -128,7 +128,7 @@
 							<span class="">Missed Payments</span>
 							<span>:</span>
 						</div>
-						<span class="flex-2 text-primary-dark">{{loanAccount.current_amortization.delinquent.missed.length}}</span>
+						<span class="flex-2 text-primary-dark">{{loanAccount.current_amortization.delinquent?loanAccount.current_amortization.delinquent.missed.length:''}}</span>
 					</div>
 
 					<div class="d-flex flex-row mb-12">
@@ -939,8 +939,8 @@ export default {
 			}
 			return '';
 		},
-		amortSched:function(account){
-			axios.post(this.baseURL() + 'api/account/generate-amortization', account, {
+		amortSched:function(loan){
+			axios.post(this.baseURL() + 'api/account/generate-amortization', loan, {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
 					'Content-Type': 'application/json',
@@ -948,15 +948,16 @@ export default {
 				}
 			})
 			.then(function (response) {
+				loan.current_amortization = response.data.data;
 				this.amortizationSched = response.data.data;
-				this.fetchAccount(account.loan_account_id);
+				// this.loanAccount = loan;
+				this.fetchAccount(loan.loan_account_id);
 			}.bind(this))
 			.catch(function (error) {
 				console.log(error);
 			}.bind(this));
 		},
 		fetchAccount:function(id){
-			this.$emit('load');
 			axios.get(this.baseURL() + 'api/account/show/' + id, {
 			headers: {
 				'Authorization': 'Bearer ' + this.token,
@@ -965,13 +966,9 @@ export default {
 				}
 			})
 			.then(function (response) {
-				this.$emit('unload');
-				var loan = response.data.data;
-				loan.remainingBalance = response.data.data.remaining_balance;
-				this.loanAccount = loan;
+				this.loanAccount = response.data.data;
 			}.bind(this))
 			.catch(function (error) {
-				this.$emit('unload');
 				console.log(error);
 			}.bind(this));
 		},
@@ -1133,7 +1130,7 @@ export default {
 			return this.penaltyWaive + this.pdiWaive;
 		},
 		totalScheduledPayment:function(){
-			return this.loanAccount.current_amortization.schedule_interest + this.loanAccount.current_amortization.schedule_principal;
+			return this.loanAccount.current_amortization? this.loanAccount.current_amortization.schedule_interest + this.loanAccount.current_amortization.schedule_principal:0;
 		},
 		borrowerPhoto:function(){
 			return this.pborrower.photo? this.pborrower.photo : this.baseURL()+'/img/user.png';
@@ -1142,19 +1139,19 @@ export default {
 			return this.loanAccount.payments.length > 0 ? this.dateToMDY2(new Date(this.loanAccount.payments[this.loanAccount.payments.length-1].transaction_date)) : 'None';
 		},
 		amountDistributed:function(){
-			return parseFloat(this.payment.amount_paid) + parseFloat(this.loanAccount.current_amortization.advance_principal)
+			return this.loanAccount.current_amortization?parseFloat(this.payment.amount_paid) + parseFloat(this.loanAccount.current_amortization.advance_principal):0;
 		},
 		totalBalance:function(){
-			return this.totalDue + parseFloat(this.loanAccount.current_amortization.principal_balance) + parseFloat(this.loanAccount.current_amortization.interest_balance)
+			return this.loanAccount.current_amortization?this.totalDue + parseFloat(this.loanAccount.current_amortization.principal_balance) + parseFloat(this.loanAccount.current_amortization.interest_balance):0;
 		},
 		totalShort:function(){
 			return this.payment.short_pdi + this.payment.short_penalty + this.payment.short_interest + this.payment.short_principal;
 		},
 		totalInterest:function(){
-			return this.loanAccount.current_amortization.interest + this.loanAccount.current_amortization.short_interest;
+			return this.loanAccount.current_amortization? this.loanAccount.current_amortization.interest + this.loanAccount.current_amortization.short_interest:0;
 		},
 		totalPrincipal:function(){
-			return this.loanAccount.current_amortization.principal + this.loanAccount.current_amortization.short_principal;
+			return this.loanAccount.current_amortization?this.loanAccount.current_amortization.principal + this.loanAccount.current_amortization.short_principal:0;
 		},
 		duePdi:function(){
 			if(this.loanAccount.remainingBalance){
@@ -1163,25 +1160,26 @@ export default {
 			return 0;
 		},
 		duePenalty:function(){
-			return this.waive.penalty ? 0 : this.loanAccount.current_amortization.penalty + this.loanAccount.current_amortization.short_penalty;
+			return 0;
+			return (this.loanAccount.current_amortization.penalty&&this.waive&&this.waive.penalty) ? 0 : this.loanAccount.current_amortization.penalty + this.loanAccount.current_amortization.short_penalty;
 		},
 		dueInterest:function(){
-			return this.totalInterest > this.loanAccount.current_amortization.advance_interest ? this.totalInterest - this.loanAccount.current_amortization.advance_interest : 0;
+			return (this.loanAccount.current_amortization&&this.totalInterest > this.loanAccount.current_amortization.advance_interest) ? this.totalInterest - this.loanAccount.current_amortization.advance_interest : 0;
 		},
 		dueInterestRebates:function(){
-			return this.dueInterest < this.rebatesApplied ? 0 : this.dueInterest - this.rebatesApplied;
+			return (this.dueInterest < this.rebatesApplied) ? 0 : this.dueInterest - this.rebatesApplied;
 		},
 		duePrincipal:function(){
-			return this.totalPrincipal > this.loanAccount.current_amortization.advance_principal ? this.totalPrincipal - this.loanAccount.current_amortization.advance_principal : 0;
+			return (this.loanAccount.current_amortization&&this.totalPrincipal > this.loanAccount.current_amortization.advance_principal)? this.totalPrincipal - this.loanAccount.current_amortization.advance_principal : 0;
 		},
 		totalDue:function(){
 			return this.duePrincipal + this.dueInterestRebates + this.duePdi + this.duePenalty;
 		},
 		excessAdvancePrincipal:function(){
-			return this.loanAccount.current_amortization.advance_principal < this.totalPrincipal ? 0 : this.loanAccount.current_amortization.advance_principal - this.totalPrincipal;
+			return (this.loanAccount.current_amortization&&this.loanAccount.current_amortization.advance_principal < this.totalPrincipal) ? 0 : this.loanAccount.current_amortization.advance_principal - this.totalPrincipal;
 		},
 		excessAdvanceInterest:function(){
-			return this.loanAccount.current_amortization.advance_interest < this.totalInterest ? 0 : this.loanAccount.current_amortization.advance_interest - this.totalInterest;
+			return (this.loanAccount.current_amortization&&this.loanAccount.current_amortization.advance_interest < this.totalInterest) ? 0 : this.loanAccount.current_amortization.advance_interest - this.totalInterest;
 		},
 		dueRebates:function(){
 			return this.dueInterest >= this.rebatesApplied ? this.rebatesApplied : this.dueInterest;
@@ -1205,10 +1203,10 @@ export default {
 			return this.outstandingPrincipal + this.outstandingInterest + this.outstandingSurcharge;
 		},
 		outstandingPrincipalRemaining:function(){
-			return this.loanAccount.remainingBalance.principal.balance - this.payment.principal;
+			return this.loanAccount.remainingBalance?this.loanAccount.remainingBalance.principal.balance - this.payment.principal:0;
 		},
 		outstandingInterestRemaining:function(){
-			return this.loanAccount.remainingBalance.interest.balance - this.payment.interest - this.rebatesApplied;
+			return this.loanAccount.remainingBalance?this.loanAccount.remainingBalance.interest.balance - this.payment.interest - this.rebatesApplied:0;
 		},
 		outstandingSurchargeRemaining: function(){
 			return this.duePdi + this.duePenalty - this.payment.penalty - this.payment.pdi;
@@ -1229,7 +1227,6 @@ export default {
 					}
 				}.bind(this))
 			}
-			
 			return filteredData;
 		}
 	},
@@ -1242,7 +1239,9 @@ export default {
 			this.distribute();
 		},
 		'loanAccount.loan_account_id':function(newValue){
-			this.payment.total_payable = this.totalDue;
+			if(this.loanAccount.current_amortization.penalty){
+				this.payment.total_payable = this.totalDue;
+			}
 			this.payment.amortization_id = this.loanAccount.current_amortization.id;
 		},
 		'waive.pdi':function(newValue){

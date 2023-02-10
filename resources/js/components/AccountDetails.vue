@@ -276,26 +276,26 @@
 											<span>Principal Balance</span>
 											<span>:</span>
 										</div>
-										<span class="flex-3 pl-10">P {{formatToCurrency(loanDetails.remainingBalance.principal.balance)}}</span>
+										<span class="flex-3 pl-10">P {{formatToCurrency(loanDetails.remaining_balance.principal.balance)}}</span>
 									</div>
 									<div class="d-flex justify-content-between py-5 text-primary-dark">
 										<div class="flex-4 d-flex justify-content-between">
 											<span>Interest Balance</span>
 											<span>:</span>
 										</div>
-										<span class="flex-3 pl-10">P {{formatToCurrency(loanDetails.remainingBalance.interest.balance)}}</span>
+										<span class="flex-3 pl-10">P {{formatToCurrency(loanDetails.remaining_balance.interest.balance)}}</span>
 									</div>
 									<div class="d-flex justify-content-between py-5 text-primary-dark">
 										<div class="flex-4 d-flex justify-content-between">
 											<span>Surcharge</span>
 											<span>:</span>
 										</div>
-										<span class="flex-3 pl-10">P {{formatToCurrency(loanDetails.remainingBalance.pdi.balance + loanDetails.remainingBalance.penalty.balance)}}</span>
+										<span class="flex-3 pl-10">P {{formatToCurrency(loanDetails.remaining_balance.pdi.balance + loanDetails.remaining_balance.penalty.balance)}}</span>
 									</div>
 								</div>
 								<div>
 									<span class="text-lg text-bold text-primary-dark">TOTAL</span>
-									<span class="text-block bg-primary-dark text-white px-16 text-45 mr-36">P {{formatToCurrency(loanDetails.remainingBalance.memo.balance)}}</span>
+									<span class="text-block bg-primary-dark text-white px-16 text-45 mr-36">P {{formatToCurrency(loanDetails.remaining_balance.memo.balance)}}</span>
 								</div>
 							</div>
 							<div class="flex-1 px-16"></div>
@@ -354,13 +354,129 @@
 
 <script>
 	export default {
-		props:['loanDetails','showPayments','showSchedule'],
+		props:['ploanDetails','showPayments','showSchedule','token'],
 		data(){
 			return {
+				loanDetails:{
+					loan_account_id:null,
+					cycle_no : 1,
+					ao_id : '',
+					product_id : '',
+					center_id : '',
+					type : '',
+					payment_mode : '',
+					terms : '',
+					loan_amount : '',
+					no_of_installment : '',
+					day_schedule : '',
+					borrower_num : '',
+					co_borrower_name : '',
+					co_borrower_address : '',
+					co_borrower_id_type : '',
+					co_borrower_id_number : '',
+					co_borrower_id_date_issued : '',
+					co_maker_name : '',
+					co_maker_address : '',
+					co_maker_id_type : '',
+					co_maker_id_number : '',
+					co_maker_id_date_issued : '',
+					document_stamp : '',
+					filing_fee : 0,
+					insurance : 0,
+					notarial_fee : '100.00',
+					prepaid_interest : 0,
+					affidavit_fee : 0,
+					memo : 0,
+					total_deduction : 0,
+					net_proceeds : 0,
+					release_type : 0,
+					interest_rate:0,
+					interest_amount:0,
+					documents: {
+						date_release: '',
+						description: '',
+						bank: '',
+						account_no: '',
+						card_no:'',
+						promissory_number: '',
+					},
+					outstandingBalance:{
+						principal_balance:0,
+						interest_balance:0,
+						surcharge:0,
+					},
+					current_amortization:{
+						principal:0,
+						interest:0,
+						short_interest:0,
+						advance_interest:0,
+						short_principal:0,
+						advance_principal:0,
+						outstandingBalance:{
+							principal_balance:0,
+							interest_balance:0,
+							surcharge:0,
+						},
+						lastPayment:{
+							principal:0,
+							interest:0,
+							short_interest:0,
+							advance_interest:0,
+							short_principal:0,
+							advance_principal:0,
+						}
+					},
+					payments:[],
+					remaining_balance:{
+						memo:{
+							debit:0,
+							credit:0,
+							balance:0
+						},
+						principal:{
+							debit:0,
+							credit:0,
+							balance:0
+						},
+						interest:{
+							debit:0,
+							credit:0,
+							balance:0
+						},
+						pdi:{
+							debit:0,
+							credit:0,
+							balance:0
+						},
+						penalty:{
+							debit:0,
+							credit:0,
+							balance:0
+						}
+					},
+					loan_status_view:''
+				}
 			}
 		},
 		methods:{
-
+			fetchAccount:function(id){
+				this.$emit('load');
+				axios.get(this.baseURL() + 'api/account/show/' + id, {
+				headers: {
+					'Authorization': 'Bearer ' + this.token,
+						'Content-Type': 'application/json',
+						'Accept': 'application/json'
+					}
+				})
+				.then(function (response) {
+					this.$emit('unload');
+					this.loanDetails = response.data.data;
+				}.bind(this))
+				.catch(function (error) {
+					this.$emit('unload');
+					console.log(error);
+				}.bind(this));
+			},
 		},
 		computed:{
 			totalAmountBalance:function(){
@@ -369,6 +485,7 @@
 					amount-=val.principal;
 				}.bind(this));
 				return amount;
+
 			},
 			totalInterestBalance:function(){
 				var amount = this.loanDetails.interest_amount;
@@ -401,8 +518,8 @@
 				return this.loanDetails.current_amortization.principal + this.loanDetails.current_amortization.short_principal;
 			},
 			duePdi:function(){
-				if(this.loanDetails.remainingBalance){
-					return this.loanDetails.remainingBalance.pdi.balance;
+				if(this.loanDetails.remaining_balance){
+					return this.loanDetails.remaining_balance.pdi.balance;
 				}
 				return 0;
 			},
@@ -440,7 +557,13 @@
 				return this.outstandingPrincipalRemaining + this.outstandingInterestRemaining + this.outstandingSurchargeRemaining;
 			},
 		},
+		watch:{
+			'ploanDetails':function(val){
+				this.fetchAccount(val);
+			}
+		},
 		mounted(){
+			this.fetchAccount(this.ploanDetails);
 		}
 	}
 </script>

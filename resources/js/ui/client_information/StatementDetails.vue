@@ -1,6 +1,13 @@
 <template>
 	<div class="px-16">
 		<notifications group="foo" />
+		<div v-if="loading" class="black-screen d-flex flex-column align-items-center justify-content-center" style="padding-left:0px;">
+			<div class="loading-container d-flex align-items-center justify-content-center mb-36">
+				<span class="loading-text">LOADING</span>
+				<img :src="baseURL() + 'img/loading_default.png'" class="rotating" alt="" style="width:300px;height:300px">
+			</div>
+			<span class="font-lg" style="color:#ddd">Please wait until the process is complete</span>
+		</div>
 		<div class="container-fluid">
 			<div class="mb-16"></div>
 			<div class="d-flex justify-content-between mb-24 bb-primary-dark pb-7 text-block">
@@ -21,7 +28,7 @@
 			<th>Current Loan Status</th>
 		</thead>
 		<tbody>
-			<tr @click="fetchAccountId(a.account_num);selected=i" v-for="(a, i) in filteredAccounts" :key="i" :class="i==selected?'account-active':''">
+			<tr @click="fetchAccountId (a.account_num);selected=i" v-for="(a, i) in filteredAccounts" :key="i" :class="i==selected?'account-active':''">
 				<td>{{a.account_num}}</td>
 				<td>{{a.loan_amount}}</td>
 				<td>{{dateToMDY(new Date(a.date_granted))}}</td>
@@ -179,7 +186,7 @@
 	<div class="info-display title mb-12">
 		<span>Account Details</span>
 	</div>
-	<account-details v-if="loanDetails.loan_account_id" :loanDetails="loanDetails" :showPayments="true"></account-details>
+	<account-details @load="loading=true" @unload="loading=false" v-if="loanDetails.loan_account_id" :ploanDetails="loanDetails.loan_account_id" :showPayments="true" :token="token"></account-details>
 
 	<div class="mb-72"></div>
 	<div v-if="loanDetails.loan_account_id" class="d-flex flex-row mb-72 justify-content-between">
@@ -1810,6 +1817,7 @@
 		props:['borrower_id','token'],
 		data(){
 			return {
+				loading:false,
 				loanAccount:{},
 				activeBrowse:false,
 				fileName:'',
@@ -2032,6 +2040,7 @@
 				}.bind(this));
 			},
 			fetchBorrower:function(){
+				this.loading = true;
 				axios.get(this.baseURL() + 'api/borrower/' + this.borrower_id, {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
@@ -2040,15 +2049,18 @@
 					}
 				})
 				.then(function (response) {
+					this.loading = false;
 					this.borrower = response.data.data;
 					this.fetchStatements();
 				}.bind(this))
 				.catch(function (error) {
+					this.loading = false;
 					console.log(error);
 				}.bind(this));
 			},
 
 			fetchStatements:function(){
+				this.loading = true;
 				axios.get(this.baseURL() + 'api/account/statement/' + this.borrower_id, {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
@@ -2057,9 +2069,11 @@
 					}
 				})
 				.then(function (response) {
+					this.loading = false;
 					this.accounts = response.data;
 				}.bind(this))
 				.catch(function (error) {
+					this.loading = false;
 					console.log(error);
 				}.bind(this));
 			},
@@ -2089,6 +2103,7 @@
 					}
 				})
 				.then(function (response) {
+					console.log(response.data.data);
 					this.loanDetails = response.data.data;
 					this.loanDetails.documents = response.data.data.document;
 					this.amortSched();
