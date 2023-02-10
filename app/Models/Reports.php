@@ -72,7 +72,7 @@ class Reports extends Model
         if( isset($filters['payment_status']) && $filters['payment_status'] ){
             $loanAccount->where([ 'loan_accounts.payment_status' => $filters['payment_status'] ]);
         }
- 
+
         if( isset($filters['type']) && $filters['type'] ){
             $loanAccount->where([ 'loan_accounts.type' => $filters['type'] ]);
         }
@@ -455,7 +455,7 @@ class Reports extends Model
             $dstSummary[$value->terms]['term'] = $value->terms;
             $dstSummary[$value->terms]['branches'][$branchIds[$value->branch_code]] += $value->loan_amount;
             $dstSummary[$value->terms]['total_amount'] += $value->loan_amount;
-            $dstSummary[$value->terms]['amount'] = $value->terms <= 360 ? round($dstSummary[$value->terms]['total_amount']*1.5/200*$value->terms/365 , 2) : round($dstSummary[$value->terms]['total_amount'] *1.5/200);
+            $dstSummary[$value->terms]['amount'] = $value->terms <= 360 ? round($dstSummary[$value->terms]['total_amount']*1.5/200*$value->terms/365 , 2) : round($dstSummary[$value->terms]['total_amount'] *1.5/200,2);
 
         }
 

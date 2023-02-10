@@ -503,7 +503,7 @@ class ReportsController extends BaseController
 		$report = new Reports();
 
 		$prepaid = $report->prepaidReport($filters);
-		
+
 		return $this->sendResponse($prepaid,"Consolidated Report");
 
 	}
