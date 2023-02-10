@@ -42,7 +42,7 @@
 							<th>Center</th>
 							<th>No. Clients</th>
 							<th>Active</th>
-							<th>Areas of Ope.</th>
+							<th>Area of Ope.</th>
 							<th>Sched</th>
 							<th v-for="(s, i) in schedHeader" :key="i">{{s}}</th>
 						</tr>
@@ -68,7 +68,7 @@
 						<tr>
 							<th>#</th>
 							<th>Name of Client</th>
-							<th>Area of Ope.</th>
+							<th>Center</th>
 							<th>Schedule</th>
 							<th v-for="s in individualSchedHeaader" :key="s">{{s}}</th>
 						</tr>
