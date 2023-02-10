@@ -695,7 +695,7 @@ class Reports extends Model
                 $data[$key]['amount_loan'] = $value['loan_amount'];
                 $data[$key]['outstanding_balance'] = $loanAccount->remainingBalance()["memo"]["balance"];
                 $data[$key]['principal_balance'] = $loanAccount->remainingBalance()["principal"]["balance"];
-                $data[$key]['delinquent'] = $currentAmortization->status == LoanAccount::PAYMENT_DELINQUENT ? $currentAmortization['delinquent']['principal'] + $currentAmortization['delinquent']['interest'] : 0;
+                $data[$key]['delinquent'] = $loanAccount->payment_status === LoanAccount::PAYMENT_DELINQUENT || $currentAmortization->status == 'delinquent' ? $currentAmortization['delinquent']['principal'] + $currentAmortization['delinquent']['interest'] : 0;
                 $data[$key]['penalty'] = $currentAmortization->penalty + $currentAmortization->pdi;
                 $data[$key]['amount_due'] = $currentAmortization->total + ($currentAmortization->penalty + $currentAmortization->pdi);
                 $data[$key]['weekly_amortization'] = $value->amortization()['total'];
