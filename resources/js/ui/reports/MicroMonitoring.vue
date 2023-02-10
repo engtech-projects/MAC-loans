@@ -68,7 +68,7 @@
 						<tr>
 							<th>#</th>
 							<th>Name of Client</th>
-							<th>Areas of Ope.</th>
+							<th>Area of Ope.</th>
 							<th>Schedule</th>
 							<th v-for="s in individualSchedHeaader" :key="s">{{s}}</th>
 						</tr>
