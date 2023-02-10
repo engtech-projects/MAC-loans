@@ -12,7 +12,9 @@
 					<input v-model="filter.date_to" type="date" class="form-control">
 				</div>
 			</div>
-			<a href="#" class="btn btn-success mr-10 max-w-250">Generate DBF File</a>
+			<a :href="dlURL" class="hide" download id="dbfLink" target="_blank"></a>
+			<a @click.prevent="generateDbf()" v-if="filter.date_from.length&&filter.date_to.length" download class="btn btn-success mr-10 max-w-250">Generate DBF File</a>
+			<button v-else class="btn btn-success mr-10 max-w-250" disabled>Generate DBF File</button>
 		</div>
 	</div>
 </template>
@@ -22,9 +24,10 @@ export default {
 	props:['branch_id','token'],
 	data(){
 		return {
+			dlURL:'',
 			filter:{
-				date_from:null,
-				date_to:null,
+				date_from:'',
+				date_to:'',
 				branch_id:null
 			}
 		}
@@ -40,7 +43,7 @@ export default {
 				}
 			})
 			.then(function (response) {
-				console.log(response.data);
+				this.dlURL = response.data.data.downloadURL;
 			}.bind(this))
 			.catch(function (error) {
 				console.log(error);
@@ -48,15 +51,18 @@ export default {
 		}
 	},
 	watch:{
-		filter:{
-			handler(val){
-				if(val.date_from && val.date_to){
-					this.generateDbf();
-				}
-			},
-			deep:true
-		}
+		'dlURL':function(val){
+			if(val.length){
+				var link = document.getElementById('dbfLink');
+				setTimeout(() => {
+					link.click();
+				}, 500);
+			}
+		},
 	},
+	mounted(){
+		
+	}
 }
 </script>
 
