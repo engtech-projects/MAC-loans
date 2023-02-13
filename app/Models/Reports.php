@@ -695,7 +695,8 @@ class Reports extends Model
                 $data[$key]['amount_loan'] = $value['loan_amount'];
                 $data[$key]['outstanding_balance'] = $loanAccount->remainingBalance()["memo"]["balance"];
                 $data[$key]['principal_balance'] = $loanAccount->remainingBalance()["principal"]["balance"];
-                $data[$key]['delinquent'] = $loanAccount->payment_status === LoanAccount::PAYMENT_DELINQUENT || $currentAmortization->status == 'delinquent' ? $currentAmortization['delinquent']['principal'] + $currentAmortization['delinquent']['interest'] : 0;
+                $data[$key]['payment_status'] = LoanAccount::getPaymentStatus($loanAccount->loan_account_id);
+                $data[$key]['delinquent'] = LoanAccount::getPaymentStatus($loanAccount->loan_account_id) === 'Delinquent' ? $currentAmortization['delinquent']['principal'] + $currentAmortization['delinquent']['interest'] : 0;
                 $data[$key]['penalty'] = $currentAmortization->penalty + $currentAmortization->pdi;
                 $data[$key]['amount_due'] = $currentAmortization->total + ($currentAmortization->penalty + $currentAmortization->pdi);
                 $data[$key]['weekly_amortization'] = $value->amortization()['total'];
@@ -705,26 +706,7 @@ class Reports extends Model
             }
 
 
-            /* $borrower = Borrower::find($value['borrower_id']);
-                $data[$key]['center'] = $value->center_id;
-                $data[$key]['account_officer'] = $value->ao_id;
-                $data[$key]['client'] = $borrower->fullname();
-                $data[$key]['date_loan'] = $value['date_release'];
-                $data[$key]['maturity_date'] = $value['due_date'];
-                $data[$key]['amount_loan'] = $value['loan_amount'];
-                $data[$key]['outstanding_balance'] = $loanAccount->remainingBalance()["memo"]["balance"];
-                $data[$key]['principal_balance'] = $loanAccount->remainingBalance()["principal"]["balance"];
-                $data[$key]['delinquent'] = ($currentAmortization->principal + $currentAmortization->interest) + $currentAmortization->short_principal;
-                $data[$key]['penalty'] = $currentAmortization->penalty + $currentAmortization->pdi;
-                $data[$key]['amount_due'] = $currentAmortization->total + ($currentAmortization->penalty + $currentAmortization->pdi);
-                $data[$key]['weekly_amortization'] = $value->amortization()['total'];
-                $data[$key]['contact'] = $borrower->contact_number;
-                $data[$key]['address'] = $borrower->address; */
-
-
         }
-
-        //return $currentAmortization;
         return $d = [
 
                     'name' =>  '',

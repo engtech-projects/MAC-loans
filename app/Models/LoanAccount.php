@@ -894,6 +894,13 @@ class LoanAccount extends Model
         return $amortizations;
    }
 
+   public static function getPaymentStatus($id){
+
+       $loan_account = LoanAccount::find($id);
+       return $loan_account->payment_status;
+
+    }
+
 }
 
 
