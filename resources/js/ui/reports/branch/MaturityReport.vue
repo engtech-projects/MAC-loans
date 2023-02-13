@@ -43,8 +43,8 @@
 							</div>
 							<span class="text-center text-primary-dark text-bold font-md mb-5">{{branch.branch_name + ' (' + branch.branch_code + ')'}}</span>
 							<div class="d-flex flex-row justify-content-center text-primary-dark">
-								<span class="mr-5">From:</span><span class="mr-16">{{filter.date_from?filter.date_from:'---'}}</span>
-								<span class="mr-5">To:</span><span>{{filter.date_to?filter.date_to:'---'}}</span>
+								<span class="mr-5">From:</span><span class="mr-16">{{filter.due_from?filter.due_from:'---'}}</span>
+								<span class="mr-5">To:</span><span>{{filter.due_to?filter.due_to:'---'}}</span>
 							</div>
 						</div>
 						<section class="d-flex flex-column mb-16">
@@ -103,7 +103,7 @@
 						<span class="flex-2 pb-24 text-bold darker-bb mr-64">Approved By:</span>
 						<span class="flex-1"></span>
 					</section>
-					
+
 			<div class="d-flex mb-24">
 				<img :src="this.baseURL()+'/img/logo-footer.png'" class="w-100" alt="">
 			</div>
