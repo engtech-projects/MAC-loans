@@ -1191,7 +1191,7 @@ class Reports extends Model
                 ->get();
             foreach ($centers as $centerId => $centerVal) {
                 $data[$weekDay][$centerVal->center]["all"]["account_officer"]  = "test_data_api_result_ACCOUNT_OFFICER";
-                $data[$weekDay][$centerVal->center]["all"]["area_of_operation"]  = "test_data_api_result_AREA_OPERATION";
+                $data[$weekDay][$centerVal->center]["all"]["area_of_operation"]  = $centerVal->area;
                 $no_of_clients = LoanAccount::join("product", 'loan_accounts.product_id', '=', 'product.product_id')
                     ->join("branch", "branch.branch_code", "loan_accounts.branch_code")
                     ->where(["loan_accounts.center_id"=>$centerVal->center_id, "product.product_name"=>'micro group', "branch.branch_id"=>$filters["branch_id"]])
@@ -1346,6 +1346,7 @@ class Reports extends Model
                 $loanMonth = $loanMonth->addMonth(1)->startOfDay();
             }
             $data[] = [
+                "branch_id" => $value->branch->branch_id,
                 "client" => $value->borrower->fullname(),
                 "amount_loan" => $value->loan_amount,
                 "date_released" => $value->date_release,

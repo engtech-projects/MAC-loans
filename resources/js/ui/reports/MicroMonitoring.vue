@@ -42,7 +42,7 @@
 							<th>Center</th>
 							<th>No. Clients</th>
 							<th>Active</th>
-							<th>Areas of Ope.</th>
+							<th>Area of Ope.</th>
 							<th>Sched</th>
 							<th v-for="(s, i) in schedHeader" :key="i">{{s}}</th>
 						</tr>
@@ -68,7 +68,7 @@
 						<tr>
 							<th>#</th>
 							<th>Name of Client</th>
-							<th>Areas of Ope.</th>
+							<th>Center</th>
 							<th>Schedule</th>
 							<th v-for="s in individualSchedHeaader" :key="s">{{s}}</th>
 						</tr>
@@ -174,7 +174,7 @@ export default {
 		},
 		group:function(){
 			var data = {rows:[],overall:[]};
-			var overall = ['','TOTAL','','','',''];
+			var overall = ['','TOTAL',0,0,'',''];
 			var overallCollection = 0;
 			for(var i in this.groupTransaction){
 				if(this.groupTransaction[i].length !== 0){
@@ -189,8 +189,11 @@ export default {
 						row.push(count);
 						row.push(p);
 						row.push(this.groupTransaction[i][p].all.no_of_clients);
+						overall[2] += this.groupTransaction[i][p].all.no_of_clients
 						row.push(this.groupTransaction[i][p].all.num_of_payments);
-						row.push('');
+						overall[3] += this.groupTransaction[i][p].all.num_of_payments?this.groupTransaction[i][p].all.num_of_payments:0;
+						console.log(this.groupTransaction[i][p].all.num_of_payments);
+						row.push(this.groupTransaction[i][p].all.area_of_operation);
 						row.push(i.toUpperCase().slice(0,3));
 						for(var w in weekly){
 							totalRow[c] = !totalRow[c]?0:totalRow[c];
