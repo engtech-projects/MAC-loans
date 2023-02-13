@@ -695,7 +695,6 @@ class Reports extends Model
                 $data[$key]['amount_loan'] = $value['loan_amount'];
                 $data[$key]['outstanding_balance'] = $loanAccount->remainingBalance()["memo"]["balance"];
                 $data[$key]['principal_balance'] = $loanAccount->remainingBalance()["principal"]["balance"];
-                $data[$key]['payment_status'] = LoanAccount::getPaymentStatus($loanAccount->loan_account_id);
                 $data[$key]['delinquent'] = LoanAccount::getPaymentStatus($loanAccount->loan_account_id) === 'Delinquent' ? $currentAmortization['delinquent']['principal'] + $currentAmortization['delinquent']['interest'] : 0;
                 $data[$key]['penalty'] = $currentAmortization->penalty + $currentAmortization->pdi;
                 $data[$key]['amount_due'] = $currentAmortization->total + ($currentAmortization->penalty + $currentAmortization->pdi);
