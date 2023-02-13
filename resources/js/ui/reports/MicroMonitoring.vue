@@ -48,8 +48,11 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr v-for="(m, i) in group" :key="i" :class="m[0]==''?'td-nb text-bold bg-yellow-pale':''">
+						<tr v-for="(m, i) in group.rows" :key="i" :class="m[0]==''?'td-nb text-bold bg-yellow-pale':''">
 							<td v-for="(j, k) in m" :key="k">{{j}}</td>
+						</tr>
+						<tr class="text-bold bg-skyblue bt-8">
+							<td v-for="over,m in group.overall" :key="m">{{over}}</td>
 						</tr>
 					</tbody>
 				</table>
@@ -170,7 +173,9 @@ export default {
 			return  group;
 		},
 		group:function(){
-			var data = [];
+			var data = {rows:[],overall:[]};
+			var overall = ['','TOTAL','','','',''];
+			var overallCollection = 0;
 			for(var i in this.groupTransaction){
 				if(this.groupTransaction[i].length !== 0){
 					var count = 1;
@@ -189,24 +194,31 @@ export default {
 						row.push(i.toUpperCase().slice(0,3));
 						for(var w in weekly){
 							totalRow[c] = !totalRow[c]?0:totalRow[c];
+							overall[c] = !overall[c]?0:overall[c];
 							row.push(weekly[w].num_of_payments);
 							totalRow[c] += parseFloat(weekly[w].num_of_payments);
+							overall[c] += parseFloat(weekly[w].num_of_payments);
 							c++;
 							totalRow[c] = !totalRow[c]?0:totalRow[c];
+							overall[c] = !overall[c]?0:overall[c];
 							row.push(weekly[w].total_paid);
 							totalRow[c] += parseFloat(weekly[w].total_paid);
+							overall[c] += parseFloat(weekly[w].total_paid);
 							collection += parseFloat(weekly[w].total_paid);
 							c++;
 						}
 						coll += collection;
+						overallCollection += collection;
 						row.push(collection);
 						count++;
-						data.push(row);
+						data.rows.push(row);
 					}
 					totalRow.push(coll);
-					data.push(totalRow);
+					data.rows.push(totalRow);
 				}
 			}
+			overall.push(overallCollection);
+			data.overall = overall;
 			return data;
 		},
 		individual:function(){

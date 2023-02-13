@@ -826,7 +826,9 @@ class LoanAccount extends Model
    }
 
    public function collectionRate(){
-      return round( ( ($this->remainingBalance()['principal']['credit'] + $this->remainingBalance()['interest']['credit'] + $this->remainingBalance()['rebates']['credit']) / ($this->remainingBalance()['principal']['debit'] + $this->remainingBalance()['interest']['debit']) ) * 100);
+        //return round(( ($this->remainingBalance()['principal']['credit'] + $this->remainingBalance()['interest']['credit'] + $this->remainingBalance()['rebates']['credit']) / ($this->remainingBalance()['principal']['debit'] + $this->remainingBalance()['interest']['debit']) ) * 100);
+        return floor(( ($this->remainingBalance()['principal']['credit'] + $this->remainingBalance()['interest']['credit'] + $this->remainingBalance()['rebates']['credit']) / ($this->remainingBalance()['principal']['debit'] + $this->remainingBalance()['interest']['debit']) ) * 100);
+
    }
 
    public function getStatusView(){
@@ -893,6 +895,12 @@ class LoanAccount extends Model
         }
         return $amortizations;
    }
+
+   public static function getPaymentStatus($id){
+
+       $loan_account = LoanAccount::find($id);
+       return $loan_account->payment_status;
+    }
 
 }
 

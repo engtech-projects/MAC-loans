@@ -1,6 +1,13 @@
 <template>
     <div class="container-fluid" style="padding: 0 !important">
         <notifications group="foo" />
+		<div v-if="loading" class="black-screen d-flex flex-column align-items-center justify-content-center" style="padding-left:0px;">
+			<div class="loading-container d-flex align-items-center justify-content-center mb-36">
+				<span class="loading-text">LOADING</span>
+				<img :src="baseURL() + 'img/loading_default.png'" class="rotating" alt="" style="width:300px;height:300px">
+			</div>
+			<span class="font-lg" style="color:#ddd">Please wait until the process is complete</span>
+		</div>
         <div class="mb-16"></div>
         <div
             class="ml-16 mb-24 bb-primary-dark pb-7 text-block d-flex justify-content-between"
@@ -347,6 +354,7 @@ export default {
     props: ["token", "pbranch", "candelete"],
     data() {
         return {
+			loading:false,
 			pagination:{
 				page: 1,
 				range: 10
@@ -403,6 +411,7 @@ export default {
 			}.bind(this));
 		},
         async openPayments() {
+			this.loading = true;
             this.preference.transaction_date = this.transactionDate.date_end;
             var data = this.preference;
             data.branch_id = this.pbranch;
@@ -416,6 +425,7 @@ export default {
                 })
                 .then(
                     function (response) {
+						this.loading = false;
                         this.payments = this.setCheckbox(
                             response.data.payments
                         );
@@ -424,6 +434,7 @@ export default {
                 )
                 .catch(
                     function (error) {
+						this.loading = false;
                         console.log(error);
                     }.bind(this)
                 );
@@ -472,6 +483,7 @@ export default {
         },
         fetchPayments: function () {
             this.preference.transaction_date = this.transactionDate.date_end;
+			this.loading = true;
             axios
                 .post(this.baseURL() + "api/payment/list", this.preference, {
                     headers: {

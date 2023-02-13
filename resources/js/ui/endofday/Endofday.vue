@@ -275,31 +275,31 @@ export default {
 }
 </script>
 
-<style lang="scss">
-	@-webkit-keyframes rotating {
-		from{
-			-webkit-transform: rotate(0deg);
-		}
-		to{
-			-webkit-transform: rotate(360deg);
-		}
-	}
+// <style lang="scss">
+// 	@-webkit-keyframes rotating {
+// 		from{
+// 			-webkit-transform: rotate(0deg);
+// 		}
+// 		to{
+// 			-webkit-transform: rotate(360deg);
+// 		}
+// 	}
 
-	.rotating {
-		-webkit-animation: rotating 5s linear infinite;
-	}
-	.loading-container {
-		position:relative;
-		width:300px;height:300px;
-		img{
-			position:absolute;
-			width:300px;height:300px;
-			left:0;top:0;
-		}
-	}
-	.loading-text {
-		font-size: 24px;
-		font-weight: bold;
-		color: #ddd;
-	}
-</style>
+// 	.rotating {
+// 		-webkit-animation: rotating 5s linear infinite;
+// 	}
+// 	.loading-container {
+// 		position:relative;
+// 		width:300px;height:300px;
+// 		img{
+// 			position:absolute;
+// 			width:300px;height:300px;
+// 			left:0;top:0;
+// 		}
+// 	}
+// 	.loading-text {
+// 		font-size: 24px;
+// 		font-weight: bold;
+// 		color: #ddd;
+// 	}
+// </style>

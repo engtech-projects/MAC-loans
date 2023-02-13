@@ -63,7 +63,7 @@ class LoanAccountController extends BaseController
             }
         }
 
-    	return $this->sendResponse(new LoanAccountResource($account), 'Account fetched.');
+    	return $this->sendResponse($account, 'Account fetched.');
 
     }
 
@@ -220,7 +220,10 @@ class LoanAccountController extends BaseController
     }
 
     public function cashVoucher(LoanAccount $account) {
-        return $this->sendResponse(new LoanAccountResource($account), 'Account fetched.');
+
+        $account->cash_voucher = $account->cashVoucher();
+
+        return $this->sendResponse($account, 'Account fetched.');
     }
 
     public function statement(Borrower $borrower) {
@@ -228,7 +231,7 @@ class LoanAccountController extends BaseController
         $accountDetails = [];
 
         foreach ($borrower->loanAccounts() as $account) {
-            $remBal = $account->remainingBalance();
+
             $accountDetails[] = [
                 "account_id" => $account->loan_account_id,
                 'account_num' => $account->account_num,
@@ -238,13 +241,11 @@ class LoanAccountController extends BaseController
                 'collection_rate' => $account->collectionRate(),
                 'payment_history' => $account->payment_status,
                 'loan_status' => $account->loan_status,
-                'amortization' => $account->amortization,
+                'amortization' => $account->amortization(),
             ];
 
         }
         return $accountDetails;
     }
-
-
 
 }

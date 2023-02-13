@@ -42,7 +42,7 @@
                     <div class="info-display title mb-12">
                         <span>Accounts</span>
                     </div>
-                    <account-details v-for="acc in unpaidLoanAccounts" :key="acc.loan_account_id" :loanDetails="acc" :showSchedule="true" class="card mb-12"></account-details>
+                    <account-details v-for="acc in unpaidLoanAccounts" :key="acc.loan_account_id" :token="token" :ploanDetails="acc.loan_account_id" :showSchedule="true" class="card mb-12"></account-details>
                 </div>
             </section>
         </div>
@@ -85,10 +85,26 @@ export default {
 				outstandingObligations : [],
                 loanAccounts:[],
                 loan_accounts:[],
-			}
+			},
+			loanAccounts:[],
 		}
 	},
 	methods:{
+		fetchBorrowerInfo:function(){
+			axios.get(this.baseURL() + 'api/borrower/' + this.borrower.borrower_id, {
+				headers: {
+					'Authorization': 'Bearer ' + this.token,
+					'Content-Type': 'application/json',
+					'Accept': 'application/json'
+				}
+			})
+			.then(function (response) {
+				this.loanAccounts = response.data.data.loan_accounts;
+			}.bind(this))
+			.catch(function (error) {
+				console.log(error);
+			}.bind(this));
+		},
 		async fetchBorrower(){
 			await axios.get(this.baseURL() + 'api/borrower/' + this.pborrower, {
 					headers: {
@@ -98,6 +114,7 @@ export default {
 				})
 				.then(function (response) {
 					this.borrower = response.data.data;
+					this.fetchBorrowerInfo();
 				}.bind(this))
 				.catch(function (error) {
 					console.log(error);
@@ -110,7 +127,7 @@ export default {
 		},
         unpaidLoanAccounts:function(){
             let data = [];
-            this.borrower.loan_accounts.map(function(acc){
+            this.loanAccounts.map(function(acc){
                 if(acc.remainingBalance.memo.balance > 0){
                     data.push(acc);
                 }

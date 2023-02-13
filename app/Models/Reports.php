@@ -72,7 +72,7 @@ class Reports extends Model
         if( isset($filters['payment_status']) && $filters['payment_status'] ){
             $loanAccount->where([ 'loan_accounts.payment_status' => $filters['payment_status'] ]);
         }
- 
+
         if( isset($filters['type']) && $filters['type'] ){
             $loanAccount->where([ 'loan_accounts.type' => $filters['type'] ]);
         }
@@ -455,7 +455,7 @@ class Reports extends Model
             $dstSummary[$value->terms]['term'] = $value->terms;
             $dstSummary[$value->terms]['branches'][$branchIds[$value->branch_code]] += $value->loan_amount;
             $dstSummary[$value->terms]['total_amount'] += $value->loan_amount;
-            $dstSummary[$value->terms]['amount'] = $value->terms <= 360 ? round($dstSummary[$value->terms]['total_amount']*1.5/200*$value->terms/365 , 2) : round($dstSummary[$value->terms]['total_amount'] *1.5/200);
+            $dstSummary[$value->terms]['amount'] = $value->terms <= 360 ? round($dstSummary[$value->terms]['total_amount']*1.5/200*$value->terms/365 , 2) : round($dstSummary[$value->terms]['total_amount'] *1.5/200,2);
 
         }
 
@@ -673,7 +673,7 @@ class Reports extends Model
         }
 
         $accounts->where(['loan_accounts.branch_code' => $branch->branch_code]);
-        $accounts->whereIn('loan_accounts.loan_status', ['Ongoing', 'Past Due']);
+        $accounts->whereIn('loan_accounts.loan_status', [LoanAccount::LOAN_ONGOING, 'Past Due']);
 
         $accounts = $accounts->get();
 
@@ -695,15 +695,17 @@ class Reports extends Model
                 $data[$key]['amount_loan'] = $value['loan_amount'];
                 $data[$key]['outstanding_balance'] = $loanAccount->remainingBalance()["memo"]["balance"];
                 $data[$key]['principal_balance'] = $loanAccount->remainingBalance()["principal"]["balance"];
-                $data[$key]['delinquent'] = $currentAmortization->short_principal + $currentAmortization->short_interest;
+                $data[$key]['delinquent'] = LoanAccount::getPaymentStatus($loanAccount->loan_account_id) === 'Delinquent' ? $currentAmortization['delinquent']['principal'] + $currentAmortization['delinquent']['interest'] : 0;
+                $data[$key]['penalty'] = $currentAmortization->penalty + $currentAmortization->pdi;
+                $data[$key]['amount_due'] = $currentAmortization->total + ($currentAmortization->penalty + $currentAmortization->pdi);
                 $data[$key]['weekly_amortization'] = $value->amortization()['total'];
                 $data[$key]['contact'] = $borrower->contact_number;
                 $data[$key]['address'] = $borrower->address;
 
             }
 
-        }
 
+        }
         return $d = [
 
                     'name' =>  '',

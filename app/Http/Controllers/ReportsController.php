@@ -166,6 +166,13 @@ class ReportsController extends Controller
 			'title' => 'Reports - consolidated Loan Performance Report',
 		]);
 	}
+
+	public function consolidatedGenerateDst(){
+		return view('reports.consolidated.generate_dst')->with([
+			'nav' => ['reports', 'consolidated','generate dst'],
+			'title' => 'Reports - Consolidated Generate DST',
+		]);
+	}
 	
 	public function reportsMicroMonitoring(){
 		return view('reports.micro_monitoring')->with([

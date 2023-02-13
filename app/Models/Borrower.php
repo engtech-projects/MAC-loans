@@ -169,20 +169,25 @@ class Borrower extends Authenticatable
     }
 
     public function loanAccounts() {
-        $activeAccounts = LoanAccount::where(['borrower_id' => $this->borrower_id, 'status' => 'released'])->get();
+        $activeAccounts = LoanAccount::where(['borrower_id' => $this->borrower_id, 'status' => 'released'])
+                            ->where('loan_status', '!=', LoanAccount::LOAN_PAID)
+                            ->get();
 
         if( count($activeAccounts) > 0 ){
 
             foreach ($activeAccounts as $account) {
                 $account->remainingBalance = $account->remainingBalance();
-                $account->current_amortization = $account->getCurrentAmortization();
-                $account->amortization = $account->amortization();
-                $account->loan_status_view = $account->getStatusView();
-                $account->collection_rate = $account->collectionRate();
+        //         $account->current_amortization = $account->getCurrentAmortization();
+        //         $account->amortization = $account->amortization();
+        //         $account->loan_status_view = $account->getStatusView();
+        //         $account->collection_rate = $account->collectionRate();
             }
             return $activeAccounts;
         }
 
-        return false;
+        // if( !count($activeAccounts) ) {
+            return false;    
+        // }
+        // return $activeAccounts;
     }
 }
