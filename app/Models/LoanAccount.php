@@ -732,7 +732,12 @@ class LoanAccount extends Model
       $account = LoanAccount::where(['loan_account_id' => $loanAccountId])->first();
       $payment = $this->getPaymentTotalPrincipalInterest($loanAccountId);
 
-      return ($account->loan_amount + $account->interest_amount) - $payment;
+      if($account->type == 'Prepaid') {
+        return ($account->loan_amount) - $payment;
+      }
+
+        return ($account->loan_amount + $account->interest_amount) - $payment;
+
    }
 
    public function amortization(){
@@ -761,7 +766,7 @@ class LoanAccount extends Model
          ],
          'interest' => [
             'debit' => $account->interest_amount,
-            'credit' => 0,
+            'credit' => $account->prepaid_interest,
             'balance' => 0,
          ],
          'rebates' => [
@@ -793,6 +798,7 @@ class LoanAccount extends Model
          foreach ($payments as $payment) {
 
             $accountSummary['principal']['credit'] += $payment->principal;
+
             $accountSummary['interest']['credit'] += $payment->interest;
 
             if( !$payment->penalty_approval_no ) {
