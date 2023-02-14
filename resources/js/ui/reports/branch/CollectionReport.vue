@@ -43,7 +43,7 @@
 						</div>
 						<section class="d-flex flex-column mb-16">
 							<div>
-								<span class="text-block p-7 text-bold bg-yellow-pale">Accasia Center</span>
+								<span class="text-block p-7 text-bold bg-yellow-pale">{{centerName}} Center</span>
 								<table class="table table-thin table-stripped" style="font-size:14.2px;">
 									<thead>
 										<th>Client</th>
@@ -53,6 +53,8 @@
 										<th>Outstanding Bal.</th>
 										<th>Principal Bal.</th>
 										<th>Delinquent</th>
+										<th>Penalty</th>
+										<th>Amt. Due</th>
 										<th>Weekly Amort.</th>
 										<th>Cont. #</th>
 										<th>Address</th>
@@ -68,6 +70,8 @@
 											<td>{{formatToCurrency(c.outstanding_balance)}}</td>
 											<td>{{formatToCurrency(c.principal_balance)}}</td>
 											<td>{{formatToCurrency(c.delinquent)}}</td>
+											<td></td>
+											<td></td>
 											<td>{{formatToCurrency(c.weekly_amortization)}}</td>
 											<td>{{c.contact}}</td>
 											<td>{{c.address}}</td>
@@ -302,6 +306,9 @@ export default {
 		accountOfficer:function(){
 			var aos = this.aos.filter(ao=>ao.ao_id==this.filter.account_officer);
 			return aos.length?aos[0]:[];
+		},
+		centerName:function(){
+			return this.filter.center?this.centers.filter(c=>c.status=='active'&&c.center_id==this.filter.center)[0].center:'';
 		}
 	},
 	watch:{
