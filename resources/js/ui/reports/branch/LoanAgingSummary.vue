@@ -38,7 +38,7 @@
 					</div>
 				</div>
 				<span class="text-center text-primary-dark text-bold">As of {{filter.as_of?dateToMDY2(new Date(filter.as_of)).split('-').join('/'):'---'}}</span>
-				<span class="text-center text-primary-dark text-bold font-md mb-5">Butuan Branch (001)</span>
+				<span class="text-center text-primary-dark text-bold font-md mb-5">{{branch.branch_name}} Branch ({{branch.branch_code}})</span>
 			</div>
 			<section class="d-flex flex-column mb-16 p-10 light-border">
 				<table class="table table-stripped mb-24">
