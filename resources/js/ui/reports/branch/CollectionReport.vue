@@ -70,8 +70,8 @@
 											<td>{{formatToCurrency(c.outstanding_balance)}}</td>
 											<td>{{formatToCurrency(c.principal_balance)}}</td>
 											<td>{{formatToCurrency(c.delinquent)}}</td>
-											<td></td>
-											<td></td>
+											<td>{{formatToCurrency(c.penalty)}}</td>
+											<td>{{formatToCurrency(c.amount_due)}}</td>
 											<td>{{formatToCurrency(c.weekly_amortization)}}</td>
 											<td>{{c.contact}}</td>
 											<td>{{c.address}}</td>
@@ -293,13 +293,15 @@ export default {
 	},
 	computed:{
 		total:function(){
-			var row = [0,0,0,0,0];
+			var row = [0,0,0,0,0,0,0];
 			this.collections.forEach(c=>{
 				row[0] += c.amount_loan;
 				row[1] += c.outstanding_balance;
 				row[2] += c.principal_balance;
 				row[3] += c.delinquent;
-				row[4] += c.weekly_amortization;
+				row[4] += c.penalty;
+				row[5] += c.amount_due;
+				row[6] += c.weekly_amortization;
 			})
 			return row;
 		},
