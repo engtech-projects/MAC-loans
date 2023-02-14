@@ -43,7 +43,7 @@
 						</div>
 						<section class="d-flex flex-column mb-16">
 							<div>
-								<span class="text-block p-7 text-bold bg-yellow-pale">{{centerName}} Center</span>
+								<span class="text-block p-7 text-bold bg-yellow-pale">{{centerName}}</span>
 								<table class="table table-thin table-stripped" style="font-size:14.2px;">
 									<thead>
 										<th>Client</th>

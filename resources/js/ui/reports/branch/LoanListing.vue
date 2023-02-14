@@ -10,7 +10,7 @@
 							<span class="mr-10 text-block">Acc. Officer: </span>
 							<select v-model="filter.account_officer" name="" id="selectProductClient" class="form-control flex-1">
 								<option value="all">All Account Officers</option>
-								<option v-for="ao in aos.filter(a=>a.status=='active')" :key="ao.id" :value="ao.ao_id">{{ao.name}}</option>
+								<option v-for="ao in aos.filter(a=>a.status=='active'&&a.branch_id==branch.branch_id)" :key="ao.id" :value="ao.ao_id">{{ao.name}}</option>
 							</select>
 						</div>
 						<div class="d-flex flex-row align-items-center mr-24 justify-content-start flex-1">
@@ -645,7 +645,7 @@ export default {
 								row.push(this.formatToCurrency(account.amount_due));
 								centerTotal[7] += account.amount_due;
 								row.push('');
-								row.push(account.status);
+								row.push(account.loan_status=='Ongoing'?account.status:account.loan_status);
 								table.rows.push(row);
 							}
 							productTotal[3] += centerTotal[3];
@@ -662,14 +662,18 @@ export default {
 					aoTotal[5] += productTotal[5];
 					aoTotal[6] += productTotal[6];
 					aoTotal[7] += productTotal[7];
-					tables[tables.length-1].productTotal = productTotal;
+					if(tables.length){
+						tables[tables.length-1].productTotal = productTotal;
+					}
 				}
 				total[3] += aoTotal[3];
 				total[4] += aoTotal[4];
 				total[5] += aoTotal[5];
 				total[6] += aoTotal[6];
 				total[7] += aoTotal[7];
-				tables[tables.length-1].aoTotal = aoTotal;
+				if(tables.length){
+					tables[tables.length-1].aoTotal = aoTotal;
+				}
 			})
 			if(tables.length){
 				tables[tables.length-1].total = total;
