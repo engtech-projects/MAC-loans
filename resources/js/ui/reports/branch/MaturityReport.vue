@@ -30,10 +30,14 @@
 			<img :src="this.baseURL()+'/img/company_header_fit.png'" class="mb-24" alt="">
 				<section class="mb-72" id="clientSection">
 						<div class="d-flex flex-column mb-24">
+
 							<div class="d-flex flex-row align-items-center">
+                                {{ filter.account_officer }}
 								<div class="flex-1 d-flex flex-column">
 									<span v-if="filter.account_officer">Account Officer</span>
-									<span v-if="filter.account_officer" class="text-bold">{{branch.branch_code}} - {{accountOfficer.name}}</span>
+									<!-- <span v-if="filter.account_officer" class="text-bold">{{branch.branch_code}} - {{accountOfficer.name}}</span> -->
+                                    <span v-text="filter.account_officer !='all' ? branch.branch_code + ' - ' + accountOfficer.name : branch.branch_code + ' - ' +'All'" class="text-bold">
+                                    </span>
 								</div>
 								<span class="font-30 text-bold text-primary-dark text-center">MATURITY REPORT</span>
 								<div class="flex-1 d-flex justify-content-end" style="padding-right:16px">
