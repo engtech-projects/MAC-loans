@@ -32,7 +32,6 @@
 						<div class="d-flex flex-column mb-24">
 
 							<div class="d-flex flex-row align-items-center">
-                                {{ filter.account_officer }}
 								<div class="flex-1 d-flex flex-column">
 									<span v-if="filter.account_officer">Account Officer</span>
 									<!-- <span v-if="filter.account_officer" class="text-bold">{{branch.branch_code}} - {{accountOfficer.name}}</span> -->
