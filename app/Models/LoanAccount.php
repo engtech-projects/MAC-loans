@@ -848,7 +848,6 @@ class LoanAccount extends Model
     public function amortizationStatusReport($date){
         $amortizations = [];
         $accAmort = Amortization::where(["loan_account_id"=> $this->loan_account_id])
-            ->orderBy('amortization_date', 'DESC')
             ->get();
         $payment = null;
         $paidDate = null;
@@ -890,7 +889,7 @@ class LoanAccount extends Model
 
             $dayLate = $dayLate < 0 ? 0 : $dayLate; // Zero out if negative
             $tempAmort = [
-                "amort_no" => ($this->no_of_installment - $key),
+                "amort_no" => $key+1,
                 "amort_amt" => $amort->total,
                 "amort_due_date" => $amort->amortization_date,
                 "amort_paid_date" => $payment ? $payment->transaction_date : "",

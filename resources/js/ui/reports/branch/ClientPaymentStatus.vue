@@ -2,17 +2,22 @@
 	<div class="d-flex flex-column" style="flex:8;">
 		<div class="d-flex flex-row font-md align-items-center mb-16">
 			<div class="d-flex align-items-center" style="flex:1">
+<<<<<<< Updated upstream
 				<div class="d-flex flex-column flex-3 mr-64">
 					<input v-model="search" type="text" class="form-control" placeholder="Search Client">
+=======
+				<div class="d-flex flex-column flex-3">
+					<input v-model="search" type="text" class="form-control" :placeholder="!client.fullname ? 'Search client' : fullNameReverse(client.firstname, client.middlename, client.lastname)">
+>>>>>>> Stashed changes
 					<div v-if="search.length > 1" class="clientlistsearch d-flex flex-column">
 						<span @click="selectClient(c)" v-for="c in filteredClients" :key="c.borrower_id">{{fullNameReverse(c.firstname, c.middlename, c.lastname)}}</span>
 						<span v-if="!filteredClients.length"><i>No clients found.</i></span>
 					</div>
 				</div>
-				 <div class="d-flex flex-row align-items-center mr-24" style="flex:1">
+				 <!-- <div class="d-flex flex-row align-items-center mr-24" style="flex:1">
 					<span class="mr-10">As of: </span>
 					<input v-model="filter.as_of" type="date" class="form-control flex-1">
-				</div>
+				</div> -->
 			</div>
 		</div>
 		<div class="sep mb-45"></div>
@@ -30,8 +35,10 @@
 									<span class="text-primary-dark">Time: {{todayTime(new Date())}} {{(new Date()).getHours() > 12? 'PM':'AM'}}</span>
 								</div>
 							</div>
-							<span class="text-center text-primary-dark text-bold">As of {{filter.as_of?dateToYMD(new Date(filter.as_of)).replaceAll('-','/'):'---'}}</span>
-							<span class="text-center text-primary-dark text-bold font-md mb-5">{{branch.branch_name}} Branch ({{branch.branch_code}})</span>
+							<span class="text-center text-primary-dark text-bold font-md mb-5">{{branch.branch_name + ' Branch (' + branch.branch_code + ')'}}</span>
+							<div class="d-flex flex-row justify-content-center text-primary-dark">
+								<span class="text-center text-primary-dark text-bold">As of {{filter.as_of?dateToMDY2(new Date(filter.as_of)).split('-').join('/'):'---'}}</span>
+							</div>
 						</div>
 						<section v-if="client.borrower_id" class="d-flex flex-column align-items-start mb-24">
 							<span class="pxy-7 font-20 bg-primary-dark text-white">Borrower's Number: {{client.borrower_num}}</span>
@@ -102,7 +109,7 @@
 												<td>{{oa.amort_no}}</td>
 												<td>{{oa.amort_amt?oa.amort_amt:0}}</td>
 												<td>{{oa.amort_due_date?oa.amort_due_date:0}}</td>
-												<td>{{oa.amort_paid_date?oa.amort_paid_date:0}}</td>
+												<td>{{oa.amort_paid_date!=""?oa.amort_paid_date:""}}</td>
 												<td>{{oa.amor_status?oa.amor_status:0}}</td>
 												<td>{{oa.days_late?oa.days_late:0}}</td>
 											</tr>
@@ -171,6 +178,21 @@ export default {
 					console.log(error);
 				}.bind(this));
 		},
+		async fetchTransactionDate(){
+			await axios.get(this.baseURL() + 'api/eod/eodtransaction/' + this.branch.branch_id,{
+				headers: {
+					'Authorization': 'Bearer ' + this.token,
+					'Content-Type': 'application/json',
+					'Accept': 'application/json'
+					}
+				})
+				.then(function (response) {
+					this.filter.as_of = response.data.data.date_end;
+				}.bind(this))
+				.catch(function (error) {
+					console.log(error);
+				}.bind(this));
+		},
 		async fetchReport(){
 			await axios.post(this.baseURL() + 'api/report/branch', this.filter, {
 				headers: {
@@ -230,6 +252,7 @@ export default {
 	mounted(){
 		this.branch = JSON.parse(this.pbranch);
 		this.fetchBorrower();
+		this.fetchTransactionDate();
 	}
 }
 </script>
