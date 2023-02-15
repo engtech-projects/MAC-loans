@@ -9,10 +9,10 @@
 						<span v-if="!filteredClients.length"><i>No clients found.</i></span>
 					</div>
 				</div>
-				 <div class="d-flex flex-row align-items-center mr-24" style="flex:1">
+				 <!-- <div class="d-flex flex-row align-items-center mr-24" style="flex:1">
 					<span class="mr-10">As of: </span>
 					<input v-model="filter.as_of" type="date" class="form-control flex-1">
-				</div>
+				</div> -->
 			</div>
 		</div>
 		<div class="sep mb-45"></div>
@@ -157,6 +157,22 @@ export default {
 		}
 	},
 	methods:{
+		async fetchTransactionDate(){
+			await axios.get(this.baseURL() + 'api/eod/eodtransaction/'+this.branch.branch_id, {
+			headers: {
+				'Authorization': 'Bearer ' + this.token,
+					'Content-Type': 'application/json',
+					'Accept': 'application/json'
+				}
+			})
+			.then(function (response) {
+				console.log(response.data.data)
+				this.filter.as_of = response.data.data.date_end;
+			}.bind(this))
+			.catch(function (error) {
+				console.log(error);
+			}.bind(this));
+		},
 		async fetchBorrower(){
 			await axios.get(this.baseURL() + 'api/borrower/', {
 					headers: {
@@ -166,6 +182,7 @@ export default {
 				})
 				.then(function (response) {
 					this.clients = response.data.data;
+					this.fetchTransactionDate();
 				}.bind(this))
 				.catch(function (error) {
 					console.log(error);
