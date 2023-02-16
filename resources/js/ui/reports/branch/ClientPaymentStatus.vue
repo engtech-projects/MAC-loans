@@ -3,7 +3,7 @@
 		<div class="d-flex flex-row font-md align-items-center mb-16">
 			<div class="d-flex align-items-center" style="flex:1">
 				<div class="d-flex flex-column flex-3 mr-64">
-					<input v-model="search" type="text" class="form-control" placeholder="Search Client">
+					<input v-model="search" type="text" class="form-control" :placeholder="fullNameReverse(client.firstname, client.middlename, client.lastname)">
 					<div v-if="search.length > 1" class="clientlistsearch d-flex flex-column">
 						<span @click="selectClient(c)" v-for="c in filteredClients" :key="c.borrower_id">{{fullNameReverse(c.firstname, c.middlename, c.lastname)}}</span>
 						<span v-if="!filteredClients.length"><i>No clients found.</i></span>
@@ -22,7 +22,7 @@
 						<div class="d-flex flex-column mb-24">
 							<div class="d-flex flex-row align-items-center">
 								<div class="flex-1 d-flex flex-column">
-								
+
 								</div>
 								<span class="font-30 text-bold text-primary-dark">CLIENT's STATUS REPORT</span>
 								<div class="flex-1 d-flex justify-content-end" style="padding-right:16px">
@@ -110,10 +110,10 @@
 									</table>
 								</div>
 							</div>
-							
+
 						</section>
 					</section>
-					
+
 			<div class="d-flex mb-24">
 				<img :src="this.baseURL()+'/img/logo-footer.png'" class="w-100" alt="">
 			</div>
