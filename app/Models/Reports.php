@@ -760,7 +760,6 @@ class Reports extends Model
             foreach ($amort as $key => $value) {
                 $maxLate = $maxLate < $value["days_late"] ? $value["days_late"] : $maxLate;
                 $paidAmort += in_array($value['amor_status'], ["Paid", "Paid Late"]) ? 1 : 0;
-                $expected_todate += in_array($value['amor_status'], ['Approaching']) ? 1 : 0;
 
             }
             $tempData = [
@@ -770,7 +769,6 @@ class Reports extends Model
                 "amt_loan" => $account->loan_amount,
                 "no_of_amort" => $account->no_of_installment,
                 "max_late" => $maxLate,
-                "amort_ontime" => round( (($paidAmort / $account->no_of_installment) * 100), 2),
                 "business_activity" => 0
             ];
             $data["closed"][] = $tempData;
@@ -794,7 +792,7 @@ class Reports extends Model
                 "max_late" => $maxLate,
                 "expected_todate" => $expected_todate,
                 "amort_ontime" => $paidAmort,
-                "ontime_percentage" => round((($paidAmort / $expected_todate)*100),2),
+                "ontime_percentage" => $expected_todate == 0 ? 0 : round((($paidAmort / $expected_todate)*100),2),
                 "business_activity" => 0,
                 "amortizations" => $amort
             ];
