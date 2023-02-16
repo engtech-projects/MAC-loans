@@ -756,7 +756,6 @@ class Reports extends Model
             $amort = $account->amortizationStatusReport($filters["as_of"]);
             $maxLate = 0;
             $paidAmort = 0;
-            $expected_todate = 0;
             foreach ($amort as $key => $value) {
                 $maxLate = $maxLate < $value["days_late"] ? $value["days_late"] : $maxLate;
                 $paidAmort += in_array($value['amor_status'], ["Paid", "Paid Late"]) ? 1 : 0;
