@@ -2,7 +2,7 @@
 	<div class="d-flex flex-column" style="flex:8;">
 		<div class="d-flex flex-row font-md align-items-center mb-16">
 			<div class="d-flex align-items-center" style="flex:1">
-				<div class="d-flex flex-column flex-3 mr-64">
+				<div class="d-flex flex-column flex-3">
 					<input v-model="search" type="text" class="form-control" :placeholder="fullNameReverse(client.firstname, client.middlename, client.lastname)">
 					<div v-if="search.length > 1" class="clientlistsearch d-flex flex-column">
 						<span @click="selectClient(c)" v-for="c in filteredClients" :key="c.borrower_id">{{fullNameReverse(c.firstname, c.middlename, c.lastname)}}</span>
@@ -30,8 +30,10 @@
 									<span class="text-primary-dark">Time: {{todayTime(new Date())}} {{(new Date()).getHours() > 12? 'PM':'AM'}}</span>
 								</div>
 							</div>
-							<span class="text-center text-primary-dark text-bold">As of {{filter.as_of?dateToYMD(new Date(filter.as_of)).replaceAll('-','/'):'---'}}</span>
-							<span class="text-center text-primary-dark text-bold font-md mb-5">{{branch.branch_name}} Branch ({{branch.branch_code}})</span>
+							<span class="text-center text-primary-dark text-bold font-md mb-5">{{branch.branch_name + ' Branch (' + branch.branch_code + ')'}}</span>
+							<div class="d-flex flex-row justify-content-center text-primary-dark">
+								<span class="text-center text-primary-dark text-bold">As of {{filter.as_of?dateToMDY2(new Date(filter.as_of)).split('-').join('/'):'---'}}</span>
+							</div>
 						</div>
 						<section v-if="client.borrower_id" class="d-flex flex-column align-items-start mb-24">
 							<span class="pxy-7 font-20 bg-primary-dark text-white">Borrower's Number: {{client.borrower_num}}</span>
@@ -44,9 +46,9 @@
 								<table class="table table-stripped th-blue">
 									<thead>
 										<th>Cumulative Loan</th>
-										<th>Loan Acct.#</th>
+										<th>Loan Acct. Number</th>
 										<th>Date Disbursed</th>
-										<th>Amnt Loan Disbursed</th>
+										<th>Amount of Loan Disbursed</th>
 										<th># of Amort.</th>
 										<th># of Late Amort.</th>
 										<th>Max Days Late</th>
@@ -63,7 +65,7 @@
 											<td>{{c.no_of_amort}}</td>
 											<td>0</td>
 											<td>{{c.max_late}}</td>
-											<td>{{c.amort_ontime}}%</td>
+											<td>100.00%</td>
 											<td>--</td>
 										</tr>
 									</tbody>
@@ -78,12 +80,12 @@
 									<div class="d-flex flex-column flex-1">
 										<span>Loan Date: {{o.date_loaned}}</span>
 										<span># of Amortizations: {{o.no_of_amort}}</span>
-										<span># of Amort. made on time to 12/21/2021: {{o.amort_ontime}}</span>
+										<span># of Amortizations made on time to {{filter.as_of?dateToMDY2(new Date(filter.as_of)).split('-').join('/'):'---'}}: {{o.amort_ontime}}</span>
 									</div>
 									<div class="d-flex flex-column flex-1" flex-1>
 										<span>Loan Amount: {{formatToCurrency(o.amt_loan)}}</span>
-										<span># of Amortizations expected to date {{o.amortizations?o.amortizations[o.amortizations.length -1].amort_due_date:''}}: {{o.amortizations?o.amortizations.length:''}}</span>
-										<span>% Made on time to date 12/21/2021: 72.73%</span>
+										<span># of Amortizations expected to date {{filter.as_of?dateToMDY2(new Date(filter.as_of)).split('-').join('/'):'---'}}: {{o.expected_todate}}</span>
+										<span>Percentage made on time to date {{filter.as_of?dateToMDY2(new Date(filter.as_of)).split('-').join('/'):'---'}}: {{o.ontime_percentage}}%</span>
 									</div>
 								</div>
 								<div class="p-10 light-border">
@@ -102,7 +104,7 @@
 												<td>{{oa.amort_no}}</td>
 												<td>{{oa.amort_amt?oa.amort_amt:0}}</td>
 												<td>{{oa.amort_due_date?oa.amort_due_date:0}}</td>
-												<td>{{oa.amort_paid_date?oa.amort_paid_date:0}}</td>
+												<td>{{oa.amort_paid_date != ""?oa.amort_paid_date:""}}</td>
 												<td>{{oa.amor_status?oa.amor_status:0}}</td>
 												<td>{{oa.days_late?oa.days_late:0}}</td>
 											</tr>
