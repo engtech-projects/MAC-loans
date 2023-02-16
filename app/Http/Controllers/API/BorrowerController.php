@@ -30,17 +30,24 @@ class BorrowerController extends BaseController
     	return $this->sendResponse(BorrowerResource::collection($borrowers), 'Borrowers');
     }
 
-    public function borrowerList($branchId) {
+    public function borrowerList($branchId,Request $request) {
 
         $branch = Branch::find($branchId);
 
         $borrowers = Borrower::join('loan_accounts','loan_accounts.borrower_id', '=', 'borrower_info.borrower_id')
                             ->select('borrower_info.*')
-                            ->where([ 'loan_accounts.branch_code' => $branch->branch_code ])
-                            ->distinct()
-                            ->get();
+                            ->where([ 'loan_accounts.branch_code' => $branch->branch_code ]);
 
-        return $this->sendResponse($borrowers, 'Borrowers');
+
+        if(isset($request->onlyUnpaid)) {
+            $borrowers = $borrowers->where('loan_accounts.loan_status','!=',LoanAccount::PAYMENT_PAID)->distinct()->get();
+        }else {
+            $borrowers = $borrowers->distinct()->get();
+        }
+
+
+
+        return  $this->sendResponse($borrowers, 'Borrowers');
     }
 
      /**
@@ -54,7 +61,7 @@ class BorrowerController extends BaseController
      * Store a newly created resource in storage.
      */
     public function store(Request $request) {
-        $borrower = new Borrower();    
+        $borrower = new Borrower();
         // add borrower_num to request data
         $request->merge(['borrower_num' => '']);
         // create borrower
@@ -82,25 +89,25 @@ class BorrowerController extends BaseController
             if( count($borrower->employmentInfo) ){
                 foreach ($borrower->employmentInfo as $key => $value) {
                     $borrower->employmentInfo()->save(new EmploymentInfo($value));
-                }    
+                }
             }
 
             if( count($borrower->businessInfo) ){
                 foreach ($borrower->businessInfo as $key => $value) {
                     $borrower->businessInfo()->save(new BusinessInfo($value));
-                }    
+                }
             }
 
             if( count($borrower->householdMembers) ){
                 foreach ($borrower->householdMembers as $key => $value) {
                     $borrower->householdMembers()->save(new HouseholdMembers($value));
-                }    
+                }
             }
 
             if( count($borrower->outstandingObligations) ){
                 foreach ($borrower->outstandingObligations as $key => $value) {
                     $borrower->outstandingObligations()->save(new OutstandingObligations($value));
-                }    
+                }
             }
             # add validator dri
             return $this->sendResponse(new BorrowerResource($borrower), 'Borrower Created');
@@ -142,10 +149,10 @@ class BorrowerController extends BaseController
 
         if( count($borrower->employmentInfo) ){
             EmploymentInfo::upsert(
-                $borrower->employmentInfo, 
+                $borrower->employmentInfo,
                 ['id'],
                 ['company_name','company_address','contact_no','years_employed','position','salary'],
-            ); 
+            );
         }
 
         if( count($borrower->businessInfo) ) {
@@ -173,6 +180,6 @@ class BorrowerController extends BaseController
         }
 
         return $this->sendResponse(new BorrowerResource($borrower), 'Borrower Updated.');
-    }    
+    }
 
 }
