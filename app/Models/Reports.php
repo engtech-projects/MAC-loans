@@ -718,7 +718,7 @@ class Reports extends Model
         $matureLoans = [];
         $loanAccounts = $this->getLoanAccounts($filters);
         foreach ($loanAccounts as $key => $value) {
-            if($value->loan_status === LoanAccount::LOAN_ONGOING) {
+            if($value->loan_status != LoanAccount::PAYMENT_PAID) {
                 array_push($matureLoans,[
                     'loan_account_id' => $value->loan_account_id,
                     'loan_account_num' => $value->loan_account_num,
