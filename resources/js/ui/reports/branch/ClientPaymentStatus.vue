@@ -166,7 +166,7 @@ export default {
 				}
 			})
 			.then(function (response) {
-				console.log(response.data.data)
+				// console.log(response.data.data)
 				this.filter.as_of = response.data.data.date_end;
 			}.bind(this))
 			.catch(function (error) {
@@ -214,6 +214,12 @@ export default {
 			this.client = client;
 			this.search = '';
 		},
+		clientInBranch:function(client){
+			if(client.loan_accounts){
+				return client.loan_accounts[0].branch_code == this.branch.branch_code;
+			}
+			return false;
+		},
 		ongoingTotal:function(amort){
 			var total = {
 
@@ -223,7 +229,7 @@ export default {
 	computed:{
 		filteredClients:function(){
 			if(this.search.length > 1){
-				return this.clients.filter(i => i.firstname.toLowerCase().includes(this.search.toLowerCase()) || i.lastname.toLowerCase().includes(this.search.toLowerCase()));
+				return this.clients.filter((i => i.firstname.toLowerCase().includes(this.search.toLowerCase()) || i.lastname.toLowerCase().includes(this.search.toLowerCase())&&this.clientInBranch(i)));
 			}
 			return this.clients;
 		},
