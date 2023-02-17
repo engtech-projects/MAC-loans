@@ -10,13 +10,13 @@
 				<span class="mr-10">To: </span>
 				<input type="date" class="form-control">
 			</div> -->
-			<!-- <div class="d-flex flex-row align-items-center mr-24" style="flex:3">
-				<span class="mr-10 flex-1">Account Officer: </span>
-				<select v-model="filter.account_officer" name="" id="selectProductClient" class="form-control">
+			<div class="d-flex flex-row align-items-center mr-24" style="flex:2">
+				<span class="mr-10">Account Officer: </span>
+				<select v-model="filter.account_officer" name="" id="selectProductClient" class="form-control flex-1">
 					<option v-for="ao in aos" :key="ao.ao_id" :value="ao.ao_id">{{ao.name}}</option>
 					<option value="all">All</option>
 				</select>
-			</div> -->
+			</div>
 			<div class="d-flex flex-row align-items-center mr-24" style="flex:2">
 				<span class="mr-10">Report Type </span>
 				<select v-model="filter.group" name="" id="selectProductClient" class="form-control flex-1">
@@ -55,7 +55,7 @@
 								</div>
 							</div>
 							<span class="text-center text-primary-dark text-bold">As of {{filter.as_of?dateToMDY2(new Date(filter.as_of)).split('-').join('/'):'---'}}</span>
-							<span class="text-center text-primary-dark text-bold font-md mb-5">{{branch.branch_name}} Branch ({{branch.branch_code}})</span>
+							<span class="text-center text-primary-dark text-bold font-md mb-5">All Branches</span>
 						</div>
 						<section class="d-flex flex-column mb-16">
 							<div class="p-10 light-border">
@@ -86,7 +86,9 @@
 								<table v-if="filter.group == 'write_off'" class="table table-stripped th-blue th-nbt">
 									<thead>
 										<th>Account Officer</th>
-										<th>No. of Accounts</th>
+										<th>No. Of Accounts</th>
+										<th>Portfolio</th>
+										<th>Delinquent Amount</th>
 										<th>Principal Bal</th>
 										<th>Interest Bal</th>
 									</thead>
@@ -94,9 +96,11 @@
 										<tr v-if="!filteredResult.length"><td><i>No data available.</i></td></tr>
 										<tr v-for="fr,i in reports" :key="i">
 											<td>{{fr.ao_name}}</td>
-											<td>{{fr.num_of_accounts}}</td>
+											<td>No backend data</td>
+											<td>No backend data</td>
+											<td>No backend data</td>
 											<td>{{formatToCurrency(fr.principal_balance)}}</td>
-											<td>{{formatToCurrency(fr.interest_balance)}}</td>
+											<td>No backend data</td>
 										</tr>
 									</tbody>
 								</table>
@@ -165,16 +169,16 @@ export default {
 			aos:[],
 			branch:{},
 			filter:{
-				branch_id:'',
 				group:'performance_report',
-				type:'account_officer'
+				type:'account_officer',
+				account_officer:''
 			},
 			reports:[],
 		}
 	},
 	methods:{
 		async fetchReports(){
-			await axios.post(this.baseURL() + 'api/report/branch', this.filter, {
+			await axios.post(this.baseURL() + 'api/report/consolidated', this.filter, {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
 					'Content-Type': 'application/json',
@@ -183,7 +187,7 @@ export default {
 			})
 			.then(function (response) {
 				this.reports = response.data.data
-				// console.log(this.reports);
+				console.log(this.reports);
 			}.bind(this))
 			.catch(function (error) {
 				console.log(error);
@@ -305,17 +309,19 @@ export default {
 		}
 	},
 	watch:{
-		'filter.group'(val){
-			if(val){
-				this.fetchReports();
-			}
+		filter:{
+			handler(val){
+				if(val.group&&val.account_officer&&val.type){
+					this.fetchReports();
+				}
+			},
+			deep:true
 		}
 	},
 	mounted(){
 		this.branch = JSON.parse(this.pbranch);
-		this.filter.branch_id = this.branch.branch_id;
 		this.fetchAo();
-		this.fetchReports();
+		// this.fetchReports();
 		this.fetchTransactionDate();
 	}
 }

@@ -155,8 +155,16 @@ return [
 				'url' => 'reports/consolidated/loan_aging_report'
 			],
 			[
+				'name' => 'Revenue Report',
+				'url' => 'reports/consolidated/revenue_report'
+			],
+			[
 				'name' => 'Generate DST',
 				'url' => 'reports/consolidated/generate_dst'
+			],
+			[
+				'name' => 'Account Officer',
+				'url' => 'reports/consolidated/account_officer'
 			],
 		]
 	]

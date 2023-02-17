@@ -35,7 +35,6 @@
 		<div class="sep mb-45"></div>
 		<img :src="this.baseURL()+'/img/company_header_fit.png'" class="mb-24" alt="">
 
-
 		<section class="mb-72" id="performanceReport">
 			<div class="d-flex flex-column mb-24">
 				<div class="d-flex flex-row align-items-center">
@@ -43,9 +42,10 @@
 					
 					</div>
 					<span class="font-30 text-bold text-primary-dark text-center">Loan Status Summary</span>
-					<div class="flex-1 d-flex justify-content-end">
-						<span class="text-primary-dark font-md">Tuesday 02/15/2021</span>
-					</div>
+					<div class="flex-1 d-flex justify-content-end" style="padding-right:16px">
+                        <current-transactiondate :branch="branch.branch_id" :token="token" :reports="true"></current-transactiondate>
+                        <span class="text-primary-dark">Time: {{todayTime(new Date())}} {{(new Date()).getHours() > 12? 'PM':'AM'}}</span>
+                    </div>
 				</div>
 				<span class="text-center text-primary-dark text-bold">As of 12/12/2021</span>
 				<span class="text-center text-primary-dark text-bold font-md mb-5">Butuan Branch (001)</span>
@@ -587,6 +587,12 @@
 
 <script>
 export default {
+	props:['pbranch', 'token'],
+	data(){
+		return {
+			branch:{}
+		}
+	},
 	methods:{
 		print:function(){
 			var content = document.getElementById('printContent').innerHTML;
@@ -594,6 +600,9 @@ export default {
 			target.innerHTML = content;
 			window.print();
 		},
+	},
+	mounted(){
+		this.branch = JSON.parse(this.pbranch);
 	}
 }
 </script>
