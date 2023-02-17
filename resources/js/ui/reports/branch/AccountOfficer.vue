@@ -87,6 +87,7 @@
 									<thead>
 										<th>Account Officer</th>
 										<th>No. of Accounts</th>
+										<th>Portfolio</th>
 										<th>Principal Bal</th>
 										<th>Interest Bal</th>
 									</thead>
@@ -95,6 +96,7 @@
 										<tr v-for="fr,i in reports" :key="i">
 											<td>{{fr.ao_name}}</td>
 											<td>{{fr.num_of_accounts}}</td>
+											<td>{{formatToCurrency(fr.principal_balance)}}</td>
 											<td>{{formatToCurrency(fr.principal_balance)}}</td>
 											<td>{{formatToCurrency(fr.interest_balance)}}</td>
 										</tr>
