@@ -82,6 +82,8 @@ Vue.component('reports-consolidated-loansummary', require('./ui/reports/consolid
 Vue.component('reports-consolidated-loanaging', require('./ui/reports/consolidated/LoanAgingReportConsolidated.vue').default);
 Vue.component('reports-consolidated-loanperformance', require('./ui/reports/consolidated/LoanPerformanceReport.vue').default);
 Vue.component('reports-consolidated-generatedst', require('./ui/reports/consolidated/GenerateDst.vue').default);
+Vue.component('reports-consolidated-revenue', require('./ui/reports/consolidated/RevenueReport.vue').default);
+Vue.component('reports-consolidated-ao', require('./ui/reports/consolidated/AccountOfficer.vue').default);
 
 Vue.component('reports-micromonitoring', require('./ui/reports/MicroMonitoring.vue').default);
 Vue.component('reports-prepaidinterest', require('./ui/reports/PrepaidInterest.vue').default);

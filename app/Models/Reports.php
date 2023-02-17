@@ -860,13 +860,16 @@ class Reports extends Model
                     "ao_name" =>  $aoValue['name'],
                     "num_of_accounts" => 0,
                     "principal_balance" => 0,
-                    "pastdue" => 0,
-                    "pd_rate" => 100
+                    /* "pastdue" => 0,
+                    "pd_rate" => 100, */
+                    "interest_balance" => 0,
+
                 ];
                 foreach ($accounts as $accKey => $account) {
                     $tempData["num_of_accounts"] += 1;
                     $tempData["principal_balance"] += $account->remainingBalance()["principal"]["balance"];
-                    $tempData["pastdue"] += $account->remainingBalance()["principal"]["balance"];
+                    /* $tempData["pastdue"] += $account->remainingBalance()["principal"]["balance"]; */
+                    $tempData["interest_balance"] += $account->remainingBalance()["interest"]["balance"];
                 }
                 $writeoffAccounts[] = $tempData;
             }

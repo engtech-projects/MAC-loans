@@ -167,10 +167,24 @@ class ReportsController extends Controller
 		]);
 	}
 
+	public function consolidatedRevenueReport(){
+		return view('reports.consolidated.revenue_report')->with([
+			'nav' => ['reports', 'consolidated','revenue report'],
+			'title' => 'Reports - Consolidated Revenue Report',
+		]);
+	}
+
 	public function consolidatedGenerateDst(){
 		return view('reports.consolidated.generate_dst')->with([
 			'nav' => ['reports', 'consolidated','generate dst'],
 			'title' => 'Reports - Consolidated Generate DST',
+		]);
+	}
+
+	public function consolidatedAccountOfficer(){
+		return view('reports.consolidated.account_officer')->with([
+			'nav' => ['reports', 'consolidated','account officer'],
+			'title' => 'Reports - Consolidated Account Officer',
 		]);
 	}
 	
