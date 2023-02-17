@@ -823,19 +823,21 @@ class Reports extends Model
                     foreach ($allAOProd as $key => $value) {
                         $tempProd["all"]["count"] += 1;
                         $tempProd["all"]["amount"] += $value->remainingBalance()["principal"]["balance"];
-                        if($value->loan_status == LoanAccount::LOAN_ONGOING){
-                            if($value->payment_status == LoanAccount::PAYMENT_DELINQUENT){
+                        if(LoanAccount::getLoanStatus($value->loan_account_id) == LoanAccount::LOAN_ONGOING){
+                            if(LoanAccount::getPaymentStatus($value->loan_account_id) == LoanAccount::PAYMENT_DELINQUENT){
                                 $tempProd["delinquent"]["count"] += 1;
                                 $tempProd["delinquent"]["amount"] += $value->remainingBalance()["principal"]["balance"];
-                                $tempProd["delinquent"]["rate"] = ($tempProd["delinquent"]["amount"] / $tempProd["all"]["amount"])*100;
+
                             }
                         }
-                        if($value->loan_status == LoanAccount::LOAN_PASTDUE){
+                        if(LoanAccount::getLoanStatus($value->loan_account_id) == LoanAccount::LOAN_PASTDUE){
                             $tempProd["pastdue"]["count"] += 1;
                             $tempProd["pastdue"]["amount"] += $value->remainingBalance()["principal"]["balance"];
-                            $tempProd["pastdue"]["rate"] = ($tempProd["pastdue"]["amount"] / $tempProd["all"]["amount"])*100;
+
                         }
                     }
+                    $tempProd["delinquent"]["rate"] = $tempProd["all"]["amount"] == 0 ? 0 :  round( (($tempProd["delinquent"]["amount"] / $tempProd["all"]["amount"]) * 100), 2); //round((($tempProd["delinquent"]["amount"] / $tempProd["all"]["amount"])*100));
+                    $tempProd["pastdue"]["rate"] = $tempProd["all"]["amount"] == 0 ? 0 : round( (($tempProd["pastdue"]["amount"] / $tempProd["all"]["amount"]) * 100), 2); //round((($tempProd["delinquent"]["amount"] / $tempProd["all"]["amount"])*100));
                     $accOfficers[$aoKey]["products"][] = $tempProd;
                 }
             }
