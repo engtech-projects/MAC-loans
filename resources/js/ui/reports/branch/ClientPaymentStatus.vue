@@ -216,6 +216,7 @@ export default {
 		},
 		clientInBranch:function(client){
 			if(client.loan_accounts){
+				console.log(client.loan_accounts[0].branch_code == this.branch.branch_code);
 				return client.loan_accounts[0].branch_code == this.branch.branch_code;
 			}
 			return false;
@@ -227,11 +228,14 @@ export default {
 		}
 	},
 	computed:{
+		branchClients:function(){
+			return this.clients.filter(c=>this.clientInBranch(c));
+		},
 		filteredClients:function(){
 			if(this.search.length > 1){
-				return this.clients.filter((i => i.firstname.toLowerCase().includes(this.search.toLowerCase()) || i.lastname.toLowerCase().includes(this.search.toLowerCase())&&this.clientInBranch(i)));
+				return this.branchClients.filter(i => i.firstname.toLowerCase().includes(this.search.toLowerCase()) || i.lastname.toLowerCase().includes(this.search.toLowerCase()));
 			}
-			return this.clients;
+			return this.branchClients;
 		},
 		closedLoans:function(){
 			return this.reports.closed?this.reports.closed:[];
