@@ -54,8 +54,10 @@
 									<span class="text-primary-dark">Time: {{todayTime(new Date())}} {{(new Date()).getHours() > 12? 'PM':'AM'}}</span>
 								</div>
 							</div>
-							<span class="text-center text-primary-dark text-bold">As of {{filter.as_of?dateToMDY2(new Date(filter.as_of)).split('-').join('/'):'---'}}</span>
 							<span class="text-center text-primary-dark text-bold font-md mb-5">{{branch.branch_name}} Branch ({{branch.branch_code}})</span>
+							<div class="d-flex flex-row justify-content-center text-primary-dark">
+								<span class="text-center text-primary-dark text-bold">As of {{filter.as_of?dateToMDY2(new Date(filter.as_of)).split('-').join('/'):'---'}}</span>
+							</div>
 						</div>
 						<section class="d-flex flex-column mb-16">
 							<div class="p-10 light-border">
@@ -270,11 +272,13 @@ export default {
 						result.push(row);
 					});
 				}
+				total[6] = (total[5]/total[3]*100) % 1 != 0? (total[5]/total[3]*100).toFixed(2):(total[5]/total[3]*100);
+				total[6] = isNaN(total[6])? '0%':total[6]+ '%';
+				total[9] = (total[8]/total[3]*100) % 1 != 0? (total[8]/total[3]*100).toFixed(2):(total[8]/total[3]*100);
+				total[9] = isNaN(total[9])? '0%':total[9]+ '%';
 				total[3] = this.formatToCurrency(total[3]);
 				total[5] = this.formatToCurrency(total[5]);
 				total[8] = this.formatToCurrency(total[8]);
-				total[6] = total[6] + '%';
-				total[9] = total[9] + '%';
 				result.push(total);
 			})
 			return result;
