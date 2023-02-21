@@ -899,7 +899,7 @@ class LoanAccount extends Model
             ];
             $amortizations[] = $tempAmort;
         }
-        return $amortizations;
+        return collect($amortizations)->sortBy("amort_no")->values()->all();
    }
 
    public static function getPaymentStatus($id){
