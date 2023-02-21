@@ -35,7 +35,33 @@ class BorrowerController extends BaseController
         $branch = Branch::find($branchId);
 
         $borrowers = Borrower::join('loan_accounts','loan_accounts.borrower_id', '=', 'borrower_info.borrower_id')
-                            ->select('borrower_info.*')
+                            ->select(
+                                'borrower_info.borrower_id',
+                                'borrower_info.borrower_num',
+                                'borrower_info.date_registered',
+                                'borrower_info.firstname',
+                                'borrower_info.middlename',
+                                'borrower_info.lastname',
+                                'borrower_info.suffix',
+                                'borrower_info.address',
+                                'borrower_info.birthdate',
+                                'borrower_info.gender',
+                                'borrower_info.status',
+                                'borrower_info.contact_number',
+                                'borrower_info.id_type',
+                                'borrower_info.id_no',
+                                'borrower_info.id_date_issued',
+                                'borrower_info.spouse_firstname',
+                                'borrower_info.spouse_middlename',
+                                'borrower_info.spouse_lastname',
+                                'borrower_info.spouse_address',
+                                'borrower_info.spouse_birthdate',
+                                'borrower_info.spouse_contact_number',
+                                'borrower_info.spouse_id_type',
+                                'borrower_info.spouse_id_no',
+                                'borrower_info.spouse_id_date_issued'
+
+                            )
                             ->where([ 'loan_accounts.branch_code' => $branch->branch_code ]);
 
 
