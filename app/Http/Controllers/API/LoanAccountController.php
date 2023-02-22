@@ -112,7 +112,7 @@ class LoanAccountController extends BaseController
 
         $accounts = new LoanAccount();
         $accounts = $accounts->overrideReleaseAccounts($filters);
-        return $this->sendResponse(LoanAccountResource::collection($accounts), 'List.');
+        return $this->sendResponse($accounts, 'List.');
     }
 
     // yyyy-mm-dd format
