@@ -52,7 +52,7 @@
 					<input v-model="borrower.birthdate" required type="date" class="form-control form-input " id="birthdate">
 				</div>
 				<div class="form-group mb-10 mr-16" style="flex: 3">
-					<label for="sex" class="form-label">Sex</label>
+					<label for="sex" class="form-label">Gender</label>
 					<select v-model="borrower.gender" required name="" id="" class="form-control form-input">
 						<option value="male">Male</option>
 						<option value="female">Female</option>
@@ -63,7 +63,7 @@
 					<select v-model="borrower.status" required name="" id="" class="form-control form-input">
 						<option value="single">Single</option>
 						<option value="married">Married</option>
-						<option value="married">Live-In</option>
+						<option value="live-in">Live-In</option>
 						<option value="widowed">Widowed</option>
 						<option value="separated">Separated</option>
 					</select>
@@ -98,7 +98,7 @@
 			</div>
 		</section>
 
-		<section v-if="borrower.status=='married'" class="mb-24" style="flex:21;padding-left:16px;">
+		<section v-if="borrower.status.toLowerCase()=='married'||borrower.status.toLowerCase()=='live-in'" class="mb-24" style="flex:21;padding-left:16px;">
 			<span class="section-title mb-24">Borrower's Spouse Information</span>
 
 			<div class="d-flex flex-row">

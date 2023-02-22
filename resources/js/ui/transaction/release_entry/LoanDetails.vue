@@ -622,40 +622,60 @@ export default {
 			}
 
 		},
-		pay:function(accountId){
-			if(this.loanaccount.loan_account_id){
-				let payment = {
-					loan_account_id: this.loanaccount.loan_account_id,
-					branch_id: this.pbranch,
-					payment_type: 'Memo',
-					reference_no: this.memoRefNo,
-					reference_id: accountId,
-					memo_type: 'deduct to balance',
-					amortization_id: this.loanaccount.current_amortization.id,
-					principal: this.loanaccount.remainingBalance.principal.balance,
-					interest: (this.loanaccount.remainingBalance.interest.balance - this.loanaccount.remainingBalance.rebates.credit) - this.loanaccount.remainingBalance.rebates.balance,
-					rebates: this.loanaccount.remainingBalance.rebates.balance,
-					rebates_approval_no: this.rebatesRefNo,
-					pdi:0,
-					penalty:0,
-					total_payable: 0,
-					amount_applied: this.loanaccount.remainingBalance.principal.balance + (this.loanaccount.remainingBalance.interest.balance - this.loanaccount.remainingBalance.rebates.credit),
-					transaction_date: this.transactionDate.date_end
-				}
-				axios.post(this.baseURL() + 'api/payment', payment, {
+		fetchAccount:function(id){
+				axios.get(this.baseURL() + 'api/account/show/' + this.loanaccount.loan_account_id, {
 				headers: {
-						'Authorization': 'Bearer ' + this.token,
+					'Authorization': 'Bearer ' + this.token,
 						'Content-Type': 'application/json',
 						'Accept': 'application/json'
-				}
+					}
 				})
 				.then(function (response) {
-					this.memoChecked = false;
-					this.notify('','Payment successful.', 'success');
-				}.bind(this))
-				.catch(function (error) {
-					console.log(error);
-				}.bind(this));
+					console.log(response.data.data);
+					let payment = {
+						loan_account_id: this.loanaccount.loan_account_id,
+						branch_id: this.pbranch,
+						payment_type: 'Memo',
+						reference_no: this.memoRefNo,
+						reference_id: id,
+						memo_type: 'deduct to balance',
+						amortization_id: response.data.data.current_amortization!=null?response.data.data.current_amortization.id:'',
+						principal: this.loanaccount.remainingBalance.principal.balance,
+						interest: (this.loanaccount.remainingBalance.interest.balance - this.loanaccount.remainingBalance.rebates.credit) - this.loanaccount.remainingBalance.rebates.balance,
+						rebates: this.loanaccount.remainingBalance.rebates.balance,
+						rebates_approval_no: this.rebatesRefNo,
+						pdi:0,
+						penalty:0,
+						total_payable: 0,
+						amount_applied: this.loanaccount.remainingBalance.principal.balance + (this.loanaccount.remainingBalance.interest.balance - this.loanaccount.remainingBalance.rebates.credit),
+						transaction_date: this.transactionDate.date_end
+					}
+
+					axios.post(this.baseURL() + 'api/payment', payment, {
+						headers: {
+								'Authorization': 'Bearer ' + this.token,
+								'Content-Type': 'application/json',
+								'Accept': 'application/json'
+						}
+						})
+						.then(function (response) {
+							this.memoChecked = false;
+							this.notify('','Payment successful.', 'success');
+						}.bind(this))
+						.catch(function (error) {
+							this.notify('',error.response.data.message + ' ' + error.response.data.data, 'error');
+							console.log(error);
+						}.bind(this));
+						}.bind(this))
+						.catch(function (error) {
+							this.$emit('unload');
+							console.log(error);
+						}.bind(this));
+					},
+
+		pay:function(accountId){
+			if(this.loanaccount.loan_account_id){
+				this.fetchAccount();
 			}
 		},
 
