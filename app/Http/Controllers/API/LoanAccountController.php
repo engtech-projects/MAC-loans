@@ -128,7 +128,7 @@ class LoanAccountController extends BaseController
 
         $accounts = new LoanAccount();
         $accounts = $accounts->releasedAccounts($filters);
-        return $this->sendResponse(LoanAccountResource::collection($accounts), 'List.');
+        return $this->sendResponse($accounts, 'List.');
     }
 
     // yyyy-mm-dd format
