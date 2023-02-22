@@ -215,6 +215,9 @@ export default {
 				},
 				current_amortization:{
 					principal_balance:0,
+				},
+				product:{
+					product_name:'',
 				}
 			},
 			dates:[],
@@ -427,6 +430,9 @@ export default {
 				},
 				current_amortization:{
 					principal_balance:0,
+				},
+				product:{
+					product_name:'',
 				}
 			};
 		},

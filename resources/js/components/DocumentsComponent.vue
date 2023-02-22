@@ -1525,7 +1525,7 @@ export default {
 		productName:function(){
 			var result = '';
 			this.products.map(function(product){
-				if(product.product_id==this.loanDetails.product_id){
+				if(product.product_name&&product.product_id==this.loanDetails.product_id){
 					result = product.product_name;
 				}
 			}.bind(this));
