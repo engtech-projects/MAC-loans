@@ -550,14 +550,14 @@ export default {
 				.then(function (response) {
 					this.notify('',response.data.message, 'success');
 					this.$emit('savedInfo', response.data.data)
-					this.$emit('unload');
+					// this.$emit('unload');
 					this.pay(response.data.data.loan_account_id);
 					if(this.prejected){
 						window.location.href = this.baseURL() + 'transaction/rejected_release';
 					}
 				}.bind(this))
 				.catch(function (error) {
-					this.$emit('unload');
+					// this.$emit('unload');
 					console.log(error);
 				}.bind(this));
 			}else {
@@ -573,10 +573,10 @@ export default {
 					this.notify('',response.data.message, 'success');
 					this.pay(response.data.data.loan_account_id);
 					this.$emit('savedInfo', response.data.data)
-					this.$emit('unload');
+					// this.$emit('unload');
 				}.bind(this))
 				.catch(function (error) {
-					this.$emit('unload');
+					// this.$emit('unload');
 					console.log(error);
 				}.bind(this));
 			}
