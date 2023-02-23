@@ -131,7 +131,7 @@
 			</div>
 		</section>
 
-		<section v-if="borrower.status=='married'" class="mb-24" style="flex:21;padding-left:16px;">
+		<section v-if="borrower.status.toLowerCase()=='married'||borrower.status.toLowerCase()=='live-in'" class="mb-24" style="flex:21;padding-left:16px;">
 			<span class="section-title mb-24">Borrower's Spouse Identification Details</span>
 
 			<div class="d-flex flex-row">
