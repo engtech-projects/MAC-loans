@@ -658,6 +658,7 @@ export default {
 					}
 
 					axios.post(this.baseURL() + 'api/payment', payment, {
+						this.$emit('load');
 						headers: {
 								'Authorization': 'Bearer ' + this.token,
 								'Content-Type': 'application/json',
@@ -665,6 +666,7 @@ export default {
 						}
 						})
 						.then(function (response) {
+							this.$emit('unload');
 							this.memoChecked = false;
 							this.notify('','Payment successful.', 'success');
 							
