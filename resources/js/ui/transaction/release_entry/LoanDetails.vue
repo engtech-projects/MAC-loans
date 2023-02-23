@@ -538,6 +538,7 @@ export default {
 			this.loanDetails.status = 'pending';
 			this.loanDetails.branch_id = this.branch;
 			this.loanDetails.transaction_date = this.transactionDate.date_end;
+			this.$emit('load');
 			if(this.loanDetails.loan_account_id){
 				axios.post(this.baseURL() + 'api/account/update/' + this.loanDetails.loan_account_id, this.loanDetails, {
 					headers: {
@@ -549,12 +550,14 @@ export default {
 				.then(function (response) {
 					this.notify('',response.data.message, 'success');
 					this.$emit('savedInfo', response.data.data)
+					this.$emit('unload');
 					this.pay(response.data.data.loan_account_id);
 					if(this.prejected){
 						window.location.href = this.baseURL() + 'transaction/rejected_release';
 					}
 				}.bind(this))
 				.catch(function (error) {
+					this.$emit('unload');
 					console.log(error);
 				}.bind(this));
 			}else {
@@ -570,8 +573,10 @@ export default {
 					this.notify('',response.data.message, 'success');
 					this.pay(response.data.data.loan_account_id);
 					this.$emit('savedInfo', response.data.data)
+					this.$emit('unload');
 				}.bind(this))
 				.catch(function (error) {
+					this.$emit('unload');
 					console.log(error);
 				}.bind(this));
 			}
@@ -623,6 +628,7 @@ export default {
 
 		},
 		fetchAccount:function(id){
+				this.$emit('load');
 				axios.get(this.baseURL() + 'api/account/show/' + this.loanaccount.loan_account_id, {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
@@ -661,10 +667,12 @@ export default {
 						.then(function (response) {
 							this.memoChecked = false;
 							this.notify('','Payment successful.', 'success');
+							
 						}.bind(this))
 						.catch(function (error) {
 							this.notify('',error.response.data.message + ' ' + error.response.data.data, 'error');
 							console.log(error);
+							this.$emit('unload');
 						}.bind(this));
 						}.bind(this))
 						.catch(function (error) {

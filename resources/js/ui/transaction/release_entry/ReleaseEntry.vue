@@ -86,6 +86,8 @@
 								:loandetails="loanDetails"
 								:pbranch="pbranch"
 								:transactionDate="transactionDate"
+								@load="loading=true"
+								@unload="loading=false"
 								></loan-details>
 							</div>
 
