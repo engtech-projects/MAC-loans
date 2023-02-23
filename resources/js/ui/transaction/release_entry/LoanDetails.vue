@@ -638,6 +638,7 @@ export default {
 				})
 				.then(function (response) {
 					console.log(response.data.data);
+					this.$emit('load');
 					let payment = {
 						loan_account_id: this.loanaccount.loan_account_id,
 						branch_id: this.pbranch,
@@ -658,7 +659,6 @@ export default {
 					}
 
 					axios.post(this.baseURL() + 'api/payment', payment, {
-						this.$emit('load');
 						headers: {
 								'Authorization': 'Bearer ' + this.token,
 								'Content-Type': 'application/json',
