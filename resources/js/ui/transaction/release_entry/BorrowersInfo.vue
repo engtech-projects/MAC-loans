@@ -70,7 +70,7 @@
 				</div>
 				<div class="form-group mb-10" style="flex: 6">
 					<label for="contactNumber" class="form-label">Contact Number</label>
-					<input v-model="borrower.contact_number" required type="number" class="form-control form-input " id="contactNumber">
+					<input v-model="borrower.contact_number" required type="text" class="form-control form-input " id="contactNumber">
 				</div>
 			</div>
 		</section>
