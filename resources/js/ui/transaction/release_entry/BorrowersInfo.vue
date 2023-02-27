@@ -535,6 +535,7 @@
 			},
 			save: function(){
 				this.borrower.img = this.img;
+				this.$emit('load')
 				// this.borrower.username = this.borrower.firstname+this.borrower.lastname;
 				// this.borrower.password = "$2y$10$BrOxloCXFGB4PyCPe7.leefLeosAh9zpS1DCdGlfz8XRyNIkgeHlO";
 				delete this.borrower.username;
@@ -548,14 +549,17 @@
 							}
 						})
 						.then(function (response) {
+							this.$emit('unload')
 							this.notify('',response.data.message, 'success');
 							this.$emit('savedInfo', response.data.data)
 							console.log(response.data);
 						}.bind(this))
 						.catch(function (error) {
 							console.log(error);
+							this.$emit('unload')
 						}.bind(this));
 				}else {
+					this.$emit('load')
 					axios.post(this.baseURL() + 'api/borrower', this.borrower, {
 						headers: {
 							'Authorization': 'Bearer ' + this.token,
@@ -564,12 +568,14 @@
 						}
 					})
 					.then(function (response) {
+						this.$emit('unload')
 						this.notify('',response.data.message, 'success');
 						this.$emit('savedInfo', response.data.data)
 						console.log(response.data);
 					}.bind(this))
 					.catch(function (error) {
 						console.log(error);
+						this.$emit('unload')
 					}.bind(this));
 				}
 

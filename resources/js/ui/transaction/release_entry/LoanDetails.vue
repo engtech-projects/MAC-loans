@@ -561,6 +561,7 @@ export default {
 					console.log(error);
 				}.bind(this));
 			}else {
+				this.$emit('load');
 				axios.post(this.baseURL() + 'api/account/create/' + this.loanDetails.borrower_id, this.loanDetails, {
 					headers: {
 						'Authorization': 'Bearer ' + this.token,
