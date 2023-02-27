@@ -864,11 +864,6 @@ class LoanAccount extends Model
            //$total_pdi = ceil($amortization->principal + $account->interest_amount)*0.02 * $days_late;
 
 
-
-
-
-
-
             return [
                 'penalty' => $lastPayment ? $total_penalty : 0,
                 'pdi' =>  $this->getPDI($this->loan_amount, $this->interest_rate, $isPastDue)
