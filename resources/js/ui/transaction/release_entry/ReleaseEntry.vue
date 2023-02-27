@@ -64,6 +64,8 @@
 								:token="token"
 								:pborrower="borrower"
 								:psave="saveInfo"
+								@load="loading=true"
+								@unload="loading=false"
 								:transactionDate="transactionDate"></borrowers-info>
 							</div>
 
