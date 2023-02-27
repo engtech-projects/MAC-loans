@@ -70,7 +70,7 @@
 				</div>
 				<div class="form-group mb-10" style="flex: 6">
 					<label for="contactNumber" class="form-label">Contact Number</label>
-					<input v-model="borrower.contact_number" required type="number" class="form-control form-input " id="contactNumber">
+					<input v-model="borrower.contact_number" required type="text" class="form-control form-input " id="contactNumber">
 				</div>
 			</div>
 		</section>
@@ -358,7 +358,7 @@
 				</div>
 				<div class="form-group mb-10 mr-16" style="flex: 2">
 					<label for="companyContact" class="form-label">Contact No.</label>
-					<input v-model="data.businessInfo.contact_no" required type="number" class="form-control form-input " id="companyContact">
+					<input v-model="data.businessInfo.contact_no" required type="text" class="form-control form-input " id="companyContact">
 				</div>
 				<div class="form-group mb-10" style="flex: 1">
 					<label for="companyYears" class="form-label">Years</label>
