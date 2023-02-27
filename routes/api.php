@@ -20,6 +20,7 @@ use App\Http\Controllers\API\GLController;
 use App\Http\Controllers\BorrowerLoginController;
 use App\Http\Controllers\API\EODController;
 use App\Http\Controllers\API\DeductionController;
+use App\Http\Resources\Borrower;
 
 /*
 |--------------------------------------------------------------------------
@@ -50,6 +51,10 @@ Route::middleware(['auth:sanctum'])->group( function () {
     Route::resource('chart', ChartOfAccountsController::class);
     Route::resource('gl', GLController::class);
     Route::resource('deduction', DeductionController::class);
+
+    Route::get('borrower/accounts/{borrower_id}',[BorrowerController::class,'getBorrowerAccounts']);
+
+
 
     Route::get('accountofficer/getActivesInBranch/{branch_id}', [AccountOfficerController::class, "getActiveInBranch"]);
     Route::get('branches/activeBranch', [BranchController::class, 'activeBranch']);

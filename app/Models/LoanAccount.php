@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
+use GuzzleHttp\Psr7\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
@@ -119,6 +120,12 @@ class LoanAccount extends Model
 
       $borrower = Borrower::find($this->borrower_id);
       return $borrower->getPhoto();
+   }
+
+   public function getBranch() {
+        $account = LoanAccount::where('loan_account_id', '=',$this->loan_account_id)->get();
+        $branch_id = Branch::where('branch_code', '=', $account->branch_code)->get();
+        return $branch_id;
    }
 
    public function borrower(){
@@ -272,7 +279,6 @@ class LoanAccount extends Model
    public function payments() {
       return $this->hasMany(Payment::class, 'loan_account_id')->whereIn('status', ['paid', 'cancelled']);
    }
-
 
    public function overrideReleaseAccounts($filters = array()) {
 
@@ -749,7 +755,60 @@ class LoanAccount extends Model
       ];
    }
 
+   public function getTransDate() {
+
+   }
+
+    public function getCurrentPenaltyAndPdi() {
+        $account = LoanAccount::where(['loan_account_id' => $this->loan_account_id])->first();
+        $tranDate = new EndTransaction();
+        $transactionDateNow = $tranDate->getTransactionDate($this->branch->branch_id)->date_end;
+        //Get current amort
+        //Get last paid amort
+        $lastPayment = Payment::where('loan_account_id','=',$this->loan_account_id)->where('status','=',Payment::STATUS_PAID)->first();
+        // get current amortization
+        $amortization = Amortization::whereDate('amortization_date', '<=', $transactionDateNow)
+        ->where('loan_account_id', $this->loan_account_id)
+        ->where('id','>',$lastPayment->amortization_id)
+        ->orderBy('amortization_date', 'DESC')
+        ->get();
+
+        $penalty = $lastPayment->short_penalty;
+
+        $total_amort = $this->amortization()['total'];
+
+
+        $total_penalty = $penalty + (sizeof($amortization)*0.02 * $total_amort);
+
+        //get loan account
+        //check if pastdue
+        //count
+        $transaction_date =  Carbon::createFromFormat("Y-m-d",$transactionDateNow)->startOfDay();
+        $due_date = Carbon::createFromFormat("Y-m-d",$this->due_date)->startOfDay();
+        $days_late = $due_date->diffInDays($transaction_date,false);
+
+        //$total_pdi = $penalty + (sizeof($amortization)*0.02 * $total_amort);
+
+       //$total_pdi = ceil($amortization->principal + $account->interest_amount)*0.02 * $days_late;
+
+
+        return [
+            'penalty' =>$total_penalty,
+            'pdi' => ($account->loan_amount + $account->interest_amount)*0.02*$days_late
+        ];
+
+
+    }
+
+
+
+
    public function remainingBalance() {
+    $tranDate = new EndTransaction();
+        $transactionDateNow = $tranDate->getTransactionDate($this->branch->branch_id)->date_end;
+        $transaction_date =  Carbon::createFromFormat("Y-m-d",$transactionDateNow)->startOfDay();
+        $due_date = Carbon::createFromFormat("Y-m-d",$this->due_date)->startOfDay();
+        $days_late = $due_date->diffInDays($transaction_date,false);
 
       $account = LoanAccount::where(['loan_account_id' => $this->loan_account_id])->first();
       $payments = Payment::where(['loan_account_id' => $this->loan_account_id, 'status' => 'paid'])->orderBy('payment_id', 'DESC')->get();
@@ -786,12 +845,7 @@ class LoanAccount extends Model
          ]
       ];
 
-      $currentAmortization = $account->getCurrentAmortization();
 
-      if( $currentAmortization ) {
-         $accountSummary['penalty']['debit'] = $currentAmortization->penalty + $currentAmortization->short_penalty;
-         $accountSummary['pdi']['debit'] = $currentAmortization->pdi;
-      }
 
       if( count($payments) ) {
 
@@ -813,6 +867,13 @@ class LoanAccount extends Model
                 $accountSummary['rebates']['credit'] += $payment->rebates;
             }
          }
+      }
+      $currentAmortization = $account->getCurrentPenaltyAndPdi();
+      //$currentAmortization = $account->getCurrentAmortization();
+
+      if( $currentAmortization ) {
+         $accountSummary['penalty']['debit'] = $currentAmortization['penalty'];
+         $accountSummary['pdi']['debit'] = $currentAmortization['pdi'];
       }
 
       $accountSummary['penalty']['debit'] += $accountSummary['penalty']['credit'];

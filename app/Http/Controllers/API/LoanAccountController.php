@@ -27,6 +27,7 @@ class LoanAccountController extends BaseController
         return $this->sendResponse(new LoanAccountResource($account), 'Account fetched.');
     }
 
+
 	/**
      * Store a newly created resource in storage.
      */
