@@ -74,7 +74,7 @@ export default {
 	methods:{
 		fetchBorrowers:function(){
 			this.loading = true;
-			axios.get(this.baseURL() + 'api/borrower/list/'+this.pbranch,{params:{onlyunpaid:true}}, {
+			axios.get(this.baseURL() + 'api/borrower/list/'+this.pbranch + '?onlyUnpaid=true', {
 			headers: {
 				'Authorization': 'Bearer ' + this.token,
 					'Content-Type': 'application/json',
