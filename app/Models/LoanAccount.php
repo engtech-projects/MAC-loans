@@ -815,6 +815,7 @@ class LoanAccount extends Model
 
 
      }
+     $this->refresh();
      return $amortization;
 
    }
