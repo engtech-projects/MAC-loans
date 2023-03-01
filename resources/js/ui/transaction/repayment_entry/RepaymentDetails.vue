@@ -120,7 +120,7 @@
 							<span class="">Product Name</span>
 							<span>:</span>
 						</div>
-						<span class="flex-2 text-primary-dark">{{loanAccount.product.product_name}}</span>
+						<span class="flex-2 text-primary-dark">{{loanAccount.product_name}}</span>
 					</div>
 
 					<div class="d-flex flex-row mb-12">
@@ -957,7 +957,7 @@ export default {
 		},
 		fetchAccount:function(id){
 			this.$emit('load');
-			axios.get(this.baseURL() + 'api/account/show/' + id, {
+			axios.get(this.baseURL() + 'api/account/loan_details/' + id, {
 			headers: {
 				'Authorization': 'Bearer ' + this.token,
 					'Content-Type': 'application/json',
@@ -1229,7 +1229,7 @@ export default {
 					}
 				}.bind(this))
 			}
-			
+
 			return filteredData;
 		}
 	},

@@ -27,6 +27,17 @@ class LoanAccountController extends BaseController
         return $this->sendResponse(new LoanAccountResource($account), 'Account fetched.');
     }
 
+    public function showLoanDetails(LoanAccount $account) {
+
+        $loan_details = $account->showLoanDetails();
+        $loan_details->current_amortization = $account->getCurrentAmortization();
+        $loan_details->remaining_balance = $account->remainingBalance();
+
+        //return $this->sendResponse(new LoanAccountResource($account),'Loan details fetched');
+        return $this->sendResponse($loan_details,'Loan details fetched');
+        //return $account->showLoanDetails();
+
+    }
 
 	/**
      * Store a newly created resource in storage.
