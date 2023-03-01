@@ -434,6 +434,54 @@ export default {
 		}
 	},
 	methods:{
+		resetLoans:function(){
+			this.loanDetails = {
+				cycle_no : 1,
+				ao_id : '',
+				product_id : '',
+				center_id : '',
+				type : '',
+				payment_mode : '',
+				terms : '',
+				loan_amount : 0,
+				no_of_installment : '',
+				day_schedule : '',
+				borrower_num : '',
+				co_borrower_name : '',
+				co_borrower_address : '',
+				co_borrower_id_type : '',
+				co_borrower_id_number : '',
+				co_borrower_id_date_issued : '',
+				co_maker_name : '',
+				co_maker_address : '',
+				co_maker_id_type : '',
+				co_maker_id_number : '',
+				co_maker_id_date_issued : '',
+				document_stamp : '',
+				filing_fee : '',
+				insurance : '',
+				notarial_fee : '100.00',
+				prepaid_interest : '',
+				affidavit_fee : '',
+				memo : 0,
+				total_deduction : '',
+				net_proceeds : '',
+				release_type : '',
+				interest_rate:'',
+				interest_amount:'',
+				documents: {
+					date_release: '',
+					description: '',
+					bank: '',
+					account_no: '',
+					card_no:'',
+					promissory_number: '',
+				},
+				product:{
+					product_name:'',
+				}
+			}
+		},
 		async computeDeduction(){
 			var data = {
 				loan_amount: this.loanDetails.loan_amount,
@@ -665,16 +713,18 @@ export default {
 							this.$emit('unload');
 							this.memoChecked = false;
 							this.notify('','Payment successful.', 'success');
-							
+							this.resetLoans();
+							this.$emit('resetall')
 						}.bind(this))
 						.catch(function (error) {
 							this.notify('',error.response.data.message + ' ' + error.response.data.data, 'error');
 							console.log(error);
 							this.$emit('unload');
+							this.$emit('resetall')
+							this.resetLoans
 						}.bind(this));
 						}.bind(this))
 						.catch(function (error) {
-							// this.$emit('unload');
 							console.log(error);
 						}.bind(this));
 					},

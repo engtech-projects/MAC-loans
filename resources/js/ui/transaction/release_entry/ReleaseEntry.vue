@@ -90,6 +90,7 @@
 								:transactionDate="transactionDate"
 								@load="loading=true"
 								@unload="loading=false"
+								@resetall="resetAll"
 								></loan-details>
 							</div>
 
@@ -1026,6 +1027,10 @@
 			}
 		},
 		methods: {
+			resetAll:function(){
+				this.resetBorrower();
+				this.resetLoanDetails();
+			},
 			fetchTransactionDate:function(){
 				axios.get(this.baseURL() + 'api/eod/eodtransaction/'+this.pbranch, {
 				headers: {
