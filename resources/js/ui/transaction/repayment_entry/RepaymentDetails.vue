@@ -1155,7 +1155,7 @@ export default {
 			return this.loanAccount.current_amortization.interest + this.loanAccount.current_amortization.short_interest;
 		},
 		totalPrincipal:function(){
-			return this.loanAccount.current_amortization.principal + this.loanAccount.current_amortization.short_principal;
+			return this.loanAccount.current_amortization?this.loanAccount.current_amortization.principal + this.loanAccount.current_amortization.short_principal:0;
 		},
 
 		duePdi:function(){
