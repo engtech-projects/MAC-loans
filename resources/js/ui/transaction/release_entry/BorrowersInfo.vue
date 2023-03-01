@@ -550,14 +550,14 @@
 							}
 						})
 						.then(function (response) {
-							this.$emit('unload')
+							// this.$emit('unload')
 							this.notify('',response.data.message, 'success');
 							this.$emit('savedInfo', response.data.data)
 							console.log(response.data);
 						}.bind(this))
 						.catch(function (error) {
 							console.log(error);
-							this.$emit('unload')
+							// this.$emit('unload')
 						}.bind(this));
 				}else {
 					this.$emit('load')
@@ -569,14 +569,14 @@
 						}
 					})
 					.then(function (response) {
-						this.$emit('unload')
+						// this.$emit('unload')
 						this.notify('',response.data.message, 'success');
 						this.$emit('savedInfo', response.data.data)
 						console.log(response.data);
 					}.bind(this))
 					.catch(function (error) {
 						console.log(error);
-						this.$emit('unload')
+						// this.$emit('unload')
 					}.bind(this));
 				}
 
