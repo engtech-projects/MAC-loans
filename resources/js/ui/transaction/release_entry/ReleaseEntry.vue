@@ -1156,7 +1156,7 @@
 					console.log(error);
 				}.bind(this));
 			},
-			fetchBorrowers:function(){
+			fetchBorrowers:function(unload){
 				this.loading=true;
 				axios.get(this.baseURL() + 'api/borrower/list/' + this.branch, {
 				headers: {
@@ -1167,11 +1167,15 @@
 				})
 				.then(function (response) {
 					this.borrowers = response.data.data;
-					this.loading = false;
+					if(!unload){
+						this.loading = false;
+					}
 				}.bind(this))
 				.catch(function (error) {
 					console.log(error);
-					this.loading = false;
+					if(!unload){
+						this.loading = false;
+					}
 				}.bind(this));
 			},
 			fetchLoanAccounts:function(){
@@ -1224,7 +1228,7 @@
 				this.loanDetails = data;
 			},
 			savedInfo:function(data){
-				this.fetchBorrowers();
+				this.fetchBorrowers(1);
 				this.bborrower = data;
 				this.saveLoanDetails = true;
 				this.navigate('custom-content-below-borrowerinfo-tab');
