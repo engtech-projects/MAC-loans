@@ -128,7 +128,7 @@
 							<span class="">Missed Payments</span>
 							<span>:</span>
 						</div>
-						<span class="flex-2 text-primary-dark">{{loanAccount.current_amortization.delinquent.missed.length}}</span>
+						<span class="flex-2 text-primary-dark">{{loanAccount.current_amortization.delinquent?loanAccount.current_amortization.delinquent.missed.length:0}}</span>
 					</div>
 
 					<div class="d-flex flex-row mb-12">
@@ -968,6 +968,7 @@ export default {
 				this.$emit('unload');
 				var loan = response.data.data;
 				loan.remainingBalance = response.data.data.remaining_balance;
+                loan.current_amortization = loan.current_amortization?loan.current_amortization:{};
 				this.loanAccount = loan;
 			}.bind(this))
 			.catch(function (error) {
@@ -1156,6 +1157,7 @@ export default {
 		totalPrincipal:function(){
 			return this.loanAccount.current_amortization.principal + this.loanAccount.current_amortization.short_principal;
 		},
+
 		duePdi:function(){
 			if(this.loanAccount.remainingBalance){
 				return this.waive.pdi ? 0 : this.loanAccount.remainingBalance.pdi.balance;
