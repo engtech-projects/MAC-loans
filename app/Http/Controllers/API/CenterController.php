@@ -19,7 +19,7 @@ class CenterController extends BaseController
         return $this->sendResponse(CenterResource::collection($centers), 'Centers fetched.');
     }
     public function activeCenter() {
-        $centers = Center::where(["status" => "active"])->sortBy('center')->get();
+        $centers = Center::where(["status" => "active"])->orderBy('center')->get();
         return $this->sendResponse(CenterResource::collection($centers), 'Centers fetched.');
     }
     /**
