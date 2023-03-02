@@ -15,4 +15,8 @@ class Center extends Model
     	'center', 'day_sched', 'status', 'deleted', 'area'
 
     ];
+
+    public function sortCenters() {
+        return $this->center;
+    }
 }
