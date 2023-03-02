@@ -15,10 +15,7 @@ class CenterController extends BaseController
      * Display a listing of the resource.
      */
     public function index() {
-        $centers = Center::orderBy('center')->get();
-        foreach($centers as $center) {
-            $center->center = Str::title($center->center);
-        }
+        $centers = Center::fetchCenters();
         return $this->sendResponse(CenterResource::collection($centers), 'Centers fetched.');
     }
     public function activeCenter() {
