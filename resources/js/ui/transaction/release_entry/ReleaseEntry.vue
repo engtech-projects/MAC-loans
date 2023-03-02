@@ -16,8 +16,8 @@
 		<div v-if="transactionDate.status == 'open'">
 			<div class="d-flex flex-column flex-xl-row p-16">
 					<div style="flex:9;">
-						<client-list-side v-if="rejectid" @selectAccount="selectAccount" :pborrowers="rejectedAccounts" :account="rejectedAccount.loan_account_id"></client-list-side>
-						<client-list-side v-if="!rejectid" @selectBorrower="selectBorrower" :pborrowers="borrowers" :id="{}"></client-list-side>
+						<client-list-side @resetAllBorrower="resetAllVal=false" v-if="rejectid" @selectAccount="selectAccount" :pborrowers="rejectedAccounts" :account="rejectedAccount.loan_account_id" :resetall="resetAllVal"></client-list-side>
+						<client-list-side @resetAllBorrower="resetAllVal=false" v-if="!rejectid" @selectBorrower="selectBorrower" :pborrowers="borrowers" :id="{}" :resetall="resetAllVal"></client-list-side>
 						<div d-flex flex-column v-if="borrower.borrower_id && !rejectid">
 							<span class="text-red font-md">Existing Current Loan Accounts</span>
 							<div class="mb-10"></div>
@@ -90,7 +90,7 @@
 								:transactionDate="transactionDate"
 								@load="loading=true"
 								@unload="loading=false"
-								@resetall="resetAll"
+								@resetall="resetAll()"
 								></loan-details>
 							</div>
 
@@ -912,6 +912,7 @@
 		props:['token', 'idtype','rejectid','title', 'releasetype', 'pbranch', 'staff', 'branch_mgr'],
 		data(){
 			return {
+				resetAllVal:false,
 				loading:false,
 				transactionDate: {
 					branch_id: this.pbranch,
@@ -1030,6 +1031,7 @@
 			resetAll:function(){
 				this.resetBorrower();
 				this.resetLoanDetails();
+				this.resetAllVal = true;
 			},
 			fetchTransactionDate:function(){
 				axios.get(this.baseURL() + 'api/eod/eodtransaction/'+this.pbranch, {
