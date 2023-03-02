@@ -735,6 +735,7 @@ export default {
 			if(this.loanaccount.loan_account_id){
 				this.fetchAccount();
 			}else{
+				this.$emit('resetall')
 				this.$emit('unload');
 			}
 		},
