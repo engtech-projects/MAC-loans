@@ -556,19 +556,21 @@ export default {
 			}.bind(this));
 		},
 		fetchPromissoryNo: function(){
-			axios.post(this.baseURL() + 'api/account/promissoryno',{'product_id':this.loanDetails.product_id, branch_id:this.branch}, {
-				headers: {
-					'Authorization': 'Bearer ' + this.token,
-					'Content-Type': 'application/json',
-					'Accept': 'application/json'
-				}
-			})
-			.then(function (response) {
-				this.loanDetails.documents.promissory_number = response.data;
-			}.bind(this))
-			.catch(function (error) {
-				console.log(error);
-			}.bind(this));
+			if(this.loanDetails.product_id && this.loanDetails.product_id !== ''){
+				axios.post(this.baseURL() + 'api/account/promissoryno',{'product_id':this.loanDetails.product_id, branch_id:this.branch}, {
+					headers: {
+						'Authorization': 'Bearer ' + this.token,
+						'Content-Type': 'application/json',
+						'Accept': 'application/json'
+					}
+				})
+				.then(function (response) {
+					this.loanDetails.documents.promissory_number = response.data;
+				}.bind(this))
+				.catch(function (error) {
+					console.log(error);
+				}.bind(this));
+			}
 		},
 		navigate:function(tab){
 			document.getElementById(tab).click();
@@ -732,6 +734,8 @@ export default {
 		pay:function(accountId){
 			if(this.loanaccount.loan_account_id){
 				this.fetchAccount();
+			}else{
+				this.$emit('unload');
 			}
 		},
 
@@ -780,7 +784,7 @@ export default {
 		},
 		'loanDetails.product_id'(newValue){
 			this.setInterestRate();
-			if(!this.prejected){
+			if(!this.prejected && newValue){
 				this.fetchPromissoryNo();
 			}
 			this.deductionComputation = 0;
