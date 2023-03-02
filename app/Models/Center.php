@@ -20,12 +20,6 @@ class Center extends Model
     public static function fetchCenters() {
         //fetch all cenrters order by center name
         $centers = Center::orderBy('center')->get();
-
-        //Capitalize first letter of each center
-        foreach($centers as $center) {
-            $center->center = Str::title($center->center);
-        }
-
         return $centers;
     }
 }
