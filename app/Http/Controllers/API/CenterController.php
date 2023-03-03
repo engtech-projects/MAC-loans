@@ -7,6 +7,7 @@ use App\Http\Controllers\API\BaseController as BaseController;
 use Illuminate\Http\Request;
 use App\Models\Center;
 use App\Http\Resources\Center as CenterResource;
+use Illuminate\Support\Str;
 
 class CenterController extends BaseController
 {
@@ -14,11 +15,11 @@ class CenterController extends BaseController
      * Display a listing of the resource.
      */
     public function index() {
-        $centers = Center::all();
+        $centers = Center::fetchCenters();
         return $this->sendResponse(CenterResource::collection($centers), 'Centers fetched.');
     }
     public function activeCenter() {
-        $centers = Center::where(["status" => "active"])->get();
+        $centers = Center::where(["status" => "active"])->orderBy('center')->get();
         return $this->sendResponse(CenterResource::collection($centers), 'Centers fetched.');
     }
     /**

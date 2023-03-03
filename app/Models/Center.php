@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Center extends Model
 {
@@ -15,4 +16,10 @@ class Center extends Model
     	'center', 'day_sched', 'status', 'deleted', 'area'
 
     ];
+
+    public static function fetchCenters() {
+        //fetch all cenrters order by center name
+        $centers = Center::orderBy('center')->get();
+        return $centers;
+    }
 }
