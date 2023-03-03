@@ -396,6 +396,35 @@ class LoanAccount extends Model
         return count($amortization->missed_amort ? $amortization->missed_amort : []);
     }
 
+    public function getLoanDetails() {
+        $loan_details = LoanAccount::join('account_officer','account_officer.ao_id', '=', 'loan_accounts.ao_id')
+        ->join('borrower_info','borrower_info.borrower_id', '=', 'loan_accounts.borrower_id')
+        ->join('product','product.product_id', '=', 'loan_accounts.product_id')
+        ->select(
+            'loan_accounts.loan_account_id',
+            'loan_accounts.account_num',
+            'loan_accounts.co_borrower_name',
+            'loan_accounts.co_borrower_address',
+            'loan_accounts.co_maker_name',
+            'loan_accounts.co_maker_address',
+            'borrower_info.contact_number',
+            'loan_accounts.date_release',
+            'loan_accounts.loan_amount',
+            'loan_accounts.loan_status',
+            'loan_accounts.interest_rate',
+            'loan_accounts.interest_amount',
+            'loan_accounts.due_date',
+            'loan_accounts.payment_mode',
+            'loan_accounts.terms',
+            'product.product_name'
+
+
+        )
+
+        ->where('loan_account_id','=',$this->loan_account_id)->first();
+        return $loan_details;
+    }
+
     public function getCurrentAmortization()
     {
         $tranDate = new EndTransaction();
@@ -874,8 +903,6 @@ class LoanAccount extends Model
         # get last payment
         if ($amortization) {
             $amortization->pdi = $amortization->pdi ? $amortization->pdi : 0;
-
-
 
             // get delinquents
             $amortization->delinquent = $this->getDelinquent($this->loan_account_id, $amortization->id, $amortization->advance_principal);
