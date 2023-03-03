@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Str;
 
 class Borrower extends JsonResource
 {
@@ -26,7 +27,7 @@ class Borrower extends JsonResource
             'address' => $this->address,
             'birthdate' => $this->birthdate,
             'gender' => $this->gender,
-            'status' => $this->status,
+            'status' => Str::lower($this->status),
             'contact_number' => $this->contact_number,
             'id_type' => $this->id_type,
             'id_no' => $this->id_no,

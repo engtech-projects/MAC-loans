@@ -36,12 +36,14 @@
 			<div class="d-flex flex-row">
 				<div class="form-group mb-10 mr-16" style="flex:7">
 					<label for="center" class="form-label">Center</label>
-					<select v-if="!productEnable" disabled required v-model="loanDetails.center_id" name="" id="" class="form-control form-input ">
-						<!-- <option v-for="center in centers" :key="center.center_id" :value="center.center_id">{{center.center}}</option> -->
+					<!-- <select v-if="!productEnable" disabled required v-model="loanDetails.center_id" name="" id="" class="form-control form-input ">
 					</select>
 					<select v-if="productEnable" required v-model="loanDetails.center_id" name="" id="" class="form-control form-input ">
 						<option v-for="center in centers" :key="center.center_id" :value="center.center_id">{{center.center}}</option>
+					</select> -->
+					<select v-if="!productEnable" disabled required v-model="loanDetails.center_id" name="" id="" class="form-control form-input ">
 					</select>
+					<search-dropdown v-else @sdSelect="centerSelect" :data="centers" id="center_id" name="center"></search-dropdown>
 				</div>
 				<div class="form-group mb-10 mr-16" style="flex:7">
 					<label for="type" class="form-label">Type</label>
@@ -434,6 +436,57 @@ export default {
 		}
 	},
 	methods:{
+		centerSelect:function(center){
+			this.loanDetails.center_id = center.center_id;
+		},
+		resetLoans:function(){
+			this.loanDetails = {
+				cycle_no : 1,
+				ao_id : '',
+				product_id : '',
+				center_id : '',
+				type : '',
+				payment_mode : '',
+				terms : '',
+				loan_amount : 0,
+				no_of_installment : '',
+				day_schedule : '',
+				borrower_num : '',
+				co_borrower_name : '',
+				co_borrower_address : '',
+				co_borrower_id_type : '',
+				co_borrower_id_number : '',
+				co_borrower_id_date_issued : '',
+				co_maker_name : '',
+				co_maker_address : '',
+				co_maker_id_type : '',
+				co_maker_id_number : '',
+				co_maker_id_date_issued : '',
+				document_stamp : '',
+				filing_fee : '',
+				insurance : '',
+				notarial_fee : '100.00',
+				prepaid_interest : '',
+				affidavit_fee : '',
+				memo : 0,
+				total_deduction : '',
+				net_proceeds : '',
+				release_type : '',
+				interest_rate:'',
+				interest_amount:'',
+				documents: {
+					date_release: '',
+					description: '',
+					bank: '',
+					account_no: '',
+					card_no:'',
+					promissory_number: '',
+				},
+				product:{
+					product_name:'',
+				}
+			}
+		},
 		async computeDeduction(){
 			var data = {
 				loan_amount: this.loanDetails.loan_amount,
@@ -508,19 +561,21 @@ export default {
 			}.bind(this));
 		},
 		fetchPromissoryNo: function(){
-			axios.post(this.baseURL() + 'api/account/promissoryno',{'product_id':this.loanDetails.product_id, branch_id:this.branch}, {
-				headers: {
-					'Authorization': 'Bearer ' + this.token,
-					'Content-Type': 'application/json',
-					'Accept': 'application/json'
-				}
-			})
-			.then(function (response) {
-				this.loanDetails.documents.promissory_number = response.data;
-			}.bind(this))
-			.catch(function (error) {
-				console.log(error);
-			}.bind(this));
+			if(this.loanDetails.product_id && this.loanDetails.product_id !== ''){
+				axios.post(this.baseURL() + 'api/account/promissoryno',{'product_id':this.loanDetails.product_id, branch_id:this.branch}, {
+					headers: {
+						'Authorization': 'Bearer ' + this.token,
+						'Content-Type': 'application/json',
+						'Accept': 'application/json'
+					}
+				})
+				.then(function (response) {
+					this.loanDetails.documents.promissory_number = response.data;
+				}.bind(this))
+				.catch(function (error) {
+					console.log(error);
+				}.bind(this));
+			}
 		},
 		navigate:function(tab){
 			document.getElementById(tab).click();
@@ -550,17 +605,16 @@ export default {
 				.then(function (response) {
 					this.notify('',response.data.message, 'success');
 					this.$emit('savedInfo', response.data.data)
-					this.$emit('unload');
 					this.pay(response.data.data.loan_account_id);
 					if(this.prejected){
 						window.location.href = this.baseURL() + 'transaction/rejected_release';
 					}
 				}.bind(this))
 				.catch(function (error) {
-					this.$emit('unload');
 					console.log(error);
 				}.bind(this));
 			}else {
+				this.$emit('load');
 				axios.post(this.baseURL() + 'api/account/create/' + this.loanDetails.borrower_id, this.loanDetails, {
 					headers: {
 						'Authorization': 'Bearer ' + this.token,
@@ -573,10 +627,8 @@ export default {
 					this.notify('',response.data.message, 'success');
 					this.pay(response.data.data.loan_account_id);
 					this.$emit('savedInfo', response.data.data)
-					this.$emit('unload');
 				}.bind(this))
 				.catch(function (error) {
-					this.$emit('unload');
 					console.log(error);
 				}.bind(this));
 			}
@@ -628,7 +680,6 @@ export default {
 
 		},
 		fetchAccount:function(id){
-				this.$emit('load');
 				axios.get(this.baseURL() + 'api/account/show/' + this.loanaccount.loan_account_id, {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
@@ -669,16 +720,18 @@ export default {
 							this.$emit('unload');
 							this.memoChecked = false;
 							this.notify('','Payment successful.', 'success');
-							
+							this.resetLoans();
+							this.$emit('resetall')
 						}.bind(this))
 						.catch(function (error) {
 							this.notify('',error.response.data.message + ' ' + error.response.data.data, 'error');
 							console.log(error);
 							this.$emit('unload');
+							this.$emit('resetall')
+							this.resetLoans
 						}.bind(this));
 						}.bind(this))
 						.catch(function (error) {
-							this.$emit('unload');
 							console.log(error);
 						}.bind(this));
 					},
@@ -686,6 +739,9 @@ export default {
 		pay:function(accountId){
 			if(this.loanaccount.loan_account_id){
 				this.fetchAccount();
+			}else{
+				this.$emit('resetall')
+				this.$emit('unload');
 			}
 		},
 
@@ -734,7 +790,7 @@ export default {
 		},
 		'loanDetails.product_id'(newValue){
 			this.setInterestRate();
-			if(!this.prejected){
+			if(!this.prejected && newValue){
 				this.fetchPromissoryNo();
 			}
 			this.deductionComputation = 0;

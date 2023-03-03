@@ -16,8 +16,8 @@
 		<div v-if="transactionDate.status == 'open'">
 			<div class="d-flex flex-column flex-xl-row p-16">
 					<div style="flex:9;">
-						<client-list-side v-if="rejectid" @selectAccount="selectAccount" :pborrowers="rejectedAccounts" :account="rejectedAccount.loan_account_id"></client-list-side>
-						<client-list-side v-if="!rejectid" @selectBorrower="selectBorrower" :pborrowers="borrowers" :id="{}"></client-list-side>
+						<client-list-side @resetAllBorrower="resetAllVal=false" v-if="rejectid" @selectAccount="selectAccount" :pborrowers="rejectedAccounts" :account="rejectedAccount.loan_account_id" :resetall="resetAllVal"></client-list-side>
+						<client-list-side @resetAllBorrower="resetAllVal=false" v-if="!rejectid" @selectBorrower="selectBorrower" :pborrowers="borrowers" :id="{}" :resetall="resetAllVal"></client-list-side>
 						<div d-flex flex-column v-if="borrower.borrower_id && !rejectid">
 							<span class="text-red font-md">Existing Current Loan Accounts</span>
 							<div class="mb-10"></div>
@@ -64,6 +64,8 @@
 								:token="token"
 								:pborrower="borrower"
 								:psave="saveInfo"
+								@load="loading=true"
+								@unload="loading=false"
 								:transactionDate="transactionDate"></borrowers-info>
 							</div>
 
@@ -88,6 +90,7 @@
 								:transactionDate="transactionDate"
 								@load="loading=true"
 								@unload="loading=false"
+								@resetall="resetAll()"
 								></loan-details>
 							</div>
 
@@ -909,6 +912,7 @@
 		props:['token', 'idtype','rejectid','title', 'releasetype', 'pbranch', 'staff', 'branch_mgr'],
 		data(){
 			return {
+				resetAllVal:false,
 				loading:false,
 				transactionDate: {
 					branch_id: this.pbranch,
@@ -1024,6 +1028,11 @@
 			}
 		},
 		methods: {
+			resetAll:function(){
+				this.resetBorrower();
+				this.resetLoanDetails();
+				this.resetAllVal = true;
+			},
 			fetchTransactionDate:function(){
 				axios.get(this.baseURL() + 'api/eod/eodtransaction/'+this.pbranch, {
 				headers: {
@@ -1154,7 +1163,7 @@
 					console.log(error);
 				}.bind(this));
 			},
-			fetchBorrowers:function(){
+			fetchBorrowers:function(unload){
 				this.loading=true;
 				axios.get(this.baseURL() + 'api/borrower/list/' + this.branch, {
 				headers: {
@@ -1165,11 +1174,15 @@
 				})
 				.then(function (response) {
 					this.borrowers = response.data.data;
-					this.loading = false;
+					if(!unload){
+						this.loading = false;
+					}
 				}.bind(this))
 				.catch(function (error) {
 					console.log(error);
-					this.loading = false;
+					if(!unload){
+						this.loading = false;
+					}
 				}.bind(this));
 			},
 			fetchLoanAccounts:function(){
@@ -1222,7 +1235,7 @@
 				this.loanDetails = data;
 			},
 			savedInfo:function(data){
-				this.fetchBorrowers();
+				this.fetchBorrowers(1);
 				this.bborrower = data;
 				this.saveLoanDetails = true;
 				this.navigate('custom-content-below-borrowerinfo-tab');

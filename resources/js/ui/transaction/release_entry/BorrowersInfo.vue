@@ -70,7 +70,7 @@
 				</div>
 				<div class="form-group mb-10" style="flex: 6">
 					<label for="contactNumber" class="form-label">Contact Number</label>
-					<input v-model="borrower.contact_number" required type="number" class="form-control form-input " id="contactNumber">
+					<input v-model="borrower.contact_number" required type="text" class="form-control form-input " id="contactNumber">
 				</div>
 			</div>
 		</section>
@@ -131,7 +131,7 @@
 			</div>
 		</section>
 
-		<section v-if="borrower.status=='married'" class="mb-24" style="flex:21;padding-left:16px;">
+		<section v-if="borrower.status.toLowerCase()=='married'||borrower.status.toLowerCase()=='live-in'" class="mb-24" style="flex:21;padding-left:16px;">
 			<span class="section-title mb-24">Borrower's Spouse Identification Details</span>
 
 			<div class="d-flex flex-row">
@@ -358,7 +358,7 @@
 				</div>
 				<div class="form-group mb-10 mr-16" style="flex: 2">
 					<label for="companyContact" class="form-label">Contact No.</label>
-					<input v-model="data.businessInfo.contact_no" required type="number" class="form-control form-input " id="companyContact">
+					<input v-model="data.businessInfo.contact_no" required type="text" class="form-control form-input " id="companyContact">
 				</div>
 				<div class="form-group mb-10" style="flex: 1">
 					<label for="companyYears" class="form-label">Years</label>
@@ -519,6 +519,7 @@
 		},
 		methods: {
 			fetchBorrower:function(){
+				this.$emit('load')
 				axios.get(this.baseURL() + 'api/borrower/' + this.borrower_id, {
 					headers: {
 						'Authorization': 'Bearer ' + this.token,
@@ -534,6 +535,7 @@
 				}.bind(this));
 			},
 			save: function(){
+				this.$emit('load')
 				this.borrower.img = this.img;
 				// this.borrower.username = this.borrower.firstname+this.borrower.lastname;
 				// this.borrower.password = "$2y$10$BrOxloCXFGB4PyCPe7.leefLeosAh9zpS1DCdGlfz8XRyNIkgeHlO";
@@ -548,14 +550,17 @@
 							}
 						})
 						.then(function (response) {
+							// this.$emit('unload')
 							this.notify('',response.data.message, 'success');
 							this.$emit('savedInfo', response.data.data)
 							console.log(response.data);
 						}.bind(this))
 						.catch(function (error) {
 							console.log(error);
+							// this.$emit('unload')
 						}.bind(this));
 				}else {
+					this.$emit('load')
 					axios.post(this.baseURL() + 'api/borrower', this.borrower, {
 						headers: {
 							'Authorization': 'Bearer ' + this.token,
@@ -564,12 +569,14 @@
 						}
 					})
 					.then(function (response) {
+						// this.$emit('unload')
 						this.notify('',response.data.message, 'success');
 						this.$emit('savedInfo', response.data.data)
 						console.log(response.data);
 					}.bind(this))
 					.catch(function (error) {
 						console.log(error);
+						// this.$emit('unload')
 					}.bind(this));
 				}
 

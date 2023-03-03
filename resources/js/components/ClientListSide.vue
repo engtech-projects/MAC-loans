@@ -59,7 +59,7 @@
 
 <script>
 export default {
-	props:['pborrowers', 'id', 'account'],
+	props:['pborrowers', 'id', 'account','resetall'],
 	data(){
 		return {
 			filter:'',
@@ -87,6 +87,14 @@ export default {
 				return 'active';
 			}
 			return '';
+		}
+	},
+	watch:{
+		'resetall'(val){
+			if(val) {
+				this.borrower = {borrower_id:''};
+				this.$emit('resetAllBorrower')
+			}
 		}
 	},
 	computed:{

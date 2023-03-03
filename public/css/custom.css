@@ -1,5 +1,11 @@
 
 /* UTILITIES */
+.no-select{
+	-webkit-user-select: none;  
+	-moz-user-select: none;     
+	-ms-user-select: none;   
+	user-select: none;       
+}
 .a4doc {
 	min-height: 297mm!important;
 }

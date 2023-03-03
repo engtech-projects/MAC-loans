@@ -28,6 +28,7 @@ Vue.component('branch-nav', require('./components/BranchNav.vue').default);
 Vue.component('reports-nav', require('./components/ReportsNav.vue').default);
 Vue.component('day-ended', require('./components/DayEnded.vue').default);
 Vue.component('mac-pagination', require('./components/Pagination.vue').default);
+Vue.component('search-dropdown', require('./components/SearchDropdown.vue').default);
 Vue.component('client-list', require('./ui/client_information/ClientList.vue').default);
 Vue.component('personal-information', require('./ui/client_information/PersonalInformation.vue').default);
 Vue.component('balance-inquiry', require('./ui/client_information/BalanceInquiry.vue').default);

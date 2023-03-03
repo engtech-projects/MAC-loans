@@ -968,7 +968,7 @@ export default {
 				this.$emit('unload');
 				var loan = response.data.data;
 				loan.remainingBalance = response.data.data.remaining_balance;
-                loan.current_amortization = loan.current_amortization?loan.current_amortization:{};
+				loan.current_amortization = loan.current_amortization?loan.current_amortization:{};
 				this.loanAccount = loan;
 			}.bind(this))
 			.catch(function (error) {
