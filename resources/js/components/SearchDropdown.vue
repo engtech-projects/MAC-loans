@@ -18,7 +18,7 @@
 
 <script>
 export default {
-	props:['data','id','name'],
+	props:['data','id','name','reset'],
 	data(){
 		return {
 			dd:false,
@@ -37,6 +37,14 @@ export default {
 	computed:{
 		filteredData:function(){
 			return this.search.length>0?this.data.filter(d=>d[this.name].toLowerCase().includes(this.search.toLowerCase())):this.data;
+		}
+	},
+	watch:{
+		'reset':function(val){
+			if(val){
+				this.selectedData = {};
+				this.$emit('centerReset');
+			}
 		}
 	}
 }

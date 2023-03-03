@@ -43,7 +43,7 @@
 					</select> -->
 					<select v-if="!productEnable" disabled required v-model="loanDetails.center_id" name="" id="" class="form-control form-input ">
 					</select>
-					<search-dropdown v-else @sdSelect="centerSelect" :data="centers" id="center_id" name="center"></search-dropdown>
+					<search-dropdown :reset="resetCenter" @centerReset="resetCenter=false" v-else @sdSelect="centerSelect" :data="centers" id="center_id" name="center"></search-dropdown>
 				</div>
 				<div class="form-group mb-10 mr-16" style="flex:7">
 					<label for="type" class="form-label">Type</label>
@@ -343,6 +343,7 @@ export default {
 	],
 	data(){
 		return {
+			resetCenter:false,
 			inputs:{
 				loanAmount:false,
 				interestAmount:false,
@@ -737,6 +738,7 @@ export default {
 					},
 
 		pay:function(accountId){
+			this.resetCenter = true;
 			if(this.loanaccount.loan_account_id){
 				this.fetchAccount();
 			}else{
