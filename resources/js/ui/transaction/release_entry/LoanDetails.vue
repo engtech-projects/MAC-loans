@@ -36,12 +36,14 @@
 			<div class="d-flex flex-row">
 				<div class="form-group mb-10 mr-16" style="flex:7">
 					<label for="center" class="form-label">Center</label>
-					<select v-if="!productEnable" disabled required v-model="loanDetails.center_id" name="" id="" class="form-control form-input ">
-						<!-- <option v-for="center in centers" :key="center.center_id" :value="center.center_id">{{center.center}}</option> -->
+					<!-- <select v-if="!productEnable" disabled required v-model="loanDetails.center_id" name="" id="" class="form-control form-input ">
 					</select>
 					<select v-if="productEnable" required v-model="loanDetails.center_id" name="" id="" class="form-control form-input ">
 						<option v-for="center in centers" :key="center.center_id" :value="center.center_id">{{center.center}}</option>
+					</select> -->
+					<select v-if="!productEnable" disabled required v-model="loanDetails.center_id" name="" id="" class="form-control form-input ">
 					</select>
+					<search-dropdown v-else @sdSelect="centerSelect" :data="centers" id="center_id" name="center"></search-dropdown>
 				</div>
 				<div class="form-group mb-10 mr-16" style="flex:7">
 					<label for="type" class="form-label">Type</label>
@@ -434,6 +436,9 @@ export default {
 		}
 	},
 	methods:{
+		centerSelect:function(center){
+			this.loanDetails.center_id = center.center_id;
+		},
 		resetLoans:function(){
 			this.loanDetails = {
 				cycle_no : 1,
