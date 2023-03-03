@@ -17,6 +17,7 @@ use App\Models\HouseholdMembers;
 use App\Models\OutstandingObligations;
 use App\Models\LoanAccount;
 use App\Http\Resources\Borrower as BorrowerResource;
+use App\Http\Resources\BorrowerAccountsResource;
 
 class BorrowerController extends BaseController
 {
@@ -74,6 +75,11 @@ class BorrowerController extends BaseController
 
 
         return  $this->sendResponse($borrowers, 'Borrowers');
+    }
+
+    public function getBorrowerAccounts($borrowerId) {
+        $borrowerAccount = LoanAccount::where(['borrower_id' => $borrowerId])->get();
+        return $this->sendResponse(BorrowerAccountsResource::collection($borrowerAccount), 'Borrowers Account List');
     }
 
      /**

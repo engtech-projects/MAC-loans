@@ -14,6 +14,8 @@ class Payment extends Model
     protected $table = 'payment';
     protected $primaryKey = 'payment_id';
 
+    const STATUS_PAID = 'paid';
+
     protected $fillable = [
     	'loan_account_id',
     	'branch_id',

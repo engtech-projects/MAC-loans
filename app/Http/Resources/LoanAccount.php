@@ -74,7 +74,7 @@ class LoanAccount extends JsonResource
             'updated_at' => $this->updated_at,
             'cash_voucher' => $this->cashVoucher(),
             'remaining_balance' => $this->remainingBalance(),
-            'collection_rate' => $this->collectionRate()
+            'collection_rate' => $this->collectionRate(),
         ];
     }
 }

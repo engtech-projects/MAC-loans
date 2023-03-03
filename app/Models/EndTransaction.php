@@ -51,7 +51,7 @@ class EndTransaction extends Model
 		// return $transactionDate;
 	// }
 
-	public function getTransactionDate($branchId) {
+	public static function getTransactionDate($branchId) {
 
 		$eod = EndTransaction::where([ 'branch_id' => $branchId, 'status' => 'open' ])->get()->last();
 
