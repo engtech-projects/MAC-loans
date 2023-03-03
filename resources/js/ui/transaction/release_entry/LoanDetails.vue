@@ -680,7 +680,7 @@ export default {
 
 		},
 		fetchAccount:function(id){
-				axios.get(this.baseURL() + 'api/account/show/' + this.loanaccount.loan_account_id, {
+				axios.get(this.baseURL() + 'api/account/amortization_details/' + this.loanaccount.loan_account_id, {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
 						'Content-Type': 'application/json',

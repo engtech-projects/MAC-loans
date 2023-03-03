@@ -38,6 +38,12 @@ class LoanAccountController extends BaseController
 
     }
 
+    public function showCurrentAmortization(LoanAccount $account) {
+        $data = $account->getAmortization();
+
+        return $this->sendResponse($data,'Amortization details fetched');
+    }
+
 	/**
      * Store a newly created resource in storage.
      */
