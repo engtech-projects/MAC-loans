@@ -343,6 +343,20 @@ class LoanAccount extends Model
         return $accounts->get();
     }
 
+    public function getAmortization()
+    {
+        $data = (Object)[];
+        $tranDate = new EndTransaction();
+        $transactionDateNow = $tranDate->getTransactionDate($this->branch->branch_id)->date_end;
+        $data->current_amortization = $this->currentAmortization($this->loan_account_id,$transactionDateNow);
+        $data->remainingBalance = $this->remainingBalance();
+
+
+        return $data;
+
+    }
+
+
     public function currentAmortization($loanAccountId, $dateNow)
     {
 
