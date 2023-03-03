@@ -411,17 +411,25 @@ class LoanAccount extends Model
             'loan_accounts.date_release',
             'loan_accounts.loan_amount',
             'loan_accounts.loan_status',
+            'loan_accounts.payment_status',
             'loan_accounts.interest_rate',
             'loan_accounts.interest_amount',
             'loan_accounts.due_date',
             'loan_accounts.payment_mode',
+            'loan_accounts.no_of_installment',
             'loan_accounts.terms',
+            'loan_accounts.type',
+            'loan_accounts.cycle_no',
             'product.product_name'
 
 
         )
 
         ->where('loan_account_id','=',$this->loan_account_id)->first();
+        $loan_details->current_amortization = $this->getCurrentAmortization();
+        $loan_details->remaining_balance = $this->remainingBalance();
+        $loan_details->amortization = $this->amortization();
+        $loan_details->loan_status_view =  $this->getStatusView();
         return $loan_details;
     }
 
