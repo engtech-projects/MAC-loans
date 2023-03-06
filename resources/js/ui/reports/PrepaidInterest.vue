@@ -97,7 +97,8 @@ export default {
 			branch:{},
 			reports:[],
 			filter:{
-				date_from:null
+				date_from:null,
+				branch_id:null,
 			}
 		}
 	},
@@ -196,12 +197,18 @@ export default {
 		}
 	},
 	watch:{
-		'filter.date_from':function(){
-			this.fetchReports();
+		filter: {
+			handler(val){
+				if(val.date_from && val.branch_id){
+					this.fetchReports();
+				}
+			},
+			deep: true
 		}
 	},
 	mounted(){
 		this.branch = JSON.parse(this.pbranch);
+		this.filter.branch_id = this.branch.branch_id;
 	}
 }
 </script>
