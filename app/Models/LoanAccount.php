@@ -1052,6 +1052,11 @@ class LoanAccount extends Model
         return $accountSummary;
     }
 
+    public function collectionRateSOA($reamaining_balance = null) {
+
+        return floor((($reamaining_balance['principal']['credit'] + $reamaining_balance['interest']['credit'] + $reamaining_balance['rebates']['credit']) / ($reamaining_balance['principal']['debit'] + $reamaining_balance['interest']['debit'])) * 100);
+    }
+
     public function collectionRate()
     {
         //return round(( ($this->remainingBalance()['principal']['credit'] + $this->remainingBalance()['interest']['credit'] + $this->remainingBalance()['rebates']['credit']) / ($this->remainingBalance()['principal']['debit'] + $this->remainingBalance()['interest']['debit']) ) * 100);

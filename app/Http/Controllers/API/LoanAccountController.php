@@ -38,6 +38,11 @@ class LoanAccountController extends BaseController
 
     }
 
+    public function getRemainingBalance(LoanAccount $account) {
+        return $this->sendResponse($account->remainingBalance(), 'Remaining Balance fetched');
+    }
+
+
     public function showCurrentAmortization(LoanAccount $account) {
         $data = $account->getAmortization();
 
@@ -255,7 +260,7 @@ class LoanAccountController extends BaseController
                 'loan_amount' =>  $account->loan_amount,
                 'date_granted' => $account->date_release,
                 'term' => $account->terms,
-                'collection_rate' => $account->collectionRate(),
+                'collection_rate' => $account->collectionRateSOA($account->remainingBalance),
                 'payment_history' => $account->payment_status,
                 'loan_status' => $account->loan_status,
                 'amortization' => $account->amortization(),
