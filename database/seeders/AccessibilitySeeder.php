@@ -183,7 +183,7 @@ class AccessibilitySeeder extends Seeder
             ],
             // reports
             [ 
-                'label' => 'Transaction',
+                'label' => 'Transaction Reports',
                 'group' => 'Reports',
                 'permission' => 'view transaction report',
                 'description' => 'description',
