@@ -2,6 +2,9 @@ import Vue from 'vue';
 
 Vue.mixin({
 	methods: {
+		hasUserAccess:function(userAccess, access){
+			return userAccess.filter(u=>u.permission == access);
+		},
 		concatW:function(str){
 			if(str.length > 15){
 				return str.substring(0,15) + '...';

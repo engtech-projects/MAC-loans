@@ -158,10 +158,10 @@
 									<span class="flex-1 py-10">{{cinfo.label}}</span>
 									<input @change="togglePermission(cinfo, $event)" type="checkbox" :checked="isChecked(cinfo)">
 								</div>
-								<!-- <div v-for="cc in cinfo.child_permissions" :key="cc.access_id" class="d-flex flex-row justify-content-between light-bb align-items-center mx-45 hover-border-dark">
+								<div v-for="cc in cinfo.child_permissions" :key="cc.access_id" class="d-flex flex-row justify-content-between light-bb align-items-center mx-45 hover-border-dark">
 									<span class="flex-1 py-10 text-tomato">{{cc.label}}</span>
 									<input @change="togglePermission(cc, $event)" type="checkbox" :checked="isChecked(cc)">
-								</div> -->
+								</div>
 							</div>
 						</div>
 					</div>
