@@ -911,6 +911,9 @@ class LoanAccount extends Model
         # GET LAST PAYMENT
         $lastPayment = Payment::where('loan_account_id',$this->loan_account_id)->orderBy('payment_id','DESC')->first();
         $pdi = 0; $penalty = 0;
+        $currentDay = Carbon::createFromFormat('Y-m-d', $transactionDateNow)->startOfDay();
+        $counter = 0;
+
         if($lastPayment) {
             $unpaid_amorts = Amortization::where('loan_account_id',$this->loan_account_id)
             ->where('id','>',$lastPayment->amortization_id)
@@ -920,8 +923,8 @@ class LoanAccount extends Model
             $penalty = $lastPayment->short_penalty;
 
             #Get current day
-            $currentDay = Carbon::createFromFormat('Y-m-d', $transactionDateNow)->startOfDay();
-            $counter = 0;
+
+
 
             foreach($unpaid_amorts as $amort) {
 
@@ -944,7 +947,31 @@ class LoanAccount extends Model
                 }
 
         }else {
-            $unpaid_amort = Amortization::where('loan_account_id',$this->loan_account_id)->whereDate('amortization_date','<=',$transactionDateNow)->get();
+            $unpaid_amorts = Amortization::where('loan_account_id',$this->loan_account_id)->whereDate('amortization_date','<=',$transactionDateNow)->get();
+            $pdi = 0;
+            $penalty =0;
+            foreach($unpaid_amorts as $amort) {
+
+                $dateSched = Carbon::createFromFormat('Y-m-d', $amort->amortization_date);
+                $diff = $currentDay->diffInDays($dateSched);
+
+                if($diff >10) {
+                    $counter++;
+                }
+
+            }
+
+            $totalAmort = $amortization->principal + $amortization->interest;
+            $penalty += ($totalAmort *(2/100)) * $counter;
+
+            #GET PAST DUE INTEREST
+            $isPastDue = $this->checkPastDue($this->due_date, $transactionDateNow);
+                if ($isPastDue && $amortization) {
+
+                    $pdi += $this->getPDI($this->loan_amount, $this->interest_rate, $isPastDue);
+                }
+
+
         }
 
 
