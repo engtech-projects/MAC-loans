@@ -913,6 +913,15 @@ class LoanAccount extends Model
         $pdi = 0; $penalty = 0;
         $currentDay = Carbon::createFromFormat('Y-m-d', $transactionDateNow)->startOfDay();
         $counter = 0;
+        $totalAmort = 0;
+
+        #Check amortization
+        if($amortization) {
+            $totalAmort = $amortization->principal + $amortization->interest;
+        }else {
+            $totalAmort = 0;
+        }
+
 
         if($lastPayment) {
             $unpaid_amorts = Amortization::where('loan_account_id',$this->loan_account_id)
@@ -936,7 +945,7 @@ class LoanAccount extends Model
                 }
 
             }
-            $totalAmort = $amortization->principal + $amortization->interest;
+
             $penalty += ($totalAmort *(2/100)) * $counter;
 
             #GET PAST DUE INTEREST
