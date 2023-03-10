@@ -911,6 +911,7 @@ class LoanAccount extends Model
         $amortization = Amortization::where('loan_account_id',$this->loan_account_id)->first();
 
 
+
         # GET LAST PAYMENT
         $lastPayment = Payment::where('loan_account_id',$this->loan_account_id)->orderBy('payment_id','DESC')->first();
         $pdi = 0;
@@ -920,7 +921,7 @@ class LoanAccount extends Model
 
         #Check amortization
         if($amortization) {
-            $totalAmort = $amortization->principal + $amortization->interest;
+            $totalAmort = $amortization->total + $amortization->interest;
         }else {
             $totalAmort = 0;
         }
