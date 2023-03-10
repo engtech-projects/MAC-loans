@@ -906,13 +906,14 @@ class LoanAccount extends Model
         }
 
 
+        # Get current amortization
         $amortization = $this->currentAmortization($this->loan_account_id, $transactionDateNow);
 
         # GET LAST PAYMENT
         $lastPayment = Payment::where('loan_account_id',$this->loan_account_id)->orderBy('payment_id','DESC')->first();
         $pdi = 0;
         $penalty = 0;
-        $currentDay = Carbon::createFromFormat('Y-m-d', $transactionDateNow)->startOfDay();
+        $currentDay = Carbon::createFromFormat('Y-m-d', $transactionDateNow);
         $counter = 0;
         $totalAmort = 0;
 
@@ -922,8 +923,6 @@ class LoanAccount extends Model
         }else {
             $totalAmort = 0;
         }
-
-
         if($lastPayment) {
             $unpaid_amorts = Amortization::where('loan_account_id',$this->loan_account_id)
             ->where('id','>',$lastPayment->amortization_id)
@@ -931,7 +930,6 @@ class LoanAccount extends Model
             ->get();
             $pdi = $lastPayment->short_pdi;
             $penalty = $lastPayment->short_penalty;
-
 
         }else {
             $unpaid_amorts = Amortization::where('loan_account_id',$this->loan_account_id)->whereDate('amortization_date','<=',$transactionDateNow)->get();
@@ -944,13 +942,19 @@ class LoanAccount extends Model
             $dateSched = Carbon::createFromFormat('Y-m-d', $amort->amortization_date);
             $diff = $currentDay->diffInDays($dateSched);
 
-            if($diff >10) {
+            if($diff > 10) {
                 $counter++;
             }
 
-        }
 
-        $penalty += ($totalAmort *(2/100)) * $counter;
+
+        }
+        //$penalty = ($totalAmortization * ($percent / 100)) * $counter;
+
+        //$penalty += $this->getPenalty($ids, ($amortization->principal + $amortization->interest), $transactionDateNow);
+
+        $penalty = ($totalAmort * (2 / 100)) * $counter;
+
 
         #GET PAST DUE INTEREST
         $isPastDue = $this->checkPastDue($this->due_date, $transactionDateNow);
@@ -958,7 +962,6 @@ class LoanAccount extends Model
 
                 $pdi += $this->getPDI($this->loan_amount, $this->interest_rate, $isPastDue);
             }
-
 
         return [
             'penalty' => $penalty,
