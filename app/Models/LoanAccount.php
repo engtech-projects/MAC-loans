@@ -910,7 +910,8 @@ class LoanAccount extends Model
 
         # GET LAST PAYMENT
         $lastPayment = Payment::where('loan_account_id',$this->loan_account_id)->orderBy('payment_id','DESC')->first();
-        $pdi = 0; $penalty = 0;
+        $pdi = 0;
+        $penalty = 0;
         $currentDay = Carbon::createFromFormat('Y-m-d', $transactionDateNow)->startOfDay();
         $counter = 0;
         $totalAmort = 0;
@@ -931,184 +932,34 @@ class LoanAccount extends Model
             $pdi = $lastPayment->short_pdi;
             $penalty = $lastPayment->short_penalty;
 
-            #Get current day
-
-
-
-            foreach($unpaid_amorts as $amort) {
-
-                $dateSched = Carbon::createFromFormat('Y-m-d', $amort->amortization_date);
-                $diff = $currentDay->diffInDays($dateSched);
-
-                if($diff >10) {
-                    $counter++;
-                }
-
-            }
-
-            $penalty += ($totalAmort *(2/100)) * $counter;
-
-            #GET PAST DUE INTEREST
-            $isPastDue = $this->checkPastDue($this->due_date, $transactionDateNow);
-                if ($isPastDue && $amortization) {
-
-                    $pdi += $this->getPDI($this->loan_amount, $this->interest_rate, $isPastDue);
-                }
 
         }else {
             $unpaid_amorts = Amortization::where('loan_account_id',$this->loan_account_id)->whereDate('amortization_date','<=',$transactionDateNow)->get();
-            $pdi = 0;
-            $penalty =0;
-            foreach($unpaid_amorts as $amort) {
-
-                $dateSched = Carbon::createFromFormat('Y-m-d', $amort->amortization_date);
-                $diff = $currentDay->diffInDays($dateSched);
-
-                if($diff >10) {
-                    $counter++;
-                }
-
-            }
-
-            $totalAmort = $amortization->principal + $amortization->interest;
-            $penalty += ($totalAmort *(2/100)) * $counter;
-
-            #GET PAST DUE INTEREST
-            $isPastDue = $this->checkPastDue($this->due_date, $transactionDateNow);
-                if ($isPastDue && $amortization) {
-
-                    $pdi += $this->getPDI($this->loan_amount, $this->interest_rate, $isPastDue);
-                }
-
 
         }
 
+        #Calculate penalty
+        foreach($unpaid_amorts as $amort) {
 
+            $dateSched = Carbon::createFromFormat('Y-m-d', $amort->amortization_date);
+            $diff = $currentDay->diffInDays($dateSched);
 
-
-
-        //$advancePrincipal = 0;
-        /* if ($amortization) {
-            $amortization->pdi = $amortization->pdi ? $amortization->pdi : 0;
-
-
-            //get delinquents
-            $lastPaidAmort = $this->getPrevAmortization($this->loan_account_id, $amortization->id, ['paid'], null, true, 'DESC');
-            $delinquents = null;
-
-
-            if ($lastPaidAmort) {
-                $delinquents = $this->getPrevAmortization($this->loan_account_id, $amortization->id, ['delinquent'], $lastPaidAmort->id, false, 'DESC');
-            } else {
-                $delinquents = $this->getPrevAmortization($this->loan_account_id, $amortization->id, ['delinquent'], null, false, 'DESC');
+            if($diff >10) {
+                $counter++;
             }
 
-
-            $currentDay = Carbon::createFromFormat('Y-m-d', $transactionDateNow)->startOfDay();
-
-            $ids = [];
-            $missed = [];
-            $totalPrincipal = 0;
-            $totalInterest = 0;
-            $totalPdi = 0;
-            $totalPenalty = 0;
-             // identify missed payments
-                if ($delinquents) {
-                    $amort_id = [];
-                    foreach ($delinquents as $delinquent) {
-
-                        $payments = $this->getPayment($this->loan_account_id, $delinquent->id);
-                        $delinquent->payments = $payments;
-                    }
-
-
-                    foreach ($delinquents as $delinquent) {
-
-                        $ids[] = $delinquent->id;
-
-                        if (isset($delinquent->payments) && count($delinquent->payments) > 0) {
-                            $isNotAdvancePayment = true;
-                            foreach ($delinquent->payments as $payment) {
-                                $totalPrincipal += $payment->short_principal;
-                                $totalInterest += $payment->short_interest;
-                                $totalPdi += $payment->short_pdi;
-                                $totalPenalty += $payment->short_penalty;
-                                $isNotAdvancePayment = (bool)$payment->total_payable;
-                                break;
-                            }
-                            if (!$isNotAdvancePayment) { // if advanced payment only add principal and interest
-                                $totalPrincipal += $delinquent->principal;
-                                $totalInterest += $delinquent->interest;
-                            }
-                            break;
-                        } else {
-                            $missed[] = $delinquent->id;
-                        }
-
-                        $totalPrincipal += $delinquent->principal;
-                        $totalInterest += $delinquent->interest;
-                    }
-                }
-
-                if ($advancePrincipal) {
-
-                    if (count($missed) > 0) {
-                        $balance = $advancePrincipal;
-                        // $balance = 0;
-                        $missedAmortizations = Amortization::whereIn('id', $missed)->orderBy('id', 'ASC')->get();
-
-                        foreach ($missedAmortizations as $key => $missedAmortization) {
-
-                            if ($balance >=  $missedAmortization->principal) {
-                                $balance -= $missedAmortization->principal;
-                                $pos = array_search($missedAmortization->id, $missed);
-                                unset($missed[$pos]);
-                            } else {
-                                // LoanAccount::find($loanAccountId)->update(['payment_status' => 'Delinquent']);
-                                break;
-                            }
-                        }
-                    }
-                }
-                $amortization->delinquent = [
-                    'ids' => $ids,
-                    'principal' => $totalPrincipal,
-                    'interest' => $totalInterest,
-                    'penalty' => $totalPenalty,
-                    'pdi' => $totalPdi,
-                    'advance' => $advancePrincipal,
-                    'missed' => $missed
-
-                ];
-
-
-
-            //$amortization->sample = $this->getDelinquent($this->loan_account_id, $amortization->id, $amortization->advance_principal);
-
-            $amortization->short_principal = $amortization->delinquent['principal'] - (in_array($amortization->id, $amortization->delinquent['ids']) ? $amortization->principal : 0);
-            $amortization->short_interest = $amortization->delinquent['interest'] - (in_array($amortization->id, $amortization->delinquent['ids']) ? $amortization->interest : 0);
-
-            $amortization->schedule_principal = $amortization->principal;
-            $amortization->schedule_interest = $amortization->interest;
-            $amortization->short_pdi = 0;
-            $amortization->short_penalty = $amortization->delinquent['penalty'];
-            // check if current amortization is paid partially.
-            $isPaid = $this->getPayment($this->loan_account_id, $amortization->id)->last();
-            $currentDay = Carbon::createFromFormat('Y-m-d', $transactionDateNow)->startOfDay();
-            $dateSched = Carbon::createFromFormat('Y-m-d', $amortization->amortization_date)->startOfDay();
-            $dayDiff = $dateSched->diffInDays($currentDay, false);
-            $penaltyMissed = $amortization->delinquent['missed'];
-            $amortization->day_late = $dayDiff;
-
-            if ($dayDiff > 10 && !$isPaid && $amortization->advance_principal < $amortization->schedule_principal) {
-                $penaltyMissed = array_merge($amortization->delinquent['missed'], [$amortization->id]);
-            }
-            $amortization->penalty = $this->getPenalty($penaltyMissed, ($amortization->schedule_principal + $amortization->schedule_interest), $transactionDateNow);
-
-            $amortization->total = ($amortization->principal + $amortization->interest) + ($amortization->short_principal + $amortization->short_interest);
-            $amortization->outstandingBalance = $this->outstandingBalance($this->loan_account_id);
         }
- */
+
+        $penalty += ($totalAmort *(2/100)) * $counter;
+
+        #GET PAST DUE INTEREST
+        $isPastDue = $this->checkPastDue($this->due_date, $transactionDateNow);
+            if ($isPastDue && $amortization) {
+
+                $pdi += $this->getPDI($this->loan_amount, $this->interest_rate, $isPastDue);
+            }
+
+
         return [
             'penalty' => $penalty,
             'pdi' => $pdi
@@ -1183,10 +1034,10 @@ class LoanAccount extends Model
                 }
             }
         }
-        //$currentAmortization = $account->getCurrentPenaltyAndPdi();
+
+        // SET PDI AND PENALTY IN THE ACCOUNT SUMMARY
         $currentAmortization = $account->getPDIPENALTY();
-        //$currentAmortization = $account->getPenaltyPdi();
-        //$currentAmortization = $account->getCurrentAmortization();
+
 
         if ($currentAmortization) {
             $accountSummary['penalty']['debit'] = $currentAmortization['penalty'];
@@ -1206,11 +1057,6 @@ class LoanAccount extends Model
         $accountSummary['memo']['balance'] = $accountSummary['principal']['balance'] + $accountSummary['interest']['balance'] + $accountSummary['penalty']['balance'] + $accountSummary['pdi']['balance'] + $accountSummary['rebates']['balance'];
 
         return $accountSummary;
-    }
-
-    public function collectionRateSOA($reamaining_balance = null) {
-
-        return floor((($reamaining_balance['principal']['credit'] + $reamaining_balance['interest']['credit'] + $reamaining_balance['rebates']['credit']) / ($reamaining_balance['principal']['debit'] + $reamaining_balance['interest']['debit'])) * 100);
     }
 
     public function collectionRate($reamaining_balance = null)

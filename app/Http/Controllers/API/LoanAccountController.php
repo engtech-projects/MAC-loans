@@ -262,7 +262,7 @@ class LoanAccountController extends BaseController
                 'loan_amount' =>  $account->loan_amount,
                 'date_granted' => $account->date_release,
                 'term' => $account->terms,
-                'collection_rate' => $account->collectionRate(), //$account->collectionRateSOA($account->remainingBalance),
+                'collection_rate' => $account->collectionRate($account->remainingBalance), //$account->collectionRateSOA($account->remainingBalance),
                 'payment_history' => $account->payment_status,
                 'loan_status' => $account->loan_status,
                 'amortization' => $account->amortization(),
