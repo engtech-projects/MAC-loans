@@ -907,8 +907,9 @@ class LoanAccount extends Model
 
 
         # Get current amortization
-        //$amortization = $this->currentAmortization($this->loan_account_id, $transactionDateNow);
-        $amortization = Amortization::where('loan_account_id',$this->loan_account_id)->first();
+        $amortization = $this->currentAmortization($this->loan_account_id, $transactionDateNow);
+        //$amortization = Amortization::where('loan_account_id',$this->loan_account_id)->first();
+
 
 
 
@@ -921,7 +922,7 @@ class LoanAccount extends Model
 
         #Check amortization
         if($amortization) {
-            $totalAmort = $amortization->total + $amortization->interest;
+            $totalAmort = $amortization->principal + $amortization->interest;
         }else {
             $totalAmort = 0;
         }
@@ -944,14 +945,12 @@ class LoanAccount extends Model
 
             $dateSched = Carbon::createFromFormat('Y-m-d', $amort->amortization_date);
             $diff = $currentDay->diffInDays($dateSched);
-
             if($diff > 10) {
                 $counter++;
             }
         }
 
         $penalty += ($totalAmort * (2 / 100)) * $counter;
-
 
         #GET PAST DUE INTEREST
         $isPastDue = $this->checkPastDue($this->due_date, $transactionDateNow);
