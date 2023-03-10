@@ -120,7 +120,7 @@
 							<span class="">Product Name</span>
 							<span>:</span>
 						</div>
-						<span class="flex-2 text-primary-dark">{{loanAccount.product_name}}</span>
+						<span class="flex-2 text-primary-dark">{{loanAccount.product.product_name}}</span>
 					</div>
 
 					<div class="d-flex flex-row mb-12">
