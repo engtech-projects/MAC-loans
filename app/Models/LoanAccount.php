@@ -907,7 +907,9 @@ class LoanAccount extends Model
 
 
         # Get current amortization
-        $amortization = $this->currentAmortization($this->loan_account_id, $transactionDateNow);
+        //$amortization = $this->currentAmortization($this->loan_account_id, $transactionDateNow);
+        $amortization = Amortization::where('loan_account_id',$this->loan_account_id)->first();
+
 
         # GET LAST PAYMENT
         $lastPayment = Payment::where('loan_account_id',$this->loan_account_id)->orderBy('payment_id','DESC')->first();
@@ -948,6 +950,7 @@ class LoanAccount extends Model
         }
 
         $penalty += ($totalAmort * (2 / 100)) * $counter;
+
 
         #GET PAST DUE INTEREST
         $isPastDue = $this->checkPastDue($this->due_date, $transactionDateNow);
