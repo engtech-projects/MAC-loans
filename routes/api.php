@@ -72,11 +72,10 @@ Route::middleware(['auth:sanctum'])->group( function () {
 
 
     // loan account
-    Route::get('account/loan_details/{account}', [LoanAccountController::class, 'showLoanDetails']);
+    Route::get('account/show/{account}', [LoanAccountController::class, 'showLoanAccount']);
     Route::get('account/amortization_details/{account}',[LoanAccountController::class, 'showCurrentAmortization']);
 
 
-    Route::get('account/show/{account}', [LoanAccountController::class, 'showLoanAccount']);
     Route::post('account/create/{borrower}', [LoanAccountController::class, 'createLoanAccount']);
     Route::post('account/update/{account}', [LoanAccountController::class, 'updateLoanAccount']);
     Route::get('account/statement/{borrower}', [LoanAccountController::class, 'statement']);

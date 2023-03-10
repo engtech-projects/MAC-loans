@@ -957,7 +957,7 @@ export default {
 		},
 		fetchAccount:function(id){
 			this.$emit('load');
-			axios.get(this.baseURL() + 'api/account/loan_details/' + id, {
+			axios.get(this.baseURL() + 'api/account/show/' + id, {
 			headers: {
 				'Authorization': 'Bearer ' + this.token,
 					'Content-Type': 'application/json',

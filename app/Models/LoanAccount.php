@@ -447,6 +447,15 @@ class LoanAccount extends Model
         return $loan_details;
     }
 
+    public function getFirstAmortization() {
+        #GET FIRST AMORTIZAIONT PRINCIPAL AND INTEREST
+        $amort = Amortization::where('loan_account_id',$this->loan_account_id)
+        ->select('principal','interest')
+        ->first();
+
+        return $amort;
+    }
+
     public function getCurrentAmortization()
     {
         $tranDate = new EndTransaction();
@@ -467,8 +476,12 @@ class LoanAccount extends Model
             return;
         }
 
-        //$amortization = $this->currentAmortization($this->loan_account_id, $transactionDateNow);
-        $amortization = Amortization::where('loan_account_id',$this->loan_account_id)->first();
+        //get current amortization
+        $amortization = $this->currentAmortization($this->loan_account_id, $transactionDateNow);
+
+        //Get first amortization principal and interest
+        $first_amort = $this->getFirstAmortization();
+
 
         // check if past due
         $isPastDue = $this->checkPastDue($this->due_date, $transactionDateNow);
@@ -548,14 +561,15 @@ class LoanAccount extends Model
             if ($dayDiff > 10 && !$isPaid && $amortization->advance_principal < $amortization->schedule_principal) {
                 $penaltyMissed = array_merge($amortization->delinquent['missed'], [$amortization->id]);
             }
-            $amortization->penalty = $this->getPenalty($penaltyMissed, ($amortization->schedule_principal + $amortization->schedule_interest), $transactionDateNow);
+
+            $amortization->penalty = $this->getPenalty($penaltyMissed, ($first_amort->principal + $first_amort->interest), $transactionDateNow);
+
 
             // $amortization->penalty = $this->getPenalty($amortization->delinquent['missed'], ($amortization->principal + $amortization->interest));
             $amortization->total = ($amortization->principal + $amortization->interest) + ($amortization->short_principal + $amortization->short_interest);
             $amortization->totalPaid = $this->getPaymentTotal($this->loan_account_id);
             $amortization->outstandingBalance = $this->outstandingBalance($this->loan_account_id);
         }
-
         return $amortization;
     }
 
@@ -909,8 +923,9 @@ class LoanAccount extends Model
 
 
         # Get current amortization
-        //$amortization = $this->currentAmortization($this->loan_account_id, $transactionDateNow);
-        $amortization = Amortization::where('loan_account_id',$this->loan_account_id)->first();
+        $amortization = $this->currentAmortization($this->loan_account_id, $transactionDateNow);
+        #GET FIRST AMORTIZAIONT PRINCIPAL AND INTEREST
+        $first_amort = $this->getFirstAmortization();
 
 
 
@@ -924,7 +939,7 @@ class LoanAccount extends Model
 
         #Check amortization
         if($amortization) {
-            $totalAmort = $amortization->principal + $amortization->interest;
+            $totalAmort = $first_amort->principal + $first_amort->interest;
         }else {
             $totalAmort = 0;
         }
