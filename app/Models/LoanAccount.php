@@ -467,7 +467,8 @@ class LoanAccount extends Model
             return;
         }
 
-        $amortization = $this->currentAmortization($this->loan_account_id, $transactionDateNow);
+        //$amortization = $this->currentAmortization($this->loan_account_id, $transactionDateNow);
+        $amortization = Amortization::where('loan_account_id',$this->loan_account_id)->first();
 
         // check if past due
         $isPastDue = $this->checkPastDue($this->due_date, $transactionDateNow);
@@ -486,6 +487,7 @@ class LoanAccount extends Model
 
             $amortization->pdi = $this->getPDI($this->loan_amount, $this->interest_rate, $isPastDue);
         }
+
 
         # compute for total payables
         # compute for total payments
@@ -950,7 +952,10 @@ class LoanAccount extends Model
             }
         }
 
+
         $penalty += ($totalAmort * (2 / 100)) * $counter;
+
+
 
 
 
