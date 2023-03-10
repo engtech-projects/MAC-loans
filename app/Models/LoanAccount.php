@@ -907,8 +907,8 @@ class LoanAccount extends Model
 
 
         # Get current amortization
-        $amortization = $this->currentAmortization($this->loan_account_id, $transactionDateNow);
-        //$amortization = Amortization::where('loan_account_id',$this->loan_account_id)->first();
+        //$amortization = $this->currentAmortization($this->loan_account_id, $transactionDateNow);
+        $amortization = Amortization::where('loan_account_id',$this->loan_account_id)->first();
 
 
 
@@ -952,12 +952,14 @@ class LoanAccount extends Model
 
         $penalty += ($totalAmort * (2 / 100)) * $counter;
 
+
+
         #GET PAST DUE INTEREST
         $isPastDue = $this->checkPastDue($this->due_date, $transactionDateNow);
-            if ($isPastDue && $amortization) {
+        if ($isPastDue && $amortization) {
 
-                $pdi += $this->getPDI($this->loan_amount, $this->interest_rate, $isPastDue);
-            }
+            $pdi += $this->getPDI($this->loan_amount, $this->interest_rate, $isPastDue);
+        }
 
         return [
             'penalty' => $penalty,
