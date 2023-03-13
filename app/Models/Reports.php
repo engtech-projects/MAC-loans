@@ -112,9 +112,8 @@ class Reports extends Model
     public function getPayments($filters = []) {
 
 
-
         $payments = Payment::where([ 'payment.status' => 'paid']);
-        $payments->join('loan_accounts', 'loan_accounts.loan_account_id', '=', 'payment.loan_account_id');
+        $payments->with('account');
 
     	if( isset($filters['branch_id']) && $filters['branch_id'] ){
             $branch = Branch::find($filters['branch_id']);
@@ -144,6 +143,7 @@ class Reports extends Model
         }
 
         return $payments->get();
+
     }
 
     /* start transaction reports */
@@ -635,7 +635,7 @@ class Reports extends Model
         foreach ($payments as $payment) {
 
             $data[] = [
-                'borrower' => Borrower::find($payment->borrower_id)->fullname(),
+                'borrower' => Borrower::find($payment->account->borrower_id)->fullname(),
                 'payment_date' => $payment->transaction_date,
                 'or' => $payment->or_no,
                 'principal' => $payment->principal,

@@ -62,6 +62,9 @@ class Payment extends Model
         'rebates' => 'MEM'
     ];
 
+    public function account() {
+        return $this->belongsTo(LoanAccount::class,'loan_account_id');
+    }
 	public function loanDetails(){
 		return $this->belongsTo(LoanAccount::class, 'loan_account_id');
 	}
