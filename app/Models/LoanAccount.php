@@ -297,6 +297,7 @@ class LoanAccount extends Model
     {
 
         $branch = Branch::find($filters['branch_id']);
+
         $accounts = LoanAccount::where('status', '=', 'pending')->where(['branch_code' => $branch->branch_code]);
 
         if (isset($filters['transaction_date']) && $filters['transaction_date'] != 'all') {
@@ -315,7 +316,12 @@ class LoanAccount extends Model
             $accounts->where('loan_accounts.product_id', '=', $filters['product_id']);
         }
 
-        return $accounts->get();
+        $accounts = $accounts->get();
+
+        foreach($accounts as $key => $account) {
+            $accounts[$key]->borrower_photo = $account->borrowerPhoto();
+        }
+        return $accounts;
     }
 
     public function releasedAccounts($filters = array())
@@ -339,8 +345,8 @@ class LoanAccount extends Model
         if (isset($filters['product_id']) && $filters['product_id'] != 'all') {
             $accounts->where('loan_accounts.product_id', '=', $filters['product_id']);
         }
-
         return $accounts->get();
+
     }
 
     public function getAmortization()
