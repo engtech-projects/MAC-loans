@@ -30,7 +30,7 @@
 					</div>
 					<div class="form-group mb-10 mr-16" style="flex: 3">
 						<label for="coIdDate" class="form-label">ID Date Issued</label>
-						<input required v-model="loanDetails.co_borrower_id_date_issued" type="date" class="form-control form-input " id="coIdDate">
+						<input v-model="loanDetails.co_borrower_id_date_issued" type="date" class="form-control form-input " id="coIdDate">
 					</div>
 					<div style="flex: 3"></div>
 				</div>
@@ -61,7 +61,7 @@
 					</div>
 					<div class="form-group mb-10 mr-16" style="flex: 3">
 						<label for="coIdDate" class="form-label">ID Date Issued</label>
-						<input v-model="loanDetails.co_maker_id_date_issued" required type="date" class="form-control form-input " id="coIdDate">
+						<input v-model="loanDetails.co_maker_id_date_issued" type="date" class="form-control form-input " id="coIdDate">
 					</div>
 					<div style="flex: 3"></div>
 				</div>
