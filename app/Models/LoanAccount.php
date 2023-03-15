@@ -82,10 +82,18 @@ class LoanAccount extends Model
         /* $num = LoanAccount::where('account_num', 'LIKE', '%' . $branchCode . '-' . $productCode . '%')->get()->pluck('account_num')->last(); */
 
         $num = LoanAccount::where('account_num', 'LIKE','%' . $branchCode . '-' . $productCode . '%')->orderBy('account_num','DESC')->limit(1)->pluck('account_num');
-        if ($num) {
+
+
+        if(count($num) > 0) {
             $series = explode('-', $num);
             $identifier = (int)$series[2] + 1;
+        }else {
+            $identifier = 0000001;
         }
+       /*  if ($num) {
+            $series = explode('-', $num);
+            $identifier = (int)$series[2] + 1;
+        } */
 
 
         return $branchCode . '-' . $productCode . '-' . str_pad($identifier, 7, '0', STR_PAD_LEFT);
