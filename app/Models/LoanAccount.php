@@ -1034,8 +1034,8 @@ class LoanAccount extends Model
         $tranDate = new EndTransaction();
         $transactionDateNow = $tranDate->getTransactionDate($this->branch->branch_id)->date_end;
         $transaction_date =  Carbon::createFromFormat("Y-m-d", $transactionDateNow)->startOfDay();
-        $due_date = $this->due_date !=null ? Carbon::createFromFormat("Y-m-d", $this->due_date)->startOfDay() : null;
-        $days_late = $this->$due_date !=null ? $due_date->diffInDays($transaction_date, false) : null;
+        $due_date =  Carbon::createFromFormat("Y-m-d", $this->due_date)->startOfDay();
+        $days_late = $due_date->diffInDays($transaction_date, false);
 
         $account = LoanAccount::where(['loan_account_id' => $this->loan_account_id])->first();
         $payments = Payment::where(['loan_account_id' => $this->loan_account_id, 'status' => 'paid'])->orderBy('payment_id', 'DESC')->get();
