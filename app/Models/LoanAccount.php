@@ -940,7 +940,7 @@ class LoanAccount extends Model
         if ($data['adv_principal'] != null) {
             $penalty = 0;
         }else {
-            $penalty += ($data['total_amortization'] * (2 / 100)) * $counter;
+            $penalty += ($data['total_amort'] * (2 / 100)) * $counter;
         }
 
         return $penalty;
