@@ -986,6 +986,7 @@ class LoanAccount extends Model
         $penalty = 0;
         $currentDay = Carbon::createFromFormat('Y-m-d', $transactionDateNow);
         $counter = 0;
+        $advPrincipal = 0;
 
         #Check amortization
         if($amortization) {
