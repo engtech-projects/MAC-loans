@@ -990,11 +990,13 @@ class LoanAccount extends Model
         #Check amortization
         if($amortization) {
             $totalAmort = $first_amort->principal + $first_amort->interest;
+
+            $advPrincipal = $this->getAdvancePrincipal($this->loan_account_id, $amortization->id);
         }else {
             $totalAmort = 0;
         }
 
-        $advPrincipal = $this->getAdvancePrincipal($this->loan_account_id, $amortization->id);
+
 
         if($lastPayment) {
             $unpaid_amorts = Amortization::where('loan_account_id',$this->loan_account_id)
