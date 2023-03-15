@@ -79,12 +79,14 @@ class LoanAccount extends Model
         // compute for the document transaction
         $accounNum = NULL;
 
-        $num = LoanAccount::where('account_num', 'LIKE', '%' . $branchCode . '-' . $productCode . '%')->get()->pluck('account_num')->last();
+        /* $num = LoanAccount::where('account_num', 'LIKE', '%' . $branchCode . '-' . $productCode . '%')->get()->pluck('account_num')->last(); */
 
+        $num = LoanAccount::where('account_num', 'LIKE','%' . $branchCode . '-' . $productCode . '%')->orderBy('account_num','DESC')->limit(1)->pluck('account_num');
         if ($num) {
             $series = explode('-', $num);
             $identifier = (int)$series[2] + 1;
         }
+
 
         return $branchCode . '-' . $productCode . '-' . str_pad($identifier, 7, '0', STR_PAD_LEFT);
     }
@@ -912,6 +914,40 @@ class LoanAccount extends Model
         return $account;
     }
 
+    #Calculate penalty
+    public function calculatePenalty($data) {
+
+        $penalty = $data['penalty'];
+        $counter = 0;
+
+        foreach($data['unpaid_amorts'] as $amort) {
+            $dateSched = Carbon::createFromFormat('Y-m-d', $amort->amortization_date);
+            $diff = $data['current_day']->diffInDays($dateSched);
+            if($diff > 10) {
+                $counter++;
+            }
+        }
+
+        //check advance principal
+        if ($data['adv_principal'] != null) {
+            $penalty = 0;
+        }else {
+            $penalty += ($data['total_amortization'] * (2 / 100)) * $counter;
+        }
+
+        return $penalty;
+
+    }
+
+    public function calculatePastDueInterest($amortization,$transactionDateNow,$pdi) {
+        #GET PAST DUE INTEREST
+        $isPastDue = $this->checkPastDue($this->due_date, $transactionDateNow);
+        if ($isPastDue && $amortization) {
+            $pdi += $this->getPDI($this->loan_amount, $this->interest_rate, $isPastDue);
+        }
+        return $pdi;
+    }
+
     public function getPDIPENALTY()
     {
         $tranDate = new EndTransaction();
@@ -950,6 +986,8 @@ class LoanAccount extends Model
             $totalAmort = 0;
         }
 
+        $advPrincipal = $this->getAdvancePrincipal($this->loan_account_id, $amortization->id);
+
         if($lastPayment) {
             $unpaid_amorts = Amortization::where('loan_account_id',$this->loan_account_id)
             ->where('id','>',$lastPayment->amortization_id)
@@ -962,10 +1000,8 @@ class LoanAccount extends Model
             $unpaid_amorts = Amortization::where('loan_account_id',$this->loan_account_id)->whereDate('amortization_date','<=',$transactionDateNow)->get();
 
         }
-
         #Calculate penalty
         foreach($unpaid_amorts as $amort) {
-
             $dateSched = Carbon::createFromFormat('Y-m-d', $amort->amortization_date);
             $diff = $currentDay->diffInDays($dateSched);
             if($diff > 10) {
@@ -973,19 +1009,17 @@ class LoanAccount extends Model
             }
         }
 
+        $penalty = $this->calculatePenalty(
+            [
+                'penalty' => $penalty,
+                'unpaid_amorts' => $unpaid_amorts,
+                'total_amort' => $totalAmort,
+                'current_day' => $currentDay,
+                'adv_principal' => $advPrincipal
+            ]
+        );
 
-        $penalty += ($totalAmort * (2 / 100)) * $counter;
-
-
-
-
-
-        #GET PAST DUE INTEREST
-        $isPastDue = $this->checkPastDue($this->due_date, $transactionDateNow);
-        if ($isPastDue && $amortization) {
-
-            $pdi += $this->getPDI($this->loan_amount, $this->interest_rate, $isPastDue);
-        }
+        $pdi = $this->calculatePastDueInterest($amortization,$transactionDateNow,$pdi);
 
         return [
             'penalty' => $penalty,
@@ -1000,8 +1034,8 @@ class LoanAccount extends Model
         $tranDate = new EndTransaction();
         $transactionDateNow = $tranDate->getTransactionDate($this->branch->branch_id)->date_end;
         $transaction_date =  Carbon::createFromFormat("Y-m-d", $transactionDateNow)->startOfDay();
-        $due_date = Carbon::createFromFormat("Y-m-d", $this->due_date)->startOfDay();
-        $days_late = $due_date->diffInDays($transaction_date, false);
+        $due_date = $this->due_date !=null ? Carbon::createFromFormat("Y-m-d", $this->due_date)->startOfDay() : null;
+        $days_late = $this->$due_date !=null ? $due_date->diffInDays($transaction_date, false) : null;
 
         $account = LoanAccount::where(['loan_account_id' => $this->loan_account_id])->first();
         $payments = Payment::where(['loan_account_id' => $this->loan_account_id, 'status' => 'paid'])->orderBy('payment_id', 'DESC')->get();
