@@ -245,5 +245,10 @@ class Amortization extends Model
         return $amortizationSched;
     }
 
+    public static function getAmortizationStatus($loan_account_id) {
+        $amortization = Amortization::find($loan_account_id);
+        return $amortization->status;
+    }
+
 
 }
