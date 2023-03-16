@@ -30,7 +30,7 @@ class CreateBorrowerInfoTable extends Migration
             // ID details
             $table->string('id_type');
             $table->string('id_no');
-            $table->date('id_date_issued');
+            $table->date('id_date_issued')->nullable();
             // spouse info
             $table->string('spouse_firstname')->nullable();
             $table->string('spouse_middlename')->nullable();

@@ -39,13 +39,13 @@ class CreateLoanAccountsTable extends Migration
             $table->string('co_borrower_address');
             $table->string('co_borrower_id_type');
             $table->string('co_borrower_id_number');
-            $table->string('co_borrower_id_date_issued');
+            $table->string('co_borrower_id_date_issued')->nullable();
             // co maker
             $table->string('co_maker_name');
             $table->string('co_maker_address')->nullable();;
             $table->string('co_maker_id_type');
             $table->string('co_maker_id_number');
-            $table->string('co_maker_id_date_issued');
+            $table->string('co_maker_id_date_issued')->nullable();
             // deductions
             $table->double('document_stamp', 10, 2)->nullable();
             $table->double('filing_fee', 10, 2)->nullable();
