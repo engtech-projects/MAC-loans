@@ -528,9 +528,15 @@
 					}
 				})
 				.then(function (response) {
+					if(this.pclient){
+						this.$emit('unload')
+					}
 					this.borrower = response.data.data;
 				}.bind(this))
 				.catch(function (error) {
+					if(this.pclient){
+						this.$emit('unload')
+					}
 					console.log(error);
 				}.bind(this));
 			},
