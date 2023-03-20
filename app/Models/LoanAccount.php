@@ -1115,7 +1115,7 @@ class LoanAccount extends Model
         $advPrincipal = 0;
         $ids = [];
         $missed = [];
-        $unpaid_amorts = null;
+        $unpaid_amorts = [];
         #Check amortization
         if($amortization) {
             $totalAmort = $first_amort->principal + $first_amort->interest;
