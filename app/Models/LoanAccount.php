@@ -1139,56 +1139,55 @@ class LoanAccount extends Model
             }else {
                 $unpaid_amorts = Amortization::where('loan_account_id',$this->loan_account_id)->whereDate('amortization_date','<=',$transactionDateNow)->get();
             }
-        }
 
 
+            foreach ($unpaid_amorts as $delinquent) {
 
-
-
-        foreach ($unpaid_amorts as $delinquent) {
-
-            $ids[] = $delinquent->id;
-            $missed[] = $delinquent->id;
-
-        }
-
-
-        if($advPrincipal) {
-            $balance = $advPrincipal;
-            if (count($missed) > 0) {
-                $missedAmortizations = Amortization::whereIn('id', $missed)->orderBy('id', 'ASC')->get();
-                foreach ($missedAmortizations as $key => $missedAmortization) {
-                    $missed_amorts [] = $missedAmortization->id;
-                    if ($balance >=  $missedAmortization->principal) {
-                        $balance -= $missedAmortization->principal;
-                        $pos = array_search($missedAmortization->id, $ids);
-                        unset($missed[$pos]);
-
-                    }else {
-                        $penalty = $this->getPenalty($missed,$totalAmort,$transactionDateNow);
-                    }
-                }
+                $ids[] = $delinquent->id;
+                $missed[] = $delinquent->id;
 
             }
+
+            if($advPrincipal) {
+                $balance = $advPrincipal;
+                if (count($missed) > 0) {
+                    $missedAmortizations = Amortization::whereIn('id', $missed)->orderBy('id', 'ASC')->get();
+                    foreach ($missedAmortizations as $key => $missedAmortization) {
+                        $missed_amorts [] = $missedAmortization->id;
+                        if ($balance >=  $missedAmortization->principal) {
+                            $balance -= $missedAmortization->principal;
+                            $pos = array_search($missedAmortization->id, $ids);
+                            unset($missed[$pos]);
+
+                        }else {
+                            $penalty = $this->getPenalty($missed,$totalAmort,$transactionDateNow);
+                        }
+                    }
+
+                }
+            }
+
+
+            $penaltyMissed = $missed;
+            $currentDay = Carbon::createFromFormat('Y-m-d', $transactionDateNow)->startOfDay();
+            $dateSched = Carbon::createFromFormat('Y-m-d',$amortization->amortization_date)->startOfDay();
+            $dayDiff = $dateSched->diffInDays($currentDay,false);
+            if ($dayDiff > 0 && !$isPaid && $amortization->advance_principal < $amortization->principal) {
+                Amortization::find($amortization->id)->update(['status' => 'delinquent']);
+
+            }
+
+            if ($dayDiff > 10 && !$isPaid && $balance < $amortization->principal) {
+
+                $penaltyMissed = array_merge($missed, [$amortization->id]);
+            }
+
+
+            $penalty = $this->getPenalty($penaltyMissed,$totalAmort,$transactionDateNow);
         }
 
 
-        $penaltyMissed = $missed;
-        $currentDay = Carbon::createFromFormat('Y-m-d', $transactionDateNow)->startOfDay();
-        $dateSched = Carbon::createFromFormat('Y-m-d',$amortization->amortization_date)->startOfDay();
-        $dayDiff = $dateSched->diffInDays($currentDay,false);
-        if ($dayDiff > 0 && !$isPaid && $amortization->advance_principal < $amortization->principal) {
-            Amortization::find($amortization->id)->update(['status' => 'delinquent']);
 
-        }
-
-        if ($dayDiff > 10 && !$isPaid && $balance < $amortization->principal) {
-
-            $penaltyMissed = array_merge($missed, [$amortization->id]);
-        }
-
-
-        $penalty = $this->getPenalty($penaltyMissed,$totalAmort,$transactionDateNow);
 
 
 
@@ -1267,8 +1266,8 @@ class LoanAccount extends Model
         $pdi = $this->calculatePastDueInterest($amortization,$transactionDateNow,$pdi);
 
         return [
-            'penalty' => $penalty,
-            'pdi' => $pdi
+            'penalty' => $amortization ? $penalty : 0,
+            'pdi' => $amortization ? $pdi : 0
         ];
     }
 
