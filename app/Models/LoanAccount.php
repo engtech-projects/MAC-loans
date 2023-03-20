@@ -1177,15 +1177,17 @@ class LoanAccount extends Model
         $dayDiff = $dateSched->diffInDays($currentDay,false);
         if ($dayDiff > 0 && !$isPaid && $amortization->advance_principal < $amortization->principal) {
             Amortization::find($amortization->id)->update(['status' => 'delinquent']);
+
         }
-        if ($dayDiff > 10 && !$isPaid && $amortization->advance_principal < $amortization->principal) {
+
+        if ($dayDiff > 10 && !$isPaid && $balance < $amortization->principal) {
+
             $penaltyMissed = array_merge($missed, [$amortization->id]);
         }
 
 
-
-
         $penalty = $this->getPenalty($penaltyMissed,$totalAmort,$transactionDateNow);
+
 
 
 
