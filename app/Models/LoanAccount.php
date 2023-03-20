@@ -552,6 +552,7 @@ class LoanAccount extends Model
                 $amortization->over_payment = $isPaid->over_payment;
             }
             $currentDay = Carbon::createFromFormat('Y-m-d', $transactionDateNow)->startOfDay();
+
             $dateSched = Carbon::createFromFormat('Y-m-d', $amortization->amortization_date)->startOfDay();
             $dateSchedPension = Carbon::createFromFormat('Y-m-d', $amortization->amortization_date)->startOfMonth();
             $dayDiff = $dateSched->diffInDays($currentDay, false);
@@ -571,6 +572,7 @@ class LoanAccount extends Model
                     }
                 }
             }
+
             if ($dayDiff > 0 && !$isPaid && $amortization->advance_principal < $amortization->schedule_principal) {
                 Amortization::find($amortization->id)->update(['status' => 'delinquent']);
                 $amortization->delinquent = $this->getDelinquent($this->loan_account_id, $amortization->id, $amortization->advance_principal);
@@ -579,6 +581,8 @@ class LoanAccount extends Model
             if ($dayDiff > 10 && !$isPaid && $amortization->advance_principal < $amortization->schedule_principal) {
                 $penaltyMissed = array_merge($amortization->delinquent['missed'], [$amortization->id]);
             }
+
+
 
 
 
@@ -1137,44 +1141,16 @@ class LoanAccount extends Model
         }
 
 
-        #Calculate penalty
-        foreach($unpaid_amorts as $amort) {
-            $payments = $this->getPayment($this->loan_account_id, $amort->id);
-            $unpaid_amorts->payments = $payments;
-        }
+
 
         foreach ($unpaid_amorts as $delinquent) {
 
             $ids[] = $delinquent->id;
-
-            if (isset($delinquent->payments) && count($delinquent->payments) > 0) {
-                $isNotAdvancePayment = true;
-                foreach ($delinquent->payments as $payment) {
-
-                    $pdi += $payment->short_pdi;
-                    $penalty += $payment->short_penalty;
-                    $isNotAdvancePayment = (bool)$payment->total_payable;
-                    break;
-                }
-                if (!$isNotAdvancePayment) { // if advanced payment only add principal and interest
-
-                }
-                break;
-            } else {
-                $missed[] = $delinquent->id;
-            }
+            $missed[] = $delinquent->id;
 
         }
 
-        /* foreach($unpaid_amorts as $amort) {
-            $missed[] = $amort->id;
-            $ids[] = $amort->id;
-            $dateSched = Carbon::createFromFormat('Y-m-d', $amort->amortization_date);
-            $diff = $currentDay->diffInDays($dateSched);
-            if($diff > 10) {
-                $counter++;
-            }
-        } */
+
         if($advPrincipal) {
             $balance = $advPrincipal;
             if (count($missed) > 0) {
@@ -1194,15 +1170,19 @@ class LoanAccount extends Model
             }
         }
 
+
         $penaltyMissed = $missed;
+        $currentDay = Carbon::createFromFormat('Y-m-d', $transactionDateNow)->startOfDay();
         $dateSched = Carbon::createFromFormat('Y-m-d',$amortization->amortization_date)->startOfDay();
-        $dayDiff = $dateSched->diffInDays($transactionDateNow);
-        if ($dayDiff > 10) {
+        $dayDiff = $dateSched->diffInDays($currentDay,false);
+        if ($dayDiff > 0 && !$isPaid && $amortization->advance_principal < $amortization->principal) {
             Amortization::find($amortization->id)->update(['status' => 'delinquent']);
         }
-        if ($dayDiff > 10) {
+        if ($dayDiff > 10 && !$isPaid && $amortization->advance_principal < $amortization->principal) {
             $penaltyMissed = array_merge($missed, [$amortization->id]);
         }
+
+
 
 
         $penalty = $this->getPenalty($penaltyMissed,$totalAmort,$transactionDateNow);
