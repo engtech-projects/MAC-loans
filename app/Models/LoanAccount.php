@@ -1117,10 +1117,6 @@ class LoanAccount extends Model
 
             if($lastPayment) {
 
-                if($lastPayment->advance_principal < $amortization->principal) {
-                    Amortization::find($amortization->id)->update(['status' => 'delinquent']);
-                }
-
                 $unpaid_amorts = Amortization::where(['loan_account_id' => $this->loan_account_id])
                 ->where('id','>',$lastPayment->amortization_id)
                 ->where('status','delinquent')
@@ -1163,6 +1159,7 @@ class LoanAccount extends Model
             }
 
         }
+
         /* foreach($unpaid_amorts as $amort) {
             $missed[] = $amort->id;
             $ids[] = $amort->id;
