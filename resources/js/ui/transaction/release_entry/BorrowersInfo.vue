@@ -593,12 +593,17 @@
 					this.$emit('nextBorrower', this.borrower.birthdate)
 					document.getElementById('borrowerBtn').click();
 				}else{
-					this.save();
+					document.getElementById('borrowerBtn').click();
+					// this.save();
 				}
 			},
 
 			navigate:function(){
-				document.getElementById('custom-content-below-coborrowerinfo-tab').click();
+				if(!this.pclient){
+					document.getElementById('custom-content-below-coborrowerinfo-tab').click();
+				}else{
+					this.save();
+				}
 			},
 
 			addData:function(data){
