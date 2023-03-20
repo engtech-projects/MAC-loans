@@ -1115,6 +1115,7 @@ class LoanAccount extends Model
         $advPrincipal = 0;
         $ids = [];
         $missed = [];
+        $unpaid_amorts = null;
         #Check amortization
         if($amortization) {
             $totalAmort = $first_amort->principal + $first_amort->interest;
@@ -1139,6 +1140,7 @@ class LoanAccount extends Model
                 $unpaid_amorts = Amortization::where('loan_account_id',$this->loan_account_id)->whereDate('amortization_date','<=',$transactionDateNow)->get();
             }
         }
+
 
 
 
