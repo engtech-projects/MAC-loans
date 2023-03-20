@@ -190,6 +190,7 @@ class Borrower extends Authenticatable
         if (count($activeAccounts) > 0) {
 
             foreach ($activeAccounts as $account) {
+
                 $account->remainingBalance = $account->remainingBalance();
                 //         $account->current_amortization = $account->getCurrentAmortization();
                 //         $account->amortization = $account->amortization();
