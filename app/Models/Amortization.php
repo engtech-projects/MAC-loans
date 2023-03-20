@@ -251,4 +251,10 @@ class Amortization extends Model
     }
 
 
+    public function getDelinquents($amort_id) {
+        $amortization = Amortization::find($amort_id);
+        return $amortization->status;
+    }
+
+
 }
