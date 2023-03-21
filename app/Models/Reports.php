@@ -644,7 +644,7 @@ class Reports extends Model
                 'overpayment' => $payment->over_payment,
                 'rebates' => $payment->rebates,
                 'total' => $payment->amount_applied-$payment->rebates,
-                'net_interest' => $payment->interest,
+                'net_interest' => $payment->interest - $payment->rebates,
                 'vat' => $payment->vat,
                 'payment_type' => $payment->payment_type,
                 'memo_type' => $payment->memo_type
