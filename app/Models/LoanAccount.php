@@ -638,7 +638,9 @@ class LoanAccount extends Model
             $delinquents = $this->getPrevAmortization($loanAccountId, $amortizationId, ['delinquent'], $lastPaidAmort->id, false, 'DESC');
         } else {
             $delinquents = $this->getPrevAmortization($loanAccountId, $amortizationId, ['delinquent'], null, false, 'DESC');
+
         }
+
 
 
 
@@ -722,6 +724,7 @@ class LoanAccount extends Model
         if (count($ids)) {
             LoanAccount::find($loanAccountId)->update(['payment_status' => 'Delinquent']);
         }
+
 
 
         return [
@@ -1129,9 +1132,7 @@ class LoanAccount extends Model
             $advPrincipal = $this->getAdvancePrincipal($this->loan_account_id, $amortization->id);
 
 
-
-
-            if($lastPayment) {
+            /* if($lastPayment) {
 
                 $unpaid_amorts = Amortization::where(['loan_account_id' => $this->loan_account_id])
                 ->where('id','>',$lastPayment->amortization_id)
@@ -1139,29 +1140,26 @@ class LoanAccount extends Model
                 ->whereDate('amortization_date','<=',$transactionDateNow)
                 ->orderBy('id','DESC')
                 ->get();
-                $pdi = $lastPayment->short_pdi;
-                $penalty = $lastPayment->short_penalty;
+                $pdi += $lastPayment->short_pdi;
+                $penalty += $lastPayment->short_penalty;
             }else {
                 $unpaid_amorts = Amortization::where('loan_account_id',$this->loan_account_id)->whereDate('amortization_date','<=',$transactionDateNow)->get();
-            }
-
-
-
-            /* $lastPaidAmort = $this->getPrevAmortization($this->loan_account_id, $amortization->id, ['paid'], null, true, 'DESC');
-            $unpaid_amorts = null;
-
-
-            if ($lastPaidAmort) {
-                $unpaid_amorts = $this->getPrevAmortization($this->loan_account_id, $amortization->id, ['delinquent'], $lastPaidAmort->id, false, 'DESC');
+            } */
+            if ($lastPayment) {
+                $unpaid_amorts = $this->getPrevAmortization($this->loan_account_id, $amortization->id, ['delinquent'], $lastPayment->id, false, 'DESC');
             } else {
                 $unpaid_amorts = $this->getPrevAmortization($this->loan_account_id, $amortization->id, ['delinquent'], null, false, 'DESC');
-            } */
+
+            }
+
 
 
             foreach ($unpaid_amorts as $delinquent) {
 
                 $ids[] = $delinquent->id;
                 $missed[] = $delinquent->id;
+                $penalty = $lastPayment ? $lastPayment->short_penalty : 0;
+                $pdi = $lastPayment ? $lastPayment->short_pdi : 0;
 
             }
 
@@ -1169,15 +1167,16 @@ class LoanAccount extends Model
                 $balance = $advPrincipal;
 
                 //Count missed amortization
-                if (count($missed) > 0) {
 
+                if (count($missed) > 0) {
                     $missedAmortizations = Amortization::whereIn('id', $missed)->orderBy('id', 'ASC')->get();
+
                     foreach ($missedAmortizations as $key => $missedAmortization) {
-                        $missed_amorts [] = $missedAmortization->id;
                         if ($balance >=  $missedAmortization->principal) {
                             $balance -= $missedAmortization->principal;
                             $pos = array_search($missedAmortization->id, $ids);
                             unset($missed[$pos]);
+
 
                         }else {
                             $penalty = $this->getPenalty($missed,$totalAmort,$transactionDateNow);
@@ -1185,14 +1184,15 @@ class LoanAccount extends Model
                     }
 
                 }
+                if($balance>=$amortization->principal) {
+                    LoanAccount::find($this->loan_account_id)->update(['payment_status' => 'Current']);
+                }
 
             }
+
             if (count($ids)) {
                 LoanAccount::find($this->loan_account_id)->update(['payment_status' => 'Delinquent']);
             }
-
-
-
 
             $penaltyMissed = $missed;
             $currentDay = Carbon::createFromFormat('Y-m-d', $transactionDateNow)->startOfDay();
