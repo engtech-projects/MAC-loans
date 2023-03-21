@@ -502,6 +502,7 @@ class LoanAccount extends Model
         // check if past due
         $isPastDue = $this->checkPastDue($this->due_date, $transactionDateNow);
         if ($isPastDue && $amortization) {
+
             // update loan status.
             // set current amortization status to delinquent/
             // var_dump($this->loan_account_id);
@@ -712,18 +713,27 @@ class LoanAccount extends Model
                         $balance -= $missedAmortization->principal;
                         $pos = array_search($missedAmortization->id, $missed);
                         unset($missed[$pos]);
+                        if($balance>=$missedAmortization->principal) {
+                            LoanAccount::find($loanAccountId)->update(['payment_status' => 'Current']);
+                        }else {
+                            LoanAccount::find($loanAccountId)->update(['payment_status' => 'Delinquent']);
+                        }
+
                     } else {
                         LoanAccount::find($loanAccountId)->update(['payment_status' => 'Delinquent']);
                         break;
                     }
                 }
+
+
+
             }
         }
 
 
-        if (count($ids)) {
+        /* if (count($ids)) {
             LoanAccount::find($loanAccountId)->update(['payment_status' => 'Delinquent']);
-        }
+        } */
 
 
 
@@ -1176,23 +1186,26 @@ class LoanAccount extends Model
                             $balance -= $missedAmortization->principal;
                             $pos = array_search($missedAmortization->id, $ids);
                             unset($missed[$pos]);
-
+                            if($balance>=$missedAmortization->principal) {
+                                LoanAccount::find($this->loan_account_id)->update(['payment_status' => 'Current']);
+                            }else {
+                                LoanAccount::find($this->loan_account_id)->update(['payment_status' => 'Delinquent']);
+                            }
 
                         }else {
-                            $penalty = $this->getPenalty($missed,$totalAmort,$transactionDateNow);
+                            LoanAccount::find($this->loan_account_id)->update(['payment_status' => 'Delinquent']);
+                            $penalty += $this->getPenalty($missed,$totalAmort,$transactionDateNow);
+                            break;
                         }
                     }
 
                 }
-                if($balance>=$amortization->principal) {
-                    LoanAccount::find($this->loan_account_id)->update(['payment_status' => 'Current']);
-                }
 
             }
 
-            if (count($ids)) {
+            /* if (count($ids)) {
                 LoanAccount::find($this->loan_account_id)->update(['payment_status' => 'Delinquent']);
-            }
+            } */
 
             $penaltyMissed = $missed;
             $currentDay = Carbon::createFromFormat('Y-m-d', $transactionDateNow)->startOfDay();
@@ -1207,7 +1220,7 @@ class LoanAccount extends Model
             if ($dayDiff > 10 && !$isPaid && $advPrincipal < $amortization->principal) {
                 $penaltyMissed = array_merge($missed, [$amortization->id]);
             }
-            $penalty = $this->getPenalty($penaltyMissed,$totalAmort,$transactionDateNow);
+            $penalty += $this->getPenalty($penaltyMissed,$totalAmort,$transactionDateNow);
 
 
 
