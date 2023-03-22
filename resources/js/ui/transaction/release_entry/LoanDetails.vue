@@ -43,7 +43,10 @@
 					</select> -->
 					<select v-if="!productEnable" disabled required v-model="loanDetails.center_id" name="" id="" class="form-control form-input ">
 					</select>
-					<search-dropdown :reset="resetCenter" @centerReset="resetCenter=false" v-else @sdSelect="centerSelect" :data="centers" id="center_id" name="center"></search-dropdown>
+					<div class="d-flex flex-column" v-else>
+						<search-dropdown product="currentProductName" :reset="resetCenter" @centerReset="resetCenter=false" @sdSelect="centerSelect" :data="centers" id="center_id" name="center"></search-dropdown>
+						<input style="border:none!important;width:100%!important;height:0px!important;opacity:0!important;" type="text" required v-model="loanDetails.center_id">
+					</div>
 				</div>
 				<div class="form-group mb-10 mr-16" style="flex:7">
 					<label for="type" class="form-label">Type</label>
@@ -953,6 +956,12 @@ export default {
 		calculateMemo:function(){
 			let rebates = (this.loanaccount.remainingBalance.interest.balance - this.loanaccount.remainingBalance.rebates.balance) > 0? this.loanaccount.remainingBalance.rebates.balance : this.loanaccount.remainingBalance.interest.balance;
 			this.loanDetails.memo = this.loanaccount.remainingBalance.memo.balance - rebates;
+		},
+		currentProductName:function(){
+			if(this.loanDetails.product_id){
+				return this.products.filter(p=>p.product.product_id==this.loanDetails.product_id);
+			}
+			return false;
 		}
 	},
 	mounted(){
