@@ -492,17 +492,13 @@ class LoanAccount extends Model
             return;
         }
 
-        //get current amortization
+
         $amortization = $this->currentAmortization($this->loan_account_id, $transactionDateNow);
-
-        //Get first amortization principal and interest
         $first_amort = $this->getFirstAmortization();
-
 
         // check if past due
         $isPastDue = $this->checkPastDue($this->due_date, $transactionDateNow);
         if ($isPastDue && $amortization) {
-
             // update loan status.
             // set current amortization status to delinquent/
             // var_dump($this->loan_account_id);
@@ -518,11 +514,11 @@ class LoanAccount extends Model
             $amortization->pdi = $this->getPDI($this->loan_amount, $this->interest_rate, $isPastDue);
         }
 
-
         # compute for total payables
         # compute for total payments
         # get last payment
         if ($amortization) {
+            $totalAmort = $first_amort->principal + $first_amort->interest;
             $amortization->pdi = $amortization->pdi ? $amortization->pdi : 0;
             // check and set previous schedule to delinquent if unpaid (missed)
             $this->setDelinquent($this->loan_account_id, $amortization->id, $transactionDateNow);
@@ -532,17 +528,15 @@ class LoanAccount extends Model
             $amortization->advance_principal = $this->getAdvancePrincipal($this->loan_account_id, $amortization->id);
             $amortization->advance_interest = $this->getAdvanceInterest($this->loan_account_id, $amortization->id);
             // get delinquents
-            $amortization->delinquent = $this->getDelinquent($this->loan_account_id, $amortization, $amortization->id, $amortization->advance_principal);
+            $amortization->delinquent = $this->getDelinquent($this->loan_account_id, $amortization->id, $amortization->advance_principal);
             $amortization->short_principal = $amortization->delinquent['principal'] - (in_array($amortization->id, $amortization->delinquent['ids']) ? $amortization->principal : 0);
             $amortization->short_interest = $amortization->delinquent['interest'] - (in_array($amortization->id, $amortization->delinquent['ids']) ? $amortization->interest : 0);
             $amortization->schedule_principal = $amortization->principal;
             $amortization->schedule_interest = $amortization->interest;
             $amortization->short_pdi = 0;
             $amortization->short_penalty = $amortization->delinquent['penalty'];
-
             // check if current amortization is paid partially.
             $isPaid = $this->getPayment($this->loan_account_id, $amortization->id)->last();
-
             if ($isPaid && ($isPaid->short_principal || $isPaid->short_interest)) {
 
                 $amortization->total = $amortization->total - ($amortization->principal + $amortization->interest);
@@ -554,7 +548,6 @@ class LoanAccount extends Model
                 $amortization->over_payment = $isPaid->over_payment;
             }
             $currentDay = Carbon::createFromFormat('Y-m-d', $transactionDateNow)->startOfDay();
-
             $dateSched = Carbon::createFromFormat('Y-m-d', $amortization->amortization_date)->startOfDay();
             $dateSchedPension = Carbon::createFromFormat('Y-m-d', $amortization->amortization_date)->startOfMonth();
             $dayDiff = $dateSched->diffInDays($currentDay, false);
@@ -574,31 +567,21 @@ class LoanAccount extends Model
                     }
                 }
             }
-
-
             if ($dayDiff > 0 && !$isPaid && $amortization->advance_principal < $amortization->schedule_principal) {
                 Amortization::find($amortization->id)->update(['status' => 'delinquent']);
                 $amortization->delinquent = $this->getDelinquent($this->loan_account_id, $amortization->id, $amortization->advance_principal);
-
             }
             if ($dayDiff > 10 && !$isPaid && $amortization->advance_principal < $amortization->schedule_principal) {
                 $penaltyMissed = array_merge($amortization->delinquent['missed'], [$amortization->id]);
             }
-
-
-
-
-
-
-
-            $amortization->penalty = $this->getPenalty($penaltyMissed, ($first_amort->principal + $first_amort->interest), $transactionDateNow);
-
+            $amortization->penalty = $this->getPenalty($penaltyMissed, $totalAmort, $transactionDateNow);
 
             // $amortization->penalty = $this->getPenalty($amortization->delinquent['missed'], ($amortization->principal + $amortization->interest));
             $amortization->total = ($amortization->principal + $amortization->interest) + ($amortization->short_principal + $amortization->short_interest);
             $amortization->totalPaid = $this->getPaymentTotal($this->loan_account_id);
             $amortization->outstandingBalance = $this->outstandingBalance($this->loan_account_id);
         }
+
         return $amortization;
     }
 
@@ -632,22 +615,18 @@ class LoanAccount extends Model
         return $amortizations->get();
     }
 
-    public function getDelinquent($loanAccountId,$amortization, $amortizationId, $advancePrincipal = 0)
+    public function getDelinquent($loanAccountId, $amortizationId, $advancePrincipal = 0)
     {
 
         $lastPaidAmort = $this->getPrevAmortization($loanAccountId, $amortizationId, ['paid'], null, true, 'DESC');
         $delinquents = null;
 
+
         if ($lastPaidAmort) {
             $delinquents = $this->getPrevAmortization($loanAccountId, $amortizationId, ['delinquent'], $lastPaidAmort->id, false, 'DESC');
         } else {
             $delinquents = $this->getPrevAmortization($loanAccountId, $amortizationId, ['delinquent'], null, false, 'DESC');
-
         }
-
-
-
-
 
         $ids = [];
         $missed = [];
@@ -659,17 +638,13 @@ class LoanAccount extends Model
 
 
         // identify missed payments
-
         if ($delinquents) {
 
             foreach ($delinquents as $delinquent) {
 
                 $payments = $this->getPayment($loanAccountId, $delinquent->id);
                 $delinquent->payments = $payments;
-
             }
-
-
 
             foreach ($delinquents as $delinquent) {
 
@@ -697,39 +672,7 @@ class LoanAccount extends Model
                 $totalPrincipal += $delinquent->principal;
                 $totalInterest += $delinquent->interest;
             }
-
         }
-
-
-
-        /* if ($advancePrincipal) {
-            $balance = $advancePrincipal;
-            if (count($missed) > 0) {
-
-
-                $missedAmortizations = Amortization::whereIn('id', $missed)->orderBy('id', 'ASC')->get();
-                foreach ($missedAmortizations as $key => $missedAmortization) {
-                    if ($balance >=  $missedAmortization->principal) {
-                        $balance -= $missedAmortization->principal;
-                        $pos = array_search($missedAmortization->id, $missed);
-                        unset($missed[$pos]);
-
-                        LoanAccount::find($loanAccountId)->update(['payment_status' => 'Current']);
-
-                    } else {
-                        LoanAccount::find($loanAccountId)->update(['payment_status' => 'Delinquent']);
-                        break;
-                    }
-                }
-                if($balance<$amortization->principal) {
-                    LoanAccount::find($loanAccountId)->update(['payment_status' => 'Delinquent']);
-                }
-
-            }
-            else {
-                LoanAccount::find($loanAccountId)->update(['payment_status' => 'Current']);
-            }
-        } */
 
         if ($advancePrincipal) {
 
@@ -752,13 +695,9 @@ class LoanAccount extends Model
             }
         }
 
-        if (count($missed)) {
+        if (count($ids)) {
             LoanAccount::find($loanAccountId)->update(['payment_status' => 'Delinquent']);
         }
-
-
-
-
 
         return [
             'ids' => $ids,
@@ -769,7 +708,6 @@ class LoanAccount extends Model
             'advance' => $advancePrincipal,
             'missed' => $missed
         ];
-
     }
 
     public function setDelinquent($loanAccountId, $amortizationId, $currentDay)
