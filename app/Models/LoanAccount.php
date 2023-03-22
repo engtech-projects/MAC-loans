@@ -532,7 +532,7 @@ class LoanAccount extends Model
             $amortization->advance_principal = $this->getAdvancePrincipal($this->loan_account_id, $amortization->id);
             $amortization->advance_interest = $this->getAdvanceInterest($this->loan_account_id, $amortization->id);
             // get delinquents
-            $amortization->delinquent = $this->getDelinquent($this->loan_account_id, $amortization->id, $amortization->advance_principal);
+            $amortization->delinquent = $this->getDelinquent($this->loan_account_id, $amortization, $amortization->id, $amortization->advance_principal);
             $amortization->short_principal = $amortization->delinquent['principal'] - (in_array($amortization->id, $amortization->delinquent['ids']) ? $amortization->principal : 0);
             $amortization->short_interest = $amortization->delinquent['interest'] - (in_array($amortization->id, $amortization->delinquent['ids']) ? $amortization->interest : 0);
             $amortization->schedule_principal = $amortization->principal;
@@ -629,7 +629,7 @@ class LoanAccount extends Model
         return $amortizations->get();
     }
 
-    public function getDelinquent($loanAccountId, $amortizationId, $advancePrincipal = 0)
+    public function getDelinquent($loanAccountId,$amortization, $amortizationId, $advancePrincipal = 0)
     {
 
         $lastPaidAmort = $this->getPrevAmortization($loanAccountId, $amortizationId, ['paid'], null, true, 'DESC');
@@ -707,31 +707,30 @@ class LoanAccount extends Model
             if (count($missed) > 0) {
 
                 $balance = $advancePrincipal;
+                $missed_principal = 0;
                 // $balance = 0;
                 $missedAmortizations = Amortization::whereIn('id', $missed)->orderBy('id', 'ASC')->get();
-
                 foreach ($missedAmortizations as $key => $missedAmortization) {
-
                     if ($balance >=  $missedAmortization->principal) {
                         $balance -= $missedAmortization->principal;
+                        $missed_principal = $missedAmortization->principal;
                         $pos = array_search($missedAmortization->id, $missed);
                         unset($missed[$pos]);
-                        if($balance>=$missedAmortization->principal) {
-                            LoanAccount::find($loanAccountId)->update(['payment_status' => 'Current']);
-                        }else {
-                            LoanAccount::find($loanAccountId)->update(['payment_status' => 'Delinquent']);
-                        }
+
+                        LoanAccount::find($loanAccountId)->update(['payment_status' => 'Current']);
 
                     } else {
                         LoanAccount::find($loanAccountId)->update(['payment_status' => 'Delinquent']);
                         break;
                     }
                 }
-
-
+                if($balance<$amortization->principal) {
+                    LoanAccount::find($loanAccountId)->update(['payment_status' => 'Delinquent']);
+                }
 
             }
         }
+
         if (count($missed)) {
             LoanAccount::find($loanAccountId)->update(['payment_status' => 'Delinquent']);
         }
@@ -1126,7 +1125,7 @@ class LoanAccount extends Model
 
         # GET LAST PAYMENT
         $lastPayment = Payment::where('loan_account_id',$this->loan_account_id)->orderBy('payment_id','DESC')->first();
-        $lastPaidAmort = $this->getPrevAmortization($this->loan_account_id, $amortization->id, ['paid'], null, true, 'DESC');
+        //$lastPaidAmort = $this->getPrevAmortization($this->loan_account_id, $amortization->id, ['paid'], null, true, 'DESC');
         $pdi = 0;
         $penalty = 0;
         $currentDay = Carbon::createFromFormat('Y-m-d', $transactionDateNow);
@@ -1284,8 +1283,6 @@ class LoanAccount extends Model
             ]
         ];
 
-
-
         if (count($payments)) {
 
             foreach ($payments as $payment) {
@@ -1316,6 +1313,7 @@ class LoanAccount extends Model
             $accountSummary['penalty']['debit'] = $currentAmortization['penalty'];
             $accountSummary['pdi']['debit'] = $currentAmortization['pdi'];
         }
+
 
         $accountSummary['penalty']['debit'] += $accountSummary['penalty']['credit'];
         $accountSummary['pdi']['debit'] += $accountSummary['pdi']['debit'] ? 0 : $accountSummary['pdi']['credit'];
