@@ -607,9 +607,12 @@ class LoanAccount extends Model
 
         $cond = '<';
         $current = Amortization::find($amortizationId);
-        if ($current->status === 'delinquent') {
-            $cond = '<=';
+        if($current) {
+            if ($current->status === 'delinquent') {
+                $cond = '<=';
+            }
         }
+
         $amortizations = Amortization::where('loan_account_id', $loanAccountId)
             ->whereIn('status', $status)
             ->where('id', $cond, $amortizationId);
@@ -701,7 +704,6 @@ class LoanAccount extends Model
 
         if ($advancePrincipal) {
             $balance = $advancePrincipal;
-
             if (count($missed) > 0) {
 
 
