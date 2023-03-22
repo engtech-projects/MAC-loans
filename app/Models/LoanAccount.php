@@ -635,14 +635,12 @@ class LoanAccount extends Model
         $lastPaidAmort = $this->getPrevAmortization($loanAccountId, $amortizationId, ['paid'], null, true, 'DESC');
         $delinquents = null;
 
-
         if ($lastPaidAmort) {
             $delinquents = $this->getPrevAmortization($loanAccountId, $amortizationId, ['delinquent'], $lastPaidAmort->id, false, 'DESC');
         } else {
             $delinquents = $this->getPrevAmortization($loanAccountId, $amortizationId, ['delinquent'], null, false, 'DESC');
 
         }
-
 
 
 
@@ -702,18 +700,15 @@ class LoanAccount extends Model
 
 
         if ($advancePrincipal) {
-
+            $balance = $advancePrincipal;
 
             if (count($missed) > 0) {
 
-                $balance = $advancePrincipal;
-                $missed_principal = 0;
-                // $balance = 0;
+
                 $missedAmortizations = Amortization::whereIn('id', $missed)->orderBy('id', 'ASC')->get();
                 foreach ($missedAmortizations as $key => $missedAmortization) {
                     if ($balance >=  $missedAmortization->principal) {
                         $balance -= $missedAmortization->principal;
-                        $missed_principal = $missedAmortization->principal;
                         $pos = array_search($missedAmortization->id, $missed);
                         unset($missed[$pos]);
 
@@ -729,11 +724,16 @@ class LoanAccount extends Model
                 }
 
             }
+            else {
+                LoanAccount::find($loanAccountId)->update(['payment_status' => 'Current']);
+            }
         }
 
         if (count($missed)) {
             LoanAccount::find($loanAccountId)->update(['payment_status' => 'Delinquent']);
         }
+
+
 
 
 
@@ -754,6 +754,7 @@ class LoanAccount extends Model
     {
         $currentDay = Carbon::createFromFormat('Y-m-d', $currentDay);
         $amortizations = $this->getPrevAmortization($loanAccountId, $amortizationId);
+
 
         if (count($amortizations) > 0) {
 
