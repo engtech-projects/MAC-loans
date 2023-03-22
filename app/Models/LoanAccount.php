@@ -1191,14 +1191,14 @@ class LoanAccount extends Model
                             $balance -= $missedAmortization->principal;
                             $pos = array_search($missedAmortization->id, $ids);
                             unset($missed[$pos]);
-                            if($balance>=$missedAmortization->principal) {
+                            /* if($balance>=$missedAmortization->principal) {
                                 LoanAccount::find($this->loan_account_id)->update(['payment_status' => 'Current']);
                             }else {
                                 LoanAccount::find($this->loan_account_id)->update(['payment_status' => 'Delinquent']);
-                            }
+                            } */
 
                         }else {
-                            LoanAccount::find($this->loan_account_id)->update(['payment_status' => 'Delinquent']);
+                            /* LoanAccount::find($this->loan_account_id)->update(['payment_status' => 'Delinquent']); */
                             $penalty = $this->getPenalty($missed,$totalAmort,$transactionDateNow);
                             break;
                         }
