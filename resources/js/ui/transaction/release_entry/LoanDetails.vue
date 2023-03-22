@@ -14,7 +14,7 @@
 			<div class="d-flex flex-row">
 				<div class="form-group mb-10 mr-16" style="flex:3">
 					<label for="cycleNumber" class="form-label">Cycle Number</label>
-					<input v-model="loanDetails.cycle_no" disabled type="text" class="form-control form-input " id="cycleNumber">
+					<input v-model="loanDetails.cycle_no" type="text" class="form-control form-input " id="cycleNumber">
 				</div>
 				<div class="form-group mb-10 mr-16" style="flex:7">
 					<label for="accountOfficer" class="form-label">Account Officer</label>
@@ -342,7 +342,8 @@ export default {
 		'pbranch',
 		'loanaccounts',
 		'prejected',
-		'transactionDate'
+		'transactionDate',
+		'currentcycle'
 	],
 	data(){
 		return {
@@ -752,6 +753,11 @@ export default {
 
 	},
 	watch: {
+		'currentcycle'(val){
+			if(val > 1){
+				this.loanDetails.cycle_no = val + 1;
+			}
+		},
 		'loandetails'(newValue) {
 			this.loanDetails = newValue;
 			if(this.prejected) {
