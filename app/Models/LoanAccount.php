@@ -567,6 +567,8 @@ class LoanAccount extends Model
                     }
                 }
             }
+
+
             if ($dayDiff > 0 && !$isPaid && $amortization->advance_principal < $amortization->schedule_principal) {
                 Amortization::find($amortization->id)->update(['status' => 'delinquent']);
                 $amortization->delinquent = $this->getDelinquent($this->loan_account_id, $amortization->id, $amortization->advance_principal);
@@ -642,10 +644,15 @@ class LoanAccount extends Model
 
     public function getDelinquent($loanAccountId, $amortizationId, $advancePrincipal = 0)
     {
+        $tranDate = new EndTransaction();
+        $transactionDateNow = $tranDate->getTransactionDate($this->branch->branch_id)->date_end;
 
 
         $lastPaidAmort = $this->getPrevAmortization($loanAccountId, $amortizationId, ['paid'], null, true, 'DESC');
         $delinquents = null;
+
+        $current_amort = Amortization::find($amortizationId);
+
 
 
         if ($lastPaidAmort) {
@@ -711,7 +718,6 @@ class LoanAccount extends Model
         }
 
         if ($advancePrincipal) {
-
             if (count($missed) > 0) {
                 $balance = $advancePrincipal;
                 // $balance = 0;
@@ -728,13 +734,25 @@ class LoanAccount extends Model
                         break;
                     }
                 }
+
+                if($transactionDateNow>$current_amort->amortization_date) {
+                    $missed[] = $current_amort->id;
+                    if($balance<$current_amort->principal) {
+                        LoanAccount::find($loanAccountId)->update(['payment_status' => 'Delinquent']);
+                        Amortization::find($current_amort->id)->update(['status' => 'delinquent']);
+                    }
+                }
+
+            }
+
+        }else {
+
+            if (count($ids)) {
+                LoanAccount::find($loanAccountId)->update(['payment_status' => 'Delinquent']);
             }
         }
 
 
-        if (count($ids)) {
-            LoanAccount::find($loanAccountId)->update(['payment_status' => 'Delinquent']);
-        }
 
         return [
             'ids' => $ids,
