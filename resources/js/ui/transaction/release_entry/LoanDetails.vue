@@ -754,7 +754,7 @@ export default {
 	},
 	watch: {
 		'currentcycle'(val){
-			if(val > 1){
+			if(val >= 1){
 				this.loanDetails.cycle_no = val + 1;
 			}
 		},
