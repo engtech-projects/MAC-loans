@@ -1052,7 +1052,7 @@ class LoanAccount extends Model
             foreach ($unpaid_amorts as $delinquent) {
 
                 $ids[] = $delinquent->id;
-                $payments = $this->getPayment($this->loan_account_id, $delinquent->id);
+                $payments = $this->getDelinquentPayment($this->loan_account_id, $delinquent->id);
                 $delinquent->payments = $payments;
 
                 if (isset($delinquent->payments) && count($delinquent->payments) > 0) {
