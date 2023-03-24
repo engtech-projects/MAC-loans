@@ -715,6 +715,12 @@
 			}
 		},
 		watch: {
+			'borrower.spouse_id_date_issued'(newValue){
+				this.borrower.spouse_id_date_issued = !newValue || newValue=='0000-00-00'?'':newValue;
+			},
+			'borrower.id_date_issued'(newValue){
+				this.borrower.id_date_issued = !newValue || newValue=='0000-00-00'?'':newValue;
+			},
 			'img'(newValue){
 				if(!newValue){
 					// this.img = this.baseUrl + '/img/user.png'
