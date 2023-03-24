@@ -717,8 +717,11 @@ class LoanAccount extends Model
 
         }
 
+
         if ($advancePrincipal) {
+
             if (count($missed) > 0) {
+
                 $balance = $advancePrincipal;
                 // $balance = 0;
                 $missedAmortizations = Amortization::whereIn('id', $missed)->orderBy('id', 'ASC')->get();
@@ -731,15 +734,21 @@ class LoanAccount extends Model
                         unset($missed[$pos]);
                     } else {
                         // LoanAccount::find($loanAccountId)->update(['payment_status' => 'Delinquent']);
+
+
                         break;
                     }
                 }
 
                 if($transactionDateNow>$current_amort->amortization_date) {
-                    $missed[] = $current_amort->id;
                     if($balance<$current_amort->principal) {
+
                         LoanAccount::find($loanAccountId)->update(['payment_status' => 'Delinquent']);
                         Amortization::find($current_amort->id)->update(['status' => 'delinquent']);
+
+                        $missed = array($current_amort->id);
+
+
                     }
                 }
 
