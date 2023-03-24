@@ -757,6 +757,9 @@ export default {
 			if(val >= 1){
 				this.loanDetails.cycle_no = val + 1;
 			}
+			if(val == 1){
+				this.loanDetails.cycle_no = 2;
+			}
 		},
 		'loandetails'(newValue) {
 			this.loanDetails = newValue;
@@ -979,7 +982,7 @@ export default {
 		},
 		currentProductUsed:function(){
 			if(this.loanDetails.product_id){
-				return this.products.filter(p=>p.product.product_id==this.loanDetails.product_id);
+				return this.products.filter(p=>p.product_id==this.loanDetails.product_id);
 			}
 			return {product_name:''};
 		}

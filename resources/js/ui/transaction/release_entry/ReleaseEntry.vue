@@ -1430,7 +1430,7 @@
 		},
 		computed:{
 			currentCycleNo:function(){
-				var cycleNo = 1;
+				var cycleNo = 0;
 				if(this.borrower.loan_accounts){
 					this.borrower.loan_accounts.forEach(la=>{
 						if(parseInt(la.cycle_no) > cycleNo){
