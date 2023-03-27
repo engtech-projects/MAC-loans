@@ -552,7 +552,7 @@ class LoanAccount extends Model
             $dateSchedPension = Carbon::createFromFormat('Y-m-d', $amortization->amortization_date)->startOfMonth();
             $dayDiff = $dateSched->diffInDays($currentDay, false);
             $dayDiffPension = $dateSchedPension->diffInDays($currentDay, false);
-            $penaltyMissed = $amortization->delinquent['missed'];
+            $penaltyMissed = array_unique($amortization->delinquent['missed']);
             $amortization->day_late = $dayDiff;
             if ($this->getPaymentTotal($this->loan_account_id)) { // condition that checks if not the first payment
                 if ($this->product->product_name != "Pension Loan") {
