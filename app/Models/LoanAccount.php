@@ -649,6 +649,7 @@ class LoanAccount extends Model
 
         $lastPaidAmort = $this->getPrevAmortization($loanAccountId, $amortizationId, ['paid'], null, true, 'DESC');
         $delinquents = null;
+        $balance = 0;
 
         $current_amort = Amortization::find($amortizationId);
 
