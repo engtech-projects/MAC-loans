@@ -207,6 +207,7 @@ class LoanAccountController extends BaseController
 
         //delete document
         $document->deleteDocument($loanAccount->loan_account_id);
+        $loanAccount->delete();
         return $this->sendResponse(['status' => 'Account deleted'], 'Deleted');
     }
 
