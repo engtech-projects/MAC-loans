@@ -25,12 +25,19 @@ class Document extends Model
          $series = explode('-', $num);
          $identifier = (int)$series[2] + 1;
         }
-      
+
         return $branchCode . '-' .$productCode . '-' . str_pad($identifier, 7, '0', STR_PAD_LEFT);
 
     	// $id = Document::max('id');
     	// $series = str_pad($id, 7, '0', STR_PAD_LEFT);
     	// return $branchCode . '-' . $productCode . '-' . $series;
 
+    }
+
+    public function deleteDocument($loan_account_id) {
+        $document = Document::where('loan_account_id',$loan_account_id)->get();
+        if($document) {
+            $document->destroy();
+        }
     }
 }
