@@ -744,7 +744,7 @@ export default {
 		pay:function(accountId){
 			this.resetCenter = true;
 			if(this.loanaccount.loan_account_id){
-				this.fetchAccount();
+				this.fetchAccount(accountId);
 			}else{
 				this.$emit('resetall')
 				this.$emit('unload');
