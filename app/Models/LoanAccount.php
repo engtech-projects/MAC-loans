@@ -734,7 +734,7 @@ class LoanAccount extends Model
                         unset($missed[$pos]);
                     } else {
                         // LoanAccount::find($loanAccountId)->update(['payment_status' => 'Delinquent']);
-                       $s[] = $delinquent->id;
+                        break;
 
                     }
                 }
@@ -989,11 +989,23 @@ class LoanAccount extends Model
 
 
     public function calculatePastDueInterest($amortization,$transactionDateNow,$pdi) {
-        #GET PAST DUE INTEREST
         $isPastDue = $this->checkPastDue($this->due_date, $transactionDateNow);
         if ($isPastDue && $amortization) {
-            $pdi += $this->getPDI($this->loan_amount, $this->interest_rate, $isPastDue);
+            // update loan status.
+            // set current amortization status to delinquent/
+            // var_dump($this->loan_account_id);
+            if ($this->loan_status == LoanAccount::LOAN_ONGOING) {
+                LoanAccount::where(['loan_account_id' => $this->loan_account_id])->update(['loan_status' => LoanAccount::LOAN_PASTDUE]);
+                $this->payment_status = LoanAccount::PAYMENT_DELINQUENT;
+                $this->loan_status = LoanAccount::LOAN_PASTDUE;
+                // $this->save();
+            }
+            $amortization->status = 'delinquent';
+            $amortization->save();
+
+            $pdi = $this->getPDI($this->loan_amount, $this->interest_rate, $isPastDue);
         }
+
         return $pdi;
     }
 
