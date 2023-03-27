@@ -206,10 +206,7 @@ class LoanAccountController extends BaseController
         }
 
         //delete document
-        $document = Document::where('loan_account_id',$loanAccount->loan_account_id)->get();
-        if($document) {
-            Document::where('loan_account_id',$loanAccount->loan_account_id)->delete();
-        }
+        $document->deleteDocument($loanAccount->loan_account_id);
         return $this->sendResponse(['status' => 'Account deleted'], 'Deleted');
     }
 

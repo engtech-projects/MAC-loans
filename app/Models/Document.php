@@ -35,9 +35,14 @@ class Document extends Model
     }
 
     public function deleteDocument($loan_account_id) {
+        //get document if exists in document table
         $document = Document::where('loan_account_id',$loan_account_id)->get();
+
+        //check document
         if($document) {
-            $document->destroy();
+            //delete document
+            return Document::where('loan_account_id',$loan_account_id)->delete();
         }
+        return false;
     }
 }
