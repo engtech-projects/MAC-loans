@@ -568,11 +568,13 @@ class LoanAccount extends Model
                 }
             }
 
-
-            if ($dayDiff > 0 && !$isPaid && $amortization->advance_principal < $amortization->schedule_principal) {
+            if ($dayDiff > 0 && !$isPaid && $amortization->delinquent['balance'] < $amortization->schedule_principal) {
                 Amortization::find($amortization->id)->update(['status' => 'delinquent']);
                 $amortization->delinquent = $this->getDelinquent($this->loan_account_id, $amortization->id, $amortization->advance_principal);
+                if($transactionDateNow>$amortization->amortization_date) {
+                        LoanAccount::find($this->loan_account_id)->update(['payment_status' => 'Delinquent']);
 
+                }
             }
 
             if ($dayDiff > 10 && !$isPaid && $amortization->advance_principal < $amortization->schedule_principal) {
@@ -644,9 +646,6 @@ class LoanAccount extends Model
 
     public function getDelinquent($loanAccountId, $amortizationId, $advancePrincipal = 0)
     {
-        $tranDate = new EndTransaction();
-        $transactionDateNow = $tranDate->getTransactionDate($this->branch->branch_id)->date_end;
-
 
         $lastPaidAmort = $this->getPrevAmortization($loanAccountId, $amortizationId, ['paid'], null, true, 'DESC');
         $delinquents = null;
@@ -739,15 +738,6 @@ class LoanAccount extends Model
                     }
                 }
 
-                if($transactionDateNow>$current_amort->amortization_date) {
-                    if($balance<$current_amort->principal) {
-
-                        LoanAccount::find($loanAccountId)->update(['payment_status' => 'Delinquent']);
-                        Amortization::find($current_amort->id)->update(['status' => 'delinquent']);
-                        array_push($missed,$current_amort->id);
-
-                    }
-                }
 
             }
 
@@ -765,6 +755,7 @@ class LoanAccount extends Model
             'principal' => $totalPrincipal,
             'interest' => $totalInterest,
             'penalty' => $totalPenalty,
+            'balance' => $balance,
             'pdi' => $totalPdi,
             'advance' => $advancePrincipal,
             'missed' => array_values($missed),
