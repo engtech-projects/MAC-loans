@@ -576,7 +576,7 @@ class LoanAccount extends Model
             }
 
             if ($dayDiff > 10 && !$isPaid && $amortization->advance_principal < $amortization->schedule_principal) {
-                $penaltyMissed = array_merge($amortization->delinquent['missed'], [$amortization->id]);
+                $penaltyMissed = array_merge(array_unique($amortization->delinquent['missed']), [$amortization->id]);
             }
             $amortization->penalty = $this->getPenalty($penaltyMissed, $totalAmort, $transactionDateNow);
 
@@ -745,8 +745,6 @@ class LoanAccount extends Model
                         LoanAccount::find($loanAccountId)->update(['payment_status' => 'Delinquent']);
                         Amortization::find($current_amort->id)->update(['status' => 'delinquent']);
                         array_push($missed,$current_amort->id);
-
-
 
                     }
                 }
