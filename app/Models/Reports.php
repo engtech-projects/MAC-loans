@@ -112,9 +112,27 @@ class Reports extends Model
     public function getPayments($filters = []) {
 
 
+        /* $payments = Payment::where([ 'payment.status' => 'paid'])->select('transaction_date');
+        $payments->join('loan_accounts', 'loan_accounts.loan_account_id', '=', 'payment.loan_account_id'); */
 
-        $payments = Payment::where([ 'payment.status' => 'paid']);
-        $payments->join('loan_accounts', 'loan_accounts.loan_account_id', '=', 'payment.loan_account_id');
+        $payments = Payment::join('loan_accounts','loan_accounts.loan_account_id','=','payment.loan_account_id')
+        ->select(
+            'payment.transaction_date',
+            'loan_accounts.borrower_id',
+            'payment.or_no',
+            'payment.principal',
+            'payment.interest',
+            'payment.pdi',
+            'payment.pdi_approval_no',
+            'payment.over_payment',
+            'payment.rebates',
+            'payment.amount_applied',
+            'payment.vat',
+            'payment.payment_type',
+            'payment.memo_type',
+            'loan_accounts.center_id'
+        ) ->where(['payment.status' => 'paid']);
+        /* $payments->with('account'); */
 
     	if( isset($filters['branch_id']) && $filters['branch_id'] ){
             $branch = Branch::find($filters['branch_id']);
@@ -144,6 +162,7 @@ class Reports extends Model
         }
 
         return $payments->get();
+
     }
 
     /* start transaction reports */
@@ -635,6 +654,7 @@ class Reports extends Model
         foreach ($payments as $payment) {
 
             $data[] = [
+                /* 'borrower' => Borrower::find($payment->account->borrower_id)->fullname(), */
                 'borrower' => Borrower::find($payment->borrower_id)->fullname(),
                 'payment_date' => $payment->transaction_date,
                 'or' => $payment->or_no,
@@ -651,7 +671,7 @@ class Reports extends Model
             ];
         }
 
-        return $data;
+        return collect($data)->sortBy('borrower')->values();
     }
     /* end repayment report */
 

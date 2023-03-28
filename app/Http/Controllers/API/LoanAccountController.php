@@ -38,11 +38,17 @@ class LoanAccountController extends BaseController
 
     }
 
+    public function getRemainingBalance(LoanAccount $account) {
+        return $this->sendResponse($account->remainingBalance(), 'Remaining Balance fetched');
+    }
+
+
     public function showCurrentAmortization(LoanAccount $account) {
         $data = $account->getAmortization();
 
         return $this->sendResponse($data,'Amortization details fetched');
     }
+
 
 	/**
      * Store a newly created resource in storage.
@@ -249,23 +255,26 @@ class LoanAccountController extends BaseController
     }
 
     public function statement(Borrower $borrower) {
+        $accounts = $borrower->loanAccounts();
 
         $accountDetails = [];
+        if($accounts) {
 
-        foreach ($borrower->loanAccounts() as $account) {
+            foreach ($accounts as $account) {
 
-            $accountDetails[] = [
-                "account_id" => $account->loan_account_id,
-                'account_num' => $account->account_num,
-                'loan_amount' =>  $account->loan_amount,
-                'date_granted' => $account->date_release,
-                'term' => $account->terms,
-                'collection_rate' => $account->collectionRate(),
-                'payment_history' => $account->payment_status,
-                'loan_status' => $account->loan_status,
-                'amortization' => $account->amortization(),
-            ];
+                $accountDetails[] = [
+                    "account_id" => $account->loan_account_id,
+                    'account_num' => $account->account_num,
+                    'loan_amount' =>  $account->loan_amount,
+                    'date_granted' => $account->date_release,
+                    'term' => $account->terms,
+                    'collection_rate' => $account->collectionRate($account->remainingBalance), //$account->collectionRateSOA($account->remainingBalance),
+                    'payment_history' => $account->payment_status,
+                    'loan_status' => $account->loan_status,
+                    'amortization' => $account->amortization(),
+                ];
 
+            }
         }
         return $accountDetails;
     }

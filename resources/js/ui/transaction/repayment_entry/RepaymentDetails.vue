@@ -120,7 +120,7 @@
 							<span class="">Product Name</span>
 							<span>:</span>
 						</div>
-						<span class="flex-2 text-primary-dark">{{loanAccount.product_name}}</span>
+						<span class="flex-2 text-primary-dark">{{loanAccount.product.product_name}}</span>
 					</div>
 
 					<div class="d-flex flex-row mb-12">
@@ -128,6 +128,7 @@
 							<span class="">Missed Payments</span>
 							<span>:</span>
 						</div>
+
 						<span class="flex-2 text-primary-dark">{{loanAccount.current_amortization.delinquent?loanAccount.current_amortization.delinquent.missed.length:0}}</span>
 					</div>
 
@@ -957,7 +958,7 @@ export default {
 		},
 		fetchAccount:function(id){
 			this.$emit('load');
-			axios.get(this.baseURL() + 'api/account/loan_details/' + id, {
+			axios.get(this.baseURL() + 'api/account/show/' + id, {
 			headers: {
 				'Authorization': 'Bearer ' + this.token,
 					'Content-Type': 'application/json',
