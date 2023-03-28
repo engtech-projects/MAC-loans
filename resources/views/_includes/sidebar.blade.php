@@ -327,15 +327,15 @@
 				  </p>
 				</a>
 			</li>
-
+			@if(Auth::user()->hasAccess('set beginning/end of day'))
 			<li class="nav-item pick {{isset($nav) && isActive($nav[0], 'end of day')? 'active menu-open' : ''}}">
 				<a href="{{route('endofday')}}" class="nav-link main-link">
 				  <p>
 					End of Day
 				  </p>
 				</a>
-				
 			</li>
+			@endif
 		</ul>
 		<div class="d-flex flex-column align-items-center justify-content-center mt-120">
 			<img src="<?=url('/img/logo-side.png');?>" alt="">

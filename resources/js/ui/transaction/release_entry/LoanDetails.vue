@@ -14,7 +14,7 @@
 			<div class="d-flex flex-row">
 				<div class="form-group mb-10 mr-16" style="flex:3">
 					<label for="cycleNumber" class="form-label">Cycle Number</label>
-					<input v-model="loanDetails.cycle_no" disabled type="text" class="form-control form-input " id="cycleNumber">
+					<input v-model="loanDetails.cycle_no" type="text" class="form-control form-input " id="cycleNumber">
 				</div>
 				<div class="form-group mb-10 mr-16" style="flex:7">
 					<label for="accountOfficer" class="form-label">Account Officer</label>
@@ -43,7 +43,10 @@
 					</select> -->
 					<select v-if="!productEnable" disabled required v-model="loanDetails.center_id" name="" id="" class="form-control form-input ">
 					</select>
-					<search-dropdown :reset="resetCenter" @centerReset="resetCenter=false" v-else @sdSelect="centerSelect" :data="centers" id="center_id" name="center"></search-dropdown>
+					<div class="d-flex flex-column" v-else>
+						<search-dropdown product="currentProductName" :reset="resetCenter" @centerReset="resetCenter=false" @sdSelect="centerSelect" :data="centers" id="center_id" name="center"></search-dropdown>
+						<input style="border:none!important;width:100%!important;height:0px!important;opacity:0!important;" type="text" :required="currentProductUsed.product_name==='Micro Group'" v-model="loanDetails.center_id">
+					</div>
 				</div>
 				<div class="form-group mb-10 mr-16" style="flex:7">
 					<label for="type" class="form-label">Type</label>
@@ -339,7 +342,8 @@ export default {
 		'pbranch',
 		'loanaccounts',
 		'prejected',
-		'transactionDate'
+		'transactionDate',
+		'currentcycle'
 	],
 	data(){
 		return {
@@ -740,7 +744,7 @@ export default {
 		pay:function(accountId){
 			this.resetCenter = true;
 			if(this.loanaccount.loan_account_id){
-				this.fetchAccount();
+				this.fetchAccount(accountId);
 			}else{
 				this.$emit('resetall')
 				this.$emit('unload');
@@ -749,6 +753,14 @@ export default {
 
 	},
 	watch: {
+		'currentcycle'(val){
+			if(val >= 1){
+				this.loanDetails.cycle_no = val + 1;
+			}
+			if(val == 1){
+				this.loanDetails.cycle_no = 2;
+			}
+		},
 		'loandetails'(newValue) {
 			this.loanDetails = newValue;
 			if(this.prejected) {
@@ -878,6 +890,20 @@ export default {
 
 	},
 	computed: {
+		currentCenterName:function(){
+			var center = this.centers.filter(c=>c.center_id==this.loanDetails.center_id)
+			if(center.length){
+				return center[0].center;
+			}
+			return '';
+		},
+		currentProductName:function(){
+			var product = this.products.filter(p=>p.product_id==this.loanDetails.product_id)
+			if(product.length){
+				return product[0].product_name;
+			}
+			return '';
+		},
 		isComputed:function(){
 			return this.deductionComputation > 0 ? false : true;
 		},
@@ -953,6 +979,12 @@ export default {
 		calculateMemo:function(){
 			let rebates = (this.loanaccount.remainingBalance.interest.balance - this.loanaccount.remainingBalance.rebates.balance) > 0? this.loanaccount.remainingBalance.rebates.balance : this.loanaccount.remainingBalance.interest.balance;
 			this.loanDetails.memo = this.loanaccount.remainingBalance.memo.balance - rebates;
+		},
+		currentProductUsed:function(){
+			if(this.loanDetails.product_id){
+				return this.products.filter(p=>p.product_id==this.loanDetails.product_id);
+			}
+			return {product_name:''};
 		}
 	},
 	mounted(){

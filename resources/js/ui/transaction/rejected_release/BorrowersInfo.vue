@@ -90,7 +90,7 @@
 				</div>
 				<div class="form-group mb-10 mr-16" style="flex: 3">
 					<label for="idDate" class="form-label">ID Date Issued</label>
-					<input v-model="borrower.id_date_issued" required type="date" class="form-control form-input " id="idDate">
+					<input v-model="borrower.id_date_issued" type="date" class="form-control form-input " id="idDate">
 				</div>
 				<div style="flex: 3"></div>
 			</div>

@@ -659,7 +659,7 @@ class Reports extends Model
                 'payment_date' => $payment->transaction_date,
                 'or' => $payment->or_no,
                 'principal' => $payment->principal,
-                'interest' => $payment->interest,
+                'interest' => $payment->interest + $payment->rebates,
                 'pdi' => ($payment->pdi_approval_no) ? $payment->pdi : 0,
                 'overpayment' => $payment->over_payment,
                 'rebates' => $payment->rebates,

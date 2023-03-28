@@ -92,7 +92,7 @@
 				</div>
 				<div class="form-group mb-10 mr-16" style="flex: 3">
 					<label for="idDate" class="form-label">ID Date Issued</label>
-					<input v-model="borrower.id_date_issued" required type="date" class="form-control form-input " id="idDate">
+					<input v-model="borrower.id_date_issued" type="date" class="form-control form-input " id="idDate">
 				</div>
 				<div style="flex: 3"></div>
 			</div>
@@ -148,7 +148,7 @@
 				</div>
 				<div class="form-group mb-10 mr-16" style="flex: 3">
 					<label for="spouseIdDate" class="form-label">ID Date Issued</label>
-					<input v-model="borrower.spouse_id_date_issued" type="date" required class="form-control form-input " id="spouseIdDate">
+					<input v-model="borrower.spouse_id_date_issued" type="date" class="form-control form-input " id="spouseIdDate">
 				</div>
 				<div style="flex: 3"></div>
 			</div>
@@ -528,9 +528,15 @@
 					}
 				})
 				.then(function (response) {
+					if(this.pclient){
+						this.$emit('unload')
+					}
 					this.borrower = response.data.data;
 				}.bind(this))
 				.catch(function (error) {
+					if(this.pclient){
+						this.$emit('unload')
+					}
 					console.log(error);
 				}.bind(this));
 			},
@@ -587,12 +593,17 @@
 					this.$emit('nextBorrower', this.borrower.birthdate)
 					document.getElementById('borrowerBtn').click();
 				}else{
-					this.save();
+					document.getElementById('borrowerBtn').click();
+					// this.save();
 				}
 			},
 
 			navigate:function(){
-				document.getElementById('custom-content-below-coborrowerinfo-tab').click();
+				if(!this.pclient){
+					document.getElementById('custom-content-below-coborrowerinfo-tab').click();
+				}else{
+					this.save();
+				}
 			},
 
 			addData:function(data){
@@ -704,6 +715,12 @@
 			}
 		},
 		watch: {
+			'borrower.spouse_id_date_issued'(newValue){
+				this.borrower.spouse_id_date_issued = !newValue || newValue=='0000-00-00'?'':newValue;
+			},
+			'borrower.id_date_issued'(newValue){
+				this.borrower.id_date_issued = !newValue || newValue=='0000-00-00'?'':newValue;
+			},
 			'img'(newValue){
 				if(!newValue){
 					// this.img = this.baseUrl + '/img/user.png'

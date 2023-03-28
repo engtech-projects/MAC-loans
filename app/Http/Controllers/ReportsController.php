@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 class ReportsController extends Controller
 {
     public function transactionProduct(){
+		$this->checkAccess('view transaction report');
 		return view('reports.transaction')->with([
 			'nav' => ['reports', 'transaction',''],
 			'title' => 'Reports - Transaction',
@@ -14,6 +15,7 @@ class ReportsController extends Controller
 	}
 
 	public function releaseSummary(){
+		$this->checkAccess('view release report');
 		return view('reports.release.summary')->with([
 			'nav' => ['reports', 'release',''],
 			'title' => 'Reports - Release',
@@ -21,6 +23,7 @@ class ReportsController extends Controller
 	}
 
 	public function releaseProduct(){
+		$this->checkAccess('view releases reports by product');
 		return view('reports.release.product')->with([
 			'nav' => ['reports', 'release','by product'],
 			'title' => 'Reports - Release',
@@ -28,6 +31,7 @@ class ReportsController extends Controller
 	}
 
 	public function releaseClient(){
+		$this->checkAccess('view releases reports by client');
 		return view('reports.release.client')->with([
 			'nav' => ['reports', 'release','by client'],
 			'title' => 'Reports - Release',
@@ -35,6 +39,7 @@ class ReportsController extends Controller
 	}
 
 	public function releaseAo(){
+		$this->checkAccess('view releases reports by AO');
 		return view('reports.release.ao')->with([
 			'nav' => ['reports', 'release','by account officer'],
 			'title' => 'Reports - Release',
@@ -42,6 +47,7 @@ class ReportsController extends Controller
 	}
 
 	public function releaseInsurance(){
+		$this->checkAccess('view release report');
 		return view('reports.release.insurance')->with([
 			'nav' => ['reports', 'insurance',''],
 			'title' => 'Reports - Release',
@@ -49,6 +55,7 @@ class ReportsController extends Controller
 	}
 
 	public function repaymentProduct(){
+		$this->checkAccess('view repayment reports by product');
 		return view('reports.repayment.product')->with([
 			'nav' => ['reports', 'repayment','by product'],
 			'title' => 'Reports - Repayment',
@@ -56,6 +63,7 @@ class ReportsController extends Controller
 	}
 
 	public function repaymentClient(){
+		$this->checkAccess('view repayment reports by client');
 		return view('reports.repayment.client')->with([
 			'nav' => ['reports', 'repayment','by client'],
 			'title' => 'Reports - Repayment',
@@ -63,6 +71,7 @@ class ReportsController extends Controller
 	}
 
 	public function repaymentCancelled(){
+		$this->checkAccess('view cancelled payments report');
 		return view('reports.repayment.cancelled')->with([
 			'nav' => ['reports', 'cancelled payments',''],
 			'title' => 'Reports - Cancelled Payments',
@@ -70,6 +79,7 @@ class ReportsController extends Controller
 	}
 
 	public function collectionClient(){
+		$this->checkAccess('view collection reports by client');
 		return view('reports.collection.client')->with([
 			'nav' => ['reports', 'collection','group by client status'],
 			'title' => 'Reports - Collection',
@@ -77,6 +87,7 @@ class ReportsController extends Controller
 	}
 
 	public function collectionProduct(){
+		$this->checkAccess('view collection reports by product');
 		return view('reports.collection.product')->with([
 			'nav' => ['reports', 'collection','group by product status'],
 			'title' => 'Reports - Collection',
@@ -84,6 +95,7 @@ class ReportsController extends Controller
 	}
 
 	public function collectionAo(){
+		$this->checkAccess('view collection reports by AO');
 		return view('reports.collection.ao')->with([
 			'nav' => ['reports', 'collection','group by account officer'],
 			'title' => 'Reports - Collection',
@@ -91,6 +103,7 @@ class ReportsController extends Controller
 	}
 
 	public function branchCollectionReport(){
+		$this->checkAccess('view collection branch reports');
 		return view('reports.branch.collection_report')->with([
 			'nav' => ['reports', 'branch','collection report'],
 			'title' => 'Reports - Branch Collection Report',
@@ -98,6 +111,7 @@ class ReportsController extends Controller
 	}
 
 	public function branchMaturityReport(){
+		$this->checkAccess('view maturity branch reports');
 		return view('reports.branch.maturity_report')->with([
 			'nav' => ['reports', 'branch','maturity report'],
 			'title' => 'Reports - Branch Maturity Report',
@@ -105,6 +119,7 @@ class ReportsController extends Controller
 	}
 	
 	public function branchPaymentStatus(){
+		$this->checkAccess('view client payment status branch reports');
 		return view('reports.branch.client_payment_status')->with([
 			'nav' => ['reports', 'branch','client payment status'],
 			'title' => 'Reports - Branch Client Payment Status',
@@ -112,6 +127,7 @@ class ReportsController extends Controller
 	}
 
 	public function branchAccountOfficer(){
+		$this->checkAccess('view AO branch reports');
 		return view('reports.branch.account_officer')->with([
 			'nav' => ['reports', 'branch','account officer'],
 			'title' => 'Reports - Branch Account Officer',
@@ -119,6 +135,7 @@ class ReportsController extends Controller
 	}
 
 	public function branchLoanListing(){
+		$this->checkAccess('view loan listing branch reports');
 		return view('reports.branch.loan_listing')->with([
 			'nav' => ['reports', 'branch','loan listing'],
 			'title' => 'Reports - Branch Loan Listing',
@@ -126,6 +143,7 @@ class ReportsController extends Controller
 	}
 
 	public function branchLoanStatusSummary(){
+		$this->checkAccess('view loan status summary branch reports');
 		return view('reports.branch.loan_status_summary')->with([
 			'nav' => ['reports', 'branch','loan status summary'],
 			'title' => 'Reports - Branch Loan Status Summary',
@@ -133,6 +151,7 @@ class ReportsController extends Controller
 	}
 
 	public function branchLoanAgingSummary(){
+		$this->checkAccess('view loan aging summary branch reports');
 		return view('reports.branch.loan_aging_summary')->with([
 			'nav' => ['reports', 'branch','loan aging summary'],
 			'title' => 'Reports - Branch Loan aging Summary',
@@ -140,6 +159,7 @@ class ReportsController extends Controller
 	}
 
 	public function branchRevenueReport(){
+		$this->checkAccess('view revenue branch reports');
 		return view('reports.branch.revenue_report')->with([
 			'nav' => ['reports', 'branch','revenue report'],
 			'title' => 'Reports - Branch Revenue Report',
@@ -189,6 +209,7 @@ class ReportsController extends Controller
 	}
 	
 	public function reportsMicroMonitoring(){
+		$this->checkAccess('view micro monitoring report');
 		return view('reports.micro_monitoring')->with([
 			'nav' => ['reports', 'micro monitoring',''],
 			'title' => 'Reports - Micro Monitoring',
@@ -196,6 +217,7 @@ class ReportsController extends Controller
 	}
 
 	public function reportsPrepaidInterest(){
+		$this->checkAccess('view prepaid interest report');
 		return view('reports.prepaid_interest')->with([
 			'nav' => ['reports', 'prepaid interest',''],
 			'title' => 'Reports - Prepaid Interest',
@@ -203,6 +225,7 @@ class ReportsController extends Controller
 	}
 
 	public function reportsPerformanceReport(){
+		$this->checkAccess('view performance report');
 		return view('reports.performance_report')->with([
 			'nav' => ['reports', 'performance report',''],
 			'title' => 'Reports - Performance Report',
@@ -210,6 +233,7 @@ class ReportsController extends Controller
 	}
 
 	public function birReport(){
+		$this->checkAccess('view BIR report');
 		return view('reports.bir')->with([
 			'nav' => ['reports', 'bir',''],
 			'title' => 'Reports - Bir',

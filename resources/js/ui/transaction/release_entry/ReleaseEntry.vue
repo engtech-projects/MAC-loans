@@ -88,6 +88,7 @@
 								:loandetails="loanDetails"
 								:pbranch="pbranch"
 								:transactionDate="transactionDate"
+								:currentcycle="currentCycleNo"
 								@load="loading=true"
 								@unload="loading=false"
 								@resetall="resetAll()"
@@ -1428,6 +1429,17 @@
 			},
 		},
 		computed:{
+			currentCycleNo:function(){
+				var cycleNo = 0;
+				if(this.borrower.loan_accounts){
+					this.borrower.loan_accounts.forEach(la=>{
+						if(parseInt(la.cycle_no) > cycleNo){
+							cycleNo = la.cycle_no
+						}
+					});
+				}
+				return cycleNo;
+			},
 			idType:function(){
 				return JSON.parse(this.idtype);
 			},

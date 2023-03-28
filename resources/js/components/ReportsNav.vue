@@ -6,7 +6,7 @@
 				<i class="fa fa-caret-right" style="display:block"></i>
 			</div>
 			<div class="sub-item-container mt-10">
-				<div v-for="sn,i in subNavigation" :key="i" class="pxy-15 light-bt light-bb d-flex justify-content-between align-items-center hover-primary-dark" :class="(nav2.toLowerCase()==sn.name.toLowerCase()&&name.toLowerCase()==nav1.toLowerCase())?'active':''">
+				<div v-for="sn,i in filteredNavigation" :key="i" class="pxy-15 light-bt light-bb d-flex justify-content-between align-items-center hover-primary-dark" :class="(nav2.toLowerCase()==sn.name.toLowerCase()&&name.toLowerCase()==nav1.toLowerCase())?'active':''">
 					<a :href="baseURL() + sn.url" class="text-md base-link">{{sn.name}}</a>
 				</div>
 			</div>
@@ -16,15 +16,22 @@
 
 <script>
 export default {
-	props:['name','nav','nav1','nav2','subnavs'],
+	props:['name','nav','nav1','nav2','subnavs','access'],
 	data(){
 		return {
 			collapse:false,
 			selected:'',
-			subNavigation:[]
+			subNavigation:[],
+			userAccess:[],
+		}
+	},
+	computed:{
+		filteredNavigation:function(){
+			return this.subNavigation.filter(s=>this.hasUserAccess(this.userAccess, s.access).length);
 		}
 	},
 	mounted(){
+		this.userAccess = JSON.parse(this.access);
 		this.subNavigation = JSON.parse(this.subnavs);
 		this.collapse=this.nav1 == this.name.toLowerCase()?true:false;
 	}
