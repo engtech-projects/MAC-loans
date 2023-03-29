@@ -1349,4 +1349,6 @@ class LoanAccount extends Model
         $loan_account = LoanAccount::find($id);
         return $loan_account->loan_status;
     }
+
+
 }
