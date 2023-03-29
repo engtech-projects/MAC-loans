@@ -82,6 +82,9 @@ Route::middleware(['auth:sanctum'])->group( function () {
 
     Route::get('account/remaining_balance/{account}',[LoanAccountController::class,'getRemainingBalance']);
 
+    //Update Co-Maker
+    Route::post('account/updatecomaker/{account}',[LoanAccountController::class,'updateCoMaker']);
+
 
     // override release
     Route::post('account/overrrideaccounts', [LoanAccountController::class, 'overrideAccountList']);

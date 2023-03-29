@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 // use App\Http\Controllers\Controller;
 use App\Http\Controllers\API\BaseController as BaseController;
+use App\Http\Requests\UpdateCoMakerRequest;
 use Illuminate\Http\Request;
 use App\Models\Borrower;
 use App\Models\LoanAccount;
@@ -277,6 +278,14 @@ class LoanAccountController extends BaseController
             }
         }
         return $accountDetails;
+    }
+
+    public function updateCoMaker(UpdateCoMakerRequest $request,LoanAccount $account) {
+        $validated = $request->validated($request);
+        $account->fill($validated);
+        $account->save();
+        return $this->sendResponse(new LoanAccountResource($account),'Co-maker successfully updated');
+
     }
 
 }
