@@ -45,7 +45,7 @@
 					</select>
 					<div class="d-flex flex-column" v-else>
 						<search-dropdown product="currentProductName" :reset="resetCenter" @centerReset="resetCenter=false" @sdSelect="centerSelect" :data="centers" id="center_id" name="center"></search-dropdown>
-						<input style="border:none!important;width:100%!important;height:0px!important;opacity:0!important;" type="text" :required="currentProductUsed.product_name==='Micro Group'" v-model="loanDetails.center_id">
+						<input style="border:none!important;width:100%!important;height:0px!important;opacity:0!important;" type="text" :required="currentProductUsed.product_name=='Micro Group'" v-model="loanDetails.center_id">
 					</div>
 				</div>
 				<div class="form-group mb-10 mr-16" style="flex:7">
@@ -982,7 +982,7 @@ export default {
 		},
 		currentProductUsed:function(){
 			if(this.loanDetails.product_id){
-				return this.products.filter(p=>p.product_id==this.loanDetails.product_id);
+				return this.products.filter(p=>p.product_id==this.loanDetails.product_id)[0];
 			}
 			return {product_name:''};
 		}
