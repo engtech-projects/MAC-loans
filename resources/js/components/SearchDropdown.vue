@@ -18,7 +18,7 @@
 
 <script>
 export default {
-	props:['data','id','name','reset'],
+	props:['data','id','name','reset', 'product'],
 	data(){
 		return {
 			dd:false,
