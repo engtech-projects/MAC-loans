@@ -29,7 +29,7 @@ class UpdatePaymentRequest extends FormRequest
             'pdi'           =>      'required|regex:/^[0-9]+(\.[0-9][0-9]?)?$/',
             'penalty'       =>      'required|regex:/^[0-9]+(\.[0-9][0-9]?)?$/',
             'rebates'       =>      'required|regex:/^[0-9]+(\.[0-9][0-9]?)?$/',
-            'total_payable' =>      'required|regex:/^[0-9]+(\.[0-9][0-9]?)?$/',
+            'amount_applied' =>      'required|regex:/^[0-9]+(\.[0-9][0-9]?)?$/',
         ];
     }
 }
