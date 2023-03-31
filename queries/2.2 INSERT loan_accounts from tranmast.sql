@@ -42,7 +42,8 @@ INSERT INTO loan_accounts (
 	STATUS,
 	created_at,
 	updated_at,
-	loan_status
+	loan_status,
+    payment_status
 )(SELECT
 	CAST(tranmast.ACCNUM AS char) AS "account_num",
 	CAST(tranmast.DATELN AS date) AS "date_release",
@@ -92,7 +93,8 @@ INSERT INTO loan_accounts (
 	CAST('released' AS char) AS "STATUS",
 	NOW() AS "created_at",
 	NOW() AS "updated_at",
-	CAST(IF(tranmast.`STATUS` != "", tranmast.`STATUS`, IF(tranmast.BALANCE+tranmast.INTBAL <= 0, 'Paid', 'Ongoing')) AS char) AS "loan_status"
+	CAST(IF(tranmast.`STATUS` != "", tranmast.`STATUS`, IF(tranmast.BALANCE+tranmast.INTBAL <= 0, 'Paid', 'Ongoing')) AS char) AS "loan_status",
+    CAST(IF(tranmast.PDIBAL+tranmast.PNLTYBAL >0,'Delinquent','Current')AS char) AS "payment_status"
 FROM
 	tranmast
 INNER JOIN product ON (
