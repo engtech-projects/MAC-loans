@@ -24,12 +24,12 @@ class UpdatePaymentRequest extends FormRequest
     public function rules()
     {
         return [
-            'principal'     =>      'required|regex:/^[0-9]+(\.[0-9][0-9]?)?$/',
-            'interest'      =>      'required|regex:/^[0-9]+(\.[0-9][0-9]?)?$/',
-            'pdi'           =>      'required|regex:/^[0-9]+(\.[0-9][0-9]?)?$/',
-            'penalty'       =>      'required|regex:/^[0-9]+(\.[0-9][0-9]?)?$/',
-            'rebates'       =>      'required|regex:/^[0-9]+(\.[0-9][0-9]?)?$/',
-            'amount_applied' =>      'required|regex:/^[0-9]+(\.[0-9][0-9]?)?$/',
+            'principal'     =>      'regex:/^[0-9]+(\.[0-9][0-9]?)?$/',
+            'interest'      =>      'regex:/^[0-9]+(\.[0-9][0-9]?)?$/',
+            'pdi'           =>      'regex:/^[0-9]+(\.[0-9][0-9]?)?$/',
+            'penalty'       =>      'regex:/^[0-9]+(\.[0-9][0-9]?)?$/',
+            'rebates'       =>      'regex:/^[0-9]+(\.[0-9][0-9]?)?$/',
+            'amount_applied' =>     'regex:/^[0-9]+(\.[0-9][0-9]?)?$/',
         ];
     }
 }
