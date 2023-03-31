@@ -97,28 +97,30 @@ class LoanAccountController extends BaseController
 		}
         $account->fill($request->input());
         $account->save();
+        if($request->input('data')) {
 
-		$document = Document::find($request->input('documents')['id']);
+            $document = Document::find($request->input('documents')['id']);
 
-        if( $document ) {
-            $document->description = ($request->input('documents')['description']);
-            $document->bank = ($request->input('documents')['bank']);
-            $document->account_no = ($request->input('documents')['account_no']);
-            $document->card_no = ($request->input('documents')['card_no']);
-            $document->promissory_number = ($request->input('documents')['promissory_number']);
-            $document->save();
-        }else if($request->input('documents')) {
-            Document::create(
-                array_merge(
-                    $request->input('documents'),
-                    ['loan_account_id' => $account->loan_account_id ],
-                )
-            );
-        }
+            if( $document ) {
+                $document->description = ($request->input('documents')['description']);
+                $document->bank = ($request->input('documents')['bank']);
+                $document->account_no = ($request->input('documents')['account_no']);
+                $document->card_no = ($request->input('documents')['card_no']);
+                $document->promissory_number = ($request->input('documents')['promissory_number']);
+                $document->save();
+            }else if($request->input('documents')) {
+                Document::create(
+                    array_merge(
+                        $request->input('documents'),
+                        ['loan_account_id' => $account->loan_account_id ],
+                    )
+                );
+            }
 
-        if( $request->hasFile('loanfiles') ) {
-			$files[] = $request->file('loanfiles');
-            $account->setDocs($account->borrower_id, $account->loan_account_id, $files);
+            if( $request->hasFile('loanfiles') ) {
+                $files[] = $request->file('loanfiles');
+                $account->setDocs($account->borrower_id, $account->loan_account_id, $files);
+            }
         }
         return $this->sendResponse(new LoanAccountResource($account), 'Account Updated.');
     }
