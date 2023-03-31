@@ -25,6 +25,10 @@ class Amortization extends Model
     	'status'
     ];
 
+    public function payments(){
+        return $this->hasMany(Payment::class, 'amortization_id', 'id');
+    }
+
     public function createAmortizationSched(LoanAccount $account, $dateRelease = null) {
 
         $interestAmount = $account->interest_amount;
