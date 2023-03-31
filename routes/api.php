@@ -84,6 +84,7 @@ Route::middleware(['auth:sanctum'])->group( function () {
 
     //Update Co-Maker
     Route::post('account/updatecomaker/{account}',[LoanAccountController::class,'updateCoMaker']);
+    Route::post('account/updatepayment/{payment}',[PaymentController::class,'updatePayment']);
 
 
     // override release

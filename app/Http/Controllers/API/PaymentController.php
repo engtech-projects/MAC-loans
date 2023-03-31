@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 // use App\Http\Controllers\Controller;
 use App\Http\Controllers\API\BaseController as BaseController;
+use App\Http\Requests\UpdatePaymentRequest;
 use Illuminate\Http\Request;
 use App\Models\Payment;
 use App\Models\LoanAccount;
@@ -153,6 +154,13 @@ class PaymentController extends BaseController
         $payment->delete();
 
         return $this->sendResponse(['status' => 'Payment deleted'], 'Deleted');
+    }
+
+    public function updatePayment(UpdatePaymentRequest $request,Payment $payment) {
+        $validated = $request->validated($request);
+        $payment->fill($validated);
+        $payment->save();
+        return $this->sendResponse(new PaymentResource($payment),'Payment successfully updated');
     }
 
     public function update(Request $request, Payment $payment) {
