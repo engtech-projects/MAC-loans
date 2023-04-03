@@ -1,6 +1,7 @@
 <template>
 
 	<section v-if="loanDetails.loan_account_id" id="accountDetails" class="">
+		<notifications group="foo" />
 		<div class="flex-col accounts-list">
 			<div class="card mb-12">
 				<div class="card-header" style="background-color:#dfdfd0!important;">
@@ -176,6 +177,7 @@
 								<th>Over Payment</th>
 								<th>Total Payment</th>
 								<th>Remarks</th>
+								<th></th>
 							</thead>
 							<tbody>
 								<tr v-for="(p,pi) in loanDetails.payments" :key="pi">
@@ -191,6 +193,7 @@
 									<td>{{formatToCurrency(p.over_payment)}}</td>
 									<td>{{formatToCurrency(p.amount_applied)}}</td>
 									<td>{{p.status == 'cancelled' ? 'Cancelled' + (p.remarks ? ' - ' + p.remarks : '') : ''}}</td>
+									<td><a @click.prevent="editPayment=p" data-toggle="modal" data-target="#editPaymentModal" href=""><i class="fa fa-edit"></i>Edit</a></td>
 								</tr>
 								<tr v-if="loanDetails.payments.length==0">
 									<td>No payments yet.</td>
@@ -348,6 +351,105 @@
 			</div>
 
 		</div>
+
+
+
+
+
+
+		<div class="modal" id="editPaymentModal" tabindex="-1" role="dialog">
+			<div class="modal-dialog modal-xl" role="document">
+				<div class="modal-content">
+					<div class="modal-body">
+						<form @submit.prevent="">
+							<section class="mb-24 p-16" style="flex:21;padding-left:16px;">
+								<span class="section-title mb-12">Edit Payment</span>
+								<div class="d-flex flex-column">
+									<div class="d-flex flex-column flex-lg-row">
+										<div class="form-group mb-10 mr-16 flex-1">
+											<label for="transactionDate" class="form-label">Date</label>
+											<div class="form-group">
+												<input v-model="editPayment.transaction_date" type="date" class="form-control form-input">
+											</div>
+										</div>
+										<div class="form-group mb-10 mr-16 flex-1">
+											<label for="transactionDate" class="form-label">OR No.</label>
+											<div class="form-group">
+												<input v-model="editPayment.or_no" type="text" class="form-control form-input">
+											</div>
+										</div>
+										<div class="form-group mb-10 mr-16 flex-1">
+											<label for="transactionDate" class="form-label">Trans. No.</label>
+											<div class="form-group">
+												<input v-model="editPayment.transaction_number" type="text" class="form-control form-input">
+											</div>
+										</div>
+										<div class="form-group mb-10 mr-16 flex-1">
+											<label for="transactionDate" class="form-label">Refrerence No.</label>
+											<div class="form-group">
+												<input v-model="editPayment.reference_no" type="text" class="form-control form-input">
+											</div>
+										</div>
+									</div>
+
+									<div class="d-flex flex-column flex-lg-row">
+										<div class="form-group mb-10 mr-16 flex-1">
+											<label for="transactionDate" class="form-label">Principal</label>
+											<div class="form-group">
+												<input v-model="editPayment.principal" type="number" class="form-control form-input">
+											</div>
+										</div>
+										<div class="form-group mb-10 mr-16 flex-1">
+											<label for="transactionDate" class="form-label">Interest</label>
+											<div class="form-group">
+												<input v-model="editPayment.interest" type="number" class="form-control form-input">
+											</div>
+										</div>
+										<div class="form-group mb-10 mr-16 flex-1">
+											<label for="transactionDate" class="form-label">PDI</label>
+											<div class="form-group">
+												<input v-model="editPayment.pdi" type="number" class="form-control form-input">
+											</div>
+										</div>
+										<div class="form-group mb-10 mr-16 flex-1">
+											<label for="transactionDate" class="form-label">Penalty</label>
+											<div class="form-group">
+												<input v-model="editPayment.penalty" type="number" class="form-control form-input">
+											</div>
+										</div>
+									</div>
+
+
+									<div class="d-flex flex-column flex-lg-row">
+										<div class="form-group mb-10 mr-16 flex-1">
+											<label for="transactionDate" class="form-label">Rebates</label>
+											<div class="form-group">
+												<input v-model="editPayment.rebates" type="number" class="form-control form-input">
+											</div>
+										</div>
+										<div class="form-group mb-10 mr-16 flex-1">
+											<label for="transactionDate" class="form-label">Overpayment</label>
+											<div class="form-group">
+												<input v-model="editPayment.over_payment" type="number" class="form-control form-input">
+											</div>
+										</div>
+										<div class="form-group mb-10 mr-16 flex-1">
+											<label for="transactionDate" class="form-label">Total Payment</label>
+											<div class="form-group">
+												<input v-model="editPayment.amount_applied" type="number" class="form-control form-input">
+											</div>
+										</div>
+										<div class="form-group mb-10 mr-16 flex-1 d-flex align-items-end">
+											<button @click="updatePayment()" data-dismiss="modal" class="btn btn-success" style="margin-bottom:1rem;width:100%;height:47px;">UPDATE</button>
+										</div>
+									</div>
+								</div>
+							</section>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
 	</section>
 
 </template>
@@ -357,6 +459,7 @@
 		props:['ploanDetails','showPayments','showSchedule','token'],
 		data(){
 			return {
+				editPayment:{},
 				loanDetails:{
 					loan_account_id:null,
 					cycle_no : 1,
@@ -476,6 +579,30 @@
 					this.$emit('unload');
 					console.log(error);
 				}.bind(this));
+			},
+			updatePayment:function(){
+				axios.put(this.baseURL() + 'api/payment/' + this.editPayment.payment_id, this.editPayment, {
+					headers: {
+							'Authorization': 'Bearer ' + this.token,
+							'Content-Type': 'application/json',
+							'Accept': 'application/json'
+					}
+				})
+				.then(function (response) {
+					this.notify('','Payment successfully updated.', 'success');
+				}.bind(this))
+				.catch(function (error) {
+					console.log(error);
+					this.notify('',error.response.data.data, 'error');
+				}.bind(this));
+			},
+			notify:function(title, text, type){
+				this.$notify({
+					group: 'foo',
+					title: title,
+					text: text,
+					type: type,
+				});
 			},
 		},
 		computed:{
