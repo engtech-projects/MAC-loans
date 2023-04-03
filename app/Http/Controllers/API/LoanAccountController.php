@@ -328,4 +328,15 @@ class LoanAccountController extends BaseController
         return 1;
     }
 
+    public function fixMiragtionRebates(){
+        
+        for ($i=0; $i <= 15; $i++) { 
+            $payments = Payment::limit(1000, $i * 1000)->get();
+            foreach ($payments as $payment) {
+                # code...
+            }
+        }
+        return 1;
+    }
+
 }
