@@ -365,7 +365,7 @@
 							<section class="mb-24 p-16" style="flex:21;padding-left:16px;">
 								<span class="section-title mb-12">Edit Payment</span>
 								<div class="d-flex flex-column">
-									<div class="d-flex flex-column flex-lg-row">
+									<!-- <div class="d-flex flex-column flex-lg-row">
 										<div class="form-group mb-10 mr-16 flex-1">
 											<label for="transactionDate" class="form-label">Date</label>
 											<div class="form-group">
@@ -390,7 +390,7 @@
 												<input v-model="editPayment.reference_no" type="text" class="form-control form-input">
 											</div>
 										</div>
-									</div>
+									</div> -->
 
 									<div class="d-flex flex-column flex-lg-row">
 										<div class="form-group mb-10 mr-16 flex-1">
@@ -428,16 +428,13 @@
 											</div>
 										</div>
 										<div class="form-group mb-10 mr-16 flex-1">
-											<label for="transactionDate" class="form-label">Overpayment</label>
-											<div class="form-group">
-												<input v-model="editPayment.over_payment" type="number" class="form-control form-input">
-											</div>
-										</div>
-										<div class="form-group mb-10 mr-16 flex-1">
 											<label for="transactionDate" class="form-label">Total Payment</label>
 											<div class="form-group">
 												<input v-model="editPayment.amount_applied" type="number" class="form-control form-input">
 											</div>
+										</div>
+										<div class="form-group mb-10 mr-16 flex-1">
+											
 										</div>
 										<div class="form-group mb-10 mr-16 flex-1 d-flex align-items-end">
 											<button @click="updatePayment()" data-dismiss="modal" class="btn btn-success" style="margin-bottom:1rem;width:100%;height:47px;">UPDATE</button>
