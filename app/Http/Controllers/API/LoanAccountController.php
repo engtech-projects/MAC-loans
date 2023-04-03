@@ -18,6 +18,7 @@ use Carbon\Carbon;
 use App\Http\Resources\Borrower as BorrowerResource;
 use App\Http\Resources\LoanAccount as LoanAccountResource;
 use App\Http\Resources\Amortization as AmortizationResource;
+use App\Models\LoanAccountMigrationFix;
 
 class LoanAccountController extends BaseController
 {
@@ -288,6 +289,43 @@ class LoanAccountController extends BaseController
         $account->save();
         return $this->sendResponse(new LoanAccountResource($account),'Co-maker successfully updated');
 
+    }
+
+    public function fixShortAdv(){
+        
+        for ($i=0; $i <= 15; $i++) { 
+            $accounts = LoanAccountMigrationFix::with(['amortizations', 'amortizations.payments'])->limit(1000, $i * 1000)->get();
+            foreach($accounts as $acc){
+                $amortP = 0;
+                $amortI = 0;
+                $advP = 0;
+                $advI = 0;
+                $shortP = 0;
+                $shortI = 0;
+                foreach($acc->amortizations as $amort){
+                    // echo $amort;
+                    $amortP += $amort->principal;
+                    $amortI += $amort->interest;
+                    foreach($amort->payments as $payment){
+                        $payment->principal += $advP;
+                        $payment->interest += $advI;
+                        $shortP = $amortP < $payment->principal ? 0 : $amortP - $payment->principal;
+                        $advP = $amortP < $payment->principal ? $payment->principal - $amortP : 0;
+                        $shortI = $amortI < $payment->interest ? 0 : $amortI - $payment->interest;
+                        $advI = $amortI < $payment-> interest ? $payment->interest - $amortI : 0;
+                        $payment->fill([
+                            "short_interest"=> $shortI,
+                            "short_principal"=> $shortP,
+                            "advance_interest"=> $advI,
+                            "advance_principal"=> $advP,
+                        ])->save();
+                        $amortP -= $payment->principal > $amortP ? $amortP : $payment->principal;
+                        $amortI -= $payment->interest > $amortI ? $amortI : $payment->interest;
+                    }
+                }
+            }
+        }
+        return 1;
     }
 
 }
