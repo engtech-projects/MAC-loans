@@ -313,7 +313,7 @@ class LoanAccountController extends BaseController
                         $advP = $amortP < $payment->principal ? $payment->principal - $amortP : 0;
                         $shortI = $amortI < $payment->interest ? 0 : $amortI - $payment->interest;
                         $advI = $amortI < $payment-> interest ? $payment->interest - $amortI : 0;
-                        $payment->fill([
+                        Payment::find($payment->payment_id)->fill([
                             "short_interest"=> $shortI,
                             "short_principal"=> $shortP,
                             "advance_interest"=> $advI,

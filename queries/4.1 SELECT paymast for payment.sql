@@ -34,7 +34,7 @@ IF
 	paymast.PNLTYBAL AS 'short_penalty',
 IF
 	(
-		paymast.REBATES < paymast.INTBAL 
+		paymast.REBATES <= paymast.INTBAL 
 		AND paymast.REBATES != paymast.PDI 
 		AND paymast.REBATES != paymast.PENALTY,
 		paymast.REBATES,
@@ -55,7 +55,7 @@ IF
 			paymast.INTBAL + paymast.PDI + paymast.PENALTY -
 		IF
 			(
-				paymast.REBATES < paymast.INTBAL 
+				paymast.REBATES <= paymast.INTBAL 
 				AND paymast.REBATES != paymast.PDI 
 				AND paymast.REBATES != paymast.PENALTY,
 				paymast.REBATES,
