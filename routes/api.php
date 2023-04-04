@@ -129,7 +129,9 @@ Route::middleware(['auth:sanctum'])->group( function () {
     Route::post('deduction/calculate', [DeductionController::class, 'calculateDeductions']);
 
     Route::get('borrower/list/{branch_id}', [BorrowerController::class, "borrowerList"]);
+    
     Route::get('migrate/loanAccount', [LoanAccountController::class, "fixShortAdv"]);
+    Route::get('migrate/payment/rebatesInterestPenaltyPDI', [LoanAccountController::class, "fixMiragtionRebates"]);
 
 });
 
