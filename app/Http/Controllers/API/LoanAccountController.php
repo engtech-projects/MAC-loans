@@ -186,6 +186,20 @@ class LoanAccountController extends BaseController
         return $this->sendResponse(['status' => 'released'], 'Released');
     }
 
+    public function updateAccountAmortization(LoanAccount $account) {
+
+        $account = LoanAccount::find($account->loan_account_id);
+
+        $account->transaction_date = $account->transaction_date;
+        $account->date_release = $account->date_release;
+        $account->due_date = $account->due_date;
+        $account->update();
+
+        $this->createAmortizationSched($account);
+
+        return $this->sendResponse(['status' => 'released'], 'Released');
+    }
+
     public function reject(Request $request, LoanAccount $account) {
 
         if( $account->memo > 0 ){
@@ -292,8 +306,8 @@ class LoanAccountController extends BaseController
     }
 
     public function fixShortAdv(){
-        
-        for ($i=0; $i <= 15; $i++) { 
+
+        for ($i=0; $i <= 15; $i++) {
             $accounts = LoanAccountMigrationFix::with(['amortizations', 'amortizations.payments'])->limit(1000, $i * 1000)->get();
             foreach($accounts as $acc){
                 $amortP = 0;
