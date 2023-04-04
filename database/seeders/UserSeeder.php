@@ -407,7 +407,7 @@ class UserSeeder extends Seeder
         DB::table('account_officer')->insert([
             [
                 'ao_id' => '1',
-                'name' => 'John Mark Barcenas',
+                'name' => 'Robert Dumaog',
                 'branch_id' => '001',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
@@ -424,6 +424,13 @@ class UserSeeder extends Seeder
                 'ao_id' => '3',
                 'name' => 'Jomel T. Gallenero',
                 'branch_id' => '001',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'ao_id' => '3',
+                'name' => 'Jomel T. Gallenero',
+                'branch_id' => '002',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ],
@@ -450,7 +457,7 @@ class UserSeeder extends Seeder
             ],
             [
                 'ao_id' => '22',
-                'name' => 'Joselito C Ferrer Jr',
+                'name' => 'John Mark Barcenas',
                 'branch_id' => '002',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
@@ -465,6 +472,13 @@ class UserSeeder extends Seeder
             [
                 'ao_id' => '24',
                 'name' => 'Nasipit Branch Ofs.',
+                'branch_id' => '001',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'ao_id' => '25',
+                'name' => 'Janine L. Descallar',
                 'branch_id' => '001',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
