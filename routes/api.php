@@ -15,6 +15,7 @@ use App\Http\Controllers\API\UserController;
 use App\Http\Controllers\API\PaymentController;
 use App\Http\Controllers\API\ReportsController;
 use App\Http\Controllers\API\AccessibilityController;
+use App\Http\Controllers\API\AccountRetaggingController;
 use App\Http\Controllers\API\ChartOfAccountsController;
 use App\Http\Controllers\API\GLController;
 use App\Http\Controllers\BorrowerLoginController;
@@ -105,6 +106,8 @@ Route::middleware(['auth:sanctum'])->group( function () {
     // Route::get('account/create-amortization/{account}', [LoanAccountController::class, 'createAmortizationSched']);
     Route::post('account/generate-amortization/', [LoanAccountController::class, 'generateAmortizationSched']);
     Route::post('account/generate-sme/', [LoanAccountController::class, 'generateSMESched']);
+
+    Route::post('account/retag-list/{branch}',[AccountRetaggingController::class,'retagList']);
     // promissory number
     Route::post('account/promissoryno/', [LoanAccountController::class, 'getPromissoryNo']);
 
