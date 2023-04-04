@@ -26,6 +26,7 @@
 			<th>Collection Rate</th>
 			<th>Payment History</th>
 			<th>Current Loan Status</th>
+			<th></th>
 		</thead>
 		<tbody>
 			<tr @click="fetchAccountId (a.account_num);selected=i" v-for="(a, i) in filteredAccounts" :key="i" :class="i==selected?'account-active':''">
@@ -36,11 +37,13 @@
 				<td>{{a.collection_rate}}%</td>
 				<td>{{a.payment_history}}</td>
 				<td>{{a.loan_status}}</td>
+				<td><a @click.prevent="editAccount=a" href="" data-toggle="modal" data-target="#editAccountModal"><i class="fa fa-edit"></i> Edit</a></td>
 			</tr>
 			<tr v-if="filteredAccounts.length == 0">
 				<td>No accounts found.</td>
 			</tr>
 			<!-- <tr>
+
 				<td>100-3429-15421</td>
 				<td>28,000.00</td>
 				<td>8/8/2021</td>
@@ -1808,6 +1811,114 @@
 		</div>
 
 
+		<div class="modal" id="editAccountModal" tabindex="-1" role="dialog">
+			<div class="modal-dialog modal-xl" role="document">
+				<div class="modal-content">
+					<div class="modal-body">
+						<form @submit.prevent="">
+							<section class="mb-24 p-16" style="flex:21;padding-left:16px;">
+								<span class="section-title mb-12">Edit Account</span>
+								<div class="d-flex flex-column">
+									<!-- <div class="d-flex flex-column flex-lg-row">
+										<div class="form-group mb-10 mr-16 flex-1">
+											<label for="transactionDate" class="form-label">Date</label>
+											<div class="form-group">
+												<input v-model="editAccount.transaction_date" type="date" class="form-control form-input">
+											</div>
+										</div>
+										<div class="form-group mb-10 mr-16 flex-1">
+											<label for="transactionDate" class="form-label">OR No.</label>
+											<div class="form-group">
+												<input v-model="editAccount.or_no" type="text" class="form-control form-input">
+											</div>
+										</div>
+										<div class="form-group mb-10 mr-16 flex-1">
+											<label for="transactionDate" class="form-label">Trans. No.</label>
+											<div class="form-group">
+												<input v-model="editAccount.transaction_number" type="text" class="form-control form-input">
+											</div>
+										</div>
+										<div class="form-group mb-10 mr-16 flex-1">
+											<label for="transactionDate" class="form-label">Refrerence No.</label>
+											<div class="form-group">
+												<input v-model="editAccount.reference_no" type="text" class="form-control form-input">
+											</div>
+										</div>
+									</div> -->
+
+									<div class="d-flex flex-column flex-lg-row">
+										<div class="form-group mb-10 mr-16 flex-1">
+											<label for="transactionDate" class="form-label">Account No.</label>
+											<div class="form-group">
+												<input v-model="editAccount.account_num" type="text" disabled class="form-control form-input">
+											</div>
+										</div>
+										<div class="form-group mb-10 mr-16 flex-1">
+											<label for="transactionDate" class="form-label">Loan Amount</label>
+											<div class="form-group">
+												<input v-model="editAccount.loan_amount" type="text" disabled class="form-control form-input">
+											</div>
+										</div>
+										<div class="form-group mb-10 mr-16 flex-1">
+											<label for="transactionDate" class="form-label">Date Granted</label>
+											<div class="form-group">
+												<input v-model="editAccount.date_granted" type="text" disabled class="form-control form-input">
+											</div>
+										</div>
+										<div class="form-group mb-10 mr-16 flex-1">
+											<label for="transactionDate" class="form-label">Term</label>
+											<div class="form-group">
+												<input v-model="editAccount.term" type="text" disabled class="form-control form-input">
+											</div>
+										</div>
+									</div>
+
+
+									<div class="d-flex flex-column flex-lg-row">
+										<div class="form-group mb-10 mr-16 flex-1">
+											<label for="transactionDate" class="form-label">Collection Rate</label>
+											<div class="form-group">
+												<input v-model="editAccount.collection_rate" type="text" disabled class="form-control form-input">
+											</div>
+										</div>
+										<div class="form-group mb-10 mr-16 flex-1">
+											<label for="transactionDate" class="form-label">Payment History</label>
+											<div class="form-group">
+												<!-- <input v-model="editAccount.payment_history" type="text" class="form-control form-input"> -->
+												<select name="" id="" class="form-control form-input" v-model="editAccount.payment_history">
+													<option value="Current">Current</option>
+													<option value="Delinquent">Delinquent</option>
+													<option value="Past Due">Past Due</option>
+												</select>
+											</div>
+										</div>
+										<div class="form-group mb-10 mr-16 flex-1">
+											<label for="transactionDate" class="form-label">Current Loan Status</label>
+											<div class="form-group">
+												<!-- <input v-model="editAccount.loan_status" type="text" class="form-control form-input"> -->
+												<select name="" id="" class="form-control form-input" v-model="editAccount.loan_status">
+													<option value="Ongoing">Ongoing</option>
+													<option value="Write-Off">Write-Off</option>
+													<option value="Past Due">Past Due</option>
+													<option value="Restructed">Restructed</option>
+													<option value="Res WO-PDI">Res WO-PDI</option>
+													<option value="Case Filed">Case Filed</option>
+													<option value="Litigated">Litigated</option>
+												</select>
+											</div>
+										</div>
+										<div class="form-group mb-10 mr-16 flex-1 d-flex align-items-end">
+											<button @click="updateAccount({'payment_status':editAccount.payment_history}, 'Payment Status')" data-dismiss="modal" class="btn btn-success" style="margin-bottom:1rem;width:100%;height:47px;">UPDATE</button>
+										</div>
+									</div>
+								</div>
+							</section>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+
 	</div>
 
 </template>
@@ -1817,6 +1928,7 @@
 		props:['borrower_id','token'],
 		data(){
 			return {
+				editAccount:{},
 				loading:false,
 				loanAccount:{},
 				activeBrowse:false,
@@ -1987,6 +2099,24 @@
 			}
 		},
 		methods:{
+			async updateAccount(data, type){
+				console.log(data);
+				await axios.post(this.baseURL() + 'api/account/update/' + this.editAccount.account_id, data, {
+					headers: {
+						'Authorization': 'Bearer ' + this.token,
+						'contentType': "multipart/form-data"
+					}
+				})
+				.then(function (response) {
+					this.notify('', type + ' has been updated successfully.', 'success');
+					if(type=='Payment Status'){
+						this.updateAccount({'loan_status':this.editAccount.loan_status}, 'Loan Status')
+					}
+				}.bind(this))
+				.catch(function (error) {
+					console.log(error);
+				}.bind(this));
+			},
 			notify:function(title, text, type){
 				this.$notify({
 					group: 'foo',
