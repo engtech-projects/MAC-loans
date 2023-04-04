@@ -18,6 +18,7 @@ use Carbon\Carbon;
 use App\Http\Resources\Borrower as BorrowerResource;
 use App\Http\Resources\LoanAccount as LoanAccountResource;
 use App\Http\Resources\Amortization as AmortizationResource;
+use App\Jobs\FixShortAdvMigration;
 use App\Models\LoanAccountMigrationFix;
 
 class LoanAccountController extends BaseController
@@ -292,40 +293,55 @@ class LoanAccountController extends BaseController
     }
 
     public function fixShortAdv(){
-        
-        for ($i=0; $i <= 15; $i++) { 
-            $accounts = LoanAccountMigrationFix::with(['amortizations', 'amortizations.payments'])->limit(1000, $i * 1000)->get();
-            foreach($accounts as $acc){
-                $amortP = 0;
-                $amortI = 0;
-                $advP = 0;
-                $advI = 0;
-                $shortP = 0;
-                $shortI = 0;
-                foreach($acc->amortizations as $amort){
-                    // echo $amort;
-                    $amortP += $amort->principal;
-                    $amortI += $amort->interest;
-                    foreach($amort->payments as $payment){
-                        $payment->principal += $advP;
-                        $payment->interest += $advI;
-                        $shortP = $amortP < $payment->principal ? 0 : $amortP - $payment->principal;
-                        $advP = $amortP < $payment->principal ? $payment->principal - $amortP : 0;
-                        $shortI = $amortI < $payment->interest ? 0 : $amortI - $payment->interest;
-                        $advI = $amortI < $payment-> interest ? $payment->interest - $amortI : 0;
-                        Payment::find($payment->payment_id)->fill([
-                            "short_interest"=> $shortI,
-                            "short_principal"=> $shortP,
-                            "advance_interest"=> $advI,
-                            "advance_principal"=> $advP,
-                        ])->save();
-                        $amortP -= $payment->principal > $amortP ? $amortP : $payment->principal;
-                        $amortI -= $payment->interest > $amortI ? $amortI : $payment->interest;
-                    }
+        $limit = 2000;
+        $start = 0;
+        $totalPages = 8;
+        $workers = 8; // for simultaneous queue instance
+        for ($i=$start; $i <= $totalPages; $i++) { 
+            // For Using Queue in Background
+            // FixShortAdvMigration::dispatch($i, $limit)->onQueue($i%8);
+
+            // For Using just waiting in front end / Realtime
+            LoanAccountController::fixLoanAccountShortAndAdvances($i, $limit);
+
+            // break;
+            // echo $i.' ';
+        }
+        // return response()->json(["data"=>"success", "message"=>"Being processed in background"],202); // Queue in Background
+        return response()->json(["data"=>"success"],200); // Realtime
+    }
+
+    public static function fixLoanAccountShortAndAdvances($i, $limit){
+        $accountsArray = LoanAccountMigrationFix::with(['amortizations', 'amortizations.payments'])->offset($i * 1000)->limit($limit)->get();
+        foreach($accountsArray as $acc){
+            $amortP = 0;
+            $amortI = 0;
+            $advP = 0;
+            $advI = 0;
+            $shortP = 0;
+            $shortI = 0;
+            foreach($acc->amortizations as $amort){
+                // echo $amort;
+                $amortP += $amort->principal;
+                $amortI += $amort->interest;
+                foreach($amort->payments as $payment){
+                    $payment->principal += $advP;
+                    $payment->interest += $advI;
+                    $shortP = $amortP < $payment->principal ? 0 : $amortP - $payment->principal;
+                    $advP = $amortP < $payment->principal ? $payment->principal - $amortP : 0;
+                    $shortI = $amortI < $payment->interest ? 0 : $amortI - $payment->interest;
+                    $advI = $amortI < $payment-> interest ? $payment->interest - $amortI : 0;
+                    Payment::find($payment->payment_id)->fill([
+                        "short_interest"=> $shortI,
+                        "short_principal"=> $shortP,
+                        "advance_interest"=> $advI,
+                        "advance_principal"=> $advP,
+                    ])->save();
+                    $amortP -= $payment->principal > $amortP ? $amortP : $payment->principal;
+                    $amortI -= $payment->interest > $amortI ? $amortI : $payment->interest;
                 }
             }
         }
-        return 1;
     }
 
     public function fixMiragtionRebates(){
