@@ -93,6 +93,9 @@ Route::middleware(['auth:sanctum'])->group( function () {
     // cash voucher
     Route::get('account/cashvoucher/{account}', [LoanAccountController::class, 'cashVoucher']);
 
+
+    Route::post('account/update-account-amortization/{account}',[LoanAccountController::class,'updateAccountAmortization']);
+
     Route::post('account/override/', [LoanAccountController::class, 'override']);
     Route::delete('account/remove/{account}', [LoanAccountController::class, 'delete']);
     Route::put('account/reject/{account}', [LoanAccountController::class, 'reject']);
