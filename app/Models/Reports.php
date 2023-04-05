@@ -828,11 +828,11 @@ class Reports extends Model
             if(isset($filters["branch_id"]) && $filters["branch_id"]){
                 $accOfficers =  AccountOfficer::join('account_officer_branch','account_officer.ao_id', '=', 'account_officer_branch.ao_id')
                                         ->join('branch','account_officer_branch.branch_id', '=', 'branch.branch_id')
-                                        ->where(['branch.branch_id' => $filters['branch_id']])->get()->toArray();
+                                        ->where(['account_officer.status' => AccountOfficer::STATUS_ACTIVE,'branch.branch_id' => $filters['branch_id']])->get()->toArray();
             }else{
                 $accOfficers = AccountOfficer::where(["status"=> AccountOfficer::STATUS_ACTIVE])->get()->toArray();
             }
-            
+
             $products = Product::where(["status" => Product::STATUS_ACTIVE])->get()->toArray();
             foreach ($accOfficers as $aoKey => $aoValue) {
                 foreach ($products as $prodKey => $prodValue) {
