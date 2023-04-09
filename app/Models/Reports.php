@@ -822,6 +822,7 @@ class Reports extends Model
 
     public function branchAOReport($filters = []) {
         $tranDate = new EndTransaction();
+        $branch = Branch::find($filters['branch_id']);
         $data = [];
         if($filters["group"] == Reports::BRANCH_AO_PERFORMANCE){
             $accOfficers = NULL;
@@ -840,7 +841,8 @@ class Reports extends Model
                     $allAOProd = LoanAccount::where([
                         "status"=>LoanAccount::STATUS_RELEASED,
                         "ao_id"=>$aoValue["ao_id"],
-                        "product_id"=>$prodValue["product_id"]
+                        "product_id"=>$prodValue["product_id"],
+                        "branch_code" => $branch->branch_code
                     ])
                     ->whereNotIn("loan_status",[LoanAccount::LOAN_PAID])
                     ->get();
