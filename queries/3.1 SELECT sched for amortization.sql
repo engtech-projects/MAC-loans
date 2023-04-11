@@ -27,7 +27,7 @@ SELECT
 	CAST(
 
 		IF (
-			sched.DATEPAID,
+			sched.DATEPAID >= sched.DATESCHE AND sched.DATEPAID is not NULL,
 			'paid',
 			'open'
 		) AS CHAR

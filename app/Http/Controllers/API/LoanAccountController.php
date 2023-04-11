@@ -307,22 +307,22 @@ class LoanAccountController extends BaseController
     }
 
     public function fixShortAdv(){
-        $limit = 2000;
+        $limit = 100;
         $start = 0;
-        $totalPages = 8;
-        $workers = 8; // for simultaneous queue instance
+        $totalPages = 150;
+        $workers = 10; // for simultaneous queue instance
         for ($i=$start; $i <= $totalPages; $i++) { 
             // For Using Queue in Background
-            // FixShortAdvMigration::dispatch($i, $limit)->onQueue($i%8);
+            FixShortAdvMigration::dispatch($i, $limit)->onQueue($i % $workers);
 
             // For Using just waiting in front end / Realtime
-            LoanAccountController::fixLoanAccountShortAndAdvances($i, $limit);
+            // LoanAccountController::fixLoanAccountShortAndAdvances($i, $limit);
 
             // break;
             // echo $i.' ';
         }
-        // return response()->json(["data"=>"success", "message"=>"Being processed in background"],202); // Queue in Background
-        return response()->json(["data"=>"success"],200); // Realtime
+        return response()->json(["data"=>"success", "message"=>"Being processed in background"], 202); // Queue in Background
+        // return response()->json(["data"=>"success"],200); // Realtime
     }
 
     public static function fixLoanAccountShortAndAdvances($i, $limit){
