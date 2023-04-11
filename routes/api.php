@@ -75,7 +75,8 @@ Route::middleware(['auth:sanctum'])->group( function () {
     // loan account
     Route::get('account/show/{account}', [LoanAccountController::class, 'showLoanAccount']);
     Route::get('account/amortization_details/{account}',[LoanAccountController::class, 'showCurrentAmortization']);
-    Route::post('account/amortizations/update/{amortization}',[AmortizationController::class, 'update']);
+    Route::get('account/amortizations/{account}',[AmortizationController::class,'getAmortizations']);
+    Route::post('account/amortizations/update/{amortization}', [AmortizationController::class, 'update']);
 
 
     Route::post('account/create/{borrower}', [LoanAccountController::class, 'createLoanAccount']);
@@ -97,6 +98,7 @@ Route::middleware(['auth:sanctum'])->group( function () {
 
 
     Route::post('account/update-account-amortization/{account}',[LoanAccountController::class,'updateAccountAmortization']);
+
 
     Route::post('account/override/', [LoanAccountController::class, 'override']);
     Route::delete('account/remove/{account}', [LoanAccountController::class, 'delete']);
