@@ -15,6 +15,7 @@ use App\Http\Controllers\API\UserController;
 use App\Http\Controllers\API\PaymentController;
 use App\Http\Controllers\API\ReportsController;
 use App\Http\Controllers\API\AccessibilityController;
+use App\Http\Controllers\API\AmortizationController;
 use App\Http\Controllers\API\ChartOfAccountsController;
 use App\Http\Controllers\API\GLController;
 use App\Http\Controllers\BorrowerLoginController;
@@ -74,6 +75,7 @@ Route::middleware(['auth:sanctum'])->group( function () {
     // loan account
     Route::get('account/show/{account}', [LoanAccountController::class, 'showLoanAccount']);
     Route::get('account/amortization_details/{account}',[LoanAccountController::class, 'showCurrentAmortization']);
+    Route::post('account/amortizations/update/{amortization}',[AmortizationController::class, 'update']);
 
 
     Route::post('account/create/{borrower}', [LoanAccountController::class, 'createLoanAccount']);
@@ -129,7 +131,7 @@ Route::middleware(['auth:sanctum'])->group( function () {
     Route::post('deduction/calculate', [DeductionController::class, 'calculateDeductions']);
 
     Route::get('borrower/list/{branch_id}', [BorrowerController::class, "borrowerList"]);
-    
+
     Route::get('migrate/loanAccount', [LoanAccountController::class, "fixShortAdv"]);
     Route::get('migrate/payment/rebatesInterestPenaltyPDI', [LoanAccountController::class, "fixMiragtionRebates"]);
 
