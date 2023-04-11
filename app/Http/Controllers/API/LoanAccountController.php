@@ -46,6 +46,12 @@ class LoanAccountController extends BaseController
     }
 
 
+    public function getAmortizations(LoanAccount $account) {
+        $amortizations = Amortization::where(['loan_account_id' => $account->loan_account_id])->get();
+        return $this->sendResponse($amortizations,'Loan Account amortizations fetched.');
+    }
+
+
     public function showCurrentAmortization(LoanAccount $account) {
         $data = $account->getAmortization();
 
@@ -311,7 +317,7 @@ class LoanAccountController extends BaseController
         $start = 0;
         $totalPages = 150;
         $workers = 10; // for simultaneous queue instance
-        for ($i=$start; $i <= $totalPages; $i++) { 
+        for ($i=$start; $i <= $totalPages; $i++) {
             // For Using Queue in Background
             FixShortAdvMigration::dispatch($i, $limit)->onQueue($i % $workers);
 
@@ -359,8 +365,8 @@ class LoanAccountController extends BaseController
     }
 
     public function fixMiragtionRebates(){
-        
-        for ($i=0; $i <= 15; $i++) { 
+
+        for ($i=0; $i <= 15; $i++) {
             $payments = Payment::limit(1000, $i * 1000)->get();
             foreach ($payments as $payment) {
                 # code...
