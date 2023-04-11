@@ -46,12 +46,6 @@ class LoanAccountController extends BaseController
     }
 
 
-    public function getAmortizations(LoanAccount $account) {
-        $amortizations = Amortization::where(['loan_account_id' => $account->loan_account_id])->get();
-        return $this->sendResponse($amortizations,'Loan Account amortizations fetched.');
-    }
-
-
     public function showCurrentAmortization(LoanAccount $account) {
         $data = $account->getAmortization();
 
