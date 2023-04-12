@@ -312,9 +312,17 @@ class LoanAccountController extends BaseController
         $start = 0;
         $totalPages = 150;
         $workers = 10; // for simultaneous queue instance
+
         for ($i=$start; $i <= $totalPages; $i++) {
-            // For Using Queue in Background
-            FixShortAdvMigration::dispatch($i, $limit)->onQueue($i % $workers);
+            if($type == 'background'){
+                // For Using Queue in Background
+                FixShortAdvMigration::dispatch($i, $limit)->onQueue($i % $workers);
+            }else if($type == 'realtime'){
+                // For Using just waiting in front end / Realtime
+                LoanAccountController::fixLoanAccountShortAndAdvances($i, $limit);
+            }else{
+                break;
+            }
 
 
             // break;
