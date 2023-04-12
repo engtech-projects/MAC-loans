@@ -239,4 +239,8 @@ class ReportsController extends Controller
 			'title' => 'Reports - Bir',
 		]);
 	}
+
+	public function amortSched($id){
+		return \App\Models\Amortization::where('loan_account_id',$id)->orderBy('amortization_date', 'ASC')->get();
+	}
 }

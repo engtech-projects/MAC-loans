@@ -161,46 +161,103 @@
 						</div>
 					</div>
 
-					<div class="flex-col payments-list" v-if="showPayments">
+					<!-- <div class="flex-col payments-list" v-if="showPayments">
 						<span class="header">Payments</span>
-						<table class="table table-stripped mb-64">
-							<thead>
-								<th>Date</th>
-								<th>O.R. #</th>
-								<th>Trans. #</th>
-								<th>Reference</th>
-								<th>Principal</th>
-								<th>Interest</th>
-								<th>PDI</th>
-								<th>Penalty</th>
-								<th>Rebates</th>
-								<th>Over Payment</th>
-								<th>Total Payment</th>
-								<th>Remarks</th>
-								<th></th>
-							</thead>
-							<tbody>
-								<tr v-for="(p,pi) in loanDetails.payments" :key="pi">
-									<td>{{dateToMDY(new Date(p.transaction_date))}}</td>
-									<td>{{p.or_no}}</td>
-									<td>{{p.transaction_number}}</td>
-									<td>{{p.reference_no}}</td>
-									<td>{{formatToCurrency(p.principal)}}</td>
-									<td>{{formatToCurrency(p.interest)}}</td>
-									<td>{{formatToCurrency(p.pdi)}}</td>
-									<td>{{formatToCurrency(p.penalty)}}</td>
-									<td>{{formatToCurrency(p.rebates)}}</td>
-									<td>{{formatToCurrency(p.over_payment)}}</td>
-									<td>{{formatToCurrency(p.amount_applied)}}</td>
-									<td>{{p.status == 'cancelled' ? 'Cancelled' + (p.remarks ? ' - ' + p.remarks : '') : ''}}</td>
-									<td><a @click.prevent="editPayment=p" data-toggle="modal" data-target="#editPaymentModal" href=""><i class="fa fa-edit"></i>Edit</a></td>
-								</tr>
-								<tr v-if="loanDetails.payments.length==0">
-									<td>No payments yet.</td>
-								</tr>
-							</tbody>
-						</table>
+						
+					</div> -->
+
+					<div class="card card-primary card-outline card-tabs" style="border-top: 3px solid #283f53;">
+						<div class="card-header p-0 pt-1 border-bottom-0">
+							<ul class="nav nav-tabs" id="custom-tabs-three-tab" role="tablist">
+								<li class="nav-item">
+								<a class="nav-link active" id="custom-tabs-three-home-tab" data-toggle="pill" href="#custom-tabs-three-home" role="tab" aria-controls="custom-tabs-three-home" aria-selected="true">Payments</a>
+								</li>
+								<li class="nav-item">
+								<a class="nav-link" id="custom-tabs-three-profile-tab" data-toggle="pill" href="#custom-tabs-three-profile" role="tab" aria-controls="custom-tabs-three-profile" aria-selected="false">Amortization Schedule</a>
+								</li>
+							</ul>
+						</div>
+						<div class="card-body">
+							<div class="tab-content" id="custom-tabs-three-tabContent">
+								<div class="tab-pane fade active show" id="custom-tabs-three-home" role="tabpanel" aria-labelledby="custom-tabs-three-home-tab">
+									<table class="table table-stripped mb-64">
+										<thead>
+											<th>Date</th>
+											<th>O.R. #</th>
+											<th>Trans. #</th>
+											<th>Reference</th>
+											<th>Principal</th>
+											<th>Interest</th>
+											<th>PDI</th>
+											<th>Penalty</th>
+											<th>Rebates</th>
+											<th>Over Payment</th>
+											<th>Total Payment</th>
+											<th>Remarks</th>
+											<th></th>
+										</thead>
+										<tbody>
+											<tr v-for="(p,pi) in loanDetails.payments" :key="pi">
+												<td>{{dateToMDY(new Date(p.transaction_date))}}</td>
+												<td>{{p.or_no}}</td>
+												<td>{{p.transaction_number}}</td>
+												<td>{{p.reference_no}}</td>
+												<td>{{formatToCurrency(p.principal)}}</td>
+												<td>{{formatToCurrency(p.interest)}}</td>
+												<td>{{formatToCurrency(p.pdi)}}</td>
+												<td>{{formatToCurrency(p.penalty)}}</td>
+												<td>{{formatToCurrency(p.rebates)}}</td>
+												<td>{{formatToCurrency(p.over_payment)}}</td>
+												<td>{{formatToCurrency(p.amount_applied)}}</td>
+												<td>{{p.status == 'cancelled' ? 'Cancelled' + (p.remarks ? ' - ' + p.remarks : '') : ''}}</td>
+												<td><a @click.prevent="editPayment=p" data-toggle="modal" data-target="#editPaymentModal" href=""><i class="fa fa-edit"></i>Edit</a></td>
+											</tr>
+											<tr v-if="loanDetails.payments.length==0">
+												<td>No payments yet.</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+								<div class="tab-pane fade" id="custom-tabs-three-profile" role="tabpanel" aria-labelledby="custom-tabs-three-profile-tab">
+									<div class="flex-col payments-list" v-if="showPayments">
+										<!-- <span class="header">Schedules</span> -->
+										<table class="table table-stripped mb-64">
+										<thead>
+											<th>No.</th>
+											<th>Date</th>
+											<th>Principal</th>
+											<th>Interest</th>
+											<th>Total</th>
+											<th>Principal Balance</th>
+											<th>Interest Balance</th>
+											<th>Status</th>
+											<th></th>
+										</thead>
+										<tbody>
+											<tr v-for="(as, a) in amortSched" :key="a">
+												<td>{{a + 1}}</td>
+												<td>{{dateToMDY(new Date(as.amortization_date))}}</td>
+												<td>{{formatToCurrency(as.principal)}}</td>
+												<td>{{formatToCurrency(as.interest)}}</td>
+												<td>{{formatToCurrency(as.total)}}</td>
+												<td>{{formatToCurrency(as.principal_balance)}}</td>
+												<td>{{formatToCurrency(as.interest_balance)}}</td>
+												<td>{{upperFirst(as.status)}}</td>
+												<td><a @click.prevent="editAmort=as" data-toggle="modal" data-target="#editAmortizationModal" href=""><i class="fa fa-edit"></i>Edit</a></td>
+											</tr>
+											<tr v-if="loanDetails.payments.length==0">
+												<td>No payments yet.</td>
+											</tr>
+										</tbody>
+									</table>
+									</div>
+								</div>
+							</div>
+						</div>
 					</div>
+
+
+
 					<div class="flex-col schedule-row" v-if="showSchedule">
                         <div class="sep mb-24"></div>
 						<div class="d-flex">
@@ -447,6 +504,105 @@
 				</div>
 			</div>
 		</div>
+
+		
+		<div class="modal" id="editAmortizationModal" tabindex="-1" role="dialog">
+			<div class="modal-dialog modal-xl" role="document">
+				<div class="modal-content">
+					<div class="modal-body">
+						<form @submit.prevent="">
+							<section class="mb-24 p-16" style="flex:21;padding-left:16px;">
+								<span class="section-title mb-12">Edit Amortization</span>
+								<div class="d-flex flex-column">
+									<!-- <div class="d-flex flex-column flex-lg-row">
+										<div class="form-group mb-10 mr-16 flex-1">
+											<label for="transactionDate" class="form-label">Date</label>
+											<div class="form-group">
+												<input v-model="editPayment.transaction_date" type="date" class="form-control form-input">
+											</div>
+										</div>
+										<div class="form-group mb-10 mr-16 flex-1">
+											<label for="transactionDate" class="form-label">OR No.</label>
+											<div class="form-group">
+												<input v-model="editPayment.or_no" type="text" class="form-control form-input">
+											</div>
+										</div>
+										<div class="form-group mb-10 mr-16 flex-1">
+											<label for="transactionDate" class="form-label">Trans. No.</label>
+											<div class="form-group">
+												<input v-model="editPayment.transaction_number" type="text" class="form-control form-input">
+											</div>
+										</div>
+										<div class="form-group mb-10 mr-16 flex-1">
+											<label for="transactionDate" class="form-label">Refrerence No.</label>
+											<div class="form-group">
+												<input v-model="editPayment.reference_no" type="text" class="form-control form-input">
+											</div>
+										</div>
+									</div> -->
+
+									<div class="d-flex flex-column flex-lg-row">
+										<div class="form-group mb-10 mr-16 flex-1">
+											<label for="transactionDate" class="form-label">Date</label>
+											<div class="form-group">
+												<input v-model="editAmort.amortization_date" type="date" disabled class="form-control form-input">
+											</div>
+										</div>
+											<div class="form-group mb-10 mr-16 flex-1">
+											<label for="transactionDate" class="form-label">Principal</label>
+											<div class="form-group">
+												<input v-model="editAmort.principal" type="number" disabled class="form-control form-input">
+											</div>
+										</div>
+										<div class="form-group mb-10 mr-16 flex-1">
+											<label for="transactionDate" class="form-label">Interest</label>
+											<div class="form-group">
+												<input v-model="editAmort.interest" type="number" disabled class="form-control form-input">
+											</div>
+										</div>
+										<div class="form-group mb-10 mr-16 flex-1">
+											<label for="transactionDate" class="form-label">Total</label>
+											<div class="form-group">
+												<input v-model="editAmort.total" type="number" disabled class="form-control form-input">
+											</div>
+										</div>
+									</div>
+
+
+									<div class="d-flex flex-column flex-lg-row">
+										<div class="form-group mb-10 mr-16 flex-1">
+											<label for="transactionDate" class="form-label">Principal Balance</label>
+											<div class="form-group">
+												<input v-model="editAmort.principal_balance" type="number" disabled class="form-control form-input">
+											</div>
+										</div>
+										<div class="form-group mb-10 mr-16 flex-1">
+											<label for="transactionDate" class="form-label">Interest Balance</label>
+											<div class="form-group">
+												<input v-model="editAmort.interest_balance" type="number" disabled class="form-control form-input">
+											</div>
+										</div>
+										<div class="form-group mb-10 mr-16 flex-1">
+											<label for="transactionDate" class="form-label">Status</label>
+											<div class="form-group">
+												<select v-model="editAmort.status" class="form-control form-input">
+													<option value="open">Open</option>
+													<option value="paid">Paid</option>
+													<option value="delinquent">Delinquent</option>
+												</select>
+											</div>
+										</div>
+										<div class="form-group mb-10 mr-16 flex-1 d-flex align-items-end">
+											<button @click="updateAmort()" data-dismiss="modal" class="btn btn-success" style="margin-bottom:1rem;width:100%;height:47px;">UPDATE</button>
+										</div>
+									</div>
+								</div>
+							</section>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
 	</section>
 
 </template>
@@ -456,7 +612,9 @@
 		props:['ploanDetails','showPayments','showSchedule','token'],
 		data(){
 			return {
+				amortSched:[],
 				editPayment:{},
+				editAmort:{},
 				loanDetails:{
 					loan_account_id:null,
 					cycle_no : 1,
@@ -559,6 +717,22 @@
 			}
 		},
 		methods:{
+			async fetchAmortSched(){
+				await axios.get(this.baseURL() + 'api/account/amortizations/' + this.loanDetails.loan_account_id, {
+				headers: {
+					'Authorization': 'Bearer ' + this.token,
+						'Content-Type': 'application/json',
+						'Accept': 'application/json'
+					}
+				})
+				.then(function (response) {
+					// console.log(response.data);
+					this.amortSched = response.data.data;
+				}.bind(this))
+				.catch(function (error) {
+					console.log(error);
+				}.bind(this));
+			},
 			fetchAccount:function(id){
 				this.$emit('load');
 				axios.get(this.baseURL() + 'api/account/show/' + id, {
@@ -571,6 +745,7 @@
 				.then(function (response) {
 					this.$emit('unload');
 					this.loanDetails = response.data.data;
+					this.fetchAmortSched();
 				}.bind(this))
 				.catch(function (error) {
 					this.$emit('unload');
@@ -587,6 +762,22 @@
 				})
 				.then(function (response) {
 					this.notify('','Payment successfully updated.', 'success');
+				}.bind(this))
+				.catch(function (error) {
+					console.log(error);
+					this.notify('',error.response.data.data, 'error');
+				}.bind(this));
+			},
+			updateAmort:function(){
+				axios.post(this.baseURL() + 'api/account/amortizations/update/' + this.editAmort.id, this.editAmort, {
+					headers: {
+							'Authorization': 'Bearer ' + this.token,
+							'Content-Type': 'application/json',
+							'Accept': 'application/json'
+					}
+				})
+				.then(function (response) {
+					this.notify('','Amortization successfully updated.', 'success');
 				}.bind(this))
 				.catch(function (error) {
 					console.log(error);
