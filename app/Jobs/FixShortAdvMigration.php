@@ -37,23 +37,15 @@ class FixShortAdvMigration implements ShouldQueue
      */
     public function handle()
     {
-        $accountsArray = LoanAccountMigrationFix::with(['lastPayment', 'branch','endTransaction', 'amortizations', 'amortizations.payments'])->offset($this->i * $this->limit)->limit($this->limit)->get();
-
-        $tranDate = new EndTransaction();
-
-
-
-        $dd = [];
-
+        $accountsArray = LoanAccountMigrationFix::where('account_num', '001-002-0011082')->with(['lastPayment', 'branch.endTransaction', 'amortizations', 'amortizations.payments'])->offset($this->i * $this->limit)->limit($this->limit)->get();
         foreach($accountsArray as $acc){
-            $transactionDateNow = $tranDate->getTransactionDate($acc->branch->branch_id)->date_end;
             $amortP = 0;
             $amortI = 0;
             $advP = 0;
             $advI = 0;
             $shortP = 0;
             $shortI = 0;
-            foreach($acc->amortizations as $amort){
+            foreach($acc->amorizations as $amort){
 
                 // echo $amort;
                 $amortP += $amort->principal;
@@ -66,14 +58,14 @@ class FixShortAdvMigration implements ShouldQueue
                     $advP = $amortP < $payment->principal ? $payment->principal - $amortP : 0;
                     $shortI = $amortI < $payment->interest ? 0 : $amortI - $payment->interest;
                     $advI = $amortI < $payment-> interest ? $payment->interest - $amortI : 0;
-                    if($acc->lastPayment == $payment && $shortP > 0){
-                        if($transactionDateNow > $amort->amortization_date){
-                            $amort->status = 'open';
-                        }else{
-                            $amort->status = 'delinquent';
-                        }
-                        $amort->save();
-                    }
+                    // if($acc->lastPayment == $payment && $shortP > 0){
+                    //     if($acc->branch->endTransaction->date_end >= $amort->amortization_date){
+                    //         $amort->status = 'open';
+                    //     }else{
+                    //         $amort->status = 'delinquent';
+                    //     }
+                    //     $amort->save();
+                    // }
                     Payment::find($payment->payment_id)->fill([
                         "short_interest"=> $shortI,
                         "short_principal"=> $shortP,

@@ -15,4 +15,9 @@ class Branch extends Model
     protected $fillable = [
     	'branch_code', 'branch_name', 'branch_manager', 'branch_address', 'status', 'deleted'
     ];
+
+    public function endTransaction()
+    {
+        return $this->hasOne(EndTransaction::class, 'branch_id', 'branch_id')->latest();
+    }
 }

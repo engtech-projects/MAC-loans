@@ -21,12 +21,7 @@ INSERT INTO amortization (
 		sched.PRIN  AS 'principal',
 		sched.INTE AS 'interest',
 		(sched.PRIN + sched.INTE) AS 'total',
-		ROUND(
-				(
-					sched.BALANCE / (sched.PRIN + sched.INTE)
-				) * sched.PRIN,
-				2
-			) AS 'principal_balance',
+		(sched.BALANCE + sched.INTE) - (FLOOR((sched.BALANCE + sched.PRIN + sched.INTE ) / (sched.PRIN + sched.INTE)) * sched.INTE) AS 'principal_balance',
 			FLOOR(
 				(
 					sched.BALANCE / (sched.PRIN + sched.INTE)

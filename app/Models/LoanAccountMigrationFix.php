@@ -120,9 +120,4 @@ class LoanAccountMigrationFix extends Model
         return $this->hasOne(Payment::class, 'loan_account_id')->where('status', 'paid')->orderBy('transaction_date', 'desc');
     }
 
-    public function endTransaction()
-    {
-        return $this->hasOne(EndTransaction::class, 'branch_id','branch_id')->where('status','open');
-    }
-
 }
