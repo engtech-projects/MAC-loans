@@ -35,7 +35,7 @@ class FixShortAdvMigration implements ShouldQueue
      */
     public function handle()
     {
-        $accountsArray = LoanAccountMigrationFix::with(['amortizations', 'amortizations.payments'])->offset($this->i * $this->limit)->limit($this->limit)->get();
+        $accountsArray = LoanAccountMigrationFix::with(['lastPayment', 'amortizations', 'amortizations.payments'])->offset($this->i * $this->limit)->limit($this->limit)->get();
         foreach($accountsArray as $acc){
             $amortP = 0;
             $amortI = 0;
@@ -54,6 +54,14 @@ class FixShortAdvMigration implements ShouldQueue
                     $advP = $amortP < $payment->principal ? $payment->principal - $amortP : 0;
                     $shortI = $amortI < $payment->interest ? 0 : $amortI - $payment->interest;
                     $advI = $amortI < $payment-> interest ? $payment->interest - $amortI : 0;
+                    if($acc->lastPayment == $payment && $shortP > 0){
+                        if($acc->transaction_date->date_end > $amort->amortization_date){
+                            $amort->status = 'open';
+                        }else{
+                            $amort->status = 'delinquent';
+                        }
+                        $amort->save();
+                    }
                     Payment::find($payment->payment_id)->fill([
                         "short_interest"=> $shortI,
                         "short_principal"=> $shortP,

@@ -307,26 +307,42 @@ class LoanAccountController extends BaseController
     }
 
     public function fixShortAdv(){
+        $type = 'background'; // realtime or background
         $limit = 100;
         $start = 0;
         $totalPages = 150;
         $workers = 10; // for simultaneous queue instance
+<<<<<<< Updated upstream
         for ($i=$start; $i <= $totalPages; $i++) {
             // For Using Queue in Background
             FixShortAdvMigration::dispatch($i, $limit)->onQueue($i % $workers);
+=======
+        for ($i=$start; $i <= $totalPages; $i++) { 
+            if($type == 'background'){
+                // For Using Queue in Background
+                FixShortAdvMigration::dispatch($i, $limit)->onQueue($i % $workers);
+            }else if($type == 'realtime'){
+                // For Using just waiting in front end / Realtime
+                LoanAccountController::fixLoanAccountShortAndAdvances($i, $limit);
+            }else{
+                break;
+            }
+>>>>>>> Stashed changes
 
-            // For Using just waiting in front end / Realtime
-            // LoanAccountController::fixLoanAccountShortAndAdvances($i, $limit);
 
             // break;
             // echo $i.' ';
         }
-        return response()->json(["data"=>"success", "message"=>"Being processed in background"], 202); // Queue in Background
-        // return response()->json(["data"=>"success"],200); // Realtime
+        if($type == 'background'){
+            return response()->json(["data"=>"success", "message"=>"Being processed in background"], 202); // Queue in Background
+        }else if($type == 'realtime'){
+            return response()->json(["data"=>"success"],200); // Realtime
+        }
+        return response()->json(["data"=>"failed", 'message'=>'wrong type'],200); // Realtime
     }
 
     public static function fixLoanAccountShortAndAdvances($i, $limit){
-        $accountsArray = LoanAccountMigrationFix::with(['amortizations', 'amortizations.payments'])->offset($i * 1000)->limit($limit)->get();
+        $accountsArray = LoanAccountMigrationFix::with(['lastPayment', 'amortizations', 'amortizations.payments'])->offset($i * 1000)->limit($limit)->get();
         foreach($accountsArray as $acc){
             $amortP = 0;
             $amortI = 0;
@@ -345,6 +361,10 @@ class LoanAccountController extends BaseController
                     $advP = $amortP < $payment->principal ? $payment->principal - $amortP : 0;
                     $shortI = $amortI < $payment->interest ? 0 : $amortI - $payment->interest;
                     $advI = $amortI < $payment-> interest ? $payment->interest - $amortI : 0;
+                    if($acc->lastPayment && $acc->lastPayment->payment_id == $payment->payment_id && $shortP > 0){
+                        $amort->status = 'open';
+                        $amort->save();
+                    }
                     Payment::find($payment->payment_id)->fill([
                         "short_interest"=> $shortI,
                         "short_principal"=> $shortP,

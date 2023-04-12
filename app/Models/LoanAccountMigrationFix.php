@@ -115,4 +115,14 @@ class LoanAccountMigrationFix extends Model
         return $this->hasMany(Payment::class, 'loan_account_id')->whereIn('status', ['paid', 'cancelled']);
     }
 
+    public function lastPayment()
+    {
+        return $this->hasOne(Payment::class, 'loan_account_id')->where('status', 'paid')->orderBy('transaction_date', 'desc');
+    }
+
+    public function transaction_date()
+    {
+        return $this->hasOne(EndTransaction::class, 'branch_id', 'branch_id' );
+    }
+
 }
