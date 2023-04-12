@@ -3,25 +3,14 @@ SELECT
 		loan_accounts.loan_account_id AS UNSIGNED
 	) AS "loan_account_id",
 	CAST(sched.DATESCHE AS DATE) AS 'amortization_date',
-	CAST(sched.PRIN AS DECIMAL) AS 'principal',
-	CAST(sched.INTE AS DECIMAL) AS 'interest',
-	CAST(
-		(sched.PRIN + sched.INTE) AS DECIMAL
-	) AS 'total',
-	CAST(
-		ROUND(
-			(
-				sched.BALANCE / (sched.PRIN + sched.INTE)
-			) * sched.PRIN,
-			2
-		) AS DECIMAL
-	) AS 'principal_balance',
-	CAST(
+	sched.PRIN  AS 'principal',
+	sched.INTE AS 'interest',
+	(sched.PRIN + sched.INTE) AS 'total',
+	(sched.BALANCE + sched.INTE) - (FLOOR((sched.BALANCE + sched.PRIN + sched.INTE ) / (sched.PRIN + sched.INTE)) * sched.INTE) AS 'principal_balance',
 		FLOOR(
 			(
 				sched.BALANCE / (sched.PRIN + sched.INTE)
 			) * sched.INTE
-		) AS DECIMAL
 	) AS 'interest_balance',
 	CAST(sched.TRNO AS CHAR) AS 'transaction_number',
 	CAST(
