@@ -3,8 +3,10 @@
 namespace App\Jobs;
 
 use App\Http\Controllers\API\LoanAccountController;
+use App\Models\EndTransaction;
 use App\Models\LoanAccountMigrationFix;
 use App\Models\Payment;
+use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -35,8 +37,16 @@ class FixShortAdvMigration implements ShouldQueue
      */
     public function handle()
     {
-        $accountsArray = LoanAccountMigrationFix::with(['lastPayment', 'amortizations', 'amortizations.payments'])->offset($this->i * $this->limit)->limit($this->limit)->get();
+        $accountsArray = LoanAccountMigrationFix::with(['lastPayment', 'branch','endTransaction', 'amortizations', 'amortizations.payments'])->offset($this->i * $this->limit)->limit($this->limit)->get();
+
+        $tranDate = new EndTransaction();
+
+
+
+        $dd = [];
+
         foreach($accountsArray as $acc){
+            $transactionDateNow = $tranDate->getTransactionDate($acc->branch->branch_id)->date_end;
             $amortP = 0;
             $amortI = 0;
             $advP = 0;
@@ -44,10 +54,12 @@ class FixShortAdvMigration implements ShouldQueue
             $shortP = 0;
             $shortI = 0;
             foreach($acc->amortizations as $amort){
+
                 // echo $amort;
                 $amortP += $amort->principal;
                 $amortI += $amort->interest;
                 foreach($amort->payments as $payment){
+                    /* dd($acc->end_of_transaction->date_end); */
                     $payment->principal += $advP;
                     $payment->interest += $advI;
                     $shortP = $amortP < $payment->principal ? 0 : $amortP - $payment->principal;
@@ -55,7 +67,7 @@ class FixShortAdvMigration implements ShouldQueue
                     $shortI = $amortI < $payment->interest ? 0 : $amortI - $payment->interest;
                     $advI = $amortI < $payment-> interest ? $payment->interest - $amortI : 0;
                     if($acc->lastPayment == $payment && $shortP > 0){
-                        if($acc->transaction_date->date_end > $amort->amortization_date){
+                        if($transactionDateNow > $amort->amortization_date){
                             $amort->status = 'open';
                         }else{
                             $amort->status = 'delinquent';
@@ -72,6 +84,9 @@ class FixShortAdvMigration implements ShouldQueue
                     $amortI -= $payment->interest > $amortI ? $amortI : $payment->interest;
                 }
             }
+
         }
+
+
     }
 }
