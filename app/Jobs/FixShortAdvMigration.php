@@ -50,6 +50,10 @@ class FixShortAdvMigration implements ShouldQueue
                 // echo $amort;
                 $amortP += $amort->principal;
                 $amortI += $amort->interest;
+                if($amort->status != 'paid' && $acc->branch->endTransaction->date_end > $amort->amortization_date){
+                    $amort->status = 'delinquent';
+                    $amort->save();
+                }
                 foreach($amort->payments as $payment){
                     /* dd($acc->end_of_transaction->date_end); */
                     $payment->principal += $advP;
@@ -58,14 +62,14 @@ class FixShortAdvMigration implements ShouldQueue
                     $advP = $amortP < $payment->principal ? $payment->principal - $amortP : 0;
                     $shortI = $amortI < $payment->interest ? 0 : $amortI - $payment->interest;
                     $advI = $amortI < $payment-> interest ? $payment->interest - $amortI : 0;
-                    // if($acc->lastPayment == $payment && $shortP > 0){
-                    //     if($acc->branch->endTransaction->date_end >= $amort->amortization_date){
-                    //         $amort->status = 'open';
-                    //     }else{
-                    //         $amort->status = 'delinquent';
-                    //     }
-                    //     $amort->save();
-                    // }
+                    if($acc->lastPayment == $payment && $shortP > 0){
+                        if($acc->branch->endTransaction->date_end >= $amort->amortization_date){
+                            $amort->status = 'open';
+                        }else{
+                            $amort->status = 'delinquent';
+                        }
+                        $amort->save();
+                    }
                     Payment::find($payment->payment_id)->fill([
                         "short_interest"=> $shortI,
                         "short_principal"=> $shortP,

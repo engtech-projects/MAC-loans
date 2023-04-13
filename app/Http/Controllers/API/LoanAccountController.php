@@ -307,6 +307,7 @@ class LoanAccountController extends BaseController
     }
 
     public function fixShortAdv(){
+        // $type = 'realtime'; // realtime or background
         $type = 'background'; // realtime or background
         $limit = 100;
         $start = 0;
@@ -350,6 +351,7 @@ class LoanAccountController extends BaseController
                 // echo $amort;
                 $amortP += $amort->principal;
                 $amortI += $amort->interest;
+                // echo($amort->status.'--  ');
                 foreach($amort->payments as $payment){
                     $payment->principal += $advP;
                     $payment->interest += $advI;
@@ -359,14 +361,18 @@ class LoanAccountController extends BaseController
                     $advI = $amortI < $payment-> interest ? $payment->interest - $amortI : 0;
                     // echo ($payment->payment_id) , '  ';
                     // echo ($shortP) . '   ';
-                    // if($acc->lastPayment && $acc->lastPayment->payment_id == $payment->payment_id && $shortP > 0){
-                    //     if($acc->branch->endTransaction->date_end >= $amort->amortization_date){
-                    //         $amort->status = 'open';
-                    //     }else{
-                    //         $amort->status = 'delinquent';
-                    //     }
-                    //     $amort->save();
-                    // }
+                    if($acc->lastPayment && $acc->lastPayment->payment_id == $payment->payment_id && $shortP > 0){
+                        if($acc->branch->endTransaction->date_end >= $amort->amortization_date){
+                            Amortization::find($amort->id)->fill([
+                                'status' => 'open'
+                            ])->save();
+                        }else{
+                            Amortization::find($amort->id)->fill([
+                                'status' => 'delinquent'
+                            ])->save();
+                        }
+                        $amort->save();
+                    }
                     Payment::find($payment->payment_id)->fill([
                         "short_interest"=> $shortI,
                         "short_principal"=> $shortP,
@@ -375,6 +381,12 @@ class LoanAccountController extends BaseController
                     ])->save();
                     $amortP -= $payment->principal > $amortP ? $amortP : $payment->principal;
                     $amortI -= $payment->interest > $amortI ? $amortI : $payment->interest;
+                }
+                if($amort->status != 'paid' && $acc->branch->endTransaction->date_end > $amort->amortization_date){
+                    echo('==');
+                    Amortization::find($amort->id)->fill([
+                        'status' => 'delinquent'
+                    ])->save();
                 }
             }
         }
