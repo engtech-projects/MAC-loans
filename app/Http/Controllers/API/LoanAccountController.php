@@ -338,7 +338,7 @@ class LoanAccountController extends BaseController
     }
 
     public static function fixLoanAccountShortAndAdvances($i, $limit){
-        $accountsArray = LoanAccountMigrationFix::where('account_num', '001-002-0011082')->with(['lastPayment', 'branch.endTransaction', 'amortizations', 'amortizations.payments'])->offset($i * 1000)->limit($limit)->get();
+        $accountsArray = LoanAccountMigrationFix::with(['lastPayment', 'branch.endTransaction', 'amortizations', 'amortizations.payments'])->offset($i * 1000)->limit($limit)->get();
         // dd($accountsArray[0]);
         foreach($accountsArray as $acc){
             $amortP = 0;
@@ -362,7 +362,7 @@ class LoanAccountController extends BaseController
                     // echo ($payment->payment_id) , '  ';
                     // echo ($shortP) . '   ';
                     if($acc->lastPayment && $acc->lastPayment->payment_id == $payment->payment_id && $shortP > 0){
-                        if($acc->branch->endTransaction->date_end >= $amort->amortization_date){
+                        if($acc->branch->endTransaction->date_end <= $amort->amortization_date){
                             Amortization::find($amort->id)->fill([
                                 'status' => 'open'
                             ])->save();
@@ -371,7 +371,6 @@ class LoanAccountController extends BaseController
                                 'status' => 'delinquent'
                             ])->save();
                         }
-                        $amort->save();
                     }
                     Payment::find($payment->payment_id)->fill([
                         "short_interest"=> $shortI,
@@ -383,7 +382,7 @@ class LoanAccountController extends BaseController
                     $amortI -= $payment->interest > $amortI ? $amortI : $payment->interest;
                 }
                 if($amort->status != 'paid' && $acc->branch->endTransaction->date_end > $amort->amortization_date){
-                    echo('==');
+                    // echo('==');
                     Amortization::find($amort->id)->fill([
                         'status' => 'delinquent'
                     ])->save();
