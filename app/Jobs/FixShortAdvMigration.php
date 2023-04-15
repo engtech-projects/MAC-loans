@@ -62,6 +62,7 @@ class FixShortAdvMigration implements ShouldQueue
                     $advP = $amortP < $payment->principal ? $payment->principal - $amortP : 0;
                     $shortI = $amortI < $payment->interest ? 0 : $amortI - $payment->interest;
                     $advI = $amortI < $payment-> interest ? $payment->interest - $amortI : 0;
+                    $totalPayable = $payment->amount_applied + $shortI + $shortP;
                     if($acc->lastPayment && $acc->lastPayment->payment_id == $payment->payment_id && $shortP > 0){
                         if($acc->branch->endTransaction->date_end <= $amort->amortization_date){
                             Amortization::find($amort->id)->fill([
@@ -74,6 +75,7 @@ class FixShortAdvMigration implements ShouldQueue
                         }
                     }
                     Payment::find($payment->payment_id)->fill([
+                        "total_payable" => $totalPayable,
                         "short_interest"=> $shortI,
                         "short_principal"=> $shortP,
                         "advance_interest"=> $advI,
