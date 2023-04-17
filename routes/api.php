@@ -99,6 +99,8 @@ Route::middleware(['auth:sanctum'])->group( function () {
 
     Route::post('account/update-account-amortization/{account}',[LoanAccountController::class,'updateAccountAmortization']);
 
+    Route::post('account/retag-list/{branch}',[AccountRetaggingController::class,'retagList']);
+
 
     Route::post('account/override/', [LoanAccountController::class, 'override']);
     Route::delete('account/remove/{account}', [LoanAccountController::class, 'delete']);
