@@ -1353,8 +1353,8 @@ class LoanAccount extends Model
     public static function getRetagList($branch) {
         $accounts = LoanAccount::where('branch_code', '=',$branch->branch_code)
         ->where('loan_status', '!=', LoanAccount::LOAN_PAID)
-        ->withOut('documents')
-        ->withOut('payments')
+        ->without('documents')
+        ->without('payments')
         ->get();
         return $accounts;
     }
