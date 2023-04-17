@@ -344,6 +344,7 @@ class LoanAccountController extends BaseController
 
     public static function fixLoanAccountShortAndAdvances($i, $limit){
         $accountsArray = LoanAccountMigrationFix::with(['lastPayment', 'branch.endTransaction', 'amortizations', 'amortizations.payments'])->offset($i * 1000)->limit($limit)->get();
+        // $accountsArray = LoanAccountMigrationFix::where('loan_account_id', 14540)->with(['lastPayment', 'branch.endTransaction', 'amortizations', 'amortizations.payments'])->offset($i * 1000)->limit($limit)->get();
         // dd($accountsArray[0]);
         foreach($accountsArray as $acc){
             $amortP = 0;
@@ -352,11 +353,15 @@ class LoanAccountController extends BaseController
             $advI = 0;
             $shortP = 0;
             $shortI = 0;
+            $principal = $acc->loan_amount;
+            $interest = $acc->interest_amount;
             foreach($acc->amortizations as $amort){
-                // echo $amort;
                 $amortP += $amort->principal;
                 $amortI += $amort->interest;
-                // echo($amort->status.'--  ');
+                $principal -= $amort->principal;
+                $interest -= $amort->interest;
+                $principal = $principal < 0 ? 0: $principal;
+                $interest = $interest < 0 ? 0: $interest;
                 foreach($amort->payments as $payment){
                     $payment->principal += $advP;
                     $payment->interest += $advI;
@@ -364,8 +369,6 @@ class LoanAccountController extends BaseController
                     $advP = $amortP < $payment->principal ? $payment->principal - $amortP : 0;
                     $shortI = $amortI < $payment->interest ? 0 : $amortI - $payment->interest;
                     $advI = $amortI < $payment-> interest ? $payment->interest - $amortI : 0;
-                    // echo ($payment->payment_id) , '  ';
-                    // echo ($shortP) . '   ';
                     $totalPayable = $payment->amount_applied + $shortI + $shortP;
                     if($acc->lastPayment && $acc->lastPayment->payment_id == $payment->payment_id && $shortP > 0){
                         if($acc->branch->endTransaction->date_end <= $amort->amortization_date){
@@ -389,11 +392,14 @@ class LoanAccountController extends BaseController
                     $amortI -= $payment->interest > $amortI ? $amortI : $payment->interest;
                 }
                 if($amort->status != 'paid' && $acc->branch->endTransaction->date_end > $amort->amortization_date){
-                    // echo('==');
                     Amortization::find($amort->id)->fill([
                         'status' => 'delinquent'
                     ])->save();
                 }
+                Amortization::find($amort->id)->fill([
+                    'principal_balance' => $principal,
+                    'interest_balance' => $interest,
+                ])->save();
             }
         }
     }

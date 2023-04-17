@@ -49,13 +49,13 @@ class FixShortAdvMigration implements ShouldQueue
             $principal = $acc->loan_amount;
             $interest = $acc->interest_amount;
             foreach($acc->amortizations as $amort){
-                // echo $amort;
                 $amortP += $amort->principal;
                 $amortI += $amort->interest;
                 $principal -= $amort->principal;
                 $interest -= $amort->interest;
+                $principal = $principal < 0 ? 0: $principal;
+                $interest = $interest < 0 ? 0: $interest;
                 foreach($amort->payments as $payment){
-                    /* dd($acc->end_of_transaction->date_end); */
                     $payment->principal += $advP;
                     $payment->interest += $advI;
                     $shortP = $amortP < $payment->principal ? 0 : $amortP - $payment->principal;
@@ -90,7 +90,6 @@ class FixShortAdvMigration implements ShouldQueue
                     ])->save();
                 }
                 Amortization::find($amort->id)->fill([
-                    // 'status' => $amortStatus,
                     'principal_balance' => $principal,
                     'interest_balance' => $interest,
                 ])->save();
