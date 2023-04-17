@@ -1185,13 +1185,13 @@ class LoanAccount extends Model
                 'balance' => 0,
             ],
             'principal' => [
-                'debit' => $account->loan_amount,
+                'debit' => $account->loan_amount ?? null,
                 'credit' => 0,
                 'balance' => 0,
             ],
             'interest' => [
-                'debit' => $account->interest_amount,
-                'credit' => $account->prepaid_interest,
+                'debit' => $account->interest_amount ?? null,
+                'credit' => $account->prepaid_interest ?? null,
                 'balance' => 0,
             ],
             'rebates' => [

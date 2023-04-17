@@ -17,6 +17,10 @@ class Center extends Model
 
     ];
 
+    public function remainingBalance() {
+        $loanAcccounts = new LoanAccount();
+        return $loanAcccounts->remainingBalance();
+    }
     public function loanAccounts() {
         return $this->hasMany(LoanAccount::class,'center_id','center_id');
     }
