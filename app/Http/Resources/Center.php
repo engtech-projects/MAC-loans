@@ -2,6 +2,8 @@
 
 namespace App\Http\Resources;
 
+use App\Models\LoanAccount;
+use App\Models\LoanAccountMigrationFix;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class Center extends JsonResource
@@ -23,4 +25,5 @@ class Center extends JsonResource
             'deleted' => $this->deleted,
         ];
     }
+
 }
