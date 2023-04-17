@@ -361,6 +361,7 @@ class LoanAccountController extends BaseController
                     $advI = $amortI < $payment-> interest ? $payment->interest - $amortI : 0;
                     // echo ($payment->payment_id) , '  ';
                     // echo ($shortP) . '   ';
+                    $totalPayable = $payment->amount_applied + $shortI + $shortP;
                     if($acc->lastPayment && $acc->lastPayment->payment_id == $payment->payment_id && $shortP > 0){
                         if($acc->branch->endTransaction->date_end <= $amort->amortization_date){
                             Amortization::find($amort->id)->fill([
@@ -373,6 +374,7 @@ class LoanAccountController extends BaseController
                         }
                     }
                     Payment::find($payment->payment_id)->fill([
+                        "total_payable" => $totalPayable,
                         "short_interest"=> $shortI,
                         "short_principal"=> $shortP,
                         "advance_interest"=> $advI,
