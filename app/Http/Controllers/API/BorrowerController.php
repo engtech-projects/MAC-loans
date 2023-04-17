@@ -30,12 +30,27 @@ class BorrowerController extends BaseController
     	$borrowers = Borrower::all();
     	return $this->sendResponse(BorrowerResource::collection($borrowers), 'Borrowers');
     }
+    /* public function borrowerList($branchId) {
+
+        $branch = Branch::find($branchId);
+
+        $borrowers = Borrower::join('loan_accounts','loan_accounts.borrower_id', '=', 'borrower_info.borrower_id')
+                            ->select('borrower_info.*')
+                            ->where([ 'loan_accounts.branch_code' => $branch->branch_code ])
+                            ->distinct()
+                            ->get();
+
+        return $this->sendResponse(BorrowerResource::collection($borrowers), 'Borrowers');
+    } */
+
 
     public function borrowerList($branchId,Request $request) {
 
         $branch = Branch::find($branchId);
 
-        $borrowers = Borrower::join('loan_accounts','loan_accounts.borrower_id', '=', 'borrower_info.borrower_id')
+        $borrowers = Borrower::join(
+            'loan_accounts','loan_accounts.borrower_id', '=', 'borrower_info.borrower_id'
+            )->join('product','loan_accounts.product_id', '=', 'product.product_id')
                             ->select(
                                 'borrower_info.borrower_id',
                                 'borrower_info.borrower_num',
@@ -60,7 +75,7 @@ class BorrowerController extends BaseController
                                 'borrower_info.spouse_contact_number',
                                 'borrower_info.spouse_id_type',
                                 'borrower_info.spouse_id_no',
-                                'borrower_info.spouse_id_date_issued'
+                                'borrower_info.spouse_id_date_issued',
 
                             )
                             ->where([ 'loan_accounts.branch_code' => $branch->branch_code ]);
@@ -77,10 +92,6 @@ class BorrowerController extends BaseController
         return  $this->sendResponse($borrowers, 'Borrowers');
     }
 
-    public function getBorrowerAccounts($borrowerId) {
-        $borrowerAccount = LoanAccount::where(['borrower_id' => $borrowerId])->get();
-        return $this->sendResponse(BorrowerAccountsResource::collection($borrowerAccount), 'Borrowers Account List');
-    }
 
      /**
      * Show the form for creating a new resource.

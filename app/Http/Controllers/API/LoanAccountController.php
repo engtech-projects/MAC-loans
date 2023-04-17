@@ -53,6 +53,11 @@ class LoanAccountController extends BaseController
     }
 
 
+    public function accountRetagging(Request $request,$branchId) {
+        return $branchId;
+    }
+
+
 	/**
      * Store a newly created resource in storage.
      */
