@@ -22,9 +22,8 @@ class AccountOfficer extends JsonResource
             'status' => $this->status,
             'branch_id' => $this->branch_id,
             'branch' => $this->branch,
-            'deleted' => $this->deleted,
-            'created_at' => $this->created_at->format('m/d/Y'),
-            'updated_at' => $this->updated_at->format('m/d/Y'),
+            'branch_registered' => $this->branches,
+            'deleted' => $this->deleted
         ];
     }
 }

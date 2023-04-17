@@ -822,22 +822,27 @@ class Reports extends Model
 
     public function branchAOReport($filters = []) {
         $tranDate = new EndTransaction();
+        $branch = Branch::find($filters['branch_id']);
         $data = [];
         if($filters["group"] == Reports::BRANCH_AO_PERFORMANCE){
-            $accOfficers = AccountOfficer::where(["status"=> AccountOfficer::STATUS_ACTIVE]);
+            $accOfficers = NULL;
             if(isset($filters["branch_id"]) && $filters["branch_id"]){
-                $accOfficers = $accOfficers->where(["branch_id"=>$filters["branch_id"]]);
+                $accOfficers =  AccountOfficer::join('account_officer_branch','account_officer.ao_id', '=', 'account_officer_branch.ao_id')
+                                        ->join('branch','account_officer_branch.branch_id', '=', 'branch.branch_id')
+                                        ->where(['account_officer.status' => AccountOfficer::STATUS_ACTIVE,'branch.branch_id' => $filters['branch_id']])->select('account_officer.*')->get()->toArray();
+            }else{
+                $accOfficers = AccountOfficer::where(["status"=> AccountOfficer::STATUS_ACTIVE])->get()->toArray();
             }
-            $accOfficers = $accOfficers->get()->toArray();
-            $products = Product::where(["status" => Product::STATUS_ACTIVE])
-                ->get()->toArray();
+
+            $products = Product::where(["status" => Product::STATUS_ACTIVE])->get()->toArray();
             foreach ($accOfficers as $aoKey => $aoValue) {
                 foreach ($products as $prodKey => $prodValue) {
                     $tempProd = $prodValue;
                     $allAOProd = LoanAccount::where([
                         "status"=>LoanAccount::STATUS_RELEASED,
                         "ao_id"=>$aoValue["ao_id"],
-                        "product_id"=>$prodValue["product_id"]
+                        "product_id"=>$prodValue["product_id"],
+                        "branch_code" => $branch->branch_code
                     ])
                     ->whereNotIn("loan_status",[LoanAccount::LOAN_PAID])
                     ->get();

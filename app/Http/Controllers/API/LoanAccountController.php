@@ -18,6 +18,7 @@ use Carbon\Carbon;
 use App\Http\Resources\Borrower as BorrowerResource;
 use App\Http\Resources\LoanAccount as LoanAccountResource;
 use App\Http\Resources\Amortization as AmortizationResource;
+use App\Jobs\FixShortAdvMigration;
 use App\Models\LoanAccountMigrationFix;
 
 class LoanAccountController extends BaseController
@@ -311,37 +312,98 @@ class LoanAccountController extends BaseController
     }
 
     public function fixShortAdv(){
+        // $type = 'realtime'; // realtime or background
+        $type = 'background'; // realtime or background
+        $limit = 100;
+        $start = 0;
+        $totalPages = 150;
+        $workers = 10; // for simultaneous queue instance
+
+        for ($i=$start; $i <= $totalPages; $i++) {
+            if($type == 'background'){
+                // For Using Queue in Background
+                FixShortAdvMigration::dispatch($i, $limit)->onQueue($i % $workers);
+            }else if($type == 'realtime'){
+                // For Using just waiting in front end / Realtime
+                LoanAccountController::fixLoanAccountShortAndAdvances($i, $limit);
+            }else{
+                break;
+            }
+
+
+            // break;
+            // echo $i.' ';
+        }
+        if($type == 'background'){
+            return response()->json(["data"=>"success", "message"=>"Being processed in background"], 202); // Queue in Background
+        }else if($type == 'realtime'){
+            return response()->json(["data"=>"success"],200); // Realtime
+        }
+        return response()->json(["data"=>"failed", 'message'=>'wrong type'],200); // Realtime
+    }
+
+    public static function fixLoanAccountShortAndAdvances($i, $limit){
+        $accountsArray = LoanAccountMigrationFix::with(['lastPayment', 'branch.endTransaction', 'amortizations', 'amortizations.payments'])->offset($i * 1000)->limit($limit)->get();
+        // dd($accountsArray[0]);
+        foreach($accountsArray as $acc){
+            $amortP = 0;
+            $amortI = 0;
+            $advP = 0;
+            $advI = 0;
+            $shortP = 0;
+            $shortI = 0;
+            foreach($acc->amortizations as $amort){
+                // echo $amort;
+                $amortP += $amort->principal;
+                $amortI += $amort->interest;
+                // echo($amort->status.'--  ');
+                foreach($amort->payments as $payment){
+                    $payment->principal += $advP;
+                    $payment->interest += $advI;
+                    $shortP = $amortP < $payment->principal ? 0 : $amortP - $payment->principal;
+                    $advP = $amortP < $payment->principal ? $payment->principal - $amortP : 0;
+                    $shortI = $amortI < $payment->interest ? 0 : $amortI - $payment->interest;
+                    $advI = $amortI < $payment-> interest ? $payment->interest - $amortI : 0;
+                    // echo ($payment->payment_id) , '  ';
+                    // echo ($shortP) . '   ';
+                    $totalPayable = $payment->amount_applied + $shortI + $shortP;
+                    if($acc->lastPayment && $acc->lastPayment->payment_id == $payment->payment_id && $shortP > 0){
+                        if($acc->branch->endTransaction->date_end <= $amort->amortization_date){
+                            Amortization::find($amort->id)->fill([
+                                'status' => 'open'
+                            ])->save();
+                        }else{
+                            Amortization::find($amort->id)->fill([
+                                'status' => 'delinquent'
+                            ])->save();
+                        }
+                    }
+                    Payment::find($payment->payment_id)->fill([
+                        "total_payable" => $totalPayable,
+                        "short_interest"=> $shortI,
+                        "short_principal"=> $shortP,
+                        "advance_interest"=> $advI,
+                        "advance_principal"=> $advP,
+                    ])->save();
+                    $amortP -= $payment->principal > $amortP ? $amortP : $payment->principal;
+                    $amortI -= $payment->interest > $amortI ? $amortI : $payment->interest;
+                }
+                if($amort->status != 'paid' && $acc->branch->endTransaction->date_end > $amort->amortization_date){
+                    // echo('==');
+                    Amortization::find($amort->id)->fill([
+                        'status' => 'delinquent'
+                    ])->save();
+                }
+            }
+        }
+    }
+
+    public function fixMiragtionRebates(){
 
         for ($i=0; $i <= 15; $i++) {
-            $accounts = LoanAccountMigrationFix::with(['amortizations', 'amortizations.payments'])->limit(1000, $i * 1000)->get();
-            foreach($accounts as $acc){
-                $amortP = 0;
-                $amortI = 0;
-                $advP = 0;
-                $advI = 0;
-                $shortP = 0;
-                $shortI = 0;
-                foreach($acc->amortizations as $amort){
-                    // echo $amort;
-                    $amortP += $amort->principal;
-                    $amortI += $amort->interest;
-                    foreach($amort->payments as $payment){
-                        $payment->principal += $advP;
-                        $payment->interest += $advI;
-                        $shortP = $amortP < $payment->principal ? 0 : $amortP - $payment->principal;
-                        $advP = $amortP < $payment->principal ? $payment->principal - $amortP : 0;
-                        $shortI = $amortI < $payment->interest ? 0 : $amortI - $payment->interest;
-                        $advI = $amortI < $payment-> interest ? $payment->interest - $amortI : 0;
-                        $payment->fill([
-                            "short_interest"=> $shortI,
-                            "short_principal"=> $shortP,
-                            "advance_interest"=> $advI,
-                            "advance_principal"=> $advP,
-                        ])->save();
-                        $amortP -= $payment->principal > $amortP ? $amortP : $payment->principal;
-                        $amortI -= $payment->interest > $amortI ? $amortI : $payment->interest;
-                    }
-                }
+            $payments = Payment::limit(1000, $i * 1000)->get();
+            foreach ($payments as $payment) {
+                # code...
             }
         }
         return 1;
