@@ -15,6 +15,7 @@ use App\Http\Controllers\API\UserController;
 use App\Http\Controllers\API\PaymentController;
 use App\Http\Controllers\API\ReportsController;
 use App\Http\Controllers\API\AccessibilityController;
+use App\Http\Controllers\API\AccountRetaggingController;
 use App\Http\Controllers\API\ChartOfAccountsController;
 use App\Http\Controllers\API\GLController;
 use App\Http\Controllers\BorrowerLoginController;
@@ -97,6 +98,8 @@ Route::middleware(['auth:sanctum'])->group( function () {
 
 
     Route::post('account/update-account-amortization/{account}',[LoanAccountController::class,'updateAccountAmortization']);
+
+    Route::post('account/retag-list/{branch}',[AccountRetaggingController::class,'retagList']);
 
 
     Route::post('account/override/', [LoanAccountController::class, 'override']);
