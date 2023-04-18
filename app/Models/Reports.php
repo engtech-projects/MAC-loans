@@ -111,7 +111,7 @@ class Reports extends Model
         ]); */
     }
 
-    public function getLoanAccounts($filters = []) {
+    public function getLoanAccounts($filters = [], $without = []) {
 
         $loanAccount = Loanaccount::where([ 'loan_accounts.status' => 'released']);
 
@@ -172,7 +172,7 @@ class Reports extends Model
         }
 
 
-    	return $loanAccount->get([
+    	return $loanAccount->where('loan_status', '!=', 'Paid')->without($without)->get([
 			'loan_accounts.loan_account_id',
 			'loan_accounts.account_num',
 			'loan_accounts.date_release',
@@ -1059,92 +1059,72 @@ class Reports extends Model
         if(isset($filters["account_officer"]) && $filters["account_officer"]){
             $accOfficers = $accOfficers->where(["ao_id"=>$filters["account_officer"]]);
         }
-        $accOfficers = $accOfficers->get()->toArray();
+        $accOfficers = $accOfficers->without('branch', 'branch_registered')->select('ao_id', 'name')->get()->toArray();
         $centers = Center::where(["status"=>"active"]);
         if(isset($filters["center"]) && $filters["center"]){
             $centers = $centers->where(["center_id"=>$filters["center"]]);
-            $centers = $centers->get()->toArray();
+            $centers = $centers->select('center_id', 'center')->get()->toArray();
         }else{
-            $centers = $centers->get()->toArray();
+            $centers = $centers->select('center_id', 'center')->get()->toArray();
             $centers[] = ["center"=>"No Center", "center_id" => "No Center"];
         }
         $products = Product::where(["status"=>"active"]);
         if(isset($filters["product"]) && $filters["product"]){
             $products = $products->where(["product_id"=>$filters["product"]]);
         }
-        $products = $products->get()->toArray();
+        $products = $products->select('product_id', 'product_code', 'product_name')->get()->toArray();
 
-        $accounts = $this->getLoanAccounts($filters);
+        // $accounts = $this->getLoanAccounts($filters);
 
-        foreach($accounts as $key => $account) {
-            $oBalance = $account->outstandingBalance($account->loan_account_id);
-            $remainingBal = $account->remainingBalance();
-            $reb = $remainingBal['rebates']['credit'];
-            $interestBal = $remainingBal['interest']['balance'];
-            $principalBal = $remainingBal['principal']['balance'];
-            $amortization = $account->amortization();
-            $principal = $amortization['principal'];
-            $interest = $amortization['interest'];
-
-            $accounts[$key] = [
-                'borrower_name' => $account->borrower->fullname(),
-                "account_num" => $account->account_num,
-                "date_loan" => $account->date_release,
-                "maturity" => $account->due_date,
-                "amount_loan" => $account->loan_amount,
-                "amount_due" => $oBalance,
-                "principal_balance" => $principalBal,
-                "interest_balance" => $interestBal - $reb,
-                "amortization" => $principal + $interest, //$account->amortization()["principal"] + $account->amortization()["interest"],
-                "type" => $account->payment_mode,
-                "loan_status" => $account->loan_status,
-                "status" => $account->payment_status
-            ];
-        }
-
-        /* $accounts = Center::where(['status' => 'active'])->with('loanAccounts',function($query) {
-            return $query->without(['payments','documents','borrower','accountOfficer','center']);
-        })->get(); */
-
-
-
-       /*  foreach ($accOfficers as $aoKey => $aoValue) {
+        foreach ($accOfficers as $aoKey => $aoValue) {
             foreach ($products as $prodKey => $prodValue) {
                 $accOfficers[$aoKey]["products"][$prodValue["product_name"]] = $prodValue;
                 foreach ($centers as $centKey => $centVal) {
-                    $accOfficers[$aoKey]["products"][$prodValue["product_name"]]["centers"][$centVal["center"]] = $centVal;
-                    $filtersCopy = $filters;
-                    $filtersCopy["account_officer"] = $aoValue["ao_id"];
-                    $filtersCopy["product"] = $prodValue["product_id"];
-                    $filtersCopy["center"] = $centVal["center_id"];
-                    $accounts = LoanAccount::where(['center_id' => 91])->get();
+                    // $accOfficers[$aoKey]["products"][$prodValue["product_name"]]["centers"][$centVal["center"]] = $centVal;
 
-                    //$accounts = $this->getAccounts($filtersCopy);
-                    foreach ($accounts as $accKey => $account) {
-                        $accOfficers[$aoKey]["products"][$prodValue["product_name"]]["centers"][$centVal["center"]]['accounts'][] = [
-                            "borrower_name" => $account->borrower->fullname(),
-                            "account_num" => $account->account_num,
-                            "date_loan" => $account->date_release,
-                            "maturity" => $account->due_date,
-                            "amount_loan" => $account->loan_amount,
-                            "amount_due" => $account->outstandingBalance($account->loan_account_id),
-                            "principal_balance" => $account->remainingBalance()["principal"]["balance"],
-                            "interest_balance" => $account->remainingBalance()["interest"]["balance"] - $account->remainingBalance()["rebates"]["credit"],
-                            "amortization" => $account->amortization()["principal"] + $account->amortization()["interest"],
-                            "type" => $account->payment_mode,
-                            "loan_status" => $account->loan_status,
-                            "status" => $account->payment_status
-                        ];
+                    $accounts = $this->getLoanAccounts([
+                        'account_officer' => $aoValue["ao_id"],
+                        'product' => $prodValue["product_id"],
+                        'center' => $centVal["center_id"],
+                        'branch_id' => $filters["branch_id"]
+                    ], [
+                        'documents', 'borrower', 'center', 'branch', 'product', 'accountOfficer', 'payments'
+                    ]);
+
+                    if( count($accounts) > 0 ) {
+                        foreach($accounts as $key => $account) {
+                            $oBalance = $account->outstandingBalance($account->loan_account_id);
+                            $remainingBal = $account->remainingBalance();
+                            $reb = $remainingBal['rebates']['credit'];
+                            $interestBal = $remainingBal['interest']['balance'];
+                            $principalBal = $remainingBal['principal']['balance'];
+                            $amortization = $account->amortization();
+                            $principal = $amortization['principal'];
+                            $interest = $amortization['interest'];
+
+                             $accOfficers[$aoKey]["products"][$prodValue["product_name"]]["centers"][$centVal["center"]]['accounts'][] = [
+                                'borrower_name' => isset($account->borrower) ? $account->borrower->fullname() : '',
+                                "account_num" => $account->account_num,
+                                "date_loan" => $account->date_release,
+                                "maturity" => $account->due_date,
+                                "amount_loan" => $account->loan_amount,
+                                "amount_due" => $oBalance,
+                                "principal_balance" => $principalBal,
+                                "interest_balance" => $interestBal - $reb,
+                                "amortization" => $principal + $interest, //$account->amortization()["principal"] + $account->amortization()["interest"],
+                                "type" => $account->payment_mode,
+                                "loan_status" => $account->loan_status,
+                                "status" => $account->payment_status
+                            ];
+                        }
+
                     }
                 }
-            }
-        } */
 
-        /* $dd = [];
-        foreach($accounts as $acc) {
-            $dd[] = $acc->loanAccounts;
-        } */
-        return $accounts;
+            }
+        }
+
+        return $accOfficers;
     }
 
     public function aoRevenueReport($filters = []){
