@@ -25,6 +25,27 @@ class Amortization extends Model
     	'status'
     ];
 
+    protected $casts = [
+        'total' => 'float',
+        'interest' => 'float',
+        'principal_balance' => 'float',
+        'interest_balance' => 'float',
+        'status' => 'string',
+        'principal' => 'float'
+    ];
+
+    /* public function getPreferencesAttribute($value)
+    {
+        // Accessing the "preferences" attribute will automatically decode the JSON string
+        return json_decode($value, true);
+    }
+
+    public function setPreferencesAttribute($value)
+    {
+        // Setting the "preferences" attribute will automatically encode the value to JSON
+        $this->attributes['preferences'] = json_encode($value);
+    } */
+
     public function payments(){
         return $this->hasMany(Payment::class, 'amortization_id', 'id');
     }
