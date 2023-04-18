@@ -26,12 +26,12 @@ class Amortization extends Model
     ];
 
     protected $casts = [
-        'amortization_date' => 'date:m-d-Y',
         'total' => 'float',
         'interest' => 'float',
         'principal_balance' => 'float',
         'interest_balance' => 'float',
-        'status' => 'string'
+        'status' => 'string',
+        'principal' => 'float'
     ];
 
     /* public function getPreferencesAttribute($value)

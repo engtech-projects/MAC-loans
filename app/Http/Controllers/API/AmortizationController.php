@@ -22,7 +22,8 @@ class AmortizationController extends BaseController
             'interest' => 'required|regex:/^[0-9]+(\.[0-9][0-9]?)?$/',
             'principal_balance' => 'required|regex:/^[0-9]+(\.[0-9][0-9]?)?$/',
             'interest_balance' => 'required|regex:/^[0-9]+(\.[0-9][0-9]?)?$/',
-            'amortization_date' => 'required'
+            'amortization_date' => 'required',
+            'principal' => 'required|regex:/^[0-9]+(\.[0-9][0-9]?)?$/'
         ]);
 
         $amortization->fill($validated);
