@@ -17,5 +17,9 @@ class Product extends Model
     protected $fillable = [
     	'product_code', 'product_name', 'interest_rate', 'status', 'deleted'
     ];
-    
+
+    public function loanAccounts() {
+        return $this->hasMany(LoanAccountMigrationFix::class,'loan_account_id','loan_account_id');
+    }
+
 }

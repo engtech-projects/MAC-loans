@@ -17,6 +17,100 @@ class Reports extends Model
     const BRANCH_AO_WRITEOFF = "write_off";
     const BRANCH_AO_DELINQUENT = "delinquent";
 
+
+    public function getAccounts($filters = []) {
+
+        $loanAccount = Loanaccount::where([ 'loan_accounts.status' => 'released']);
+
+    	if( isset($filters['branch_id']) && $filters['branch_id'] ){
+            $branch = Branch::find($filters['branch_id']);
+    		$loanAccount->where([ 'loan_accounts.branch_code' => $branch->branch_code ]);
+        }
+
+        if( isset($filters['date_from']) && isset($filters['date_to']) ){
+            /*$loanAccount = LoanAccount::whereBetween(DB::raw('date(loan_accounts.date_release)'), [ $filters['date_from'], $filters['date_to'] ]);*/
+
+            $loanAccount->whereDate('loan_accounts.date_release', '>=', $filters['date_from']);
+            $loanAccount->whereDate('loan_accounts.date_release', '<=', $filters['date_to']);
+        }
+
+        if( isset($filters['due_from']) ){
+            $loanAccount->whereDate('loan_accounts.due_date', '>=', $filters['due_from']);
+        }
+        if(isset($filters['due_to'])){
+            $loanAccount->whereDate('loan_accounts.due_date', '<=', $filters['due_to']);
+        }
+
+
+    	if( isset($filters['product_id']) && $filters['product_id'] ){
+    		$loanAccount->where([ 'loan_accounts.product_id' => $filters['product_id'] ]);
+    	}
+
+    	if( isset($filters['cycle_no']) && $filters['cycle_no'] ){
+    		$loanAccount->where([ 'loan_accounts.cycle_no' => $filters['cycle_no'] ]);
+    	}
+
+    	if( isset($filters['center']) && $filters['center'] ){
+            if($filters['center'] == "No Center"){
+                $loanAccount->whereNull('loan_accounts.center_id');
+            }else{
+                $loanAccount->where([ 'loan_accounts.center_id' => $filters['center'] ]);
+            }
+    	}
+
+    	if( isset($filters['product']) && $filters['product'] ){
+    		$loanAccount->where([ 'loan_accounts.product_id' => $filters['product'] ]);
+    	}
+
+        if( isset($filters['account_officer']) && $filters['account_officer'] ){
+            $loanAccount->where([ 'loan_accounts.ao_id' => $filters['account_officer'] ]);
+        }
+
+        if( isset($filters['loan_status']) && $filters['loan_status'] ){
+            $loanAccount->where([ 'loan_accounts.loan_status' => $filters['loan_status'] ]);
+        }
+
+        if( isset($filters['payment_status']) && $filters['payment_status'] ){
+            $loanAccount->where([ 'loan_accounts.payment_status' => $filters['payment_status'] ]);
+        }
+
+        if( isset($filters['type']) && $filters['type'] ){
+            $loanAccount->where([ 'loan_accounts.type' => $filters['type'] ]);
+        }
+
+
+        return $loanAccount->paginate(10);
+    	/* return $loanAccount->get([
+			'loan_accounts.loan_account_id',
+			'loan_accounts.account_num',
+			'loan_accounts.date_release',
+			'loan_accounts.terms',
+			'loan_accounts.loan_amount',
+			'loan_accounts.interest_amount',
+			'loan_accounts.document_stamp',
+			'loan_accounts.filing_fee',
+			'loan_accounts.insurance',
+			'loan_accounts.notarial_fee',
+			'loan_accounts.prepaid_interest',
+			'loan_accounts.affidavit_fee',
+			'loan_accounts.total_deduction',
+			'loan_accounts.no_of_installment',
+			'loan_accounts.net_proceeds',
+			'loan_accounts.borrower_id',
+			'loan_accounts.product_id',
+			'loan_accounts.ao_id',
+			'loan_accounts.center_id',
+			'loan_accounts.branch_code',
+            'loan_accounts.release_type',
+            'loan_accounts.cycle_no',
+            'loan_accounts.memo',
+            'loan_accounts.due_date',
+            'loan_accounts.payment_mode',
+            'loan_accounts.payment_status',
+            'loan_accounts.loan_status',
+        ]); */
+    }
+
     public function getLoanAccounts($filters = []) {
 
         $loanAccount = Loanaccount::where([ 'loan_accounts.status' => 'released']);
@@ -979,7 +1073,42 @@ class Reports extends Model
             $products = $products->where(["product_id"=>$filters["product"]]);
         }
         $products = $products->get()->toArray();
-        foreach ($accOfficers as $aoKey => $aoValue) {
+
+        $accounts = $this->getLoanAccounts($filters);
+
+        foreach($accounts as $key => $account) {
+            $oBalance = $account->outstandingBalance($account->loan_account_id);
+            $remainingBal = $account->remainingBalance();
+            $reb = $remainingBal['rebates']['credit'];
+            $interestBal = $remainingBal['interest']['balance'];
+            $principalBal = $remainingBal['principal']['balance'];
+            $amortization = $account->amortization();
+            $principal = $amortization['principal'];
+            $interest = $amortization['interest'];
+
+            $accounts[$key] = [
+                'borrower_name' => $account->borrower->fullname(),
+                "account_num" => $account->account_num,
+                "date_loan" => $account->date_release,
+                "maturity" => $account->due_date,
+                "amount_loan" => $account->loan_amount,
+                "amount_due" => $oBalance,
+                "principal_balance" => $principalBal,
+                "interest_balance" => $interestBal - $reb,
+                "amortization" => $principal + $interest, //$account->amortization()["principal"] + $account->amortization()["interest"],
+                "type" => $account->payment_mode,
+                "loan_status" => $account->loan_status,
+                "status" => $account->payment_status
+            ];
+        }
+
+        /* $accounts = Center::where(['status' => 'active'])->with('loanAccounts',function($query) {
+            return $query->without(['payments','documents','borrower','accountOfficer','center']);
+        })->get(); */
+
+
+
+       /*  foreach ($accOfficers as $aoKey => $aoValue) {
             foreach ($products as $prodKey => $prodValue) {
                 $accOfficers[$aoKey]["products"][$prodValue["product_name"]] = $prodValue;
                 foreach ($centers as $centKey => $centVal) {
@@ -988,10 +1117,10 @@ class Reports extends Model
                     $filtersCopy["account_officer"] = $aoValue["ao_id"];
                     $filtersCopy["product"] = $prodValue["product_id"];
                     $filtersCopy["center"] = $centVal["center_id"];
-                    $accounts = $this->getLoanAccounts($filtersCopy);
+                    $accounts = LoanAccount::where(['center_id' => 91])->get();
+
+                    //$accounts = $this->getAccounts($filtersCopy);
                     foreach ($accounts as $accKey => $account) {
-                        $tranDate = new EndTransaction();
-                        $transactionDate = $tranDate->getTransactionDate($account->branch->branch_id)->date_end; // move into array outside of loop for optimization
                         $accOfficers[$aoKey]["products"][$prodValue["product_name"]]["centers"][$centVal["center"]]['accounts'][] = [
                             "borrower_name" => $account->borrower->fullname(),
                             "account_num" => $account->account_num,
@@ -1009,8 +1138,13 @@ class Reports extends Model
                     }
                 }
             }
-        }
-        return $accOfficers;
+        } */
+
+        /* $dd = [];
+        foreach($accounts as $acc) {
+            $dd[] = $acc->loanAccounts;
+        } */
+        return $accounts;
     }
 
     public function aoRevenueReport($filters = []){

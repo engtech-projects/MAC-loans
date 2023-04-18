@@ -17,6 +17,17 @@ class Center extends Model
 
     ];
 
+    public function remainingBalance() {
+        $loanAcccounts = new LoanAccount();
+        return $loanAcccounts->remainingBalance();
+    }
+    public function loanAccounts() {
+        return $this->hasMany(LoanAccount::class,'center_id','center_id');
+    }
+    public function product() {
+        return $this->hasMany(Product::class,'product_id','product_id');
+    }
+
     public static function fetchCenters() {
         //fetch all cenrters order by center name
         $centers = Center::orderBy('center')->get();

@@ -44,7 +44,7 @@ Route::group(['middleware' => 'auth:borrowers'], function(){
 Route::group(['middleware' => 'auth'], function (){
 	Route::get('logout', [LoginController::class, 'logout']);
 	Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-	
+
 	Route::get('/client_information/personal_information_list', [ClientInformationController::class, 'personalInformationList'])->name('client_information.personal_information_list');
 	Route::get('/client_information/personal_information_details/{id}', [ClientInformationController::class, 'personalInformationDetails'])->name('client_information.personal_information_details');
 	Route::get('/client_information/statement_of_accounts_list', [ClientInformationController::class, 'statementOfAccountsList'])->name('client_information.statement_of_accounts_list');
@@ -54,7 +54,7 @@ Route::group(['middleware' => 'auth'], function (){
 	Route::get('/client_information/balance_inquiry/{id}', [ClientInformationController::class, 'balanceInquiry'])->name('client_information.balance_inquiry');
 	Route::get('/client_information/balance_inquiry_list/', [ClientInformationController::class, 'balanceInquiryList'])->name('client_information.balance_inquiry_list');
 	Route::post('/client_information/personal_information_details/delete/', [ClientInformationController::class, 'deleteOtherInfo']);
-	
+
 	Route::get('/maintenance/cancel_payments', [MaintenanceController::class, 'cancelPayments'])->name('maintenance.cancel_payments');
 	Route::get('/maintenance/product_setup', [MaintenanceController::class, 'productSetup'])->name('maintenance.product_setup');
 	Route::get('/maintenance/center_ao', [MaintenanceController::class, 'centerAo'])->name('maintenance.center_ao');
