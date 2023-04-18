@@ -17,7 +17,12 @@ class AmortizationController extends BaseController
 
     public function update(Request $request, Amortization $amortization) {
         $validated = $request->validate([
-            'status' => 'required'
+            'status' => 'required',
+            'total' => 'required|regex:/^[0-9]+(\.[0-9][0-9]?)?$/',
+            'interest' => 'required|regex:/^[0-9]+(\.[0-9][0-9]?)?$/',
+            'principal_balance' => 'required|regex:/^[0-9]+(\.[0-9][0-9]?)?$/',
+            'interest_balance' => 'required|regex:/^[0-9]+(\.[0-9][0-9]?)?$/',
+            'amortization_date' => 'required'
         ]);
 
         $amortization->fill($validated);
