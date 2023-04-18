@@ -19,14 +19,14 @@
 								<option value="all">All Products</option>
 								<option v-for="product in products.filter(p=>p.status=='active')" :key="product.id" :value="product.product_id">{{product.product_name}}</option>
 							</select>
-						</div>		
+						</div>
 						<div class="d-flex flex-row align-items-center mr-24 justify-content-start flex-1">
 							<span class="mr-10 text-block">Center: </span>
 							<select v-model="filter.center" name="" id="selectProductClient" class="form-control flex-1">
 								<option value="all">All Centers</option>
 								<option v-for="center in centers.filter(c=>c.status=='active')" :key="center.id" :value="center.center_id">{{center.center}}</option>
 							</select>
-						</div>								
+						</div>
 					</div>
 					<div class="sep mb-45"></div>
 					<img :src="this.baseURL()+'/img/company_header_fit.png'" class="mb-24" alt="">
@@ -36,7 +36,7 @@
 						<div class="d-flex flex-column mb-24">
 							<div class="d-flex flex-row align-items-center">
 								<div class="flex-1 d-flex flex-column">
-								
+
 								</div>
 								<span class="font-30 text-bold text-primary-dark text-center">Loan Listing</span>
 								<div class="flex-1 d-flex justify-content-end" style="padding-right:16px">
@@ -67,6 +67,7 @@
 								<table class="table table-stripped mb-24">
 									<thead>
 										<th>Borrower's Name</th>
+                                        <th>Account Number</th>
 										<th>Date Loan</th>
 										<th>Maturity</th>
 										<th>Amnt. Loan</th>
@@ -233,6 +234,7 @@ export default {
 								var account = center.accounts[ac];
 								var row = [];
 								row.push(account.borrower_name);
+                                row.push(account.account_num);
 								row.push(account.date_loan);
 								row.push(account.maturity);
 								row.push(this.formatToCurrency(account.amount_loan));
