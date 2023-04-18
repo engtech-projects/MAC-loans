@@ -181,6 +181,10 @@ class Borrower extends Authenticatable
         return $this->hasMany(OutstandingObligations::class, 'borrower_id');
     }
 
+    public function accounts() {
+        return $this->hasMany(LoanAccount::class, 'loan_account_id');
+    }
+
     public function loanAccounts()
     {
         $activeAccounts = LoanAccount::where(['borrower_id' => $this->borrower_id, 'status' => 'released'])

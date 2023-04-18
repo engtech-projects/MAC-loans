@@ -967,6 +967,7 @@ export default {
                 borrower_num: "############",
                 photo: null,
             },
+			borrowers:[],
             loanAccounts: [],
             loanAccount: {
                 loan_account_id: null,
@@ -1161,7 +1162,9 @@ export default {
                 })
                 .then(
                     function (response) {
-                        this.loanAccounts = this.setAccounts(response.data.data);
+						console.log(response.data);
+						this.borrowers = response.data.data;
+                        // this.loanAccounts = this.setAccounts(response.data.data);
                     }.bind(this)
                 )
                 .catch(

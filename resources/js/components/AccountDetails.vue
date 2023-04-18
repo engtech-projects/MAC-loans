@@ -193,6 +193,7 @@
 											<th>Rebates</th>
 											<th>Over Payment</th>
 											<th>Total Payment</th>
+											<th>Total Payable</th>
 											<th>Remarks</th>
 											<th></th>
 										</thead>
@@ -209,6 +210,7 @@
 												<td>{{formatToCurrency(p.rebates)}}</td>
 												<td>{{formatToCurrency(p.over_payment)}}</td>
 												<td>{{formatToCurrency(p.amount_applied)}}</td>
+												<td>{{formatToCurrency(p.total_payable)}}</td>
 												<td>{{p.status == 'cancelled' ? 'Cancelled' + (p.remarks ? ' - ' + p.remarks : '') : ''}}</td>
 												<td><a @click.prevent="editPayment=p" data-toggle="modal" data-target="#editPaymentModal" href=""><i class="fa fa-edit"></i>Edit</a></td>
 											</tr>
@@ -422,33 +424,6 @@
 							<section class="mb-24 p-16" style="flex:21;padding-left:16px;">
 								<span class="section-title mb-12">Edit Payment</span>
 								<div class="d-flex flex-column">
-									<!-- <div class="d-flex flex-column flex-lg-row">
-										<div class="form-group mb-10 mr-16 flex-1">
-											<label for="transactionDate" class="form-label">Date</label>
-											<div class="form-group">
-												<input v-model="editPayment.transaction_date" type="date" class="form-control form-input">
-											</div>
-										</div>
-										<div class="form-group mb-10 mr-16 flex-1">
-											<label for="transactionDate" class="form-label">OR No.</label>
-											<div class="form-group">
-												<input v-model="editPayment.or_no" type="text" class="form-control form-input">
-											</div>
-										</div>
-										<div class="form-group mb-10 mr-16 flex-1">
-											<label for="transactionDate" class="form-label">Trans. No.</label>
-											<div class="form-group">
-												<input v-model="editPayment.transaction_number" type="text" class="form-control form-input">
-											</div>
-										</div>
-										<div class="form-group mb-10 mr-16 flex-1">
-											<label for="transactionDate" class="form-label">Refrerence No.</label>
-											<div class="form-group">
-												<input v-model="editPayment.reference_no" type="text" class="form-control form-input">
-											</div>
-										</div>
-									</div> -->
-
 									<div class="d-flex flex-column flex-lg-row">
 										<div class="form-group mb-10 mr-16 flex-1">
 											<label for="transactionDate" class="form-label">Principal</label>
@@ -491,7 +466,10 @@
 											</div>
 										</div>
 										<div class="form-group mb-10 mr-16 flex-1">
-											
+											<label for="transactionDate" class="form-label">Total Payable</label>
+											<div class="form-group">
+												<input v-model="editPayment.total_payable" type="number" class="form-control form-input">
+											</div>
 										</div>
 										<div class="form-group mb-10 mr-16 flex-1 d-flex align-items-end">
 											<button @click="updatePayment()" data-dismiss="modal" class="btn btn-success" style="margin-bottom:1rem;width:100%;height:47px;">UPDATE</button>
@@ -514,56 +492,30 @@
 							<section class="mb-24 p-16" style="flex:21;padding-left:16px;">
 								<span class="section-title mb-12">Edit Amortization</span>
 								<div class="d-flex flex-column">
-									<!-- <div class="d-flex flex-column flex-lg-row">
-										<div class="form-group mb-10 mr-16 flex-1">
-											<label for="transactionDate" class="form-label">Date</label>
-											<div class="form-group">
-												<input v-model="editPayment.transaction_date" type="date" class="form-control form-input">
-											</div>
-										</div>
-										<div class="form-group mb-10 mr-16 flex-1">
-											<label for="transactionDate" class="form-label">OR No.</label>
-											<div class="form-group">
-												<input v-model="editPayment.or_no" type="text" class="form-control form-input">
-											</div>
-										</div>
-										<div class="form-group mb-10 mr-16 flex-1">
-											<label for="transactionDate" class="form-label">Trans. No.</label>
-											<div class="form-group">
-												<input v-model="editPayment.transaction_number" type="text" class="form-control form-input">
-											</div>
-										</div>
-										<div class="form-group mb-10 mr-16 flex-1">
-											<label for="transactionDate" class="form-label">Refrerence No.</label>
-											<div class="form-group">
-												<input v-model="editPayment.reference_no" type="text" class="form-control form-input">
-											</div>
-										</div>
-									</div> -->
 
 									<div class="d-flex flex-column flex-lg-row">
 										<div class="form-group mb-10 mr-16 flex-1">
 											<label for="transactionDate" class="form-label">Date</label>
 											<div class="form-group">
-												<input v-model="editAmort.amortization_date" type="date" disabled class="form-control form-input">
+												<input v-model="editAmort.amortization_date" type="date" class="form-control form-input">
 											</div>
 										</div>
 											<div class="form-group mb-10 mr-16 flex-1">
 											<label for="transactionDate" class="form-label">Principal</label>
 											<div class="form-group">
-												<input v-model="editAmort.principal" type="number" disabled class="form-control form-input">
+												<input v-model="editAmort.principal" type="number" class="form-control form-input">
 											</div>
 										</div>
 										<div class="form-group mb-10 mr-16 flex-1">
 											<label for="transactionDate" class="form-label">Interest</label>
 											<div class="form-group">
-												<input v-model="editAmort.interest" type="number" disabled class="form-control form-input">
+												<input v-model="editAmort.interest" type="number" class="form-control form-input">
 											</div>
 										</div>
 										<div class="form-group mb-10 mr-16 flex-1">
 											<label for="transactionDate" class="form-label">Total</label>
 											<div class="form-group">
-												<input v-model="editAmort.total" type="number" disabled class="form-control form-input">
+												<input v-model="editAmort.total" type="number" class="form-control form-input">
 											</div>
 										</div>
 									</div>
@@ -573,13 +525,13 @@
 										<div class="form-group mb-10 mr-16 flex-1">
 											<label for="transactionDate" class="form-label">Principal Balance</label>
 											<div class="form-group">
-												<input v-model="editAmort.principal_balance" type="number" disabled class="form-control form-input">
+												<input v-model="editAmort.principal_balance" type="number" class="form-control form-input">
 											</div>
 										</div>
 										<div class="form-group mb-10 mr-16 flex-1">
 											<label for="transactionDate" class="form-label">Interest Balance</label>
 											<div class="form-group">
-												<input v-model="editAmort.interest_balance" type="number" disabled class="form-control form-input">
+												<input v-model="editAmort.interest_balance" type="number" class="form-control form-input">
 											</div>
 										</div>
 										<div class="form-group mb-10 mr-16 flex-1">
