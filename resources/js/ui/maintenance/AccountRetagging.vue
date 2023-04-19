@@ -8,7 +8,7 @@
         <!-- /.col -->
         <div class="d-flex flex-column flex-xl-row">
             <div style="flex: 1">
-                <div class="search-bar mb-12">
+                <div class="search-bar mb-12 relative">
                     <input
                         type="text"
                         v-model="filter"
@@ -17,6 +17,9 @@
                         placeholder="Search"
                     />
                     <div><i class="fa fa-search"></i></div>
+					<div class="results-container d-flex flex-column justify-content-start">
+						<a v-for="b,f in filteredBorrowers" @click.prevent="selectBorrower(b)" href="" :key="f">{{b.lastname + ', ' + b.firstname}}</a>
+					</div>
                 </div>
                 <table class="table table-stripped" id="clientsList">
                     <thead>
@@ -953,6 +956,7 @@ export default {
     props: ["pbranch", "token",'ploanstatus'],
     data() {
         return {
+			selectedBorrower:{},
 			pagination:{
 				page: 1,
 				range: 10
@@ -1173,6 +1177,26 @@ export default {
                     }.bind(this)
                 );
         },
+		 async fetchBorrower(borrower) {
+            await axios
+                .get(this.baseURL() + "api/borrower/accounts/" + borrower.borrower_id, {
+                    headers: {
+                        Authorization: "Bearer " + this.token,
+                        "Content-Type": "application/json",
+                        Accept: "application/json",
+                    },
+                })
+                .then(
+                    function (response) {
+						console.log(response.data);
+                    }.bind(this)
+                )
+                .catch(
+                    function (error) {
+                        console.log(error);
+                    }.bind(this)
+                );
+        },
         setAccounts: function (borrowers) {
             var accounts = [];
             borrowers.forEach(b => {
@@ -1211,6 +1235,11 @@ export default {
                     }.bind(this)
                 );
         },
+		selectBorrower:function(b){
+			this.fetchBorrower(b)
+			// this.selectedBorrower = b;
+			this.filter = '';
+		}
     },
     computed: {
 		canRetagg:function(){
@@ -1236,6 +1265,21 @@ export default {
                   )
                 : "None";
         },
+		filteredBorrowers:function(){
+			if(this.filter.length > 0){
+				return this.borrowers.filter( data => data.firstname
+							.toLowerCase()
+							.includes(this.filter.toLowerCase()) ||
+						data.lastname.toLowerCase()
+                        	.includes(this.filter.toLowerCase()) ||
+						(data.lastname.toLowerCase() + ' ' + data.firstname.toLowerCase())
+                        	.includes(this.filter.toLowerCase()) ||
+						(data.firstname.toLowerCase() + ' ' + data.lastname.toLowerCase())
+                        	.includes(this.filter.toLowerCase())
+						)
+			}
+ 			return [];
+		},
         filteredAccounts: function () {
             return this.loanAccounts.filter(
                 (data) =>
@@ -1290,3 +1334,25 @@ export default {
     },
 };
 </script>
+
+<style scoped>
+	.results-container {
+		position:absolute;
+		left:0;top:40px;width:100%;height:auto;
+		border:1px solid #f2f2f2;
+		box-shadow: 1px 1px 2px rgba(0,0,0,.1);
+		z-index: 9999999;
+		padding: 10px 0px;
+		background-color: #FFF;
+		overflow: hidden;
+	}
+	.results-container a {
+		width:100%;
+		border-bottom: 1px solid #eee;
+		padding: 5px 10px;
+		background-color: #FFF;
+	}
+	.results-container a:hover {
+		background-color: #eee;
+	}
+</style>

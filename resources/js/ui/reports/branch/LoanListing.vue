@@ -1,5 +1,12 @@
 <template>
 	<div class="d-flex flex-column" style="flex:8;">
+		<div v-if="loading" class="black-screen d-flex flex-column align-items-center justify-content-center" style="padding-left:0px;">
+			<div class="loading-container d-flex align-items-center justify-content-center mb-36">
+				<span class="loading-text">LOADING</span>
+				<img :src="baseURL() + 'img/loading_default.png'" class="rotating" alt="" style="width:300px;height:300px">
+			</div>
+			<span class="font-lg" style="color:#ddd">Please wait until the process is complete</span>
+		</div>
 					<div class="d-flex flex-row font-md mb-16">
 						<!-- <span class="font-lg text-primary-dark flex-1 mr-45"></span> -->
 						<!-- <div class="d-flex flex-row align-items-center mr-24" style="flex:1">
@@ -122,6 +129,7 @@ export default {
 	props:['pbranch', 'token'],
 	data(){
 		return {
+			loading:false,
 			filter:{
 				type:'loan_listing',
 				branch_id:'',
@@ -138,6 +146,7 @@ export default {
 	},
 	methods:{
 		async fetchReport(){
+			this.loading = true;
 			await axios.post(this.baseURL() + 'api/report/branch', this.filter, {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
@@ -146,10 +155,12 @@ export default {
 				}
 			})
 			.then(function (response) {
+				this.loading = false;
 				this.reports = response.data.data
 				console.log(this.reports);
 			}.bind(this))
 			.catch(function (error) {
+				this.loading = false;
 				console.log(error);
 			}.bind(this));
 		},
