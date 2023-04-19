@@ -925,10 +925,10 @@ class Reports extends Model
                                         ->join('branch','account_officer_branch.branch_id', '=', 'branch.branch_id')
                                         ->where(['account_officer.status' => AccountOfficer::STATUS_ACTIVE,'branch.branch_id' => $filters['branch_id']])->select('account_officer.*')->get()->toArray();
             }else{
-                $accOfficers = AccountOfficer::where(["status"=> AccountOfficer::STATUS_ACTIVE])->get()->toArray();
+                $accOfficers = AccountOfficer::where(["status"=> AccountOfficer::STATUS_ACTIVE])->get(['ao_id','name','branch_id'])->toArray();
             }
 
-            $products = Product::where(["status" => Product::STATUS_ACTIVE])->get()->toArray();
+            $products = Product::where(["status" => Product::STATUS_ACTIVE])->get(['product_name','product_id','product_code'])->toArray();
             foreach ($accOfficers as $aoKey => $aoValue) {
                 foreach ($products as $prodKey => $prodValue) {
                     $tempProd = $prodValue;
@@ -938,24 +938,26 @@ class Reports extends Model
                         "product_id"=>$prodValue["product_id"],
                         "branch_code" => $branch->branch_code
                     ])
-                    ->whereNotIn("loan_status",[LoanAccount::LOAN_PAID])
+                    ->whereIn("loan_status",[LoanAccount::LOAN_ONGOING, LoanAccount::LOAN_PASTDUE,LoanAccount::LOAN_RESTRUCTED])
+                    ->without(['payments','documents','accountOfficer','borrower'])
                     ->get();
                     $tempProd["all"] = ["count" => 0, "amount" => 0];
                     $tempProd["delinquent"] = ["count" => 0, "amount" => 0, "rate" => 0];
                     $tempProd["pastdue"] = ["count" => 0, "amount" => 0, "rate" => 0];
                     foreach ($allAOProd as $key => $value) {
+                        $pBal = $value->remainingBalance()["principal"]["balance"];
                         $tempProd["all"]["count"] += 1;
-                        $tempProd["all"]["amount"] += $value->remainingBalance()["principal"]["balance"];
+                        $tempProd["all"]["amount"] += $pBal;
                         if(LoanAccount::getLoanStatus($value->loan_account_id) == LoanAccount::LOAN_ONGOING){
                             if(LoanAccount::getPaymentStatus($value->loan_account_id) == LoanAccount::PAYMENT_DELINQUENT){
                                 $tempProd["delinquent"]["count"] += 1;
-                                $tempProd["delinquent"]["amount"] += $value->remainingBalance()["principal"]["balance"];
+                                $tempProd["delinquent"]["amount"] += $pBal;
 
                             }
                         }
                         if(LoanAccount::getLoanStatus($value->loan_account_id) == LoanAccount::LOAN_PASTDUE){
                             $tempProd["pastdue"]["count"] += 1;
-                            $tempProd["pastdue"]["amount"] += $value->remainingBalance()["principal"]["balance"];
+                            $tempProd["pastdue"]["amount"] += $pBal;
 
                         }
                     }
