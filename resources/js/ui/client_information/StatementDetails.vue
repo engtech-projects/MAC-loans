@@ -1888,7 +1888,6 @@
 												<select name="" id="" class="form-control form-input" v-model="editAccount.payment_history">
 													<option value="Current">Current</option>
 													<option value="Delinquent">Delinquent</option>
-													<option value="Past Due">Past Due</option>
 												</select>
 											</div>
 										</div>
@@ -1904,6 +1903,7 @@
 													<option value="Res WO-PDI">Res WO-PDI</option>
 													<option value="Case Filed">Case Filed</option>
 													<option value="Litigated">Litigated</option>
+                                                    <option value="Paid">Paid</option>
 												</select>
 											</div>
 										</div>
