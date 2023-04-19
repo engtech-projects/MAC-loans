@@ -838,6 +838,7 @@ class Reports extends Model
                                         ->select('account_officer.ao_id', 'account_officer.name')
                                         ->without('branch', 'branch_registered')
                                         ->orderBy('account_officer.name', 'ASC')
+                                        ->groupBy('account_officer.ao_id')
                                         ->get()
                                         ->toArray();
             }else{
@@ -846,6 +847,7 @@ class Reports extends Model
                                         ->select('account_officer.ao_id', 'account_officer.name')
                                         ->without('branch', 'branch_registered')
                                         ->orderBy('account_officer.name', 'ASC')
+                                        ->groupBy('account_officer.ao_id')
                                         ->get()
                                         ->toArray();
             }
