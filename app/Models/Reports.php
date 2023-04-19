@@ -919,53 +919,89 @@ class Reports extends Model
         $branch = Branch::find($filters['branch_id']);
         $data = [];
         if($filters["group"] == Reports::BRANCH_AO_PERFORMANCE){
-            $accOfficers = NULL;
-            if(isset($filters["branch_id"]) && $filters["branch_id"]){
+               $accOfficers = NULL;
+
+            if( isset($filters["branch_id"]) && $filters["branch_id"] ) {
+
                 $accOfficers =  AccountOfficer::join('account_officer_branch','account_officer.ao_id', '=', 'account_officer_branch.ao_id')
                                         ->join('branch','account_officer_branch.branch_id', '=', 'branch.branch_id')
-                                        ->where(['account_officer.status' => AccountOfficer::STATUS_ACTIVE,'branch.branch_id' => $filters['branch_id']])->select('account_officer.*')->get()->toArray();
+                                        ->where([
+                                            'account_officer.status' => AccountOfficer::STATUS_ACTIVE, 
+                                            'branch.branch_id' => $filters['branch_id']
+                                        ])
+                                        ->select('account_officer.ao_id', 'account_officer.name')
+                                        ->without('branch', 'branch_registered')
+                                        ->orderBy('account_officer.name', 'ASC')
+                                        ->get()
+                                        ->toArray();
             }else{
-                $accOfficers = AccountOfficer::where(["status"=> AccountOfficer::STATUS_ACTIVE])->get(['ao_id','name','branch_id'])->toArray();
+
+                $accOfficers = AccountOfficer::where(["status"=> AccountOfficer::STATUS_ACTIVE])
+                                        ->select('account_officer.ao_id', 'account_officer.name')
+                                        ->without('branch', 'branch_registered')
+                                        ->orderBy('account_officer.name', 'ASC')
+                                        ->get()
+                                        ->toArray();
             }
 
-            $products = Product::where(["status" => Product::STATUS_ACTIVE])->get(['product_name','product_id','product_code'])->toArray();
-            foreach ($accOfficers as $aoKey => $aoValue) {
-                foreach ($products as $prodKey => $prodValue) {
+            $products = Product::where(["status" => Product::STATUS_ACTIVE])
+                                ->select('product_id', 'product_code', 'product_name')
+                                ->get()
+                                ->toArray();
+
+            foreach ( $accOfficers as $aoKey => $aoValue ) {
+
+                foreach ( $products as $prodKey => $prodValue ) {
+
                     $tempProd = $prodValue;
+
                     $allAOProd = LoanAccount::where([
                         "status"=>LoanAccount::STATUS_RELEASED,
                         "ao_id"=>$aoValue["ao_id"],
                         "product_id"=>$prodValue["product_id"],
                         "branch_code" => $branch->branch_code
                     ])
-                    ->whereIn("loan_status",[LoanAccount::LOAN_ONGOING, LoanAccount::LOAN_PASTDUE,LoanAccount::LOAN_RESTRUCTED])
-                    ->without(['payments','documents','accountOfficer','borrower'])
+                    ->whereIn("loan_status",[LoanAccount::LOAN_ONGOING, LoanAccount::LOAN_PASTDUE, LoanAccount::LOAN_RESTRUCTED ])
+                    ->without(['documents', 'borrower', 'center', 'branch', 'product', 'accountOfficer', 'payments'])
                     ->get();
-                    $tempProd["all"] = ["count" => 0, "amount" => 0];
-                    $tempProd["delinquent"] = ["count" => 0, "amount" => 0, "rate" => 0];
-                    $tempProd["pastdue"] = ["count" => 0, "amount" => 0, "rate" => 0];
-                    foreach ($allAOProd as $key => $value) {
-                        $pBal = $value->remainingBalance()["principal"]["balance"];
-                        $tempProd["all"]["count"] += 1;
-                        $tempProd["all"]["amount"] += $pBal;
-                        if(LoanAccount::getLoanStatus($value->loan_account_id) == LoanAccount::LOAN_ONGOING){
-                            if(LoanAccount::getPaymentStatus($value->loan_account_id) == LoanAccount::PAYMENT_DELINQUENT){
-                                $tempProd["delinquent"]["count"] += 1;
-                                $tempProd["delinquent"]["amount"] += $pBal;
+
+                    if( count($allAOProd) > 0 ) {
+
+                        $tempProd["all"] = ["count" => 0, "amount" => 0];
+                        $tempProd["delinquent"] = ["count" => 0, "amount" => 0, "rate" => 0];
+                        $tempProd["pastdue"] = ["count" => 0, "amount" => 0, "rate" => 0];
+
+                        foreach ( $allAOProd as $key => $value ) {
+
+                            $principalBalance = $value->remainingBalance()["principal"]["balance"];
+
+                            $tempProd["all"]["count"] += 1;
+                            $tempProd["all"]["amount"] += $principalBalance;
+
+                            if( $value->loan_status == LoanAccount::LOAN_ONGOING ) {
+
+                                if( $value->payment_status == LoanAccount::PAYMENT_DELINQUENT ) {
+                                    $tempProd["delinquent"]["count"] += 1;
+                                    $tempProd["delinquent"]["amount"] += $principalBalance;
+                                }
+                            }
+
+                            if( $value->loan_status == LoanAccount::LOAN_PASTDUE ) {
+                                $tempProd["pastdue"]["count"] += 1;
+                                $tempProd["pastdue"]["amount"] += $principalBalance;
 
                             }
                         }
-                        if(LoanAccount::getLoanStatus($value->loan_account_id) == LoanAccount::LOAN_PASTDUE){
-                            $tempProd["pastdue"]["count"] += 1;
-                            $tempProd["pastdue"]["amount"] += $pBal;
 
-                        }
+                        $tempProd["delinquent"]["rate"] = $tempProd["all"]["amount"] == 0 ? 0 :  round( (($tempProd["delinquent"]["amount"] / $tempProd["all"]["amount"]) * 100), 2); //round((($tempProd["delinquent"]["amount"] / $tempProd["all"]["amount"])*100));
+                        $tempProd["pastdue"]["rate"] = $tempProd["all"]["amount"] == 0 ? 0 : round( (($tempProd["pastdue"]["amount"] / $tempProd["all"]["amount"]) * 100), 2); //round((($tempProd["delinquent"]["amount"] / $tempProd["all"]["amount"])*100));
+                        $accOfficers[$aoKey]["products"][] = $tempProd;
+
                     }
-                    $tempProd["delinquent"]["rate"] = $tempProd["all"]["amount"] == 0 ? 0 :  round( (($tempProd["delinquent"]["amount"] / $tempProd["all"]["amount"]) * 100), 2); //round((($tempProd["delinquent"]["amount"] / $tempProd["all"]["amount"])*100));
-                    $tempProd["pastdue"]["rate"] = $tempProd["all"]["amount"] == 0 ? 0 : round( (($tempProd["pastdue"]["amount"] / $tempProd["all"]["amount"]) * 100), 2); //round((($tempProd["delinquent"]["amount"] / $tempProd["all"]["amount"])*100));
-                    $accOfficers[$aoKey]["products"][] = $tempProd;
+
                 }
             }
+
             $data = $accOfficers;
         }else if($filters["group"] == Reports::BRANCH_AO_WRITEOFF){
             $writeoffAccounts = [];
