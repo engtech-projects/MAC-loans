@@ -74,6 +74,10 @@ class FixShortAdvMigration implements ShouldQueue
                             Amortization::find($amort->id)->fill([
                                 'status' => 'delinquent'
                             ])->save();
+
+                            LoanAccountMigrationFix::find($acc->loan_account_id)->fill([
+                                'payment_status' => 'Delinquent'
+                            ])->save();
                         }
                     }
                     Payment::find($payment->payment_id)->fill([
@@ -89,6 +93,10 @@ class FixShortAdvMigration implements ShouldQueue
                 if($amort->status != 'paid' && $acc->branch->endTransaction->date_end > $amort->amortization_date){
                     Amortization::find($amort->id)->fill([
                         'status' => 'delinquent'
+                    ])->save();
+
+                    LoanAccountMigrationFix::find($acc->loan_account_id)->fill([
+                        'payment_status' => 'Delinquent'
                     ])->save();
                 }
                 Amortization::find($amort->id)->fill([

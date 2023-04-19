@@ -343,8 +343,8 @@ class LoanAccountController extends BaseController
     }
 
     public static function fixLoanAccountShortAndAdvances($i, $limit){
-        $accountsArray = LoanAccountMigrationFix::with(['lastPayment', 'branch.endTransaction', 'amortizations', 'amortizations.payments'])->offset($i * 1000)->limit($limit)->get();
-        // $accountsArray = LoanAccountMigrationFix::where('loan_account_id', 14540)->with(['lastPayment', 'branch.endTransaction', 'amortizations', 'amortizations.payments'])->offset($i * 1000)->limit($limit)->get();
+       $accountsArray = LoanAccountMigrationFix::with(['lastPayment', 'branch.endTransaction', 'amortizations', 'amortizations.payments'])->offset($i * 1000)->limit($limit)->get();
+        //  $accountsArray = LoanAccountMigrationFix::where('loan_account_id', 14611)->with(['lastPayment', 'branch.endTransaction', 'amortizations', 'amortizations.payments'])->offset($i * 1000)->limit($limit)->get();
         // dd($accountsArray[0]);
         foreach($accountsArray as $acc){
             $amortP = 0;
@@ -381,6 +381,10 @@ class LoanAccountController extends BaseController
                             Amortization::find($amort->id)->fill([
                                 'status' => 'delinquent'
                             ])->save();
+
+                            LoanAccountMigrationFix::find($acc->loan_account_id)->fill([
+                                'payment_status' => 'Delinquent'
+                            ])->save();
                         }
                     }
                     Payment::find($payment->payment_id)->fill([
@@ -397,6 +401,11 @@ class LoanAccountController extends BaseController
                     Amortization::find($amort->id)->fill([
                         'status' => 'delinquent'
                     ])->save();
+                    
+                    LoanAccountMigrationFix::find($acc->loan_account_id)->fill([
+                        'payment_status' => 'Delinquent'
+                    ])->save();
+
                 }
                 Amortization::find($amort->id)->fill([
                     'principal_balance' => $principal,
