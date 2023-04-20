@@ -519,8 +519,8 @@ class LoanAccount extends Model
         # compute for total payments
         # get last payment
         if ($amortization) {
-            $amortization->principal = ceil($amortization->principal);
-            $amortization->interest = ceil($amortization->interest);
+            $amortization->principal = round($amortization->principal);
+            $amortization->interest = round($amortization->interest);
 
             $totalAmort = $first_amort->principal + $first_amort->interest;
             $amortization->pdi = $amortization->pdi ? $amortization->pdi : 0;
@@ -707,16 +707,16 @@ class LoanAccount extends Model
                         break;
                     }
                     if (!$isNotAdvancePayment) { // if advanced payment only add principal and interest
-                        $totalPrincipal += ceil($delinquent->principal);
-                        $totalInterest += ceil($delinquent->interest);
+                        $totalPrincipal += round($delinquent->principal);
+                        $totalInterest += round($delinquent->interest);
                     }
                     break;
                 } else {
                     $missed[] = $delinquent->id;
                 }
 
-                $totalPrincipal += ceil($delinquent->principal);
-                $totalInterest += ceil($delinquent->interest);
+                $totalPrincipal += round($delinquent->principal);
+                $totalInterest += round($delinquent->interest);
             }
 
         }
