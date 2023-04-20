@@ -1054,6 +1054,9 @@ class Reports extends Model
                             $interestBal = $remainingBal['interest']['balance'];
                             $principalBal = $remainingBal['principal']['balance'];
                             $amortization = $account->amortization();
+                            $current_amort = $account->getCurrentAmortization();
+                            $amortPrincipal = $current_amort["principal"] ?? 0;
+                            $amortInterest = $current_amort["interest"] ?? 0;
                             $principal = $amortization['principal'];
                             $interest = $amortization['interest'];
 
@@ -1063,13 +1066,13 @@ class Reports extends Model
                                 "date_loan" => $account->date_release,
                                 "maturity" => $account->due_date,
                                 "amount_loan" => $account->loan_amount,
-                                "amount_due" => $oBalance,
+                                "amount_due" => $amortInterest + $amortPrincipal,
                                 "principal_balance" => $principalBal,
                                 "interest_balance" => $interestBal - $reb,
                                 "amortization" => $principal + $interest, //$account->amortization()["principal"] + $account->amortization()["interest"],
                                 "type" => $account->payment_mode,
                                 "loan_status" => $account->loan_status,
-                                "status" => $account->payment_status
+                                "status" => $account->payment_status,
                             ];
                         }
 
