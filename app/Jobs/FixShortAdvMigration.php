@@ -49,8 +49,8 @@ class FixShortAdvMigration implements ShouldQueue
             $principal = $acc->loan_amount;
             $interest = $acc->interest_amount;
             foreach($acc->amortizations as $amort){
-                $amortP += ceil($amort->principal);
-                $amortI += ceil($amort->interest);
+                $amortP += round($amort->principal);
+                $amortI += round($amort->interest);
                 $principal -= $amort->principal;
                 $interest -= $amort->interest;
                 $principal = $principal < 0 ? 0: $principal;

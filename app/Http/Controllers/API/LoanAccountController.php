@@ -314,10 +314,10 @@ class LoanAccountController extends BaseController
     public function fixShortAdv(){
         // $type = 'realtime'; // realtime or background
         $type = 'background'; // realtime or background
-        $limit = 100;
+        $limit = 10;
         $start = 0;
-        $totalPages = 150;
-        $workers = 10; // for simultaneous queue instance
+        $totalPages = 1500;
+        $workers = 15; // for simultaneous queue instance
 
         for ($i=$start; $i <= $totalPages; $i++) {
             if($type == 'background'){
@@ -344,7 +344,7 @@ class LoanAccountController extends BaseController
 
     public static function fixLoanAccountShortAndAdvances($i, $limit){
        $accountsArray = LoanAccountMigrationFix::with(['lastPayment', 'branch.endTransaction', 'amortizations', 'amortizations.payments'])->offset($i * 1000)->limit($limit)->get();
-        //  $accountsArray = LoanAccountMigrationFix::where('loan_account_id', 14611)->with(['lastPayment', 'branch.endTransaction', 'amortizations', 'amortizations.payments'])->offset($i * 1000)->limit($limit)->get();
+        //  $accountsArray = LoanAccountMigrationFix::where('account_num', "001-003-0002458")->with(['lastPayment', 'branch.endTransaction', 'amortizations', 'amortizations.payments'])->offset($i * 1000)->limit($limit)->get();
         // dd($accountsArray[0]);
         foreach($accountsArray as $acc){
             $amortP = 0;
@@ -356,8 +356,8 @@ class LoanAccountController extends BaseController
             $principal = $acc->loan_amount;
             $interest = $acc->interest_amount;
             foreach($acc->amortizations as $amort){
-                $amortP += ceil($amort->principal);
-                $amortI += ceil($amort->interest);
+                $amortP += round($amort->principal);
+                $amortI += round($amort->interest);
                 $principal -= $amort->principal;
                 $interest -= $amort->interest;
                 $principal = $principal < 0 ? 0: $principal;

@@ -519,6 +519,9 @@ class LoanAccount extends Model
         # compute for total payments
         # get last payment
         if ($amortization) {
+            $amortization->principal = round($amortization->principal);
+            $amortization->interest = round($amortization->interest);
+
             $totalAmort = $first_amort->principal + $first_amort->interest;
             $amortization->pdi = $amortization->pdi ? $amortization->pdi : 0;
             // check and set previous schedule to delinquent if unpaid (missed)
@@ -704,16 +707,16 @@ class LoanAccount extends Model
                         break;
                     }
                     if (!$isNotAdvancePayment) { // if advanced payment only add principal and interest
-                        $totalPrincipal += $delinquent->principal;
-                        $totalInterest += $delinquent->interest;
+                        $totalPrincipal += round($delinquent->principal);
+                        $totalInterest += round($delinquent->interest);
                     }
                     break;
                 } else {
                     $missed[] = $delinquent->id;
                 }
 
-                $totalPrincipal += $delinquent->principal;
-                $totalInterest += $delinquent->interest;
+                $totalPrincipal += round($delinquent->principal);
+                $totalInterest += round($delinquent->interest);
             }
 
         }
