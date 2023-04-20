@@ -1054,6 +1054,18 @@ class Reports extends Model
                             $interestBal = $remainingBal['interest']['balance'];
                             $principalBal = $remainingBal['principal']['balance'];
                             $amortization = $account->amortization();
+                            $current_amort = $account->getCurrentAmortization();
+                            $amountDue = 0;
+                            if($current_amort) {
+                                $amortPrincipal = $current_amort["principal"];
+                                $advPrincipal = $current_amort["advance_principal"];
+                                $shortPrincipal = $current_amort["short_principal"];
+                                $amortInterest = $current_amort["interest"];
+                                $advInterest = $current_amort["advance_interest"];
+                                $shortInterest = $current_amort["short_interest"];
+                                $amountDue = ceil(($amortPrincipal + $shortPrincipal - $advPrincipal) + ($amortInterest + $shortInterest - $advInterest) + ($remainingBal["penalty"]["balance"] + $remainingBal["pdi"]["balance"] + $remainingBal["rebates"]["balance"]));
+                            }
+
                             $principal = $amortization['principal'];
                             $interest = $amortization['interest'];
 
@@ -1063,13 +1075,13 @@ class Reports extends Model
                                 "date_loan" => $account->date_release,
                                 "maturity" => $account->due_date,
                                 "amount_loan" => $account->loan_amount,
-                                "amount_due" => $oBalance,
+                                "amount_due" => $amountDue > 0 ? $amountDue : 0,
                                 "principal_balance" => $principalBal,
                                 "interest_balance" => $interestBal - $reb,
                                 "amortization" => $principal + $interest, //$account->amortization()["principal"] + $account->amortization()["interest"],
                                 "type" => $account->payment_mode,
                                 "loan_status" => $account->loan_status,
-                                "status" => $account->payment_status
+                                "status" => $account->payment_status,
                             ];
                         }
 
