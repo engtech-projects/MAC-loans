@@ -1055,8 +1055,15 @@ class Reports extends Model
                             $principalBal = $remainingBal['principal']['balance'];
                             $amortization = $account->amortization();
                             $current_amort = $account->getCurrentAmortization();
-                            $amortPrincipal = $current_amort["principal"] ?? 0;
-                            $amortInterest = $current_amort["interest"] ?? 0;
+                            $amountDue = 0;
+                            if($current_amort) {
+                                $amortPrincipal = $current_amort["principal"];
+                                $advPrincipal = $current_amort["advance_principal"];
+                                $amortInterest = $current_amort["interest"];
+                                $advInterest = $current_amort["advance_interest"];
+                                $amountDue = ceil(($amortPrincipal - $advPrincipal) + ($amortInterest - $advInterest) + ($remainingBal["penalty"]["balance"] + $remainingBal["pdi"]["balance"] + $remainingBal["rebates"]["balance"]));
+                            }
+
                             $principal = $amortization['principal'];
                             $interest = $amortization['interest'];
 
@@ -1066,7 +1073,7 @@ class Reports extends Model
                                 "date_loan" => $account->date_release,
                                 "maturity" => $account->due_date,
                                 "amount_loan" => $account->loan_amount,
-                                "amount_due" => $amortInterest + $amortPrincipal,
+                                "amount_due" => $amountDue > 0 ? $amountDue : 0,
                                 "principal_balance" => $principalBal,
                                 "interest_balance" => $interestBal - $reb,
                                 "amortization" => $principal + $interest, //$account->amortization()["principal"] + $account->amortization()["interest"],
