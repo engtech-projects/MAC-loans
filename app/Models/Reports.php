@@ -832,7 +832,7 @@ class Reports extends Model
                 $accOfficers =  AccountOfficer::join('account_officer_branch','account_officer.ao_id', '=', 'account_officer_branch.ao_id')
                                         ->join('branch','account_officer_branch.branch_id', '=', 'branch.branch_id')
                                         ->where([
-                                            'account_officer.status' => AccountOfficer::STATUS_ACTIVE, 
+                                            'account_officer.status' => AccountOfficer::STATUS_ACTIVE,
                                             'branch.branch_id' => $filters['branch_id']
                                         ])
                                         ->select('account_officer.ao_id', 'account_officer.name')
@@ -1001,14 +1001,20 @@ class Reports extends Model
     }
 
     public function branchLoanListingReport($filters = []){
-        $accOfficers = AccountOfficer::where(["status"=> AccountOfficer::STATUS_ACTIVE]);
+        /* $accOfficers = AccountOfficer::where(["status"=> AccountOfficer::STATUS_ACTIVE]); */
+        $accOfficers =  AccountOfficer::join('account_officer_branch','account_officer.ao_id', '=', 'account_officer_branch.ao_id')
+        ->join('branch','account_officer_branch.branch_id', '=', 'branch.branch_id')
+        ->where([
+            'account_officer.status' => AccountOfficer::STATUS_ACTIVE,
+        ]);
+
         if(isset($filters["branch_id"]) && $filters["branch_id"]){
-            $accOfficers = $accOfficers->where(["branch_id"=>$filters["branch_id"]]);
+            $accOfficers = $accOfficers->where(["branch.branch_id"=>$filters["branch_id"]]);
         }
         if(isset($filters["account_officer"]) && $filters["account_officer"]){
-            $accOfficers = $accOfficers->where(["ao_id"=>$filters["account_officer"]]);
+            $accOfficers = $accOfficers->where(["account_officer.ao_id"=>$filters["account_officer"]]);
         }
-        $accOfficers = $accOfficers->without('branch', 'branch_registered')->select('ao_id', 'name')->get()->toArray();
+        $accOfficers = $accOfficers->without('branch', 'branch_registered')->select('account_officer.ao_id', 'account_officer.name')->get()->toArray();
         $centers = Center::where(["status"=>"active"]);
         if(isset($filters["center"]) && $filters["center"]){
             $centers = $centers->where(["center_id"=>$filters["center"]]);
