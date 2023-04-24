@@ -163,7 +163,7 @@
 
 					<!-- <div class="flex-col payments-list" v-if="showPayments">
 						<span class="header">Payments</span>
-						
+
 					</div> -->
 
 					<div class="card card-primary card-outline card-tabs" style="border-top: 3px solid #283f53;">
@@ -471,6 +471,65 @@
 												<input v-model="editPayment.total_payable" type="number" class="form-control form-input">
 											</div>
 										</div>
+
+
+										<!-- <div class="form-group mb-10 mr-16 flex-1 d-flex align-items-end">
+											<button @click="updatePayment()" data-dismiss="modal" class="btn btn-success" style="margin-bottom:1rem;width:100%;height:47px;">UPDATE</button>
+										</div> -->
+									</div>
+                                    <div class="d-flex flex-column flex-lg-row">
+										<div class="form-group mb-10 mr-16 flex-1">
+											<label for="transactionDate" class="form-label">Short Principal</label>
+											<div class="form-group">
+												<input v-model="editPayment.short_principal" type="number" class="form-control form-input">
+											</div>
+										</div>
+										<div class="form-group mb-10 mr-16 flex-1">
+											<label for="transactionDate" class="form-label">Adv. Principal</label>
+											<div class="form-group">
+												<input v-model="editPayment.advance_principal" type="number" class="form-control form-input">
+											</div>
+										</div>
+										<div class="form-group mb-10 mr-16 flex-1">
+											<label for="transactionDate" class="form-label">Adv. Interest</label>
+											<div class="form-group">
+												<input v-model="editPayment.advance_interest" type="number" class="form-control form-input">
+											</div>
+										</div>
+                                        <div class="form-group mb-10 mr-16 flex-1">
+											<label for="transactionDate" class="form-label">Short Interest</label>
+											<div class="form-group">
+												<input v-model="editPayment.short_interest" type="number" class="form-control form-input">
+											</div>
+										</div>
+
+
+										<!-- <div class="form-group mb-10 mr-16 flex-1 d-flex align-items-end">
+											<button @click="updatePayment()" data-dismiss="modal" class="btn btn-success" style="margin-bottom:1rem;width:100%;height:47px;">UPDATE</button>
+										</div> -->
+									</div>
+
+                                    <div class="d-flex flex-column flex-lg-row">
+										<div class="form-group mb-10 mr-16 flex-1">
+											<label for="transactionDate" class="form-label">Rebates Approval No.</label>
+											<div class="form-group">
+												<input v-model="editPayment.rebates_approval_no" type="text" class="form-control form-input">
+											</div>
+										</div>
+										<div class="form-group mb-10 mr-16 flex-1">
+											<label for="transactionDate" class="form-label">Penalty Approval No.</label>
+											<div class="form-group">
+												<input v-model="editPayment.penalty_approval_no" type="text" class="form-control form-input">
+											</div>
+										</div>
+										<div class="form-group mb-10 mr-16 flex-1">
+											<label for="transactionDate" class="form-label">Pdi Approval No.</label>
+											<div class="form-group">
+												<input v-model="editPayment.pdi_approval_no" type="text" class="form-control form-input">
+											</div>
+										</div>
+
+
 										<div class="form-group mb-10 mr-16 flex-1 d-flex align-items-end">
 											<button @click="updatePayment()" data-dismiss="modal" class="btn btn-success" style="margin-bottom:1rem;width:100%;height:47px;">UPDATE</button>
 										</div>
@@ -483,7 +542,7 @@
 			</div>
 		</div>
 
-		
+
 		<div class="modal" id="editAmortizationModal" tabindex="-1" role="dialog">
 			<div class="modal-dialog modal-xl" role="document">
 				<div class="modal-content">

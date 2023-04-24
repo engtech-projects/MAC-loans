@@ -24,12 +24,19 @@ class UpdatePaymentRequest extends FormRequest
     public function rules()
     {
         return [
-            'principal'     =>      'regex:/^[0-9]+(\.[0-9][0-9]?)?$/',
-            'interest'      =>      'regex:/^[0-9]+(\.[0-9][0-9]?)?$/',
-            'pdi'           =>      'regex:/^[0-9]+(\.[0-9][0-9]?)?$/',
-            'penalty'       =>      'regex:/^[0-9]+(\.[0-9][0-9]?)?$/',
-            'rebates'       =>      'regex:/^[0-9]+(\.[0-9][0-9]?)?$/',
-            'amount_applied' =>     'regex:/^[0-9]+(\.[0-9][0-9]?)?$/',
+            'short_principal'           =>      'regex:/^[0-9]+(\.[0-9][0-9]?)?$/',
+            'advance_principal'         =>      'regex:/^[0-9]+(\.[0-9][0-9]?)?$/',
+            'advance_interest'          =>      'regex:/^[0-9]+(\.[0-9][0-9]?)?$/',
+            'rebates_approval_no'       =>      'numeric',
+            'penalty_approval_no'       =>      'numeric',
+            'pdi_approval_no'           =>      'numeric',
+            'short_inerest'             =>      'regex:/^[0-9]+(\.[0-9][0-9]?)?$/',
+            'principal'                 =>      'regex:/^[0-9]+(\.[0-9][0-9]?)?$/',
+            'interest'                  =>      'regex:/^[0-9]+(\.[0-9][0-9]?)?$/',
+            'pdi'                       =>      'regex:/^[0-9]+(\.[0-9][0-9]?)?$/',
+            'penalty'                   =>      'regex:/^[0-9]+(\.[0-9][0-9]?)?$/',
+            'rebates'                   =>      'regex:/^[0-9]+(\.[0-9][0-9]?)?$/',
+            'amount_applied'            =>      'regex:/^[0-9]+(\.[0-9][0-9]?)?$/',
         ];
     }
 }
