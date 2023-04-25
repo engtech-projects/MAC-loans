@@ -876,7 +876,7 @@ class Reports extends Model
                     if( count($allAOProd) > 0 ) {
 
                         $tempProd["all"] = ["count" => 0, "amount" => 0];
-                        $tempProd["delinquent"] = ["count" => 0, "amount" => 0, "rate" => 0];
+                        $tempProd["delinquent"] = ["count" => 0, "amount" => 0, "rate" => 0, "account" => ''];
                         $tempProd["pastdue"] = ["count" => 0, "amount" => 0, "rate" => 0];
 
                         foreach ( $allAOProd as $key => $value ) {
@@ -891,7 +891,8 @@ class Reports extends Model
                                 if( $value->payment_status == LoanAccount::PAYMENT_DELINQUENT ) {
                                     $amortization = $value->getCurrentAmortization();
                                     $tempProd["delinquent"]["count"] += 1;
-                                    $tempProd["delinquent"]["amount"] += ($amortization->delinquent['principal'] + $amortization->short_principal);
+                                    $tempProd["delinquent"]["amount"] += ($amortization->schedule_principal + $amortization->short_principal);
+                                    break;
                                 }
                             }
 
