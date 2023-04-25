@@ -221,20 +221,20 @@ export default {
 	computed:{
 		filteredReports:function(){
 			var tables = [];
-			var total = ['TOTAL','','',0,0,0,0,0,'',''];
+			var total = ['TOTAL','','','',0,0,0,0,0,'',''];
 			this.reports.forEach(ao=>{
-				var aoTotal = ['OFFICER SUB-TOTAL','','',0,0,0,0,0,'',''];
+				var aoTotal = ['OFFICER SUB-TOTAL','','','',0,0,0,0,0,'',''];
 				for(var p in ao.products){
 					var product = ao.products[p];
-					var productTotal = ['PRODUCT SUB-TOTAL','','',0,0,0,0,0,'',''];
+					var productTotal = ['PRODUCT SUB-TOTAL','','','',0,0,0,0,0,'',''];
 					for(var c in product.centers){
 						var center = product.centers[c];
-						var centerTotal = ['CENTER SUB-TOTAL','','',0,0,0,0,0,'',''];
+						var centerTotal = ['CENTER SUB-TOTAL','','','',0,0,0,0,0,'',''];
 						if(center.accounts){
 							var table = {
 								ao:'0' + ao.ao_id + ' - ' + ao.name,
 								product:product.product_code + ' - ' + product.product_name,
-								center:center.center,
+								center:c,
 								rows:[],
 								centerTotal:null,
 								productTotal:null,
@@ -249,42 +249,43 @@ export default {
 								row.push(account.date_loan);
 								row.push(account.maturity);
 								row.push(this.formatToCurrency(account.amount_loan));
-								centerTotal[3] += account.amount_loan;
+								centerTotal[4] += account.amount_loan;
 								row.push(this.formatToCurrency(account.principal_balance));
-								centerTotal[4] += account.principal_balance;
+								centerTotal[5] += account.principal_balance;
 								row.push(this.formatToCurrency(account.interest_balance));
-								centerTotal[5] += account.interest_balance;
+								centerTotal[6] += account.interest_balance;
 								row.push(this.formatToCurrency(account.amortization));
-								centerTotal[6] += account.amortization;
+								centerTotal[7] += account.amortization;
 								row.push(this.formatToCurrency(account.amount_due));
-								centerTotal[7] += account.amount_due;
+								centerTotal[8] += account.amount_due;
+								centerTotal[9] = '';
 								row.push('');
 								row.push(account.loan_status=='Ongoing'?account.status:account.loan_status);
 								table.rows.push(row);
 							}
-							productTotal[3] += centerTotal[3];
 							productTotal[4] += centerTotal[4];
 							productTotal[5] += centerTotal[5];
 							productTotal[6] += centerTotal[6];
 							productTotal[7] += centerTotal[7];
+							productTotal[8] += centerTotal[8];
 							table.centerTotal = centerTotal;
 							tables.push(table);
 						}
 					}
-					aoTotal[3] += productTotal[3];
 					aoTotal[4] += productTotal[4];
 					aoTotal[5] += productTotal[5];
 					aoTotal[6] += productTotal[6];
 					aoTotal[7] += productTotal[7];
+					aoTotal[8] += productTotal[8];
 					if(tables.length){
 						tables[tables.length-1].productTotal = productTotal;
 					}
 				}
-				total[3] += aoTotal[3];
 				total[4] += aoTotal[4];
 				total[5] += aoTotal[5];
 				total[6] += aoTotal[6];
 				total[7] += aoTotal[7];
+				total[8] += aoTotal[8];
 				if(tables.length){
 					tables[tables.length-1].aoTotal = aoTotal;
 				}
