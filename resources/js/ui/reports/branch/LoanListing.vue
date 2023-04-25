@@ -81,6 +81,8 @@
 										<th>Principal Bal.</th>
 										<th>Interest Bal.</th>
 										<th>Amort.</th>
+                                        <th>Bitay Principal</th>
+                                        <th>Bitay Interest</th>
 										<th>Amnt. Due</th>
 										<th># Days</th>
 										<th>STATUS</th>
@@ -248,6 +250,7 @@ export default {
                                 row.push(account.account_num);
 								row.push(account.date_loan);
 								row.push(account.maturity);
+
 								row.push(this.formatToCurrency(account.amount_loan));
 								centerTotal[3] += account.amount_loan;
 								row.push(this.formatToCurrency(account.principal_balance));
@@ -256,6 +259,8 @@ export default {
 								centerTotal[5] += account.interest_balance;
 								row.push(this.formatToCurrency(account.amortization));
 								centerTotal[6] += account.amortization;
+                                row.push(account.distribution.short_principal + account.distribution.principal)
+                                row.push(account.distribution.short_interest + account.distribution.interest)
 								row.push(this.formatToCurrency(account.amount_due));
 								centerTotal[7] += account.amount_due;
 								row.push('');
