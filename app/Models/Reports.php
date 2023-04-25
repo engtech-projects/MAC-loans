@@ -891,7 +891,7 @@ class Reports extends Model
                                 if( $value->payment_status == LoanAccount::PAYMENT_DELINQUENT ) {
                                     $amortization = $value->getCurrentAmortization();
                                     $tempProd["delinquent"]["count"] += 1;
-                                    $tempProd["delinquent"]["amount"] += ($amortization->delinquent['principal'] + $amortization->principal);
+                                    $tempProd["delinquent"]["amount"] += $amortization->delinquent['principal'];
                                     break;
                                 }
                             }
