@@ -892,7 +892,6 @@ class Reports extends Model
                                     $amortization = $value->getCurrentAmortization();
                                     $tempProd["delinquent"]["count"] += 1;
                                     $tempProd["delinquent"]["amount"] += $amortization->delinquent['principal'];
-                                    break;
                                 }
                             }
 
