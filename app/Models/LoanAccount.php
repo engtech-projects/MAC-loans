@@ -635,7 +635,7 @@ class LoanAccount extends Model
                 'short_pdi',
                 'short_penalty',
                 'total_payable'
-            )->get();
+            )->orderBy('payment_id', 'DESC')->get();
         }
 
         return Payment::where(['loan_account_id' => $loan_account_id, 'status' => 'paid', 'amortization_id' => $amortization_id])
@@ -645,7 +645,7 @@ class LoanAccount extends Model
             'short_pdi',
             'short_penalty',
             'total_payable'
-        )->get();
+        )->orderBy('payment_id', 'DESC')->get();
     }
 
     public function getDelinquent($loanAccountId, $amortizationId, $advancePrincipal = 0)
