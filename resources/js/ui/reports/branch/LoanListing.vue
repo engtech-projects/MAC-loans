@@ -7,33 +7,38 @@
 			</div>
 			<span class="font-lg" style="color:#ddd">Please wait until the process is complete</span>
 		</div>
-					<div class="d-flex flex-row font-md mb-16">
+					<div class=" font-md mb-16">
 						<!-- <span class="font-lg text-primary-dark flex-1 mr-45"></span> -->
 						<!-- <div class="d-flex flex-row align-items-center mr-24" style="flex:1">
 							<span class="mr-10">As of: </span>
 							<input type="date" class="form-control flex-1">
 						</div> -->
-						<div class="d-flex flex-row align-items-center mr-24 justify-content-start flex-1">
-							<span class="mr-10 text-block">Acc. Officer: </span>
-							<select v-model="filter.account_officer" name="" id="selectProductClient" class="form-control flex-1">
-								<option value="all">All Account Officers</option>
-								<option v-for="ao in aos.filter(a=>a.status=='active'&&a.branch_id==branch.branch_id)" :key="ao.id" :value="ao.ao_id">{{ao.name}}</option>
-							</select>
-						</div>
-						<div class="d-flex flex-row align-items-center mr-24 justify-content-start flex-1">
-							<span class="mr-10 text-block">Product: </span>
-							<select v-model="filter.product" name="" id="selectProductClient" class="form-control flex-1">
-								<option value="all">All Products</option>
-								<option v-for="product in products.filter(p=>p.status=='active')" :key="product.id" :value="product.product_id">{{product.product_name}}</option>
-							</select>
-						</div>
-						<div class="d-flex flex-row align-items-center mr-24 justify-content-start flex-1">
-							<span class="mr-10 text-block">Center: </span>
-							<select v-model="filter.center" name="" id="selectProductClient" class="form-control flex-1">
-								<option value="all">All Centers</option>
-								<option v-for="center in centers.filter(c=>c.status=='active')" :key="center.id" :value="center.center_id">{{center.center}}</option>
-							</select>
-						</div>
+						<form action="" class="d-flex flex-row" @submit.prevent="generate()">
+							<div class="d-flex flex-row align-items-center mr-24 justify-content-start flex-1">
+								<span class="mr-10 text-block">Acc. Officer: </span>
+								<select v-model="filter.account_officer" name="" id="selectProductClient" class="form-control flex-1" required>
+									<option value="all">All Account Officers</option>
+									<option v-for="ao in aos.filter(a=>a.status=='active'&&a.branch_id==branch.branch_id)" :key="ao.id" :value="ao.ao_id">{{ao.name}}</option>
+								</select>
+							</div>
+							<div class="d-flex flex-row align-items-center mr-24 justify-content-start flex-1">
+								<span class="mr-10 text-block">Product: </span>
+								<select v-model="filter.product" name="" id="selectProductClient" class="form-control flex-1" required>
+									<option value="all">All Products</option>
+									<option v-for="product in products.filter(p=>p.status=='active')" :key="product.id" :value="product.product_id">{{product.product_name}}</option>
+								</select>
+							</div>
+							<div class="d-flex flex-row align-items-center mr-24 justify-content-start flex-1">
+								<span class="mr-10 text-block">Center: </span>
+								<select v-model="filter.center" name="" id="selectProductClient" class="form-control flex-1" required>
+									<option value="all">All Centers</option>
+									<option v-for="center in centers.filter(c=>c.status=='active')" :key="center.id" :value="center.center_id">{{center.center}}</option>
+								</select>
+							</div>
+							<div class="d-flex flex-row align-items-center mr-24 justify-content-start flex-1">
+								<button @click="generate()" class="btn btn-primary">Generate</button>
+							</div>
+						</form>
 					</div>
 					<div class="sep mb-45"></div>
 					<img :src="this.baseURL()+'/img/company_header_fit.png'" class="mb-24" alt="">
@@ -147,6 +152,11 @@ export default {
 		}
 	},
 	methods:{
+		generate:function(){
+			if(this.filter.account_officer && this.filter.product && this.filter.center && this.filter.branch_id && this.filter.type){
+				this.fetchReport();
+			}
+		},
 		async fetchReport(){
 			this.loading = true;
 			await axios.post(this.baseURL() + 'api/report/branch', this.filter, {
@@ -304,7 +314,7 @@ export default {
 		filter: {
 			handler(val){
 				if(val.account_officer && val.product && val.center && val.branch_id && val.type){
-					this.fetchReport();
+					// this.fetchReport();
 				}
 			},
 			deep: true
