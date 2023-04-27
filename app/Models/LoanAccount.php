@@ -74,6 +74,7 @@ class LoanAccount extends Model
     const LOAN_PASTDUE = "Past Due";
     const LOAN_WRITEOFF = "Write-Off";
     const LOAN_RESTRUCTED = "Restructed";
+    const LOAN_RES_WO_PDI = "Res WO/PDI";
 
     public static function generateAccountNum($branchCode, $productCode, $identifier = 1)
     {
