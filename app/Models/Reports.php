@@ -78,7 +78,8 @@ class Reports extends Model
         }
 
 
-    	return $loanAccount->whereIn('loan_status', [LoanAccount::LOAN_ONGOING, LoanAccount::LOAN_PASTDUE,LoanAccount::LOAN_RESTRUCTED])->without($without)->get([
+    	return $loanAccount->whereIn('loan_status', [LoanAccount::LOAN_ONGOING, LoanAccount::LOAN_PASTDUE,LoanAccount::LOAN_RESTRUCTED, LoanAccount::LOAN_RES_WO_PDI])
+        ->without($without)->get([
 			'loan_accounts.loan_account_id',
 			'loan_accounts.account_num',
 			'loan_accounts.date_release',
@@ -869,7 +870,7 @@ class Reports extends Model
                         "product_id"=>$prodValue["product_id"],
                         "branch_code" => $branch->branch_code
                     ])
-                    ->whereIn("loan_status",[LoanAccount::LOAN_ONGOING, LoanAccount::LOAN_PASTDUE, LoanAccount::LOAN_RESTRUCTED ])
+                    ->whereIn("loan_status",[LoanAccount::LOAN_ONGOING, LoanAccount::LOAN_PASTDUE, LoanAccount::LOAN_RESTRUCTED, LoanAccount::LOAN_RES_WO_PDI])
                     ->without(['documents', 'borrower', 'center', 'branch', 'product', 'accountOfficer', 'payments'])
                     ->get();
 
@@ -1064,7 +1065,7 @@ class Reports extends Model
                             $advPrincipal = 0;
                             $shortPrincipal = 0;
                             $amortInterest = 0;
-                            $advInteres = 0;
+                            $advInterest = 0;
                             $shortInterest = 0;
 
                             if($current_amort) {
@@ -1075,7 +1076,7 @@ class Reports extends Model
                                 $advInterest = $current_amort["advance_interest"];
                                 $shortInterest = $current_amort["short_interest"];
                                 $amountDue = ceil(($amortPrincipal + $shortPrincipal - $advPrincipal) + ($amortInterest + $shortInterest - $advInterest) + ($remainingBal["pdi"]["balance"] + $remainingBal["rebates"]["balance"]));
-                            }                           
+                            }
 
                             $principal = $amortization['principal'];
                             $interest = $amortization['interest'];
@@ -1089,7 +1090,7 @@ class Reports extends Model
                                 "principal_amount" => abs(($amortPrincipal + $shortPrincipal) - $advPrincipal),
                                 "interest_amount" => abs($amortInterest + $shortInterest - $advInterest),
                                 "amount_due" => $amountDue > 0 ? $amountDue : 0,
-                                "distribution" => [ 
+                                "distribution" => [
                                     'principal' => $amortPrincipal,
                                     'short_principal' => $shortPrincipal,
                                     'advance_principal' => $advPrincipal,
