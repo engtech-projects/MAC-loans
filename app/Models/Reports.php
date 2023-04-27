@@ -77,7 +77,6 @@ class Reports extends Model
             $loanAccount->where([ 'loan_accounts.type' => $filters['type'] ]);
         }
 
-
     	return $loanAccount->whereIn('loan_status', [LoanAccount::LOAN_ONGOING, LoanAccount::LOAN_PASTDUE,LoanAccount::LOAN_RESTRUCTED])->without($without)->get([
 			'loan_accounts.loan_account_id',
 			'loan_accounts.account_num',
@@ -1003,6 +1002,11 @@ class Reports extends Model
         return $data;
     }
 
+    function sortAccounts($a, $b) {
+        // Sort by account number in ascending order
+        return strcmp($a['borrower_name'], $b['borrower_name']);
+    }
+
     public function branchLoanListingReport($filters = []){
         /* $accOfficers = AccountOfficer::where(["status"=> AccountOfficer::STATUS_ACTIVE]); */
         $accOfficers =  AccountOfficer::join('account_officer_branch','account_officer.ao_id', '=', 'account_officer_branch.ao_id')
@@ -1048,7 +1052,6 @@ class Reports extends Model
                     ], [
                         'documents', 'borrower', 'center', 'branch', 'product', 'accountOfficer', 'payments'
                     ]);
-
                     if( count($accounts) > 0 ) {
                         foreach($accounts as $key => $account) {
                             $oBalance = $account->outstandingBalance($account->loan_account_id);
@@ -1067,6 +1070,9 @@ class Reports extends Model
                             $advInteres = 0;
                             $shortInterest = 0;
 
+
+
+
                             if($current_amort) {
                                 $amortPrincipal = $current_amort["principal"];
                                 $advPrincipal = $current_amort["advance_principal"];
@@ -1075,7 +1081,7 @@ class Reports extends Model
                                 $advInterest = $current_amort["advance_interest"];
                                 $shortInterest = $current_amort["short_interest"];
                                 $amountDue = ceil(($amortPrincipal + $shortPrincipal - $advPrincipal) + ($amortInterest + $shortInterest - $advInterest) + ($remainingBal["pdi"]["balance"] + $remainingBal["rebates"]["balance"]));
-                            }                           
+                            }
 
                             $principal = $amortization['principal'];
                             $interest = $amortization['interest'];
@@ -1089,7 +1095,7 @@ class Reports extends Model
                                 "principal_amount" => abs(($amortPrincipal + $shortPrincipal) - $advPrincipal),
                                 "interest_amount" => abs($amortInterest + $shortInterest - $advInterest),
                                 "amount_due" => $amountDue > 0 ? $amountDue : 0,
-                                "distribution" => [ 
+                                "distribution" => [
                                     'principal' => $amortPrincipal,
                                     'short_principal' => $shortPrincipal,
                                     'advance_principal' => $advPrincipal,
@@ -1109,16 +1115,32 @@ class Reports extends Model
                                 "loan_status" => $account->loan_status,
                                 "status" => $account->payment_status,
                             ];
+
+                                $acc = $accOfficers[$aoKey]["products"][$prodValue["product_name"]]["centers"][$centVal["center"]]['accounts'];
+                                usort($acc,function($a,$b) {
+                                    return strcmp($a['borrower_name'],$b['borrower_name']);
+                                });
+
+                                $accOfficers[$aoKey]["products"][$prodValue["product_name"]]["centers"][$centVal["center"]]['accounts'] = $acc;
+
                         }
 
+
                     }
+
+
+
+
                 }
 
-            }
-        }
 
+            }
+
+
+        }
         return $accOfficers;
     }
+
 
     public function aoRevenueReport($filters = []){
         $accOfficers = AccountOfficer::where(["status"=> AccountOfficer::STATUS_ACTIVE]);
