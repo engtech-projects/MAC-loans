@@ -313,7 +313,7 @@ class LoanAccountController extends BaseController
 
     public function fixShortAdv(){
         $type = 'realtime'; // realtime or background
-        $type = 'background'; // realtime or background
+        // $type = 'background'; // realtime or background
         $limit = 10;
         $start = 0;
         $totalPages = 1500;
@@ -344,8 +344,8 @@ class LoanAccountController extends BaseController
     }
 
     public static function fixLoanAccountShortAndAdvances($i, $limit){
-        // $accountsArray = LoanAccountMigrationFix::with(['lastPayment', 'branch.endTransaction', 'amortizations', 'amortizations.payments'])->offset($i * 1000)->limit($limit)->get();
-        $accountsArray = LoanAccountMigrationFix::where('account_num', "001-002-0007899")->with(['lastPayment', 'branch.endTransaction', 'amortizations', 'amortizations.payments'])->offset($i * 1000)->limit($limit)->get();
+        // $accountsArray = LoanAccountMigrationFix::with(['lastAmortization', 'lastPayment', 'branch.endTransaction', 'amortizations', 'amortizations.payments'])->offset($i * 1000)->limit($limit)->get();
+        $accountsArray = LoanAccountMigrationFix::where('account_num', "001-002-0005771")->with(['lastAmortization', 'lastPayment', 'branch.endTransaction', 'amortizations', 'amortizations.payments'])->offset($i * 1000)->limit($limit)->get();
         // dd($accountsArray[0]);
         foreach($accountsArray as $acc){
             $amortP = 0;
@@ -365,6 +365,12 @@ class LoanAccountController extends BaseController
                 $principal = $principal < 0 ? 0: $principal;
                 $currentAmortI = $interest < 0 ? round($amort->interest) - abs($interest) : round($amort->interest);
                 $interest = $interest < 0 ? 0: $interest;
+                $currentAmortP += $principal > 0 && $amort->id == $acc->lastAmortization->id ? $principal : 0;
+                $currentAmortI += $interest > 0 && $amort->id == $acc->lastAmortization->id ? $interest : 0;
+                $amortP += $principal > 0 && $amort->id == $acc->lastAmortization->id ? $principal : 0;
+                $amortI += $interest > 0 && $amort->id == $acc->lastAmortization->id ? $interest : 0;
+                $principal -= $principal > 0 && $amort->id == $acc->lastAmortization->id ? $principal: 0;
+                $interest -= $interest > 0 && $amort->id == $acc->lastAmortization->id ? $interest : 0;
                 foreach($amort->payments as $payment){
                     $payment->principal += $advP;
                     $payment->interest += $advI;

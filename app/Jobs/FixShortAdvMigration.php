@@ -38,7 +38,7 @@ class FixShortAdvMigration implements ShouldQueue
      */
     public function handle()
     {
-        $accountsArray = LoanAccountMigrationFix::with(['lastPayment', 'branch.endTransaction', 'amortizations', 'amortizations.payments'])->offset($this->i * $this->limit)->limit($this->limit)->get();
+        $accountsArray = LoanAccountMigrationFix::with(['lastAmortization', 'lastPayment', 'branch.endTransaction', 'amortizations', 'amortizations.payments'])->offset($this->i * $this->limit)->limit($this->limit)->get();
         foreach($accountsArray as $acc){
             $amortP = 0;
             $amortI = 0;
@@ -57,6 +57,12 @@ class FixShortAdvMigration implements ShouldQueue
                 $principal = $principal < 0 ? 0: $principal;
                 $currentAmortI = $interest < 0 ? round($amort->interest) - abs($interest) : round($amort->interest);
                 $interest = $interest < 0 ? 0: $interest;
+                $currentAmortP += $principal > 0 && $amort->id == $acc->lastAmortization->id ? $principal : 0;
+                $currentAmortI += $interest > 0 && $amort->id == $acc->lastAmortization->id ? $interest : 0;
+                $amortP += $principal > 0 && $amort->id == $acc->lastAmortization->id ? $principal : 0;
+                $amortI += $interest > 0 && $amort->id == $acc->lastAmortization->id ? $interest : 0;
+                $principal -= $principal > 0 && $amort->id == $acc->lastAmortization->id ? $principal: 0;
+                $interest -= $interest > 0 && $amort->id == $acc->lastAmortization->id ? $interest : 0;
                 foreach($amort->payments as $payment){
                     $payment->principal += $advP;
                     $payment->interest += $advI;
