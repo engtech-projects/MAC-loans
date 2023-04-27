@@ -1160,6 +1160,7 @@ class LoanAccount extends Model
 
                 if($this->getLoanStatus($this->loan_account_id) == LoanAccount::LOAN_PAID) {
                     $pdi = 0;
+                    $penalty = 0;
                 }
 
         }
