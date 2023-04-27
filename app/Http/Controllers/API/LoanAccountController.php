@@ -313,7 +313,7 @@ class LoanAccountController extends BaseController
 
     public function fixShortAdv(){
         $type = 'realtime'; // realtime or background
-        // $type = 'background'; // realtime or background
+        $type = 'background'; // realtime or background
         $limit = 10;
         $start = 0;
         $totalPages = 1500;
