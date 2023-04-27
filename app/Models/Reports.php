@@ -869,7 +869,7 @@ class Reports extends Model
                         "product_id"=>$prodValue["product_id"],
                         "branch_code" => $branch->branch_code
                     ])
-                    ->whereIn("loan_status",[LoanAccount::LOAN_ONGOING, LoanAccount::LOAN_PASTDUE, LoanAccount::LOAN_RESTRUCTED ])
+                    ->whereIn("loan_status",[LoanAccount::LOAN_ONGOING, LoanAccount::LOAN_PASTDUE, LoanAccount::LOAN_RESTRUCTED, LoanAccount::LOAN_RES_WO_PDI])
                     ->without(['documents', 'borrower', 'center', 'branch', 'product', 'accountOfficer', 'payments'])
                     ->get();
 
