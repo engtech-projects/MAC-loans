@@ -312,7 +312,7 @@ class LoanAccountController extends BaseController
     }
 
     public function fixShortAdv(){
-        // $type = 'realtime'; // realtime or background
+        $type = 'realtime'; // realtime or background
         $type = 'background'; // realtime or background
         $limit = 10;
         $start = 0;
@@ -326,6 +326,7 @@ class LoanAccountController extends BaseController
             }else if($type == 'realtime'){
                 // For Using just waiting in front end / Realtime
                 LoanAccountController::fixLoanAccountShortAndAdvances($i, $limit);
+                break;
             }else{
                 break;
             }
@@ -344,7 +345,7 @@ class LoanAccountController extends BaseController
 
     public static function fixLoanAccountShortAndAdvances($i, $limit){
         // $accountsArray = LoanAccountMigrationFix::with(['lastPayment', 'branch.endTransaction', 'amortizations', 'amortizations.payments'])->offset($i * 1000)->limit($limit)->get();
-        $accountsArray = LoanAccountMigrationFix::where('account_num', "001-003-0000022")->with(['lastPayment', 'branch.endTransaction', 'amortizations', 'amortizations.payments'])->offset($i * 1000)->limit($limit)->get();
+        $accountsArray = LoanAccountMigrationFix::where('account_num', "001-002-0007899")->with(['lastPayment', 'branch.endTransaction', 'amortizations', 'amortizations.payments'])->offset($i * 1000)->limit($limit)->get();
         // dd($accountsArray[0]);
         foreach($accountsArray as $acc){
             $amortP = 0;
@@ -358,11 +359,11 @@ class LoanAccountController extends BaseController
             foreach($acc->amortizations as $amort){
                 $amortP += round($amort->principal);
                 $amortI += round($amort->interest);
-                $principal -= $amort->principal;
-                $interest -= $amort->interest;
-                $currentAmortP = $principal < 0 ? $amort->principal - abs($principal): $amort->principal;
+                $principal -= round($amort->principal);
+                $interest -= round($amort->interest);
+                $currentAmortP = $principal < 0 ? round($amort->principal) - abs($principal): round($amort->principal);
                 $principal = $principal < 0 ? 0: $principal;
-                $currentAmortI = $interest < 0 ? $amort->interest - abs($interest) : $amort->interest;
+                $currentAmortI = $interest < 0 ? round($amort->interest) - abs($interest) : round($amort->interest);
                 $interest = $interest < 0 ? 0: $interest;
                 foreach($amort->payments as $payment){
                     $payment->principal += $advP;
@@ -412,6 +413,7 @@ class LoanAccountController extends BaseController
                     'interest_balance' => $interest,
                     'principal' => $currentAmortP,
                     'interest' => $currentAmortI,
+                    'total' => $currentAmortP + $currentAmortI,
                 ])->save();
             }
         }

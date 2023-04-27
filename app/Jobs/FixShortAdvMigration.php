@@ -51,11 +51,11 @@ class FixShortAdvMigration implements ShouldQueue
             foreach($acc->amortizations as $amort){
                 $amortP += round($amort->principal);
                 $amortI += round($amort->interest);
-                $principal -= $amort->principal;
-                $interest -= $amort->interest;
-                $currentAmortP = $principal < 0 ? $amort->principal - abs($principal): $amort->principal;
+                $principal -= round($amort->principal;
+                $interest -= round($amort->interest);
+                $currentAmortP = $principal < 0 ? round($amort->principal - abs($principal): round($amort->principal;
                 $principal = $principal < 0 ? 0: $principal;
-                $currentAmortI = $interest < 0 ? $amort->interest - abs($interest) : $amort->interest;
+                $currentAmortI = $interest < 0 ? round($amort->interest) - abs($interest) : round($amort->interest);
                 $interest = $interest < 0 ? 0: $interest;
                 foreach($amort->payments as $payment){
                     $payment->principal += $advP;
@@ -104,6 +104,7 @@ class FixShortAdvMigration implements ShouldQueue
                     'interest_balance' => $interest,
                     'principal' => $currentAmortP,
                     'interest' => $currentAmortI,
+                    'total' => $currentAmortP + $currentAmortI,
                 ])->save();
             }
 
