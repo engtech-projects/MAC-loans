@@ -288,15 +288,15 @@ export default {
 						total[9] += p.pastdue.rate;
 						result.push(row);
 					});
+					total[6] = (total[5]/total[3]*100) % 1 != 0? (total[5]/total[3]*100).toFixed(2):(total[5]/total[3]*100);
+					total[6] = isNaN(total[6])? '0%':total[6]+ '%';
+					total[9] = (total[8]/total[3]*100) % 1 != 0? (total[8]/total[3]*100).toFixed(2):(total[8]/total[3]*100);
+					total[9] = isNaN(total[9])? '0%':total[9]+ '%';
+					total[3] = this.formatToCurrency(total[3]);
+					total[5] = this.formatToCurrency(total[5]);
+					total[8] = this.formatToCurrency(total[8]);
+					result.push(total);
 				}
-				total[6] = (total[5]/total[3]*100) % 1 != 0? (total[5]/total[3]*100).toFixed(2):(total[5]/total[3]*100);
-				total[6] = isNaN(total[6])? '0%':total[6]+ '%';
-				total[9] = (total[8]/total[3]*100) % 1 != 0? (total[8]/total[3]*100).toFixed(2):(total[8]/total[3]*100);
-				total[9] = isNaN(total[9])? '0%':total[9]+ '%';
-				total[3] = this.formatToCurrency(total[3]);
-				total[5] = this.formatToCurrency(total[5]);
-				total[8] = this.formatToCurrency(total[8]);
-				result.push(total);
 			})
 			return result;
 		},
