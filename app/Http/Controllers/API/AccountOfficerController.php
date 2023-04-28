@@ -19,7 +19,15 @@ class AccountOfficerController extends BaseController
     }
 
     public function getActiveInBranch($branch_id) {
-        $accountOfficer = AccountOfficer::where(["status" => "active", "branch_id" => $branch_id])->get();
+        $accountOfficer = AccountOfficer::join('account_officer_branch','account_officer.ao_id', '=', 'account_officer_branch.ao_id')
+                                        ->join('branch','account_officer_branch.branch_id', '=', 'branch.branch_id')
+                                        ->where([
+                                            'account_officer.status' => AccountOfficer::STATUS_ACTIVE,
+                                            'branch.branch_id' => $branch_id
+                                        ])
+                                        ->orderBy('account_officer.name', 'ASC')
+                                        ->groupBy('account_officer.ao_id')
+                                        ->get();
         return $this->sendResponse(AccountOfficerResource::collection($accountOfficer), 'AO fetched.');
     }
     /**
