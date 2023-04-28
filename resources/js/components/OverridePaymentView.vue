@@ -415,7 +415,7 @@ export default {
 		overPayment:function(){
 			var amount = 0;
 			this.filteredPayments.map(function(payment){
-				amount += (payment.advance_principal + payment.advance_interest);
+				amount += (payment.over_payment);
 			});
 			return amount;
 		},
