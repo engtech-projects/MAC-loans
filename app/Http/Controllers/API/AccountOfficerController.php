@@ -25,6 +25,7 @@ class AccountOfficerController extends BaseController
                                             'account_officer.status' => AccountOfficer::STATUS_ACTIVE,
                                             'branch.branch_id' => $branch_id
                                         ])
+                                        ->select('account_officer.*')
                                         ->orderBy('account_officer.name', 'ASC')
                                         ->groupBy('account_officer.ao_id')
                                         ->get();
