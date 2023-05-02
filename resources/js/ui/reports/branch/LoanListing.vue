@@ -36,7 +36,7 @@
 								</select>
 							</div>
 							<div class="d-flex flex-row align-items-center mr-24 justify-content-start flex-1">
-								<button @click="generate()" class="btn btn-primary">Generate</button>
+								<button class="btn btn-primary">Generate</button>
 							</div>
 						</form>
 					</div>
@@ -311,14 +311,7 @@ export default {
 		}
 	},
 	watch:{
-		filter: {
-			handler(val){
-				if(val.account_officer && val.product && val.center && val.branch_id && val.type){
-					// this.fetchReport();
-				}
-			},
-			deep: true
-		}
+		
 	},
 	mounted(){
 		this.filter.branch_id = JSON.parse(this.pbranch).branch_id;
