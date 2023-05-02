@@ -30,9 +30,11 @@
 			<p class="text-center lh-1 text-lg">You are about to end the transaction dated <span class="text-green">{{dateToMDY(new Date(transactionDate))}}</span></p>
 			<p class="text-red text-xl text-center mb-24" style="max-width:575px">You will not be able to do any transactions after End of Day.</p>
 			<p class="font-lg text-center lh-1 mb-45">How would you like to end the transaction?</p>
+
 			<div class="d-flex">
 				<button @click="posted=true" data-toggle="modal" data-target="#postedModal" class="btn btn-success mr-24 px-35">Posted</button>
 				<button @click="posted=false" data-toggle="modal" data-target="#postedModal" class="btn btn-success px-35">Unposted</button>
+                <button data-toggle="modal" data-target="#updateConfirmationModal" class="btn btn-success ml-4 px-35">Update</button>
 			</div>
 		</div>
 		<day-ended v-if="success"></day-ended>
@@ -63,6 +65,28 @@
 				</div>
 			</div>
 		</div>
+
+
+        <div class="modal" id="updateConfirmationModal" tabindex="-1" role="dialog">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+				<div class="modal-body">
+					<div class="d-flex flex-column" style="min-height:200px;padding:16px;">
+						<div class="d-flex flex-1 justify-content-center align-items-center">
+                            <p class="text-24 text-center">Are you sure you want to procced update?</p>
+						</div>
+						<div class="d-flex flex-row">
+							<div style="flex:2"></div>
+							<button @click="execUpdater()" data-dismiss="modal" class="btn btn-lg btn-success mr-24" style="flex:3">Yes</button>
+							<button data-dismiss="modal" class="btn btn-lg btn-success" style="flex:3">No</button>
+							<div style="flex:2"></div>
+						</div>
+					</div>
+				</div>
+				</div>
+			</div>
+		</div>
+
 		<div class="modal" id="eodModal" tabindex="-1" role="dialog">
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
@@ -163,6 +187,25 @@ export default {
 				console.log(error);
 			}.bind(this));
 		},
+        async execUpdater() {
+            this.loading = true
+            await axios.post(this.baseURL() + 'api/get-current-amortization/'+this.branch.branch_id,{
+                headers:{
+                    'Authorization': 'Bearer ' + this.token,
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                }
+            }).then(function(response) {
+                var message = response.data.message
+                this.loading = false
+                this.notify('',response.data.message,'success')
+            }.bind(this))
+            .catch(function(error) {
+                console.log(error)
+                this.loading = false
+            }.bind(this))
+
+        },
 		async checkPendingTransactions(){
 			this.loading = true;
 			this.failed = false;

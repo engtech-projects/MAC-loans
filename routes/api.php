@@ -56,7 +56,7 @@ Route::middleware(['auth:sanctum'])->group( function () {
 
     Route::get('borrower/accounts/{borrower_id}',[BorrowerController::class,'getBorrowerAccounts']);
 
-    Route::get('get-current-amortization/{branch_id}',[AmortizationController::class, 'getCurrentAmortization']);
+    Route::post('get-current-amortization/{branch_id}',[AmortizationController::class, 'getCurrentAmortization']);
 
 
 

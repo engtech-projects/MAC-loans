@@ -36,7 +36,7 @@ class AmortizationController extends BaseController
             $account->getCurrentAmortization();
         }
 
-        return $accounts;
+        return $this->sendResponse($accounts,'Successfully updated.');
     }
 
     public function update(Request $request, Amortization $amortization) {
