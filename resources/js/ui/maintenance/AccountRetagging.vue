@@ -1067,6 +1067,21 @@ export default {
 		setPage:function(page){
 			this.pagination.page = page;
 		},
+		async retagList(){
+			await axios.post(this.baseURL() + 'api/account/retag-list/' + this.pbranch, {}, {
+				headers: {
+					'Authorization': 'Bearer ' + this.token,
+					'Content-Type': 'application/json',
+					'Accept': 'application/json'
+				}
+			})
+			.then(function (response) {
+				console.log(response.data);
+			}.bind(this))
+			.catch(function (error) {
+				console.log(error);
+			}.bind(this));
+		},
 		async retag(account){
 			await axios.post(this.baseURL() + 'api/account/update/' + account.loan_account_id, account, {
 				headers: {
@@ -1331,6 +1346,7 @@ export default {
 		this.fetchCenters();
 		this.fetchOfficers();
 		this.fetchProducts();
+		this.retagList();
     },
 };
 </script>
