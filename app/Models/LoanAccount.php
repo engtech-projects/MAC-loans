@@ -866,7 +866,9 @@ class LoanAccount extends Model
     public function getPDI($amount, $rate, $days)
     {
 
-        $perDay = ($amount * ($rate / 100)) * 12 / 365;
+        $balance = $this->outstandingBalance($this->loan_account_id);
+
+        $perDay = ($balance * ($rate / 100)) * 12 / 365;
         return round($perDay * $days);
     }
 
