@@ -8,6 +8,8 @@
 			</div>
 			<span class="font-lg" style="color:#ddd">Please wait until the process is complete</span>
 		</div>
+
+
 		<div v-if="1==11" class="black-screen d-flex flex-column align-items-center justify-content-center" style="padding-left:0px;">
 			<span class="mb-24" style="color:#ddd;font-size:36px;">Process complete...</span>
 			<!-- <button class="btn btn-success" style="padding-left:35px;padding-right:35px">OK</button> -->
@@ -34,7 +36,7 @@
 			<div class="d-flex">
 				<button @click="posted=true" data-toggle="modal" data-target="#postedModal" class="btn btn-success mr-24 px-35">Posted</button>
 				<button @click="posted=false" data-toggle="modal" data-target="#postedModal" class="btn btn-success px-35">Unposted</button>
-                <button data-toggle="modal" data-target="#updateConfirmationModal" class="btn btn-success ml-4 px-35">Update</button>
+                <button data-toggle="modal" data-target="#updateConfirmationModal" class="btn btn-secondary ml-4 px-35">Accout Validation</button>
 			</div>
 		</div>
 		<day-ended v-if="success"></day-ended>
@@ -73,7 +75,7 @@
 				<div class="modal-body">
 					<div class="d-flex flex-column" style="min-height:200px;padding:16px;">
 						<div class="d-flex flex-1 justify-content-center align-items-center">
-                            <p class="text-24 text-center">Are you sure you want to procced update?</p>
+                            <p class="text-24 text-center">Are you sure you want to procced Account Validation?</p>
 						</div>
 						<div class="d-flex flex-row">
 							<div style="flex:2"></div>
@@ -132,6 +134,7 @@ export default {
 			branch:{
 				branch_id:null,
 			},
+			isUpdating:false,
 			failed:false,
 			loading:false,
 			success:false,
@@ -188,7 +191,8 @@ export default {
 			}.bind(this));
 		},
         async execUpdater() {
-            this.loading = true
+			this.loading = true
+            this.isUpdating = true
             await axios.post(this.baseURL() + 'api/get-current-amortization/'+this.branch.branch_id,{
                 headers:{
                     'Authorization': 'Bearer ' + this.token,
@@ -197,12 +201,14 @@ export default {
                 }
             }).then(function(response) {
                 var message = response.data.message
-                this.loading = false
+				this.loading = false
+                this.isUpdating = false
                 this.notify('',response.data.message,'success')
             }.bind(this))
             .catch(function(error) {
                 console.log(error)
-                this.loading = false
+				this.loading = false
+                this.isUpdating = false
             }.bind(this))
 
         },
