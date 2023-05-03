@@ -1,5 +1,12 @@
 <template>
     <div class="px-16">
+		<div v-if="loading" class="black-screen d-flex flex-column align-items-center justify-content-center" style="padding-left:0px;">
+			<div class="loading-container d-flex align-items-center justify-content-center mb-36">
+				<span class="loading-text">LOADING</span>
+				<img :src="baseURL() + 'img/loading_default.png'" class="rotating" alt="" style="width:300px;height:300px">
+			</div>
+			<span class="font-lg" style="color:#ddd">Please wait until the process is complete</span>
+		</div>
         <div class="container-fluid">
             <div class="mb-16"></div>
             <div
@@ -54,6 +61,7 @@ export default {
 	props:['pborrower','token'],
 	data(){
 		return {
+			loading:false,
 			borrower: {
 				borrower_id: null,
 				date_registered:'',
@@ -91,6 +99,7 @@ export default {
 	},
 	methods:{
 		fetchBorrowerInfo:function(){
+			this.loading = true;
 			axios.get(this.baseURL() + 'api/borrower/' + this.borrower.borrower_id, {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
@@ -99,9 +108,11 @@ export default {
 				}
 			})
 			.then(function (response) {
+				this.loading =false;
 				this.loanAccounts = response.data.data.loan_accounts;
 			}.bind(this))
 			.catch(function (error) {
+				this.loading = false;
 				console.log(error);
 			}.bind(this));
 		},
