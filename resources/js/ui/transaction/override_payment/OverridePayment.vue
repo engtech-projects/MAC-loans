@@ -49,9 +49,25 @@
                         </select>
                     </div>
                 </div>
+
                 <table class="table table-stripped mb-24" id="clientsList">
                     <thead>
-                        <th>All</th>
+                        <th>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <input
+                                    v-model="selectAll"
+                                    type="checkbox"
+                                    class="form-control form-box"
+                                    @click="selectAllRows()"
+                                />
+                                </div>
+                                <div class="col-md-4">
+                                    All
+                                </div>
+                            </div>
+
+                        </th>
                         <th>Account #</th>
                         <th>Client Name</th>
                         <th></th>
@@ -72,6 +88,7 @@
                                     v-model="p.checked"
                                     type="checkbox"
                                     class="form-control form-box"
+                                    @click="selectRow"
                                 />
                             </td>
                             <td>{{ p.loan_details.account_num }}</td>
@@ -354,6 +371,7 @@ export default {
     props: ["token", "pbranch", "candelete"],
     data() {
         return {
+            selectAll:false,
 			loading:false,
 			pagination:{
 				page: 1,
@@ -392,6 +410,22 @@ export default {
         };
     },
     methods: {
+        selectAllRows() {
+            if(!this.selectAll) {
+                this.selectAll = true
+                this.allSelected = true
+            }else {
+                this.allSelected = false
+            }
+            this.allSelected = this.selectAll;
+
+        },
+        selectRow() {
+            /* this.selectAll = this.allSelected; */
+
+
+
+        },
 		setPage:function(page){
 			this.pagination.page = page;
 		},
@@ -586,6 +620,15 @@ export default {
         },
     },
     computed: {
+        allSelected: {
+            get() {
+                return this.paginate.every((row) => row.checked);
+            },
+            set(value) {
+                this.selectAll = value;
+                this.paginate.forEach((row) => (row.checked = value));
+            }
+        },
         boverrideCheck: function () {
 			var pps = [];
             this.payments.map(
@@ -824,6 +867,16 @@ export default {
             }
             return result;
         },
+        newList() {
+            var result = []
+            for(let i in this.paginate) {
+                if(this.isAll) {
+                    this.paginate[i].checked = true
+                }
+                result.push(this.paginate[i])
+            }
+            return result
+        },
 		paginate:function(){
 			var result = [];
 			var start = (this.pagination.page - 1) * this.pagination.range;
@@ -831,13 +884,34 @@ export default {
 			for(var i = start; i < this.filterClient.length; i++){
 				if(end < this.pagination.range){
 					result.push(this.filterClient[i]);
+                    /* if(this.selectAll) {
+                        result[i].checked = true
+
+                    }else {
+                        result[i].checked = false
+                    } */
 				}
 				end++;
 			}
+
+
+
+
+
 			return result;
 		},
     },
     watch: {
+        paginate:{
+            handler() {
+                this.selectAll = this.allSelected
+            }
+        },
+        deep:true,
+        allSelected(value) {
+            this.selectAll = value
+        },
+
         "transactionDate": function (newValue) {
             this.fetchPayments();
             this.openPayments(this.preference);
@@ -849,6 +923,7 @@ export default {
         },
     },
     async mounted() {
+
         await this.fetchTransactionDate();
     },
 };
