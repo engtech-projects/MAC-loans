@@ -88,7 +88,7 @@
 									</thead>
 									<tbody>
 										<tr v-if="!filteredResult.length"><td><i>No data available.</i></td></tr>
-										<tr v-for="fr,i in filteredResult" :key="i" :class="fr[0]=='OFFICER SUB-TOTAL'?'bbt-8-light text-primary-dark text-bold':''">
+										<tr v-for="fr,i in filteredResult" :key="i" :class="prTableStyle(fr)">
 											<td v-for="r,k in fr" :key="k">{{r}}</td>
 										</tr>
 									</tbody>
@@ -247,6 +247,14 @@ export default {
 			target.innerHTML = content;
 			window.print();
 		},
+		prTableStyle:function(fr){
+			if(fr[0]=='OFFICER SUB-TOTAL'){
+				return 'bbt-8-light text-primary-dark text-bold';
+			}else if(fr[0]=='TOTAL'){
+				return 'text-white text-bold bg-primary-dark'
+			}
+			
+		}
 	},
 	computed:{
 		total:function(){
@@ -263,6 +271,7 @@ export default {
 		},
 		filteredResult:function(){
 			var result = [];
+			var overall = ['TOTAL','',0,0,0,0,0,0,0,0];
 			this.reports.forEach(r=>{
 				var total = ['OFFICER SUB-TOTAL','',0,0,0,0,0,0,0,0];
 				if(r.products){
@@ -292,12 +301,26 @@ export default {
 					total[6] = isNaN(total[6])? '0%':total[6]+ '%';
 					total[9] = (total[8]/total[3]*100) % 1 != 0? (total[8]/total[3]*100).toFixed(2):(total[8]/total[3]*100);
 					total[9] = isNaN(total[9])? '0%':total[9]+ '%';
+					overall[3] += total[3];
 					total[3] = this.formatToCurrency(total[3]);
+					overall[2] += total[2];
+					overall[4] += total[4];
+					overall[5] += total[5];
+					overall[7] += total[7];
 					total[5] = this.formatToCurrency(total[5]);
+					overall[8] += total[8];
 					total[8] = this.formatToCurrency(total[8]);
 					result.push(total);
 				}
 			})
+			overall[6] = (overall[5]/overall[3]*100) % 1 != 0? (overall[5]/overall[3]*100).toFixed(2):(overall[5]/overall[3]*100);
+			overall[6] = isNaN(overall[6])? '0%':overall[6]+ '%';
+			overall[9] = (overall[8]/overall[3]*100) % 1 != 0? (overall[8]/overall[3]*100).toFixed(2):(overall[8]/overall[3]*100);
+			overall[9] = isNaN(overall[9])? '0%':overall[9]+ '%';
+			overall[3] = this.formatToCurrency(overall[3]);
+			overall[5] = this.formatToCurrency(overall[5]);
+			overall[8] = this.formatToCurrency(overall[8]);
+			result.push(overall);
 			return result;
 		},
 		delinquentReport:function(){
