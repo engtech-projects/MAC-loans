@@ -138,7 +138,7 @@
 				<override-release-details @deleteAccount="fetchAccounts"
 					@doneOverride="pbatchoverride=0"
 					:pboverride="pbatchoverride"
-					:pbranch="pbranch"
+					:pbranch="branch"
 					@updateLoanAccounts="fetchAccounts();resetLoanAccount();"
 					:csrf="csrf"
 					:token="token"
@@ -151,7 +151,7 @@
 				</override-release-details>
 			</div>
 		</div>
-		<print-docs :ploanDetails="loanAccount" :token="token" :staff='staff' :branch_mgr='branch_mgr'></print-docs>
+		<print-docs :branch="branch" :ploanDetails="loanAccount" :token="token" :staff='staff' :branch_mgr='branch_mgr'></print-docs>
 
 		<div class="modal" id="warningModal" tabindex="-1" role="dialog">
 			<div class="modal-dialog modal-md" role="document">
@@ -181,13 +181,14 @@ export default {
 	props:['token', 'csrf', 'pbranch', 'staff', 'branch_mgr','canreject','candelete'],
 	data(){
 		return {
+			branch:{branch_id:''},
 			loading:false,
 			pagination:{
 				page: 1,
 				range: 10
 			},
 			transactionDate: {
-				branch_id: this.pbranch,
+				branch_id: '',
 				status: 'closed',
 				date_end: '',
 			},
@@ -230,7 +231,7 @@ export default {
 			this.pagination.page = page;
 		},
 		fetchTransactionDate:function(){
-				axios.get(this.baseURL() + 'api/eod/eodtransaction/'+this.pbranch, {
+				axios.get(this.baseURL() + 'api/eod/eodtransaction/'+this.branch.branch_id, {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
 						'Content-Type': 'application/json',
@@ -263,7 +264,7 @@ export default {
 		},
 		fetchAccounts:function(){
 			this.loading = true;
-			this.filter.branch_id = this.pbranch;
+			this.filter.branch_id = this.branch.branch_id;
 			axios.post(this.baseURL() + 'api/account/overrrideaccounts', this.filter, {
 			headers: {
 				'Authorization': 'Bearer ' + this.token,
@@ -285,7 +286,7 @@ export default {
 		todaysRelease:function(){
 			var data = {
 				date_release:this.transactionDate.date_end,
-				branch_id:this.pbranch,
+				branch_id:this.branch.branch_id,
 				ao_id:null,
 				center_id:null,
 				product_id:null
@@ -613,6 +614,7 @@ export default {
 		},
 	},
 	async mounted(){
+		this.branch = JSON.parse(this.pbranch);
 		await this.fetchTransactionDate();
 		this.resetLoanAccount();
 		this.fetchAccounts();

@@ -271,7 +271,7 @@ export default {
 		},
 		filteredResult:function(){
 			var result = [];
-			var overall = ['TOTAL','',0,0,0,0,'',0,0,''];
+			var overall = ['TOTAL','',0,0,0,0,0,0,0,0];
 			this.reports.forEach(r=>{
 				var total = ['OFFICER SUB-TOTAL','',0,0,0,0,0,0,0,0];
 				if(r.products){
@@ -313,6 +313,10 @@ export default {
 					result.push(total);
 				}
 			})
+			overall[6] = (overall[5]/overall[3]*100) % 1 != 0? (overall[5]/overall[3]*100).toFixed(2):(overall[5]/overall[3]*100);
+			overall[6] = isNaN(overall[6])? '0%':overall[6]+ '%';
+			overall[9] = (overall[8]/overall[3]*100) % 1 != 0? (overall[8]/overall[3]*100).toFixed(2):(overall[8]/overall[3]*100);
+			overall[9] = isNaN(overall[9])? '0%':overall[9]+ '%';
 			overall[3] = this.formatToCurrency(overall[3]);
 			overall[5] = this.formatToCurrency(overall[5]);
 			overall[8] = this.formatToCurrency(overall[8]);

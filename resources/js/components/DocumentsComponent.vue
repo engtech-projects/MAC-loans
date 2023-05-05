@@ -1181,7 +1181,7 @@
 											<div>
 												<div class="d-flex flex-row align-items-center mb-36">
 													<div class="flex-1">
-														<span class="text-primary-dark font-26">Butuan Branch (001)</span>
+														<span class="text-primary-dark font-26">{{branch.branch_name}} Branch ({{branch.branch_code}})</span>
 													</div>
 													<div class="d-flex flex-column">
 														<span class="font-26 text-bold text-primary-dark lh-1">PROMISSORY NOTE</span>
@@ -1387,7 +1387,7 @@
 
 <script>
 export default {
-	props:['ploanDetails', 'token', 'statement', 'staff', 'branch_mgr'],
+	props:['ploanDetails', 'token', 'statement', 'staff', 'branch_mgr','branch'],
 	data(){
 		return {
 			activeTab:'reminder-letter-tab',
