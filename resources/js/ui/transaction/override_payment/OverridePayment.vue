@@ -88,7 +88,6 @@
                                     v-model="p.checked"
                                     type="checkbox"
                                     class="form-control form-box"
-                                    @click="selectRow"
                                 />
                             </td>
                             <td>{{ p.loan_details.account_num }}</td>
@@ -420,12 +419,6 @@ export default {
             this.allSelected = this.selectAll;
 
         },
-        selectRow() {
-            /* this.selectAll = this.allSelected; */
-
-
-
-        },
 		setPage:function(page){
 			this.pagination.page = page;
 		},
@@ -626,7 +619,9 @@ export default {
             },
             set(value) {
                 this.selectAll = value;
-                this.paginate.forEach((row) => (row.checked = value));
+                for(let i =0; i<this.filterClient.length; i++) {
+                    this.filterClient[i].checked = value
+                }
             }
         },
         boverrideCheck: function () {
@@ -882,17 +877,19 @@ export default {
 			var start = (this.pagination.page - 1) * this.pagination.range;
 			var end = 0;
 			for(var i = start; i < this.filterClient.length; i++){
-				if(end < this.pagination.range){
-					result.push(this.filterClient[i]);
-                    /* if(this.selectAll) {
-                        result[i].checked = true
+                if(this.selectAll) {
+                    if(end < this.pagination.range){
+                        result.push(this.filterClient[i]);
+                    }
+                }else  {
+                    if(end < this.pagination.range){
+                        result.push(this.filterClient[i]);
+                    }
+                }
 
-                    }else {
-                        result[i].checked = false
-                    } */
-				}
 				end++;
 			}
+            /* console.log(result) */
 
 
 
