@@ -12,75 +12,9 @@
 			<div class="mb-16"></div>
 			<div class="d-flex justify-content-between mb-24 bb-primary-dark pb-7 text-block">
 				<h1 class="m-0 font-35">Statement of Account Details</h1>
-			</div><!-- /.col -->
+		</div><!-- /.col -->
 
-			<form action="" class="mb-10">
-		<input v-model="filter" type="text" class="form-control" placeholder="Search">
-	</form>
-	<table class="table table-stripped table-hover light-border mb-24 table-row-clickable" id="accountTable">
-		<thead>
-			<th>Account #</th>
-			<th>Loan Amount</th>
-			<th>Date Granted</th>
-			<th>Term</th>
-			<th>Collection Rate</th>
-			<th>Payment History</th>
-			<th>Current Loan Status</th>
-			<th></th>
-		</thead>
-		<tbody>
-			<tr @click="fetchAccountId (a.account_num);selected=i" v-for="(a, i) in filteredAccounts" :key="i" :class="i==selected?'account-active':''">
-				<td>{{a.account_num}}</td>
-				<td>{{a.loan_amount}}</td>
-				<td>{{dateToMDY(new Date(a.date_granted))}}</td>
-				<td>{{Math.ceil(a.term / 30)}} Month(s)</td>
-				<td>{{a.collection_rate}}%</td>
-				<td>{{a.payment_history}}</td>
-				<td>{{a.loan_status}}</td>
-				<td><a @click.prevent="editAccount=a" href="" data-toggle="modal" data-target="#editAccountModal"><i class="fa fa-edit"></i> Edit</a></td>
-			</tr>
-			<tr v-if="filteredAccounts.length == 0">
-				<td>No accounts found.</td>
-			</tr>
-			<!-- <tr>
-
-				<td>100-3429-15421</td>
-				<td>28,000.00</td>
-				<td>8/8/2021</td>
-				<td>3 Months</td>
-				<td>30%</td>
-				<td>Delinquent</td>
-				<td>On going</td>
-			</tr>
-			<tr>
-				<td>100-3429-15421</td>
-				<td>28,000.00</td>
-				<td>8/8/2021</td>
-				<td>3 Months</td>
-				<td>30%</td>
-				<td>Delinquent</td>
-				<td>On going</td>
-			</tr>
-			<tr>
-				<td>100-3429-15421</td>
-				<td>28,000.00</td>
-				<td>8/8/2021</td>
-				<td>3 Months</td>
-				<td>30%</td>
-				<td>Delinquent</td>
-				<td>On going</td>
-			</tr>
-			<tr>
-				<td>100-3429-15421</td>
-				<td>28,000.00</td>
-				<td>8/8/2021</td>
-				<td>3 Months</td>
-				<td>30%</td>
-				<td>Delinquent</td>
-				<td>On going</td>
-			</tr> -->
-		</tbody>
-	</table>
+	
 	<div class="sep mb-24"></div>
 	<section class="d-flex mb-24">
 		<div class="d-flex flex-1 flex-sm-row personal-info" style="margin-bottom:24px;">
@@ -186,6 +120,43 @@
 			</div>
 		</div>
 	</section>
+
+	<div>
+		<form action="" class="mb-10">
+		<input v-model="filter" type="text" class="form-control" placeholder="Search">
+	</form>
+	<table class="table table-stripped table-hover light-border mb-24 table-row-clickable" id="accountTable">
+		<thead>
+			<th>Account #</th>
+			<th>Loan Amount</th>
+			<th>Date Granted</th>
+			<th>Term</th>
+			<th>Collection Rate</th>
+			<th>Payment History</th>
+			<th>Current Loan Status</th>
+			<th></th>
+		</thead>
+		<tbody>
+			<tr @click="fetchAccountId (a.account_num);selected=i" v-for="(a, i) in paginate" :key="i" :class="i==selected?'account-active':''">
+				<td>{{a.account_num}}</td>
+				<td>{{a.loan_amount}}</td>
+				<td>{{dateToMDY(new Date(a.date_granted))}}</td>
+				<td>{{Math.ceil(a.term / 30)}} Month(s)</td>
+				<td>{{a.collection_rate}}%</td>
+				<td>{{a.payment_history}}</td>
+				<td>{{a.loan_status}}</td>
+				<td><a @click.prevent="editAccount=a" href="" data-toggle="modal" data-target="#editAccountModal"><i class="fa fa-edit"></i> Edit</a></td>
+			</tr>
+			<tr v-if="filteredAccounts.length == 0">
+				<td>No accounts found.</td>
+			</tr>
+		</tbody>
+	</table>
+	<mac-pagination v-if="canPaginate" @setpage="setPage" :pdata="filteredAccounts" :ppage="pagination.page" :prange="pagination.range" class="mb-24"></mac-pagination>
+	</div>
+
+
+
 	<div class="info-display title mb-12">
 		<span>Account Details</span>
 	</div>
@@ -308,7 +279,7 @@
 			</div>
 		</div>
 
-		<print-docs :ploanDetails="loanDetails" :token="token" statement="1"></print-docs>
+		<print-docs :branch="branch" :ploanDetails="loanDetails" :token="token" statement="1"></print-docs>
 
 
 
@@ -544,7 +515,7 @@
 			</div>
 		</div>
 
-		<div class="modal" id="promisoryNoteModal" tabindex="-1" role="dialog">
+		<div class="modal text-justify" id="promisoryNoteModal" tabindex="-1" role="dialog">
 			<div class="modal-dialog modal-lg minw-70" role="document">
 			<div class="modal-content">
 				<div class="modal-body font-md" id="promissoryPrintContent">
@@ -552,7 +523,7 @@
 					<div class="d-flex flex-column" style="padding:0 50px;">
 						<div class="d-flex flex-row align-items-center mb-36">
 							<div class="flex-1">
-								<span class="text-primary-dark font-26">Butuan Branch (001)</span>
+								<span class="text-primary-dark font-26">{{branch.branch_name}} Branch ({{branch.branch_code}})</span>
 							</div>
 							<div class="d-flex flex-column">
 								<span class="font-26 text-bold text-primary-dark lh-1">PROMISSORY NOTE</span>
@@ -617,7 +588,7 @@
 						</section>
 						<span class="bbt-8 py-7 text-center text-20 text-bold mb-16">OTHER CONDITIONS</span>
 						<section class="font-md mb-24" style="font-size:16px!important;line-height:1.3em!important">
-							<p style="line-height:1.8" class="mb-36">
+							<p style="line-height:1.8" class="mb-36 text-justify">
 								In case of default, this note will be due and demandable without further demand, and an additional fee of (2%) per missed payment of the scheduled amortization as penalty, And in case this note be given to hands of an attorney an additional charged of (10%) of the total amount due will be charged as attorney's fee, further, the borrower is liable to litigation expenses, damages, etc. should the failure on the part of the borrower reach the courts. In cases that the borrower/s changes address/ transfer of residence without notice to MICRO ACCESS LOANS CORPORATION in writing, the address indicated in this note shall be the address for purposes of delivery of notices and other matters pertaining to the loan. Shall any issue/case that may arise as a result of this promissory note on any document in relation hereto, venue shall be at the civil courts of Butuan City, Agusan del Norte, to the exclusion of other court or at the option of MICRO ACCESS LOANS CORPORATION The Borrower/s hereby authorized the MICRO ACCESS LOANS CORPORATION to assign, sell or otherwise negotiate this note with any financial institution on its face value. Done this <b>{{nthDay(this.dateToD(new Date(loanDetails.date_release)))}}</b> day of <b class="allcaps">{{this.dateToFullMonth(new Date(loanDetails.date_release))}}  {{this.dateToY(new Date(loanDetails.date_release))}}</b>.
 							</p>
 
@@ -1925,9 +1896,14 @@
 
 <script>
 	export default {
-		props:['borrower_id','token'],
+		props:['borrower_id','token', 'pbranch'],
 		data(){
 			return {
+				branch:{},
+				pagination:{
+					page: 1,
+					range: 3
+				},
 				editAccount:{},
 				loading:false,
 				loanAccount:{},
@@ -2099,6 +2075,9 @@
 			}
 		},
 		methods:{
+			setPage:function(page){
+				this.pagination.page = page;
+			},
 			async updateAccount(data, type){
 				console.log(data);
 				await axios.post(this.baseURL() + 'api/account/update/' + this.editAccount.account_id, data, {
@@ -2278,6 +2257,18 @@
 			}
 		},
 		computed:{
+			paginate:function(){
+				var result = [];
+				var start = (this.pagination.page - 1) * this.pagination.range;
+				var end = 0;
+				for(var i = start; i < this.filteredAccounts.length; i++){
+					if(end < this.pagination.range){
+						result.push(this.filteredAccounts[i]);
+					}
+					end++;
+				}
+				return result;
+			},
 			loanAccountStatus:function(){
 				if(this.loanDetails.current_amortization){
 					if(this.loanDetails.current_amortization.delinquent.ids.length > 0){
@@ -2343,8 +2334,12 @@
 				}
 				return this.accounts;
 			},
+			canPaginate:function(){
+				return this.filteredAccounts.length > this.pagination.range
+			}
 		},
 		mounted(){
+			this.branch = JSON.parse(this.pbranch);
 			// console.log(this.extractFileName("http://mac-loans.test/storage/borrowers/1/12/hello.pdf"));
 			this.fetchBorrower();
 		}
