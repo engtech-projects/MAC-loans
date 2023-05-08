@@ -48,6 +48,8 @@ class FixShortAdvMigration implements ShouldQueue
             $shortI = 0;
             $principal = $acc->loan_amount;
             $interest = $acc->interest_amount;
+            $pastLast = null;
+            $pastLastDone = false;
             foreach($acc->amortizations as $amort){
                 $amortP += round($amort->principal);
                 $amortI += round($amort->interest);
@@ -71,19 +73,23 @@ class FixShortAdvMigration implements ShouldQueue
                     $shortI = $amortI < $payment->interest ? 0 : $amortI - $payment->interest;
                     $advI = $amortI < $payment-> interest ? $payment->interest - $amortI : 0;
                     $totalPayable = $payment->amount_applied + $shortI + $shortP;
-                    if($acc->lastPayment && $acc->lastPayment->payment_id == $payment->payment_id && $shortP > 0){
-                        if($acc->branch->endTransaction->date_end <= $amort->amortization_date){
-                            Amortization::find($amort->id)->fill([
-                                'status' => 'open'
-                            ])->save();
-                        }else{
-                            Amortization::find($amort->id)->fill([
-                                'status' => 'delinquent'
-                            ])->save();
 
-                            LoanAccountMigrationFix::find($acc->loan_account_id)->fill([
-                                'payment_status' => 'Delinquent'
-                            ])->save();
+                    if($acc->lastPayment && $acc->lastPayment->payment_id == $payment->payment_id ){
+                        $pastLast = $amort->id;
+                        if($shortP > 0){
+                            if($acc->branch->endTransaction->date_end <= $amort->amortization_date){
+                                Amortization::find($amort->id)->fill([
+                                    'status' => 'open'
+                                ])->save();
+                            }else{
+                                Amortization::find($amort->id)->fill([
+                                    'status' => 'delinquent'
+                                ])->save();
+    
+                                LoanAccountMigrationFix::find($acc->loan_account_id)->fill([
+                                    'payment_status' => 'Delinquent'
+                                ])->save();
+                            }
                         }
                     }
                     Payment::find($payment->payment_id)->fill([
@@ -95,15 +101,33 @@ class FixShortAdvMigration implements ShouldQueue
                     ])->save();
                     $amortP -= $payment->principal > $amortP ? $amortP : $payment->principal;
                     $amortI -= $payment->interest > $amortI ? $amortI : $payment->interest;
+                    if($shortI + $shortP <= 0){
+                        Amortization::find($amort->id)->fill([
+                            'status' => 'paid'
+                        ])->save();
+                    }
                 }
-                if($amort->status != 'paid' && $acc->branch->endTransaction->date_end > $amort->amortization_date){
+                $amort->refresh();
+                if($advI + $advP >= 0 && $pastLast != null && $pastLast < $amort->id && !$pastLastDone && $acc->product->product_code == '003'){
+                    $pastLastDone = true;
+                    $advI -= $currentAmortI;
+                    $advP -= $currentAmortP;
+                    Payment::find($acc->lastPayment->payment_id)->fill([
+                        "advance_interest"=> $advI,
+                        "advance_principal"=> $advP,
+                    ])->save();
+                    Amortization::find($amort->id)->fill([
+                        'status' => 'paid'
+                    ])->save();
+                }else if($amort->status != 'paid' && $acc->branch->endTransaction->date_end > $amort->amortization_date){
                     Amortization::find($amort->id)->fill([
                         'status' => 'delinquent'
                     ])->save();
-
+                    
                     LoanAccountMigrationFix::find($acc->loan_account_id)->fill([
                         'payment_status' => 'Delinquent'
                     ])->save();
+
                 }
                 Amortization::find($amort->id)->fill([
                     'principal_balance' => $principal,
@@ -113,9 +137,6 @@ class FixShortAdvMigration implements ShouldQueue
                     'total' => $currentAmortP + $currentAmortI,
                 ])->save();
             }
-
         }
-
-
     }
 }
