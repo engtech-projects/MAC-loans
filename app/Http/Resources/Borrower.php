@@ -26,6 +26,7 @@ class Borrower extends JsonResource
             'suffix' => $this->suffix,
             'address' => $this->address,
             'birthdate' => $this->birthdate,
+            'age' => $this->age,
             'gender' => $this->gender,
             'status' => Str::lower($this->status),
             'contact_number' => $this->contact_number,

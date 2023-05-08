@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
@@ -19,6 +20,7 @@ class Borrower extends Authenticatable
     protected $table = 'borrower_info';
     protected $primaryKey = 'borrower_id';
     public static $snakeAttributes = false;
+    protected $appends = ['age'];
 
     protected $fillable = [
         'borrower_id',
@@ -52,6 +54,9 @@ class Borrower extends Authenticatable
     public function generateDefaultUsername()
     {
         return $this->firstname . $this->lastname;
+    }
+    public function getAgeAttribute() {
+        return Carbon::parse($this->attributes['birthdate'])->age;
     }
 
     public function generateDefaultPassword()

@@ -78,6 +78,7 @@ class BorrowerController extends BaseController
                                 'borrower_info.spouse_id_date_issued',
 
                             )
+                            ->selectRaw('TIMESTAMPDIFF(YEAR, borrower_info.birthdate, CURDATE()) AS age')
                             ->where([ 'loan_accounts.branch_code' => $branch->branch_code ]);
 
 
