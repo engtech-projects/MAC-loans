@@ -911,7 +911,7 @@ export default {
 			return JSON.parse(this.releasetype);
 		},
 		productEnable:function(){
-			if(this.currentProduct.product_name == 'Micro Group' || this.currentProduct.product_name == 'Micro Individual'){
+			if(this.currentProduct.product_name == 'Micro Group'){
 				return true;
 			}
 			return false;
