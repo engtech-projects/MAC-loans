@@ -312,7 +312,7 @@ class LoanAccountController extends BaseController
     }
 
     public function fixShortAdv(){
-        $type = 'realtime'; // realtime or background
+        // $type = 'realtime'; // realtime or background
         $type = 'background'; // realtime or background
         $limit = 10;
         $start = 0;
@@ -344,8 +344,8 @@ class LoanAccountController extends BaseController
     }
 
     public static function fixLoanAccountShortAndAdvances($i, $limit){
-        // $accountsArray = LoanAccountMigrationFix::with(['lastAmortization', 'lastPayment', 'branch.endTransaction', 'amortizations', 'amortizations.payments'])->offset($i * 1000)->limit($limit)->get();
-        $accountsArray = LoanAccountMigrationFix::where('account_num', "002-002-0009141")->with(['product', 'lastAmortization', 'lastPayment', 'branch.endTransaction', 'amortizations', 'amortizations.payments'])->offset($i * 1000)->limit($limit)->get();
+        $accountsArray = LoanAccountMigrationFix::with(['product','lastAmortization', 'lastPayment', 'branch.endTransaction', 'amortizations', 'amortizations.payments'])->offset($i * 1000)->limit($limit)->get();
+        // $accountsArray = LoanAccountMigrationFix::where('account_num', "002-002-0009141")->with(['product', 'lastAmortization', 'lastPayment', 'branch.endTransaction', 'amortizations', 'amortizations.payments'])->offset($i * 1000)->limit($limit)->get();
         // dd($accountsArray[0]);
         foreach($accountsArray as $acc){
             $amortP = 0;
