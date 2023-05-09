@@ -125,34 +125,36 @@
 		<form action="" class="mb-10">
 		<input v-model="filter" type="text" class="form-control" placeholder="Search">
 	</form>
-	<table class="table table-stripped table-hover light-border mb-24 table-row-clickable" id="accountTable">
-		<thead>
-			<th>Account #</th>
-			<th>Loan Amount</th>
-			<th>Date Granted</th>
-			<th>Term</th>
-			<th>Collection Rate</th>
-			<th>Payment History</th>
-			<th>Current Loan Status</th>
-			<th></th>
-		</thead>
-		<tbody>
-			<tr @click="fetchAccountId (a.account_num);selected=i" v-for="(a, i) in paginate" :key="i" :class="i==selected?'account-active':''">
-				<td>{{a.account_num}}</td>
-				<td>{{a.loan_amount}}</td>
-				<td>{{dateToMDY(new Date(a.date_granted))}}</td>
-				<td>{{Math.ceil(a.term / 30)}} Month(s)</td>
-				<td>{{a.collection_rate}}%</td>
-				<td>{{a.payment_history}}</td>
-				<td>{{a.loan_status}}</td>
-				<td><a @click.prevent="editAccount=a" href="" data-toggle="modal" data-target="#editAccountModal"><i class="fa fa-edit"></i> Edit</a></td>
-			</tr>
-			<tr v-if="filteredAccounts.length == 0">
-				<td>No accounts found.</td>
-			</tr>
-		</tbody>
-	</table>
-	<mac-pagination v-if="canPaginate" @setpage="setPage" :pdata="filteredAccounts" :ppage="pagination.page" :prange="pagination.range" class="mb-24"></mac-pagination>
+	<div style="max-height:550px!important;overflow:auto;">
+		<table class="table table-stripped table-hover light-border mb-24 table-row-clickable" id="accountTable">
+			<thead>
+				<th>Account #</th>
+				<th>Loan Amount</th>
+				<th>Date Granted</th>
+				<th>Term</th>
+				<th>Collection Rate</th>
+				<th>Payment History</th>
+				<th>Current Loan Status</th>
+				<th></th>
+			</thead>
+			<tbody>
+				<tr @click="fetchAccountId (a.account_num);selected=i" v-for="(a, i) in filteredAccounts" :key="i" :class="i==selected?'account-active':''">
+					<td>{{a.account_num}}</td>
+					<td>{{a.loan_amount}}</td>
+					<td>{{dateToMDY(new Date(a.date_granted))}}</td>
+					<td>{{Math.ceil(a.term / 30)}} Month(s)</td>
+					<td>{{a.collection_rate}}%</td>
+					<td>{{a.payment_history}}</td>
+					<td>{{a.loan_status}}</td>
+					<td><a @click.prevent="editAccount=a" href="" data-toggle="modal" data-target="#editAccountModal"><i class="fa fa-edit"></i> Edit</a></td>
+				</tr>
+				<tr v-if="filteredAccounts.length == 0">
+					<td>No accounts found.</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<!-- <mac-pagination v-if="canPaginate" @setpage="setPage" :pdata="filteredAccounts" :ppage="pagination.page" :prange="pagination.range" class="mb-24"></mac-pagination> -->
 	</div>
 
 
