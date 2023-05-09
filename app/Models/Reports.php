@@ -857,11 +857,8 @@ class Reports extends Model
                                 ->select('product_id', 'product_code', 'product_name')
                                 ->get()
                                 ->toArray();
-
             foreach ( $accOfficers as $aoKey => $aoValue ) {
-
                 foreach ( $products as $prodKey => $prodValue ) {
-
                     $tempProd = $prodValue;
 
                     $allAOProd = LoanAccount::where([
@@ -874,40 +871,55 @@ class Reports extends Model
                     ->without(['documents', 'borrower', 'center', 'branch', 'product', 'accountOfficer', 'payments'])
                     ->get();
 
-                    if( count($allAOProd) > 0 ) {
 
+                    if( count($allAOProd) > 0 ) {
                         $tempProd["all"] = ["count" => 0, "amount" => 0];
                         $tempProd["delinquent"] = ["count" => 0, "amount" => 0, "rate" => 0];
                         $tempProd["pastdue"] = ["count" => 0, "amount" => 0, "rate" => 0];
 
                         foreach ( $allAOProd as $key => $value ) {
-
                             $principalBalance = $value->remainingBalance()["principal"]["balance"];
+                            $memoBal = $value->remainingBalance()["memo"]["balance"];
+                            $totalBal = $memoBal < 0 ? 0 : $memoBal;
 
-                            $tempProd["all"]["count"] += 1;
-                            $tempProd["all"]["amount"] += $principalBalance;
+                            $loan_status = $value->loan_status;
+                            /* $exclude = $loan_status == LoanAccount::LOAN_RES_WO_PDI && $totalBal == 0 || $loan_status == LoanAccount::LOAN_RESTRUCTED && $totalBal == 0; */
+                            if($value->loan_status == LoanAccount::LOAN_RES_WO_PDI && $totalBal == 0 || $value->loan_status == LoanAccount::LOAN_RESTRUCTED && $totalBal == 0) {
+                                continue;
+                            }else {
+                                $tempProd["all"]["count"] += 1;
+                                $tempProd["all"]["amount"] += $principalBalance;
+                                if( $value->loan_status == LoanAccount::LOAN_ONGOING ) {
 
-                            if( $value->loan_status == LoanAccount::LOAN_ONGOING ) {
+                                    if( $value->payment_status == LoanAccount::PAYMENT_DELINQUENT ) {
+                                        $amortization = $value->getCurrentAmortization();
+                                        $tempProd["delinquent"]["count"] += 1;
+                                        $tempProd["delinquent"]["amount"] += $amortization->delinquent['principal'];
+                                        // $tempProd["delinquent"]["account"] = $amortization;
+                                        // break;
+                                    }
+                                }
 
-                                if( $value->payment_status == LoanAccount::PAYMENT_DELINQUENT ) {
-                                    $amortization = $value->getCurrentAmortization();
-                                    $tempProd["delinquent"]["count"] += 1;
-                                    $tempProd["delinquent"]["amount"] += $amortization->delinquent['principal'];
-                                    // $tempProd["delinquent"]["account"] = $amortization;
-                                    // break;
+                                if( $value->loan_status == LoanAccount::LOAN_PASTDUE ) {
+                                    $tempProd["pastdue"]["count"] += 1;
+                                    $tempProd["pastdue"]["amount"] += $principalBalance;
+
                                 }
                             }
+                            /* $tempProd["all"]["count"] += 1;
+                            $tempProd["all"]["amount"] += $principalBalance; */
 
-                            if( $value->loan_status == LoanAccount::LOAN_PASTDUE ) {
-                                $tempProd["pastdue"]["count"] += 1;
-                                $tempProd["pastdue"]["amount"] += $principalBalance;
 
-                            }
+                        }
+                        if($tempProd["all"]["count"] == 0) {
+                            continue;
+                        }else {
+                            $tempProd["delinquent"]["rate"] = $tempProd["all"]["amount"] == 0 ? 0 :  round( (($tempProd["delinquent"]["amount"] / $tempProd["all"]["amount"]) * 100), 2); //round((($tempProd["delinquent"]["amount"] / $tempProd["all"]["amount"])*100));
+                            $tempProd["pastdue"]["rate"] = $tempProd["all"]["amount"] == 0 ? 0 : round( (($tempProd["pastdue"]["amount"] / $tempProd["all"]["amount"]) * 100), 2); //round((($tempProd["delinquent"]["amount"] / $tempProd["all"]["amount"])*100));
+                            $accOfficers[$aoKey]["products"][] = $tempProd;
                         }
 
-                        $tempProd["delinquent"]["rate"] = $tempProd["all"]["amount"] == 0 ? 0 :  round( (($tempProd["delinquent"]["amount"] / $tempProd["all"]["amount"]) * 100), 2); //round((($tempProd["delinquent"]["amount"] / $tempProd["all"]["amount"])*100));
-                        $tempProd["pastdue"]["rate"] = $tempProd["all"]["amount"] == 0 ? 0 : round( (($tempProd["pastdue"]["amount"] / $tempProd["all"]["amount"]) * 100), 2); //round((($tempProd["delinquent"]["amount"] / $tempProd["all"]["amount"])*100));
-                        $accOfficers[$aoKey]["products"][] = $tempProd;
+
 
                     }
 
