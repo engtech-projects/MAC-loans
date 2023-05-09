@@ -125,7 +125,7 @@
 		<form action="" class="mb-10">
 		<input v-model="filter" type="text" class="form-control" placeholder="Search">
 	</form>
-	<div style="max-height:550px!important;overflow:auto;">
+	<div style="max-height:300px!important;overflow:auto;">
 		<table class="table table-stripped table-hover light-border mb-24 table-row-clickable" id="accountTable">
 			<thead>
 				<th>Account #</th>
