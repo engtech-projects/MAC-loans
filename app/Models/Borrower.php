@@ -192,7 +192,7 @@ class Borrower extends Authenticatable
 
     public function loanAccounts()
     {
-        $activeAccounts = LoanAccount::where(['borrower_id' => $this->borrower_id, 'status' => 'released'])
+        $activeAccounts = LoanAccount::where(['borrower_id' => $this->borrower_id, 'status' => 'released'])->orderBy('date_release', 'DESC')
             /*                             ->where('loan_status', '!=', LoanAccount::LOAN_PAID) */
             ->get();
 
