@@ -1066,13 +1066,15 @@ class Reports extends Model
 
                     if( count($accounts) > 0 ) {
                         foreach($accounts as $key => $account) {
-                            $oBalance = $account->outstandingBalance($account->loan_account_id);
+                            $totalBal = $account->outstandingBalance($account->loan_account_id);
+                            $oBalance = $totalBal < 0 ? 0 : $totalBal;
                             $remainingBal = $account->remainingBalance();
                             $reb = $remainingBal['rebates']['credit'];
                             $interestBal = $remainingBal['interest']['balance'];
                             $principalBal = $remainingBal['principal']['balance'];
                             $amortization = $account->amortization();
                             $current_amort = $account->getCurrentAmortization();
+
 
                             if($account->loan_status == LoanAccount::LOAN_RES_WO_PDI && $oBalance == 0 || $account->loan_status == LoanAccount::LOAN_RESTRUCTED && $oBalance == 0) {
                                 continue;
