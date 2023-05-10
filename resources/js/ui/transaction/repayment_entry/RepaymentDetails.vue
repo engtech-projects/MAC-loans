@@ -431,7 +431,7 @@
 													<span>PDI</span>
 													<span>:</span>
 												</div>
-                                                <input type="number" v-model.number="pdi" class="form-control flex-1" placeholder="PDI">
+                                                <input type="number" step="0.01" v-model.number="pdi" class="form-control flex-1" placeholder="PDI">
 												<!-- <span class="flex-1">P {{formatToCurrency(duePdi)}}</span> -->
 											</div>
 										</div>
