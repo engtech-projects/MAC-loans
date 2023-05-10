@@ -427,11 +427,12 @@
 												<span class="flex-1">P {{formatToCurrency(duePenalty)}}</span>
 											</div>
 											<div class="d-flex flex-row mb-7">
-												<div class="d-flex flex-row justify-content-between flex-1 mr-16">
+												<div class="d-flex flex-row justify-content-between flex-1">
 													<span>PDI</span>
 													<span>:</span>
 												</div>
-												<span class="flex-1">P {{formatToCurrency(duePdi)}}</span>
+                                                <input type="text" v-model="pdi" class="form-control flex-1" placeholder="PDI">
+												<!-- <span class="flex-1">P {{formatToCurrency(duePdi)}}</span> -->
 											</div>
 										</div>
 										<div class="d-flex flex-column mb-auto">
@@ -631,6 +632,7 @@ export default {
 				status: 'closed',
 				date_end: '',
 			},
+            pdi:null,
 			loanAccount:{
 				loan_account_id:null,
 				cycle_no : 1,
@@ -700,6 +702,7 @@ export default {
 						advance_principal:'',
 					}
 				},
+                pastdue_interest:null,
 				remainingBalance:{
 					memo:{
 						debit:0,
@@ -993,14 +996,14 @@ export default {
 			this.payment.rebates = this.rebatesApplied;
 			if(this.payment.payment_applied != ''){
 				// pdi
-				if(amount >= this.duePdi){
-					amount -= this.duePdi;
-					this.payment.pdi = this.duePdi;
+				if(amount >= this.pdi){
+					amount -= this.pdi;
+					this.payment.pdi = this.pdi;
 				}else{
 					this.payment.pdi = amount;
 					amount = 0;
 				}
-				this.payment.short_pdi = this.duePdi - this.payment.pdi;
+				this.payment.short_pdi = this.pdi - this.payment.pdi;
 				// penalty
 				if(amount >= this.duePenalty){
 					amount -= this.duePenalty;
@@ -1160,10 +1163,13 @@ export default {
 		},
 
 		duePdi:function(){
+            var pdi = 0;
 			if(this.loanAccount.remainingBalance){
-				return this.waive.pdi ? 0 : this.loanAccount.remainingBalance.pdi.balance;
+				pdi = this.waive.pdi ? 0 : this.loanAccount.remainingBalance.pdi.balance;
+                this.pdi = pdi;
+                return pdi
 			}
-			return 0;
+			return pdi;
 		},
 		duePenalty:function(){
 			return this.waive.penalty ? 0 : this.loanAccount.current_amortization.penalty + this.loanAccount.current_amortization.short_penalty;
