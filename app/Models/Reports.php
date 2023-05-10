@@ -1016,6 +1016,11 @@ class Reports extends Model
         return $data;
     }
 
+    function sortAccounts($a, $b) {
+        // Sort by account number in ascending order
+        return strcmp($a['borrower_name'], $b['borrower_name']);
+    }
+
     public function branchLoanListingReport($filters = []){
         /* $accOfficers = AccountOfficer::where(["status"=> AccountOfficer::STATUS_ACTIVE]); */
         $accOfficers =  AccountOfficer::join('account_officer_branch','account_officer.ao_id', '=', 'account_officer_branch.ao_id')
@@ -1131,7 +1136,13 @@ class Reports extends Model
                                     "loan_status" => $account->loan_status,
                                     "status" => $account->payment_status,
                                 ];
-                            }
+
+                                $acc = $accOfficers[$aoKey]["products"][$prodValue["product_name"]]["centers"][$centVal["center"]]['accounts'];
+                                usort($acc,function($a,$b) {
+                                    return strcmp($a['borrower_name'],$b['borrower_name']);
+                                });
+
+                                $accOfficers[$aoKey]["products"][$prodValue["product_name"]]["centers"][$centVal["center"]]['accounts'] = $acc;
 
                         }
 
