@@ -857,11 +857,8 @@ class Reports extends Model
                                 ->select('product_id', 'product_code', 'product_name')
                                 ->get()
                                 ->toArray();
-
             foreach ( $accOfficers as $aoKey => $aoValue ) {
-
                 foreach ( $products as $prodKey => $prodValue ) {
-
                     $tempProd = $prodValue;
 
                     $allAOProd = LoanAccount::where([
@@ -874,40 +871,55 @@ class Reports extends Model
                     ->without(['documents', 'borrower', 'center', 'branch', 'product', 'accountOfficer', 'payments'])
                     ->get();
 
-                    if( count($allAOProd) > 0 ) {
 
+                    if( count($allAOProd) > 0 ) {
                         $tempProd["all"] = ["count" => 0, "amount" => 0];
                         $tempProd["delinquent"] = ["count" => 0, "amount" => 0, "rate" => 0];
                         $tempProd["pastdue"] = ["count" => 0, "amount" => 0, "rate" => 0];
 
                         foreach ( $allAOProd as $key => $value ) {
-
                             $principalBalance = $value->remainingBalance()["principal"]["balance"];
+                            $memoBal = $value->remainingBalance()["memo"]["balance"];
+                            $totalBal = $memoBal < 0 ? 0 : $memoBal;
 
-                            $tempProd["all"]["count"] += 1;
-                            $tempProd["all"]["amount"] += $principalBalance;
+                            $loan_status = $value->loan_status;
+                            /* $exclude = $loan_status == LoanAccount::LOAN_RES_WO_PDI && $totalBal == 0 || $loan_status == LoanAccount::LOAN_RESTRUCTED && $totalBal == 0; */
+                            if($value->loan_status == LoanAccount::LOAN_RES_WO_PDI && $totalBal == 0 || $value->loan_status == LoanAccount::LOAN_RESTRUCTED && $totalBal == 0) {
+                                continue;
+                            }else {
+                                $tempProd["all"]["count"] += 1;
+                                $tempProd["all"]["amount"] += $principalBalance;
+                                if( $value->loan_status == LoanAccount::LOAN_ONGOING ) {
 
-                            if( $value->loan_status == LoanAccount::LOAN_ONGOING ) {
+                                    if( $value->payment_status == LoanAccount::PAYMENT_DELINQUENT ) {
+                                        $amortization = $value->getCurrentAmortization();
+                                        $tempProd["delinquent"]["count"] += 1;
+                                        $tempProd["delinquent"]["amount"] += $amortization->delinquent['principal'];
+                                        // $tempProd["delinquent"]["account"] = $amortization;
+                                        // break;
+                                    }
+                                }
 
-                                if( $value->payment_status == LoanAccount::PAYMENT_DELINQUENT ) {
-                                    $amortization = $value->getCurrentAmortization();
-                                    $tempProd["delinquent"]["count"] += 1;
-                                    $tempProd["delinquent"]["amount"] += $amortization->delinquent['principal'];
-                                    // $tempProd["delinquent"]["account"] = $amortization;
-                                    // break;
+                                if( $value->loan_status == LoanAccount::LOAN_PASTDUE ) {
+                                    $tempProd["pastdue"]["count"] += 1;
+                                    $tempProd["pastdue"]["amount"] += $principalBalance;
+
                                 }
                             }
+                            /* $tempProd["all"]["count"] += 1;
+                            $tempProd["all"]["amount"] += $principalBalance; */
 
-                            if( $value->loan_status == LoanAccount::LOAN_PASTDUE ) {
-                                $tempProd["pastdue"]["count"] += 1;
-                                $tempProd["pastdue"]["amount"] += $principalBalance;
 
-                            }
+                        }
+                        if($tempProd["all"]["count"] == 0) {
+                            continue;
+                        }else {
+                            $tempProd["delinquent"]["rate"] = $tempProd["all"]["amount"] == 0 ? 0 :  round( (($tempProd["delinquent"]["amount"] / $tempProd["all"]["amount"]) * 100), 2); //round((($tempProd["delinquent"]["amount"] / $tempProd["all"]["amount"])*100));
+                            $tempProd["pastdue"]["rate"] = $tempProd["all"]["amount"] == 0 ? 0 : round( (($tempProd["pastdue"]["amount"] / $tempProd["all"]["amount"]) * 100), 2); //round((($tempProd["delinquent"]["amount"] / $tempProd["all"]["amount"])*100));
+                            $accOfficers[$aoKey]["products"][] = $tempProd;
                         }
 
-                        $tempProd["delinquent"]["rate"] = $tempProd["all"]["amount"] == 0 ? 0 :  round( (($tempProd["delinquent"]["amount"] / $tempProd["all"]["amount"]) * 100), 2); //round((($tempProd["delinquent"]["amount"] / $tempProd["all"]["amount"])*100));
-                        $tempProd["pastdue"]["rate"] = $tempProd["all"]["amount"] == 0 ? 0 : round( (($tempProd["pastdue"]["amount"] / $tempProd["all"]["amount"]) * 100), 2); //round((($tempProd["delinquent"]["amount"] / $tempProd["all"]["amount"])*100));
-                        $accOfficers[$aoKey]["products"][] = $tempProd;
+
 
                     }
 
@@ -1034,6 +1046,8 @@ class Reports extends Model
         $products = $products->select('product_id', 'product_code', 'product_name')->get()->toArray();
 
         // $accounts = $this->getLoanAccounts($filters);
+        $count = 0;
+        $z = 0;
 
         foreach ($accOfficers as $aoKey => $aoValue) {
             foreach ($products as $prodKey => $prodValue) {
@@ -1052,7 +1066,8 @@ class Reports extends Model
 
                     if( count($accounts) > 0 ) {
                         foreach($accounts as $key => $account) {
-                            $oBalance = $account->outstandingBalance($account->loan_account_id);
+                            $totalBal = $account->outstandingBalance($account->loan_account_id);
+                            $oBalance = $totalBal < 0 ? 0 : $totalBal;
                             $remainingBal = $account->remainingBalance();
                             $reb = $remainingBal['rebates']['credit'];
                             $interestBal = $remainingBal['interest']['balance'];
@@ -1060,56 +1075,64 @@ class Reports extends Model
                             $amortization = $account->amortization();
                             $current_amort = $account->getCurrentAmortization();
 
-                            $amountDue = 0;
-                            $amortPrincipal = 0;
-                            $advPrincipal = 0;
-                            $shortPrincipal = 0;
-                            $amortInterest = 0;
-                            $advInterest = 0;
-                            $shortInterest = 0;
 
-                            if($current_amort) {
-                                $amortPrincipal = $current_amort["principal"];
-                                $advPrincipal = $current_amort["advance_principal"];
-                                $shortPrincipal = $current_amort["short_principal"];
-                                $amortInterest = $current_amort["interest"];
-                                $advInterest = $current_amort["advance_interest"];
-                                $shortInterest = $current_amort["short_interest"];
-                                $amountDue = ceil(($amortPrincipal + $shortPrincipal - $advPrincipal) + ($amortInterest + $shortInterest - $advInterest) + ($remainingBal["pdi"]["balance"] + $remainingBal["rebates"]["balance"]));
+                            if($account->loan_status == LoanAccount::LOAN_RES_WO_PDI && $oBalance == 0 || $account->loan_status == LoanAccount::LOAN_RESTRUCTED && $oBalance == 0) {
+                                continue;
+                            }else {
+                                $amountDue = 0;
+                                $amortPrincipal = 0;
+                                $advPrincipal = 0;
+                                $shortPrincipal = 0;
+                                $amortInterest = 0;
+                                $advInterest = 0;
+                                $shortInterest = 0;
+
+                                if($current_amort) {
+                                    $amortPrincipal = $current_amort["principal"];
+                                    $advPrincipal = $current_amort["advance_principal"];
+                                    $shortPrincipal = $current_amort["short_principal"];
+                                    $amortInterest = $current_amort["interest"];
+                                    $advInterest = $current_amort["advance_interest"];
+                                    $shortInterest = $current_amort["short_interest"];
+                                    $amountDue = ceil(($amortPrincipal + $shortPrincipal - $advPrincipal) + ($amortInterest + $shortInterest - $advInterest) + ($remainingBal["pdi"]["balance"] + $remainingBal["rebates"]["balance"]));
+                                }
+
+                                $principal = $amortization['principal'];
+                                $interest = $amortization['interest'];
+
+
+
+                                $accOfficers[$aoKey]["products"][$prodValue["product_name"]]["centers"][$centVal["center"]]['accounts'][] = [
+                                    'borrower_name' => isset($account->borrower) ? $account->borrower->fullname() : '',
+                                    "account_num" => $account->account_num,
+                                    "date_loan" => $account->date_release,
+                                    "maturity" => $account->due_date,
+                                    "amount_loan" => $account->loan_amount,
+                                    "principal_amount" => abs(($amortPrincipal + $shortPrincipal) - $advPrincipal),
+                                    "interest_amount" => abs($amortInterest + $shortInterest - $advInterest),
+                                    "amount_due" => $amountDue > 0 ? $amountDue : 0,
+                                    "distribution" => [
+                                        'principal' => $amortPrincipal,
+                                        'short_principal' => $shortPrincipal,
+                                        'advance_principal' => $advPrincipal,
+                                        'interest' => $amortInterest,
+                                        'short_interest' => $shortInterest,
+                                        'advance_interest' => $advInterest,
+                                        'pdi' => $remainingBal["pdi"]["balance"],
+                                        'rebates' => $remainingBal["rebates"]["balance"]
+                                    ],
+                                    "principal_balance" => $principalBal,
+                                    "interest_balance" => $interestBal - $reb,
+                                    "outstanding_balance" => $oBalance,
+                                    "amortization" => $principal + $interest, //$account->amortization()["principal"] + $account->amortization()["interest"],
+                                    "amort_dist" => ['principal' => $principal, 'interest' => $interest ],
+                                    // "current_amort" => $current_amort,
+                                    "type" => $account->payment_mode,
+                                    "loan_status" => $account->loan_status,
+                                    "status" => $account->payment_status,
+                                ];
                             }
 
-                            $principal = $amortization['principal'];
-                            $interest = $amortization['interest'];
-
-                             $accOfficers[$aoKey]["products"][$prodValue["product_name"]]["centers"][$centVal["center"]]['accounts'][] = [
-                                'borrower_name' => isset($account->borrower) ? $account->borrower->fullname() : '',
-                                "account_num" => $account->account_num,
-                                "date_loan" => $account->date_release,
-                                "maturity" => $account->due_date,
-                                "amount_loan" => $account->loan_amount,
-                                "principal_amount" => abs(($amortPrincipal + $shortPrincipal) - $advPrincipal),
-                                "interest_amount" => abs($amortInterest + $shortInterest - $advInterest),
-                                "amount_due" => $amountDue > 0 ? $amountDue : 0,
-                                "distribution" => [
-                                    'principal' => $amortPrincipal,
-                                    'short_principal' => $shortPrincipal,
-                                    'advance_principal' => $advPrincipal,
-                                    'interest' => $amortInterest,
-                                    'short_interest' => $shortInterest,
-                                    'advance_interest' => $advInterest,
-                                    'pdi' => $remainingBal["pdi"]["balance"],
-                                    'rebates' => $remainingBal["rebates"]["balance"]
-                                ],
-                                "principal_balance" => $principalBal,
-                                "interest_balance" => $interestBal - $reb,
-                                "outstanding_balance" => $oBalance,
-                                "amortization" => $principal + $interest, //$account->amortization()["principal"] + $account->amortization()["interest"],
-                                "amort_dist" => ['principal' => $principal, 'interest' => $interest ],
-                                // "current_amort" => $current_amort,
-                                "type" => $account->payment_mode,
-                                "loan_status" => $account->loan_status,
-                                "status" => $account->payment_status,
-                            ];
                         }
 
                     }
