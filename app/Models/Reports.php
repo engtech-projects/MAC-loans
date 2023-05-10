@@ -76,8 +76,8 @@ class Reports extends Model
         if( isset($filters['type']) && $filters['type'] ){
             $loanAccount->where([ 'loan_accounts.type' => $filters['type'] ]);
         }
-
-    	return $loanAccount->whereIn('loan_status', [LoanAccount::LOAN_ONGOING, LoanAccount::LOAN_PASTDUE,LoanAccount::LOAN_RESTRUCTED])->without($without)->get([
+    	return $loanAccount->whereIn('loan_status', [LoanAccount::LOAN_ONGOING, LoanAccount::LOAN_PASTDUE,LoanAccount::LOAN_RESTRUCTED, LoanAccount::LOAN_RES_WO_PDI])
+        ->without($without)->get([
 			'loan_accounts.loan_account_id',
 			'loan_accounts.account_num',
 			'loan_accounts.date_release',
@@ -868,7 +868,7 @@ class Reports extends Model
                         "product_id"=>$prodValue["product_id"],
                         "branch_code" => $branch->branch_code
                     ])
-                    ->whereIn("loan_status",[LoanAccount::LOAN_ONGOING, LoanAccount::LOAN_PASTDUE, LoanAccount::LOAN_RESTRUCTED ])
+                    ->whereIn("loan_status",[LoanAccount::LOAN_ONGOING, LoanAccount::LOAN_PASTDUE, LoanAccount::LOAN_RESTRUCTED, LoanAccount::LOAN_RES_WO_PDI])
                     ->without(['documents', 'borrower', 'center', 'branch', 'product', 'accountOfficer', 'payments'])
                     ->get();
 
@@ -1067,7 +1067,7 @@ class Reports extends Model
                             $advPrincipal = 0;
                             $shortPrincipal = 0;
                             $amortInterest = 0;
-                            $advInteres = 0;
+                            $advInterest = 0;
                             $shortInterest = 0;
 
 

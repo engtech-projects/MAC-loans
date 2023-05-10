@@ -74,6 +74,7 @@ class LoanAccount extends Model
     const LOAN_PASTDUE = "Past Due";
     const LOAN_WRITEOFF = "Write-Off";
     const LOAN_RESTRUCTED = "Restructed";
+    const LOAN_RES_WO_PDI = "Res WO/PDI";
 
     public static function generateAccountNum($branchCode, $productCode, $identifier = 1)
     {
@@ -865,7 +866,9 @@ class LoanAccount extends Model
     public function getPDI($amount, $rate, $days)
     {
 
-        $perDay = ($amount * ($rate / 100)) * 12 / 365;
+        $balance = $this->outstandingBalance($this->loan_account_id);
+
+        $perDay = ($balance * ($rate / 100)) * 12 / 365;
         return round($perDay * $days);
     }
 
@@ -1160,6 +1163,7 @@ class LoanAccount extends Model
 
                 if($this->getLoanStatus($this->loan_account_id) == LoanAccount::LOAN_PAID) {
                     $pdi = 0;
+                    $penalty = 0;
                 }
 
         }

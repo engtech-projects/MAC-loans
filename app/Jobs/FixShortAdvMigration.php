@@ -38,77 +38,9 @@ class FixShortAdvMigration implements ShouldQueue
      */
     public function handle()
     {
-        $accountsArray = LoanAccountMigrationFix::with(['lastPayment', 'branch.endTransaction', 'amortizations', 'amortizations.payments'])->offset($this->i * $this->limit)->limit($this->limit)->get();
+        $accountsArray = LoanAccountMigrationFix::offset($this->i * $this->limit)->limit($this->limit)->get()->pluck('loan_account_id');
         foreach($accountsArray as $acc){
-            $amortP = 0;
-            $amortI = 0;
-            $advP = 0;
-            $advI = 0;
-            $shortP = 0;
-            $shortI = 0;
-            $principal = $acc->loan_amount;
-            $interest = $acc->interest_amount;
-            foreach($acc->amortizations as $amort){
-                $amortP += round($amort->principal);
-                $amortI += round($amort->interest);
-                $principal -= $amort->principal;
-                $interest -= $amort->interest;
-                $currentAmortP = $principal < 0 ? $amort->principal - abs($principal): $amort->principal;
-                $principal = $principal < 0 ? 0: $principal;
-                $currentAmortI = $interest < 0 ? $amort->interest - abs($interest) : $amort->interest;
-                $interest = $interest < 0 ? 0: $interest;
-                foreach($amort->payments as $payment){
-                    $payment->principal += $advP;
-                    $payment->interest += $advI;
-                    $shortP = $amortP < $payment->principal ? 0 : $amortP - $payment->principal;
-                    $advP = $amortP < $payment->principal ? $payment->principal - $amortP : 0;
-                    $shortI = $amortI < $payment->interest ? 0 : $amortI - $payment->interest;
-                    $advI = $amortI < $payment-> interest ? $payment->interest - $amortI : 0;
-                    $totalPayable = $payment->amount_applied + $shortI + $shortP;
-                    if($acc->lastPayment && $acc->lastPayment->payment_id == $payment->payment_id && $shortP > 0){
-                        if($acc->branch->endTransaction->date_end <= $amort->amortization_date){
-                            Amortization::find($amort->id)->fill([
-                                'status' => 'open'
-                            ])->save();
-                        }else{
-                            Amortization::find($amort->id)->fill([
-                                'status' => 'delinquent'
-                            ])->save();
-
-                            LoanAccountMigrationFix::find($acc->loan_account_id)->fill([
-                                'payment_status' => 'Delinquent'
-                            ])->save();
-                        }
-                    }
-                    Payment::find($payment->payment_id)->fill([
-                        "total_payable" => $totalPayable,
-                        "short_interest"=> $shortI,
-                        "short_principal"=> $shortP,
-                        "advance_interest"=> $advI,
-                        "advance_principal"=> $advP,
-                    ])->save();
-                    $amortP -= $payment->principal > $amortP ? $amortP : $payment->principal;
-                    $amortI -= $payment->interest > $amortI ? $amortI : $payment->interest;
-                }
-                if($amort->status != 'paid' && $acc->branch->endTransaction->date_end > $amort->amortization_date){
-                    Amortization::find($amort->id)->fill([
-                        'status' => 'delinquent'
-                    ])->save();
-
-                    LoanAccountMigrationFix::find($acc->loan_account_id)->fill([
-                        'payment_status' => 'Delinquent'
-                    ])->save();
-                }
-                Amortization::find($amort->id)->fill([
-                    'principal_balance' => $principal,
-                    'interest_balance' => $interest,
-                    'principal' => $currentAmortP,
-                    'interest' => $currentAmortI,
-                ])->save();
-            }
-
+            LoanAccountController::fixMigration($acc);
         }
-
-
     }
 }

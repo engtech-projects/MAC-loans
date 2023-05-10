@@ -64,7 +64,7 @@
 							<td>{{formatToCurrency(p.interest)}}</td>
 							<td>{{formatToCurrency(p.penalty_approval_no ? 0 : p.penalty)}}</td>
 							<td>{{formatToCurrency(p.pdi_approval_no ? 0 : p.pdi)}}</td>
-							<td>{{formatToCurrency(p.advance_interest + p.advance_principal)}}</td>
+							<td>{{formatToCurrency(p.over_payment)}}</td>
 							<td>{{formatToCurrency(p.rebates)}}</td>
 							<td>{{formatToCurrency(p.penalty_approval_no ? p.penalty : 0)}}</td>
 							<td>{{formatToCurrency(p.pdi_approval_no ? p.pdi : 0)}}</td>
@@ -415,7 +415,7 @@ export default {
 		overPayment:function(){
 			var amount = 0;
 			this.filteredPayments.map(function(payment){
-				amount += (payment.advance_principal + payment.advance_interest);
+				amount += (payment.over_payment);
 			});
 			return amount;
 		},
