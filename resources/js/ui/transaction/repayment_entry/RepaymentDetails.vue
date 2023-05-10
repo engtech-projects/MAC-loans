@@ -431,7 +431,7 @@
 													<span>PDI</span>
 													<span>:</span>
 												</div>
-                                                <input type="text" v-model="pdi" class="form-control flex-1" placeholder="PDI">
+                                                <input type="number" v-model.number="pdi" class="form-control flex-1" placeholder="PDI">
 												<!-- <span class="flex-1">P {{formatToCurrency(duePdi)}}</span> -->
 											</div>
 										</div>
@@ -632,7 +632,7 @@ export default {
 				status: 'closed',
 				date_end: '',
 			},
-            pdi:null,
+            pdi:0,
 			loanAccount:{
 				loan_account_id:null,
 				cycle_no : 1,
@@ -996,14 +996,14 @@ export default {
 			this.payment.rebates = this.rebatesApplied;
 			if(this.payment.payment_applied != ''){
 				// pdi
-				if(amount >= this.pdi){
-					amount -= this.pdi;
-					this.payment.pdi = this.pdi;
+				if(amount >= this.duePdi){
+					amount -= this.duePdi;
+					this.payment.pdi = this.duePdi;
 				}else{
 					this.payment.pdi = amount;
 					amount = 0;
 				}
-				this.payment.short_pdi = this.pdi - this.payment.pdi;
+				this.payment.short_pdi = this.duePdi - this.payment.pdi;
 				// penalty
 				if(amount >= this.duePenalty){
 					amount -= this.duePenalty;
@@ -1127,6 +1127,12 @@ export default {
 			return this.waive.rebates ? parseFloat(this.payment.rebatesInputted) : 0;
 		},
 		pdiWaive:function(){
+            if(this.pdi != this.duePdiCopy) {
+                return this.waive.pdi ? this.pdi : 0;
+            }
+		    return this.pdiWaiveCopy;
+		},
+        pdiWaiveCopy:function(){
 			if(this.loanAccount.remainingBalance){
 				return this.waive.pdi ? this.loanAccount.remainingBalance.pdi.balance : 0;
 			}
@@ -1163,13 +1169,17 @@ export default {
 		},
 
 		duePdi:function(){
-            var pdi = 0;
-			if(this.loanAccount.remainingBalance){
-				pdi = this.waive.pdi ? 0 : this.loanAccount.remainingBalance.pdi.balance;
-                this.pdi = pdi;
-                return pdi
+			if(this.pdi != this.duePdiCopy){
+                return this.waive.pdi ? 0 : this.pdi
 			}
-			return pdi;
+			return this.duePdiCopy;
+		},
+
+		duePdiCopy:function(){
+			if(this.loanAccount.remainingBalance){
+				return this.loanAccount.remainingBalance.pdi.balance;
+			}
+			return 0;
 		},
 		duePenalty:function(){
 			return this.waive.penalty ? 0 : this.loanAccount.current_amortization.penalty + this.loanAccount.current_amortization.short_penalty;
@@ -1253,8 +1263,12 @@ export default {
 		'loanAccount.loan_account_id':function(newValue){
 			this.payment.total_payable = this.totalDue;
 			this.payment.amortization_id = this.loanAccount.current_amortization.id;
+            this.pdi = parseFloat(this.loanAccount.remainingBalance.pdi.balance);
 		},
 		'waive.pdi':function(newValue){
+			this.distribute();
+		},
+		'pdi':function(newValue){
 			this.distribute();
 		},
 		'waive.penalty':function(newValue){
