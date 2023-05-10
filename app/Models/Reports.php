@@ -1144,6 +1144,7 @@ class Reports extends Model
 
                                 $accOfficers[$aoKey]["products"][$prodValue["product_name"]]["centers"][$centVal["center"]]['accounts'] = $acc;
 
+                            }
                         }
 
                     }
