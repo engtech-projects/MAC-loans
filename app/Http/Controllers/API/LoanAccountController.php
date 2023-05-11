@@ -340,7 +340,7 @@ class LoanAccountController extends BaseController
 
     public static function fixLoanAccountShortAndAdvances($i, $limit){
         // $accountsArray = LoanAccountMigrationFix::offset($i * $limit)->limit($limit)->get()->pluck('loan_account_id');
-        $accountsArray = LoanAccountMigrationFix::where('account_num', "001-003-0002743")->get()->pluck('loan_account_id');
+        $accountsArray = LoanAccountMigrationFix::where('account_num', "001-005-0000639")->get()->pluck('loan_account_id');
         // dd($accountsArray[0]);
         foreach($accountsArray as $acc_id){
             LoanAccountController::fixMigration($acc_id);
@@ -356,7 +356,7 @@ class LoanAccountController extends BaseController
         $shortP = 0;
         $shortI = 0;
         $principal = $acc->loan_amount;
-        $interest = $acc->interest_amount;
+        $interest = $acc->interest_amount - $acc->prepaid_interest;
         $pastLast = null;
         $pastLastDone = false;
         foreach($acc->amortizations as $amort){
