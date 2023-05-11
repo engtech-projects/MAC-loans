@@ -331,9 +331,9 @@ class Reports extends Model
         foreach ($payments as $payment) {
 
             $borrower = LoanAccount::find($payment->loan_account_id);
-            if($borrower) {
+            /* if($borrower) { */
                 $data['collection'][] = [
-                    'borrower' => Borrower::find($borrower->borrower_id)->fullname(),
+                    'borrower' => $borrower ? Borrower::find($borrower->borrower_id)->fullname() : '',
                     'date_paid' => $payment->transaction_date,
                     'or' => $payment->or_no,
                     'payment_type' => $payment->payment_type,
@@ -347,7 +347,7 @@ class Reports extends Model
                     'vat' => $payment->vat,
                     'memo_type' => $payment->memo_type
                 ];
-            }
+            //}
 
         }
 
