@@ -147,7 +147,6 @@ export default {
                     toUpdate = false;
 					console.log(error);
 				}.bind(this));
-                console.log(this.toUpdate)
                 if(this.toUpdate) {
                     this.loading = true
                     await axios.get(this.baseURL() + 'api/get-current-amortization/'+this.branch.branch_id,{
