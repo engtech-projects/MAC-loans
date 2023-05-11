@@ -159,12 +159,11 @@ export default {
                         var message = response.data.message
                         this.loading = false
                         this.toUpdate = false
-                        this.notify('',response.data.message,'success')
                     }.bind(this))
                     .catch(function(error) {
                         console.log(error)
                         this.loading = false
-                        this.isUpdating = false
+                        this.toUpdate = false
                     }.bind(this))
                 }
 		},
