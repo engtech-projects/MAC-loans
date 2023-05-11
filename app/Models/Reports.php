@@ -331,21 +331,23 @@ class Reports extends Model
         foreach ($payments as $payment) {
 
             $borrower = LoanAccount::find($payment->loan_account_id);
-            $data['collection'][] = [
-                'borrower' => Borrower::find($borrower->borrower_id)->fullname(),
-                'date_paid' => $payment->transaction_date,
-                'or' => $payment->or_no,
-                'payment_type' => $payment->payment_type,
-                'principal' => $payment->principal,
-                'interest' => $payment->interest,
-                'pdi' => $payment->pdi,
-                'over' => $payment->over_payment,
-                'discount' => $payment->rebates,
-                'total_payment' => $payment->amount_applied-$payment->rebates,
-                'net_int' => $payment->interest,
-                'vat' => $payment->vat,
-                'memo_type' => $payment->memo_type
-            ];
+            if($borrower) {
+                $data['collection'][] = [
+                    'borrower' => Borrower::find($borrower->borrower_id)->fullname(),
+                    'date_paid' => $payment->transaction_date,
+                    'or' => $payment->or_no,
+                    'payment_type' => $payment->payment_type,
+                    'principal' => $payment->principal,
+                    'interest' => $payment->interest,
+                    'pdi' => $payment->pdi,
+                    'over' => $payment->over_payment,
+                    'discount' => $payment->rebates,
+                    'total_payment' => $payment->amount_applied-$payment->rebates,
+                    'net_int' => $payment->interest,
+                    'vat' => $payment->vat,
+                    'memo_type' => $payment->memo_type
+                ];
+            }
 
         }
 
