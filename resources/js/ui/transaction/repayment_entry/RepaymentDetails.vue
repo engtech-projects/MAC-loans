@@ -427,11 +427,12 @@
 												<span class="flex-1">P {{formatToCurrency(duePenalty)}}</span>
 											</div>
 											<div class="d-flex flex-row mb-7">
-												<div class="d-flex flex-row justify-content-between flex-1 mr-16">
+												<div class="d-flex flex-row justify-content-between flex-1">
 													<span>PDI</span>
 													<span>:</span>
 												</div>
-												<span class="flex-1">P {{formatToCurrency(duePdi)}}</span>
+                                                <input type="number" step="0.01" v-model.number="pdi" class="form-control flex-1" placeholder="PDI">
+												<!-- <span class="flex-1">P {{formatToCurrency(duePdi)}}</span> -->
 											</div>
 										</div>
 										<div class="d-flex flex-column mb-auto">
@@ -631,6 +632,7 @@ export default {
 				status: 'closed',
 				date_end: '',
 			},
+            pdi:0,
 			loanAccount:{
 				loan_account_id:null,
 				cycle_no : 1,
@@ -700,6 +702,7 @@ export default {
 						advance_principal:'',
 					}
 				},
+                pastdue_interest:null,
 				remainingBalance:{
 					memo:{
 						debit:0,
@@ -1124,6 +1127,12 @@ export default {
 			return this.waive.rebates ? parseFloat(this.payment.rebatesInputted) : 0;
 		},
 		pdiWaive:function(){
+            if(this.pdi != this.duePdiCopy) {
+                return this.waive.pdi ? this.pdi : 0;
+            }
+		    return this.pdiWaiveCopy;
+		},
+        pdiWaiveCopy:function(){
 			if(this.loanAccount.remainingBalance){
 				return this.waive.pdi ? this.loanAccount.remainingBalance.pdi.balance : 0;
 			}
@@ -1160,8 +1169,15 @@ export default {
 		},
 
 		duePdi:function(){
+			if(this.pdi != this.duePdiCopy){
+                return this.waive.pdi ? 0 : this.pdi
+			}
+			return this.duePdiCopy;
+		},
+
+		duePdiCopy:function(){
 			if(this.loanAccount.remainingBalance){
-				return this.waive.pdi ? 0 : this.loanAccount.remainingBalance.pdi.balance;
+				return this.loanAccount.remainingBalance.pdi.balance;
 			}
 			return 0;
 		},
@@ -1247,8 +1263,12 @@ export default {
 		'loanAccount.loan_account_id':function(newValue){
 			this.payment.total_payable = this.totalDue;
 			this.payment.amortization_id = this.loanAccount.current_amortization.id;
+            this.pdi = parseFloat(this.loanAccount.remainingBalance.pdi.balance);
 		},
 		'waive.pdi':function(newValue){
+			this.distribute();
+		},
+		'pdi':function(newValue){
 			this.distribute();
 		},
 		'waive.penalty':function(newValue){
