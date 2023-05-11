@@ -108,6 +108,7 @@ export default {
 			branch:{
 				branch_id:null,
 			},
+            toUpdate:false,
 			failed:false,
 			loading:false,
 			success:false,
@@ -137,13 +138,34 @@ export default {
 						this.notify('','Transaction date has been set successfully', 'success');
 						this.fetchTransactionDate();
 						document.getElementById("currentTransactionDate").value = this.newTransactionDate;
+                        this.toUpdate = true
 					}
 
 				}.bind(this))
 				.catch(function (error) {
 					this.notify('',error.response.data.data, 'error');
+                    toUpdate = false;
 					console.log(error);
 				}.bind(this));
+                if(this.toUpdate) {
+                    this.loading = true
+                    await axios.get(this.baseURL() + 'api/get-current-amortization/'+this.branch.branch_id,{
+                        headers:{
+                            'Authorization': 'Bearer ' + this.token,
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json'
+                        }
+                    }).then(function(response) {
+                        var message = response.data.message
+                        this.loading = false
+                        this.toUpdate = false
+                    }.bind(this))
+                    .catch(function(error) {
+                        console.log(error)
+                        this.loading = false
+                        this.toUpdate = false
+                    }.bind(this))
+                }
 		},
 		async fetchTransactionDate(){
 			await axios.get(this.baseURL() + 'api/eod/eodtransaction/' + this.branch.branch_id,{
