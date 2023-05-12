@@ -902,7 +902,7 @@ export default {
 				ao_id:this.filter.ao_id=='all'?null:this.filter.ao_id,
 				center_id:this.filter.center_id=='all'?null:this.filter.center_id,
 				product_id:this.filter.product_id=='all'?null:this.filter.product_id,
-				branch_id:this.pbranch
+				branch_id:this.pbranch.branch_id
 			}
 			axios.post(this.baseURL() + 'api/account/overrrideaccounts', filter, {
 				headers: {
