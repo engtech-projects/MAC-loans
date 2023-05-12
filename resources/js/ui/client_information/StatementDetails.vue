@@ -66,11 +66,17 @@
 					</div>
 					<div class="col-xl-1 col-lg-6">
 						<div class="info-display">
+							<span>Age</span>
+							<span>{{calculateAge(dateToYMD(new Date(borrower.birthdate)))}}</span>
+						</div>
+					</div>
+					<div class="col-xl-1 col-lg-6">
+						<div class="info-display">
 							<span>Gender</span>
 							<span>{{capitalizeFirstLetter(borrower.gender)}}</span>
 						</div>
 					</div>
-					<div class="col-xl-2 col-lg-6">
+					<div class="col-xl-1 col-lg-6">
 						<div class="info-display">
 							<span>Status</span>
 							<span>{{capitalizeFirstLetter(borrower.status)}}</span>
