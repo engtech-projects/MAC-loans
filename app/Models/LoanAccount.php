@@ -1345,10 +1345,18 @@ class LoanAccount extends Model
         return collect($amortizations)->sortBy("amort_no")->values()->all();
     }
 
-    public function updateDocuments($account_num) {
-        Document::where('loan_account_id',$this->loan_account_id)->update([
-            'promissory_number'   =>      $account_num
+    public function updateLoanAccount($accountNum) {
+        $loanAccount = LoanAccount::find($this->loan_account_id);
+        $loanAccount->update([
+            'account_num'   =>  $accountNum
         ]);
+        $loanAccount->save();
+        if($loanAccount) {
+            Document::where('loan_account_id',$this->loan_account_id)->update([
+                'promissory_number'   =>      $accountNum
+            ]);
+        }
+
     }
 
     public static function getPaymentStatus($id)

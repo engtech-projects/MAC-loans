@@ -105,11 +105,7 @@ class LoanAccountController extends BaseController
 			$request->request->add(objToArray(json_decode($request->input('data'))));
 		}
         $account->fill($request->input());
-        $account->updateDocuments($request->account_num);
-        UpdateDocuments::dispatch([
-            'loan_account_id' => $account->loan_account_id,
-            'account_num' => $request->account_num
-        ]);
+        $account->updateLoanAccount($request->account_num);
         $account->save();
         if($request->input('data')) {
 
