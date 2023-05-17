@@ -1347,7 +1347,7 @@ class LoanAccount extends Model
 
     public function updateDocuments($account_num) {
         Document::where('loan_account_id',$this->loan_account_id)->update([
-            'account_no'   =>      $account_num
+            'promissory_number'   =>      $account_num
         ]);
     }
 
