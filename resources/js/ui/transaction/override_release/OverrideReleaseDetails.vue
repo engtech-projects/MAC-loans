@@ -410,6 +410,7 @@
 							<th>Insurance</th>
 							<th>Notarial</th>
 							<th>Prepaid Interest</th>
+							<th>VAT</th>
 							<th>Other / Mem</th>
 							<th>Net Amount</th>
 							<th>Cash Release Type</th>
@@ -423,6 +424,7 @@
 								<td>{{formatToCurrency(fo.insurance)}}</td>
 								<td>{{formatToCurrency(fo.notarial_fee)}}</td>
 								<td>{{formatToCurrency(fo.prepaid_interest)}}</td>
+								<td>{{formatToCurrency(0)}}</td>
 								<td>{{formatToCurrency(fo.memo)}}</td>
 								<td>{{formatToCurrency(fo.net_proceeds)}}</td>
 								<td>{{fo.release_type}}</td>
@@ -435,6 +437,7 @@
 								<td>{{formatToCurrency(totalInsurance)}}</td>
 								<td>{{formatToCurrency(totalNotarialFee)}}</td>
 								<td>{{formatToCurrency(totalPrepaidInterest)}}</td>
+								<td>{{formatToCurrency(0)}}</td>
 								<td>{{formatToCurrency(totalMemoView)}}</td>
 								<td>{{formatToCurrency(totalNetProceeds)}}</td>
 								<td></td>
@@ -628,7 +631,7 @@
 								</div>
 							</div>
 
-							<table class="table dark-border th-nb th-bb-dark mb-24">
+							<table class="table dark-border th-nb th-bb-dark mb-24 table-thin">
 								<thead>
 									<th >Acct</th>
 									<th >Title</th>
