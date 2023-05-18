@@ -294,7 +294,11 @@
 										</select>
 									</div>
 								</div>
-								<div class="flex-1" v-if="payment.payment_type=='Memo'"></div>
+								<div class="form-group mb-10 flex-1  mr-16" v-if="payment.payment_type=='Memo'&&payment.memo_type=='Interbranch'">
+									<label for="transactionDate" class="form-label">OR</label>
+									<input required v-model="payment.or_no" type="text" class="form-control form-input" id="transactionDate">
+								</div>
+								<div class="flex-1" v-if="payment.payment_type=='Memo'&&payment.memo_type!='Interbranch'"></div>
 							</div>
 							<div class="d-flex flex-row mb-24">
 								<div class="form-group mb-0 flex-2 mr-24">
