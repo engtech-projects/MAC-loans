@@ -14,7 +14,7 @@
 				<h1 class="m-0 font-35">Statement of Account Details</h1>
 		</div><!-- /.col -->
 
-	
+
 	<div class="sep mb-24"></div>
 	<section class="d-flex mb-24">
 		<div class="d-flex flex-1 flex-sm-row personal-info" style="margin-bottom:24px;">
@@ -1829,7 +1829,7 @@
 										<div class="form-group mb-10 mr-16 flex-1">
 											<label for="transactionDate" class="form-label">Account No.</label>
 											<div class="form-group">
-												<input v-model="editAccount.account_num" type="text" disabled class="form-control form-input">
+												<input v-model="editAccount.account_num" type="text" class="form-control form-input">
 											</div>
 										</div>
 										<div class="form-group mb-10 mr-16 flex-1">
@@ -1887,7 +1887,7 @@
 											</div>
 										</div>
 										<div class="form-group mb-10 mr-16 flex-1 d-flex align-items-end">
-											<button @click="updateAccount({'payment_status':editAccount.payment_history}, 'Payment Status')" data-dismiss="modal" class="btn btn-success" style="margin-bottom:1rem;width:100%;height:47px;">UPDATE</button>
+											<button @click="updateAccount({'payment_status':editAccount.payment_history,'account_num':editAccount.account_num}, 'Payment Status')" data-dismiss="modal" class="btn btn-success" style="margin-bottom:1rem;width:100%;height:47px;">UPDATE</button>
 										</div>
 									</div>
 								</div>
@@ -2087,7 +2087,6 @@
 				this.pagination.page = page;
 			},
 			async updateAccount(data, type){
-				console.log(data);
 				await axios.post(this.baseURL() + 'api/account/update/' + this.editAccount.account_id, data, {
 					headers: {
 						'Authorization': 'Bearer ' + this.token,
@@ -2097,7 +2096,10 @@
 				.then(function (response) {
 					this.notify('', type + ' has been updated successfully.', 'success');
 					if(type=='Payment Status'){
-						this.updateAccount({'loan_status':this.editAccount.loan_status}, 'Loan Status')
+						this.updateAccount({
+                            'loan_status':this.editAccount.loan_status,
+                            'account_num':this.editAccount.account_num
+                        }, 'Loan Status')
 					}
 				}.bind(this))
 				.catch(function (error) {

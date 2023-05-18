@@ -19,6 +19,7 @@ use App\Http\Resources\Borrower as BorrowerResource;
 use App\Http\Resources\LoanAccount as LoanAccountResource;
 use App\Http\Resources\Amortization as AmortizationResource;
 use App\Jobs\FixShortAdvMigration;
+use App\Jobs\UpdateDocuments;
 use App\Models\LoanAccountMigrationFix;
 
 class LoanAccountController extends BaseController
@@ -99,10 +100,12 @@ class LoanAccountController extends BaseController
     }
 
 	public function updateLoanAccount(Request $request, LoanAccount $account) {
+
 		if($request->input('data')){
 			$request->request->add(objToArray(json_decode($request->input('data'))));
 		}
         $account->fill($request->input());
+        $account->updateLoanAccount($request->account_num);
         $account->save();
         if($request->input('data')) {
 
@@ -434,7 +437,7 @@ class LoanAccountController extends BaseController
                 Amortization::find($amort->id)->fill([
                     'status' => 'delinquent'
                 ])->save();
-                
+
                 LoanAccountMigrationFix::find($acc->loan_account_id)->fill([
                     'payment_status' => 'Delinquent'
                 ])->save();
