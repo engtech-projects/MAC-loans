@@ -43,7 +43,7 @@
 							<span class="">Filling Fee</span>
 							<span>:</span>
 						</div>
-						<span class="flex-1 text-primary-dark">{{loanaccount.filing_fee}}</span>
+						<span class="flex-1 text-primary-dark">{{formatToCurrency(loanaccount.filing_fee)}}</span>
 					</div>
 
 					<div class="d-flex flex-row mb-12">
@@ -51,7 +51,7 @@
 							<span class="">Documents</span>
 							<span>:</span>
 						</div>
-						<span class="flex-1 text-primary-dark">{{loanaccount.document_stamp}}</span>
+						<span class="flex-1 text-primary-dark">{{formatToCurrency(loanaccount.document_stamp)}}</span>
 					</div>
 
 					<div class="d-flex flex-row mb-12">
