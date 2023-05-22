@@ -268,11 +268,16 @@
 								<div class="form-group mb-10 mr-16 flex-1" v-if="payment.payment_type=='Check Payment'||payment.payment_type=='POS'">
 									<label for="transactionDate" class="form-label">Bank Name</label>
 									<div class="form-group">
-										<select required v-model="payment.bank_name" class="form-control form-input">
-											<option value="Land Bank">Land Bank</option>
-											<option value="PNB">PNB</option>
-											<option value="BDO">BDO</option>
-										</select>
+										<input @blur="addAnotherBank" v-if="chequeAdd" type="text" v-model="payment.bank_name" class="form-control form-input">
+										<div class="d-flex" v-if="!chequeAdd">
+											<select required v-model="payment.bank_name" class="form-control form-input">
+												<option v-for="b,i in banks" :key="i" :value="b">{{b}}</option>
+												<!-- <option value="Land Bank">Land Bank</option>
+												<option value="PNB">PNB</option>
+												<option value="BDO">BDO</option> -->
+											</select>
+											<a @click.prevent="chequeAdd=true" href="#" class="btn btn-defualt form-input"><i class="fa fa-plus"></i></a>
+										</div>
 									</div>
 								</div>
 								<div class="form-group mb-10 flex-1  mr-16" v-if="payment.payment_type=='Memo'">
@@ -289,7 +294,11 @@
 										</select>
 									</div>
 								</div>
-								<div class="flex-1" v-if="payment.payment_type=='Memo'"></div>
+								<div class="form-group mb-10 flex-1  mr-16" v-if="payment.payment_type=='Memo'&&payment.memo_type=='Interbranch'">
+									<label for="transactionDate" class="form-label">OR</label>
+									<input required v-model="payment.or_no" type="text" class="form-control form-input" id="transactionDate">
+								</div>
+								<div class="flex-1" v-if="payment.payment_type=='Memo'&&payment.memo_type!='Interbranch'"></div>
 							</div>
 							<div class="d-flex flex-row mb-24">
 								<div class="form-group mb-0 flex-2 mr-24">
@@ -626,6 +635,8 @@ export default {
 	props:['pborrower','token', 'pbranch', 'ppaymenttype'],
 	data(){
 		return {
+			banks:['Land Bank', 'PNB', 'BDO'],
+			chequeAdd:false,
 			paymentType:'Cash Payment',
 			transactionDate: {
 				branch_id: this.pbranch,
@@ -774,6 +785,12 @@ export default {
 		}
 	},
 	methods:{
+		addAnotherBank:function() {
+			if(this.payment.bank_name && this.payment.bank_name.length > 0 && this.banks.filter(b=>b.toLowerCase()===this.payment.bank_name.toLowerCase()).length == 0){
+				this.banks.push(this.payment.bank_name);
+			}
+			this.chequeAdd=false
+		},
 		resetPayment:function(){
 			this.payment = {
 				payment_id:null,

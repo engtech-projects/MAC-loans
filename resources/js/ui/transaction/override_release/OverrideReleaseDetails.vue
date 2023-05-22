@@ -59,7 +59,7 @@
 							<span class="">Insurance</span>
 							<span>:</span>
 						</div>
-						<span class="flex-1 text-primary-dark">{{loanaccount.insurance}}</span>
+						<span class="flex-1 text-primary-dark">{{formatToCurrency(loanaccount.insurance)}}</span>
 					</div>
 
 					<div class="d-flex flex-row mb-12">
@@ -67,7 +67,7 @@
 							<span class="">Notarial</span>
 							<span>:</span>
 						</div>
-						<span class="flex-1 text-primary-dark">{{loanaccount.notarial_fee}}</span>
+						<span class="flex-1 text-primary-dark">{{formatToCurrency(loanaccount.notarial_fee)}}</span>
 					</div>
 
 					<div class="d-flex flex-row mb-12">
@@ -91,7 +91,7 @@
 							<span class="">Net Amount</span>
 							<span>:</span>
 						</div>
-						<span class="flex-1 text-primary-dark">{{loanaccount.net_proceeds}}</span>
+						<span class="flex-1 text-primary-dark">{{formatToCurrency(loanaccount.net_proceeds)}}</span>
 					</div>
 
 					<div class="d-flex flex-row mb-12">
