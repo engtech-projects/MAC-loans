@@ -483,13 +483,6 @@
 											</div>
 											<div class="d-flex flex-row mb-7">
 												<div class="d-flex flex-row justify-content-between flex-1 mr-16">
-													<span>Total Waive</span>
-													<span>:</span>
-												</div>
-												<span class="flex-1">P {{formatToCurrency(totalWaive)}}</span>
-											</div>
-											<div class="d-flex flex-row mb-7">
-												<div class="d-flex flex-row justify-content-between flex-1 mr-16">
 													<span>Rebates</span>
 													<span>:</span>
 												</div>
@@ -517,7 +510,13 @@
 													</div>
 													<span class="flex-1">P {{formatToCurrency(penaltyWaive)}}</span>
 												</div>
-
+												<div class="d-flex flex-row mb-7">
+													<div class="d-flex flex-row justify-content-between flex-1 mr-16">
+														<span>Total Waive</span>
+														<span>:</span>
+													</div>
+													<span class="flex-1">P {{formatToCurrency(totalWaive)}}</span>
+												</div>
 											</div>
 											<div v-if="dueExcess">
 												<span>Excess:</span>
