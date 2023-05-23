@@ -828,9 +828,12 @@ class Reports extends Model
         $branch = Branch::find($filters['branch_id']);
         $data = [];
         if($filters["group"] == Reports::BRANCH_AO_PERFORMANCE){
-               $accOfficers = NULL;
+            $accOfficers = NULL;
+            $transDate = new EndTransaction();
+            $transactionDateNow = $transDate->getTransactionDate($filters['branch_id'])->date_end;
 
             if( isset($filters["branch_id"]) && $filters["branch_id"] ) {
+
 
                 $accOfficers =  AccountOfficer::join('account_officer_branch','account_officer.ao_id', '=', 'account_officer_branch.ao_id')
                                         ->join('branch','account_officer_branch.branch_id', '=', 'branch.branch_id')
@@ -869,7 +872,7 @@ class Reports extends Model
                         "product_id"=>$prodValue["product_id"],
                         "branch_code" => $branch->branch_code
                     ])
-                    ->whereIn("loan_status",[LoanAccount::LOAN_ONGOING, LoanAccount::LOAN_PASTDUE, LoanAccount::LOAN_RESTRUCTED, LoanAccount::LOAN_RES_WO_PDI])
+                    ->whereIn('loan_status', [LoanAccount::LOAN_ONGOING, LoanAccount::LOAN_PASTDUE,LoanAccount::LOAN_RESTRUCTED, LoanAccount::LOAN_RES_WO_PDI])
                     ->without(['documents', 'borrower', 'center', 'branch', 'product', 'accountOfficer', 'payments'])
                     ->get();
 
@@ -883,9 +886,6 @@ class Reports extends Model
                             $principalBalance = $value->remainingBalance()["principal"]["balance"];
                             $memoBal = $value->remainingBalance()["memo"]["balance"];
                             $totalBal = $memoBal < 0 ? 0 : $memoBal;
-
-                            $loan_status = $value->loan_status;
-                            /* $exclude = $loan_status == LoanAccount::LOAN_RES_WO_PDI && $totalBal == 0 || $loan_status == LoanAccount::LOAN_RESTRUCTED && $totalBal == 0; */
                             if($value->loan_status == LoanAccount::LOAN_RES_WO_PDI && $totalBal == 0 || $value->loan_status == LoanAccount::LOAN_RESTRUCTED && $totalBal == 0) {
                                 continue;
                             }else {
@@ -900,17 +900,13 @@ class Reports extends Model
                                         // $tempProd["delinquent"]["account"] = $amortization;
                                         // break;
                                     }
-                                }
-
-                                if( $value->loan_status == LoanAccount::LOAN_PASTDUE ) {
+                                }else {
                                     $tempProd["pastdue"]["count"] += 1;
                                     $tempProd["pastdue"]["amount"] += $principalBalance;
-
                                 }
-                            }
-                            /* $tempProd["all"]["count"] += 1;
-                            $tempProd["all"]["amount"] += $principalBalance; */
 
+
+                            }
 
                         }
                         if($tempProd["all"]["count"] == 0) {
@@ -927,7 +923,6 @@ class Reports extends Model
 
                 }
             }
-
             $data = $accOfficers;
         }else if($filters["group"] == Reports::BRANCH_AO_WRITEOFF){
             $writeoffAccounts = [];
