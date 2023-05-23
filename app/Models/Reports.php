@@ -886,11 +886,11 @@ class Reports extends Model
                             $principalBalance = $value->remainingBalance()["principal"]["balance"];
                             $memoBal = $value->remainingBalance()["memo"]["balance"];
                             $totalBal = $memoBal < 0 ? 0 : $memoBal;
-                            $tempProd["all"]["count"] += 1;
-                            $tempProd["all"]["amount"] += $principalBalance;
                             if($value->loan_status == LoanAccount::LOAN_RES_WO_PDI && $totalBal == 0 || $value->loan_status == LoanAccount::LOAN_RESTRUCTED && $totalBal == 0) {
                                 continue;
                             }else {
+                                $tempProd["all"]["count"] += 1;
+                                $tempProd["all"]["amount"] += $principalBalance;
                                 if( $value->loan_status == LoanAccount::LOAN_ONGOING ) {
 
                                     if( $value->payment_status == LoanAccount::PAYMENT_DELINQUENT ) {
