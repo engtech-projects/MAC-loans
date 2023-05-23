@@ -1,5 +1,12 @@
 <template>
 		<div class="d-flex flex-column" style="flex:8;">
+			<div v-if="loading" class="black-screen d-flex flex-column align-items-center justify-content-center" style="padding-left:0px;">
+				<div class="loading-container d-flex align-items-center justify-content-center mb-36">
+					<span class="loading-text">LOADING</span>
+					<img :src="baseURL() + 'img/loading_default.png'" class="rotating" alt="" style="width:300px;height:300px">
+				</div>
+				<span class="font-lg" style="color:#ddd">Please wait until the process is complete</span>
+			</div>
 			<div class="d-flex flex-row font-md align-items-center mb-16">
 				<span class="font-lg text-primary-dark" style="flex:3">Transaction</span>
 				<div class="d-flex flex-row align-items-center mr-24" style="flex:2">
@@ -136,8 +143,20 @@
 								<th>VAT</th>
 							</thead>
 							<tbody>
-								<tr :class="rowBorders(p[0])" v-for="p,i in paymentSummary" :key="i">
+								<tr :class="rowBorders(p[0])" v-for="p,i in paymentSummary.row" :key="i">
 									<td v-for="j,k in p" :key="k">{{p[0]=='TOTAL PRODUCT'&&k>1?formatToCurrency(j):j}}</td>
+								</tr>
+								<tr class="bg-primary-dark text-white text-bold">
+									<td style="padding:7px!important">TOTAL</td>
+									<td style="padding:7px!important"></td>
+									<td style="padding:7px!important">{{formatToCurrency(paymentSummary.total.principal)}}</td>
+									<td style="padding:7px!important">{{formatToCurrency(paymentSummary.total.interest)}}</td>
+									<td style="padding:7px!important">{{formatToCurrency(paymentSummary.total.pdint)}}</td>
+									<td style="padding:7px!important">{{formatToCurrency(paymentSummary.total.over)}}</td>
+									<td style="padding:7px!important">{{formatToCurrency(paymentSummary.total.discount)}}</td>
+									<td style="padding:7px!important">{{formatToCurrency(paymentSummary.total.totalPayment)}}</td>
+									<td style="padding:7px!important">{{formatToCurrency(paymentSummary.total.netInt)}}</td>
+									<td style="padding:7px!important">{{formatToCurrency(paymentSummary.total.vat)}}</td>
 								</tr>
 							</tbody>
 						</table>
@@ -492,6 +511,7 @@ export default {
 	props:['token','branch','branch_name','branch_code'],
 	data(){
 		return {
+			loading:false,
 			type:'product',
 			transactions:{product:[],client:{release:[],collection:[]}},
 			filter:{
@@ -515,6 +535,7 @@ export default {
 	},
 	methods:{
 		async fetchTransactions(){
+			this.loading = true;
 			await axios.post(this.baseURL() + 'api/report/transaction', this.filter, {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
@@ -523,10 +544,12 @@ export default {
 				}
 			})
 			.then(function (response) {
+				this.loading = false;
 				this.transactions = response.data.data;
 				console.log(response.data.data);
 			}.bind(this))
 			.catch(function (error) {
+				this.loading = false;
 				console.log(error);
 			}.bind(this));
 		},
@@ -717,7 +740,7 @@ export default {
 		},
 
 		paymentSummary:function(){
-			var result = [];
+			var result = {row:[],total:{principal:0,interest:0,pdint:0,over:0,discount:0,totalPayment:0,netInt:0,vat:0}};
 			this.paymentSummaryTotal = {
 				cash:0,
 				check:0,
@@ -762,33 +785,41 @@ export default {
 					row.push(i.toUpperCase());
 					row.push(this.formatToCurrency(t.payment[i].principal));
 					totalRow[index] += t.payment[i].principal;
+					result.total.principal += t.payment[i].principal;
 					index++;
 					row.push(this.formatToCurrency(t.payment[i].interest));
 					totalRow[index] += t.payment[i].interest;
+					result.total.interest += t.payment[i].interest;
 					index++;
 					row.push(this.formatToCurrency(t.payment[i].pdi));
 					totalRow[index] += t.payment[i].pdi;
+					result.total.pdint += t.payment[i].pdi;
 					index++;
 					row.push(this.formatToCurrency(t.payment[i].over));
 					totalRow[index] += t.payment[i].over;
+					result.total.over += t.payment[i].over;
 					index++;
 					row.push(this.formatToCurrency(t.payment[i].discount));
 					totalRow[index] += t.payment[i].discount;
+					result.total.discount += t.payment[i].discount;
 					index++;
 					row.push(this.formatToCurrency(t.payment[i].total_payment));
 					totalRow[index] += t.payment[i].total_payment;
+					result.total.totalPayment += t.payment[i].total_payment;
 					index++;
 					row.push(this.formatToCurrency(t.payment[i].net_int));
 					totalRow[index] += t.payment[i].net_int;
+					result.total.netInt += t.payment[i].net_int;
 					index++;
 					row.push(this.formatToCurrency(t.payment[i].vat));
 					totalRow[index] += t.payment[i].vat;
-					result.push(row);
+					result.total.vat += t.payment[i].vat;
+					result.row.push(row);
 				}
 				if(index != 2){
-					result.push([' ','','','','','','','','',''])
-					result.push(totalRow)
-					result.push(['  ','','','','','','','','',''])
+					result.row.push([' ','','','','','','','','',''])
+					result.row.push(totalRow)
+					result.row.push(['  ','','','','','','','','',''])
 				}
 			})
 			return result;
