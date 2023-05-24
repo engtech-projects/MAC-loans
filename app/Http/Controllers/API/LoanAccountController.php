@@ -390,7 +390,13 @@ class LoanAccountController extends BaseController
                 $totalPayable = $payment->amount_applied + $shortI + $shortP;
 
                 if($acc->lastPayment && $acc->lastPayment->payment_id == $payment->payment_id ){
-                    if($payment->transaction_date > $amort->amortization_date && (sizeof($amort->payments) > 1) && $prevPaid){
+                    if(
+                        $payment->transaction_date > $amort->amortization_date &&
+                        ( 
+                            (sizeof($amort->payments) > 1 && $prevPaid) ||  
+                            $acc->product->product_code == '003'
+                        )
+                    ){
                         $pastLast = $amort->id;
                     }
                     if($shortP > 0){
