@@ -41,7 +41,7 @@ jobs:
           cache: 'npm'
       - run: |
           npm ci
-          npm run generate
+          npm run production
       - name: Copy to Laragon WWW
         run: xcopy /s /y . C:\laragon\www\$env:NUXT_OUTPUT_NAME\
         shell: powershell
