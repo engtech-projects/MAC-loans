@@ -314,9 +314,11 @@ class LoanAccountController extends BaseController
 
     }
 
-    public function fixShortAdv(){
-        $type = 'realtime'; // realtime or background
-        $type = 'background'; // realtime or background
+    public function fixShortAdv(Request $request){
+        $accNum = $request->input("account_num");
+        $type = $request->input("type") ?? 'background'; 
+        // $type = 'realtime'; // realtime or background
+        // $type = 'background'; // realtime or background
         $limit = 10;
         $start = 0;
         $totalPages = 1500;
@@ -327,7 +329,7 @@ class LoanAccountController extends BaseController
                 FixShortAdvMigration::dispatch($i, $limit)->onQueue($i % $workers);
             }else if($type == 'realtime'){
                 // For Using just waiting in front end / Realtime
-                LoanAccountController::fixLoanAccountShortAndAdvances($i, $limit);
+                LoanAccountController::fixLoanAccountShortAndAdvances($i, $limit, $accNum);
                 break;
             }else{
                 break;
@@ -341,9 +343,9 @@ class LoanAccountController extends BaseController
         return response()->json(["data"=>"failed", 'message'=>'wrong type'],200); // Realtime
     }
 
-    public static function fixLoanAccountShortAndAdvances($i, $limit){
+    public static function fixLoanAccountShortAndAdvances($i, $limit, $accNum){
         // $accountsArray = LoanAccountMigrationFix::offset($i * $limit)->limit($limit)->get()->pluck('loan_account_id');
-        $accountsArray = LoanAccountMigrationFix::where('account_num', "001-005-0000639")->get()->pluck('loan_account_id');
+        $accountsArray = LoanAccountMigrationFix::where('account_num', $accNum)->get()->pluck('loan_account_id');
         // dd($accountsArray[0]);
         foreach($accountsArray as $acc_id){
             LoanAccountController::fixMigration($acc_id);
@@ -387,13 +389,16 @@ class LoanAccountController extends BaseController
                 $totalPayable = $payment->amount_applied + $shortI + $shortP;
 
                 if($acc->lastPayment && $acc->lastPayment->payment_id == $payment->payment_id ){
-                    if($payment->transaction_date < $amort->amortization_date){
+                    if($payment->transaction_date > $amort->amortization_date){
                         $pastLast = $amort->id;
                     }
                     if($shortP > 0){
                         if($acc->branch->endTransaction->date_end <= $amort->amortization_date){
                             Amortization::find($amort->id)->fill([
                                 'status' => 'open'
+                            ])->save();
+                            LoanAccountMigrationFix::find($acc->loan_account_id)->fill([
+                                'payment_status' => 'Current'
                             ])->save();
                         }else{
                             Amortization::find($amort->id)->fill([
@@ -422,16 +427,10 @@ class LoanAccountController extends BaseController
                 }
             }
             $amort->refresh();
-            if($advI + $advP >= 0 && $pastLast != null && $pastLast < $amort->id && !$pastLastDone && $acc->product->product_code == '003'){
+            if($pastLast != null && $pastLast < $amort->id && !$pastLastDone && $acc->product->product_code == '003'){
                 $pastLastDone = true;
-                $advI -= $currentAmortI;
-                $advP -= $currentAmortP;
                 Payment::find($acc->lastPayment->payment_id)->fill([
-                    "advance_interest"=> $advI,
-                    "advance_principal"=> $advP,
-                ])->save();
-                Amortization::find($amort->id)->fill([
-                    'status' => 'paid'
+                    "amortization_id"=> $amort->id,
                 ])->save();
             }else if($amort->status != 'paid' && $acc->branch->endTransaction->date_end > $amort->amortization_date){
                 Amortization::find($amort->id)->fill([
