@@ -392,8 +392,9 @@ class LoanAccountController extends BaseController
                 if($acc->lastPayment && $acc->lastPayment->payment_id == $payment->payment_id ){
                     if(
                         $payment->transaction_date > $amort->amortization_date &&
+                        sizeof($amort->payments) > 1 &&
                         ( 
-                            (sizeof($amort->payments) > 1 && $prevPaid) ||  
+                            $prevPaid ||  
                             $acc->product->product_code == '003'
                         )
                     ){
@@ -443,7 +444,7 @@ class LoanAccountController extends BaseController
                 Payment::find($acc->lastPayment->payment_id)->fill([
                     "amortization_id"=> $amort->id,
                 ])->save();
-            }else if($amort->status != 'paid' && $acc->branch->endTransaction->date_end > $amort->amortization_date){
+            }else if($amort->status != 'paid' && $acc->branch->endTransaction->date_end > $amort->amortization_date && $amortP <= 0){
                 Amortization::find($amort->id)->fill([
                     'status' => 'delinquent'
                 ])->save();
