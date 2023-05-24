@@ -883,8 +883,11 @@ class Reports extends Model
                         $tempProd["pastdue"] = ["count" => 0, "amount" => 0, "rate" => 0];
 
                         foreach ( $allAOProd as $key => $value ) {
-                            $principalBalance = $value->remainingBalance()["principal"]["balance"];
-                            $memoBal = $value->remainingBalance()["memo"]["balance"];
+                            $remainBal = $value->remainingBalance();
+                            $principalBalance = $remainBal["principal"]["balance"];
+                            $memoBal = $remainBal["memo"]["balance"];
+                            $currentAmort = $this->getCurrentAmortization($value->getCurrentAmortization(),$remainBal);
+
                             $totalBal = $memoBal < 0 ? 0 : $memoBal;
                             if($value->loan_status == LoanAccount::LOAN_RES_WO_PDI && $totalBal == 0 || $value->loan_status == LoanAccount::LOAN_RESTRUCTED && $totalBal == 0) {
                                 continue;
@@ -894,9 +897,8 @@ class Reports extends Model
                                 if( $value->loan_status == LoanAccount::LOAN_ONGOING ) {
 
                                     if( $value->payment_status == LoanAccount::PAYMENT_DELINQUENT ) {
-                                        $amortization = $value->getCurrentAmortization();
                                         $tempProd["delinquent"]["count"] += 1;
-                                        $tempProd["delinquent"]["amount"] += $amortization->delinquent['principal'];
+                                        $tempProd["delinquent"]["amount"] += $currentAmort["amount_due"] > 0 ? $currentAmort["amount_due"] : 0 ;
                                         // $tempProd["delinquent"]["account"] = $amortization;
                                         // break;
                                     }
@@ -1011,6 +1013,24 @@ class Reports extends Model
             $data = $accOfficers;
         }
         return $data;
+    }
+
+
+    private function getCurrentAmortization($currentAmort,$remainBal) {
+        $amortization = null;
+        if($currentAmort) {
+            $amortization = [
+                'current_principal'         =>      $currentAmort["principal"],
+                'adv_principal'             =>      $currentAmort["advance_principal"],
+                'short_principal'           =>      $currentAmort["short_principal"],
+                'amort_interest'            =>      $currentAmort["interest"],
+                'adv_interest'              =>      $currentAmort["advance_interest"],
+                'short_interest'            =>      $currentAmort["short_interest"],
+                'amount_due'                =>      ceil(($currentAmort["principal"] + $currentAmort["short_principal"] - $currentAmort["advance_principal"]) + ($currentAmort["interest"] + $currentAmort["short_interest"] - $currentAmort["advance_interest"]) + ($remainBal["pdi"]["balance"] + $remainBal["rebates"]["balance"]))
+            ];
+        }
+
+        return $amortization;
     }
 
     public function branchLoanListingReport($filters = []){
