@@ -1,0 +1,47 @@
+name: Deploy Enrollment to Local Main
+
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+env:
+  NUXT_OUTPUT_NAME: "macloans"
+  
+jobs:
+  build:
+    runs-on:
+      labels: staging1
+    strategy:
+      matrix:
+        node-version: [18.x]
+    steps:
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1'
+        env:
+          runner: self-hosted
+      - uses: actions/checkout@v3
+        with:
+          ref: staging
+          clean: false
+      - name: Copy .env
+        run: php -r "file_exists('.env') || copy('.env.example', '.env');"
+      - name: Install Dependencies
+        run: composer install --no-ansi --no-interaction --no-scripts --no-progress --ignore-platform-reqs
+      - name: Generate key
+        run: php artisan key:generate
+      - name: optimize
+        run: php artisan optimize
+      - name: migrate
+        run: php artisan migrate --force
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+      - run: |
+          npm ci
+          npm run generate
+      - name: Copy to Laragon WWW
+        run: xcopy /s /y . C:\laragon\www\$env:NUXT_OUTPUT_NAME\
+        shell: powershell
