@@ -8,12 +8,9 @@ env:
   NUXT_OUTPUT_NAME: "macloans"
   
 jobs:
-  build:
+  build-php:
     runs-on:
       labels: staging1
-    strategy:
-      matrix:
-        node-version: [18.x]
     steps:
       - uses: shivammathur/setup-php@2.25.1
         with:
@@ -34,6 +31,13 @@ jobs:
         run: php artisan optimize
 #       - name: migrate
 #         run: php artisan migrate --force
+  build-node:
+    strategy:
+      matrix:
+        node-version: [18.x]
+    runs-on:
+      labels: staging1
+    steps:
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
         with:
@@ -42,6 +46,11 @@ jobs:
       - run: |
           npm ci
           npm run production
+  deploy-local:
+    runs-on:
+      labels: staging1
+    needs: [build-php, build-node]
+    steps:
       - name: Copy to Laragon WWW
         run: xcopy /s /y . C:\laragon\www\$env:NUXT_OUTPUT_NAME\
         shell: powershell
