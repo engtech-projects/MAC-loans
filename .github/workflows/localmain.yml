@@ -32,8 +32,8 @@ jobs:
         run: php artisan key:generate
       - name: optimize
         run: php artisan optimize
-      - name: migrate
-        run: php artisan migrate --force
+#       - name: migrate
+#         run: php artisan migrate --force
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
         with:
