@@ -1096,8 +1096,8 @@ export default {
 			// this.payment.pdi = this.loanAccount.remainingBalance.pdi.balance;
 			// this.payment.penalty = this.loanAccount.current_amortization.penalty + this.loanAccount.current_amortization.short_penalty;
 			this.payment.transaction_date = this.transactionDate.date_end;
-			this.payment.penalty = this.loanAccount.current_amortization.penalty + this.loanAccount.current_amortization.short_penalty;
-			this.payment.pdi = this.loanAccount.remainingBalance? this.loanAccount.remainingBalance.pdi.balance:0;
+			// this.payment.penalty = this.loanAccount.current_amortization.penalty + this.loanAccount.current_amortization.short_penalty;
+			// this.payment.pdi = this.loanAccount.remainingBalance? this.loanAccount.remainingBalance.pdi.balance:0;
 			
 			if(parseFloat(this.payment.amount_paid) > 0 && this.checkRebates()){
 				axios.post(this.baseURL() + 'api/payment', this.payment, {
@@ -1309,7 +1309,7 @@ export default {
 	mounted(){
 		this.fetchTransactionDate();
 		this.payment.branch_id = this.pbranch;
-		this.payment.penalty = 500;
+		// this.payment.penalty = 500;
 	}
 }
 </script>
