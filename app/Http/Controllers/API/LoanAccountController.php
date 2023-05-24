@@ -453,6 +453,13 @@ class LoanAccountController extends BaseController
                     'payment_status' => 'Delinquent'
                 ])->save();
 
+            }else{
+                Amortization::find($amort->id)->fill([
+                    'status' => 'open'
+                ])->save();
+                LoanAccountMigrationFix::find($acc->loan_account_id)->fill([
+                    'payment_status' => 'Current'
+                ])->save();
             }
             Amortization::find($amort->id)->fill([
                 'principal_balance' => $principal,
