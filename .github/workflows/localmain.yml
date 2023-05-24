@@ -36,8 +36,8 @@ jobs:
         run: composer install --no-ansi --no-interaction --no-scripts --no-progress --ignore-platform-reqs
       - name: Generate key
         run: php artisan key:generate
-      - name: optimize
-        run: php artisan optimize
+#       - name: optimize
+#         run: php artisan optimize
 #       - name: migrate
 #         run: php artisan migrate --force
   build-node:
