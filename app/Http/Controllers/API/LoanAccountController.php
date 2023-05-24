@@ -365,6 +365,7 @@ class LoanAccountController extends BaseController
         $pastLast = null;
         $pastLastDone = false;
         foreach($acc->amortizations as $amort){
+            $prevPaid = false;
             $amortP += round($amort->principal);
             $amortI += round($amort->interest);
             $principal -= round($amort->principal);
@@ -389,7 +390,7 @@ class LoanAccountController extends BaseController
                 $totalPayable = $payment->amount_applied + $shortI + $shortP;
 
                 if($acc->lastPayment && $acc->lastPayment->payment_id == $payment->payment_id ){
-                    if($payment->transaction_date > $amort->amortization_date){
+                    if($payment->transaction_date > $amort->amortization_date && (sizeof($amort->payments) > 1) && $prevPaid){
                         $pastLast = $amort->id;
                     }
                     if($shortP > 0){
@@ -420,14 +421,18 @@ class LoanAccountController extends BaseController
                 ])->save();
                 $amortP -= $payment->principal > $amortP ? $amortP : $payment->principal;
                 $amortI -= $payment->interest > $amortI ? $amortI : $payment->interest;
-                if($shortI + $shortP <= 0){
+                if($shortP <= 0){
                     Amortization::find($amort->id)->fill([
                         'status' => 'paid'
                     ])->save();
+                    LoanAccountMigrationFix::find($acc->loan_account_id)->fill([
+                        'payment_status' => 'Current'
+                    ])->save();
                 }
+                $prevPaid = $shortP <= 0;
             }
             $amort->refresh();
-            if($pastLast != null && $pastLast < $amort->id && !$pastLastDone && $acc->product->product_code == '003'){
+            if($pastLast != null && $pastLast < $amort->id && !$pastLastDone){
                 $pastLastDone = true;
                 Payment::find($acc->lastPayment->payment_id)->fill([
                     "amortization_id"=> $amort->id,
