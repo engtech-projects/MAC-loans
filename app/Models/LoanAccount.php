@@ -125,6 +125,11 @@ class LoanAccount extends Model
         return $this->hasOne(Branch::class, 'branch_code', 'branch_code');
     }
 
+    public function accOfficer()
+    {
+        return $this->belongsTo(AccountOfficer::class,'ao_id');
+    }
+
     public function accountOfficer()
     {
         return $this->hasOne(AccountOfficer::class, 'ao_id', 'ao_id');

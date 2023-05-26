@@ -97,7 +97,7 @@ class LoanAccountMigrationFix extends Model
 
     public function accountOfficer()
     {
-        return $this->hasOne(AccountOfficer::class, 'ao_id', 'ao_id');
+        return $this->belongsTo(AccountOfficer::class, 'ao_id', 'ao_id')->where(['status' => AccountOfficer::STATUS_ACTIVE]);
     }
 
     public function borrower()

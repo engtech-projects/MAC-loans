@@ -25,8 +25,15 @@ class AccountOfficer extends Model
     	return $this->hasOne(Branch::class, 'branch_id', 'branch_id');
     }
 
-    public function loan_accounts() {
-        return $this->hasMany(LoanAccountMigrationFix::class,'loan_account_id');
+    public function accounts() {
+        return $this->hasMany(LoanAccount::class,'ao_id')
+        ->without(['documents', 'branch','borrower', 'accountOfficer', 'payments'])
+        ->whereIn('loan_status', [LoanAccount::LOAN_ONGOING, LoanAccount::LOAN_PASTDUE,LoanAccount::LOAN_RESTRUCTED, LoanAccount::LOAN_RES_WO_PDI]);
+    }
+
+    public function loanAccounts() {
+        return $this->hasMany(LoanAccountMigrationFix::class,'ao_id','ao_id')
+        ->whereIn('loan_status', [LoanAccount::LOAN_ONGOING, LoanAccount::LOAN_PASTDUE,LoanAccount::LOAN_RESTRUCTED, LoanAccount::LOAN_RES_WO_PDI]);
     }
 
     public function product() {

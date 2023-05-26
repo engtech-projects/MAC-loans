@@ -1035,19 +1035,30 @@ class Reports extends Model
 
     public function branchLoanListingReport($filters = []){
         /* $accOfficers = AccountOfficer::where(["status"=> AccountOfficer::STATUS_ACTIVE]); */
-        $accOfficers =  AccountOfficer::join('account_officer_branch','account_officer.ao_id', '=', 'account_officer_branch.ao_id')
+        /* $accOfficers =  AccountOfficer::join('account_officer_branch','account_officer.ao_id', '=', 'account_officer_branch.ao_id')
         ->join('branch','account_officer_branch.branch_id', '=', 'branch.branch_id')
         ->where([
             'account_officer.status' => AccountOfficer::STATUS_ACTIVE,
-        ]);
+        ]); */
 
+        $accOfficers = AccountOfficer::with(['accounts'])->without(['branch_registered']);
         if(isset($filters["branch_id"]) && $filters["branch_id"]){
-            $accOfficers = $accOfficers->where(["branch.branch_id"=>$filters["branch_id"]]);
+            $accOfficers = $accOfficers->where(["branch_id"=>$filters["branch_id"]]);
         }
         if(isset($filters["account_officer"]) && $filters["account_officer"]){
             $accOfficers = $accOfficers->where(["account_officer.ao_id"=>$filters["account_officer"]]);
         }
+
+        if(isset($filters["center"]) && $filters["center"]){
+            $accOfficers->where(["accounts.center_id"=>$filters["center"]]);
+            /* $centers = $centers->select('center_id', 'center')->get()->toArray(); */
+        }
+        if(isset($filters["product"]) && $filters["product"]){
+            $accOfficers->where(["accounts.product_id"=>$filters["product"]]);
+        }
+
         $accOfficers = $accOfficers->without('branch', 'branch_registered')->select('account_officer.ao_id', 'account_officer.name')->get()->toArray();
+
         $centers = Center::where(["status"=>"active"]);
         if(isset($filters["center"]) && $filters["center"]){
             $centers = $centers->where(["center_id"=>$filters["center"]]);
@@ -1062,13 +1073,60 @@ class Reports extends Model
         }
         $products = $products->select('product_id', 'product_code', 'product_name')->get()->toArray();
 
-        // $accounts = $this->getLoanAccounts($filters);
-        $count = 0;
-        $z = 0;
+        $acc = [];
+        $zz = [];
 
-        foreach ($accOfficers as $aoKey => $aoValue) {
+  /*       foreach($accOfficers as $ao => $aoVal) {
+            $acc[]["accounts"] = $aoVal["accounts"];
+        }
+ */
+
+
+        foreach($accOfficers as $aoKey => $aoValue) {
+            $acc[] = ["name" => $aoValue["name"]];
+            foreach($products as $prodKey => $prodVal) {
+                $acc[$aoKey]["products"][$prodVal["product_name"]] = $prodVal;
+                foreach($aoValue["accounts"] as $accKey => $account) {
+                    if($prodVal["product_id"] == $aoValue["accounts"][$accKey]["product"]["product_id"]) {
+                        $acc[$aoKey]["products"][$prodVal["product_name"]]["accounts"][] = $account;
+                    }
+                    foreach($account["accounts"] as $keyAcc => $loanAccount) {
+                        $acc[$aoKey]["products"][$prodVal["product_name"]]["accounts"][$keyAcc][] = [
+                            "o_bal"     =>      $loanAccount->outstandingBalance($loanAccount->loan_acount_id)
+                        ];
+                    }
+
+
+
+                    /* $prodId = $accOfficer["products"][$prodVal["product_name"]]["product_id"];
+                    if($accProdId == $prodId) {
+                        $acc[$aoKey]["products"][$prodVal["product_name"]]["accounts"][] = $accOfficers[$aoKey]["accounts"];
+                    } */
+                }
+                /* foreach($centers as $centKey => $centVal) {
+                    //$acc[$aoKey]["products"][$prodVal["product_name"]]["centers"][$centVal["center"]] = $centVal;
+                    foreach($aoValue["accounts"] as $accKey => $account) {
+
+                        $acc[$aoKey]["products"][$prodVal["product_name"]]["centers"][$centVal["center"]]['accounts'][] = [
+                            'account_id'        =>      $account["loan_account_id"]
+                        ];
+                        if($centVal["center_id"] == $account["accounts"][$accKey]["center_id"]) {
+                            $acc[$aoKey]["products"][$prodVal["product_name"]]["centers"][$centVal["center"]]['accounts'][] = [
+                                'account_id'        =>      $account["loan_account_id"]
+                            ];
+
+                        }
+                    }
+
+                } */
+            }
+        }
+        return $acc;
+
+
+        /* foreach ($ao as $aoKey => $aoValue) {
             foreach ($products as $prodKey => $prodValue) {
-                $accOfficers[$aoKey]["products"][$prodValue["product_name"]] = $prodValue;
+                $ao[$aoKey]["products"][$prodValue["product_name"]] = $prodValue;
                 foreach ($centers as $centKey => $centVal) {
                     // $accOfficers[$aoKey]["products"][$prodValue["product_name"]]["centers"][$centVal["center"]] = $centVal;
 
@@ -1119,7 +1177,7 @@ class Reports extends Model
 
 
 
-                                $accOfficers[$aoKey]["products"][$prodValue["product_name"]]["centers"][$centVal["center"]]['accounts'][] = [
+                                $ao[$aoKey]["products"][$prodValue["product_name"]]["centers"][$centVal["center"]]['accounts'][] = [
                                     'borrower_name' => isset($account->borrower) ? $account->borrower->fullname() : '',
                                     "account_num" => $account->account_num,
                                     "date_loan" => $account->date_release,
@@ -1149,12 +1207,12 @@ class Reports extends Model
                                     "status" => $account->payment_status,
                                 ];
 
-                                $acc = $accOfficers[$aoKey]["products"][$prodValue["product_name"]]["centers"][$centVal["center"]]['accounts'];
+                                $acc = $ao[$aoKey]["products"][$prodValue["product_name"]]["centers"][$centVal["center"]]['accounts'];
                                 usort($acc,function($a,$b) {
                                     return strcmp($a['borrower_name'],$b['borrower_name']);
                                 });
 
-                                $accOfficers[$aoKey]["products"][$prodValue["product_name"]]["centers"][$centVal["center"]]['accounts'] = $acc;
+                                $ao[$aoKey]["products"][$prodValue["product_name"]]["centers"][$centVal["center"]]['accounts'] = $acc;
                             }
 
                         }
@@ -1164,8 +1222,8 @@ class Reports extends Model
 
             }
         }
-
-        return $accOfficers;
+ */
+        return $ao;
     }
 
     public function aoRevenueReport($filters = []){
