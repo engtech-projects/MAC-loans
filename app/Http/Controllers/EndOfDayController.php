@@ -9,6 +9,7 @@ use Auth;
 class EndOfDayController extends Controller
 {
     public function index(){
+		$this->checkAccess('set beginning/end of day');
 		return view('endofday.index')->with([
 			'nav' => ['end of day',''],
 			'title' => 'End of Day',
