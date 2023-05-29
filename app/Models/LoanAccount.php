@@ -932,10 +932,11 @@ class LoanAccount extends Model
         $payment = $this->getPaymentTotalPrincipalInterest($loanAccountId);
 
         if ($account->type == 'Prepaid') {
-            return ($account->loan_amount) - $payment;
+            $bal = ($account->loan_amount) - $payment;
         }
 
-        return ($account->loan_amount + $account->interest_amount) - $payment;
+        $bal = ($account->loan_amount + $account->interest_amount) - $payment;
+        return floatval(number_format($bal, 2, ".", ""));
     }
 
     public function amortization()
