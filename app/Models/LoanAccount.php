@@ -92,6 +92,7 @@ class LoanAccount extends Model
         }else {
             $identifier = 0000001;
         }
+
        /*  if ($num) {
             $series = explode('-', $num);
             $identifier = (int)$series[2] + 1;
@@ -572,8 +573,8 @@ class LoanAccount extends Model
                     }
                 }
             }
-
-            if ($dayDiff > 0 && !$isPaid && $amortization->delinquent['balance'] < $amortization->schedule_principal) {
+            // dd($amortization);
+            if ($dayDiff > 0 && $amortization->advance_principal < $amortization->short_principal+ $amortization->principal) {
                 Amortization::find($amortization->id)->update(['status' => 'delinquent']);
                 $amortization->delinquent = $this->getDelinquent($this->loan_account_id, $amortization->id, $amortization->advance_principal);
                 if($transactionDateNow>$amortization->amortization_date) {
@@ -581,7 +582,6 @@ class LoanAccount extends Model
 
                 }
             }
-
             if ($dayDiff > 10 && !$isPaid && $amortization->advance_principal < $amortization->schedule_principal) {
                 $penaltyMissed = array_merge(array_unique($amortization->delinquent['missed']), [$amortization->id]);
             }
@@ -724,10 +724,7 @@ class LoanAccount extends Model
 
 
         if ($advancePrincipal) {
-
-
             if (count($missed) > 0) {
-
                 $balance = $advancePrincipal;
                 // $balance = 0;
                 $missedAmortizations = Amortization::whereIn('id', $missed)->orderBy('id', 'ASC')->get();
@@ -764,7 +761,7 @@ class LoanAccount extends Model
             'balance' => $balance,
             'pdi' => $totalPdi,
             'advance' => $advancePrincipal,
-            'missed' => array_values($missed),
+            'missed' => array_values($missed)
         ];
     }
 
