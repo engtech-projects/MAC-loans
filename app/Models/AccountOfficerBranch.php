@@ -15,4 +15,5 @@ class AccountOfficerBranch extends Model
      * @var array<int, string>
      */
     protected $fillable = [ 'ao_id', 'branch_id' ];
+
 }

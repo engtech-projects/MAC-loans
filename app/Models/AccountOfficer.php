@@ -31,11 +31,9 @@ class AccountOfficer extends Model
         ->whereIn('loan_status', [LoanAccount::LOAN_ONGOING, LoanAccount::LOAN_PASTDUE,LoanAccount::LOAN_RESTRUCTED, LoanAccount::LOAN_RES_WO_PDI]);
     }
 
-    public function loanAccounts() {
-        return $this->hasMany(LoanAccountMigrationFix::class,'ao_id','ao_id')
-        ->whereIn('loan_status', [LoanAccount::LOAN_ONGOING, LoanAccount::LOAN_PASTDUE,LoanAccount::LOAN_RESTRUCTED, LoanAccount::LOAN_RES_WO_PDI]);
+    public function accountOfficerBranch() {
+        return $this->hasMany(AccountOfficerBranch::class,'ao_id','ao_id');
     }
-
     public function product() {
 
         // return $this->pivot(Product::class);

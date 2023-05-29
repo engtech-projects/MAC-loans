@@ -936,7 +936,8 @@ class LoanAccount extends Model
     public function outstandingBalance($loanAccountId)
     {
 
-        $account = LoanAccount::where(['loan_account_id' => $loanAccountId])->first();
+        $account = LoanAccount::find($loanAccountId,['loan_amount','interest_amount','type']);
+        //$account = LoanAccount::where(['loan_account_id' => $loanAccountId])->first();
         $payment = $this->getPaymentTotalPrincipalInterest($loanAccountId);
 
         if ($account->type == 'Prepaid') {
