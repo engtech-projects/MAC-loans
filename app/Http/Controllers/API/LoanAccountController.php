@@ -429,9 +429,9 @@ class LoanAccountController extends BaseController
                 $amortP -= $payment->principal > $amortP ? $amortP : $payment->principal;
                 $amortI -= $payment->interest > $amortI ? $amortI : $payment->interest;
                 if($shortP <= 0){
-                    Amortization::find($amort->id)->fill([
-                        'status' => 'paid'
-                    ])->save();
+                    // Amortization::find($amort->id)->fill([
+                    //     'status' => 'paid'
+                    // ])->save();
                     LoanAccountMigrationFix::find($acc->loan_account_id)->fill([
                         'payment_status' => 'Current'
                     ])->save();
@@ -449,9 +449,9 @@ class LoanAccountController extends BaseController
                     'status' => 'delinquent'
                 ])->save();
 
-                LoanAccountMigrationFix::find($acc->loan_account_id)->fill([
-                    'payment_status' => 'Delinquent'
-                ])->save();
+                // LoanAccountMigrationFix::find($acc->loan_account_id)->fill([
+                //     'payment_status' => 'Delinquent'
+                // ])->save();
 
             }
             Amortization::find($amort->id)->fill([
