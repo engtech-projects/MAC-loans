@@ -6,24 +6,15 @@ on:
   workflow_dispatch:
 env:
   APP_NAME: "macloans"
-  
+
 jobs:
-  setup-repository:
+  deploy-laravue:
     runs-on:
       labels: staging1
     steps:
       - uses: actions/checkout@v3
         with:
           ref: ci-pipe-main
-          clean: false
-  deploy-laravue:
-    runs-on:
-      labels: staging1
-    needs: setup-repository
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          ref: main
           clean: false
       - name: Copy to Laragon WWW
         run: xcopy /s /y . C:\laragon\www\$env:APP_NAME\
