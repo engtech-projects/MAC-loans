@@ -1192,6 +1192,13 @@ class LoanAccount extends Model
                 'balance' => 0,
             ]
         ];
+        // SET PDI AND PENALTY IN THE ACCOUNT SUMMARY
+        $currentAmortization = $account->getPDIPENALTY();
+        if ($currentAmortization) {
+            $accountSummary['penalty']['debit'] += $currentAmortization['penalty'];
+            $accountSummary['pdi']['debit'] += $currentAmortization['pdi'];
+        }
+
 
         if (count($payments)) {
 
@@ -1213,16 +1220,12 @@ class LoanAccount extends Model
                     $accountSummary['rebates']['credit'] += $payment->rebates;
                 }
             }
+
         }
 
-        // SET PDI AND PENALTY IN THE ACCOUNT SUMMARY
-        $currentAmortization = $account->getPDIPENALTY();
 
 
-        if ($currentAmortization) {
-            $accountSummary['penalty']['debit'] += $currentAmortization['penalty'];
-            $accountSummary['pdi']['debit'] += $currentAmortization['pdi'];
-        }
+
 
 
 
