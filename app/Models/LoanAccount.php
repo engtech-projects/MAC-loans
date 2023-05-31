@@ -1200,6 +1200,7 @@ class LoanAccount extends Model
         }
 
 
+
         if (count($payments)) {
 
             foreach ($payments as $payment) {
@@ -1231,6 +1232,7 @@ class LoanAccount extends Model
 
 
 
+
         $accountSummary['penalty']['debit'] += $accountSummary['penalty']['credit'];
         $accountSummary['pdi']['debit'] += $accountSummary['pdi']['credit'];
         // calculate balance
@@ -1242,7 +1244,7 @@ class LoanAccount extends Model
 
         $accountSummary['memo']['account'] = $account->account_num;
         $accountSummary['memo']['balance'] = $accountSummary['principal']['balance'] + $accountSummary['interest']['balance'] + $accountSummary['penalty']['balance'] + $accountSummary['pdi']['balance'] + $accountSummary['rebates']['balance'];
-
+        dd($accountSummary);
         return $accountSummary;
     }
 
