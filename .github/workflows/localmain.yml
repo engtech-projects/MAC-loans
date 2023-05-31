@@ -3,6 +3,8 @@ name: Deploy Enrollment to Local Main
 on:
   push:
     branches: [ "ci-pipe-main" ]
+  pull_request:
+    branches: [ "ci-pipe-main" ]
   workflow_dispatch:
 env:
   APP_NAME: "macloans"

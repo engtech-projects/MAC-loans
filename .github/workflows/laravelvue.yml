@@ -11,7 +11,7 @@ env:
   APPLICATION_NAME: "macloans"
   GIT_USERNAME: "engtech-projects"
   REPOSITORY_NAME: "MAC-loans"
-  
+
 # Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
   contents: write
@@ -25,6 +25,7 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+
   build-staging:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/staging'
@@ -52,6 +53,7 @@ jobs:
               git commit -m 'deploy to CI-Pipeline'
               git push -f https://$GIT_USERNAME:${{ secrets.GITHUB_TOKEN }}@github.com/$GIT_USERNAME/$REPOSITORY_NAME.git master:ci-pipe-${{ steps.vars.outputs.short_ref }}
         shell: bash
+
   build-main:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
@@ -79,5 +81,3 @@ jobs:
               git commit -m 'deploy to CI-Pipeline'
               git push -f https://$GIT_USERNAME:${{ secrets.GITHUB_TOKEN }}@github.com/$GIT_USERNAME/$REPOSITORY_NAME.git master:ci-pipe-${{ steps.vars.outputs.short_ref }}
         shell: bash
-        
-        
