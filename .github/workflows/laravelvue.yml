@@ -41,7 +41,7 @@ jobs:
           ref: ${{ steps.vars.outputs.short_ref }}
       - name: Build Laravel with Vue
         run: |
-              composer install --no-dev -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+              composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
               npm ci
               npm run production
               rm -rf .git
@@ -69,7 +69,7 @@ jobs:
           ref: ${{ steps.vars.outputs.short_ref }}
       - name: Build Laravel
         run: |
-              composer install --no-dev -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+              composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
               npm ci
               npm run production
               rm -rf .git
