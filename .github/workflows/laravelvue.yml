@@ -50,7 +50,7 @@ jobs:
               git init
               git add -A
               git commit -m 'deploy to CI-Pipeline'
-              git push -f https://$env:GIT_USERNAME:${{ secrets.GITHUB_TOKEN }}@github.com/$env:GIT_USERNAME/$env:REPOSITORY_NAME.git master:ci-pipe-${{ steps.vars.outputs.short_ref }}
+              git push -f https://$GIT_USERNAME:${{ secrets.GITHUB_TOKEN }}@github.com/$GIT_USERNAME/$REPOSITORY_NAME.git master:ci-pipe-${{ steps.vars.outputs.short_ref }}
         shell: bash
   build-main:
     runs-on: ubuntu-latest
@@ -77,7 +77,7 @@ jobs:
               git init
               git add -A
               git commit -m 'deploy to CI-Pipeline'
-              git push -f https://$env:GIT_USERNAME:${{ secrets.GITHUB_TOKEN }}@github.com/$env:GIT_USERNAME/$env:REPOSITORY_NAME.git master:ci-pipe-${{ steps.vars.outputs.short_ref }}
+              git push -f https://$GIT_USERNAME:${{ secrets.GITHUB_TOKEN }}@github.com/$GIT_USERNAME/$REPOSITORY_NAME.git master:ci-pipe-${{ steps.vars.outputs.short_ref }}
         shell: bash
         
         
