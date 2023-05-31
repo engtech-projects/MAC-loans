@@ -735,7 +735,7 @@ class LoanAccount extends Model
                         $pos = array_search($missedAmortization->id, $missed);
                         unset($missed[$pos]);
                     } else {
-                        // LoanAccount::find($loanAccountId)->update(['payment_status' => 'Delinquent']);
+                        LoanAccount::find($loanAccountId)->update(['payment_status' => 'Delinquent']);
                         break;
 
                     }
