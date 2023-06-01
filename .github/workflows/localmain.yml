@@ -1,18 +1,15 @@
 name: Deploy Enrollment to Local Main
 
 on:
+  create:
   push:
-    branches:
-      "ci-pipe-main"
-  pull_request:
-    branches: 
-      "ci-pipe-main"
   workflow_dispatch:
 env:
   APP_NAME: "macloans"
 
 jobs:
   deploy-laravue:
+    if: github.ref == 'refs/heads/ci-pipe-main'
     runs-on:
       labels: staging1
     steps:
