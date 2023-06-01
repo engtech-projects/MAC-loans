@@ -2,9 +2,11 @@ name: Deploy Enrollment to Local Main
 
 on:
   push:
-    branches: [ "ci-pipe-main" ]
+    branches:
+      "ci-pipe-main"
   pull_request:
-    branches: [ "ci-pipe-main" ]
+    branches: 
+      "ci-pipe-main"
   workflow_dispatch:
 env:
   APP_NAME: "macloans"
@@ -17,7 +19,6 @@ jobs:
       - uses: actions/checkout@v3
         with:
           ref: ci-pipe-main
-          clean: false
       - name: Copy to Laragon WWW
         run: xcopy /s /y . C:\laragon\www\$env:APP_NAME\
         shell: powershell
