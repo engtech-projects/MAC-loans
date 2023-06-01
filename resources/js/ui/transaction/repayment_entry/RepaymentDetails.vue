@@ -1188,7 +1188,7 @@ export default {
 			if(this.pdi != this.duePdiCopy){
                 return this.waive.pdi ? 0 : this.pdi
 			}
-			return this.duePdiCopy;
+			return this.waive.pdi ? 0 : this.duePdiCopy;
 		},
 
 		duePdiCopy:function(){
