@@ -1146,7 +1146,7 @@ export default {
             if(this.pdi != this.duePdiCopy) {
                 return this.waive.pdi ? this.pdi : 0;
             }
-		    return this.pdiWaiveCopy;
+		    return this.waive.pdi ? this.pdiWaiveCopy : 0;
 		},
         pdiWaiveCopy:function(){
 			if(this.loanAccount.remainingBalance){
