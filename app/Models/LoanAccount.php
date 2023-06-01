@@ -1201,7 +1201,7 @@ class LoanAccount extends Model
         // SET PDI AND PENALTY IN THE ACCOUNT SUMMARY
         $currentAmortization = $account->getCurrentAmortization();
         if ($currentAmortization) {
-            $accountSummary['penalty']['debit'] += $currentAmortization['penalty'];
+            $accountSummary['penalty']['debit'] += $currentAmortization->short_penalty + $currentAmortization['penalty'];
             $accountSummary['pdi']['debit'] += $currentAmortization['pdi'];
         }
 
