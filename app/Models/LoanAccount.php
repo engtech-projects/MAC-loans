@@ -541,6 +541,7 @@ class LoanAccount extends Model
             $amortization->schedule_interest = $amortization->interest;
             $amortization->short_pdi = 0;
             $amortization->short_penalty = $amortization->delinquent['penalty'];
+
             // check if current amortization is paid partially.
             $isPaid = $this->getPayment($this->loan_account_id, $amortization->id)->last();
             if ($isPaid && ($isPaid->short_principal || $isPaid->short_interest)) {
@@ -695,6 +696,7 @@ class LoanAccount extends Model
                 $payments = $this->getDelinquentPayment($loanAccountId, $delinquent->id);
                 $delinquent->payments = $payments;
 
+
                 if (isset($delinquent->payments) && count($delinquent->payments) > 0) {
                     $isNotAdvancePayment = true;
                     foreach ($delinquent->payments as $payment) {
@@ -719,6 +721,7 @@ class LoanAccount extends Model
             }
 
         }
+
 
 
         if ($advancePrincipal) {
@@ -748,7 +751,6 @@ class LoanAccount extends Model
                 LoanAccount::find($loanAccountId)->update(['payment_status' => 'Delinquent']);
             }
         }
-
 
 
         return [
@@ -1193,11 +1195,13 @@ class LoanAccount extends Model
             ]
         ];
         // SET PDI AND PENALTY IN THE ACCOUNT SUMMARY
-        $currentAmortization = $account->getPDIPENALTY();
+        $currentAmortization = $account->getCurrentAmortization();
         if ($currentAmortization) {
-            $accountSummary['penalty']['debit'] += $currentAmortization['penalty'];
+            $accountSummary['penalty']['debit'] += $currentAmortization->short_penalty + $currentAmortization['penalty'];
             $accountSummary['pdi']['debit'] += $currentAmortization['pdi'];
         }
+
+
 
 
 
@@ -1233,6 +1237,8 @@ class LoanAccount extends Model
 
 
 
+
+
         $accountSummary['penalty']['debit'] += $accountSummary['penalty']['credit'];
         $accountSummary['pdi']['debit'] += $accountSummary['pdi']['credit'];
         // calculate balance
@@ -1244,7 +1250,9 @@ class LoanAccount extends Model
 
         $accountSummary['memo']['account'] = $account->account_num;
         $accountSummary['memo']['balance'] = $accountSummary['principal']['balance'] + $accountSummary['interest']['balance'] + $accountSummary['penalty']['balance'] + $accountSummary['pdi']['balance'] + $accountSummary['rebates']['balance'];
-        dd($accountSummary);
+
+
+
         return $accountSummary;
     }
 
