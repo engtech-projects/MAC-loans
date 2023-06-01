@@ -515,6 +515,7 @@ class LoanAccount extends Model
             $amortization->save();
 
             $amortization->pdi = $this->getPDI($this->loan_amount, $this->interest_rate, $isPastDue);
+
         }
 
         # compute for total payables
@@ -1202,7 +1203,7 @@ class LoanAccount extends Model
         $currentAmortization = $account->getCurrentAmortization();
         if ($currentAmortization) {
             $accountSummary['penalty']['debit'] += $currentAmortization->short_penalty + $currentAmortization['penalty'];
-            $accountSummary['pdi']['debit'] += $currentAmortization['pdi'];
+            $accountSummary['pdi']['debit'] += $currentAmortization->short_pdi + $currentAmortization['pdi'];
         }
 
 
@@ -1244,7 +1245,7 @@ class LoanAccount extends Model
 
 
         $accountSummary['penalty']['debit'] += $accountSummary['penalty']['credit'];
-        $accountSummary['pdi']['debit'] += $accountSummary['pdi']['credit'];
+        //$accountSummary['pdi']['debit'] += $accountSummary['pdi']['credit'];
         // calculate balance
 
         $accountSummary['principal']['balance'] = $accountSummary['principal']['debit'] - $accountSummary['principal']['credit'];
