@@ -29,13 +29,14 @@ Route::post('/login', [LoginController::class, 'login']);
 Route::get('/borrower_login', [BorrowerLoginController::class, 'index'])->name('borrowerlogin');
 Route::post('/borrower_login', [BorrowerLoginController::class, 'login']);
 
-Route::get('/', function () {
-    return redirect('/dashboard');
-});
+
 Route::get('/branch', function(){
 	return \App\Models\Branch::all();
 });
 Route::group(['middleware' => 'auth:borrowers'], function(){
+	Route::get('/', function () {
+		return redirect('/dashboard');
+	});
 	Route::get('borrower_logout', [BorrowerLoginController::class, 'logout'])->name('logout');
 	Route::get('/borrower/personal_information', [ClientPortalInformationController::class, 'personalInformationDetails'])->name('borrower.personal_information');
 	Route::get('/borrower/account_statement', [ClientPortalInformationController::class, 'accountStatementDetails'])->name('borrower.account_statement');
