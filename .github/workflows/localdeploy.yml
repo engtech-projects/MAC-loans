@@ -1,8 +1,9 @@
-name: Deploy Enrollment to Local Main
+# Deploying to local staging server
+name: Deploy MAC-Loans to Local
 
 on:
   workflow_run:
-    workflows: Build and Push to CI-Pipeline Branch
+    workflows: MAC_loans Build and Push to CI-Pipeline Branch
     types:
       - completed
 env:
