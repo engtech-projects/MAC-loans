@@ -97,16 +97,16 @@
 											<td v-for="rw,k in rws" :key="k">{{rw}}</td>
 										</tr>
 										<tr class="bg-skyblue text-bold">
-											<td v-for="tc,l in fr.centerTotal" :key="l">{{tc===""||tc==="CENTER SUB-TOTAL"||l==1?tc:formatToCurrency(tc)}}</td>
+											<td v-for="tc,l in fr.centerTotal" :key="l">{{tc===""||tc==="CENTER SUB-TOTAL"?tc:formatToCurrency(tc)}}</td>
 										</tr>
 										<tr v-if="fr.productTotal" class="bg-green-mint text-bold">
-											<td v-for="tp,m in fr.productTotal" :key="m">{{tp===""||tp==="PRODUCT SUB-TOTAL"||m==1?tp:formatToCurrency(tp)}}</td>
+											<td v-for="tp,m in fr.productTotal" :key="m">{{tp===""||tp==="PRODUCT SUB-TOTAL"?tp:formatToCurrency(tp)}}</td>
 										</tr>
 										<tr v-if="fr.aoTotal" class="bg-purple-light text-bold">
-											<td v-for="ta,n in fr.aoTotal" :key="n">{{ta===""||ta==="OFFICER SUB-TOTAL"||n==1?ta:formatToCurrency(ta)}}</td>
+											<td v-for="ta,n in fr.aoTotal" :key="n">{{ta===""||ta==="OFFICER SUB-TOTAL"?ta:formatToCurrency(ta)}}</td>
 										</tr>
 										<tr v-if="fr.total" class="bg-primary-dark text-white text-bold">
-											<td v-for="tt,o in fr.total" :key="o">{{tt===""||tt==="TOTAL"||l==o?tt:formatToCurrency(tt)}}</td>
+											<td v-for="tt,o in fr.total" :key="o">{{tt===""||tt==="TOTAL"?tt:formatToCurrency(tt)}}</td>
 										</tr>
 									</tbody>
 								</table>
@@ -233,15 +233,15 @@ export default {
 	computed:{
 		filteredReports:function(){
 			var tables = [];
-			var total = ['TOTAL',0,'','',0,0,0,0,0,'','','',''];
+			var total = ['TOTAL','','',0,0,0,0,0,'',''];
 			this.reports.forEach(ao=>{
-				var aoTotal = ['OFFICER SUB-TOTAL',0,'','',0,0,0,0,0,'','','',''];
+				var aoTotal = ['OFFICER SUB-TOTAL','','',0,0,0,0,0,'',''];
 				for(var p in ao.products){
 					var product = ao.products[p];
-					var productTotal = ['PRODUCT SUB-TOTAL',0,'','',0,0,0,0,0,'','','',''];
+					var productTotal = ['PRODUCT SUB-TOTAL','','',0,0,0,0,0,'',''];
 					for(var c in product.centers){
 						var center = product.centers[c];
-						var centerTotal = ['CENTER SUB-TOTAL',0,'','',0,0,0,0,0,'','','',''];
+						var centerTotal = ['CENTER SUB-TOTAL','','',0,0,0,0,0,'',''];
 						if(center.accounts){
 							var table = {
 								ao:'0' + ao.ao_id + ' - ' + ao.name,
@@ -260,48 +260,46 @@ export default {
                                 row.push(account.account_num);
 								row.push(account.date_loan);
 								row.push(account.maturity);
+
 								row.push(this.formatToCurrency(account.amount_loan));
-								centerTotal[1]++;
-								productTotal[1]++;
-								aoTotal[1]++;
-								total[1]++;
-								centerTotal[4] += account.amount_loan;
+								centerTotal[3] += account.amount_loan;
 								row.push(this.formatToCurrency(account.principal_balance));
-								centerTotal[5] += account.principal_balance;
+								centerTotal[4] += account.principal_balance;
 								row.push(this.formatToCurrency(account.interest_balance));
-								centerTotal[6] += account.interest_balance;
+								centerTotal[5] += account.interest_balance;
 								row.push(this.formatToCurrency(account.amortization));
-								centerTotal[7] += account.amortization;
+								centerTotal[6] += account.amortization;
+                                row.push(account.distribution.short_principal + account.distribution.principal)
+                                row.push(account.distribution.short_interest + account.distribution.interest)
 								row.push(this.formatToCurrency(account.amount_due));
-								centerTotal[8] += account.amount_due;
-								centerTotal[9] = '';
+								centerTotal[7] += account.amount_due;
 								row.push('');
 								row.push(account.loan_status=='Ongoing'?account.status:account.loan_status);
 								table.rows.push(row);
 							}
+							productTotal[3] += centerTotal[3];
 							productTotal[4] += centerTotal[4];
 							productTotal[5] += centerTotal[5];
 							productTotal[6] += centerTotal[6];
 							productTotal[7] += centerTotal[7];
-							productTotal[8] += centerTotal[8];
 							table.centerTotal = centerTotal;
 							tables.push(table);
 						}
 					}
+					aoTotal[3] += productTotal[3];
 					aoTotal[4] += productTotal[4];
 					aoTotal[5] += productTotal[5];
 					aoTotal[6] += productTotal[6];
 					aoTotal[7] += productTotal[7];
-					aoTotal[8] += productTotal[8];
 					if(tables.length){
 						tables[tables.length-1].productTotal = productTotal;
 					}
 				}
+				total[3] += aoTotal[3];
 				total[4] += aoTotal[4];
 				total[5] += aoTotal[5];
 				total[6] += aoTotal[6];
 				total[7] += aoTotal[7];
-				total[8] += aoTotal[8];
 				if(tables.length){
 					tables[tables.length-1].aoTotal = aoTotal;
 				}
