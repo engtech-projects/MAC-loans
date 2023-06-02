@@ -1,6 +1,13 @@
 <template>
 	<form @submit.prevent="submit" action="">
 	<div class="d-flex flex-column">
+		<div v-if="loading" class="black-screen d-flex flex-column align-items-center justify-content-center" style="padding-left:0px;">
+			<div class="loading-container d-flex align-items-center justify-content-center mb-36">
+				<span class="loading-text">LOADING</span>
+				<img :src="baseURL() + 'img/loading_default.png'" class="rotating" alt="" style="width:300px;height:300px">
+			</div>
+			<span class="font-lg" style="color:#ddd">Please wait until the process is complete</span>
+		</div>
 		<notifications group="foo" />
 		<section class="mb-24" style="flex:21;padding-left:16px;">
 			<span class="section-title mb-24">Loan Details</span>
@@ -347,6 +354,7 @@ export default {
 	],
 	data(){
 		return {
+            loading:false,
 			resetCenter:false,
 			inputs:{
 				loanAmount:false,
@@ -493,6 +501,8 @@ export default {
 			}
 		},
 		async computeDeduction(){
+
+			this.loading=true;
 			var data = {
 				loan_amount: this.loanDetails.loan_amount,
 				terms: this.loanDetails.terms,
@@ -514,10 +524,11 @@ export default {
 				this.loanDetails.notarial_fee = result.notarial_fee.rate;
 				this.loanDetails.affidavit_fee = result.affidavit.rate;
 				this.loanDetails.prepaid_interest = this.loanDetails.type=="Add-On"?0:this.loanDetails.interest_amount;
-
+				this.loading=false;
 			}.bind(this))
 			.catch(function (error) {
-				console.log(error);
+                console.log(error);
+                this.loading=false;
 			}.bind(this));
 		},
 		fetchProducts: function(){
