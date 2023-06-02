@@ -1,4 +1,5 @@
-name: Build and Push to CI-Pipeline Branch
+# BUILDING FOR CI CD - LARAVEL with Vue
+name: MAC_loans Build and Push to CI-Pipeline Branch
 
 on:
   # Runs on pushes targeting the default branch
