@@ -233,15 +233,15 @@ export default {
 	computed:{
 		filteredReports:function(){
 			var tables = [];
-			var total = ['TOTAL',0,'','',0,0,0,0,0,'','','',''];
+			var total = ['TOTAL',0,'','',0,0,0,0,0,0,0,'',''];
 			this.reports.forEach(ao=>{
-				var aoTotal = ['OFFICER SUB-TOTAL',0,'','',0,0,0,0,0,'','','',''];
+				var aoTotal = ['OFFICER SUB-TOTAL',0,'','',0,0,0,0,0,0,0,'',''];
 				for(var p in ao.products){
 					var product = ao.products[p];
-					var productTotal = ['PRODUCT SUB-TOTAL',0,'','',0,0,0,0,0,'','','',''];
+					var productTotal = ['PRODUCT SUB-TOTAL',0,'','',0,0,0,0,0,0,0,'',''];
 					for(var c in product.centers){
 						var center = product.centers[c];
-						var centerTotal = ['CENTER SUB-TOTAL',0,'','',0,0,0,0,0,'','','',''];
+						var centerTotal = ['CENTER SUB-TOTAL',0,'','',0,0,0,0,0,0,0,'',''];
 						if(center.accounts){
 							var table = {
 								ao:'0' + ao.ao_id + ' - ' + ao.name,
@@ -271,10 +271,12 @@ export default {
 								row.push(this.formatToCurrency(account.interest_balance));
 								centerTotal[6] += account.interest_balance;
 								row.push(this.formatToCurrency(account.amortization));
+								row.push(0);
+								row.push(0);
 								centerTotal[7] += account.amortization;
 								row.push(this.formatToCurrency(account.amount_due));
-								centerTotal[8] += account.amount_due;
-								centerTotal[9] = '';
+								centerTotal[10] += account.amount_due;
+								// centerTotal[9] = '';
 								row.push('');
 								row.push(account.loan_status=='Ongoing'?account.status:account.loan_status);
 								table.rows.push(row);
@@ -283,7 +285,7 @@ export default {
 							productTotal[5] += centerTotal[5];
 							productTotal[6] += centerTotal[6];
 							productTotal[7] += centerTotal[7];
-							productTotal[8] += centerTotal[8];
+							productTotal[10] += centerTotal[10];
 							table.centerTotal = centerTotal;
 							tables.push(table);
 						}
@@ -292,7 +294,7 @@ export default {
 					aoTotal[5] += productTotal[5];
 					aoTotal[6] += productTotal[6];
 					aoTotal[7] += productTotal[7];
-					aoTotal[8] += productTotal[8];
+					aoTotal[10] += productTotal[10];
 					if(tables.length){
 						tables[tables.length-1].productTotal = productTotal;
 					}
@@ -301,10 +303,10 @@ export default {
 				total[5] += aoTotal[5];
 				total[6] += aoTotal[6];
 				total[7] += aoTotal[7];
-				total[8] += aoTotal[8];
-				if(tables.length){
-					tables[tables.length-1].aoTotal = aoTotal;
-				}
+				total[10] += aoTotal[10];
+				// if(tables.length){
+				// 	tables[tables.length-1].aoTotal = aoTotal;
+				// }
 			})
 			if(tables.length){
 				tables[tables.length-1].total = total;
