@@ -20,7 +20,7 @@ class Reports extends Model
     public function getLoanAccounts($filters = [], $without = [])
     {
 
-        $loanAccount = Loanaccount::where(['loan_accounts.status' => 'released']);
+        $loanAccount = LoanAccount::where(['loan_accounts.status' => 'released']);
 
         if (isset($filters['branch_id']) && $filters['branch_id']) {
             $branch = Branch::find($filters['branch_id']);
@@ -1097,25 +1097,14 @@ class Reports extends Model
         $acc = [];
         $zz = [];
 
-        /*       foreach($accOfficers as $ao => $aoVal) {
-                  $acc[]["accounts"] = $aoVal["accounts"];
-              }
-       */
 
-        foreach ($accOfficers as $aoKey => $aoValue) {
+        /* foreach ($accOfficers as $aoKey => $aoValue) {
             $acc[] = ["ao_id" => $aoValue["ao_id"],"name" => $aoValue["name"]];
             foreach ($products as $prodKey => $prodVal) {
-                $acc[$aoKey]["products"][$prodVal["product_name"]] = $prodVal;
-                /* foreach ($centers as $centKey => $centVal) {
-                    foreach ($aoValue["accounts"] as $accKey => $account) {
-                        $loanAccount = Loanaccount::where(['status' => 'released', 'loan_account_id' => $account["loan_account_id"]])
-                                        ->without(['documents', 'branch', 'borrower', 'accountOfficer', 'payments'])
-                                        ->get();
-
-
-                        if ($prodVal["product_id"] == $aoValue["accounts"][$accKey]["product"]["product_id"]) {
-
-                            if($centVal["center_id"] == $aoValue["accounts"][$accKey]["center_id"]) {
+                $accOfficers[$aoKey]["products"][$prodVal["product_name"]] = $prodVal;
+                foreach ($centers as $centKey => $centVal) {
+                   foreach ($aoValue["accounts"] as $accKey => $account) { */
+                        /* if ($prodVal["product_id"] == $aoValue["accounts"][$accKey]["product"]["product_id"]) {
                                 if($loanAccount){
                                     $totalBal = $loanAccount->outstandingBalance($loanAccount["loan_account_id"]);
                                     $oBalance = $totalBal < 0 ? 0 : $totalBal;
@@ -1147,7 +1136,7 @@ class Reports extends Model
                                         }
                                         $principal = $amortization['principal'];
                                         $interest = $amortization['interest'];
-                                        $acc[$aoKey]["products"][$prodVal["product_name"]]["centers"][$centVal["center"]]['accounts'][] = [
+                                        $acc[$aoKey]["products"][$prodVal["product_name"]]["centers"]['accounts'][] = [
                                             'borrower_name' => isset($loanAccount->borrower) ? $loanAccount->borrower->fullname() : '',
                                             "account_num" => $loanAccount["account_num"],
                                             "date_loan" => $loanAccount["date_release"],
@@ -1181,19 +1170,38 @@ class Reports extends Model
                                     }
                                 }
 
-                            }
-                        }
+                           // }
+                        } */
 
 
-                    }
-                } */
+                    /* }
+                }
 
 
 
             }
+        } */
+        $acc = [];
+        foreach($accOfficers as $key => $officer) {
+            $acc[$officer['name']] = [
+                'ao_id' => $officer['ao_id'
+            ]];
+            foreach($products as $prodkey => $prodVal) {
+                $acc[$officer['name']]["products"][$prodVal["product_name"]] = $prodVal;
+
+                foreach($centers as $centKey => $centerVal) {
+                    $acc[$officer['name']]["products"][$prodVal["product_name"]]["centers"][$centerVal["center"]] = $centerVal;
+
+                    foreach($officer["accounts"] as $accKey => $account) {
+                        if($centerVal["center_id"] == $account["center_id"] && $prodVal["product_id"] == $account["product_id"]) {
+                            $acc[$officer['name']]["products"][$prodVal["product_name"]]["centers"][$centerVal["center"]]["accounts"] = $account;
+                        }
+                    }
+                }
+
+            }
         }
         return $acc;
-
 
         /* foreach ($ao as $aoKey => $aoValue) {
             foreach ($products as $prodKey => $prodValue) {
