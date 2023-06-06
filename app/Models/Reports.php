@@ -1111,7 +1111,7 @@ class Reports extends Model
                                     $amortInterest = $current_amort["interest"];
                                     $advInterest = $current_amort["advance_interest"];
                                     $shortInterest = $current_amort["short_interest"];
-                                    $amountDue = ceil(($amortPrincipal + $shortPrincipal - $advPrincipal) + ($amortInterest + $shortInterest - $advInterest) + ($remainingBal["pdi"]["balance"] + $remainingBal["rebates"]["balance"]));
+                                    $amountDue = ceil(($amortPrincipal + $shortPrincipal - $advPrincipal) + ($amortInterest + $shortInterest - $advInterest) + ($remainingBal["rebates"]["balance"]));
                                 }
 
                                 $principal = $amortization['principal'];
