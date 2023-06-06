@@ -1111,7 +1111,7 @@ class Reports extends Model
                                     $amortInterest = $current_amort["interest"];
                                     $advInterest = $current_amort["advance_interest"];
                                     $shortInterest = $current_amort["short_interest"];
-                                    $amountDue = ceil(($amortPrincipal + $shortPrincipal - $advPrincipal) + ($amortInterest + $shortInterest - $advInterest) + ($remainingBal["pdi"]["balance"] + $remainingBal["rebates"]["balance"]));
+                                    $amountDue = floatval(($amortPrincipal + $shortPrincipal - $advPrincipal) + ($amortInterest + $shortInterest - $advInterest) + ($remainingBal["rebates"]["balance"]));
                                 }
 
                                 $principal = $amortization['principal'];
@@ -1122,8 +1122,8 @@ class Reports extends Model
                                 $accOfficers[$aoKey]["products"][$prodValue["product_name"]]["centers"][$centVal["center"]]['accounts'][] = [
                                     'borrower_name' => isset($account->borrower) ? $account->borrower->fullname() : '',
                                     "account_num" => $account->account_num,
-                                    "date_loan" => $account->date_release,
-                                    "maturity" => $account->due_date,
+                                    "date_loan" => Carbon::createFromFormat('Y-m-d',$account->date_release)->format('m/d/Y'),
+                                    "maturity" => Carbon::createFromFormat('Y-m-d',$account->due_date)->format('m/d/Y'),
                                     "amount_loan" => $account->loan_amount,
                                     "principal_amount" => abs(($amortPrincipal + $shortPrincipal) - $advPrincipal),
                                     "interest_amount" => abs($amortInterest + $shortInterest - $advInterest),
