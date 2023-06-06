@@ -1058,13 +1058,13 @@ class Reports extends Model
         ->where([
             'account_officer.status' => AccountOfficer::STATUS_ACTIVE,
         ]); */
-        /* $accOfficers = AccountOfficer::join('account_officer_branch', 'account_officer.ao_id', '=', 'account_officer_branch.ao_id')
+        $accOfficers = AccountOfficer::join('account_officer_branch', 'account_officer.ao_id', '=', 'account_officer_branch.ao_id')
             ->join('branch', 'account_officer_branch.branch_id', '=', 'branch.branch_id')
             ->with(['accounts'])
-            ->without(['branch_registered']); */
-        $accOfficers = AccountOfficer::with(['accounts']);
+            ->without(['branch_registered']);
+        //$accOfficers = AccountOfficer::with(['accounts']);
         if (isset($filters["branch_id"]) && $filters["branch_id"]) {
-            $accOfficers = $accOfficers->where(["branch_id" => $filters["branch_id"]]);
+            $accOfficers = $accOfficers->where(["branch.branch_id" => $filters["branch_id"]]);
         }
         if (isset($filters["account_officer"]) && $filters["account_officer"]) {
             $accOfficers = $accOfficers->where(["account_officer.ao_id" => $filters["account_officer"]]);
@@ -1095,16 +1095,110 @@ class Reports extends Model
         $products = $products->select('product_id', 'product_code', 'product_name')->get()->toArray();
 
         $acc = [];
-        $zz = [];
+        $aw = [];
+
+        foreach($accOfficers as $aoKey => $aoVal) {
+            $acc[$aoVal["name"]] = [
+                "ao_id"     =>      $aoVal["ao_id"]
+            ];
+            foreach($products as $prodKey => $prodVal) {
+                $acc[$aoVal["name"]]["products"][$prodVal["product_name"]] = $prodVal;
+
+                foreach($centers as $centKey => $centVal) {
+                    if($centVal["center_id"] == "No Center") {
+                        $centVal["center_id"] = null;
+                    }
+                    foreach($aoVal["accounts"] as $accKey => $account) {
+                        if($centVal["center_id"] == $account["center_id"] && $prodVal["product_id"] == $account["product_id"]) {
+                            $loanAccount = LoanAccount::where('loan_account_id','=',$account["loan_account_id"])
+                            ->where('product_id','=',$account["product_id"])
+                            ->where('ao_id','=',$account["ao_id"])
+                            ->without(['documents', 'branch','center','product', 'borrower', 'accountOfficer', 'payments'])->first();
+                            if($loanAccount) {
+                                $osBal = $loanAccount->outstandingBalance($loanAccount["loan_account_id"]);
+
+                                $oBalance = $osBal < 0 ? 0 : $osBal;
+                                $remainingBal = $loanAccount->remainingBalance();
+                                $reb = $remainingBal['rebates']['credit'];
+                                $interestBal = $remainingBal['interest']['balance'];
+                                $principalBal = $remainingBal['principal']['balance'];
+                                $amortization = $loanAccount->amortization();
+                                $current_amort = $loanAccount->getCurrentAmortization();
+
+                                $amountDue = 0;
+                                $amortPrincipal = 0;
+                                $advPrincipal = 0;
+                                $shortPrincipal = 0;
+                                $amortInterest = 0;
+                                $advInterest = 0;
+                                $shortInterest = 0;
+
+                                if ($current_amort) {
+                                    $amortPrincipal = $current_amort["principal"];
+                                    $advPrincipal = $current_amort["advance_principal"];
+                                    $shortPrincipal = $current_amort["short_principal"];
+                                    $amortInterest = $current_amort["interest"];
+                                    $advInterest = $current_amort["advance_interest"];
+                                    $shortInterest = $current_amort["short_interest"];
+                                    $amountDue = ceil(($amortPrincipal + $shortPrincipal - $advPrincipal) + ($amortInterest + $shortInterest - $advInterest) + ($remainingBal["pdi"]["balance"] + $remainingBal["rebates"]["balance"]));
+                                }
+
+                                $principal = $amortization['principal'];
+                                $interest = $amortization['interest'];
+
+                                $acc[$aoVal["name"]]["products"][$prodVal["product_name"]]["centers"][$centVal["center"]]["accounts"] = [
+                                    'borrower_name' => isset($loanAccount->borrower) ? $loanAccount->borrower->fullname() : '',
+                                    "account_num" => $loanAccount["account_num"],
+                                    "date_loan" => $loanAccount["date_release"],
+                                    "maturity" => $loanAccount["due_date"],
+                                    "amount_loan" => $loanAccount["loan_amount"],
+                                    "principal_amount" => abs(($amortPrincipal + $shortPrincipal) - $advPrincipal),
+                                    "interest_amount" => abs($amortInterest + $shortInterest - $advInterest),
+                                    "amount_due" => $amountDue > 0 ? $amountDue : 0,
+                                    "distribution" => [
+                                        'principal' => $amortPrincipal,
+                                        'short_principal' => $shortPrincipal,
+                                        'advance_principal' => $advPrincipal,
+                                        'interest' => $amortInterest,
+                                        'short_interest' => $shortInterest,
+                                        'advance_interest' => $advInterest,
+                                        'pdi' => $remainingBal["pdi"]["balance"],
+                                        'rebates' => $remainingBal["rebates"]["balance"]
+                                    ],
+                                     "principal_balance" => $principalBal,
+                                     "interest_balance" => $interestBal - $reb,
+                                     "outstanding_balance" => $oBalance,
+                                     "amortization" => $principal + $interest,
+                                     //$account->amortization()["principal"] + $account->amortization()["interest"],
+                                     "amort_dist" => ['principal' => $principal, 'interest' => $interest],
+                                     // "current_amort" => $current_amort,
+                                     "type" => $loanAccount->payment_mode,
+                                     "loan_status" => $loanAccount["loan_status"],
+                                     "status" => $loanAccount["payment_status"],
+                                ];
+                            }
+
+                        };
+                    }
+                }
+            };
+        }
 
 
-        /* foreach ($accOfficers as $aoKey => $aoValue) {
+        foreach ($accOfficers as $aoKey => $aoValue) {
             $acc[] = ["ao_id" => $aoValue["ao_id"],"name" => $aoValue["name"]];
             foreach ($products as $prodKey => $prodVal) {
-                $accOfficers[$aoKey]["products"][$prodVal["product_name"]] = $prodVal;
-                foreach ($centers as $centKey => $centVal) {
-                   foreach ($aoValue["accounts"] as $accKey => $account) { */
-                        /* if ($prodVal["product_id"] == $aoValue["accounts"][$accKey]["product"]["product_id"]) {
+                $acc[$aoKey]["products"][$prodVal["product_name"]] = $prodVal;
+                /* foreach ($centers as $centKey => $centVal) {
+                    foreach ($aoValue["accounts"] as $accKey => $account) {
+                        $loanAccount = Loanaccount::where(['status' => 'released', 'loan_account_id' => $account["loan_account_id"]])
+                                        ->without(['documents', 'branch', 'borrower', 'accountOfficer', 'payments'])
+                                        ->get();
+
+
+                        if ($prodVal["product_id"] == $aoValue["accounts"][$accKey]["product"]["product_id"]) {
+
+                            if($centVal["center_id"] == $aoValue["accounts"][$accKey]["center_id"]) {
                                 if($loanAccount){
                                     $totalBal = $loanAccount->outstandingBalance($loanAccount["loan_account_id"]);
                                     $oBalance = $totalBal < 0 ? 0 : $totalBal;
@@ -1199,8 +1293,8 @@ class Reports extends Model
                     }
                 }
 
-            }
-        }
+           // }
+        //}
         return $acc;
 
         /* foreach ($ao as $aoKey => $aoValue) {
