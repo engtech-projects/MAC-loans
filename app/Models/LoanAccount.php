@@ -108,6 +108,9 @@ class LoanAccount extends Model
         return $cycleNo + 1;
     }
 
+    public function loanCenter() {
+        return $this->belongsTo(Center::class,'center_id');
+    }
     public function center()
     {
         return $this->hasOne(Center::class, 'center_id', 'center_id');

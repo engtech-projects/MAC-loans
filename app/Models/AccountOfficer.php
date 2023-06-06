@@ -26,7 +26,7 @@ class AccountOfficer extends Model
     }
 
     public function accounts() {
-        return $this->hasMany(LoanAccount::class,'ao_id')
+        return $this->hasMany(LoanAccount::class,'ao_id','ao_id')
         ->without(['documents', 'branch','borrower', 'accountOfficer', 'payments'])
         ->where('loan_status','!=',LoanAccount::LOAN_PAID);
     }
