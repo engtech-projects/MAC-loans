@@ -50,14 +50,16 @@
 								<div class="flex-1 d-flex flex-column">
 
 								</div>
-								<span class="font-30 text-bold text-primary-dark text-center">Loan Listing</span>
+								<span class="font-30 text-bold text-primary-dark text-center">LOAN LISTING REPORT</span>
 								<div class="flex-1 d-flex justify-content-end" style="padding-right:16px">
 									<current-transactiondate :branch="branch.branch_id" :token="token" :reports="true"></current-transactiondate>
 									<span class="text-primary-dark">Time: {{todayTime(new Date())}} {{(new Date()).getHours() > 12? 'PM':'AM'}}</span>
 								</div>
 							</div>
-							<span class="text-center text-primary-dark text-bold">As of {{dateToMDY2(new Date()).split('-').join('/')}}</span>
 							<span class="text-center text-primary-dark text-bold font-md mb-5">{{branch.branch_name}} Branch ({{branch.branch_code}})</span>
+							<div class="d-flex flex-row justify-content-center text-primary-dark">
+								<span class="text-center text-primary-dark text-bold">As of {{filter.as_of?dateToMDY2(new Date(filter.as_of)).split('-').join('/'):'---'}}</span>
+							</div>
 						</div>
 						<section class="d-flex flex-column mb-16 p-10 light-border">
 							<section v-for="fr,i in filteredReports" :key="i">
@@ -223,6 +225,21 @@ export default {
 				console.log(error);
 			}.bind(this));
 		},
+		async fetchTransactionDate(){
+			await axios.get(this.baseURL() + 'api/eod/eodtransaction/' + this.branch.branch_id,{
+				headers: {
+					'Authorization': 'Bearer ' + this.token,
+					'Content-Type': 'application/json',
+					'Accept': 'application/json'
+					}
+				})
+				.then(function (response) {
+					this.filter.as_of = response.data.data.date_end;
+				}.bind(this))
+				.catch(function (error) {
+					console.log(error);
+				}.bind(this));
+		},
 		print:function(){
 			var content = document.getElementById('printContent').innerHTML;
 			var target = document.querySelector('.to-print');
@@ -317,6 +334,7 @@ export default {
 		this.filter.branch_id = JSON.parse(this.pbranch).branch_id;
 		this.branch = JSON.parse(this.pbranch);
 		this.fetchProducts();
+		this.fetchTransactionDate();
 	}
 }
 </script>
