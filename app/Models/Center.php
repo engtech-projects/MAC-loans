@@ -23,8 +23,9 @@ class Center extends Model
     }
     public function accounts() {
         return $this->hasMany(LoanAccount::class,'center_id','center_id')
-        ->without(['documents','products','center', 'branch','borrower', 'accountOfficer', 'payments'])
+        ->without(['documents','branch','borrower', 'accountOfficer', 'payments'])
         ->where('loan_status','!=',LoanAccount::LOAN_PAID);
+
     }
     public function product() {
         return $this->hasMany(Product::class,'product_id','product_id');
