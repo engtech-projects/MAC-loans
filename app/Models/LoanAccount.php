@@ -1063,6 +1063,9 @@ class LoanAccount extends Model
             $isPaid = $this->getPayment($this->loan_account_id, $amortization->id)->last();
             #GET PAYMENT ADVANCE PRINCIPAL
             $advPrincipal = $this->getAdvancePrincipal($this->loan_account_id, $amortization->id);
+            $amortization->delinquent = $this->getDelinquent($this->loan_account_id, $amortization->id, $amortization->advance_principal);
+
+
 
 
             #CHECK LAST PAID AMORTIZATION
@@ -1135,10 +1138,11 @@ class LoanAccount extends Model
                 Amortization::find($amortization->id)->update(['status' => 'delinquent']);
 
             } */
+
             if ($dayDiff > 10  && $advPrincipal < $amortization->principal) {
                 $penaltyMissed = array_merge($missed, [$amortization->id]);
             }
-            $penalty = $this->getPenalty($penaltyMissed,$totalAmort,$transactionDateNow);
+            $penalty += $this->getPenalty($amortization->delinquent["missed"],$totalAmort,$transactionDateNow);
             $pdi = $this->calculatePastDueInterest($amortization,$transactionDateNow,$pdi);
             //set pdi and penalty to zero if loan is paid
             if($this->getLoanStatus($this->loan_account_id) == LoanAccount::LOAN_PAID) {
@@ -1199,9 +1203,9 @@ class LoanAccount extends Model
             ]
         ];
         // SET PDI AND PENALTY IN THE ACCOUNT SUMMARY
-        $currentAmortization = $account->getCurrentAmortization();
+        $currentAmortization = $account->getPDIPENALTY();
         if ($currentAmortization) {
-            $accountSummary['penalty']['debit'] += $currentAmortization->short_penalty + $currentAmortization['penalty'];
+            $accountSummary['penalty']['debit'] += $currentAmortization['penalty'];
             $accountSummary['pdi']['debit'] += $currentAmortization['pdi'];
         }
 
