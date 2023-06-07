@@ -577,7 +577,7 @@ class LoanAccount extends Model
                 }
             }
 
-            if ($dayDiff > 0 && $amortization->advance_principal < $amortization->short_principal+ $amortization->principal) {
+            if ($dayDiff >= 0 && $amortization->advance_principal < $amortization->short_principal+ $amortization->principal) {
                 Amortization::find($amortization->id)->update(['status' => 'delinquent']);
                 $amortization->delinquent = $this->getDelinquent($this->loan_account_id, $amortization->id, $amortization->advance_principal);
                 if($transactionDateNow>$amortization->amortization_date) {
