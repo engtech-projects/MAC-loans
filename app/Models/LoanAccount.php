@@ -1094,7 +1094,6 @@ class LoanAccount extends Model
                         $totalInterest += $payment->short_interest;
                         $pdi += $payment->short_pdi;
                         $penalty += $payment->short_penalty;
-                        $short_penalty+=$payment->short_penalty;
                         $isNotAdvancePayment = (bool)$payment->total_payable;
                         break;
                     }
@@ -1162,7 +1161,6 @@ class LoanAccount extends Model
 
 
         return [
-            'short_penalty' => $amortization? $short_penalty : 0,
             'penalty' => $amortization ? $penalty : 0,
             'pdi' => $amortization ? $pdi : 0
         ];
