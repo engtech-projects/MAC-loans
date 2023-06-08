@@ -6,10 +6,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
 use App\Models\EndTransaction;
 
-use Illuminate\Database\Eloquent\Builder;
 
 class Reports extends Model
 {
@@ -1029,42 +1027,18 @@ class Reports extends Model
         return $amortization;
     }
 
-
-    public function getAccounts()
-    {
-        $centerAccounts = Center::with(['accounts' => function ($query) {
-            $query->select([
-                'loan_account_id',
-                'account_num',
-                'product_id',
-                'center_id',
-                'ao_id',
-                'loan_amount',
-                'payment_mode',
-                'payment_status',
-                'loan_status',
-                'due_date',
-                'date_release',
-            ]);
-        }])->get();
-
-        return $centerAccounts;
-    }
-
     public function branchLoanListingReport($filters = [])
     {
-        /* $accOfficers = AccountOfficer::where(["status"=> AccountOfficer::STATUS_ACTIVE]); */
-        /*  $accOfficers =  AccountOfficer::join('account_officer_branch','account_officer.ao_id', '=', 'account_officer_branch.ao_id')
+         $accOfficers =  AccountOfficer::join('account_officer_branch','account_officer.ao_id', '=', 'account_officer_branch.ao_id')
         ->join('branch','account_officer_branch.branch_id', '=', 'branch.branch_id')
+        ->without(['branch_registered'])
         ->where([
             'account_officer.status' => AccountOfficer::STATUS_ACTIVE,
-        ]); */
-        $accOfficers = AccountOfficer::join('account_officer_branch', 'account_officer.ao_id', '=', 'account_officer_branch.ao_id')
+        ]);
+        /* $accOfficers = AccountOfficer::join('account_officer_branch', 'account_officer.ao_id', '=', 'account_officer_branch.ao_id')
             ->join('branch', 'account_officer_branch.branch_id', '=', 'branch.branch_id')
-            ->without(['branch_registered']);
+            ->without(['branch_registered']); */
 
-
-        //$accOfficers = AccountOfficer::with(['accounts']);
         if (isset($filters["branch_id"]) && $filters["branch_id"]) {
             $accOfficers = $accOfficers->where(["branch.branch_id" => $filters["branch_id"]]);
         }
@@ -1234,8 +1208,6 @@ class Reports extends Model
                                 "loan_status" => $account->loan_status,
                                 "status" => $account->payment_status,
                             ];
-                        }else {
-                            continue;
                         }
                     }
                 }
@@ -1339,10 +1311,6 @@ class Reports extends Model
         } */
 
         return $acc;
-    }
-
-    private function addLoanDetails()
-    {
     }
 
     public function aoRevenueReport($filters = [])
