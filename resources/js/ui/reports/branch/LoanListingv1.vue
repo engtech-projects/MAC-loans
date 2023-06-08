@@ -50,16 +50,14 @@
 								<div class="flex-1 d-flex flex-column">
 
 								</div>
-								<span class="font-30 text-bold text-primary-dark text-center">LOAN LISTING REPORT</span>
+								<span class="font-30 text-bold text-primary-dark text-center">Loan Listing</span>
 								<div class="flex-1 d-flex justify-content-end" style="padding-right:16px">
 									<current-transactiondate :branch="branch.branch_id" :token="token" :reports="true"></current-transactiondate>
 									<span class="text-primary-dark">Time: {{todayTime(new Date())}} {{(new Date()).getHours() > 12? 'PM':'AM'}}</span>
 								</div>
 							</div>
+							<span class="text-center text-primary-dark text-bold">As of {{dateToMDY2(new Date()).split('-').join('/')}}</span>
 							<span class="text-center text-primary-dark text-bold font-md mb-5">{{branch.branch_name}} Branch ({{branch.branch_code}})</span>
-							<div class="d-flex flex-row justify-content-center text-primary-dark">
-								<span class="text-center text-primary-dark text-bold">As of {{filter.as_of?dateToMDY2(new Date(filter.as_of)).split('-').join('/'):'---'}}</span>
-							</div>
 						</div>
 						<section class="d-flex flex-column mb-16 p-10 light-border">
 							<section v-for="fr,i in filteredReports" :key="i">
@@ -98,17 +96,17 @@
 										<tr v-for="rws,j in fr.rows" :key="j">
 											<td v-for="rw,k in rws" :key="k">{{rw}}</td>
 										</tr>
-										<tr v-if="fr.product=='002 - Micro Group'" class="bg-skyblue text-bold">
-											<td v-for="tc,l in fr.centerTotal" :key="l">{{tc===""||tc==="CENTER SUB-TOTAL"||l==1?tc:formatToCurrency(tc)}}</td>
+										<tr class="bg-skyblue text-bold">
+											<td v-for="tc,l in fr.centerTotal" :key="l">{{tc===""||tc==="CENTER SUB-TOTAL"?tc:formatToCurrency(tc)}}</td>
 										</tr>
 										<tr v-if="fr.productTotal" class="bg-green-mint text-bold">
-											<td v-for="tp,m in fr.productTotal" :key="m">{{tp===""||tp==="PRODUCT SUB-TOTAL"||m==1?tp:formatToCurrency(tp)}}</td>
+											<td v-for="tp,m in fr.productTotal" :key="m">{{tp===""||tp==="PRODUCT SUB-TOTAL"?tp:formatToCurrency(tp)}}</td>
 										</tr>
 										<tr v-if="fr.aoTotal" class="bg-purple-light text-bold">
-											<td v-for="ta,n in fr.aoTotal" :key="n">{{ta===""||ta==="OFFICER SUB-TOTAL"||n==1?ta:formatToCurrency(ta)}}</td>
+											<td v-for="ta,n in fr.aoTotal" :key="n">{{ta===""||ta==="OFFICER SUB-TOTAL"?ta:formatToCurrency(ta)}}</td>
 										</tr>
 										<tr v-if="fr.total" class="bg-primary-dark text-white text-bold">
-											<td v-for="tt,o in fr.total" :key="o">{{tt===""||tt==="TOTAL"||o==1?tt:formatToCurrency(tt)}}</td>
+											<td v-for="tt,o in fr.total" :key="o">{{tt===""||tt==="TOTAL"?tt:formatToCurrency(tt)}}</td>
 										</tr>
 									</tbody>
 								</table>
@@ -171,7 +169,7 @@ export default {
 			.then(function (response) {
 				this.loading = false;
 				this.reports = response.data.data
-				// console.log(this.reports);
+				console.log(this.reports);
 			}.bind(this))
 			.catch(function (error) {
 				this.loading = false;
@@ -225,21 +223,6 @@ export default {
 				console.log(error);
 			}.bind(this));
 		},
-		async fetchTransactionDate(){
-			await axios.get(this.baseURL() + 'api/eod/eodtransaction/' + this.branch.branch_id,{
-				headers: {
-					'Authorization': 'Bearer ' + this.token,
-					'Content-Type': 'application/json',
-					'Accept': 'application/json'
-					}
-				})
-				.then(function (response) {
-					this.filter.as_of = response.data.data.date_end;
-				}.bind(this))
-				.catch(function (error) {
-					console.log(error);
-				}.bind(this));
-		},
 		print:function(){
 			var content = document.getElementById('printContent').innerHTML;
 			var target = document.querySelector('.to-print');
@@ -250,20 +233,16 @@ export default {
 	computed:{
 		filteredReports:function(){
 			var tables = [];
-			var total = ['TOTAL',0,'','',0,0,0,'','','',0,'',''];
+			var total = ['TOTAL','','',0,0,0,0,0,'',''];
 			this.reports.forEach(ao=>{
-				var hasAoAccounts = false;
-				var aoTotal = ['OFFICER SUB-TOTAL',0,'','',0,0,0,'','','',0,'',''];
+				var aoTotal = ['OFFICER SUB-TOTAL','','',0,0,0,0,0,'',''];
 				for(var p in ao.products){
-					var hasAccounts = false;
 					var product = ao.products[p];
-					var productTotal = ['PRODUCT SUB-TOTAL',0,'','',0,0,0,'','','',0,'',''];
+					var productTotal = ['PRODUCT SUB-TOTAL','','',0,0,0,0,0,'',''];
 					for(var c in product.centers){
 						var center = product.centers[c];
-						var centerTotal = ['CENTER SUB-TOTAL',0,'','',0,0,0,'','','',0,'',''];
+						var centerTotal = ['CENTER SUB-TOTAL','','',0,0,0,0,0,'',''];
 						if(center.accounts){
-							hasAccounts = true;
-							hasAoAccounts = true;
 							var table = {
 								ao:'0' + ao.ao_id + ' - ' + ao.name,
 								product:product.product_code + ' - ' + product.product_name,
@@ -281,58 +260,52 @@ export default {
                                 row.push(account.account_num);
 								row.push(account.date_loan);
 								row.push(account.maturity);
+
 								row.push(this.formatToCurrency(account.amount_loan));
-								centerTotal[1]++;
-								productTotal[1]++;
-								aoTotal[1]++;
-								total[1]++;
-								centerTotal[4] += account.amount_loan;
+								centerTotal[3] += account.amount_loan;
 								row.push(this.formatToCurrency(account.principal_balance));
-								centerTotal[5] += account.principal_balance;
+								centerTotal[4] += account.principal_balance;
 								row.push(this.formatToCurrency(account.interest_balance));
-								centerTotal[6] += account.interest_balance;
+								centerTotal[5] += account.interest_balance;
 								row.push(this.formatToCurrency(account.amortization));
-								row.push(this.formatToCurrency(account.distribution.short_principal + account.distribution.principal));
-                                row.push(this.formatToCurrency(account.distribution.short_interest + account.distribution.interest));
-								// centerTotal[7] += account.amortization;
+								centerTotal[6] += account.amortization;
+                                row.push(account.distribution.short_principal + account.distribution.principal)
+                                row.push(account.distribution.short_interest + account.distribution.interest)
 								row.push(this.formatToCurrency(account.amount_due));
-								centerTotal[10] += account.amount_due;
-								// centerTotal[9] = '';
+								centerTotal[7] += account.amount_due;
 								row.push('');
 								row.push(account.loan_status=='Ongoing'?account.status:account.loan_status);
 								table.rows.push(row);
 							}
+							productTotal[3] += centerTotal[3];
 							productTotal[4] += centerTotal[4];
 							productTotal[5] += centerTotal[5];
 							productTotal[6] += centerTotal[6];
-							// productTotal[7] += centerTotal[7];
-							productTotal[10] += centerTotal[10];
+							productTotal[7] += centerTotal[7];
 							table.centerTotal = centerTotal;
 							tables.push(table);
 						}
 					}
-					
-					
+					aoTotal[3] += productTotal[3];
 					aoTotal[4] += productTotal[4];
 					aoTotal[5] += productTotal[5];
 					aoTotal[6] += productTotal[6];
-					// aoTotal[7] += productTotal[7];
-					aoTotal[10] += productTotal[10];
-					if(tables.length && hasAccounts){
-						tables[tables.length - 1].productTotal = productTotal;
+					aoTotal[7] += productTotal[7];
+					if(tables.length){
+						tables[tables.length-1].productTotal = productTotal;
 					}
 				}
+				total[3] += aoTotal[3];
 				total[4] += aoTotal[4];
 				total[5] += aoTotal[5];
 				total[6] += aoTotal[6];
-				// total[7] += aoTotal[7];
-				total[10] += aoTotal[10];
-				if(tables.length && hasAoAccounts){
-					tables[tables.length - 1].aoTotal = aoTotal;
+				total[7] += aoTotal[7];
+				if(tables.length){
+					tables[tables.length-1].aoTotal = aoTotal;
 				}
 			})
 			if(tables.length){
-				tables[tables.length - 1].total = total;
+				tables[tables.length-1].total = total;
 			}
 			return tables;
 		}
@@ -344,7 +317,6 @@ export default {
 		this.filter.branch_id = JSON.parse(this.pbranch).branch_id;
 		this.branch = JSON.parse(this.pbranch);
 		this.fetchProducts();
-		this.fetchTransactionDate();
 	}
 }
 </script>
