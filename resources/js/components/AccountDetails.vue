@@ -529,9 +529,24 @@
 											</div>
 										</div>
 
-
 										<div class="form-group mb-10 mr-16 flex-1 d-flex align-items-end">
 											<button @click="updatePayment()" data-dismiss="modal" class="btn btn-success" style="margin-bottom:1rem;width:100%;height:47px;">UPDATE</button>
+										</div>
+									</div>
+									
+									<div class="d-flex flex-column flex-lg-row">
+										<div class="form-group mb-10 mr-16 flex-1">
+											<label for="transactionDate" class="form-label">Amortization Schedule</label>
+											<div class="form-group">
+												<select v-model="editPayment.amortization_id" class="form-control form-input">
+													<template v-for="sched in amortSched">
+														<option :value="sched.id">{{sched.amortization_date}}</option>
+													</template>
+												</select>
+											</div>
+										</div>
+										<div class="form-group mb-10 mr-16 flex-1 d-flex align-items-end">
+											<button @click="updatePaymentDistribute()" data-dismiss="modal" class="btn btn-warning" style="margin-bottom:1rem;width:100%;height:47px;">Update and Distribute</button>
 										</div>
 									</div>
 								</div>
@@ -773,6 +788,35 @@
 				})
 				.then(function (response) {
 					this.notify('','Payment successfully updated.', 'success');
+				}.bind(this))
+				.catch(function (error) {
+					console.log(error);
+					this.notify('',error.response.data.data, 'error');
+				}.bind(this));
+			},
+			updatePaymentDistribute:function(){
+				axios.put(this.baseURL() + 'api/payment/' + this.editPayment.payment_id, this.editPayment, {
+					headers: {
+							'Authorization': 'Bearer ' + this.token,
+							'Content-Type': 'application/json',
+							'Accept': 'application/json'
+					}
+				})
+				.then(function (response) {
+					axios.get(this.baseURL() + 'api/migrate/loanAccount?type=realtime&account_num=' + this.loanDetails.account_num, {
+						headers: {
+								'Authorization': 'Bearer ' + this.token,
+								'Content-Type': 'application/json',
+								'Accept': 'application/json'
+						}
+					})
+					.then(function (response) {
+						this.notify('','Payment successfully updated.', 'success');
+					}.bind(this))
+					.catch(function (error) {
+						console.log(error);
+						this.notify('',error.response.data.data, 'error');
+					}.bind(this));
 				}.bind(this))
 				.catch(function (error) {
 					console.log(error);
