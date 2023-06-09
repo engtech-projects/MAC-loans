@@ -391,10 +391,14 @@ class LoanAccount extends Model
             $transDate = Carbon::createFromFormat('Y-m-d',$dateNow);
             $month = $transDate->format('m');
             $year = $transDate->format('Y');
-            $amortization = $amortization->whereMonth('amortization_date', $month)
-            ->whereYear('amortization_date',$year)->first();
+            $amortization = $amortization
+            ->whereMonth('amortization_date', $month)
+            ->whereYear('amortization_date',$year)
+            ->first();
+
         }else {
-            $amortization = $amortization->whereDate('amortization_date', '<=', $dateNow)->first();
+            $amortization = $amortization->whereDate('amortization_date', '<=', $dateNow)
+            ->first();
         }
 
         if ((isset($amortization->status) && $amortization->status == 'paid') || $amortization == null) {
