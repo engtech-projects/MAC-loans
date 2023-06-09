@@ -19,7 +19,9 @@ class Document extends Model
 
     public function getPromissoryNo($branchCode, $productCode, $identifier = 1) {
 
-        $num = Document::where('promissory_number', 'LIKE', '%'.$branchCode . '-' .$productCode.'%')->get()->pluck('promissory_number')->last();
+        //$num = LoanAccount::where('account_num', 'LIKE','%-' . $productCode . '-%')->orderBy('account_num','DESC')->limit(1)->pluck('account_num');
+
+        $num = Document::where('promissory_number', 'LIKE', '%'. '-' .$productCode.'%')->orderBy('account_num','DESC')->limit(1)->pluck('account_num');
 
         if( $num ) {
          $series = explode('-', $num);
