@@ -379,17 +379,29 @@ class LoanAccount extends Model
     public function currentAmortization($loanAccountId, $dateNow)
     {
 
+        $account = LoanAccount::find($loanAccountId);
         // get current amortization
-        $amortization = Amortization::whereDate('amortization_date', '<=', $dateNow)
-            ->where('loan_account_id', $loanAccountId)
+        $amortization = Amortization::where('loan_account_id', $loanAccountId)
             ->whereIn('status', ['open', 'delinquent', 'paid'])
             ->orderBy('amortization_date', 'DESC')
-            ->limit(1)
+            ->limit(1);
+
+
+        if($account->product["product_name"] == "Pension Loan") {
+            $transDate = Carbon::createFromFormat('Y-m-d',$dateNow);
+            $month = $transDate->format('m');
+            $year = $transDate->format('Y');
+            $amortization = $amortization
+            ->whereMonth('amortization_date', $month)
+            ->whereYear('amortization_date',$year)
             ->first();
 
+        }else {
+            $amortization = $amortization->whereDate('amortization_date', '<=', $dateNow)
+            ->first();
+        }
 
         if ((isset($amortization->status) && $amortization->status == 'paid') || $amortization == null) {
-
             $amortization = Amortization::whereDate('amortization_date', '>', $dateNow)
                 ->where('loan_account_id', $loanAccountId)
                 ->whereIn('status', ['open', 'delinquent'])
@@ -400,7 +412,6 @@ class LoanAccount extends Model
 
         return $amortization;
     }
-
     public function getAmortizationMissed()
     {
         $tranDate = new EndTransaction();
