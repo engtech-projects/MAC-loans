@@ -229,6 +229,35 @@ export default {
 			target.innerHTML = content;
 			window.print();
 		},
+		processCenter:function(centers, product){
+			var result = [];
+			if(product != 'Micro Group'){
+				result = centers;
+			}else{
+				var ccc = [];
+				for(var c in centers){
+					ccc.push(c);
+				}
+				for(var a in ccc.sort()){
+					for(var b in centers){
+						if(ccc[a] === b){
+							result[b]=(centers[b]);
+						}
+					}
+				}
+			}
+			return result;
+		},
+		sortMicroGroup:function( a, b ) {
+			console.log(a);
+			if ( a.center < b.center ){
+				return -1;
+			}
+			if ( a.center > b.center ){
+				return 1;
+			}
+			return 0;
+		}
 	},
 	computed:{
 		filteredReports:function(){
@@ -241,7 +270,7 @@ export default {
 					var hasAccounts = false;
 					var product = ao.products[p];
 					var productTotal = ['PRODUCT SUB-TOTAL',0,'','',0,0,0,'','','',0,'',''];
-					for(var c in product.centers){
+					for(var c in this.processCenter(product.centers, p)){
 						var center = product.centers[c];
 						var centerTotal = ['CENTER SUB-TOTAL',0,'','',0,0,0,'','','',0,'',''];
 						if(center.accounts){
