@@ -884,11 +884,14 @@ class Reports extends Model
 
                         foreach ( $allAOProd as $key => $value ) {
                             $remainBal = $value->remainingBalance();
+
                             $principalBalance = $remainBal["principal"]["balance"];
                             $memoBal = $remainBal["memo"]["balance"];
                             $currentAmort = $this->getCurrentAmortization($value->getCurrentAmortization(),$remainBal);
 
+
                             $totalBal = $memoBal < 0 ? 0 : $memoBal;
+
                             if($value->loan_status == LoanAccount::LOAN_RES_WO_PDI && $totalBal == 0 || $value->loan_status == LoanAccount::LOAN_RESTRUCTED && $totalBal == 0) {
                                 continue;
                             }else {
@@ -898,7 +901,11 @@ class Reports extends Model
 
                                     if( $value->payment_status == LoanAccount::PAYMENT_DELINQUENT ) {
                                         $tempProd["delinquent"]["count"] += 1;
-                                        $tempProd["delinquent"]["amount"] += $currentAmort["amount_due"] > 0 ? $currentAmort["amount_due"] : 0 ;
+
+                                        if($currentAmort) {
+                                            $tempProd["delinquent"]["amount"] += $currentAmort["amount_due"] > 0 ? $currentAmort["amount_due"] : 0 ;
+                                        }
+
                                         // $tempProd["delinquent"]["account"] = $amortization;
                                         // break;
                                     }

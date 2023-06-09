@@ -410,6 +410,25 @@ class LoanAccount extends Model
                 ->first();
         }
 
+
+        /* $amortization = Amortization::whereDate('amortization_date', '<=', $dateNow)
+            ->where('loan_account_id', $loanAccountId)
+            ->whereIn('status', ['open', 'delinquent', 'paid'])
+            ->orderBy('amortization_date', 'DESC')
+            ->limit(1)
+            ->first();
+
+
+        if ((isset($amortization->status) && $amortization->status == 'paid') || $amortization == null) {
+
+            $amortization = Amortization::whereDate('amortization_date', '>', $dateNow)
+                ->where('loan_account_id', $loanAccountId)
+                ->whereIn('status', ['open', 'delinquent'])
+                ->orderBy('amortization_date', 'ASC')
+                ->limit(1)
+                ->first();
+        } */
+
         return $amortization;
     }
     public function getAmortizationMissed()
