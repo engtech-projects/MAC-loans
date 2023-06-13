@@ -236,9 +236,13 @@ export default {
 			}else{
 				var ccc = [];
 				for(var c in centers){
-					ccc.push(c);
+					if(c !== 'No Center'){
+						ccc.push(c);
+					}
 				}
-				for(var a in ccc.sort()){
+				var ccenters = ccc.sort(this.sortMicrofunction);
+				ccenters.unshift('No Center');
+				for(var a in ccenters){
 					for(var b in centers){
 						if(ccc[a] === b){
 							result[b]=(centers[b]);
@@ -246,17 +250,14 @@ export default {
 					}
 				}
 			}
+			console.log(result);
 			return result;
 		},
-		sortMicroGroup:function( a, b ) {
-			console.log(a);
-			if ( a.center < b.center ){
-				return -1;
-			}
-			if ( a.center > b.center ){
-				return 1;
-			}
-			return 0;
+		sortMicrofunction:function(a,b) {
+			a = a.toLowerCase();
+			b = b.toLowerCase();
+			if( a == b) return 0;
+			return a < b ? -1 : 1;
 		}
 	},
 	computed:{
