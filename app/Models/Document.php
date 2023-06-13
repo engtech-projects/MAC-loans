@@ -26,6 +26,8 @@ class Document extends Model
         if( $num ) {
          $series = explode('-', $num);
          $identifier = (int)$series[2] + 1;
+        }else {
+            $identifier = 0000001;
         }
 
         return $branchCode . '-' .$productCode . '-' . str_pad($identifier, 7, '0', STR_PAD_LEFT);
