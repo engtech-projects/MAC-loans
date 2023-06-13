@@ -271,6 +271,7 @@ class LoanAccountController extends BaseController
 
         $document = new Document();
 
+
         return $document->getPromissoryNo($branch->branch_code, $product->product_code);
     }
 
@@ -316,7 +317,7 @@ class LoanAccountController extends BaseController
 
     public function fixShortAdv(Request $request){
         $accNum = $request->input("account_num");
-        $type = $request->input("type") ?? 'background'; 
+        $type = $request->input("type") ?? 'background';
         // $type = 'realtime'; // realtime or background
         // $type = 'background'; // realtime or background
         $limit = 10;
@@ -393,8 +394,8 @@ class LoanAccountController extends BaseController
                     if(
                         $payment->transaction_date > $amort->amortization_date &&
                         sizeof($amort->payments) > 1 &&
-                        ( 
-                            $prevPaid ||  
+                        (
+                            $prevPaid ||
                             $acc->product->product_code == '003'
                         )
                     ){
