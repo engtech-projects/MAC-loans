@@ -21,7 +21,7 @@ class Document extends Model
 
         //$num = LoanAccount::where('account_num', 'LIKE','%-' . $productCode . '-%')->orderBy('account_num','DESC')->limit(1)->pluck('account_num');
 
-        $num = Document::where('promissory_number', 'LIKE', '%'. '-' .$productCode.'%')->orderBy('account_num','DESC')->limit(1)->pluck('account_num');
+        $num = Document::where('promissory_number', 'LIKE', '%'. '-' .$productCode.'%')->orderBy('promissory_number','DESC')->limit(1)->pluck('promissory_number');
 
         if( $num ) {
          $series = explode('-', $num);
