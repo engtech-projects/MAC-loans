@@ -250,7 +250,6 @@ export default {
 					}
 				}
 			}
-			console.log(result);
 			return result;
 		},
 		sortMicrofunction:function(a,b) {
