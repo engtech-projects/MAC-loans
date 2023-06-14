@@ -117,9 +117,11 @@ class Reports extends Model
         $payments->join('loan_accounts', 'loan_accounts.loan_account_id', '=', 'payment.loan_account_id'); */
 
         $payments = Payment::join('loan_accounts','loan_accounts.loan_account_id','=','payment.loan_account_id')
+        ->join('amortization','amortization.id','=','payment.amortization_id')
         ->select(
             'payment.transaction_date',
             'loan_accounts.borrower_id',
+            'amortization.interest',
             'payment.or_no',
             'payment.principal',
             'payment.interest',
@@ -670,7 +672,8 @@ class Reports extends Model
                 'net_interest' => $payment->interest,
                 'vat' => $payment->vat,
                 'payment_type' => $payment->payment_type,
-                'memo_type' => $payment->memo_type
+                'memo_type' => $payment->memo_type,
+                'amortization_interest' => $payment->interest
             ];
         }
 
