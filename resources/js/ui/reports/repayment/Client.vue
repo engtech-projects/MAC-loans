@@ -69,6 +69,7 @@
 							<th>Net Int.</th>
 							<th>VAT</th>
 							<th>Type</th>
+							<th>Amort. Int.</th>
 						</thead>
 						<tbody>
 							<tr v-if="!reports.length"><td><i>No records found.</i></td></tr>
@@ -85,6 +86,7 @@
 								<td>{{formatToCurrency(r.net_interest)}}</td>
 								<td>{{formatToCurrency(r.vat)}}</td>
 								<td>{{r.payment_type}}</td>
+								<td>{{formatToCurrency(r.amortization_interest)}}</td>
 							</tr>
 							
 							<tr class="border-cell-gray-7">
@@ -319,7 +321,7 @@ export default {
 			return this.accountOfficers.filter(ao=>ao.status=='active'&&ao.branch_id==this.branch.branch_id);
 		},
 		total:function(){
-			var result = ['TOTAL','','',0,0,0,0,0,0,0,0,'',''];
+			var result = ['TOTAL','','',0,0,0,0,0,0,0,0,'',0,''];
 			this.reports.forEach(r => {
 				result[3] += r.principal;
 				result[4] += r.interest;
@@ -329,6 +331,7 @@ export default {
 				result[8] += r.total;
 				result[9] += r.net_interest;
 				result[10] += r.vat;
+				result[12] += r.amortization_interest;
 			});
 			return result;
 		},
