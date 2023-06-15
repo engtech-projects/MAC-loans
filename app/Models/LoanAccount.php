@@ -380,7 +380,7 @@ class LoanAccount extends Model
     public function currentAmortization($loanAccountId, $dateNow)
     {
         $account = LoanAccount::find($loanAccountId);
-        if ($account->product["name"] == 'Pension Loan') {
+        if ($account->product->name == 'Pension Loan') {
             $transDate = Carbon::createFromFormat('Y-m-d', $dateNow)->endOfMonth();
             $amortization = Amortization::whereDate('amortization_date', '<=', $transDate)
                 ->where('loan_account_id', $loanAccountId)
