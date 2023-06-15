@@ -380,45 +380,35 @@ class LoanAccount extends Model
     public function currentAmortization($loanAccountId, $dateNow)
     {
         $account = LoanAccount::find($loanAccountId);
-        if ($account->payment_mode != 'Lumpsum') {
-
-
-            if ($account->product["name"] == 'Pension Loan') {
-                $transDate = Carbon::createFromFormat('Y-m-d', $dateNow)->endOfMonth();
-                $amortization = Amortization::whereDate('amortization_date', '<=', $transDate)
-                    ->where('loan_account_id', $loanAccountId)
-                    ->whereIn('status', ['open', 'delinquent', 'paid'])
-                    ->orderBy('amortization_date', 'DESC')
-                    ->limit(1)
-                    ->first();
-            } else {
-                $amortization = Amortization::whereDate('amortization_date', '<=', $dateNow)
-                    ->where('loan_account_id', $loanAccountId)
-                    ->whereIn('status', ['open', 'delinquent', 'paid'])
-                    ->orderBy('amortization_date', 'DESC')
-                    ->limit(1)
-                    ->first();
-            }
-
-
-
-            if ((isset($amortization->status) && $amortization->status == 'paid') || $amortization == null) {
-
-                $amortization = Amortization::whereDate('amortization_date', '>', $dateNow)
-                    ->where('loan_account_id', $loanAccountId)
-                    ->whereIn('status', ['open', 'delinquent'])
-                    ->orderBy('amortization_date', 'ASC')
-                    ->limit(1)
-                    ->first();
-            }
-        }else {
+        if ($account->product["name"] == 'Pension Loan') {
+            $transDate = Carbon::createFromFormat('Y-m-d', $dateNow)->endOfMonth();
+            $amortization = Amortization::whereDate('amortization_date', '<=', $transDate)
+                ->where('loan_account_id', $loanAccountId)
+                ->whereIn('status', ['open', 'delinquent', 'paid'])
+                ->orderBy('amortization_date', 'DESC')
+                ->limit(1)
+                ->first();
+        } else {
             $amortization = Amortization::whereDate('amortization_date', '<=', $dateNow)
-            ->where('loan_account_id', $loanAccountId)
-            ->whereIn('status', ['open', 'delinquent', 'paid'])
-            ->orderBy('amortization_date', 'DESC')
-            ->limit(1)
-            ->first();
+                ->where('loan_account_id', $loanAccountId)
+                ->whereIn('status', ['open', 'delinquent', 'paid'])
+                ->orderBy('amortization_date', 'DESC')
+                ->limit(1)
+                ->first();
         }
+
+
+
+        if ((isset($amortization->status) && $amortization->status == 'paid') || $amortization == null) {
+
+            $amortization = Amortization::whereDate('amortization_date', '>', $dateNow)
+                ->where('loan_account_id', $loanAccountId)
+                ->whereIn('status', ['open', 'delinquent'])
+                ->orderBy('amortization_date', 'ASC')
+                ->limit(1)
+                ->first();
+        }
+
 
         return $amortization;
     }
@@ -544,8 +534,23 @@ class LoanAccount extends Model
         # compute for total payments
         # get last payment
         if ($amortization) {
+
+
+            $currentDay = Carbon::createFromFormat('Y-m-d', $transactionDateNow)->startOfDay();
+            $dateSched = Carbon::createFromFormat('Y-m-d', $amortization->amortization_date)->startOfDay();
+            $dateSchedPension = Carbon::createFromFormat('Y-m-d', $amortization->amortization_date)->startOfMonth();
+            $dayDiff = $dateSched->diffInDays($currentDay, false);
+            $dayDiffPension = $dateSchedPension->diffInDays($currentDay, false);
+
+
+            $loanAccount = LoanAccount::find($this->loan_account_id);
             $amortization->principal = round($amortization->principal);
             $amortization->interest = round($amortization->interest);
+
+            if ($loanAccount->payment_mode == 'Lumpsum' && $currentDay < $dateSched) {
+                $amortization->principal = 0;
+                $amortization->interest = 0;
+            }
 
             $totalAmort = $first_amort->principal + $first_amort->interest;
             $amortization->pdi = $amortization->pdi ? $amortization->pdi : 0;
@@ -578,11 +583,7 @@ class LoanAccount extends Model
                 $amortization->over_payment = $isPaid->over_payment;
             }
 
-            $currentDay = Carbon::createFromFormat('Y-m-d', $transactionDateNow)->startOfDay();
-            $dateSched = Carbon::createFromFormat('Y-m-d', $amortization->amortization_date)->startOfDay();
-            $dateSchedPension = Carbon::createFromFormat('Y-m-d', $amortization->amortization_date)->startOfMonth();
-            $dayDiff = $dateSched->diffInDays($currentDay, false);
-            $dayDiffPension = $dateSchedPension->diffInDays($currentDay, false);
+
             $penaltyMissed = array_unique($amortization->delinquent['missed']);
             $amortization->day_late = $dayDiff;
             if ($this->getPaymentTotal($this->loan_account_id)) { // condition that checks if not the first payment
@@ -619,6 +620,10 @@ class LoanAccount extends Model
         }
 
         return $amortization;
+    }
+
+    public function checkPaymentMode()
+    {
     }
 
     public function getPrevAmortization($loanAccountId, $amortizationId, $status = ['open'], $refId = null, $single = false, $order = 'ASC')
