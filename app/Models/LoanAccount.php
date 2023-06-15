@@ -380,7 +380,7 @@ class LoanAccount extends Model
     public function currentAmortization($loanAccountId, $dateNow)
     {
         $account = LoanAccount::find($loanAccountId);
-        if ($account->payment_mode != 'Lumpsim') {
+        if ($account->payment_mode != 'Lumpsum') {
 
 
             if ($account->product["name"] == 'Pension Loan') {
