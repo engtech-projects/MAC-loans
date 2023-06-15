@@ -190,6 +190,17 @@
                             <div
                                 class="d-flex flex-row flex-2 justify-content-between pr-24"
                             >
+                                <span class="">Rebates</span>
+                                <span>:</span>
+                            </div>
+                            <span class="flex-3 text-primary-dark"
+                                >P {{ formatToCurrency(paymentrebates) }}</span
+                            >
+                        </div>
+                        <div class="d-flex flex-row mb-12">
+                            <div
+                                class="d-flex flex-row flex-2 justify-content-between pr-24"
+                            >
                                 <span class="">TOTAL</span>
                                 <span>:</span>
                             </div>
@@ -639,7 +650,7 @@ export default {
             var amount = 0;
             this.payments.map(function (payment) {
                 if (payment.checked) {
-                    amount += payment.amount_applied;
+                    amount += payment.amount_applied - payment.rebates;
                 }
             });
             return amount;
@@ -648,8 +659,15 @@ export default {
             var amount = 0;
             this.payments.map(function (payment) {
                 if (!payment.checked) {
-                    amount += payment.amount_applied;
+                    amount += payment.amount_applied - payment.rebates;
                 }
+            });
+            return amount;
+        },
+        paymentrebates: function () {
+            var amount = 0;
+            this.payments.map(function (payment) {
+                amount += payment.rebates;
             });
             return amount;
         },

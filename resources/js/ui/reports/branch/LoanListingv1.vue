@@ -229,6 +229,31 @@ export default {
 			target.innerHTML = content;
 			window.print();
 		},
+		processCenter:function(centers, product){
+			result = [];
+			if(product != 'Micro Group'){
+				result = centers;
+			}else{
+				var cc = [];
+				for(c in centers){
+					var center = centers[c];
+					center.center = c;
+					cc[c] = center;
+				}
+				result = cc.sort(this.sortMicroGroup)
+			}
+			console.log(result);
+			return result;
+		},
+		sortMicroGroup:function( a, b ) {
+			if ( a.center < b.center ){
+				return -1;
+			}
+			if ( a.center > b.center ){
+				return 1;
+			}
+			return 0;
+		}
 	},
 	computed:{
 		filteredReports:function(){
@@ -239,7 +264,7 @@ export default {
 				for(var p in ao.products){
 					var product = ao.products[p];
 					var productTotal = ['PRODUCT SUB-TOTAL','','',0,0,0,0,0,'',''];
-					for(var c in product.centers){
+					for(var c in this.processCenter(product.centers)){
 						var center = product.centers[c];
 						var centerTotal = ['CENTER SUB-TOTAL','','',0,0,0,0,0,'',''];
 						if(center.accounts){

@@ -77,58 +77,60 @@
 
 
 			<section class="d-flex flex-column mb-16 p-10 light-border">
-							<section v-for="fr,i in filteredReports" :key="i">
-								<div class="d-flex bg-yellow-verylight mb-5">
-									<div class="d-flex flex-column text-primary-dark p-7 mr-24">
-										<span class="font-md text-bold">Account Officer</span>
-										<span class="font-sm">{{fr.ao}}</span>
-									</div>
-									<div class="d-flex flex-column text-primary-dark p-7 mr-24">
-										<span class="font-md text-bold">Product</span>
-										<span class="font-sm">{{fr.product}}</span>
-									</div>
-									<div class="d-flex flex-column text-primary-dark p-7 flex-1">
-										<span class="font-md text-bold">Center Name</span>
-										<span class="font-sm">{{fr.center}}</span>
-									</div>
-								</div>
-								<div class="bb-dark-8"></div>
-								<table class="table table-stripped mb-24">
-									<thead>
-										<th>Borrower's Name</th>
-                                        <th>Account Number</th>
-										<th>Date Loan</th>
-										<th>Maturity</th>
-										<th>Amnt. Loan</th>
-										<th>Principal Bal.</th>
-										<th>Interest Bal.</th>
-										<th>Amort.</th>
-                                        <th>Bitay Principal</th>
-                                        <th>Bitay Interest</th>
-										<th>Amnt. Due</th>
-										<th># Days</th>
-										<th>STATUS</th>
-									</thead>
-									<tbody>
-										<tr v-for="rws,j in fr.rows" :key="j">
-											<td v-for="rw,k in rws" :key="k">{{rw}}</td>
-										</tr>
-										<tr class="bg-skyblue text-bold">
-											<td v-for="tc,l in fr.centerTotal" :key="l">{{tc===""||tc==="CENTER SUB-TOTAL"?tc:formatToCurrency(tc)}}</td>
-										</tr>
-										<tr v-if="fr.productTotal" class="bg-green-mint text-bold">
-											<td v-for="tp,m in fr.productTotal" :key="m">{{tp===""||tp==="PRODUCT SUB-TOTAL"?tp:formatToCurrency(tp)}}</td>
-										</tr>
-										<tr v-if="fr.aoTotal" class="bg-purple-light text-bold">
-											<td v-for="ta,n in fr.aoTotal" :key="n">{{ta===""||ta==="OFFICER SUB-TOTAL"?ta:formatToCurrency(ta)}}</td>
-										</tr>
-										<tr v-if="fr.total" class="bg-primary-dark text-white text-bold">
-											<td v-for="tt,o in fr.total" :key="o">{{tt===""||tt==="TOTAL"?tt:formatToCurrency(tt)}}</td>
-										</tr>
-									</tbody>
-								</table>
-							</section>
-						</section>
+				<div v-for="fr,i in filteredReports" :key="i">
+					<section v-if="fr.rows.length">
+						<div class="d-flex bg-yellow-verylight mb-5">
+							<div class="d-flex flex-column text-primary-dark p-7 mr-24">
+								<span class="font-md text-bold">Account Officer</span>
+								<span class="font-sm">{{fr.ao}}</span>
+							</div>
+							<div class="d-flex flex-column text-primary-dark p-7 mr-24">
+								<span class="font-md text-bold">Product</span>
+								<span class="font-sm">{{fr.product}}</span>
+							</div>
+							<div class="d-flex flex-column text-primary-dark p-7 flex-1">
+								<span class="font-md text-bold">Center Name</span>
+								<span class="font-sm">{{fr.center}}</span>
+							</div>
+						</div>
+						<div class="bb-dark-8"></div>
+						<table class="table table-stripped mb-24">
+							<thead>
+								<th>Borrower's Name</th>
+								<th>Account Number</th>
+								<th>Date Loan</th>
+								<th>Maturity</th>
+								<th>Amnt. Loan</th>
+								<th>Principal Bal.</th>
+								<th>Interest Bal.</th>
+								<th>Amort.</th>
+								<th>Bitay Principal</th>
+								<th>Bitay Interest</th>
+								<th>Amnt. Due</th>
+								<th># Days</th>
+								<th>STATUS</th>
+							</thead>
+							<tbody>
+								<tr v-for="rws,j in fr.rows" :key="j">
+									<td v-for="rw,k in rws" :key="k">{{rw}}</td>
+								</tr>
+								<tr class="bg-skyblue text-bold">
+									<td v-for="tc,l in fr.centerTotal" :key="l">{{tc===""||tc==="CENTER SUB-TOTAL"?tc:formatToCurrency(tc)}}</td>
+								</tr>
+								<tr v-if="fr.productTotal" class="bg-green-mint text-bold">
+									<td v-for="tp,m in fr.productTotal" :key="m">{{tp===""||tp==="PRODUCT SUB-TOTAL"?tp:formatToCurrency(tp)}}</td>
+								</tr>
+								<tr v-if="fr.aoTotal" class="bg-purple-light text-bold">
+									<td v-for="ta,n in fr.aoTotal" :key="n">{{ta===""||ta==="OFFICER SUB-TOTAL"?ta:formatToCurrency(ta)}}</td>
+								</tr>
+								<tr v-if="fr.total" class="bg-primary-dark text-white text-bold">
+									<td v-for="tt,o in fr.total" :key="o">{{tt===""||tt==="TOTAL"?tt:formatToCurrency(tt)}}</td>
+								</tr>
+							</tbody>
+						</table>
+					</section>
+				</div>
+			</section>
 
 
 
@@ -781,15 +783,17 @@ export default {
 	computed:{
 		filteredReports:function(){
 			var tables = [];
-			var total = ['TOTAL','','',0,0,0,0,0,0,0,0,'',''];
+			var total = ['TOTAL','','','',0,0,0,'','','',0,'',''];
 			this.reports.forEach(ao=>{
-				var aoTotal = ['OFFICER SUB-TOTAL','','',0,0,0,0,0,0,0,0,'',''];
+				var aoTotal = ['OFFICER SUB-TOTAL','','','',0,0,0,'','','',0,'',''];
+				var hasAoAccounts = false;
 				for(var p in ao.products){
+					var hasProductAccounts = false;
 					var product = ao.products[p];
-					var productTotal = ['PRODUCT SUB-TOTAL','','',0,0,0,0,0,0,0,0,'',''];
+					var productTotal = ['PRODUCT SUB-TOTAL','','','',0,0,0,'','','',0,'',''];
 					for(var c in product.centers){
 						var center = product.centers[c];
-						var centerTotal = ['CENTER SUB-TOTAL','','',0,0,0,0,0,0,0,0,'',''];
+						var centerTotal = ['CENTER SUB-TOTAL','','','',0,0,0,'','','',0,'',''];
 						if(center.accounts){
 							var table = {
 								ao:'0' + ao.ao_id + ' - ' + ao.name,
@@ -804,6 +808,7 @@ export default {
 							for(var ac in center.accounts){
 								var account = center.accounts[ac];
 								var sstatus = account.loan_status=='Ongoing'?account.status:account.loan_status;
+								console.log(sstatus);
 								var row = [];
 								row.push(account.borrower_name);
                                 row.push(account.account_num);
@@ -811,55 +816,66 @@ export default {
 								row.push(account.maturity);
 
 								row.push(this.formatToCurrency(account.amount_loan));
-								centerTotal[3] += account.amount_loan;
+								
 								row.push(this.formatToCurrency(account.principal_balance));
-								centerTotal[4] += account.principal_balance;
+								
 								row.push(this.formatToCurrency(account.interest_balance));
-								centerTotal[5] += account.interest_balance;
+								
 								row.push(this.formatToCurrency(account.amortization));
-								centerTotal[6] += account.amortization;
+								
                                 row.push(account.distribution.short_principal + account.distribution.principal)
-								centerTotal[7] += account.distribution.short_principal + account.distribution.principal
+								
                                 row.push(account.distribution.short_interest + account.distribution.interest)
-								centerTotal[8] += account.distribution.short_interest + account.distribution.interest
+								
 								row.push(this.formatToCurrency(account.amount_due));
-								centerTotal[9] += account.amount_due;
+								
 								row.push('');
 								row.push(account.loan_status=='Ongoing'?account.status:account.loan_status);
 								if(sstatus == this.filter.status){
+									centerTotal[4] += account.amount_loan;
+									centerTotal[5] += account.principal_balance;
+									centerTotal[6] += account.interest_balance;
+									// centerTotal[7] += account.amortization;
+									// centerTotal[8] += account.distribution.short_principal + account.distribution.principal
+									// centerTotal[9] += account.distribution.short_interest + account.distribution.interest
+									centerTotal[10] += account.amount_due;
 									table.rows.push(row);
 								}
 							}
-							productTotal[3] += centerTotal[3];
 							productTotal[4] += centerTotal[4];
 							productTotal[5] += centerTotal[5];
 							productTotal[6] += centerTotal[6];
-							productTotal[7] += centerTotal[7];
-							productTotal[8] += centerTotal[8];
-							productTotal[9] += centerTotal[9];
+							// productTotal[7] += centerTotal[7];
+							// productTotal[8] += centerTotal[8];
+							// productTotal[9] += centerTotal[9];
+							productTotal[10] += centerTotal[10];
 							table.centerTotal = centerTotal;
-							tables.push(table);
+							if(table.rows.length){
+								tables.push(table);
+							}
+							hasProductAccounts = true;
+							hasAoAccounts = true;
 						}
 					}
-					aoTotal[3] += productTotal[3];
 					aoTotal[4] += productTotal[4];
 					aoTotal[5] += productTotal[5];
 					aoTotal[6] += productTotal[6];
-					aoTotal[7] += productTotal[7];
-					aoTotal[8] += productTotal[8];
-					aoTotal[9] += productTotal[9];
-					if(tables.length){
+					// aoTotal[7] += productTotal[7];
+					// aoTotal[8] += productTotal[8];
+					// aoTotal[9] += productTotal[9];
+					aoTotal[10] += productTotal[10];
+					if(tables.length && hasProductAccounts){
 						tables[tables.length-1].productTotal = productTotal;
 					}
 				}
-				total[3] += aoTotal[3];
 				total[4] += aoTotal[4];
 				total[5] += aoTotal[5];
 				total[6] += aoTotal[6];
-				total[7] += aoTotal[7];
-				total[8] += aoTotal[8];
-				total[9] += aoTotal[9];
-				if(tables.length){
+				// total[7] += aoTotal[7];
+				// total[8] += aoTotal[8];
+				// total[9] += aoTotal[9];
+				total[10] += aoTotal[10];
+				if(tables.length && hasAoAccounts){
 					tables[tables.length-1].aoTotal = aoTotal;
 				}
 			})
