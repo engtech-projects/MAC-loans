@@ -60,7 +60,9 @@
 							<th>Borrower's Name</th>
 							<th>Date Pay</th>
 							<th>O.R#</th>
+							<th>Amort. Prin.</th>
 							<th>Principal</th>
+							<th>Amort. Int.</th>
 							<th>Int.</th>
 							<th>PD Int.</th>
 							<th>Over</th>
@@ -69,7 +71,6 @@
 							<th>Net Int.</th>
 							<th>VAT</th>
 							<th>Type</th>
-							<th>Amort. Int.</th>
 						</thead>
 						<tbody>
 							<tr v-if="!reports.length"><td><i>No records found.</i></td></tr>
@@ -77,7 +78,9 @@
 								<td>{{r.borrower}}</td>
 								<td>{{r.payment_date}}</td>
 								<td>{{r.or}}</td>
+								<td>{{formatToCurrency(r.amortization_principal)}}</td>
 								<td>{{formatToCurrency(r.principal)}}</td>
+								<td>{{formatToCurrency(r.amortization_interest)}}</td>
 								<td>{{formatToCurrency(r.interest)}}</td>
 								<td>{{formatToCurrency(r.pdi)}}</td>
 								<td>{{formatToCurrency(r.overpayment)}}</td>
@@ -86,10 +89,10 @@
 								<td>{{formatToCurrency(r.net_interest)}}</td>
 								<td>{{formatToCurrency(r.vat)}}</td>
 								<td>{{r.payment_type}}</td>
-								<td>{{formatToCurrency(r.amortization_interest)}}</td>
 							</tr>
 							
 							<tr class="border-cell-gray-7">
+								<td></td>
 								<td></td>
 								<td></td>
 								<td></td>
@@ -321,17 +324,18 @@ export default {
 			return this.accountOfficers.filter(ao=>ao.status=='active'&&ao.branch_id==this.branch.branch_id);
 		},
 		total:function(){
-			var result = ['TOTAL','','',0,0,0,0,0,0,0,0,'',0,''];
+			var result = ['TOTAL','','',0,0,0,0,0,0,0,0,0,0,'',''];
 			this.reports.forEach(r => {
-				result[3] += r.principal;
-				result[4] += r.interest;
-				result[5] += r.pdi;
-				result[6] += r.overpayment;
-				result[7] += r.rebates;
-				result[8] += r.total;
-				result[9] += r.net_interest;
-				result[10] += r.vat;
-				result[12] += r.amortization_interest;
+				result[3] += r.amortization_principal;
+				result[4] += r.principal;
+				result[5] += r.amortization_interest;
+				result[6] += r.interest;
+				result[7] += r.pdi;
+				result[8] += r.overpayment;
+				result[9] += r.rebates;
+				result[10] += r.total;
+				result[11] += r.net_interest;
+				result[12] += r.vat;
 			});
 			return result;
 		},
