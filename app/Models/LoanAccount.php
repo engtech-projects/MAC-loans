@@ -547,6 +547,8 @@ class LoanAccount extends Model
             $amortization->principal = round($amortization->principal);
             $amortization->interest = round($amortization->interest);
 
+            $amortization->schedule_principal = $amortization->principal;
+            $amortization->schedule_interest = $amortization->interest;
             if ($loanAccount->payment_mode == 'Lumpsum' && $currentDay < $dateSched) {
                 $amortization->principal = 0;
                 $amortization->interest = 0;
@@ -565,8 +567,7 @@ class LoanAccount extends Model
             $amortization->delinquent = $this->getDelinquent($this->loan_account_id, $amortization->id, $amortization->advance_principal);
             $amortization->short_principal = $amortization->delinquent['principal'] - (in_array($amortization->id, $amortization->delinquent['ids']) ? $amortization->principal : 0);
             $amortization->short_interest = $amortization->delinquent['interest'] - (in_array($amortization->id, $amortization->delinquent['ids']) ? $amortization->interest : 0);
-            $amortization->schedule_principal = $amortization->principal;
-            $amortization->schedule_interest = $amortization->interest;
+
             $amortization->short_pdi = 0;
             $amortization->short_penalty = $amortization->delinquent['penalty'];
 
