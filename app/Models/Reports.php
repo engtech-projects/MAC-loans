@@ -124,6 +124,7 @@ class Reports extends Model
             'loan_accounts.borrower_id',
             'amortization.id',
             'amortization.interest as amortization_interest',
+            'amortization.principal as amortization_principal',
             'payment.interest as interest',
             'payment.or_no',
             'payment.principal',
@@ -678,6 +679,7 @@ class Reports extends Model
                 'payment_type' => $payment->payment_type,
                 'memo_type' => $payment->memo_type,
                 'amortization_interest' => $payment->amortization_interest,
+                'amortization_principal' => $payment->amortization_principal,
                 'amortization_id' => $payment->id
             ];
         }
