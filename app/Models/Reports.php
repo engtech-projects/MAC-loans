@@ -117,12 +117,17 @@ class Reports extends Model
         $payments->join('loan_accounts', 'loan_accounts.loan_account_id', '=', 'payment.loan_account_id'); */
 
         $payments = Payment::join('loan_accounts','loan_accounts.loan_account_id','=','payment.loan_account_id')
+        ->join('amortization','amortization.id','=','payment.amortization_id')
         ->select(
+            'loan_accounts.loan_account_id',
             'payment.transaction_date',
             'loan_accounts.borrower_id',
+            'amortization.id',
+            'amortization.interest as amortization_interest',
+            'amortization.principal as amortization_principal',
+            'payment.interest as interest',
             'payment.or_no',
             'payment.principal',
-            'payment.interest',
             'payment.pdi',
             'payment.pdi_approval_no',
             'payment.over_payment',
@@ -133,7 +138,9 @@ class Reports extends Model
             'payment.memo_type',
             'loan_accounts.center_id'
         ) ->where(['payment.status' => 'paid']);
-        /* $payments->with('account'); */
+
+
+
 
     	if( isset($filters['branch_id']) && $filters['branch_id'] ){
             $branch = Branch::find($filters['branch_id']);
@@ -670,7 +677,10 @@ class Reports extends Model
                 'net_interest' => $payment->interest,
                 'vat' => $payment->vat,
                 'payment_type' => $payment->payment_type,
-                'memo_type' => $payment->memo_type
+                'memo_type' => $payment->memo_type,
+                'amortization_interest' => $payment->amortization_interest,
+                'amortization_principal' => $payment->amortization_principal,
+                'amortization_id' => $payment->id
             ];
         }
 
