@@ -536,12 +536,14 @@
 										</div>
 									</div>
 
-									 <!-- <div class="d-flex flex-column flex-lg-row">
-										<div class="form-group mb-10 mr-16 flex-4"></div>
+									 <div class="d-flex flex-column flex-lg-row">
+										<div class="form-group mb-10 mr-16 flex-1"></div>
+										<div class="form-group mb-10 mr-16 flex-1"></div>
+										<div class="form-group mb-10 mr-16 flex-1"></div>
 										<div class="form-group mb-10 mr-16 flex-1 d-flex align-items-end">
 											<button @click="updatePayment()" data-dismiss="modal" class="btn btn-success" style="margin-bottom:1rem;width:100%;height:47px;">UPDATE</button>
 										</div>
-									</div> -->
+									</div>
 									
 									<div class="d-flex flex-column flex-lg-row">
 										<div class="form-group mb-10 mr-16 flex-1">
