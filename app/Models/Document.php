@@ -21,16 +21,16 @@ class Document extends Model
 
         //$num = LoanAccount::where('account_num', 'LIKE','%-' . $productCode . '-%')->orderBy('account_num','DESC')->limit(1)->pluck('account_num');
 
-        $num = Document::where('promissory_number', 'LIKE', '%-' .$productCode. '-%')->orderBy('promissory_number','DESC')->limit(1)->pluck('promissory_number');
+        //$num = Document::where('promissory_number', 'LIKE', '%-' . $productCode . '-%')->orderBy('promissory_number', 'DESC')->pluck('promissory_number');
+        $num = Document::where('promissory_number', 'LIKE', '%-' .$productCode. '-%')->pluck('promissory_number')->last();
 
-        if(count($num)>0) {
+        if($num) {
          $series = explode('-', $num);
+         dd($series);
          $identifier = (int)$series[2] + 1;
-
         }else {
-            $identifier = 0000001;
+            $identifier = 1;
         }
-
         return $branchCode . '-' .$productCode . '-' . str_pad($identifier, 7, '0', STR_PAD_LEFT);
 
     	// $id = Document::max('id');
