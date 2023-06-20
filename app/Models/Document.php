@@ -21,15 +21,37 @@ class Document extends Model
 
         //$num = LoanAccount::where('account_num', 'LIKE','%-' . $productCode . '-%')->orderBy('account_num','DESC')->limit(1)->pluck('account_num');
 
-        $num = Document::where('promissory_number', 'LIKE', '%-' .$productCode. '-%')->orderBy('promissory_number','DESC')->limit(1)->pluck('promissory_number');
+        $num = Document::where('promissory_number', 'LIKE', '%-' .$productCode. '-%')->pluck('promissory_number');
 
-        if(count($num)>0) {
-         $series = explode('-', $num);
-         $identifier = (int)$series[2] + 1;
 
-        }else {
-            $identifier = 0000001;
+        $promissoryNumSeries = [];
+        foreach($num as $numVal) {
+            $numSeries = explode('-',$numVal);
+            if(isset($numSeries[1]) && strpos($numSeries[1], $productCode) !== false) {
+                $promissoryNumSeries[] = $numVal;
+            }
         }
+
+        usort($promissoryNumSeries, function($a,$b) {
+            $seriesDashA = explode('-',$a)[2];
+            $seriesDashB = explode('-',$b)[2];
+            return $seriesDashB - $seriesDashB;
+        });
+
+        $series = [];
+        foreach($promissoryNumSeries as $seriesKey => $seriesVal) {
+            $number = explode('-',$seriesVal);
+            $series[$seriesKey] = $number[2];
+        }
+        array_multisort($series, SORT_DESC,$promissoryNumSeries);
+        if(count($promissoryNumSeries)>0) {
+         $seriesNumber = $promissoryNumSeries[0];
+         $lastDigit = explode('-',$seriesNumber);
+         $identifier = (int)$lastDigit[2] + 1;
+        }else {
+            $identifier = 1;
+        }
+
 
         return $branchCode . '-' .$productCode . '-' . str_pad($identifier, 7, '0', STR_PAD_LEFT);
 
