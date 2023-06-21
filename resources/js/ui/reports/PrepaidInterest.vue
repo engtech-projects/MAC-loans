@@ -150,7 +150,9 @@ export default {
 							overall[6] += r.monthly_uid;
 							counter++;
 						}else{
-							row.push(['','','','','','',''])
+							for(var u = 0; u < 7; u++){
+								row.push('');
+							}
 						}
 						row.push(i);
 						for(var j in r.history[i]){
@@ -192,7 +194,7 @@ export default {
 			});
 			return {
 				rows:rows,
-				overall:finalOverall
+				overall:finalOverall.slice(0,21)
 			}
 		}
 	},
