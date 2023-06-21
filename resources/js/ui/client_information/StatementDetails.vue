@@ -785,7 +785,7 @@
 										<span class="flex-1 mw-150">Particular</span>
 										<div class="d-flex flex-2">
 											<span class="mr-5">: </span>
-											<span> Loan Granted P {{formatToCurrency(loanDetails.loan_amount)}} for {{loanDetails.no_of_installment}} {{loanDetails.payment_mode}} payment. With interest of {{loanDetails.interest_rate}}% per month</span>
+											<span> Loan Granted P {{formatToCurrency(loanaccount.loan_amount)}} for {{loanaccount.terms / 30}} Month(s) / {{loanaccount.payment_mode}} Payment. With interest of {{loanaccount.interest_rate}}% per month</span>
 										</div>
 									</div>
 									<div class="d-flex flex-row">
