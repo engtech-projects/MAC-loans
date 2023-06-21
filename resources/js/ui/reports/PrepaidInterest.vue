@@ -127,6 +127,7 @@ export default {
 	},
 	computed:{
 		filteredReports:function(){
+			var monNum = ['01','02','03','04','05','06','07','08','09','10','11','12'];
 			var rows = [];
 			var overall = ['TOTAL',0,'','',0,0,0,'',0,0,0,0,0,0,0,0,0,0,0,0,0];
 			this.reports.forEach(r=>{
@@ -155,11 +156,16 @@ export default {
 							}
 						}
 						row.push(i);
-						for(var j in r.history[i]){
-							total += r.history[i][j];
-							overall[mCount] += r.history[i][j];
-							mCount++;
-							row.push(this.formatToCurrency(r.history[i][j]));
+						
+						for(k in monNum){
+							for(var j in r.history[i]){
+								if(monNum[k] == j){
+									total += r.history[i][j];
+									overall[mCount] += r.history[i][j];
+									mCount++;
+									row.push(this.formatToCurrency(r.history[i][j]));
+								}
+							}
 						}
 						overall[20] += total;
 						row.push(this.formatToCurrency(total));
