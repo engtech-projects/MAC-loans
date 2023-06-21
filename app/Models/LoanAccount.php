@@ -88,15 +88,15 @@ class LoanAccount extends Model
         $num = LoanAccount::select('account_num')
             ->where('account_num', 'LIKE', '%-' . $productCode . '-%')
             ->orderByRaw("SUBSTRING_INDEX(SUBSTRING_INDEX(account_num, '-', -1), '-', 1) DESC")
+            ->limit(1)
             ->get();
-        $promissoryNumber = $num->pluck('account_num');
-        if(count($promissoryNumber) >0) {
-            $series = explode('-',$promissoryNumber);
+        $accountNumber = $num->pluck('account_num');
+        if(count($accountNumber) >0) {
+            $series = explode('-',$accountNumber);
             $identifier = (int)$series[2] +1;
         }else {
             $identifier = 1;
         }
-
 
         return $branchCode . '-' . $productCode . '-' . str_pad($identifier, 7, '0', STR_PAD_LEFT);
     }
