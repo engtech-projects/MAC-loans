@@ -79,35 +79,16 @@ class LoanAccount extends Model
     public static function generateAccountNum($branchCode, $productCode, $identifier = 1)
     {
         // compute for the document transaction
-        $accounNum = NULL;
-
         /* $num = LoanAccount::where('account_num', 'LIKE', '%' . $branchCode . '-' . $productCode . '%')->get()->pluck('account_num')->last(); */
 
         /* $num = LoanAccount::where('account_num', 'LIKE','%' . $branchCode . '-' . $productCode . '%')->orderBy('account_num','DESC')->limit(1)->pluck('account_num');
         $num = LoanAccount::where('account_num', 'LIKE', '%-' . $productCode . '-%')->orderBy('account_num', 'DESC')->limit(1)->pluck('account_num');
-
-
-
-
-        if (count($num) > 0) {
-            $series = explode('-', $num);
-            $identifier = (int)$series[2] + 1;
-        } else {
-            $identifier = 1;
-        }
-
-         if ($num) {
-            $series = explode('-', $num);
-            $identifier = (int)$series[2] + 1;
-        }
- */
+        */
 
         $num = LoanAccount::select('account_num')
             ->where('account_num', 'LIKE', '%-' . $productCode . '-%')
             ->orderByRaw("SUBSTRING_INDEX(SUBSTRING_INDEX(account_num, '-', -1), '-', 1) DESC")
             ->get();
-
-
         $promissoryNumber = $num->pluck('account_num');
         if(count($promissoryNumber) >0) {
             $series = explode('-',$promissoryNumber);
