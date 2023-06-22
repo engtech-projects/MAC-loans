@@ -123,13 +123,26 @@ export default {
 			var target = document.querySelector('.to-print');
 			target.innerHTML = content;
 			window.print();
-		},
+		}, 
+		sortClient:function(a, b){
+			let aclient = a.client.toLowerCase(),
+        		bclient = b.client.toLowerCase();
+
+			if (aclient < bclient) {
+				return -1;
+			}
+			if (aclient > bclient) {
+				return 1;
+			}
+			return 0;
+		}
 	},
 	computed:{
 		filteredReports:function(){
+			var monNum = ['01','02','03','04','05','06','07','08','09','10','11','12'];
 			var rows = [];
 			var overall = ['TOTAL',0,'','',0,0,0,'',0,0,0,0,0,0,0,0,0,0,0,0,0];
-			this.reports.forEach(r=>{
+			this.reports.sort(this.sortClient).forEach(r=>{
 				if(!this.isEmptyObj(r.history)){
 					var counter = 0;
 					for(var i in r.history){
@@ -150,14 +163,21 @@ export default {
 							overall[6] += r.monthly_uid;
 							counter++;
 						}else{
-							row.push(['','','','','','',''])
+							for(var u = 0; u < 7; u++){
+								row.push('');
+							}
 						}
 						row.push(i);
-						for(var j in r.history[i]){
-							total += r.history[i][j];
-							overall[mCount] += r.history[i][j];
-							mCount++;
-							row.push(this.formatToCurrency(r.history[i][j]));
+						
+						for(k in monNum){
+							for(var j in r.history[i]){
+								if(monNum[k] == j){
+									total += r.history[i][j];
+									overall[mCount] += r.history[i][j];
+									mCount++;
+									row.push(this.formatToCurrency(r.history[i][j]));
+								}
+							}
 						}
 						overall[20] += total;
 						row.push(this.formatToCurrency(total));
@@ -192,7 +212,7 @@ export default {
 			});
 			return {
 				rows:rows,
-				overall:finalOverall
+				overall:finalOverall.slice(0,21)
 			}
 		}
 	},
