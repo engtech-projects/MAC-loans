@@ -20,16 +20,13 @@ class Document extends Model
     {
 
 
-        $num = Document::select('promissory_number')
-            ->where('promissory_number', 'LIKE', '%-' . $productCode . '-%')
-            ->orderByRaw("SUBSTRING_INDEX(SUBSTRING_INDEX(promissory_number, '-', -1), '-', 1) DESC")
-            ->limit(1)
+        $num = LoanAccount::select('account_num')
+            ->where('account_num', 'LIKE', '%-' . $productCode . '-%')
+            ->orderByRaw("SUBSTRING_INDEX(SUBSTRING_INDEX(account_num, '-', -1), '-', 1) DESC")
             ->get();
         //$num = Document::where('promissory_number', 'LIKE', '%-' . $productCode . '-%')->orderBy('promissory_number', 'DESC')->pluck('promissory_number');
 
-
-        $promissoryNumber = $num->pluck('promissory_number');
-
+        $promissoryNumber = $num->pluck('account_num');
         if(count($promissoryNumber) >0) {
             $series = explode('-',$promissoryNumber);
             $identifier = (int)$series[2] +1;
