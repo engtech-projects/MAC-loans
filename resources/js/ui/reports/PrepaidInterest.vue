@@ -123,14 +123,27 @@ export default {
 			var target = document.querySelector('.to-print');
 			target.innerHTML = content;
 			window.print();
-		},
+		}, 
+		sortClient:function(a, b){
+			let aclient = a.client.toLowerCase(),
+        		bclient = b.client.toLowerCase();
+
+			if (aclient < bclient) {
+				return -1;
+			}
+			if (aclient > bclient) {
+				return 1;
+			}
+			return 0;
+		}
 	},
 	computed:{
 		filteredReports:function(){
 			var monNum = ['01','02','03','04','05','06','07','08','09','10','11','12'];
 			var rows = [];
 			var overall = ['TOTAL',0,'','',0,0,0,'',0,0,0,0,0,0,0,0,0,0,0,0,0];
-			this.reports.forEach(r=>{
+			console.log(this.reports.sort(this.sortClient));
+			this.reports.sort(this.sortClient).forEach(r=>{
 				if(!this.isEmptyObj(r.history)){
 					var counter = 0;
 					for(var i in r.history){
