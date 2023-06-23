@@ -16,7 +16,6 @@ class Document extends Model
 
     ];
 
-
     public function getPromissoryNo($branchCode, $productCode, $identifier = 1)
     {
 
@@ -37,12 +36,20 @@ class Document extends Model
         }else {
             $identifier = 1;
         }
+        $promisorryNum = $branchCode . '-' . $productCode . '-' . str_pad($identifier, 7, '0', STR_PAD_LEFT);
+        $this->saveDocument($promisorryNum);
 
-
-        return $branchCode . '-' . $productCode . '-' . str_pad($identifier, 7, '0', STR_PAD_LEFT);
-
+        return $promisorryNum;
 
     }
+
+    public function saveDocument($promisorryNum) {
+        Document::create([
+            'promissory_number' => $promisorryNum,
+        ]);
+    }
+
+
 
     public function deleteDocument($loan_account_id)
     {
