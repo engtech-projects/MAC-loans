@@ -45,7 +45,7 @@ class GeneralLedger extends Model
 
 
     	foreach ($ledger as $key => $value) {
-    		
+
 
     		if( $value['reference'] === $identifier ){
 

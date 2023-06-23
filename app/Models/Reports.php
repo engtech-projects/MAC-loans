@@ -17,6 +17,8 @@ class Reports extends Model
     const BRANCH_AO_WRITEOFF = "write_off";
     const BRANCH_AO_DELINQUENT = "delinquent";
 
+    protected $prepaidReports = null;
+
     public function getLoanAccounts($filters = [], $without = []) {
 
         $loanAccount = Loanaccount::where([ 'loan_accounts.status' => 'released']);

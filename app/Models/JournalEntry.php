@@ -24,6 +24,7 @@ class JournalEntry extends Model
 		'cheque_date',
 		'amount',
 		'payee',
+        'status',
 		'remarks',
     ];
 }
