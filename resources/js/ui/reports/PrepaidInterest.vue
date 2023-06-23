@@ -174,10 +174,10 @@ export default {
 								if(monNum[k] == j){
 									total += r.history[i][j];
 									overall[mCount] += r.history[i][j];
-									mCount++;
 									row.push(this.formatToCurrency(r.history[i][j]));
 								}
 							}
+							mCount++;
 						}
 						overall[20] += total;
 						row.push(this.formatToCurrency(total));
