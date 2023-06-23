@@ -114,7 +114,7 @@
 								<tr v-for="rws,j in fr.rows" :key="j">
 									<td v-for="rw,k in rws" :key="k">{{rw}}</td>
 								</tr>
-								<tr class="bg-skyblue text-bold">
+								<tr v-if="fr.product=='002 - Micro Group'" class="bg-skyblue text-bold">
 									<td v-for="tc,l in fr.centerTotal" :key="l">{{tc===""||tc==="CENTER SUB-TOTAL"?tc:formatToCurrency(tc)}}</td>
 								</tr>
 								<tr v-if="fr.productTotal" class="bg-green-mint text-bold">
