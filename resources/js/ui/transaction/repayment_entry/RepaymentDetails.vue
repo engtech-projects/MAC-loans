@@ -801,7 +801,7 @@ export default {
 				bank_name:null,
 				reference_no:null,
 				memo_type:null,
-				amortization_id:0,
+				amortization_id:this.loanAccount.current_amortization.id,
 				principal:0,
 				interest:0,
 				short_principal:0,
