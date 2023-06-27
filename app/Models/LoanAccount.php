@@ -598,11 +598,32 @@ class LoanAccount extends Model
             }
 
             if ($dayDiff >= 0 && $amortization->advance_principal < $amortization->short_principal + $amortization->principal) {
-                Amortization::find($amortization->id)->update(['status' => 'delinquent']);
-                $amortization->delinquent = $this->getDelinquent($this->loan_account_id, $amortization->id, $amortization->advance_principal);
-                if ($transactionDateNow > $amortization->amortization_date) {
-                    LoanAccount::find($this->loan_account_id)->update(['payment_status' => 'Delinquent']);
+
+                if( $this->product_id === 3 ){
+
+                    if( $dateSchedPension->month < $currentDay->month ) {
+                       
+                        Amortization::find($amortization->id)->update(['status' => 'delinquent']);
+                        $amortization->delinquent = $this->getDelinquent($this->loan_account_id, $amortization->id, $amortization->advance_principal);
+                        if ($transactionDateNow > $amortization->amortization_date) {
+                            LoanAccount::find($this->loan_account_id)->update(['payment_status' => 'Delinquent']);
+                        }
+
+                    }
+                    
+                }else{
+
+                    Amortization::find($amortization->id)->update(['status' => 'delinquent']);
+
+
+                    $amortization->delinquent = $this->getDelinquent($this->loan_account_id, $amortization->id, $amortization->advance_principal);
+                    if ($transactionDateNow > $amortization->amortization_date) {
+                        LoanAccount::find($this->loan_account_id)->update(['payment_status' => 'Delinquent']);
+                    }
+
                 }
+
+                
             }
             if ($dayDiff > 10 && $amortization->advance_principal < $amortization->schedule_principal) {
                 $penaltyMissed = array_merge(array_unique($amortization->delinquent['missed']), [$amortization->id]);
