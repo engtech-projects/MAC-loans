@@ -405,6 +405,7 @@
 						<thead>
 							<th>Name</th>
 							<th>Amount Loan</th>
+							<th>Interest Amount</th>
 							<th>Filling Fee</th>
 							<th>Docs.</th>
 							<th>Insurance</th>
@@ -418,6 +419,7 @@
 							<tr v-for="fo in filteredOverrides" :key="fo.loan_account_id">
 								<td>{{fo.borrower.lastname + ', ' + fo.borrower.firstname}}</td>
 								<td>{{formatToCurrency(fo.loan_amount)}}</td>
+								<td>{{formatToCurrency(fo.interest_amount)}}</td>
 								<td>{{formatToCurrency(fo.filing_fee)}}</td>
 								<td>{{formatToCurrency(fo.document_stamp)}}</td>
 								<td>{{formatToCurrency(fo.insurance)}}</td>
@@ -430,6 +432,7 @@
 							<tr class="text-bold">
 								<td>TOTAL</td>
 								<td>{{formatToCurrency(totalLoanAmount)}}</td>
+								<td>{{formatToCurrency(totalInterestAmount)}}</td>
 								<td>{{formatToCurrency(totalFilingFee)}}</td>
 								<td>{{formatToCurrency(totalDocStamp)}}</td>
 								<td>{{formatToCurrency(totalInsurance)}}</td>
@@ -1162,6 +1165,13 @@ export default {
 			var amount = 0;
 			this.filteredOverrides.map(function(fo){
 				amount += parseFloat(fo.loan_amount);
+			});
+			return amount;
+		},
+		totalInterestAmount:function(){
+			var amount = 0;
+			this.filteredOverrides.map(function(fo){
+				amount += parseFloat(fo.interest_amount);
 			});
 			return amount;
 		},
