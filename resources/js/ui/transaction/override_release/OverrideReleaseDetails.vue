@@ -1045,10 +1045,11 @@ export default {
 			return this.loanaccount.type=='Add-On'? 0:this.loanaccount.prepaid_interest;
 		},
 		dueDate:function(){
-			if(this.loanaccount.loan_account_id){
-				var dt = new Date(this.loanaccount.date_release);
-				dt.setDate(dt.getDate() + this.loanaccount.terms);
-				return dt;
+			if(this.loanaccount.loan_account_id && this.amortizationSched && this.amortizationSched.length){
+				// var dt = new Date(this.loanaccount.date_release);
+				// dt.setDate(dt.getDate() + this.loanaccount.terms);
+				// return dt;
+				return new Date(this.amortizationSched[this.amortizationSched.length-1]['amortization_date']);
 			}
 			return new Date
 		},
