@@ -1535,27 +1535,31 @@ class Reports extends Model
     public function birTaxReport($filters = [])
     {
         $data = Payment::join("loan_accounts", 'payment.loan_account_id', '=', 'loan_accounts.loan_account_id')
-            ->join("borrower_info", 'loan_accounts.borrower_id', '=', 'borrower_info.borrower_id')
-            ->where(["payment.branch_id" => $filters["branch_id"], "payment.status" => "paid"])
-            ->whereDate('payment.transaction_date', '>=', $filters['date_from'])
-            ->whereDate('payment.transaction_date', '<=', $filters['date_to'])
-            ->groupBy("borrower_info.firstname", "borrower_info.middlename", "borrower_info.lastname",)
-            ->select([
-                // DB::raw("'".$filters["date_to"]."' as TAX_MONTH"),
-                // DB::raw("'' as SEQ_NO"),
-                DB::raw("REPLACE(REPLACE(REPLACE(borrower_info.lastname,'ñ','n'),'Ñ','N'),'-',' ') as LAST_NAME"),
-                DB::raw("REPLACE(REPLACE(REPLACE(borrower_info.firstname,'ñ','n'),'Ñ','N'),'-',' ') as FIRST_NAME"),
-                DB::raw("UPPER(SUBSTRING(borrower_info.middlename,1,1)) as MIDDLE_NAM"),
-                DB::raw("'' as ADDRESS"),
-                DB::raw("'' as ADDRESS2"),
-                DB::raw("SUM(payment.interest+payment.pdi+payment.penalty-payment.vat) as GSALES"),
-                DB::raw("SUM(payment.interest+payment.pdi+payment.penalty-payment.vat) as GTSALES"),
-                DB::raw("'' as GESALES"),
-                DB::raw("SUM(payment.vat) as TOUTTAX"),
-                DB::raw("'12.00' as TAX_RATE"),
-            ])
-            // ->toSql();
-            ->get()->toArray();
+        ->join("borrower_info", 'loan_accounts.borrower_id', '=', 'borrower_info.borrower_id')
+        ->where(["payment.branch_id" => $filters["branch_id"], "payment.status" => "paid"])
+        ->whereDate('payment.transaction_date', '>=', $filters['date_from'])
+        ->whereDate('payment.transaction_date', '<=', $filters['date_to'])
+        ->groupBy("borrower_info.firstname", "borrower_info.middlename", "borrower_info.lastname",)
+        ->select([
+            // DB::raw("'".$filters["date_to"]."' as TAX_MONTH"),
+            // DB::raw("'' as SEQ_NO"),
+            DB::raw("REPLACE(REPLACE(REPLACE(borrower_info.lastname,'ñ','n'),'Ñ','N'),'-',' ') as LAST_NAME"),
+            DB::raw("REPLACE(REPLACE(REPLACE(borrower_info.firstname,'ñ','n'),'Ñ','N'),'-',' ') as FIRST_NAME"),
+            DB::raw("UPPER(SUBSTRING(borrower_info.middlename,1,1)) as MIDDLE_NAME"),
+            DB::raw("'' as ADDRESS"),
+            DB::raw("'' as ADDRESS2"),
+            DB::raw("SUM(payment.interest+payment.pdi+payment.penalty-payment.vat) as GSALES"),
+            DB::raw("SUM(payment.interest+payment.pdi+payment.penalty-payment.vat) as GTSALES"),
+            DB::raw("'' as GESALES"),
+            DB::raw("SUM(payment.vat) as TOUTTAX"),
+            DB::raw("'12.00' as TAX_RATE"),
+        ])
+        ->having('GSALES','>',0)
+        ->having('GTSALES','>',0)
+        ->having('TOUTTAX','>',0)
+        ->orderBy('LASTNAME')
+        // ->toSql();
+        ->get()->toArray();
         return $data;
     }
 
