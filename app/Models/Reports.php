@@ -1517,6 +1517,10 @@ class Reports extends Model
             DB::raw("SUM(payment.vat) as TOUTTAX"),
             DB::raw("'12.00' as TAX_RATE"),
         ])
+        ->having('GSALES','>',0)
+        ->having('GTSALES','>',0)
+        ->having('TOUTTAX','>',0)
+        ->orderBy('LASTNAME')
         // ->toSql();
         ->get()->toArray();
         return $data;
