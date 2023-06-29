@@ -1109,7 +1109,7 @@ export default {
 					}
 				})
 				.then(function (response) {
-					//this.resetPayment();
+					this.resetPayment();
 					var btn = document.getElementById('paymentCancelBtn');
 					btn.click();
 					this.notify('','Payment successful.', 'success');
@@ -1275,15 +1275,15 @@ export default {
 	},
 	watch:{
 		'pborrower.borrower_id':function(newValue){
-			//this.resetPayment();
-			//this.resetLoanAccount();
+			this.resetPayment();
+			this.resetLoanAccount();
 		},
 		'payment.amount_paid':function(newValue){
 			this.distribute();
 		},
 		'loanAccount.loan_account_id':function(newValue){
 			this.payment.total_payable = this.totalDue;
-			//this.payment.amortization_id = this.loanAccount.current_amortization.id;
+			this.payment.amortization_id = this.loanAccount.current_amortization.id;
             this.pdi = parseFloat(this.loanAccount.remainingBalance.pdi.balance);
 		},
 		'waive.pdi':function(newValue){
