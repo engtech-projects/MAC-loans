@@ -224,7 +224,7 @@
 			</div>
 		</section>
 		<div class="flex-1 d-flex flex-row-reverse align-items-end">
-			<button @click="distribute()" v-if="loanAccount.loan_account_id" data-toggle="modal" data-target="#paymentModal" class="btn btn-bright-blue min-w-150 mb-5">Pay</button>
+			<button @click="distribute(loanAccount.loan_account_id)" v-if="loanAccount.loan_account_id" data-toggle="modal" data-target="#paymentModal" class="btn btn-bright-blue min-w-150 mb-5">Pay</button>
 		</div>
 
 
@@ -829,6 +829,8 @@ export default {
 				penalty:false,
 				rebates:false,
 			}
+
+
 		},
 		resetLoanAccount:function(){
 			this.loanAccount = {
@@ -996,7 +998,9 @@ export default {
 				console.log(error);
 			}.bind(this));
 		},
-		distribute:function(){
+		distribute:function(account_id){
+            this.fetchAccount(account_id)
+
 			var amount = parseFloat(this.payment.amount_paid);
 			this.payment.pdi = 0;
 			this.payment.penalty = 0;
@@ -1083,6 +1087,7 @@ export default {
 				this.payment.amount_applied += this.payment.over_payment;
 				// this.payment.amount_applied =  parseFloat(this.payment.amount_paid);
 			}
+
 		},
 		checkRebates:function(){
 			if(this.waive.rebates){
@@ -1104,10 +1109,10 @@ export default {
 					}
 				})
 				.then(function (response) {
-					this.resetPayment();
 					var btn = document.getElementById('paymentCancelBtn');
 					btn.click();
 					this.notify('','Payment successful.', 'success');
+/*                     this.fetchAccount(response.data.data.loan_account_id) */
 				}.bind(this))
 				.catch(function (error) {
 					console.log(error);
