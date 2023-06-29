@@ -224,7 +224,7 @@
 			</div>
 		</section>
 		<div class="flex-1 d-flex flex-row-reverse align-items-end">
-			<button @click="distribute(loanAccount.loan_account_id)" v-if="loanAccount.loan_account_id" data-toggle="modal" data-target="#paymentModal" class="btn btn-bright-blue min-w-150 mb-5">Pay</button>
+			<button @click="distribute(); fetchAccount(loanAccount.loan_account_id)" v-if="loanAccount.loan_account_id" data-toggle="modal" data-target="#paymentModal" class="btn btn-bright-blue min-w-150 mb-5">Pay</button>
 		</div>
 
 
@@ -742,6 +742,7 @@ export default {
 				},
 				loan_status_view:'',
 			},
+
 			payment:{
 				payment_id:null,
 				loan_account_id:null,
@@ -829,8 +830,6 @@ export default {
 				penalty:false,
 				rebates:false,
 			}
-
-
 		},
 		resetLoanAccount:function(){
 			this.loanAccount = {
@@ -992,15 +991,16 @@ export default {
 				loan.remainingBalance = response.data.data.remaining_balance;
 				loan.current_amortization = loan.current_amortization?loan.current_amortization:{};
 				this.loanAccount = loan;
+/*                 this.amortization_id = loan?.current_amortization?.id */
+
+                console.log(this.loanAccount?.current_amortization?.id)
 			}.bind(this))
 			.catch(function (error) {
 				this.$emit('unload');
 				console.log(error);
 			}.bind(this));
 		},
-		distribute:function(account_id){
-            this.fetchAccount(account_id)
-
+		distribute:function(){
 			var amount = parseFloat(this.payment.amount_paid);
 			this.payment.pdi = 0;
 			this.payment.penalty = 0;
@@ -1087,7 +1087,6 @@ export default {
 				this.payment.amount_applied += this.payment.over_payment;
 				// this.payment.amount_applied =  parseFloat(this.payment.amount_paid);
 			}
-
 		},
 		checkRebates:function(){
 			if(this.waive.rebates){
@@ -1100,6 +1099,7 @@ export default {
 			this.payment.pdi += this.pdiWaive;
 			this.payment.penalty += this.penaltyWaive;
 			this.payment.transaction_date = this.transactionDate.date_end;
+            this.payment.amortization_id = this.loanAccount?.current_amortization.id
 			if(parseFloat(this.payment.amount_paid) > 0 && this.checkRebates()){
 				axios.post(this.baseURL() + 'api/payment', this.payment, {
 					headers: {
@@ -1109,10 +1109,10 @@ export default {
 					}
 				})
 				.then(function (response) {
+					//this.resetPayment();
 					var btn = document.getElementById('paymentCancelBtn');
 					btn.click();
 					this.notify('','Payment successful.', 'success');
-/*                     this.fetchAccount(response.data.data.loan_account_id) */
 				}.bind(this))
 				.catch(function (error) {
 					console.log(error);
@@ -1275,15 +1275,15 @@ export default {
 	},
 	watch:{
 		'pborrower.borrower_id':function(newValue){
-			this.resetPayment();
-			this.resetLoanAccount();
+			//this.resetPayment();
+			//this.resetLoanAccount();
 		},
 		'payment.amount_paid':function(newValue){
 			this.distribute();
 		},
 		'loanAccount.loan_account_id':function(newValue){
 			this.payment.total_payable = this.totalDue;
-			this.payment.amortization_id = this.loanAccount.current_amortization.id;
+			//this.payment.amortization_id = this.loanAccount.current_amortization.id;
             this.pdi = parseFloat(this.loanAccount.remainingBalance.pdi.balance);
 		},
 		'waive.pdi':function(newValue){
