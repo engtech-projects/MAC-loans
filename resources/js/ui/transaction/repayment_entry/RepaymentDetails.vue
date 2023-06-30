@@ -383,10 +383,7 @@
         <div class="flex-1 d-flex flex-row-reverse align-items-end">
             {{ isModalOpen }}
             <button
-                @click="
-
-                    loadAccount(loanAccount.loan_account_id);
-                "
+                @click="loadAccount(loanAccount.loan_account_id)"
                 v-if="loanAccount.loan_account_id"
                 data-toggle="modal"
                 data-target="#paymentModal"
@@ -1887,14 +1884,11 @@ export default {
                 loan_status_view: "",
             };
         },
-        showModal:function() {
-
-        },
+        showModal: function () {},
         loadAccount: async function (accountId) {
             this.account.loan_account_id = accountId;
-            var modalOpen = false
+            var modalOpen = false;
             try {
-
                 await axios
                     .post(
                         this.baseURL() + "api/payment/checkpayment",
@@ -1909,7 +1903,7 @@ export default {
                     )
                     .then(
                         function (response) {
-                            modalOpen = true
+                            modalOpen = true;
                             this.fetchAccount(accountId);
                         }.bind(this)
                     )
@@ -1922,11 +1916,14 @@ export default {
                                 "error"
                             );
                         }.bind(this)
-                    ).finally(function(){
-                        this.modal = modalOpen
-                    })
+                    )
+                    .finally(
+                        function () {
+                            this.modal = modalOpen;
+                        }.bind(this)
+                    );
             } catch (error) {
-                console.log(error)
+                console.log(error);
             }
         },
         fetchTransactionDate: function () {
@@ -1967,7 +1964,7 @@ export default {
             return "";
         },
         amortSched: function (account) {
-            this.loadAccount(account.loan_account_id)
+            this.loadAccount(account.loan_account_id);
             axios
                 .post(
                     this.baseURL() + "api/account/generate-amortization",
@@ -2206,14 +2203,14 @@ export default {
         },
     },
     computed: {
-        isModalOpen:{
-            get:function() {
-                return this.modal
+        isModalOpen: {
+            get: function () {
+                return this.modal;
             },
-            set:function(newValue){
-                this.modal = newValue
-               return this.modal
-            }
+            set: function (newValue) {
+                this.modal = newValue;
+                return this.modal;
+            },
         },
         loanAccountStatus: function () {
             return this.loanAccount.loan_status_view;
