@@ -381,7 +381,6 @@
             </div>
         </section>
         <div class="flex-1 d-flex flex-row-reverse align-items-end">
-            {{ isModalOpen }}
             <button
                 @click="loadAccount(loanAccount.loan_account_id)"
                 v-if="loanAccount.loan_account_id"
@@ -1884,10 +1883,20 @@ export default {
                 loan_status_view: "",
             };
         },
-        showModal: function () {},
+        showModal: function (success) {
+            alert(success)
+            var btn = null;
+/*             if(success){
+                btn = document.getElementById("paymentModal");
+            }
+            if(btn) {
+                btn.click();
+            } */
+
+        },
         loadAccount: async function (accountId) {
             this.account.loan_account_id = accountId;
-            var modalOpen = false;
+            var success = false;
             try {
                 await axios
                     .post(
@@ -1903,13 +1912,23 @@ export default {
                     )
                     .then(
                         function (response) {
-                            modalOpen = true;
+                            this.modal = true;
+                            var btn =
+                                document.getElementById("paymentButton");
+                            if(btn) {
+                                btn.click()
+                            }
                             this.fetchAccount(accountId);
                         }.bind(this)
                     )
                     .catch(
                         function (error) {
-                            modalOpen = false;
+                            this.modal = false
+                            var btn =
+                                document.getElementById("paymentCancelBtn");
+                            if(btn) {
+                                btn.click()
+                            }
                             this.notify(
                                 error.response.data.message,
                                 error.response.data.data,
@@ -1917,11 +1936,11 @@ export default {
                             );
                         }.bind(this)
                     )
-                    .finally(
+                    /* .finally(
                         function () {
-                            this.modal = modalOpen;
+                            this.modal = success
                         }.bind(this)
-                    );
+                    ); */
             } catch (error) {
                 console.log(error);
             }
@@ -1980,6 +1999,7 @@ export default {
                 .then(
                     function (response) {
                         this.amortizationSched = response.data.data;
+                        this.fetchAccount(account.loan_account_id)
                     }.bind(this)
                 )
                 .catch(
