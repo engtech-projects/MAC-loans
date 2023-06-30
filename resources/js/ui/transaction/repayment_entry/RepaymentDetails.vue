@@ -382,18 +382,24 @@
         </section>
         <div class="flex-1 d-flex flex-row-reverse align-items-end">
             <button
-                @click="loadAccount(loanAccount.loan_account_id)"
+                 @click="loadAccount(loanAccount.loan_account_id)"
+                v-if="loanAccount.loan_account_id"
+                class="btn btn-bright-blue min-w-150 mb-5"
+            >
+                Pay
+            </button>
+            <button
+            id="paymentBtn"
                 v-if="loanAccount.loan_account_id"
                 data-toggle="modal"
                 data-target="#paymentModal"
-                class="btn btn-bright-blue min-w-150 mb-5"
+                class="btn btn-bright-blue min-w-150 mb-5 hide"
             >
                 Pay
             </button>
         </div>
 
         <div
-            v-if="isModalOpen"
             class="modal"
             id="paymentModal"
             tabindex="-1"
@@ -1914,7 +1920,7 @@ export default {
                         function (response) {
                             this.modal = true;
                             var btn =
-                                document.getElementById("paymentButton");
+                                document.getElementById("paymentBtn");
                             if(btn) {
                                 btn.click()
                             }
