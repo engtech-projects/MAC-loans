@@ -19,7 +19,7 @@ class Reports extends Model
 
     public function getLoanAccounts($filters = [], $without = []) {
 
-        $loanAccount = Loanaccount::where([ 'loan_accounts.status' => 'released']);
+        $loanAccount = LoanAccount::where([ 'loan_accounts.status' => 'released']);
 
     	if( isset($filters['branch_id']) && $filters['branch_id'] ){
             $branch = Branch::find($filters['branch_id']);
