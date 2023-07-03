@@ -520,7 +520,7 @@ class ReportsController extends BaseController
     {
         $eod = new EndTransaction();
         $journalEntry = new JournalEntry();
-        $journals = $journalEntry->getJournalNumber();
+        $journals = $journalEntry->getJounalBookById();
         return $journals;
     }
 

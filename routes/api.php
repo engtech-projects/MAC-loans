@@ -128,7 +128,7 @@ Route::middleware(['auth:sanctum'])->group( function () {
     Route::post('report/micro/', [ReportsController::class, 'microReports']);
     Route::post('report/bir/', [ReportsController::class, 'birTaxReport']);
     Route::post('report/prepaid/', [ReportsController::class, 'prepaidReport']);
-    Route::post('report/savejournalenttry',[ReportsController::class, 'saveJournalEntry']);
+    Route::post('report/savejournalenttry',[JournalEntryController::class, 'store']);
 
 
 
