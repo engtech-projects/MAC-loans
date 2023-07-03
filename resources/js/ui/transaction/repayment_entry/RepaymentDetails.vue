@@ -1906,7 +1906,7 @@ export default {
             try {
                 await axios
                     .post(
-                        this.baseURL() + "api/payment/checkpayment",
+                        this.baseURL() + "api/payment/account",
                         this.account,
                         {
                             headers: {
