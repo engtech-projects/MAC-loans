@@ -281,7 +281,7 @@ export default {
 			var tables = [];
 			var total = ['TOTAL',0,'','',0,0,0,'','','',0,'',''];
 			this.reports.forEach(ao=>{
-				 vb              
+				var hasAoAccounts = false;
 				var aoTotal = ['OFFICER SUB-TOTAL',0,'','',0,0,0,'','','',0,'',''];
 				for(var p in ao.products){
 					var hasAccounts = false;
