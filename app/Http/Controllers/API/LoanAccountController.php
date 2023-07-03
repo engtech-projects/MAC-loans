@@ -207,6 +207,7 @@ class LoanAccountController extends BaseController
         return $this->sendResponse(['status' => 'released'], 'Released');
     }
 
+
     public function updateAccountAmortization(LoanAccount $account) {
 
         $account = LoanAccount::find($account->loan_account_id);
