@@ -597,19 +597,27 @@ class LoanAccount extends Model
                 }
             }
 
+            if( $dayDiff < 0 && $this->product_id === 3 ){ 
+                $dayDiff = 0;
+            }
+
+
             if ($dayDiff >= 0 && $amortization->advance_principal < $amortization->short_principal + $amortization->principal) {
 
                 if( $this->product_id === 3 ){
 
-                    if( $dateSchedPension->month < $currentDay->month ) {
-                       
-                        Amortization::find($amortization->id)->update(['status' => 'delinquent']);
-                        $amortization->delinquent = $this->getDelinquent($this->loan_account_id, $amortization->id, $amortization->advance_principal);
-                        if ($transactionDateNow > $amortization->amortization_date) {
-                            LoanAccount::find($this->loan_account_id)->update(['payment_status' => 'Delinquent']);
-                        }
-
+                    if(  $amortization->advance_principal < $amortization->short_principal ) {
+                        LoanAccount::find($this->loan_account_id)->update(['payment_status' => 'Delinquent']);
                     }
+                    // if( $dateSchedPension->month < $currentDay->month ) {
+                       
+                    //     Amortization::find($amortization->id)->update(['status' => 'delinquent']);
+                    //     $amortization->delinquent = $this->getDelinquent($this->loan_account_id, $amortization->id, $amortization->advance_principal);
+                    //     if ($transactionDateNow > $amortization->amortization_date) {
+                    //         LoanAccount::find($this->loan_account_id)->update(['payment_status' => 'Delinquent']);
+                    //     }
+
+                    // }
                     
                 }else{
 
