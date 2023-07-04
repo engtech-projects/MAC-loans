@@ -609,7 +609,7 @@ class LoanAccount extends Model
                     if(  $amortization->advance_principal < $amortization->short_principal ) {
 
                         if( count($amortization->delinquent['ids']) > 0 && !in_array($amortization->id, $amortization->delinquent['ids']) ) {
-                            return '1';
+                            LoanAccount::find($this->loan_account_id)->update(['payment_status' => 'Delinquent']);
                         }
 
                         if( ( $dateSchedPension->month < $currentDay->month) ) {
