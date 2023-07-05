@@ -19,7 +19,7 @@ class Reports extends Model
 
     public function getLoanAccounts($filters = [], $without = []) {
 
-        $loanAccount = LoanAccount::where([ 'loan_accounts.status' => 'released']);
+        $loanAccount = Loanaccount::where([ 'loan_accounts.status' => 'released']);
 
     	if( isset($filters['branch_id']) && $filters['branch_id'] ){
             $branch = Branch::find($filters['branch_id']);
@@ -1517,10 +1517,6 @@ class Reports extends Model
             DB::raw("SUM(payment.vat) as TOUTTAX"),
             DB::raw("'12.00' as TAX_RATE"),
         ])
-        ->having('GSALES','>',0)
-        ->having('GTSALES','>',0)
-        ->having('TOUTTAX','>',0)
-        ->orderBy('LASTNAME')
         // ->toSql();
         ->get()->toArray();
         return $data;
