@@ -924,6 +924,7 @@ export default {
 		},
 		override: function(){
 			this.loanaccount.date_release = this.transactionDate.date_end;
+			this.loanaccount.due_date = this.dateToYMD(this.dueDate);
 			axios.post(this.baseURL() + 'api/account/override', [this.loanaccount], {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
