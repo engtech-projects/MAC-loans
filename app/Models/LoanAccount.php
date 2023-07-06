@@ -376,7 +376,7 @@ class LoanAccount extends Model
     public function currentAmortization($loanAccountId, $dateNow)
     {
         $account = LoanAccount::find($loanAccountId);
-        if ($account->product->product_name == 'Pension Loan') {
+        if ($account->product->name == 'Pension Loan') {
             $transDate = Carbon::createFromFormat('Y-m-d', $dateNow)->endOfMonth();
             $amortization = Amortization::whereDate('amortization_date', '<=', $transDate)
                 ->where('loan_account_id', $loanAccountId)
@@ -597,39 +597,12 @@ class LoanAccount extends Model
                 }
             }
 
-            if( $dayDiff < 0 && $this->product_id === 3 ){ 
-                $dayDiff = 0;
-            }
-
-
             if ($dayDiff >= 0 && $amortization->advance_principal < $amortization->short_principal + $amortization->principal) {
-
-                if( $this->product->product_name == 'Pension Loan' ) {
-
-                    if(  $amortization->advance_principal < $amortization->short_principal ) {
-
-                        if( count($amortization->delinquent['ids']) > 0 && !in_array($amortization->id, $amortization->delinquent['ids']) ) {
-                            LoanAccount::find($this->loan_account_id)->update(['payment_status' => 'Delinquent']);
-                        }
-
-                        if( ( $dateSchedPension->month < $currentDay->month) ) {
-                            LoanAccount::find($this->loan_account_id)->update(['payment_status' => 'Delinquent']);                            
-                        }
-                    }
-                    
-                }else{
-
-                    Amortization::find($amortization->id)->update(['status' => 'delinquent']);
-
-
-                    $amortization->delinquent = $this->getDelinquent($this->loan_account_id, $amortization->id, $amortization->advance_principal);
-                    if ($transactionDateNow > $amortization->amortization_date) {
-                        LoanAccount::find($this->loan_account_id)->update(['payment_status' => 'Delinquent']);
-                    }
-
+                Amortization::find($amortization->id)->update(['status' => 'delinquent']);
+                $amortization->delinquent = $this->getDelinquent($this->loan_account_id, $amortization->id, $amortization->advance_principal);
+                if ($transactionDateNow > $amortization->amortization_date) {
+                    LoanAccount::find($this->loan_account_id)->update(['payment_status' => 'Delinquent']);
                 }
-
-                
             }
             if ($dayDiff > 10 && $amortization->advance_principal < $amortization->schedule_principal) {
                 $penaltyMissed = array_merge(array_unique($amortization->delinquent['missed']), [$amortization->id]);
@@ -788,11 +761,6 @@ class LoanAccount extends Model
                         $pos = array_search($missedAmortization->id, $missed);
                         unset($missed[$pos]);
                     } else {
-
-                        if( $this->product->product_name == 'Pension Loan' ) {
-                           continue;
-                        }
-
                         LoanAccount::find($loanAccountId)->update(['payment_status' => 'Delinquent']);
                         break;
                     }

@@ -82,20 +82,21 @@ class Amortization extends Model
 
         for ($i=0; $i < $installments; $i++) {
 
-            if( $days == 30 && $account->product_id == 3 ) {
-                $amortizationDate = $amortizationDateStart->addMonthNoOverflow();
-            }else{
-                $amortizationDate = $amortizationDateStart->addDays($days);
-            }
-
+            $amortizationDate = $amortizationDateStart->addDays($days);
             $total = $principal + $interest;
-           
+            // principal balance
             $principalBalance = $principalBalance - $principal;
 
-         
+            // if( max($principalBalance, 0) == 0 || $principalBalance < 0 ) {
+            //     $principalBalance = 0;
+            // }
 
             $interestBalance = $interestBalance - $interest;
 
+            // if( max($interestBalance, 0) == 0 ) {
+            //     $interestBalance = 0;
+            // }
+            // deducting total(principal+interest) from total amount (loan amount+interest)
             $totalAmount -= $total;
 
             if( $totalAmount <= 0 ){
@@ -105,7 +106,7 @@ class Amortization extends Model
                     $principalBalance = 0;
                 }
 
-                if( $interestBalance < 0 ) {
+                if( $interestBalance < 0 ){
                     $interestBalance = 0;
                 }
 
