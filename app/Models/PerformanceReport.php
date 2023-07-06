@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use App\Http\Resources\PerformaceReport;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\EndTransaction;
 use Illuminate\Http\Request;
 use App\Models\Reports;
-
+use Carbon\Carbon;
 
 class PerformanceReport extends Model
 {
@@ -17,26 +18,90 @@ class PerformanceReport extends Model
     protected $primaryKey = 'report_id';
     protected $fillable = [
         'branch_id',
-        'account_officer',
-        'transaction_date'
+        'ao_id',
+        'transaction_date',
     ];
 
+    public function scopeTransactionDate($query, $value)
+    {
+        return $query->whereDate('transaction_date', '=', $value);
+    }
+    public function accountOfficer() {
+        return $this->belongsTo(AccountOfficer::class,'ao_id','ao_id');
+    }
+    public function products()
+    {
+        return $this->hasMany(PerformanceReportDetail::class, 'report_id');
+    }
+    //GET PERFORMANCE REPORT FROM PERFORMANCE REPORT MODEL
+    public function getAOPerformanceReport($transactionDate)
+    {
+        $performanceReport = self::with(['products','accountOfficer' => function($query){
+            $query->select([
+                'ao_id',
+                'name'
+            ])
+            ->without(['branch_registered','branch']);
+        }, 'products.product' => function ($query) {
+            $query->select(['product_id', 'product_name', 'product_code']);
+        }])
+        ->transactionDate($transactionDate)
+        ->get();
+        $aoReports = [];
+        if (count($performanceReport)>0) {
+            foreach ($performanceReport as $aoKey => $accOfficer) {
+                $aoReports[] = [
+                    'ao_id' => $accOfficer->accountOfficer->ao_id,
+                    'name' => $accOfficer->accountOfficer->name,
+                ];
+                foreach ($accOfficer["products"] as $prodKey => $product) {
+                    $aoReports[$aoKey]["products"] = [
+                        "product_id" => $product["product_id"],
+                        "product_code" => $product->product["product_code"],
+                        "product_name" => $product->product["product_name"],
+                        "all" => [
+                            "count" => $product["portfolio_accounts"],
+                            "amount" => $product["portfolio"],
+                        ],
+                        "delinquent" => [
+                            "count" => $product["delinquent_accounts"],
+                            "amount" => $product["delinquent"],
+                            "rate" => $product["delinquent_rate"]
+                        ],
+                        "pastdue" => [
+                            "count" => $product["pastdue_accounts"],
+                            "amount" => $product["pastdue"],
+                            "rate" => $product["pastdue_rate"]
+                        ]
+                    ];
+                }
+            }
+            return $aoReports;
+        }
+        return "No reports found.";
+
+    }
+
+    //GET TRANSACTION DATE FROM ENDTRANSACTION MODEL
     public function getTransactionDate($branc_id)
     {
         $transDate = new EndTransaction();
         $currentTransDate = $transDate->getTransactionDate($branc_id)->date_end;
         return $currentTransDate;
     }
+
+    //STORE AO PERFORMANCEREPORT TO PERFORMANCE REPORT TABLE
     public function storeAOPerformanceReport($accOfficer = [])
     {
         $ao = self::create([
             'branch_id' => $accOfficer['branch_id'],
-            'account_officer' => $accOfficer['account_officer'],
+            'ao_id' => $accOfficer['ao_id'],
             'transaction_date' => $accOfficer['transaction_date']
         ]);
         return $ao;
     }
 
+    //GET AO PERFORMANCE REPORT FROM REPORTS MODEL
     public function getPerformanceReport(Request $request)
     {
         $report = new Reports();
@@ -48,20 +113,19 @@ class PerformanceReport extends Model
             'account_officer' => "all",
         ];
         $accountOfficers = $report->branchAOReport($filters);
-
-        foreach ($accountOfficers as $accountOfficer) {
+        foreach ($accountOfficers as $aoKey => $accountOfficer) {
             $aoPerformanceReport = $this->storeAOPerformanceReport([
                 'branch_id' => $request->input('branch_id'),
                 'transaction_date' => $transactionDate,
-                'account_officer' => $accountOfficer->name
+                'ao_id' => $accountOfficer["ao_id"]
             ]);
-            if (isset($accountOfficer->products)) {
-                foreach ($accountOfficer->products as $product) {
+            if (isset($accountOfficer["products"])) {
+                foreach ($accountOfficer["products"] as $product) {
                     $performanceReportDetails->storeAOPerformanceReportDetail($product, $aoPerformanceReport->report_id);
                 }
             }
         }
 
-        return response()->json(['data' => $accountOfficers]);
+        return $accountOfficers;
     }
 }

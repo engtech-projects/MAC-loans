@@ -55,6 +55,7 @@ Route::middleware(['auth:sanctum'])->group( function () {
     Route::resource('gl', GLController::class);
     Route::resource('deduction', DeductionController::class);
 
+
     Route::get('borrower/accounts/{borrower_id}',[BorrowerController::class,'getBorrowerAccounts']);
 
     Route::get('get-current-amortization/{branch_id}',[AmortizationController::class, 'getCurrentAmortization']);
@@ -130,7 +131,8 @@ Route::middleware(['auth:sanctum'])->group( function () {
     Route::post('report/bir/', [ReportsController::class, 'birTaxReport']);
     Route::post('report/prepaid/', [ReportsController::class, 'prepaidReport']);
 
-    Route::post('report/branch/create/performancereport',[PerformanceReportController::class, 'store']);
+    Route::post('report/branch/performancereport',[PerformanceReportController::class, 'index']);
+    Route::post('report/branch/performancereport/create',[PerformanceReportController::class, 'store']);
 
 	Route::post('uploadfile/{id}', [LoanAccountController::class, 'uploadFile']);
 

@@ -11,14 +11,26 @@ use Throwable;
 
 class PerformanceReportController extends BaseController
 {
+
+    protected $performanceReport;
+    public function __construct(PerformanceReport $performanceReport)
+    {
+        $this->performanceReport = $performanceReport;
+    }
+
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+
+
+    public function index(Request $request)
     {
-        //
+        $reports = $this->performanceReport->getAOPerformanceReport($request->input("transaction_date"));
+        return $this->sendResponse($reports,"AO Performance Reports fetch");
+        /*  return $this->sendResponse(PerformanceReportResource::collection($reports),"Performance Reports Fetch."); */
     }
 
     /**
@@ -29,17 +41,9 @@ class PerformanceReportController extends BaseController
      */
     public function store(Request $request)
     {
-        $performanceReport = new PerformanceReport();
 
-/*         try { */
-        //$data = $performanceReport->storePerformanceReport($request);
-        $aoPerformanceReport = $performanceReport->getPerformanceReport($request);
-        return $aoPerformanceReport;
-/*         return $this->sendResponse(new PerformanceReportResource($data),'Performance Reports.'); */
-/*         } catch (Exception $e) {
-            return response($e->getMessage());
-        } */
-
+        $this->performanceReport->getPerformanceReport($request);
+        return $this->sendResponse("Reports", "Successfully saved", 201);
     }
 
     /**

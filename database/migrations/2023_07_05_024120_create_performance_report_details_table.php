@@ -15,7 +15,7 @@ class CreatePerformanceReportDetailsTable extends Migration
     {
         Schema::create('performance_report_details', function (Blueprint $table) {
             $table->unsignedInteger('report_id');
-            $table->string("product");
+            $table->unsignedInteger("product_id");
             $table->string("portfolio_accounts");
             $table->string("portfolio");
             $table->integer("delinquent_accounts");

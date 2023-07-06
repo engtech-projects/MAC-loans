@@ -850,8 +850,7 @@ class Reports extends Model
                                         ->where([
                                             'account_officer.status' => AccountOfficer::STATUS_ACTIVE,
                                             'branch.branch_id' => $filters['branch_id']
-                                        ])
-                                        ->select('account_officer.ao_id', 'account_officer.name')
+                                        ])->select('account_officer.ao_id', 'account_officer.name')
                                         ->without('branch', 'branch_registered')
                                         ->orderBy('account_officer.name', 'ASC')
                                         ->groupBy('account_officer.ao_id')

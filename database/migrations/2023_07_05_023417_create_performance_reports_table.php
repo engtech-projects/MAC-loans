@@ -16,7 +16,7 @@ class CreatePerformanceReportsTable extends Migration
         Schema::create('performance_reports', function (Blueprint $table) {
             $table->increments('report_id');
             $table->unsignedInteger('branch_id');
-            $table->string('account_officer');
+            $table->unsignedInteger('ao_id');
             $table->date('transaction_date');
             $table->timestamps();
         });
