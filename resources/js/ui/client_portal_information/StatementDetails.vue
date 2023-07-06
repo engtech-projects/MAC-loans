@@ -1621,7 +1621,7 @@
 								</div>
 								<div class="d-flex mb-7">
 									<span class="mr-5">Date Release: </span>
-									<span>{{loanDetails.date_release}}</span>
+									<span>{{dateToMDY(new Date(loanDetails.date_release))}}</span>
 								</div>
 								<div class="d-flex mb-7">
 									<span class="mr-5">Amount Granted: </span>
