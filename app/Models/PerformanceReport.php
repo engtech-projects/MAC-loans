@@ -34,7 +34,7 @@ class PerformanceReport extends Model
         return $this->hasMany(PerformanceReportDetail::class, 'report_id');
     }
     //GET PERFORMANCE REPORT FROM PERFORMANCE REPORT MODEL
-    public function getAOPerformanceReport($transactionDate)
+    public function getAOPerformanceReport($request)
     {
         $performanceReport = self::with(['products','accountOfficer' => function($query){
             $query->select([
@@ -45,7 +45,8 @@ class PerformanceReport extends Model
         }, 'products.product' => function ($query) {
             $query->select(['product_id', 'product_name', 'product_code']);
         }])
-        ->transactionDate($transactionDate)
+        ->transactionDate($request->input("transaction_date"))
+        ->where("branch_id",$request->input("branch_id"))
         ->get();
         $aoReports = [];
         if (count($performanceReport)>0) {

@@ -28,7 +28,7 @@ class PerformanceReportController extends BaseController
 
     public function index(Request $request)
     {
-        $reports = $this->performanceReport->getAOPerformanceReport($request->input("transaction_date"));
+        $reports = $this->performanceReport->getAOPerformanceReport($request);
         return $this->sendResponse($reports,"AO Performance Reports fetch");
         /*  return $this->sendResponse(PerformanceReportResource::collection($reports),"Performance Reports Fetch."); */
     }
