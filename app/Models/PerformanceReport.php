@@ -42,9 +42,14 @@ class PerformanceReport extends Model
     //GET LIST OF DATES AVAILABLE IN AO PERFORMANCE REPORTS
 
     public function getDateReports($branchId) {
-        $dates = self::branch($branchId)->pluck("transaction_date");
-        if(count($dates) > 0) {
-            return $dates;
+        $maxDate = self::branch($branchId)->orderBy("transaction_date","DESC")->pluck("transaction_date")->first();
+        $minDate = self::branch($branchId)->pluck("transaction_date")->first();
+        $dateRange = [
+            'min_date' => $minDate,
+            'max_date' => $maxDate
+        ];
+        if(count($dateRange) > 0) {
+            return $dateRange;
         }
         return "No dates found";
     }
