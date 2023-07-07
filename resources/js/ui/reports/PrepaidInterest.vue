@@ -1,5 +1,6 @@
 <template>
 	<div id="printContent" class="d-flex flex-column" style="flex:8;">
+		<notifications group="foo" />
 		<div class="d-flex flex-row font-md align-items-center mb-16">
 			<span class="font-lg text-primary-dark no-print" style="flex:4">Prepaid Interest</span>
 			<div class="d-flex flex-row align-items-center mr-24 no-print" style="flex:2">
@@ -84,7 +85,7 @@
 
 		<div class="d-flex flex-row-reverse mb-45">
 			<a href="#" @click.prevent="print()" class="btn btn-default min-w-150 no-print">Print</a>
-			<a href="#" class="btn btn-success min-w-150 mr-24">Post</a>
+			<a href="#" @click="saveJournalEntry" class="btn btn-success min-w-150 mr-24">Post</a>
 		</div>
 	</div>
 </template>
@@ -99,7 +100,7 @@ export default {
 			filter:{
 				due_from:null,
 				branch_id:null,
-			}
+			},
 		}
 	},
 	methods:{
@@ -117,6 +118,34 @@ export default {
 			.catch(function (error) {
 				console.log(error);
 			}.bind(this));
+		},
+		async saveJournalEntry(){
+			var data = {
+				journal_id:1,
+				branch_id: this.branch.branch_id,
+				amount:this.filteredReports.monthlyTotal[this.dateToM(new Date(this.filter.due_from)) - 1]
+			}
+			await axios.post(this.baseURL() + 'api/report/savejournalenttry', data, {
+				headers: {
+					'Authorization': 'Bearer ' + this.token,
+					'Content-Type': 'application/json',
+					'Accept': 'application/json'
+				}
+			})
+			.then(function (response) {
+				this.notify('','Journal Entry has been successfully posted.', 'success');
+			}.bind(this))
+			.catch(function (error) {
+				console.log(error);
+			}.bind(this));
+		},
+		notify:function(title, text, type){
+			this.$notify({
+				group: 'foo',
+				title: title,
+				text: text,
+				type: type,
+			});
 		},
 		print:function(){
 			var content = document.getElementById('printContent').innerHTML;
@@ -203,16 +232,24 @@ export default {
 				}
 			});
 			var finalOverall = [];
+			var ovcount = 0;
+			var monthlyTotal = [];
 			overall.forEach(ov=>{
 				if(ov!==''&&ov!='TOTAL'){
 					finalOverall.push(this.formatToCurrency(ov))
 				}else{
 					finalOverall.push(ov);
 				}
+				if(ovcount > 7){
+					monthlyTotal.push(ov)
+				}
+				ovcount++;
 			});
+			
 			return {
 				rows:rows,
-				overall:finalOverall.slice(0,21)
+				overall:finalOverall.slice(0,21),
+				monthlyTotal:monthlyTotal.slice(0,12)
 			}
 		}
 	},

@@ -40,6 +40,7 @@ Vue.mixin({
 		},
 		dateToM:function(date){
 			var m = date.getMonth() + 1;
+			return m;
 		},
 		dateToY:function(date){
 			return date.getFullYear();
