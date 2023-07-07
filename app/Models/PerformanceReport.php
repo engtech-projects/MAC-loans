@@ -54,8 +54,8 @@ class PerformanceReport extends Model
                     'ao_id' => $accOfficer->accountOfficer->ao_id,
                     'name' => $accOfficer->accountOfficer->name,
                 ];
-                foreach ($accOfficer["products"] as $prodKey => $product) {
-                    $aoReports[$aoKey]["products"] = [
+                foreach($accOfficer["products"] as $prodKey => $product) {
+                    $aoReports[$aoKey]["products"][] = [
                         "product_id" => $product["product_id"],
                         "product_code" => $product->product["product_code"],
                         "product_name" => $product->product["product_name"],
