@@ -133,6 +133,7 @@ Route::middleware(['auth:sanctum'])->group( function () {
 
     Route::post('report/branch/performancereport',[PerformanceReportController::class, 'index']);
     Route::post('report/branch/performancereport/create',[PerformanceReportController::class, 'store']);
+    Route::get('report/branch/performancereport/dates',[PerformanceReportController::class, 'fetchReportsDate']);
 
 	Route::post('uploadfile/{id}', [LoanAccountController::class, 'uploadFile']);
 

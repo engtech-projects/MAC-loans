@@ -33,6 +33,24 @@ class PerformanceReportController extends BaseController
         /*  return $this->sendResponse(PerformanceReportResource::collection($reports),"Performance Reports Fetch."); */
     }
 
+
+    public function fetchReportsDate(Request $request)
+    {
+        $branchId = $request->query("branchId");
+
+        if(isset($branchId)) {
+            $response = $this->performanceReport->getDateReports($branchId);
+            return $this->sendResponse($response,"Fetch report dates");
+        }else {
+            return $this->sendError("No branch found",null,404);
+        }
+
+
+
+
+
+    }
+
     /**
      * Store a newly created resource in storage.
      *

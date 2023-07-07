@@ -26,12 +26,27 @@ class PerformanceReport extends Model
     {
         return $query->whereDate('transaction_date', '=', $value);
     }
+
+    public function scopeBranch($query,$value)
+    {
+        return $query->where('branch_id','=',$value);
+    }
     public function accountOfficer() {
         return $this->belongsTo(AccountOfficer::class,'ao_id','ao_id');
     }
     public function products()
     {
         return $this->hasMany(PerformanceReportDetail::class, 'report_id');
+    }
+
+    //GET LIST OF DATES AVAILABLE IN AO PERFORMANCE REPORTS
+
+    public function getDateReports($branchId) {
+        $dates = self::branch($branchId)->pluck("transaction_date");
+        if(count($dates) > 0) {
+            return $dates;
+        }
+        return "No dates found";
     }
     //GET PERFORMANCE REPORT FROM PERFORMANCE REPORT MODEL
     public function getAOPerformanceReport($request)
@@ -46,7 +61,7 @@ class PerformanceReport extends Model
             $query->select(['product_id', 'product_name', 'product_code']);
         }])
         ->transactionDate($request->input("transaction_date"))
-        ->where("branch_id",$request->input("branch_id"))
+        ->branch($request->input("branch_id"))
         ->get();
         $aoReports = [];
         if (count($performanceReport)>0) {
