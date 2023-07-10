@@ -33,8 +33,8 @@ class Document extends Model
         if(count($promissoryNumber) >0) {
             $series = explode('-',$promissoryNumber);
             $identifier = (int)$series[2] +1;
-        else {
-            $identifier = 0000001;
+        }else {
+            $identifier = 1;
         }
         $promisorryNum = $branchCode . '-' . $productCode . '-' . str_pad($identifier, 7, '0', STR_PAD_LEFT);
         $this->saveDocument($promisorryNum);
