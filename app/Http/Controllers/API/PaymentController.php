@@ -20,38 +20,70 @@ use Illuminate\Support\Str;
 class PaymentController extends BaseController
 {
 
-	/**
+    /**
      * Display a listing of the resource.
      */
-    public function index() {
+    public function index()
+    {
 
-    	// $payments = Payment::all();
-    	// return $this->sendResponse(PaymentResource::collection($payments), 'Payments');
+        // $payments = Payment::all();
+        // return $this->sendResponse(PaymentResource::collection($payments), 'Payments');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request) {
+    public function store(Request $request)
+    {
 
         # create payment instance.
         $payment = new Payment();
-    	# get branch id and add to request data
-    	// $request->merge(['branch_id' => 2]);
+        # get branch id and add to request data
+        // $request->merge(['branch_id' => 2]);
 
         // $payment->addPayment($request);
 
         $pendingPayment = $payment->getOngoingPayment($request->input());
-        if($pendingPayment){
-            $message = "There is still a pending payment for this account, please override " . ($pendingPayment->or_no ? "OR #: ".$pendingPayment->or_no  : "Ref. #: ".$pendingPayment->reference_no);
-            return $this->sendError("Failed to save payment.", $message);
+        if ($pendingPayment) {
+            $message = "There is still a pending payment for this account, please override " . ($pendingPayment->or_no ? "OR #: " . $pendingPayment->or_no  : "Ref. #: " . $pendingPayment->reference_no);
+            return $this->sendError("Failed fetch account.", $message);
         }
-    	return $this->sendResponse(new PaymentResource($payment->addPayment($request)), 'Payment');
+        return $this->sendResponse(new PaymentResource($payment->addPayment($request)), 'Payment');
         // return $request->input();
     }
 
+
+
+    /* Check loan account if it is PAID or
+        if have PENDING payments to override
+     */
+    public function checkLoanAccount(Request $request)
+    {
+        $loanAccount = new LoanAccount();
+        $accountId = $request->input()["loan_account_id"];
+        $account = $loanAccount->getLoanAccount($accountId);
+        //Check loan account exist.
+        if ($account) {
+            $pendingPayments = $account->pendingPayments->first();
+
+            //Check loan account payments if there is pending payments.
+            if ($pendingPayments) {
+                $message = "There is still a pending payment for this account, please override " . ($pendingPayments->or_no ? "OR #: " . $pendingPayments->or_no  : "Ref. #: " . $pendingPayments->reference_no);
+                return $this->sendError("Pending Payment.", $message, 422);
+            }
+            //Check loan account if it is already paid.
+            if ($account->loan_status == $loanAccount::LOAN_PAID) {
+                $message = "This account is already paid, please check the statement of account";
+                return $this->sendError("Account Paid.", $message, 422);
+            }
+        }
+        return $this->sendResponse(null, "Account is open for payment");
+    }
+
+
     // Override Payment
-    public function overridePaymentList(Request $request) {
+    public function overridePaymentList(Request $request)
+    {
 
         $filters = [
             'transaction_date' => ($request->has('transaction_date')) ? $request->input('transaction_date') : false,
@@ -69,7 +101,8 @@ class PaymentController extends BaseController
         );
     }
 
-    public function overridePayment(Request $request) {
+    public function overridePayment(Request $request)
+    {
 
         $payment = null;
 
@@ -82,10 +115,10 @@ class PaymentController extends BaseController
             $amortization = Amortization::find($payment->amortization_id);
             $loanAccount = LoanAccount::find($payment->loan_account_id);
 
-            if( $payment->reference_id ){
+            if ($payment->reference_id) {
                 $acc = LoanAccount::find($payment->reference_id);
 
-                if( $acc->status == 'pending' ){
+                if ($acc->status == 'pending') {
                     $failed++;
                     continue;
                 }
@@ -96,20 +129,20 @@ class PaymentController extends BaseController
             $payment->save();
 
             # update amortization
-            if( $amortization->principal_balance < $loanAccount->remainingBalance()["principal"]["balance"] || $amortization->interest_balance < $loanAccount->remainingBalance()["interest"]["balance"] ){
+            if ($amortization->principal_balance < $loanAccount->remainingBalance()["principal"]["balance"] || $amortization->interest_balance < $loanAccount->remainingBalance()["interest"]["balance"]) {
                 $tranDate = new EndTransaction();
                 $currentDay = Carbon::createFromFormat('Y-m-d', $tranDate->getTransactionDate($payment->branch_id)->date_end);
                 $schedDate = Carbon::createFromFormat('Y-m-d', $amortization->amortization_date);
 
-                if( $currentDay->lt($schedDate) ){
+                if ($currentDay->lt($schedDate)) {
                     $amortization->status = 'open';
-                }else{
+                } else {
                     $amortization->status = 'delinquent';
                 }
                 // $loanAccount->payment_status = 'delinquent';
                 // Amortization::find($payment->amortization_id)->update([ 'status' => 'delinquent' ]);
                 // LoanAccount::find($payment->loan_account_id)->update(['payment_status' => 'Delinquent']);
-            }else{
+            } else {
                 $amortization->status = 'paid';
                 $loanAccount->payment_status = 'Current';
                 // Amortization::find($payment->amortization_id)->update([ 'status' => 'paid' ]);
@@ -118,7 +151,7 @@ class PaymentController extends BaseController
 
             $balance = $loanAccount->outstandingBalance($loanAccount->loan_account_id);
 
-            if( $balance <= 0 ){
+            if ($balance <= 0) {
                 $loanAccount->payment_status = 'Paid';
                 $loanAccount->loan_status = 'Paid';
             }
@@ -131,7 +164,8 @@ class PaymentController extends BaseController
         return $this->sendResponse("{$succeed} of {$sf} Successfully Overriden", 'Override');
     }
 
-    public function overrideList(Request $request) {
+    public function overrideList(Request $request)
+    {
 
         $branchId = $request->input('branch_id');
 
@@ -141,14 +175,15 @@ class PaymentController extends BaseController
         $payment = new Payment();
         $list =  $payment->overriddenList(array('branch_id' => $branchId, 'transaction_date' => $eod->date_end));
 
-        if( count($list) > 0 ){
+        if (count($list) > 0) {
             return $this->sendResponse(PaymentLoanAccountResource::collection($list), 'Payments');
         }
 
         return false;
     }
 
-    public function destroy($id) {
+    public function destroy($id)
+    {
 
         $payment = Payment::find($id);
         $payment->delete();
@@ -156,37 +191,37 @@ class PaymentController extends BaseController
         return $this->sendResponse(['status' => 'Payment deleted'], 'Deleted');
     }
 
-    public function updatePayment(UpdatePaymentRequest $request,Payment $payment) {
+    public function updatePayment(UpdatePaymentRequest $request, Payment $payment)
+    {
         $validated = $request->validated($request);
         $payment->fill($validated);
         $payment->save();
-        return $this->sendResponse(new PaymentResource($payment),'Payment successfully updated');
+        return $this->sendResponse(new PaymentResource($payment), 'Payment successfully updated');
     }
 
-    public function update(Request $request, Payment $payment) {
+    public function update(Request $request, Payment $payment)
+    {
 
         $payment->fill($request->input());
         $payment->save();
 
-        if( $payment->status == 'cancelled' ){
+        if ($payment->status == 'cancelled') {
 
-            if( $payment->amortization_id ){
+            if ($payment->amortization_id) {
 
-                  $amortization = Amortization::find($payment->amortization_id);
-                  $amortization->status = 'open';
-                  $amortization->save();
-
+                $amortization = Amortization::find($payment->amortization_id);
+                $amortization->status = 'open';
+                $amortization->save();
             }
 
-            if( $payment->loan_account_id ) {
+            if ($payment->loan_account_id) {
 
                 $account = LoanAccount::find($payment->loan_account_id);
 
-                if( Str::lower($account->status) == 'paid' ){
+                if (Str::lower($account->status) == 'paid') {
                     $account->loan_status = 'Ongoing';
                     $account->save();
                 }
-
             }
 
             return $this->sendResponse(new PaymentResource($payment), 'Payment Cancelled.');
@@ -195,10 +230,12 @@ class PaymentController extends BaseController
         return $this->sendResponse(new PaymentResource($payment), 'Payment Updated.');
     }
 
-    public function show($branchId) {
+    public function show($branchId)
+    {
     }
 
-    public function paymentSummary($branchId) {
+    public function paymentSummary($branchId)
+    {
 
         $endTransaction = new EndTransaction();
         $dateEnd = $endTransaction->getTransactionDate($branchId);
@@ -212,28 +249,27 @@ class PaymentController extends BaseController
             'memo' => 0,
             'total' => 0,
         ];
-        if( count($paymentList) > 0 ){
+        if (count($paymentList) > 0) {
 
             foreach ($paymentList as $payment) {
 
-                if( Str::contains(Str::lower($payment->payment_type), 'cash') ){
+                if (Str::contains(Str::lower($payment->payment_type), 'cash')) {
 
                     $summary['cash'] += $payment->amount_applied;
                     continue;
                 }
 
-                if( Str::contains(Str::lower($payment->payment_type), 'check') ){
+                if (Str::contains(Str::lower($payment->payment_type), 'check')) {
 
                     $summary['check'] += $payment->amount_applied;
                     continue;
                 }
 
-                 if( Str::contains($payment->payment_type, 'memo') ){
+                if (Str::contains($payment->payment_type, 'memo')) {
 
                     $summary['memo'] += $payment->amount_applied;
                     continue;
                 }
-
             }
             $summary['total'] = $summary['cash'] + $summary['check'] + $summary['memo'];
         }
@@ -241,14 +277,14 @@ class PaymentController extends BaseController
         return $summary;
     }
 
-    public function cancelPaymentList(Request $request) {
+    public function cancelPaymentList(Request $request)
+    {
         $payments = Payment::where(['transaction_date' => $request->transaction_date, 'branch_id' => $request->branch_id])->get();
         foreach ($payments as $payment) {
             $account = LoanAccount::find($payment->loan_account_id);
             $borrower = Borrower::find($account->borrower_id);
             $account->borrower->photo = $borrower->getPhoto();
             $payment->account = $account;
-
         }
 
         return $payments;

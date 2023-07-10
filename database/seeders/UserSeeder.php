@@ -407,7 +407,7 @@ class UserSeeder extends Seeder
         DB::table('account_officer')->insert([
             [
                 'ao_id' => '1',
-                'name' => 'John Mark Barcenas',
+                'name' => 'Robert Dumaog',
                 'branch_id' => '001',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
@@ -450,7 +450,7 @@ class UserSeeder extends Seeder
             ],
             [
                 'ao_id' => '22',
-                'name' => 'Joselito C Ferrer Jr',
+                'name' => 'John Mark Barcenas',
                 'branch_id' => '002',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
@@ -487,6 +487,88 @@ class UserSeeder extends Seeder
                 'ao_id' => '41',
                 'name' => 'Unknown AO',
                 'branch_id' => '001',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ]
+        ]);
+
+        DB::table('account_officer_branch')->insert([
+            [
+                'ao_id' => '1',
+                'branch_id' => '1',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+
+            ],
+            [
+                'ao_id' => '2',
+                'branch_id' => '1',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'ao_id' => '3',
+                'branch_id' => '1',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'ao_id' => '4',
+                'branch_id' => '1',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'ao_id' => '5',
+                'branch_id' => '1',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'ao_id' => '25',
+                'branch_id' => '1',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'ao_id' => '3',
+                'branch_id' => '2',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'ao_id' => '21',
+                'branch_id' => '2',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'ao_id' => '22',
+                'branch_id' => '2',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'ao_id' => '23',
+                'branch_id' => '2',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'ao_id' => '24',
+                'branch_id' => '2',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'ao_id' => '25',
+                'branch_id' => '2',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'ao_id' => '40',
+                'branch_id' => '3',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ]

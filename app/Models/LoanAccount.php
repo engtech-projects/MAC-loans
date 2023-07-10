@@ -79,28 +79,24 @@ class LoanAccount extends Model
     public static function generateAccountNum($branchCode, $productCode, $identifier = 1)
     {
         // compute for the document transaction
-        $accounNum = NULL;
-
         /* $num = LoanAccount::where('account_num', 'LIKE', '%' . $branchCode . '-' . $productCode . '%')->get()->pluck('account_num')->last(); */
 
-        //$num = LoanAccount::where('account_num', 'LIKE','%' . $branchCode . '-' . $productCode . '%')->orderBy('account_num','DESC')->limit(1)->pluck('account_num');
+        /* $num = LoanAccount::where('account_num', 'LIKE','%' . $branchCode . '-' . $productCode . '%')->orderBy('account_num','DESC')->limit(1)->pluck('account_num');
         $num = LoanAccount::where('account_num', 'LIKE', '%-' . $productCode . '-%')->orderBy('account_num', 'DESC')->limit(1)->pluck('account_num');
+        */
 
-
-
-
-        if (count($num) > 0) {
-            $series = explode('-', $num);
+        $num = LoanAccount::select('account_num')
+            ->where('account_num', 'LIKE', '%-' . $productCode . '-%')
+            ->orderByRaw("SUBSTRING_INDEX(SUBSTRING_INDEX(account_num, '-', -1), '-', 1) DESC")
+            ->limit(1)
+            ->get();
+        $accountNumber = $num->pluck('account_num');
+        if (count($accountNumber) > 0) {
+            $series = explode('-', $accountNumber);
             $identifier = (int)$series[2] + 1;
         } else {
-            $identifier = 0000001;
+            $identifier = 1;
         }
-
-        /*  if ($num) {
-            $series = explode('-', $num);
-            $identifier = (int)$series[2] + 1;
-        } */
-
 
         return $branchCode . '-' . $productCode . '-' . str_pad($identifier, 7, '0', STR_PAD_LEFT);
     }
@@ -380,8 +376,8 @@ class LoanAccount extends Model
     public function currentAmortization($loanAccountId, $dateNow)
     {
         $account = LoanAccount::find($loanAccountId);
-        if($account->product->product_name == 'Pension Loan') {
-            $transDate = Carbon::createFromFormat('Y-m-d',$dateNow)->endOfMonth();
+        if ($account->product->name == 'Pension Loan') {
+            $transDate = Carbon::createFromFormat('Y-m-d', $dateNow)->endOfMonth();
             $amortization = Amortization::whereDate('amortization_date', '<=', $transDate)
                 ->where('loan_account_id', $loanAccountId)
                 ->whereIn('status', ['open', 'delinquent', 'paid'])
@@ -1266,7 +1262,7 @@ class LoanAccount extends Model
         $accountSummary['rebates']['balance'] =  $accountSummary['rebates']['debit'] - $accountSummary['rebates']['credit'];
 
         $accountSummary['memo']['account'] = $account->account_num;
-        $accountSummary['memo']['balance'] = $accountSummary['principal']['balance'] + $accountSummary['interest']['balance'] + $accountSummary['penalty']['balance'] + $accountSummary['pdi']['balance'] + $accountSummary['rebates']['balance'];
+        $accountSummary['memo']['balance'] = $accountSummary['principal']['balance'] + $accountSummary['interest']['balance'] + $accountSummary['rebates']['balance'];
 
 
         return $accountSummary;
@@ -1368,6 +1364,26 @@ class LoanAccount extends Model
         $loan_account = LoanAccount::find($id);
         return $loan_account->payment_status;
     }
+
+    /** SCOPE PAYMENTS THAT STATUS IS OPEN */
+    public function pendingPayments()
+    {
+        return $this->hasMany(Payment::class, 'loan_account_id')
+            ->where('status', Payment::STATUS_OPEN);
+    }
+
+    /* GET LOAN ACCOUNT WITH PAYMENTS STATUS IS OPEN */
+    public function getLoanAccount($id)
+    {
+        $account = LoanAccount::where('loan_account_id', $id)
+            ->without(['payments', 'documents', 'borrower', 'branch', 'product', 'accountOfficer'])
+            ->with(['pendingPayments' => function ($query) use ($id) {
+                $query->where('status', Payment::STATUS_OPEN)
+                    ->where('loan_account_id', $id)->first();
+            }])->find($id);
+        return $account;
+    }
+
     public static function getLoanStatus($id)
     {
 

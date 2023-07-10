@@ -15,6 +15,7 @@ class Payment extends Model
     protected $primaryKey = 'payment_id';
 
     const STATUS_PAID = 'paid';
+    const STATUS_OPEN = 'open';
 
     protected $fillable = [
     	'loan_account_id',
@@ -256,5 +257,6 @@ class Payment extends Model
             'status'=>'open'
             ])->get()->first();
     }
+
 
 }

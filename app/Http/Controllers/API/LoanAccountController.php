@@ -77,17 +77,26 @@ class LoanAccountController extends BaseController
             'branch_code' => $branch->branch_code,
         ]);
 
+
+
+
         $account = LoanAccount::create($request->input());
-        $account->account_num = LoanAccount::generateAccountNum($branch->branch_code, $product->product_code);
+        $promissoryNum = $request->input('documents')['promissory_number'];
+        /* return LoanAccount::generateAccountNum($branch->branch_code, $product->product_code); */
+        $account->account_num = $promissoryNum;
         $account->save();
 
         if( $account->loan_account_id ) {
-            Document::create(
+            Document::where('promissory_number',$promissoryNum)
+            ->update([
+                'loan_account_id' => $account->loan_account_id
+            ]);
+/*             Document::create(
                 array_merge(
                     $request->input('documents'),
                     ['loan_account_id' => $account->loan_account_id ],
                 )
-            );
+            ); */
 
 
             if( $request->hasFile('loanfiles') ) {
@@ -178,7 +187,6 @@ class LoanAccountController extends BaseController
     }
 
     public function override(Request $request) {
-
         foreach ($request->input() as $key => $value) {
 
             $account = LoanAccount::find($value['loan_account_id']);
@@ -190,10 +198,15 @@ class LoanAccountController extends BaseController
             $account->loan_status = 'Ongoing';
             $account->update();
 
+            $document = Document::where('loan_account_id',$account->loan_account_id)->first();
+            $document->date_release = $value['date_release'];
+            $document->update();
+
             $this->createAmortizationSched($account);
         }
         return $this->sendResponse(['status' => 'released'], 'Released');
     }
+
 
     public function updateAccountAmortization(LoanAccount $account) {
 
