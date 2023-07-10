@@ -956,8 +956,8 @@ class LoanAccount extends Model
             $bal = ($account->loan_amount) - $payment;
         } else {
             $bal = ($account->loan_amount + $account->interest_amount) - $payment;
-            return floatval(number_format($bal, 2, ".", ""));
         }
+        return floatval(number_format($bal, 2, ".", ""));
     }
 
     public function amortization()
