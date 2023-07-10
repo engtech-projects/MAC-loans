@@ -4,7 +4,7 @@
 			<span class="font-lg text-primary-dark no-print" style="flex:4">Prepaid Interest</span>
 			<div class="d-flex flex-row align-items-center mr-24 no-print" style="flex:2">
 				<span class="mr-10">Due Date: </span>
-				<input v-model="filter.date_from" type="date" class="form-control flex-1">
+				<input v-model="filter.due_from" type="date" class="form-control flex-1">
 			</div>
 			<!-- <div class="d-flex flex-row align-items-center" style="flex:2">
 				<span class="mr-10">To: </span>
@@ -28,7 +28,7 @@
 				</div>
 				<span class="text-center text-primary-dark text-bold font-md mb-5">{{branch.branch_name}} Branch ({{branch.branch_code}})</span>
 				<div class="d-flex flex-row justify-content-center text-primary-dark">
-					<span class="text-center text-primary-dark text-bold">Due Date: {{filter.date_from?dateToMDY2(new Date(filter.date_from)).split('-').join('/'):'---'}}</span>
+					<span class="text-center text-primary-dark text-bold">Due Date: {{filter.due_from?dateToMDY2(new Date(filter.due_from)).split('-').join('/'):'---'}}</span>
 				</div>
 			</div>
 			<section class="d-flex flex-column mb-45">
@@ -97,7 +97,7 @@ export default {
 			branch:{},
 			reports:[],
 			filter:{
-				date_from:null,
+				due_from:null,
 				branch_id:null,
 			}
 		}
@@ -123,13 +123,26 @@ export default {
 			var target = document.querySelector('.to-print');
 			target.innerHTML = content;
 			window.print();
-		},
+		}, 
+		sortClient:function(a, b){
+			let aclient = a.client.toLowerCase(),
+        		bclient = b.client.toLowerCase();
+
+			if (aclient < bclient) {
+				return -1;
+			}
+			if (aclient > bclient) {
+				return 1;
+			}
+			return 0;
+		}
 	},
 	computed:{
 		filteredReports:function(){
+			var monNum = ['01','02','03','04','05','06','07','08','09','10','11','12'];
 			var rows = [];
 			var overall = ['TOTAL',0,'','',0,0,0,'',0,0,0,0,0,0,0,0,0,0,0,0,0];
-			this.reports.forEach(r=>{
+			this.reports.sort(this.sortClient).forEach(r=>{
 				if(!this.isEmptyObj(r.history)){
 					var counter = 0;
 					for(var i in r.history){
@@ -150,14 +163,21 @@ export default {
 							overall[6] += r.monthly_uid;
 							counter++;
 						}else{
-							row.push(['','','','','','',''])
+							for(var u = 0; u < 7; u++){
+								row.push('');
+							}
 						}
 						row.push(i);
-						for(var j in r.history[i]){
-							total += r.history[i][j];
-							overall[mCount] += r.history[i][j];
-							mCount++;
-							row.push(this.formatToCurrency(r.history[i][j]));
+						
+						for(k in monNum){
+							for(var j in r.history[i]){
+								if(monNum[k] == j){
+									total += r.history[i][j];
+									overall[mCount] += r.history[i][j];
+									mCount++;
+									row.push(this.formatToCurrency(r.history[i][j]));
+								}
+							}
 						}
 						overall[20] += total;
 						row.push(this.formatToCurrency(total));
@@ -192,14 +212,14 @@ export default {
 			});
 			return {
 				rows:rows,
-				overall:finalOverall
+				overall:finalOverall.slice(0,21)
 			}
 		}
 	},
 	watch:{
 		filter: {
 			handler(val){
-				if(val.date_from && val.branch_id){
+				if(val.due_from && val.branch_id){
 					this.fetchReports();
 				}
 			},

@@ -12,11 +12,12 @@
 		<div class="ml-16 mb-24 bb-primary-dark pb-7 text-block d-flex justify-content-between">
 			<h1 class="m-0 font-35">Repayment Entry</h1>
 		</div><!-- /.col -->
+
 		<div class="d-flex flex-column flex-xl-row p-16" v-if="transactionDate.status == 'open'">
 			<div style="flex:9;">
 				<client-list-side :pborrowers="unpaidBorrowers" :id="{}" @selectBorrower="selectBorrower"></client-list-side>
 			</div>
-			<repayment-details @load="loading=true" @unload="loading=false" :ppaymenttype="paymenttype" :pbranch="pbranch" :pborrower="borrower" :token="token"></repayment-details>
+			<repayment-details  @load="loading=true" @unload="loading=false" :ppaymenttype="paymenttype" :pbranch="pbranch" :pborrower="borrower" :token="token"></repayment-details>
 		</div>
 		<day-ended v-else></day-ended>
 

@@ -405,6 +405,7 @@
 						<thead>
 							<th>Name</th>
 							<th>Amount Loan</th>
+							<th>Interest Amount</th>
 							<th>Filling Fee</th>
 							<th>Docs.</th>
 							<th>Insurance</th>
@@ -418,6 +419,7 @@
 							<tr v-for="fo in filteredOverrides" :key="fo.loan_account_id">
 								<td>{{fo.borrower.lastname + ', ' + fo.borrower.firstname}}</td>
 								<td>{{formatToCurrency(fo.loan_amount)}}</td>
+								<td>{{formatToCurrency(fo.interest_amount)}}</td>
 								<td>{{formatToCurrency(fo.filing_fee)}}</td>
 								<td>{{formatToCurrency(fo.document_stamp)}}</td>
 								<td>{{formatToCurrency(fo.insurance)}}</td>
@@ -430,6 +432,7 @@
 							<tr class="text-bold">
 								<td>TOTAL</td>
 								<td>{{formatToCurrency(totalLoanAmount)}}</td>
+								<td>{{formatToCurrency(totalInterestAmount)}}</td>
 								<td>{{formatToCurrency(totalFilingFee)}}</td>
 								<td>{{formatToCurrency(totalDocStamp)}}</td>
 								<td>{{formatToCurrency(totalInsurance)}}</td>
@@ -579,7 +582,7 @@
 										<span class="flex-1 mw-150">Particular</span>
 										<div class="d-flex flex-2">
 											<span class="mr-5">: </span>
-											<span> Loan Granted P {{formatToCurrency(loanaccount.loan_amount)}} for {{loanaccount.no_of_installment}} {{loanaccount.payment_mode}} payment. With interest of {{loanaccount.interest_rate}}% per month</span>
+											<span> Loan Granted P {{formatToCurrency(loanaccount.loan_amount)}} for {{loanaccount.terms / 30}} Month(s) / {{loanaccount.payment_mode}} Payment. With interest of {{loanaccount.interest_rate}}% per month</span>
 										</div>
 									</div>
 									<div class="d-flex flex-row">
@@ -1042,10 +1045,14 @@ export default {
 			return this.loanaccount.type=='Add-On'? 0:this.loanaccount.prepaid_interest;
 		},
 		dueDate:function(){
-			if(this.loanaccount.loan_account_id){
-				var dt = new Date(this.loanaccount.date_release);
-				dt.setDate(dt.getDate() + this.loanaccount.terms);
-				return dt;
+			if(this.loanaccount.loan_account_id && this.amortizationSched && this.amortizationSched.length){
+				if(this.loanaccount.product.product_name == 'Pension Loan'){
+					return new Date(this.amortizationSched[this.amortizationSched.length-1]['amortization_date']);
+				}else{
+					var dt = new Date(this.loanaccount.date_release);
+					dt.setDate(dt.getDate() + this.loanaccount.terms);
+					return dt;
+				}
 			}
 			return new Date
 		},
@@ -1162,6 +1169,13 @@ export default {
 			var amount = 0;
 			this.filteredOverrides.map(function(fo){
 				amount += parseFloat(fo.loan_amount);
+			});
+			return amount;
+		},
+		totalInterestAmount:function(){
+			var amount = 0;
+			this.filteredOverrides.map(function(fo){
+				amount += parseFloat(fo.interest_amount);
 			});
 			return amount;
 		},

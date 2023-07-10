@@ -9,11 +9,11 @@
 		</div>
 		<div class="d-flex flex-row font-md align-items-center mb-16">
 			<span class="font-lg text-primary-dark" style="flex:3">Report</span>
-			<!-- <div class="d-flex flex-row align-items-center mr-24" style="flex:2">
-				<span class="mr-10">From: </span>
-				<input type="date" class="form-control">
+			<div class="d-flex flex-row align-items-center mr-24" style="flex:2">
+				<span class="mr-10">Date: </span>
+				<input v-model="filter.as_of" type="date" class="form-control">
 			</div>
-			<div class="d-flex flex-row align-items-center mr-64" style="flex:2">
+			<!-- <div class="d-flex flex-row align-items-center mr-64" style="flex:2">
 				<span class="mr-10">To: </span>
 				<input type="date" class="form-control">
 			</div> -->
@@ -182,7 +182,8 @@ export default {
 			filter:{
 				branch_id:'',
 				group:'performance_report',
-				type:'account_officer'
+				type:'account_officer',
+				as_of:'',
 			},
 			reports:[],
 		}
