@@ -22,6 +22,7 @@ use App\Http\Controllers\API\GLController;
 use App\Http\Controllers\BorrowerLoginController;
 use App\Http\Controllers\API\EODController;
 use App\Http\Controllers\API\DeductionController;
+use App\Http\Controllers\API\PerformanceReportController;
 use App\Http\Resources\Borrower;
 
 /*
@@ -53,6 +54,7 @@ Route::middleware(['auth:sanctum'])->group( function () {
     Route::resource('chart', ChartOfAccountsController::class);
     Route::resource('gl', GLController::class);
     Route::resource('deduction', DeductionController::class);
+
 
     Route::get('borrower/accounts/{borrower_id}',[BorrowerController::class,'getBorrowerAccounts']);
 
@@ -128,6 +130,10 @@ Route::middleware(['auth:sanctum'])->group( function () {
     Route::post('report/micro/', [ReportsController::class, 'microReports']);
     Route::post('report/bir/', [ReportsController::class, 'birTaxReport']);
     Route::post('report/prepaid/', [ReportsController::class, 'prepaidReport']);
+
+    Route::post('report/branch/performancereport',[PerformanceReportController::class, 'index']);
+    Route::post('report/branch/performancereport/create',[PerformanceReportController::class, 'store']);
+    Route::get('report/branch/performancereport/dates',[PerformanceReportController::class, 'fetchReportsDate']);
 
 	Route::post('uploadfile/{id}', [LoanAccountController::class, 'uploadFile']);
 
