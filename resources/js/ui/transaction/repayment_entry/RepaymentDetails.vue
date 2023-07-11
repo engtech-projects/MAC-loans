@@ -91,7 +91,7 @@
                         >
                             <td>{{ account.account_num }}</td>
                             <td>
-                                {{ dateToYMD(new Date(account.date_release)) }}
+                                {{ dateToMDY(new Date(account.date_release)) }}
                             </td>
                             <td>
                                 P
@@ -205,7 +205,7 @@
                             <span>:</span>
                         </div>
                         <span class="flex-2 text-primary-dark">{{
-                            loanAccount.date_release
+                            dateToMDY(new Date(loanAccount.date_release))
                         }}</span>
                     </div>
 
@@ -281,7 +281,7 @@
                             <span>:</span>
                         </div>
                         <span class="flex-2 text-primary-dark">{{
-                            loanAccount.loan_amount
+                            formatToCurrency(loanAccount.loan_amount)
                         }}</span>
                     </div>
                     <div class="d-flex flex-row mb-12">
@@ -292,7 +292,7 @@
                             <span>:</span>
                         </div>
                         <span class="flex-2 text-primary-dark">{{
-                            loanAccount.interest_amount
+                            formatToCurrency(loanAccount.interest_amount)
                         }}</span>
                     </div>
                     <div class="d-flex flex-row mb-12">
@@ -303,7 +303,7 @@
                             <span>:</span>
                         </div>
                         <span class="flex-2 text-primary-dark">{{
-                            loanAccount.due_date
+                            dateToMDY(new Date(loanAccount.due_date))
                         }}</span>
                     </div>
                     <div class="d-flex flex-row mb-12">

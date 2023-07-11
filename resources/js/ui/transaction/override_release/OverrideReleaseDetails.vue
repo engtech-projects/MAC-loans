@@ -226,7 +226,7 @@
 							</div>
 							<div class="d-flex mb-7">
 								<span class="mr-5">Amount Granted: </span>
-								<span>{{loanaccount.loan_amount}}</span>
+								<span>{{formatToCurrency(loanaccount.loan_amount)}}</span>
 							</div>
 							<div class="d-flex mb-7">
 								<span class="mr-5">Term: </span>

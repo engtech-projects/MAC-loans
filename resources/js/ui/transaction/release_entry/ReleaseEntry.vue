@@ -32,7 +32,7 @@
 									<tr v-if="pendingLoanAccounts.length < 1"><td>No existing current account.</td></tr>
 									<tr @click="loanDetails=bl;setCycle()" class="existing-loans" :class="selected(bl.loan_account_id)" v-for="bl in pendingLoanAccounts" :key="bl.loan_account_id">
 										<td>{{bl.account_num}}</td>
-										<td>{{bl.loan_amount}}</td>
+										<td>{{formatToCurrency(bl.loan_amount)}}</td>
 										<td>{{formatToCurrency(bl.remainingBalance.memo.balance)}}</td>
 										<td>{{dateToMDY(new Date(bl.date_release))}}</td>
 									</tr>

@@ -44,7 +44,7 @@
 					<tbody>
 						<tr v-for="account in unpaidLoanAccounts" @click="amortSched(account);" :key="account.loan_account_id" :class="isActive(account.loan_account_id)">
 							<td>{{account.account_num}}</td>
-							<td>{{dateToYMD(new Date(account.date_release))}}</td>
+							<td>{{dateToMDY(new Date(account.date_release))}}</td>
 							<td>P {{formatToCurrency(account.remainingBalance.memo?account.remainingBalance.memo.balance:0)}}</td>
 						</tr>
 					</tbody>
@@ -112,7 +112,7 @@
 							<span class="">Date Release</span>
 							<span>:</span>
 						</div>
-						<span class="flex-2 text-primary-dark">{{loanAccount.date_release}}</span>
+						<span class="flex-2 text-primary-dark">{{dateToMDY(new Date(loanAccount.date_release))}}</span>
 					</div>
 
 					<div class="d-flex flex-row mb-12">
@@ -160,21 +160,21 @@
 							<span class="">Loan Amount</span>
 							<span>:</span>
 						</div>
-						<span class="flex-2 text-primary-dark">{{loanAccount.loan_amount}}</span>
+						<span class="flex-2 text-primary-dark">{{formatToCurrency(loanAccount.loan_amount)}}</span>
 					</div>
 					<div class="d-flex flex-row mb-12">
 						<div class="d-flex flex-row flex-1 justify-content-between pr-24">
 							<span class="">Interest</span>
 							<span>:</span>
 						</div>
-						<span class="flex-2 text-primary-dark">{{loanAccount.interest_amount}}</span>
+						<span class="flex-2 text-primary-dark">{{formatToCurrency(loanAccount.interest_amount)}}</span>
 					</div>
 					<div class="d-flex flex-row mb-12">
 						<div class="d-flex flex-row flex-1 justify-content-between pr-24">
 							<span class="">Due Date</span>
 							<span>:</span>
 						</div>
-						<span class="flex-2 text-primary-dark">{{loanAccount.due_date}}</span>
+						<span class="flex-2 text-primary-dark">{{dateToMDY(new Date(loanAccount.due_date))}}</span>
 					</div>
 					<div class="d-flex flex-row mb-12">
 						<div class="d-flex flex-row flex-1 justify-content-between pr-24">
