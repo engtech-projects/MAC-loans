@@ -146,7 +146,7 @@
 			<tbody>
 				<tr @click="fetchAccountId (a.account_num);selected=i" v-for="(a, i) in filteredAccounts" :key="i" :class="i==selected?'account-active':''">
 					<td>{{a.account_num}}</td>
-					<td>{{a.loan_amount}}</td>
+					<td>{{formatToCurrency(a.loan_amount)}}</td>
 					<td>{{dateToMDY(new Date(a.date_granted))}}</td>
 					<td>{{Math.ceil(a.term / 30)}} Month(s)</td>
 					<td>{{a.collection_rate}}%</td>
@@ -1340,11 +1340,11 @@
 									</div>
 									<div class="d-flex mb-7">
 										<span class="mr-5">Date Release: </span>
-										<span>{{loanDetails.date_release}}</span>
+										<span>{{dateToMDY(new Date(loanDetails.date_release))}}</span>
 									</div>
 									<div class="d-flex mb-7">
 										<span class="mr-5">Amount Granted: </span>
-										<span>{{loanDetails.loan_amount}}</span>
+										<span>{{formatToCurrency(loanDetails.loan_amount)}}</span>
 									</div>
 									<div class="d-flex mb-7">
 										<span class="mr-5">Term: </span>
@@ -1612,7 +1612,7 @@
 								</div>
 								<div class="d-flex mb-7">
 									<span class="mr-5">Date Release: </span>
-									<span>{{loanDetails.date_release}}</span>
+									<span>{{dateToMDY(new Date(loanDetails.date_release))}}</span>
 								</div>
 								<div class="d-flex mb-7">
 									<span class="mr-5">Amount Granted: </span>
