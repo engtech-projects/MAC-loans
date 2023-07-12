@@ -582,30 +582,32 @@ class LoanAccount extends Model
                 $amortization->over_payment = $isPaid->over_payment;
             }
 
+
             $penaltyMissed = array_unique($amortization->delinquent['missed']);
             $amortization->day_late = $dayDiff;
+
             if ($this->getPaymentTotal($this->loan_account_id)) { // condition that checks if not the first payment
+
                 if ($this->product->product_name != "Pension Loan") {
                     if ($dayDiff < 0) {
                         $amortization->principal = 0;
                         $amortization->interest = 0;
                     }
                 } else {
+
                     $transDateMonth = Carbon::createFromFormat('Y-m-d', $transactionDateNow);
                     $lastPaidAmort = $this->getPrevAmortization($amortization->loan_account_id, $amortization->id, ['paid'], null, true, 'DESC');
 
                     $isMonthAmortPaid = $this->getPensionAmortization($transactionDateNow);
                     if ($lastPaidAmort) {
-
-                        //$isMonthAmortPaid = $this->getPensionAmortization($transactionDateNow);
-                        if ($dayDiff < 0) {
-
+                        if ($isMonthAmortPaid) {
                             $amortization->principal = 0;
                             $amortization->interest = 0;
                         }
                     }
                 }
             }
+
 
             if ($dayDiff < 0 && $this->product_id === 3) {
                 $dayDiff = 0;
