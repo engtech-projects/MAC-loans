@@ -310,21 +310,22 @@
                         <div
                             class="d-flex flex-row flex-1 justify-content-between pr-24"
                         >
-                            <span class="">{{ loanAccount.payment_mode }}</span>
+                            <span class="">Mode</span>
                             <span>:</span>
                         </div>
                         <span class="flex-2 text-primary-dark">{{
-                            formatToCurrency(
-                                Math.ceil(
-                                    loanAccount.interest_amount /
-                                        loanAccount.no_of_installment
-                                ) +
-                                    Math.ceil(
-                                        loanAccount.loan_amount /
-                                            loanAccount.no_of_installment
-                                    )
-                            )
+                            loanAccount.payment_mode
                         }}</span>
+                    </div>
+                    <div class="d-flex flex-row mb-12">
+                        <div
+                            class="d-flex flex-row flex-1 justify-content-between pr-24"
+                        >
+                            <span class="">Amortization</span>
+                            <span>:</span>
+                        </div>
+                        <span class="flex-2 text-primary-dark">{{loanAccount.type == "Prepaid"? formatToCurrency(Math.ceil(loanAccount.loan_amount/loanAccount.no_of_installment)) : formatToCurrency(Math.ceil(loanAccount.interest_amount/loanAccount.no_of_installment) + Math.ceil(loanAccount.loan_amount/loanAccount.no_of_installment))}}
+                        </span>
                     </div>
                     <!-- <div class="d-flex flex-row mb-12">
 						<div class="d-flex flex-row flex-1 justify-content-between pr-24">
@@ -333,17 +334,6 @@
 						</div>
 						<span class="flex-2 text-primary-dark">{{loanAccount.interest_rate}}%</span>
 					</div> -->
-                    <div class="d-flex flex-row mb-12">
-                        <div
-                            class="d-flex flex-row flex-1 justify-content-between pr-24"
-                        >
-                            <span class="">Mode</span>
-                            <span>:</span>
-                        </div>
-                        <span class="flex-2 text-primary-dark">{{
-                            loanAccount.payment_mode
-                        }}</span>
-                    </div>
                     <div class="d-flex flex-row mb-12">
                         <div
                             class="d-flex flex-row flex-1 justify-content-between pr-24"
