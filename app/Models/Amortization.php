@@ -89,10 +89,10 @@ class Amortization extends Model
             }
 
             $total = $principal + $interest;
-           
+
             $principalBalance = $principalBalance - $principal;
 
-         
+
 
             $interestBalance = $interestBalance - $interest;
 
