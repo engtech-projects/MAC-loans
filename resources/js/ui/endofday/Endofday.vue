@@ -200,7 +200,7 @@ export default {
 				this.loading = false;
 				if(response.data.data == 0){
 					this.loading = false;
-					this.endOfDay();
+					this.createPerformanceReport();
 				}else{
 					this.pendingResponse = response.data.message;
 					this.failed = true;
@@ -225,6 +225,24 @@ export default {
 				document.getElementById('eodModalBtn').click();
 				this.success = true;
 				this.newDay = true;
+			}.bind(this))
+			.catch(function (error) {
+				console.log(error);
+				this.loading = false;
+			}.bind(this));
+		},
+		async createPerformanceReport(){
+			this.loading = true;
+			await axios.post(this.baseURL() + 'api/report/branch/performancereport/create',{branch_id:this.branch.branch_id},{
+			headers: {
+				'Authorization': 'Bearer ' + this.token,
+				'Content-Type': 'application/json',
+				'Accept': 'application/json'
+				}
+			})
+			.then(function (response) {
+				console.log(response.data)
+				this.endOfDay();
 			}.bind(this))
 			.catch(function (error) {
 				console.log(error);
