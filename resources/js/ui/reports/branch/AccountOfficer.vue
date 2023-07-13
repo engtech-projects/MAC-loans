@@ -209,7 +209,7 @@ export default {
 			})
 			.then(function (response) {
 				this.loading = false;
-				// this.dates = response.data.data;
+				this.dates = response.data.data;
 				// console.log(response.data);
 			}.bind(this))
 			.catch(function (error) {
@@ -239,7 +239,7 @@ export default {
 		async fetchNoCurrentReports(){
 			this.loading = true;
 			var data = {
-				transaction_date:this.transDate,
+				transaction_date:this.filter.as_of,
 				branch_id:this.branch.branch_code
 			}
 			await axios.post(this.baseURL() + 'api/report/branch/performancereport',data, {
