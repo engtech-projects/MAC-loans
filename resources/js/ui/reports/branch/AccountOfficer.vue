@@ -11,7 +11,7 @@
 			<span class="font-lg text-primary-dark" style="flex:3">Report</span>
 			<div class="d-flex flex-row align-items-center mr-24" style="flex:2">
 				<span class="mr-10">Date: </span>
-				<input v-model="filter.as_of" type="date" class="form-control">
+				<input v-model="filter.as_of" type="date" class="form-control" :min="dates.min" :max="dates.max">
 			</div>
 			<!-- <div class="d-flex flex-row align-items-center mr-64" style="flex:2">
 				<span class="mr-10">To: </span>
@@ -179,6 +179,8 @@ export default {
 			loading:false,
 			aos:[],
 			branch:{},
+			dates:{min:null,max:null},
+			transDate:null,
 			filter:{
 				branch_id:'',
 				group:'performance_report',
@@ -190,7 +192,30 @@ export default {
 	},
 	methods:{
 		generate:function(){
-			this.fetchReports();
+			if(this.filter.as_of == this.transDate){
+				this.fetchReports();
+			}else{
+				this.fetchNoCurrentReports();
+			}
+ 		},
+		async fetchDates(){
+			this.loading = true;
+			await axios.get(this.baseURL() + 'api/report/branch/performancereport/dates?branchId=' + this.branch.branch_code, {
+				headers: {
+					'Authorization': 'Bearer ' + this.token,
+					'Content-Type': 'application/json',
+					'Accept': 'application/json'
+				}
+			})
+			.then(function (response) {
+				this.loading = false;
+				// this.dates = response.data.data;
+				// console.log(response.data);
+			}.bind(this))
+			.catch(function (error) {
+				this.loading = false;
+				console.log(error);
+			}.bind(this));
 		},
 		async fetchReports(){
 			this.loading = true;
@@ -205,6 +230,29 @@ export default {
 				this.loading = false;
 				this.reports = response.data.data
 				// console.log(this.reports);
+			}.bind(this))
+			.catch(function (error) {
+				this.loading = false;
+				console.log(error);
+			}.bind(this));
+		},
+		async fetchNoCurrentReports(){
+			this.loading = true;
+			var data = {
+				transaction_date:this.transDate,
+				branch_id:this.branch.branch_code
+			}
+			await axios.post(this.baseURL() + 'api/report/branch/performancereport',data, {
+				headers: {
+					'Authorization': 'Bearer ' + this.token,
+					'Content-Type': 'application/json',
+					'Accept': 'application/json'
+				}
+			})
+			.then(function (response) {
+				this.loading = false;
+				this.reports = response.data.data=='No reports found.'?[]:this.response.data.data;
+				console.log(response.data.data);
 			}.bind(this))
 			.catch(function (error) {
 				this.loading = false;
@@ -236,6 +284,7 @@ export default {
 				})
 				.then(function (response) {
 					this.filter.as_of = response.data.data.date_end;
+					this.transDate = response.data.data.date_end;
 				}.bind(this))
 				.catch(function (error) {
 					console.log(error);
@@ -363,6 +412,7 @@ export default {
 		this.filter.branch_id = this.branch.branch_id;
 		this.fetchAo();
 		this.fetchTransactionDate();
+		this.fetchDates();
 	}
 }
 </script>
