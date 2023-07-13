@@ -598,13 +598,29 @@ class LoanAccount extends Model
                     $transDateMonth = Carbon::createFromFormat('Y-m-d', $transactionDateNow);
                     $lastPaidAmort = $this->getPrevAmortization($amortization->loan_account_id, $amortization->id, ['paid'], null, true, 'DESC');
 
-                    $isMonthAmortPaid = $this->getPensionAmortization($transactionDateNow);
-                    if ($lastPaidAmort) {
+                    $isMonthAmortPaid = $this->getPensionAmortization($amortization->id,$transactionDateNow);
+                    if ($isMonthAmortPaid) {
+                        $amortization->principal = 0;
+                        $amortization->interest = 0;
+                    } else if($lastPaidAmort) {
+                        $amortization->principal = 0;
+                        $amortization->interest = 0;
+                    }
+
+                        /* if ($dayDiff < 0) {
+                            $amortization->principal = 0;
+                            $amortization->interest = 0;
+                        } */
+                    /* if ($dayDiff < 0) {
+                        $amortization->principal = 0;
+                        $amortization->interest = 0;
+                    } */
+                    /* if ($lastPaidAmort) {
                         if ($isMonthAmortPaid) {
                             $amortization->principal = 0;
                             $amortization->interest = 0;
-                        }
-                    }
+                       }
+                    } */
                 }
             }
 
@@ -654,7 +670,7 @@ class LoanAccount extends Model
         return $amortization;
     }
 
-    public function getPensionAmortization($transactionDateNow)
+    public function getPensionAmortization($id,$transactionDateNow)
     {
         $startMonth = Carbon::createFromFormat('Y-m-d', $transactionDateNow)->startOfMonth();
         $endMonth = Carbon::createFromFormat('Y-m-d', $transactionDateNow)->endOfMonth();
