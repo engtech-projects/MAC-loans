@@ -594,27 +594,20 @@ class LoanAccount extends Model
                         $amortization->interest = 0;
                     }
                 } else {
-
                     $transDateMonth = Carbon::createFromFormat('Y-m-d', $transactionDateNow)->startOfMonth();
                     $lastPaidAmort = $this->getPrevAmortization($amortization->loan_account_id, $amortization->id, ['paid'], null, true, 'DESC');
-                    $lastPaidAmortMonth = Carbon::createFromFormat('Y-m-d', $lastPaidAmort->amortization_date)->startOfMonth();
-                    $isMonthAmortPaid = $this->getPensionAmortization($amortization->id, $transactionDateNow);
-
-                    if ($transDateMonth < $dateSchedPension) {
-                        if ($lastPaidAmort && $transDateMonth < $lastPaidAmortMonth) {
-                            $amortization->principal = 0;
-                            $amortization->interest = 0;
+                    if ($lastPaidAmort) {
+                        $lastPaidAmortMonth = Carbon::createFromFormat('Y-m-d', $lastPaidAmort->amortization_date)->startOfMonth() ?? null;
+                        $isMonthAmortPaid = $this->getPensionAmortization($amortization->id, $transactionDateNow);
+                        if ($transDateMonth < $dateSchedPension) {
+                            if ($lastPaidAmort && $transDateMonth < $lastPaidAmortMonth) {
+                                $amortization->principal = 0;
+                                $amortization->interest = 0;
+                            }
+                        } else {
                         }
-                        /* if ($isMonthAmortPaid) {
-                            $amortization->principal = 0;
-                            $amortization->interest = 0;
-                        } */
-                    } else {
-                        /* if ($isMonthAmortPaid) {
-                            $amortization->principal = 0;
-                            $amortization->interest = 0;
-                        } */
                     }
+
 
                     /* $amortization->principal = 0;
                     $amortization->interest = 0; */
