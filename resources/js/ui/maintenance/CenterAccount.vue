@@ -231,7 +231,7 @@ export default {
 			}.bind(this));
 		},
 		upperFirst:function (string) {
-			return string.charAt(0).toUpperCase() + string.slice(1);
+			return string?string.charAt(0).toUpperCase() + string.slice(1):null;
 		},
 
 		fetchBranches:function(){
