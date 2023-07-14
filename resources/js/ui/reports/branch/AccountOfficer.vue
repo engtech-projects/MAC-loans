@@ -11,7 +11,7 @@
 			<span class="font-lg text-primary-dark" style="flex:3">Report</span>
 			<div class="d-flex flex-row align-items-center mr-24" style="flex:2">
 				<span class="mr-10">Date: </span>
-				<input v-model="filter.as_of" type="date" class="form-control" :min="dates.min" :max="dates.max">
+				<input v-model="filter.as_of" type="date" class="form-control" :min="dates.min_date" :max="dates.max_date">
 			</div>
 			<!-- <div class="d-flex flex-row align-items-center mr-64" style="flex:2">
 				<span class="mr-10">To: </span>
@@ -179,7 +179,7 @@ export default {
 			loading:false,
 			aos:[],
 			branch:{},
-			dates:{min:null,max:null},
+			dates:{min_date:null,max_date:null},
 			transDate:null,
 			filter:{
 				branch_id:'',
@@ -210,7 +210,8 @@ export default {
 			.then(function (response) {
 				this.loading = false;
 				this.dates = response.data.data;
-				// console.log(response.data);
+				this.dates.max_date = this.transDate;
+				console.log(response.data);
 			}.bind(this))
 			.catch(function (error) {
 				this.loading = false;
