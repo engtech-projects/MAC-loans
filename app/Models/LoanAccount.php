@@ -606,13 +606,11 @@ class LoanAccount extends Model
                                 if ($isMonthAmortPaid) {
                                     $amortization->principal = 0;
                                     $amortization->interest = 0;
-                                } else {
+
                                 }
+
                             } else {
-                                if ($lastPaidAmort && $transDateMonth == $lastPaidAmortMonth) {
-                                    $amortization->principal = 0;
-                                    $amortization->interest = 0;
-                                }
+
                             }
                         }
                     }
@@ -680,6 +678,7 @@ class LoanAccount extends Model
         return $amortization;
     }
 
+
     public function getPensionAmortization($id, $transactionDateNow)
     {
         $startMonth = Carbon::createFromFormat('Y-m-d', $transactionDateNow)->startOfMonth();
@@ -691,6 +690,12 @@ class LoanAccount extends Model
             ])
             ->where('status', 'paid')->first();
 
+        if (!$amort) {
+            $amort = Amortization::where('loan_account_id', $this->loan_account_id)
+                ->whereDate('amortization_date', '>=', $transactionDateNow)
+                ->where('status', 'paid')->orderBy('amortization_date', 'DESC')
+                ->first();
+        }
         return $amort;
     }
 
@@ -1032,7 +1037,7 @@ class LoanAccount extends Model
 
         if ($account->type == 'Prepaid') {
             $bal = ($account->loan_amount) - $payment;
-        }else{
+        } else {
             $bal = ($account->loan_amount + $account->interest_amount) - $payment;
         }
         return floatval(number_format($bal, 2, ".", ""));

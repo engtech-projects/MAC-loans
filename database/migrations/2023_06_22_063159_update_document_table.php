@@ -15,7 +15,7 @@ class UpdateDocumentTable extends Migration
     {
         Schema::table('documents', function (Blueprint $table) {
             $table->unsignedInteger('loan_account_id')->nullable()->change();
-            $table->date('release_date')->nullable()->change();
+            $table->date('date_release')->nullable()->change();
         });
     }
 
