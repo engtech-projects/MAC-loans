@@ -24,7 +24,7 @@
 								<div class="col-xl-3 col-lg-6">
 									<div class="info-display">
 										<span class="font-blue">Amortization</span>
-										<span>P {{formatToCurrency(loanDetails.amortization.total)}}</span>
+										<span>P {{loanDetails.type == "Prepaid"? formatToCurrency(Math.ceil(loanDetails.loan_amount/loanDetails.no_of_installment)) : formatToCurrency(loanDetails.amortization.total)}}</span>
 									</div>
 								</div>
 								<div class="col-xl-3 col-lg-6">

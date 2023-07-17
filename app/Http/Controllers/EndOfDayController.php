@@ -12,7 +12,7 @@ class EndOfDayController extends Controller
 		$this->checkAccess('set beginning/end of day');
 		return view('endofday.index')->with([
 			'nav' => ['end of day',''],
-			'title' => 'End of Day',
+			'title' => 'MAC | End of Day',
 		]);
 	}
 	public function eodCheck(Request $request){

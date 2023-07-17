@@ -100,7 +100,7 @@
 									<span class="">Term</span>
 									<span>:</span>
 								</div>
-								<span class="flex-1 text-primary-dark">{{loanAccount.terms}}</span>
+								<span class="flex-1 text-primary-dark">{{loanAccount.terms}} Days</span>
 							</div>
 
 							<div class="d-flex flex-row mb-12">

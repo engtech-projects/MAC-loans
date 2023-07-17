@@ -837,7 +837,7 @@
 										<span class="flex-1 mw-150">Amortization</span>
 										<div class="d-flex flex-2">
 											<span class="mr-5">: </span>
-											<span> P {{formatToCurrency(loanDetails.amortization.total)}}</span>
+											<span> P {{loanDetails.type == "Prepaid"? formatToCurrency(Math.ceil(loanDetails.loan_amount/loanDetails.no_of_installment)) : formatToCurrency(loanDetails.amortization.total)}}</span>
 										</div>
 									</div>
 								</div>
@@ -1361,7 +1361,7 @@
 									</div>
 									<div class="d-flex mb-7">
 										<span class="mr-5">Amort: </span>
-										<span>{{formatToCurrency(loanDetails.amortization.total)}}</span>
+										<span>{{loanDetails.type == "Prepaid"? formatToCurrency(Math.ceil(loanDetails.loan_amount/loanDetails.no_of_installment)) : formatToCurrency(loanDetails.amortization.total)}}</span>
 									</div>
 									<div class="d-flex mb-7">
 										<span class="mr-5">&nbsp;</span>
@@ -1625,7 +1625,7 @@
 								</div>
 								<div class="d-flex mb-7">
 									<span class="mr-5">Amount Granted: </span>
-									<span>{{loanDetails.loan_amount}}</span>
+									<span>{{formatToCurrency(loanDetails.loan_amount)}}</span>
 								</div>
 								<div class="d-flex mb-7">
 									<span class="mr-5">Term: </span>
@@ -1633,7 +1633,7 @@
 								</div>
 								<div class="d-flex mb-7">
 									<span class="mr-5">Amort: </span>
-									<span>{{formatToCurrency(loanDetails.amortization.total)}}</span>
+									<span>{{loanDetails.type == "Prepaid"? formatToCurrency(Math.ceil(loanDetails.loan_amount/loanDetails.no_of_installment)) : formatToCurrency(loanDetails.amortization.total)}}</span>
 								</div>
 								<div class="d-flex mb-7">
 									<span class="mr-5">&nbsp;</span>
