@@ -602,7 +602,7 @@ class LoanAccount extends Model
 
                         if ($transDateMonth < $dateSchedPension) {
 
-                            if ($lastPaidAmort && $transDateMonth <= $lastPaidAmortMonth) {
+                            if ($lastPaidAmort) {
                                 if ($isMonthAmortPaid) {
                                     $amortization->principal = 0;
                                     $amortization->interest = 0;
