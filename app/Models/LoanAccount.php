@@ -606,12 +606,6 @@ class LoanAccount extends Model
                                 if ($isMonthAmortPaid) {
                                     $amortization->principal = 0;
                                     $amortization->interest = 0;
-                                } else {
-                                }
-                            } else {
-                                if ($lastPaidAmort && $transDateMonth == $lastPaidAmortMonth) {
-                                    $amortization->principal = 0;
-                                    $amortization->interest = 0;
                                 }
                             }
                         }
@@ -690,7 +684,13 @@ class LoanAccount extends Model
                 $endMonth
             ])
             ->where('status', 'paid')->first();
-
+        if (!$amort) {
+            $amort = Amortization::where('loan_account_id', $this->loan_account_id)
+                ->whereDate('amortization_date', '>=', $transactionDateNow)
+                ->where('status','paid')
+                ->OrderBy('amortization_date', 'DESC')
+                ->first();
+        }
         return $amort;
     }
 
