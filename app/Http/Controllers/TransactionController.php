@@ -12,7 +12,7 @@ class TransactionController extends Controller
 		$this->checkAccess('view release entry');
 		return view('transaction.release_entry')->with([
 			'nav' => ['transaction', 'release entry'],
-			'title' => 'Release Entry',
+			'title' => 'MAC | Release Entry',
 		]);
 	}
 
@@ -24,7 +24,7 @@ class TransactionController extends Controller
 		$this->checkAccess('view override release');
 		return view('transaction.override_release')->with([
 			'nav' => ['transaction', 'override release'],
-			'title' => 'Override Release',
+			'title' => 'MAC | Override Release',
 		]);
 	}
 
@@ -32,7 +32,7 @@ class TransactionController extends Controller
 		$this->checkAccess('view rejected release');
 		return view('transaction.rejected_release')->with([
 			'nav' => ['transaction', 'rejected release'],
-			'title' => 'Rejected Release',
+			'title' => 'MAC | Rejected Release',
 		]);
 	}
 
@@ -40,7 +40,7 @@ class TransactionController extends Controller
 		$this->checkAccess('view rejected release');
 		return view('transaction.rejected_release_edit')->with([
 			'nav' => ['transaction', 'rejected release'],
-			'title' => 'Rejected Release Edit',
+			'title' => 'MAC | Rejected Release Edit',
 		]);
 	}
 
@@ -48,7 +48,7 @@ class TransactionController extends Controller
 		$this->checkAccess('view repayment entry');
 		return view('transaction.repayment_entry')->with([
 			'nav' => ['transaction', 'repayment entry'],
-			'title' => 'Repayment Entry',
+			'title' => 'MAC | Repayment Entry',
 		]);
 	}
 
@@ -56,7 +56,7 @@ class TransactionController extends Controller
 		$this->checkAccess('view override payment');
 		return view('transaction.override_payment')->with([
 			'nav' => ['transaction', 'override payment'],
-			'title' => 'Override Payment',
+			'title' => 'MAC | Override Payment',
 		]);
 	}
 
