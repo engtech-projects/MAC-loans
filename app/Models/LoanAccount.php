@@ -96,10 +96,6 @@ class LoanAccount extends Model
             $series = explode('-', $accountNumber);
             $identifier = (int)$series[2] + 1;
         } else {
-        if (count($accountNumber) > 0) {
-            $series = explode('-', $accountNumber);
-            $identifier = (int)$series[2] + 1;
-        } else {
             $identifier = 1;
         }
 
