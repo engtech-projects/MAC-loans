@@ -599,10 +599,8 @@ class LoanAccount extends Model
                     if ($lastPaidAmort) {
                         $lastPaidAmortMonth = Carbon::createFromFormat('Y-m-d', $lastPaidAmort->amortization_date)->startOfMonth();
                         $isMonthAmortPaid = $this->getPensionAmortization($amortization->id, $transactionDateNow);
-
                         if ($transDateMonth < $dateSchedPension) {
-
-                            if ($lastPaidAmort && $transDateMonth <= $lastPaidAmortMonth) {
+                            if ($transDateMonth < $lastPaidAmortMonth) {
                                 if ($isMonthAmortPaid) {
                                     $amortization->principal = 0;
                                     $amortization->interest = 0;
@@ -610,21 +608,6 @@ class LoanAccount extends Model
                             }
                         }
                     }
-
-
-                    /* $amortization->principal = 0;
-                    $amortization->interest = 0; */
-
-                    /* if ($dayDiff < 0) {
-                        $amortization->principal = 0;
-                        $amortization->interest = 0;
-                    } */
-                    /* if ($lastPaidAmort) {
-                        if ($isMonthAmortPaid) {
-                            $amortization->principal = 0;
-                            $amortization->interest = 0;
-                       }
-                    } */
                 }
             }
 
@@ -687,7 +670,7 @@ class LoanAccount extends Model
         if (!$amort) {
             $amort = Amortization::where('loan_account_id', $this->loan_account_id)
                 ->whereDate('amortization_date', '>=', $transactionDateNow)
-                ->where('status','paid')
+                ->where('status', 'paid')
                 ->OrderBy('amortization_date', 'DESC')
                 ->first();
         }
