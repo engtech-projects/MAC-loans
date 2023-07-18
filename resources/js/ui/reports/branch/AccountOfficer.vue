@@ -211,7 +211,7 @@ export default {
 				this.loading = false;
 				this.dates = response.data.data;
 				// this.dates.max_date = this.transDate;
-				console.log(response.data);
+				// console.log(response.data);
 			}.bind(this))
 			.catch(function (error) {
 				this.loading = false;
@@ -239,11 +239,9 @@ export default {
 		},
 		async fetchNoCurrentReports(){
 			this.loading = true;
-			var data = {
-				transaction_date:this.filter.as_of,
-				branch_id:this.branch.branch_code
-			}
-			await axios.post(this.baseURL() + 'api/report/branch/performancereport',data, {
+			
+			await axios.post(this.baseURL() + 'api/report/branch/performancereport',{transaction_date:this.filter.as_of,
+				branch_id:this.branch.branch_code}, {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
 					'Content-Type': 'application/json',
@@ -252,8 +250,7 @@ export default {
 			})
 			.then(function (response) {
 				this.loading = false;
-				this.reports = response.data.data=='No reports found.'?[]:this.response.data.data;
-				console.log(response.data.data);
+				this.reports = response.data.data==='No reports found.'?[]:response.data.data;
 			}.bind(this))
 			.catch(function (error) {
 				this.loading = false;
