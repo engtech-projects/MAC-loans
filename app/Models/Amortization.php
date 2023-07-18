@@ -84,12 +84,10 @@ class Amortization extends Model
 
             $amortizationDate = $amortizationDateStart->addDays($days);
             $total = $principal + $interest;
-            // principal balance
+
             $principalBalance = $principalBalance - $principal;
 
-            // if( max($principalBalance, 0) == 0 || $principalBalance < 0 ) {
-            //     $principalBalance = 0;
-            // }
+
 
             $interestBalance = $interestBalance - $interest;
 
