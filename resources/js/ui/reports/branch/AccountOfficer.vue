@@ -210,7 +210,7 @@ export default {
 			.then(function (response) {
 				this.loading = false;
 				this.dates = response.data.data;
-				this.dates.max_date = this.transDate;
+				// this.dates.max_date = this.transDate;
 				console.log(response.data);
 			}.bind(this))
 			.catch(function (error) {
@@ -286,6 +286,7 @@ export default {
 				.then(function (response) {
 					this.filter.as_of = response.data.data.date_end;
 					this.transDate = response.data.data.date_end;
+					this.dates.max_date = this.transDate;
 				}.bind(this))
 				.catch(function (error) {
 					console.log(error);
