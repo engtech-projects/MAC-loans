@@ -15,7 +15,8 @@ class JournalBook extends Model
 
 
 
-    public function getJounalBookById($bookId) {
-       return self::where('book_id',$bookId)->first();
+    public function getJounalBookById($bookId)
+    {
+        return self::where('book_id', $bookId)->first();
     }
 }
