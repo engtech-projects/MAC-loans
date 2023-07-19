@@ -91,7 +91,7 @@
                         >
                             <td>{{ account.account_num }}</td>
                             <td>
-                                {{ dateToYMD(new Date(account.date_release)) }}
+                                {{ dateToMDY(new Date(account.date_release)) }}
                             </td>
                             <td>
                                 P
@@ -205,7 +205,7 @@
                             <span>:</span>
                         </div>
                         <span class="flex-2 text-primary-dark">{{
-                            loanAccount.date_release
+                            dateToMDY(new Date(loanAccount.date_release))
                         }}</span>
                     </div>
 
@@ -281,7 +281,7 @@
                             <span>:</span>
                         </div>
                         <span class="flex-2 text-primary-dark">{{
-                            loanAccount.loan_amount
+                            formatToCurrency(loanAccount.loan_amount)
                         }}</span>
                     </div>
                     <div class="d-flex flex-row mb-12">
@@ -292,7 +292,7 @@
                             <span>:</span>
                         </div>
                         <span class="flex-2 text-primary-dark">{{
-                            loanAccount.interest_amount
+                            formatToCurrency(loanAccount.interest_amount)
                         }}</span>
                     </div>
                     <div class="d-flex flex-row mb-12">
@@ -303,36 +303,9 @@
                             <span>:</span>
                         </div>
                         <span class="flex-2 text-primary-dark">{{
-                            loanAccount.due_date
+                            dateToMDY(new Date(loanAccount.due_date))
                         }}</span>
                     </div>
-                    <div class="d-flex flex-row mb-12">
-                        <div
-                            class="d-flex flex-row flex-1 justify-content-between pr-24"
-                        >
-                            <span class="">{{ loanAccount.payment_mode }}</span>
-                            <span>:</span>
-                        </div>
-                        <span class="flex-2 text-primary-dark">{{
-                            formatToCurrency(
-                                Math.ceil(
-                                    loanAccount.interest_amount /
-                                        loanAccount.no_of_installment
-                                ) +
-                                    Math.ceil(
-                                        loanAccount.loan_amount /
-                                            loanAccount.no_of_installment
-                                    )
-                            )
-                        }}</span>
-                    </div>
-                    <!-- <div class="d-flex flex-row mb-12">
-						<div class="d-flex flex-row flex-1 justify-content-between pr-24">
-							<span class="">Int. Rate</span>
-							<span>:</span>
-						</div>
-						<span class="flex-2 text-primary-dark">{{loanAccount.interest_rate}}%</span>
-					</div> -->
                     <div class="d-flex flex-row mb-12">
                         <div
                             class="d-flex flex-row flex-1 justify-content-between pr-24"
@@ -344,6 +317,23 @@
                             loanAccount.payment_mode
                         }}</span>
                     </div>
+                    <div class="d-flex flex-row mb-12">
+                        <div
+                            class="d-flex flex-row flex-1 justify-content-between pr-24"
+                        >
+                            <span class="">Amortization</span>
+                            <span>:</span>
+                        </div>
+                        <span class="flex-2 text-primary-dark">{{loanAccount.type == "Prepaid"? formatToCurrency(Math.ceil(loanAccount.loan_amount/loanAccount.no_of_installment)) : formatToCurrency(Math.ceil(loanAccount.interest_amount/loanAccount.no_of_installment) + Math.ceil(loanAccount.loan_amount/loanAccount.no_of_installment))}}
+                        </span>
+                    </div>
+                    <!-- <div class="d-flex flex-row mb-12">
+						<div class="d-flex flex-row flex-1 justify-content-between pr-24">
+							<span class="">Int. Rate</span>
+							<span>:</span>
+						</div>
+						<span class="flex-2 text-primary-dark">{{loanAccount.interest_rate}}%</span>
+					</div> -->
                     <div class="d-flex flex-row mb-12">
                         <div
                             class="d-flex flex-row flex-1 justify-content-between pr-24"
