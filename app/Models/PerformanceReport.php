@@ -149,4 +149,3 @@ class PerformanceReport extends Model
 
         return $accountOfficers;
     }
-}
