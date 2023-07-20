@@ -1417,7 +1417,7 @@ class Reports extends Model
                     ->first();
                 $status = LoanAccount::select(
                     DB::raw("COUNT(CASE WHEN loan_status = 'Past Due' THEN 1 ELSE null END) as pastdue_count"),
-                    DB::raw("COUNT(CASE WHEN payment_status = 'Current' THEN 1 ELSE null END) as current_count")
+                    DB::raw("COUNT(CASE WHEN payment_status = 'Current' AND loan_status = 'Ongoing' THEN 1 ELSE null END) as current_count")
                 )->center($centerVal->center_id)->first();
 
 
