@@ -1413,18 +1413,15 @@ class Reports extends Model
                     )
                     ->where(["loan_accounts.center_id" => $centerVal->center_id, "product.product_name" => 'micro group', "branch.branch_id" => $filters["branch_id"]])
                     ->groupBy("loan_accounts.center_id")
-                    ->select([DB::raw("ifnull(count(loan_accounts.loan_account_id),0) as no_of_clients")])
+                    ->select([
+                        DB::raw("ifnull(count(loan_accounts.loan_account_id),0) as no_of_clients"),
+                        DB::raw("COUNT(CASE WHEN loan_status = 'Past Due' THEN 1 ELSE null END) as pastdue_count"),
+                        DB::raw("COUNT(CASE WHEN payment_status = 'Current' AND loan_status = 'Ongoing' THEN 1 ELSE null END) as current_count")
+                    ])
                     ->first();
-                $status = LoanAccount::select(
-                    DB::raw("COUNT(CASE WHEN loan_status = 'Past Due' THEN 1 ELSE null END) as pastdue_count"),
-                    DB::raw("COUNT(CASE WHEN payment_status = 'Current' AND loan_status = 'Ongoing' THEN 1 ELSE null END) as current_count")
-                )->center($centerVal->center_id)->first();
-
-
-
                 $data[$weekDay][$centerVal->center]["all"]['no_of_clients'] = $no_of_clients ? $no_of_clients->no_of_clients : 0;
-                $data[$weekDay][$centerVal->center]["all"]['no_of_pastdue'] = $status ? $status->pastdue_count : 0;
-                $data[$weekDay][$centerVal->center]["all"]['no_of_current'] = $status ? $status->current_count : 0;
+                $data[$weekDay][$centerVal->center]["all"]['no_of_pastdue'] = $no_of_clients ? $no_of_clients->pastdue_count : 0;
+                $data[$weekDay][$centerVal->center]["all"]['no_of_current'] = $no_of_clients ? $no_of_clients->current_count : 0;
                 $data[$weekDay][$centerVal->center]["all"]["start"] = $monthStart;
                 $data[$weekDay][$centerVal->center]["all"]["end"] = $monthEnd;
                 $monthPayments = Payment::join("loan_accounts", 'payment.loan_account_id', '=', 'loan_accounts.loan_account_id')
