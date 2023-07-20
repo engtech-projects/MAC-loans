@@ -101,6 +101,18 @@ class LoanAccount extends Model
         return $branchCode . '-' . $productCode . '-' . str_pad($identifier, 7, '0', STR_PAD_LEFT);
     }
 
+    public function scopeStatus($query,$value) {
+        $result = $query->where('loan_status',$value);
+        if($value == 'Past Due') {
+            $result = $query->where('loan_status',$value);
+        }
+        return $result;
+    }
+    public function scopeCenter($query,$value) {
+        return $query->where('center_id',$value);
+    }
+
+
     public static function getCycleNo($id)
     {
         $cycleNo = LoanAccount::where(['borrower_id' => $id, 'status' => 'released'])->count();

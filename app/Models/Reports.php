@@ -1401,7 +1401,7 @@ class Reports extends Model
         foreach ($data as $weekDay => $weekDayData) {
             //get centers where center.day_sched
             $centers = Center::where(["center.day_sched" => $weekDay, "status" => "active"]) // center daysched  or use center sched in loan account?
-                ->get();
+                ->orderBy('center.center')->get();
             foreach ($centers as $centerId => $centerVal) {
                 $data[$weekDay][$centerVal->center]["all"]["account_officer"]  = "test_data_api_result_ACCOUNT_OFFICER";
                 $data[$weekDay][$centerVal->center]["all"]["area_of_operation"]  = $centerVal->area;
@@ -1412,7 +1412,16 @@ class Reports extends Model
                     ->groupBy("loan_accounts.center_id")
                     ->select([DB::raw("ifnull(count(loan_accounts.loan_account_id),0) as no_of_clients")])
                     ->first();
+                $status = LoanAccount::select(
+                    DB::raw("COUNT(CASE WHEN loan_status = 'Past Due' THEN 1 ELSE null END) as pastdue_count"),
+                    DB::raw("COUNT(CASE WHEN payment_status = 'Current' THEN 1 ELSE null END) as current_count")
+                )->center($centerVal->center_id)->first();
+
+
+
                 $data[$weekDay][$centerVal->center]["all"]['no_of_clients'] = $no_of_clients ? $no_of_clients->no_of_clients : 0;
+                $data[$weekDay][$centerVal->center]["all"]['no_of_pastdue'] = $status ? $status->pastdue_count : 0;
+                $data[$weekDay][$centerVal->center]["all"]['no_of_current'] = $status ? $status->current_count : 0;
                 $data[$weekDay][$centerVal->center]["all"]["start"] = $monthStart;
                 $data[$weekDay][$centerVal->center]["all"]["end"] = $monthEnd;
                 $monthPayments = Payment::join("loan_accounts", 'payment.loan_account_id', '=', 'loan_accounts.loan_account_id')
