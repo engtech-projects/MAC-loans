@@ -11,7 +11,7 @@
 			<span class="font-lg text-primary-dark" style="flex:3">Report</span>
 			<div class="d-flex flex-row align-items-center mr-24" style="flex:2">
 				<span class="mr-10">Date: </span>
-				<input v-model="filter.as_of" type="date" class="form-control">
+				<input v-model="filter.as_of" type="date" class="form-control" :min="dates.min_date" :max="dates.max_date">
 			</div>
 			<!-- <div class="d-flex flex-row align-items-center mr-64" style="flex:2">
 				<span class="mr-10">To: </span>
@@ -179,6 +179,8 @@ export default {
 			loading:false,
 			aos:[],
 			branch:{},
+			dates:{min_date:null,max_date:null},
+			transDate:null,
 			filter:{
 				branch_id:'',
 				group:'performance_report',
@@ -190,7 +192,31 @@ export default {
 	},
 	methods:{
 		generate:function(){
-			this.fetchReports();
+			if(this.filter.as_of == this.transDate){
+				this.fetchReports();
+			}else{
+				this.fetchNoCurrentReports();
+			}
+ 		},
+		async fetchDates(){
+			this.loading = true;
+			await axios.get(this.baseURL() + 'api/report/branch/performancereport/dates?branchId=' + this.branch.branch_code, {
+				headers: {
+					'Authorization': 'Bearer ' + this.token,
+					'Content-Type': 'application/json',
+					'Accept': 'application/json'
+				}
+			})
+			.then(function (response) {
+				this.loading = false;
+				this.dates = response.data.data;
+				// this.dates.max_date = this.transDate;
+				// console.log(response.data);
+			}.bind(this))
+			.catch(function (error) {
+				this.loading = false;
+				console.log(error);
+			}.bind(this));
 		},
 		async fetchReports(){
 			this.loading = true;
@@ -205,6 +231,26 @@ export default {
 				this.loading = false;
 				this.reports = response.data.data
 				// console.log(this.reports);
+			}.bind(this))
+			.catch(function (error) {
+				this.loading = false;
+				console.log(error);
+			}.bind(this));
+		},
+		async fetchNoCurrentReports(){
+			this.loading = true;
+			
+			await axios.post(this.baseURL() + 'api/report/branch/performancereport',{transaction_date:this.filter.as_of,
+				branch_id:this.branch.branch_code}, {
+				headers: {
+					'Authorization': 'Bearer ' + this.token,
+					'Content-Type': 'application/json',
+					'Accept': 'application/json'
+				}
+			})
+			.then(function (response) {
+				this.loading = false;
+				this.reports = response.data.data==='No reports found.'?[]:response.data.data;
 			}.bind(this))
 			.catch(function (error) {
 				this.loading = false;
@@ -236,6 +282,8 @@ export default {
 				})
 				.then(function (response) {
 					this.filter.as_of = response.data.data.date_end;
+					this.transDate = response.data.data.date_end;
+					this.dates.max_date = this.transDate;
 				}.bind(this))
 				.catch(function (error) {
 					console.log(error);
@@ -281,21 +329,21 @@ export default {
 						row[0] = i==0?r.name:'';
 						row[1] = p.product_code + '-' + p.product_name;
 						row[2] = p.all.count;
-						total[2] += p.all.count;
+						total[2] += parseFloat(p.all.count);
 						row[3] = this.formatToCurrency(p.all.amount);
-						total[3] += p.all.amount;
+						total[3] += parseFloat(p.all.amount);
 						row[4] = p.delinquent.count;
-						total[4] += p.delinquent.count;
+						total[4] += parseFloat(p.delinquent.count);
 						row[5] = this.formatToCurrency(p.delinquent.amount);
-						total[5] += p.delinquent.amount;
+						total[5] += parseFloat(p.delinquent.amount);
 						row[6] = p.delinquent.rate + '%';
-						total[6] += p.delinquent.rate;
+						total[6] += parseFloat(p.delinquent.rate);
 						row[7] = p.pastdue.count;
-						total[7] += p.pastdue.count;
+						total[7] += parseFloat(p.pastdue.count);
 						row[8] = this.formatToCurrency(p.pastdue.amount);
-						total[8] += p.pastdue.amount;
+						total[8] += parseFloat(p.pastdue.amount);
 						row[9] = p.pastdue.rate + '%';
-						total[9] += p.pastdue.rate;
+						total[9] += parseFloat(p.pastdue.rate);
 						result.push(row);
 					});
 					total[6] = (total[5]/total[3]*100) % 1 != 0? (total[5]/total[3]*100).toFixed(2):(total[5]/total[3]*100);
@@ -363,6 +411,7 @@ export default {
 		this.filter.branch_id = this.branch.branch_id;
 		this.fetchAo();
 		this.fetchTransactionDate();
+		this.fetchDates();
 	}
 }
 </script>

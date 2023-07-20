@@ -15,8 +15,8 @@ class CreateDocumentsTable extends Migration
     {
         Schema::create('documents', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('loan_account_id');
-            $table->date('date_release');
+            $table->unsignedInteger('loan_account_id')->nullable();
+            $table->date('date_release')->nullable();
             $table->tinyText('description')->nullable();
             $table->string('bank')->nullable();
             $table->string('account_no')->nullable();
