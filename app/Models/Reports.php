@@ -1407,7 +1407,10 @@ class Reports extends Model
                 $data[$weekDay][$centerVal->center]["all"]["area_of_operation"]  = $centerVal->area;
                 $no_of_clients = LoanAccount::join("product", 'loan_accounts.product_id', '=', 'product.product_id')
                     ->join("branch", "branch.branch_code", "loan_accounts.branch_code")
-                    ->where("loan_accounts.loan_status", "Ongoing")
+                    ->whereIn(
+                        "loan_accounts.loan_status",
+                        [LoanAccount::LOAN_ONGOING, LoanAccount::LOAN_PASTDUE]
+                    )
                     ->where(["loan_accounts.center_id" => $centerVal->center_id, "product.product_name" => 'micro group', "branch.branch_id" => $filters["branch_id"]])
                     ->groupBy("loan_accounts.center_id")
                     ->select([DB::raw("ifnull(count(loan_accounts.loan_account_id),0) as no_of_clients")])
