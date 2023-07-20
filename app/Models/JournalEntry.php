@@ -31,7 +31,7 @@ class JournalEntry extends Model
         'remarks',
     ];
 
-    public function generateJournalEntryCode()
+    public function generateJournalEntryCode($bookCode)
     {
         $transaction = self::where('book_id', 5)
             ->orderBy('journal_id', 'DESC')
@@ -43,7 +43,7 @@ class JournalEntry extends Model
         } else {
             $num = 1;
         }
-        return $code[0] . '-' . str_pad($num, 7, '0', STR_PAD_LEFT);
+        return $bookCode . '-' . str_pad($num, 7, '0', STR_PAD_LEFT);
     }
 
     public function createJournalEntry($request)
@@ -55,7 +55,7 @@ class JournalEntry extends Model
         //Create Journal Entry
         if ($journalBook) {
             $journalEntry = self::create([
-                'journal_no'            =>          $this->generateJournalEntryCode(),
+                'journal_no'            =>          $this->generateJournalEntryCode($journalBook->book_code),
                 'book_id'               =>          $journalBook->book_id,
                 'journal_date'          =>          $transDate,
                 'branch_id'             =>          $request->input("branch_id"),
