@@ -27,6 +27,16 @@ class JournalEntryDetails extends Model
     ];
 
 
+    public function entry()
+    {
+        return $this->belongsTo(JournalEntry::class, 'journal_id');
+    }
+
+    public function createEntryDetails(JournalEntry $journalEntry, array $details)
+    {
+
+    }
+
     public function journalDoubleEntry($journalEntry)
     {
         if ($journalEntry) {

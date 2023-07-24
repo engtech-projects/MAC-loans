@@ -25,6 +25,7 @@ use App\Http\Controllers\API\DeductionController;
 use App\Http\Controllers\API\JournalEntryController;
 use App\Http\Resources\Borrower;
 
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -41,7 +42,7 @@ Route::post('login', [AuthController::class, 'login'])->name('api.login');
 Route::post('borrower_login', [AuthController::class, 'borrowerLogin'])->name('api.borrowerLogin');
 
 
-Route::middleware(['auth:sanctum'])->group( function () {
+Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('logout', [AuthController::class, 'logout'])->name('api.logout');
     Route::resource('user', UserController::class);
     Route::resource('product', ProductController::class);
@@ -56,9 +57,9 @@ Route::middleware(['auth:sanctum'])->group( function () {
     Route::resource('deduction', DeductionController::class);
 
 
-    Route::get('borrower/accounts/{borrower_id}',[BorrowerController::class,'getBorrowerAccounts']);
+    Route::get('borrower/accounts/{borrower_id}', [BorrowerController::class, 'getBorrowerAccounts']);
 
-    Route::get('get-current-amortization/{branch_id}',[AmortizationController::class, 'getCurrentAmortization']);
+    Route::get('get-current-amortization/{branch_id}', [AmortizationController::class, 'getCurrentAmortization']);
 
 
 
@@ -79,8 +80,8 @@ Route::middleware(['auth:sanctum'])->group( function () {
 
     // loan account
     Route::get('account/show/{account}', [LoanAccountController::class, 'showLoanAccount']);
-    Route::get('account/amortization_details/{account}',[LoanAccountController::class, 'showCurrentAmortization']);
-    Route::get('account/amortizations/{account}',[AmortizationController::class,'getAmortizations']);
+    Route::get('account/amortization_details/{account}', [LoanAccountController::class, 'showCurrentAmortization']);
+    Route::get('account/amortizations/{account}', [AmortizationController::class, 'getAmortizations']);
     Route::post('account/amortizations/update/{amortization}', [AmortizationController::class, 'update']);
 
 
@@ -88,11 +89,11 @@ Route::middleware(['auth:sanctum'])->group( function () {
     Route::post('account/update/{account}', [LoanAccountController::class, 'updateLoanAccount']);
     Route::get('account/statement/{borrower}', [LoanAccountController::class, 'statement']);
 
-    Route::get('account/remaining_balance/{account}',[LoanAccountController::class,'getRemainingBalance']);
+    Route::get('account/remaining_balance/{account}', [LoanAccountController::class, 'getRemainingBalance']);
 
     //Update Co-Maker
-    Route::post('account/updatecomaker/{account}',[LoanAccountController::class,'updateCoMaker']);
-    Route::post('account/updatepayment/{payment}',[PaymentController::class,'updatePayment']);
+    Route::post('account/updatecomaker/{account}', [LoanAccountController::class, 'updateCoMaker']);
+    Route::post('account/updatepayment/{payment}', [PaymentController::class, 'updatePayment']);
 
 
     // override release
@@ -102,9 +103,9 @@ Route::middleware(['auth:sanctum'])->group( function () {
     Route::get('account/cashvoucher/{account}', [LoanAccountController::class, 'cashVoucher']);
 
 
-    Route::post('account/update-account-amortization/{account}',[LoanAccountController::class,'updateAccountAmortization']);
+    Route::post('account/update-account-amortization/{account}', [LoanAccountController::class, 'updateAccountAmortization']);
 
-    Route::post('account/retag-list/{branch}',[AccountRetaggingController::class,'retagList']);
+    Route::post('account/retag-list/{branch}', [AccountRetaggingController::class, 'retagList']);
 
 
     Route::post('account/override/', [LoanAccountController::class, 'override']);
@@ -128,12 +129,13 @@ Route::middleware(['auth:sanctum'])->group( function () {
     Route::post('report/micro/', [ReportsController::class, 'microReports']);
     Route::post('report/bir/', [ReportsController::class, 'birTaxReport']);
     Route::post('report/prepaid/', [ReportsController::class, 'prepaidReport']);
-    Route::post('report/savejournalenttry',[JournalEntryController::class, 'store']);
+    Route::post('report/savejournalenttry', [JournalEntryController::class, 'store']);
+    Route::get('report/journal-entries', [JournalEntryController::class, 'index']);
 
 
 
 
-	Route::post('uploadfile/{id}', [LoanAccountController::class, 'uploadFile']);
+    Route::post('uploadfile/{id}', [LoanAccountController::class, 'uploadFile']);
 
     Route::get('eod/eodtransaction/{branch_id}', [EODController::class, 'getTransactionDate']);
     Route::post('eod/eodtransaction/create', [EODController::class, 'createTransactionDate']);
@@ -147,7 +149,6 @@ Route::middleware(['auth:sanctum'])->group( function () {
 
     Route::get('migrate/loanAccount', [LoanAccountController::class, "fixShortAdv"]);
     Route::get('migrate/payment/rebatesInterestPenaltyPDI', [LoanAccountController::class, "fixMiragtionRebates"]);
-
 });
 
 // Route::resource('borrower', BorrowerController::class);
