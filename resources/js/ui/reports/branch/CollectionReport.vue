@@ -62,7 +62,7 @@
 										<th>Sig</th>
 									</thead>
 									<tbody>
-										<tr v-for="c,i in collections" :key="i">
+										<tr v-for="c,i in collections.sort(sortClient)" :key="i">
 											<td>{{c.client}}</td>
 											<td>{{c.date_loan.replaceAll('-','/')}}</td>
 											<td>{{c.maturity_date.replaceAll('-','/')}}</td>
@@ -290,6 +290,18 @@ export default {
 				console.log(error);
 			}.bind(this));
 		},
+		sortClient:function(a, b){
+			let aclient = a.client.toLowerCase(),
+        		bclient = b.client.toLowerCase();
+
+			if (aclient < bclient) {
+				return -1;
+			}
+			if (aclient > bclient) {
+				return 1;
+			}
+			return 0;
+		}
 	},
 	computed:{
 		total:function(){

@@ -114,17 +114,17 @@
 								<tr v-for="rws,j in fr.rows" :key="j">
 									<td v-for="rw,k in rws" :key="k">{{rw}}</td>
 								</tr>
-								<tr class="bg-skyblue text-bold">
-									<td v-for="tc,l in fr.centerTotal" :key="l">{{tc===""||tc==="CENTER SUB-TOTAL"?tc:formatToCurrency(tc)}}</td>
+								<tr v-if="fr.product=='002 - Micro Group'" class="bg-skyblue text-bold">
+									<td v-for="tc,l in fr.centerTotal" :key="l">{{tc===""||tc==="CENTER SUB-TOTAL"||l==1?tc:formatToCurrency(tc)}}</td>
 								</tr>
 								<tr v-if="fr.productTotal" class="bg-green-mint text-bold">
-									<td v-for="tp,m in fr.productTotal" :key="m">{{tp===""||tp==="PRODUCT SUB-TOTAL"?tp:formatToCurrency(tp)}}</td>
+									<td v-for="tp,m in fr.productTotal" :key="m">{{tp===""||tp==="PRODUCT SUB-TOTAL"||m==1?tp:formatToCurrency(tp)}}</td>
 								</tr>
 								<tr v-if="fr.aoTotal" class="bg-purple-light text-bold">
-									<td v-for="ta,n in fr.aoTotal" :key="n">{{ta===""||ta==="OFFICER SUB-TOTAL"?ta:formatToCurrency(ta)}}</td>
+									<td v-for="ta,n in fr.aoTotal" :key="n">{{ta===""||ta==="OFFICER SUB-TOTAL"||n==1?ta:formatToCurrency(ta)}}</td>
 								</tr>
 								<tr v-if="fr.total" class="bg-primary-dark text-white text-bold">
-									<td v-for="tt,o in fr.total" :key="o">{{tt===""||tt==="TOTAL"?tt:formatToCurrency(tt)}}</td>
+									<td v-for="tt,o in fr.total" :key="o">{{tt===""||tt==="TOTAL"||o==1?tt:formatToCurrency(tt)}}</td>
 								</tr>
 							</tbody>
 						</table>
@@ -704,7 +704,6 @@ export default {
 			.then(function (response) {
 				this.loading = false;
 				this.reports = response.data.data
-				console.log(this.reports);
 			}.bind(this))
 			.catch(function (error) {
 				this.loading = false;
@@ -779,26 +778,55 @@ export default {
 			target.innerHTML = content;
 			window.print();
 		},
+		processCenter:function(centers, product){
+			var result = [];
+			if(product != 'Micro Group'){
+				result = centers;
+			}else{
+				var ccc = [];
+				for(var c in centers){
+					if(c !== 'No Center'){
+						ccc.push(c);
+					}
+				}
+				var ccenters = ccc.sort(this.sortMicrofunction);
+				ccenters.unshift('No Center');
+				for(var a in ccenters){
+					for(var b in centers){
+						if(ccc[a] === b){
+							result[b]=(centers[b]);
+						}
+					}
+				}
+			}
+			return result;
+		},
+		sortMicrofunction:function(a,b) {
+			a = a.toLowerCase();
+			b = b.toLowerCase();
+			if( a == b) return 0;
+			return a < b ? -1 : 1;
+		}
 	},
 	computed:{
 		filteredReports:function(){
 			var tables = [];
-			var total = ['TOTAL','','','',0,0,0,'','','',0,'',''];
+			var total = ['TOTAL',0,'','',0,0,0,'','','',0,'',''];
 			this.reports.forEach(ao=>{
-				var aoTotal = ['OFFICER SUB-TOTAL','','','',0,0,0,'','','',0,'',''];
+				var aoTotal = ['OFFICER SUB-TOTAL',0,'','',0,0,0,'','','',0,'',''];
 				var hasAoAccounts = false;
 				for(var p in ao.products){
 					var hasProductAccounts = false;
 					var product = ao.products[p];
-					var productTotal = ['PRODUCT SUB-TOTAL','','','',0,0,0,'','','',0,'',''];
-					for(var c in product.centers){
+					var productTotal = ['PRODUCT SUB-TOTAL',0,'','',0,0,0,'','','',0,'',''];
+					for(var c in this.processCenter(product.centers, p)){
 						var center = product.centers[c];
-						var centerTotal = ['CENTER SUB-TOTAL','','','',0,0,0,'','','',0,'',''];
+						var centerTotal = ['CENTER SUB-TOTAL',0,'','',0,0,0,'','','',0,'',''];
 						if(center.accounts){
 							var table = {
 								ao:'0' + ao.ao_id + ' - ' + ao.name,
 								product:product.product_code + ' - ' + product.product_name,
-								center:center.center,
+								center:c,
 								rows:[],
 								centerTotal:null,
 								productTotal:null,
@@ -808,13 +836,15 @@ export default {
 							for(var ac in center.accounts){
 								var account = center.accounts[ac];
 								var sstatus = account.loan_status=='Ongoing'?account.status:account.loan_status;
-								console.log(sstatus);
 								var row = [];
 								row.push(account.borrower_name);
                                 row.push(account.account_num);
 								row.push(account.date_loan);
 								row.push(account.maturity);
-
+								centerTotal[1]++;
+								productTotal[1]++;
+								aoTotal[1]++;
+								total[1]++;
 								row.push(this.formatToCurrency(account.amount_loan));
 								
 								row.push(this.formatToCurrency(account.principal_balance));
