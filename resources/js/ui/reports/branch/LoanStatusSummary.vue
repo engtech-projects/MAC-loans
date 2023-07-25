@@ -114,7 +114,7 @@
 								<tr v-for="rws,j in fr.rows" :key="j">
 									<td v-for="rw,k in rws" :key="k">{{rw}}</td>
 								</tr>
-								<tr class="bg-skyblue text-bold">
+                <tr class="bg-skyblue text-bold">
 									<td v-for="tc,l in fr.centerTotal" :key="l">{{tc===""||tc==="CENTER SUB-TOTAL"||l==1?tc:formatToCurrency(tc)}}</td>
 								</tr>
 								<tr v-if="fr.productTotal" class="bg-green-mint text-bold">
@@ -704,7 +704,6 @@ export default {
 			.then(function (response) {
 				this.loading = false;
 				this.reports = response.data.data
-				console.log(this.reports);
 			}.bind(this))
 			.catch(function (error) {
 				this.loading = false;
@@ -779,6 +778,35 @@ export default {
 			target.innerHTML = content;
 			window.print();
 		},
+		processCenter:function(centers, product){
+			var result = [];
+			if(product != 'Micro Group'){
+				result = centers;
+			}else{
+				var ccc = [];
+				for(var c in centers){
+					if(c !== 'No Center'){
+						ccc.push(c);
+					}
+				}
+				var ccenters = ccc.sort(this.sortMicrofunction);
+				ccenters.unshift('No Center');
+				for(var a in ccenters){
+					for(var b in centers){
+						if(ccc[a] === b){
+							result[b]=(centers[b]);
+						}
+					}
+				}
+			}
+			return result;
+		},
+		sortMicrofunction:function(a,b) {
+			a = a.toLowerCase();
+			b = b.toLowerCase();
+			if( a == b) return 0;
+			return a < b ? -1 : 1;
+		}
 	},
 	computed:{
 		filteredReports:function(){

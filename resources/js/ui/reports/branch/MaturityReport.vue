@@ -1,5 +1,12 @@
 <template>
 	<div class="d-flex flex-column" style="flex:8;">
+		<div v-if="loading" class="black-screen d-flex flex-column align-items-center justify-content-center" style="padding-left:0px;">
+			<div class="loading-container d-flex align-items-center justify-content-center mb-36">
+				<span class="loading-text">LOADING</span>
+				<img :src="baseURL() + 'img/loading_default.png'" class="rotating" alt="" style="width:300px;height:300px">
+			</div>
+			<span class="font-lg" style="color:#ddd">Please wait until the process is complete</span>
+		</div>
 		<div class="d-flex flex-row font-md align-items-center mb-16">
 			<span class="font-lg text-primary-dark" style="flex:3">Transaction</span>
 			<div class="d-flex flex-row align-items-center mr-24" style="flex:2">
@@ -63,7 +70,7 @@
 									</thead>
 									<tbody>
 										<tr v-if="!reports.length"><td><i>No data available.</i></td></tr>
-										<tr v-for="r,i in reports" :key="i">
+										<tr v-for="r,i in reports.sort(aSort('client'))" :key="i">
 											<td>{{r.client}}</td>
 											<td>{{r.date_released.replaceAll('-','/')}}</td>
 											<td>{{r.due_date.replaceAll('-','/')}}</td>
@@ -130,6 +137,7 @@ export default {
 	props:['token', 'pbranch'],
 	data(){
 		return {
+			loading:false,
 			reports:[],
 			filter:{
 				due_from:'',
@@ -146,6 +154,7 @@ export default {
 	},
 	methods:{
 		async fetchReports(){
+			this.loading = true;
 			this.filter.branch_id = this.branch.branch_id;
 			await axios.post(this.baseURL() + 'api/report/branch', this.filter, {
 				headers: {
@@ -156,9 +165,10 @@ export default {
 			})
 			.then(function (response) {
 				this.reports = response.data.data
-				console.log(response.data);
+				this.loading=false;
 			}.bind(this))
 			.catch(function (error) {
+				this.loading=false;
 				console.log(error);
 			}.bind(this));
 		},
@@ -198,6 +208,18 @@ export default {
 			target.innerHTML = content;
 			window.print();
 		},
+		sortClient:function(a, b){
+			let aclient = a.client.toLowerCase(),
+        		bclient = b.client.toLowerCase();
+
+			if (aclient < bclient) {
+				return -1;
+			}
+			if (aclient > bclient) {
+				return 1;
+			}
+			return 0;
+		}
 	},
 	computed:{
 		total:function(){
