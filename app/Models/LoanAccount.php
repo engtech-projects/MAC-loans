@@ -131,6 +131,12 @@ class LoanAccount extends Model
         return $this->hasOne(AccountOfficer::class, 'ao_id', 'ao_id');
     }
 
+    public function amortizations()
+    {
+        return $this->hasMany(Amortization::class, 'loan_account_id');
+    }
+
+
     // public function borrower() {
     //    return Borrower::with(['businessInfo','employmentInfo','householdMembers','outstandingObligations'])->find($this->borrower_id);
     // }
@@ -479,15 +485,34 @@ class LoanAccount extends Model
     {
         #GET FIRST AMORTIZAIONT PRINCIPAL AND INTEREST
         $amort = Amortization::where('loan_account_id', $this->loan_account_id)
-            ->select('principal', 'interest')
             ->first();
-
         return $amort;
+    }
+
+    public function getAllowedPensionIndicator()
+    {
+
+        $tranDate = new EndTransaction();
+        $transactionDateNow = $tranDate->getTransactionDate($this->branch->branch_id)->date_end;
+        $startMonth = Carbon::createFromFormat('Y-m-d', $transactionDateNow)->startOfMonth();
+        $endMonth = Carbon::createFromFormat('Y-m-d', $transactionDateNow)->endOfMonth();
+        $loanAccount = LoanAccount::select(['loan_account_id', 'allowed'])
+            ->with(['amortizations' => function ($query) use ($startMonth) {
+                $query->select(['loan_account_id', 'id', 'amortization_date', 'status'])
+                    ->whereDate('amortization_date', '>=', $startMonth)
+                    ->where('status', 'paid')
+                    ->first();
+            }])
+            ->withOut(['documents', 'payments'])
+            ->where('loan_account_id', $this->loan_account_id)
+            ->first();
+        return $loanAccount;
     }
 
 
     public function getCurrentAmortization()
     {
+
         $tranDate = new EndTransaction();
         $transactionDateNow = $tranDate->getTransactionDate($this->branch->branch_id)->date_end;
 
@@ -540,13 +565,13 @@ class LoanAccount extends Model
             $dayDiff = $dateSched->diffInDays($currentDay, false);
             $dayDiffPension = $dateSchedPension->diffInDays($currentDay, false);
 
-
             $loanAccount = LoanAccount::find($this->loan_account_id);
             $amortization->principal = round($amortization->principal);
             $amortization->interest = round($amortization->interest);
 
             $amortization->schedule_principal = $amortization->principal;
             $amortization->schedule_interest = $amortization->interest;
+
             if ($loanAccount->payment_mode == 'Lumpsum' && $currentDay < $dateSched) {
                 $amortization->principal = 0;
                 $amortization->interest = 0;
@@ -586,8 +611,16 @@ class LoanAccount extends Model
             $penaltyMissed = array_unique($amortization->delinquent['missed']);
             $amortization->day_late = $dayDiff;
 
-            if ($this->getPaymentTotal($this->loan_account_id)) { // condition that checks if not the first payment
 
+            /**
+             *This Condition is to check if the current amortization is not first
+             *amortization.
+             */
+            if ($this->getPaymentTotal($this->loan_account_id)) {
+
+                /**
+                 * This condition is to check the product is Pension Loan or not.
+                 */
                 if ($this->product->product_name != "Pension Loan") {
                     if ($dayDiff < 0) {
                         $amortization->principal = 0;
@@ -596,21 +629,33 @@ class LoanAccount extends Model
                 } else {
                     $transDateMonth = Carbon::createFromFormat('Y-m-d', $transactionDateNow)->startOfMonth();
                     $lastPaidAmort = $this->getPrevAmortization($amortization->loan_account_id, $amortization->id, ['paid'], null, true, 'DESC');
+
+
                     if ($lastPaidAmort) {
                         $lastPaidAmortMonth = Carbon::createFromFormat('Y-m-d', $lastPaidAmort->amortization_date)->startOfMonth();
                         $isMonthAmortPaid = $this->getPensionAmortization($amortization->id, $transactionDateNow);
-                        if ($transDateMonth < $dateSchedPension) {
-                            if ($transDateMonth < $lastPaidAmortMonth) {
-                                if ($isMonthAmortPaid) {
-                                    $amortization->principal = 0;
-                                    $amortization->interest = 0;
+                        if ($this->allowed) {
+                            if ($transDateMonth < $dateSchedPension) {
+                                if ($transDateMonth < $lastPaidAmortMonth) {
+                                    if ($isMonthAmortPaid) {
+                                        $amortization->principal = 0;
+                                        $amortization->interest = 0;
+                                    }
+                                }
+                            }
+                        } else {
+                            if ($transDateMonth < $dateSchedPension) {
+                                if ($transDateMonth <= $lastPaidAmortMonth) {
+                                    if ($isMonthAmortPaid) {
+                                        $amortization->principal = 0;
+                                        $amortization->interest = 0;
+                                    }
                                 }
                             }
                         }
                     }
                 }
             }
-
 
             if ($dayDiff < 0 && $this->product_id === 3) {
                 $dayDiff = 0;

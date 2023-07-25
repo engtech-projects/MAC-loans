@@ -46,6 +46,7 @@ class Amortization extends Model
         $this->attributes['preferences'] = json_encode($value);
     } */
 
+
     public function payments(){
         return $this->hasMany(Payment::class, 'amortization_id', 'id');
     }
