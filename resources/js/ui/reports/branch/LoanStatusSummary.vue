@@ -114,7 +114,7 @@
 								<tr v-for="rws,j in fr.rows" :key="j">
 									<td v-for="rw,k in rws" :key="k">{{rw}}</td>
 								</tr>
-                <tr class="bg-skyblue text-bold">
+                				<tr v-if="fr.product=='002 - Micro Group'" class="bg-skyblue text-bold">
 									<td v-for="tc,l in fr.centerTotal" :key="l">{{tc===""||tc==="CENTER SUB-TOTAL"||l==1?tc:formatToCurrency(tc)}}</td>
 								</tr>
 								<tr v-if="fr.productTotal" class="bg-green-mint text-bold">
@@ -826,7 +826,7 @@ export default {
 							var table = {
 								ao:'0' + ao.ao_id + ' - ' + ao.name,
 								product:product.product_code + ' - ' + product.product_name,
-								center:center.center,
+								center:c,
 								rows:[],
 								centerTotal:null,
 								productTotal:null,
