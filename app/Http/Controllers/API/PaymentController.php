@@ -106,7 +106,6 @@ class PaymentController extends BaseController
 
             $tranDate = new EndTransaction();
             $currentDay = Carbon::createFromFormat('Y-m-d', $tranDate->getTransactionDate($payment->branch_id)->date_end);
-            $currentMonth = $currentDay->startOfMonth();
             # update amortization
             if ($amortization->principal_balance < $loanAccount->remainingBalance()["principal"]["balance"] || $amortization->interest_balance < $loanAccount->remainingBalance()["interest"]["balance"]) {
 
@@ -140,22 +139,45 @@ class PaymentController extends BaseController
 
             $amortization->save();
 
-            if ($loanAccount->getFirstAmortization()->id === $amortization->id) {
-                $account = $loanAccount->getAllowedPensionIndicator();
-                if ($account) {
-                    $monthPaid = $account->amortizations[0]->amortization_date;
-                    $amortMonth = Carbon::createFromFormat('Y-m-d', $monthPaid)->startOfMonth();
-                    if ($currentMonth < $amortMonth) {
-                        $account->allowed = 1;
-                        $account->save();
-                    }
-                }
+            /** Check if amortization successufully save and
+             * execute the amortization identifier.
+             */
+            if ($amortization) {
+                $this->amortizationIdentifier($loanAccount, $amortization, $currentDay);
             }
+
             $loanAccount->save();
         }
 
         $sf = $succeed + $failed;
         return $this->sendResponse("{$succeed} of {$sf} Successfully Overriden", 'Override');
+    }
+
+    /**
+     * -Handles for checking if the amortization payment is first amortization
+     * @params
+     * -LoanAccount Model, Amortization Model, Transaction Date
+     */
+    public function amortizationIdentifier($loanAccount, $amortization, $currentDay)
+    {
+        /** Check if the payment amortization_id
+         * is equals to first amortization_id
+         */
+        if ($loanAccount->getFirstAmortization()->id === $amortization->id) {
+
+            /** Check the first amortization if it is paid before the first amortization scehdule*/
+            $firstAmort = $loanAccount->getFirstAmortizationPaid();
+            if ($firstAmort) {
+                $monthPaid = $firstAmort->amortizations[0]->amortization_date;
+                $amortMonth = Carbon::createFromFormat('Y-m-d', $monthPaid)->startOfMonth();
+
+                /** Check the transaction date  it it is less than by the paid first amortization. */
+                if ($currentDay->startOfMonth() < $amortMonth) {
+                    $firstAmort->allowed = 1;
+                    $firstAmort->save();
+                }
+            }
+        }
     }
 
 

@@ -481,21 +481,23 @@ class LoanAccount extends Model
         return $loan_details;
     }
 
+    /*** Get the first amortization of sepecific loan account */
     public function getFirstAmortization()
     {
-        #GET FIRST AMORTIZAIONT PRINCIPAL AND INTEREST
-        $amort = Amortization::where('loan_account_id', $this->loan_account_id)
+        $firstAmort = Amortization::where('loan_account_id', $this->loan_account_id)
             ->first();
-        return $amort;
+        return $firstAmort;
     }
 
-    public function getAllowedPensionIndicator()
+    /** Get the first amortization if it is already paid and the amortization
+     * date is less than the transaction date to Identify if the "allowed" flag
+     * will be updated to true.
+     */
+    public function getFirstAmortizationPaid()
     {
-
         $tranDate = new EndTransaction();
         $transactionDateNow = $tranDate->getTransactionDate($this->branch->branch_id)->date_end;
         $startMonth = Carbon::createFromFormat('Y-m-d', $transactionDateNow)->startOfMonth();
-        $endMonth = Carbon::createFromFormat('Y-m-d', $transactionDateNow)->endOfMonth();
         $loanAccount = LoanAccount::select(['loan_account_id', 'allowed'])
             ->with(['amortizations' => function ($query) use ($startMonth) {
                 $query->select(['loan_account_id', 'id', 'amortization_date', 'status'])
@@ -508,7 +510,6 @@ class LoanAccount extends Model
             ->first();
         return $loanAccount;
     }
-
 
     public function getCurrentAmortization()
     {
