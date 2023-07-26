@@ -45,7 +45,7 @@
 				<table class="table table-thin table-bordered tv-center mb-24">
 					<thead style="font-size:12px">
 						<tr>
-							<th colspan="6">MICRO GROUP MONITORING</th>
+							<th colspan="7">MICRO GROUP MONITORING</th>
 							<th v-for="(w, i) in tranSched" :key="w.start" colspan="2">Week {{parseInt(i) + 1}}</th>
 							<th rowspan="2">Total Amt.</th>
 						</tr>
@@ -137,7 +137,7 @@ export default {
 				}
 			})
 			.then(function (response) {
-				console.log(response.data.data);
+				// console.log(response.data.data);
 				this.transactions = response.data.data;
 				this.loading = false;
 			}.bind(this))
@@ -211,7 +211,7 @@ export default {
 						row.push(this.groupTransaction[i][p].all.no_of_current);
 						row.push(this.groupTransaction[i][p].all.num_of_pastdue);
 						overall[3] += this.groupTransaction[i][p].all.num_of_payments?this.groupTransaction[i][p].all.num_of_payments:0;
-						console.log(this.groupTransaction[i][p].all.num_of_payments);
+						// console.log(this.groupTransaction[i][p].all.num_of_payments);
 						row.push(this.groupTransaction[i][p].all.area_of_operation);
 						row.push(i.toUpperCase().slice(0,3));
 						for(var w in weekly){
