@@ -209,8 +209,8 @@ export default {
 						row.push(this.groupTransaction[i][p].all.no_of_clients);
 						overall[2] += this.groupTransaction[i][p].all.no_of_clients
 						row.push(this.groupTransaction[i][p].all.no_of_current);
-						row.push(this.groupTransaction[i][p].all.num_of_pastdue);
-						overall[3] += this.groupTransaction[i][p].all.num_of_payments?this.groupTransaction[i][p].all.num_of_payments:0;
+						row.push(this.groupTransaction[i][p].all.no_of_pastdue);
+						overall[3] += this.groupTransaction[i][p].all.no_of_pastdue?this.groupTransaction[i][p].all.no_of_pastdue:0;
 						// console.log(this.groupTransaction[i][p].all.num_of_payments);
 						row.push(this.groupTransaction[i][p].all.area_of_operation);
 						row.push(i.toUpperCase().slice(0,3));
