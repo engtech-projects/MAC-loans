@@ -1,16 +1,28 @@
 <template>
 	<div class="d-flex flex-column" style="flex:8;">
+		<div v-if="loading" class="black-screen d-flex flex-column align-items-center justify-content-center" style="padding-left:0px;">
+			<div class="loading-container d-flex align-items-center justify-content-center mb-36">
+				<span class="loading-text">LOADING</span>
+				<img :src="baseURL() + 'img/loading_default.png'" class="rotating" alt="" style="width:300px;height:300px">
+			</div>
+			<span class="font-lg" style="color:#ddd">Please wait until the process is complete</span>
+		</div>
+		<form @submit.prevent="fetchTransactions" action="">
 		<div class="d-flex flex-row font-md align-items-center mb-16">
 			<span class="font-lg text-primary-dark" style="flex:4">Micro Monitoring</span>
 			<div class="d-flex flex-row align-items-center mr-24" style="flex:2">
 				<span class="mr-10">Date: </span>
-				<input v-model="filter.date" type="month" class="form-control">
+				<input v-model="filter.date" type="month" class="form-control" required>
+			</div>
+			<div class="d-flex flex-row align-items-center mr-24 justify-content-start flex-1">
+				<button class="btn btn-primary">Generate</button>
 			</div>
 			<!-- <div class="d-flex flex-row align-items-center" style="flex:2">
 				<span class="mr-10">To: </span>
 				<input v-model="filter.date_to" type="date" class="form-control">
 			</div> -->
 		</div>
+		</form>
 		<div class="sep mb-45"></div>
 		<img :src="this.baseURL()+'/img/company_header_fit.png'" class="mb-24" alt="">
 
@@ -41,7 +53,8 @@
 							<th>#</th>
 							<th>Center</th>
 							<th>No. Clients</th>
-							<th>Active</th>
+							<th>C.A</th>
+							<th>P.A</th>
 							<th>Area of Ope.</th>
 							<th>Sched</th>
 							<th v-for="(s, i) in schedHeader" :key="i">{{s}}</th>
@@ -49,10 +62,10 @@
 					</thead>
 					<tbody>
 						<tr v-for="(m, i) in group.rows" :key="i" :class="m[0]==''?'td-nb text-bold bg-yellow-pale':''">
-							<td v-for="(j, k) in m" :key="k">{{j}}</td>
+							<td v-for="(j, k) in m" :key="k">{{k<8?j:formatToCurrency(j)}}</td>
 						</tr>
 						<tr class="text-bold bg-skyblue bt-8">
-							<td v-for="over,m in group.overall" :key="m">{{over}}</td>
+							<td v-for="over,m in group.overall" :key="m">{{m<8?over:formatToCurrency(over)}}</td>
 						</tr>
 					</tbody>
 				</table>
@@ -76,7 +89,7 @@
 					<tbody>
 						<tr v-if="!transactions.individual.length"><td>No data available.</td></tr>
 						<tr v-for="(t,i) in individual" :key="i" :class="t[0]=='TOTAL SUMMARY'?'text-bold bg-green-mint':''">
-							<td v-for="(j,k) in t" :key="k">{{j}}</td>
+							<td v-for="(j,k) in t" :key="k">{{k<8?j:formatToCurrency(j)}}</td>
 						</tr>
 					</tbody>
 				</table>
@@ -105,6 +118,7 @@ export default {
 	props:['token', 'branch', 'branch_name', 'branch_code'],
 	data(){
 		return {
+			loading:false,
 			transactions:{schedule:[],group:[],individual:[]},
 			filter:{
 				date:'',
@@ -114,6 +128,7 @@ export default {
 	},
 	methods:{
 		async fetchTransactions(){
+			this.loading = true;
 			await axios.post(this.baseURL() + 'api/report/micro', this.filter, {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
@@ -122,10 +137,13 @@ export default {
 				}
 			})
 			.then(function (response) {
+				console.log(response.data.data);
 				this.transactions = response.data.data;
+				this.loading = false;
 			}.bind(this))
 			.catch(function (error) {
 				console.log(error);
+				this.loading = false;
 			}.bind(this));
 		},
 		print:function(){
@@ -179,18 +197,19 @@ export default {
 			for(var i in this.groupTransaction){
 				if(this.groupTransaction[i].length !== 0){
 					var count = 1;
-					var totalRow = ['','','','','',''];
+					var totalRow = ['','','','','','',''];
 					var coll = 0;
 					for(var p in this.groupTransaction[i]){
 						var row = [];
 						var weekly = this.groupTransaction[i][p].weeklyData;
 						var collection = 0
-						var c= 6;
+						var c= 7;
 						row.push(count);
 						row.push(p);
 						row.push(this.groupTransaction[i][p].all.no_of_clients);
 						overall[2] += this.groupTransaction[i][p].all.no_of_clients
-						row.push(this.groupTransaction[i][p].all.num_of_payments);
+						row.push(this.groupTransaction[i][p].all.no_of_current);
+						row.push(this.groupTransaction[i][p].all.num_of_pastdue);
 						overall[3] += this.groupTransaction[i][p].all.num_of_payments?this.groupTransaction[i][p].all.num_of_payments:0;
 						console.log(this.groupTransaction[i][p].all.num_of_payments);
 						row.push(this.groupTransaction[i][p].all.area_of_operation);
@@ -253,9 +272,9 @@ export default {
 		}
 	},
 	watch:{
-		'filter.date'(){
-			this.fetchTransactions();
-		}
+		// 'filter.date'(){
+		// 	this.fetchTransactions();
+		// }
 	},
 	mounted(){
 		this.filter.branch_id = this.branch;
