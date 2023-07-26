@@ -628,32 +628,9 @@ class LoanAccount extends Model
                         $amortization->interest = 0;
                     }
                 } else {
-                    $transDateMonth = Carbon::createFromFormat('Y-m-d', $transactionDateNow)->startOfMonth();
                     $lastPaidAmort = $this->getPrevAmortization($amortization->loan_account_id, $amortization->id, ['paid'], null, true, 'DESC');
-
-
                     if ($lastPaidAmort) {
-                        $lastPaidAmortMonth = Carbon::createFromFormat('Y-m-d', $lastPaidAmort->amortization_date)->startOfMonth();
-                        $isMonthAmortPaid = $this->getPensionAmortization($amortization->id, $transactionDateNow);
-                        if ($this->allowed) {
-                            if ($transDateMonth < $dateSchedPension) {
-                                if ($transDateMonth < $lastPaidAmortMonth) {
-                                    if ($isMonthAmortPaid) {
-                                        $amortization->principal = 0;
-                                        $amortization->interest = 0;
-                                    }
-                                }
-                            }
-                        } else {
-                            if ($transDateMonth < $dateSchedPension) {
-                                if ($transDateMonth <= $lastPaidAmortMonth) {
-                                    if ($isMonthAmortPaid) {
-                                        $amortization->principal = 0;
-                                        $amortization->interest = 0;
-                                    }
-                                }
-                            }
-                        }
+                        $this->setAmortizationDueForPension($amortization, $lastPaidAmort, $transactionDateNow, $dateSched);
                     }
                 }
             }
@@ -703,6 +680,31 @@ class LoanAccount extends Model
         return $amortization;
     }
 
+
+    public function setAmortizationDueForPension($amortization, $lastPaidAmort, $transactionDateNow, $dateSchedPension)
+    {
+        $lastPaidAmortMonth = Carbon::createFromFormat('Y-m-d', $lastPaidAmort->amortization_date)->startOfMonth();
+        $transDateMonth = Carbon::createFromFormat('Y-m-d', $transactionDateNow)->startOfMonth();
+        $isMonthAmortPaid = $this->getPensionAmortization($amortization->id, $transactionDateNow);
+        if ($transDateMonth < $dateSchedPension) {
+            if ($this->allowed) {
+                if ($transDateMonth < $lastPaidAmortMonth) {
+                    if ($isMonthAmortPaid) {
+                        $amortization->principal = 0;
+                        $amortization->interest = 0;
+                    }
+                }
+            } else {
+                if ($transDateMonth <= $lastPaidAmortMonth) {
+                    if ($isMonthAmortPaid) {
+                        $amortization->principal = 0;
+                        $amortization->interest = 0;
+                    }
+                }
+            }
+        }
+        return $amortization;
+    }
     public function getPensionAmortization($id, $transactionDateNow)
     {
         $startMonth = Carbon::createFromFormat('Y-m-d', $transactionDateNow)->startOfMonth();

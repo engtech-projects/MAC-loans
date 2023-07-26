@@ -106,10 +106,12 @@ class PaymentController extends BaseController
 
             $tranDate = new EndTransaction();
             $currentDay = Carbon::createFromFormat('Y-m-d', $tranDate->getTransactionDate($payment->branch_id)->date_end);
+            $transactionDateNow = $tranDate->getTransactionDate($payment->branch_id)->date_end;
+            $currentMonth = Carbon::createFromFormat('Y-m-d', $transactionDateNow)->startOfMonth();
             # update amortization
             if ($amortization->principal_balance < $loanAccount->remainingBalance()["principal"]["balance"] || $amortization->interest_balance < $loanAccount->remainingBalance()["interest"]["balance"]) {
 
-                $currentMonth = Carbon::createFromFormat("Y-m-d", $currentDay)->startOfMonth();
+
                 $schedDate = Carbon::createFromFormat('Y-m-d', $amortization->amortization_date);
 
                 if ($currentDay->lt($schedDate)) {
@@ -143,7 +145,7 @@ class PaymentController extends BaseController
              * execute the amortization identifier.
              */
             if ($amortization) {
-                $this->amortizationIdentifier($loanAccount, $amortization, $currentDay);
+                $this->amortizationIdentifier($loanAccount, $amortization, $currentMonth);
             }
 
             $loanAccount->save();
@@ -158,7 +160,7 @@ class PaymentController extends BaseController
      * @params
      * -LoanAccount Model, Amortization Model, Transaction Date
      */
-    public function amortizationIdentifier($loanAccount, $amortization, $currentDay)
+    public function amortizationIdentifier($loanAccount, $amortization, $currentMonth)
     {
         /** Check if the payment amortization_id
          * is equals to first amortization_id
@@ -168,13 +170,16 @@ class PaymentController extends BaseController
             /** Check the first amortization if it is paid before the first amortization scehdule*/
             $firstAmort = $loanAccount->getFirstAmortizationPaid();
             if ($firstAmort) {
-                $monthPaid = $firstAmort->amortizations[0]->amortization_date;
-                $amortMonth = Carbon::createFromFormat('Y-m-d', $monthPaid)->startOfMonth();
+                if (count($firstAmort->amortizations) > 0) {
+                    $monthPaid = $firstAmort->amortizations[0]->amortization_date;
+                    $amortMonth = Carbon::createFromFormat('Y-m-d', $monthPaid)->startOfMonth();
 
-                /** Check the transaction date  it it is less than by the paid first amortization. */
-                if ($currentDay->startOfMonth() < $amortMonth) {
-                    $firstAmort->allowed = 1;
-                    $firstAmort->save();
+
+                    /** Check the transaction date  it it is less than by the paid first amortization. */
+                    if ($currentMonth < $amortMonth) {
+                        $firstAmort->allowed = 1;
+                        $firstAmort->save();
+                    }
                 }
             }
         }

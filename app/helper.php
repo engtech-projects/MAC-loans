@@ -1,5 +1,13 @@
 <?php
 
+
+
+/* if(!function_exists('startOfMonth'))
+{
+    function startOfMonth(Carbon $date) {
+        return $date->startOfMonth();
+    }
+} */
 function isActive($nav1, $nav2){
 	return $nav1 == $nav2;
 }
