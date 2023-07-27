@@ -62,7 +62,7 @@
 					</thead>
 					<tbody>
 						<tr v-for="(m, i) in group.rows" :key="i" :class="m[0]==''?'td-nb text-bold bg-yellow-pale':''">
-							<td v-for="(j, k) in m" :key="k">{{k<8?j:formatToCurrency(j)}}</td>
+							<td v-for="(j, k) in m" :key="k">{{filterValue(k,m)?j:formatToCurrency(j)}}</td>
 						</tr>
 						<tr class="text-bold bg-skyblue bt-8">
 							<td v-for="over,m in group.overall" :key="m">{{m<8?over:formatToCurrency(over)}}</td>
@@ -127,6 +127,17 @@ export default {
 		}
 	},
 	methods:{
+		filterValue:function(val, arr){
+			console.log(arr.length);
+			if(val < 8){
+				return true;
+			}else{
+				if(val%2==0 || val == arr.length - 1){
+					return false;
+				}
+			}
+			return true;
+		},
 		async fetchTransactions(){
 			this.loading = true;
 			await axios.post(this.baseURL() + 'api/report/micro', this.filter, {
@@ -192,12 +203,12 @@ export default {
 		},
 		group:function(){
 			var data = {rows:[],overall:[]};
-			var overall = ['','TOTAL',0,0,'',''];
+			var overall = ['','TOTAL',0,0,0,''];
 			var overallCollection = 0;
 			for(var i in this.groupTransaction){
 				if(this.groupTransaction[i].length !== 0){
 					var count = 1;
-					var totalRow = ['','','','','','',''];
+					var totalRow = ['','',0,0,0,'',''];
 					var coll = 0;
 					for(var p in this.groupTransaction[i]){
 						var row = [];
@@ -210,7 +221,11 @@ export default {
 						overall[2] += this.groupTransaction[i][p].all.no_of_clients
 						row.push(this.groupTransaction[i][p].all.no_of_current);
 						row.push(this.groupTransaction[i][p].all.no_of_pastdue);
-						overall[3] += this.groupTransaction[i][p].all.no_of_pastdue?this.groupTransaction[i][p].all.no_of_pastdue:0;
+						overall[3] += this.groupTransaction[i][p].all.no_of_clients
+						overall[4] += this.groupTransaction[i][p].all.no_of_pastdue?this.groupTransaction[i][p].all.no_of_pastdue:0;
+						totalRow[2] += this.groupTransaction[i][p].all.no_of_clients
+						totalRow[4] += this.groupTransaction[i][p].all.no_of_pastdue?this.groupTransaction[i][p].all.no_of_pastdue:0;
+						totalRow[3] += this.groupTransaction[i][p].all.no_of_clients
 						// console.log(this.groupTransaction[i][p].all.num_of_payments);
 						row.push(this.groupTransaction[i][p].all.area_of_operation);
 						row.push(i.toUpperCase().slice(0,3));
