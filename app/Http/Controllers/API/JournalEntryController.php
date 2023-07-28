@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Http\Requests\JournalEntryRequest;
 use App\Models\{
     JournalEntry,
     JournalEntryDetails,
@@ -18,23 +19,10 @@ class JournalEntryController extends BaseController
         $this->journalEntry = $journalEntry;
         $this->journalDetails = $journalDetails;
     }
-    public function index()
+    public function store(JournalEntryRequest $request)
     {
-        $entries = $this->journalEntry->getJournalEntry();
-        return $this->sendResponse($entries, "Journal Entries Fetched.");
-    }
-
-    public function store(Request $request)
-    {
-
-        $entry = $this->journalEntry->createJournalEntry($request->input());
+        $data = $request->validated($request);
+        $entry = $this->journalEntry->createJournalEntry($data);
         return $this->sendResponse($entry, 'Journal Entry Saved.');
-
-
-        /* $journalEntry = $this->journalEntry->createJournalEntry($request);
-        if ($journalEntry) {
-            $this->journalDetails->journalDoubleEntry($journalEntry);
-        }
-        return $this->sendResponse($journalEntry, 'Journal Entry Saved.'); */
     }
 }

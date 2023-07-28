@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Request;
 use App\Models\JournalEntryDetails;
 use App\Models\EndTransaction;
+use Carbon\Carbon;
 
 class JournalEntry extends Model
 {
@@ -35,24 +36,34 @@ class JournalEntry extends Model
         'remarks',
     ];
 
+    protected $casts = [
+        'amount' => 'double',
+        'journal_date' => 'date:Y-m-d',
+        'created_at' => 'date:Y-m-d',
+        'updated_at' => 'date:Y-m-d',
+    ];
 
-    public function book()
+    /** Journal Book that belongs this Journal Entry */
+    public function journalBook()
     {
         return $this->belongsTo(JournalBook::class, 'book_id');
     }
+
+    /** Journal Entry Details that owns by Journal Entry */
     public function entryDetails()
     {
-        return $this->hasMany(JournalEntryDetails::class, 'journal_id');
+        return $this->hasMany(JournalEntryDetails::class, 'journal_id', 'journal_id');
     }
 
-    public function getJournalEntry()
-    {
-        return self::with(['journalBook:book_id,book_code', 'entryDetails'])->get();
-    }
-
+    /**
+     * Handle for generating Journal Entry Code
+     * Get the last transaction in the Journal Book and increment the id
+     * for journal no series
+     * @params Journal Boook Code
+     */
     public function generateJournalEntryCode($bookCode)
     {
-        $transaction = self::where('book_id', $this->journalBook::GENERAL_JOURNAL_BOOK)
+        $transaction = self::where('book_id', JournalBook::GENERAL_JOURNAL_BOOK)
             ->orderBy('journal_id', 'DESC')
             ->pluck('journal_no')
             ->first();
@@ -65,14 +76,19 @@ class JournalEntry extends Model
         return $bookCode . '-' . str_pad($num, 7, '0', STR_PAD_LEFT);
     }
 
+    /**
+     * Handle for creating Journal Entry
+     *
+     * @params Store Request
+     */
     public function createJournalEntry($entry)
     {
         $endTransaction = new EndTransaction();
         $journalBook = new JournalBook();
+        $entryDetails = new JournalEntryDetails();
         $journalDate = $endTransaction->getTransactionDate($entry["branch_id"])->date_end;
-        $book = $journalBook->getJounalBookById($journalBook::GENERAL_JOURNAL_BOOK);
-
-        $entry =  self::create([
+        $book = $journalBook->getJournalBookById($journalBook::GENERAL_JOURNAL_BOOK);
+        $entry =  $this->create([
             'journal_no'            =>          $this->generateJournalEntryCode($book->book_code),
             'book_id'               =>          $book->book_id,
             'journal_date'          =>          $journalDate,
@@ -83,28 +99,11 @@ class JournalEntry extends Model
             'remarks'               =>          'Remarks',
         ]);
 
-        return $journalBook;
-
-        /* $journalBook = new JournalBook();
-        $transactionDate = $this->transactionDate->getTransactionDate($request["branch_id"])->date_end;
-        $journalBook = $journalBook->getJounalBookById(5);
-        //Create Journal Entry
-        if ($journalBook) {
-            $journalEntry = self::create([
-                'journal_no'            =>          $this->generateJournalEntryCode($journalBook->book_code),
-                'book_id'               =>          $journalBook->book_id,
-                'journal_date'          =>          $transactionDate,
-                'branch_id'             =>          $request->input("branch_id"),
-                'source'                =>          'Releases',
-                'amount'                =>          $request->input("amount"),
-                'status'                =>          'unposted',
-                'remarks'               =>          'Remarks',
-            ]);
-            return $journalEntry;
+        if ($entry) {
+            $doubleEntry = $entryDetails->setDoubleEntry($entry);
+            $entry->entryDetails()->createMany($doubleEntry);
         }
-        return "Fail to save journal Entry."; */
-    }
-    public function createJounalEntryDetails()
-    {
+
+        return $entry;
     }
 }

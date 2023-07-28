@@ -21,8 +21,8 @@ class JournalBook extends Model
         return $this->hasMany(JournalEntry::class, 'book_id');
     }
 
-    public function getJounalBookById($bookId)
+    public function getJournalBookById($id)
     {
-        return self::where('book_id', $bookId)->first();
+        return $this->where('book_id', $id)->first();
     }
 }
