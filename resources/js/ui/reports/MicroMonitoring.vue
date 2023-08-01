@@ -65,7 +65,7 @@
 							<td v-for="(j, k) in m" :key="k">{{filterValue(k,m)?j:formatToCurrency(j)}}</td>
 						</tr>
 						<tr class="text-bold bg-skyblue bt-8">
-							<td v-for="over,m in group.overall" :key="m">{{m<8?over:formatToCurrency(over)}}</td>
+							<td v-for="over,m in group.overall" :key="m">{{filterValue(m,group.overall)?over:formatToCurrency(over)}}</td>
 						</tr>
 					</tbody>
 				</table>
@@ -128,7 +128,6 @@ export default {
 	},
 	methods:{
 		filterValue:function(val, arr){
-			console.log(arr.length);
 			if(val < 8){
 				return true;
 			}else{
