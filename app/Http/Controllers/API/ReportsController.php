@@ -211,6 +211,8 @@ class ReportsController extends BaseController
 					'account_officer' => $request->input('account_officer'),
 					'product' => $request->input('product'),
 					'center' => $request->input('center'),
+                    'loan_status' => $request->input("loan_status"),
+                    'report' => $request->input("report")
 				];
 				if($filters['account_officer'] == "all"){
 					unset($filters['account_officer']);
