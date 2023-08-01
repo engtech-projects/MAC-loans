@@ -221,11 +221,11 @@ export default {
 						overall[2] += this.groupTransaction[i][p].all.no_of_clients
 						row.push(this.groupTransaction[i][p].all.no_of_current);
 						row.push(this.groupTransaction[i][p].all.no_of_pastdue);
-						overall[3] += this.groupTransaction[i][p].all.no_of_clients
+						overall[3] += this.groupTransaction[i][p].all.no_of_current
 						overall[4] += this.groupTransaction[i][p].all.no_of_pastdue?this.groupTransaction[i][p].all.no_of_pastdue:0;
 						totalRow[2] += this.groupTransaction[i][p].all.no_of_clients
 						totalRow[4] += this.groupTransaction[i][p].all.no_of_pastdue?this.groupTransaction[i][p].all.no_of_pastdue:0;
-						totalRow[3] += this.groupTransaction[i][p].all.no_of_clients
+						totalRow[3] += this.groupTransaction[i][p].all.no_of_current
 						// console.log(this.groupTransaction[i][p].all.num_of_payments);
 						row.push(this.groupTransaction[i][p].all.area_of_operation);
 						row.push(i.toUpperCase().slice(0,3));
