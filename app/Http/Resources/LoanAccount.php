@@ -82,5 +82,4 @@ class LoanAccount extends JsonResource
             'collection_rate' => $this->collectionRate($remaining_balance),
         ];
     }
-
 }
