@@ -101,8 +101,18 @@ class LoanAccount extends Model
         return $branchCode . '-' . $productCode . '-' . str_pad($identifier, 7, '0', STR_PAD_LEFT);
     }
 
-    public function scopeCenter($query,$value) {
-        return $query->where('center_id',$value);
+    public function scopeCenter($query, $value)
+    {
+        return $query->where('center_id', $value);
+    }
+
+    public function scopeDelinquent($query)
+    {
+        return $query->where('payment_status', self::PAYMENT_DELINQUENT);
+    }
+    public function scopeReleased($query)
+    {
+        return $query->where('status', self::STATUS_RELEASED);
     }
 
 
@@ -959,7 +969,7 @@ class LoanAccount extends Model
 
         if ($account->type == 'Prepaid') {
             $bal = ($account->loan_amount) - $payment;
-        }else{
+        } else {
             $bal = ($account->loan_amount + $account->interest_amount) - $payment;
         }
         return floatval(number_format($bal, 2, ".", ""));
@@ -1400,9 +1410,77 @@ class LoanAccount extends Model
     {
         $accounts = LoanAccount::where('branch_code', '=', $branch->branch_code)
             ->where('loan_status', '!=', LoanAccount::LOAN_PAID)
-            ->without('documents')
-            ->without('payments')
+            ->without(['documents', 'payments'])
             ->get();
         return $accounts;
+    }
+
+    public function getDelinquentAccountsByBranch($date)
+    {
+        $months = getMonths();
+        $delinquentAccounts = self::query()
+            ->selectRaw('YEAR(date_release) as year,
+            branch_code as branch_code,MONTH(date_release) as month,
+            COUNT(*) AS no_of_accounts')
+            ->released()
+            ->delinquent()
+            ->without(['documents', 'borrower', 'center', 'product', 'accountOfficer', 'payments'])
+            ->groupBy('year', 'month', 'branch_code')
+            ->orderBy('year')
+            ->orderBy('month')
+            ->get();
+
+        $groupDelinquentAccounts = [];
+
+        foreach ($delinquentAccounts as $account) {
+            $year = $account->year;
+            $branch = $account->branch->branch_name;
+            $month = $account->month;
+            $monthName = $months[$month - 1];
+            if (!isset($groupDelinquentAccounts[$branch][$year])) {
+                $groupDelinquentAccounts[$branch][$year] = array_fill_keys($months, [
+                    'no_of_accounts' => 0
+                ]);
+            }
+
+            $groupDelinquentAccounts[$branch][$year][$monthName] = [
+                'no_of_accounts' => $account->no_of_accounts
+            ];
+        }
+        return $groupDelinquentAccounts;
+    }
+
+    public function getBranchPortFolio($date)
+    {
+        $months = getMonths();
+        $delinquentAccounts = self::query()
+            ->selectRaw('
+            branch_code as branch_code,
+            status')
+            ->released()
+            ->without(['documents', 'borrower', 'center', 'product', 'accountOfficer', 'payments'])
+            ->get();
+
+        dd($delinquentAccounts->toArray());
+        $groupDelinquentAccounts = [];
+
+        foreach ($delinquentAccounts as $account) {
+            $year = $account->year;
+            $branch = $account->branch->branch_name;
+            $month = $account->month;
+            $monthName = $months[$month - 1];
+            if (!isset($groupDelinquentAccounts[$branch][$year])) {
+                $groupDelinquentAccounts[$branch][$year] = array_fill_keys($months, [
+                    'no_of_accounts' => 0,
+                    'total_net_proceeds' => 0
+                ]);
+            }
+
+            $groupDelinquentAccounts[$branch][$year][$monthName] = [
+                'no_of_accounts' => $account->no_of_accounts,
+                'total_net_proceeds' => $account->total_net_proceeds
+            ];
+        }
+        return $groupDelinquentAccounts;
     }
 }

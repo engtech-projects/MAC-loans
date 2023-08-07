@@ -1463,6 +1463,24 @@ class Reports extends Model
         return $data;
     }
 
+
+
+    public function performanceReport($date)
+    {
+        $payments = new Payment();
+        $accounts = new LoanAccount();
+        $collection = $payments->getCollectionPaymentByBranch($date);
+        $delinquentAccounts = $accounts->getDelinquentAccountsByBranch($date);
+        $branchPortfolio = $accounts->getBranchPortfolio($date);
+        $data = [
+            "portfolio" => $branchPortfolio,
+            "collection" => $collection,
+            "delinquents" => $delinquentAccounts,
+        ];
+
+        return $data;
+    }
+
     public function microIndividual($filters = [], $weeksAndDays, $monthStart, $monthEnd)
     {
         $centers = Center::where(["status" => "active"])->get();

@@ -131,9 +131,16 @@ Route::middleware(['auth:sanctum'])->group( function () {
     Route::post('report/bir/', [ReportsController::class, 'birTaxReport']);
     Route::post('report/prepaid/', [ReportsController::class, 'prepaidReport']);
 
+    Route::post('report/performance-report',[ReportsController::class,'performanceReport']);
+
+    /** Account Officer Performance Reports */
     Route::post('report/branch/performancereport',[PerformanceReportController::class, 'index']);
     Route::post('report/branch/performancereport/create',[PerformanceReportController::class, 'store']);
     Route::get('report/branch/performancereport/dates',[PerformanceReportController::class, 'fetchReportsDate']);
+
+    /** Branch Performance Reports */
+
+
 
 	Route::post('uploadfile/{id}', [LoanAccountController::class, 'uploadFile']);
 

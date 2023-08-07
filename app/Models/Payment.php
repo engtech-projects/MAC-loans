@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class Payment extends Model
@@ -18,32 +19,32 @@ class Payment extends Model
     const STATUS_OPEN = 'open';
 
     protected $fillable = [
-    	'loan_account_id',
-    	'branch_id',
-    	'payment_type',
-    	'or_no',
+        'loan_account_id',
+        'branch_id',
+        'payment_type',
+        'or_no',
         'cheque_no',
         'bank_name',
         'reference_no',
         'memo_type',
-    	'amortization_id',  // references amortization (id) primary key,
+        'amortization_id',  // references amortization (id) primary key,
         'principal',
         'interest',
         'short_principal',
         'advance_principal',
         'short_interest',
         'advance_interest',
-    	'pdi',
+        'pdi',
         'pdi_approval_no',
         'short_pdi',
-		'penalty',
+        'penalty',
         'penalty_approval_no',
         'short_penalty',
-		'rebates',
+        'rebates',
         'rebates_approval_no',
         'vat',
-		'total_payable',
-		'amount_applied',
+        'total_payable',
+        'amount_applied',
         'status',
         'reference_id',
         'remarks',
@@ -63,17 +64,50 @@ class Payment extends Model
         'rebates' => 'MEM'
     ];
 
-    public function account() {
-        return $this->belongsTo(LoanAccount::class,'loan_account_id');
+    public function account()
+    {
+        return $this->belongsTo(LoanAccount::class, 'loan_account_id');
     }
-	public function loanDetails(){
-		return $this->belongsTo(LoanAccount::class, 'loan_account_id');
-	}
-
-    public function getTotalPayment() {
+    public function loanDetails()
+    {
+        return $this->belongsTo(LoanAccount::class, 'loan_account_id');
+    }
+    public function branch()
+    {
+        return $this->belongsTo(Branch::class, 'branch_id');
     }
 
-    public function addPayment(Request $request){
+
+    public function getCollectionPaymentByBranch($date)
+    {
+        $months = getMonths();
+        $paymentsYearly = self::selectRaw('YEAR(transaction_date) AS year, branch_id as branch_id, MONTH(transaction_date) as month,COUNT(*) as account')
+            ->groupBy('year', 'month', 'branch_id')
+            ->orderBy('year')
+            ->orderBy('month')
+            ->get();
+
+        $groupPayments = [];
+        foreach ($paymentsYearly as $payment) {
+            $year = $payment->year;
+            $branch = $payment->branch->branch_name;
+            $month = $payment->month;
+            $monthName = $months[$month - 1];
+            if (!isset($groupPayments[$branch][$year])) {
+                $groupPayments[$branch][$year] = array_fill_keys($months, [
+                    'no_of_accounts' => 0
+                ]);
+            }
+
+            $groupPayments[$branch][$year][$monthName] = [
+                'no_of_accounts' => $payment->account
+            ];
+        }
+        return $groupPayments;
+    }
+
+    public function addPayment(Request $request)
+    {
 
         $account = LoanAccount::find($request->input('loan_account_id'));
         $payment = new Payment();
@@ -110,14 +144,14 @@ class Payment extends Model
         $payment->remarks = $request->input('remarks');
         $payment->transaction_date = $request->input("transaction_date");
 
-        if( $payment->interest > 0 || $payment->pdi > 0 || $payment->penalty > 0 ) {
+        if ($payment->interest > 0 || $payment->pdi > 0 || $payment->penalty > 0) {
             $pdi = 0;
             $penalty = 0;
-            if( $payment->pdi > 0 && !$payment->pdi_approval_no){
+            if ($payment->pdi > 0 && !$payment->pdi_approval_no) {
                 $pdi = $payment->pdi;
             }
 
-            if( $payment->penalty > 0 && !$payment->penalty_approval_no){
+            if ($payment->penalty > 0 && !$payment->penalty_approval_no) {
                 $penalty = $payment->penalty;
             }
 
@@ -128,7 +162,7 @@ class Payment extends Model
         // $payment->status = 'paid';
         $payment->save();
 
-        if( $payment->payment_id ){
+        if ($payment->payment_id) {
             $payment->transaction_number = $this->generateTransactionNumber($payment->payment_id, $payment->payment_type, $payment->memo_type);
             $payment->save();
         }
@@ -146,28 +180,29 @@ class Payment extends Model
         return $payment;
     }
 
-    public function overridePaymentAccounts($filters = array()) {
+    public function overridePaymentAccounts($filters = array())
+    {
 
         $payments = Payment::join('loan_accounts', 'loan_accounts.loan_account_id', '=', 'payment.loan_account_id')
-                            ->join('borrower_info', 'borrower_info.borrower_id', '=', 'loan_accounts.borrower_id');
+            ->join('borrower_info', 'borrower_info.borrower_id', '=', 'loan_accounts.borrower_id');
 
-        if( isset($filters['transaction_date']) && $filters['transaction_date'] ){
+        if (isset($filters['transaction_date']) && $filters['transaction_date']) {
             $payments->whereDate('payment.transaction_date', '=', $filters['transaction_date']);
         }
 
-        if( isset($filters['ao_id']) && $filters['ao_id'] != 'all' && $filters['ao_id']){
+        if (isset($filters['ao_id']) && $filters['ao_id'] != 'all' && $filters['ao_id']) {
             $payments->where('loan_accounts.ao_id', '=', $filters['ao_id']);
         }
 
-        if( isset($filters['center_id']) && $filters['center_id'] != 'all' && $filters['center_id']){
+        if (isset($filters['center_id']) && $filters['center_id'] != 'all' && $filters['center_id']) {
             $payments->where('loan_accounts.center_id', '=', $filters['center_id']);
         }
 
-        if( isset($filters['product_id']) && $filters['product_id'] != 'all' && $filters['product_id']){
+        if (isset($filters['product_id']) && $filters['product_id'] != 'all' && $filters['product_id']) {
             $payments->where('loan_accounts.product_id', '=', $filters['product_id']);
         }
 
-        if( isset($filters['branch_id'])){
+        if (isset($filters['branch_id'])) {
             $payments->where('payment.branch_id', '=', $filters['branch_id']);
         }
 
@@ -176,16 +211,17 @@ class Payment extends Model
         return $payments->get(['payment.*', 'loan_accounts.*', 'borrower_info.*']);
     }
 
-    public function overriddenList($filters = array()) {
+    public function overriddenList($filters = array())
+    {
 
         $payments = Payment::join('loan_accounts', 'loan_accounts.loan_account_id', '=', 'payment.loan_account_id')
-                            ->join('borrower_info', 'borrower_info.borrower_id', '=', 'loan_accounts.borrower_id');
+            ->join('borrower_info', 'borrower_info.borrower_id', '=', 'loan_accounts.borrower_id');
 
-        if( isset($filters['transaction_date']) && $filters['transaction_date'] ){
+        if (isset($filters['transaction_date']) && $filters['transaction_date']) {
             $payments->whereDate('payment.transaction_date', '=', $filters['transaction_date']);
         }
 
-        if( isset($filters['branch_id']) ){
+        if (isset($filters['branch_id'])) {
             $payments->where('payment.branch_id', '=', $filters['branch_id']);
         }
 
@@ -194,43 +230,44 @@ class Payment extends Model
         return $payments->get(['payment.*', 'loan_accounts.*', 'borrower_info.*']);
     }
 
-    public function paymentList($transDate, $branchId) {
+    public function paymentList($transDate, $branchId)
+    {
 
         return Payment::whereDate('payment.transaction_date', '=', $transDate)
-                        ->where([ 'branch_id' => $branchId ])
-                        ->get();
+            ->where(['branch_id' => $branchId])
+            ->get();
     }
 
-    public function generateTransactionNumber($paymentId, $paymentType, $memoType = null) {
+    public function generateTransactionNumber($paymentId, $paymentType, $memoType = null)
+    {
 
-        if( $paymentType ) {
+        if ($paymentType) {
 
-            if( Str::contains(Str::lower($paymentType), 'cash')  ) {
+            if (Str::contains(Str::lower($paymentType), 'cash')) {
                 return $this->pCodes['cash'] . '-' . str_pad($paymentId, 7, '0', STR_PAD_LEFT);
             }
-            if( Str::contains(Str::lower($paymentType), 'check')  ) {
+            if (Str::contains(Str::lower($paymentType), 'check')) {
                 return $this->pCodes['check'] . '-' . str_pad($paymentId, 7, '0', STR_PAD_LEFT);
             }
-            if( Str::contains(Str::lower($paymentType), 'pos')  ) {
+            if (Str::contains(Str::lower($paymentType), 'pos')) {
                 return $this->pCodes['pos'] . '-' . str_pad($paymentId, 7, '0', STR_PAD_LEFT);
             }
-            if( Str::contains(Str::lower($paymentType), 'memo')  ) {
+            if (Str::contains(Str::lower($paymentType), 'memo')) {
 
-                if( Str::contains(Str::lower($memoType), 'deduct')  ) {
-                     return $this->pCodes['deduct'] . '-' . str_pad($paymentId, 7, '0', STR_PAD_LEFT);
+                if (Str::contains(Str::lower($memoType), 'deduct')) {
+                    return $this->pCodes['deduct'] . '-' . str_pad($paymentId, 7, '0', STR_PAD_LEFT);
                 }
-                if( Str::contains(Str::lower($memoType), 'interbranch')  ) {
-                     return $this->pCodes['interbranch'] . '-' . str_pad($paymentId, 7, '0', STR_PAD_LEFT);
+                if (Str::contains(Str::lower($memoType), 'interbranch')) {
+                    return $this->pCodes['interbranch'] . '-' . str_pad($paymentId, 7, '0', STR_PAD_LEFT);
                 }
-                if( Str::contains(Str::lower($memoType), 'offset')  ) {
+                if (Str::contains(Str::lower($memoType), 'offset')) {
 
-                     return $this->pCodes['offset'] . '-' . str_pad($paymentId, 7, '0', STR_PAD_LEFT);
+                    return $this->pCodes['offset'] . '-' . str_pad($paymentId, 7, '0', STR_PAD_LEFT);
                 }
-                if( Str::contains(Str::lower($memoType), 'rebates')  ) {
-                     return $this->pCodes['rebates'] . '-' . str_pad($paymentId, 7, '0', STR_PAD_LEFT);
+                if (Str::contains(Str::lower($memoType), 'rebates')) {
+                    return $this->pCodes['rebates'] . '-' . str_pad($paymentId, 7, '0', STR_PAD_LEFT);
                 }
             }
-
         }
 
 
@@ -238,25 +275,27 @@ class Payment extends Model
         // Str::contains(Str::lower($payment->payment_type), 'check')
     }
 
-    public function remarks() {
+    public function remarks()
+    {
         $status = $this->status;
         $remarks = $this->remarks;
 
-        if( Str::lower($status) == 'cancelled' ){
+        if (Str::lower($status) == 'cancelled') {
             return ucwords($status) . ' - ' . $remarks;
         }
 
         return $remarks;
     }
 
-    public function cancelPayment() {}
-
-    public function getOngoingPayment($request = array()){
-        return Payment::where([
-            'loan_account_id'=>$request['loan_account_id'],
-            'status'=>'open'
-            ])->get()->first();
+    public function cancelPayment()
+    {
     }
 
-
+    public function getOngoingPayment($request = array())
+    {
+        return Payment::where([
+            'loan_account_id' => $request['loan_account_id'],
+            'status' => 'open'
+        ])->get()->first();
+    }
 }

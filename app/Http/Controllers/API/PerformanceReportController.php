@@ -45,10 +45,6 @@ class PerformanceReportController extends BaseController
             return $this->sendError("No branch found",null,404);
         }
 
-
-
-
-
     }
 
     /**
