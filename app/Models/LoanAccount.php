@@ -91,15 +91,20 @@ class LoanAccount extends Model
             ->limit(1)
             ->get();
         $accountNumber = $num->pluck('account_num');
-        if(count($accountNumber) >0) {
-            $series = explode('-',$accountNumber);
-            $identifier = (int)$series[2] +1;
-        }else {
+        if (count($accountNumber) > 0) {
+            $series = explode('-', $accountNumber);
+            $identifier = (int)$series[2] + 1;
+        } else {
             $identifier = 1;
         }
 
         return $branchCode . '-' . $productCode . '-' . str_pad($identifier, 7, '0', STR_PAD_LEFT);
     }
+
+    public function scopeCenter($query,$value) {
+        return $query->where('center_id',$value);
+    }
+
 
     public static function getCycleNo($id)
     {
@@ -954,9 +959,9 @@ class LoanAccount extends Model
 
         if ($account->type == 'Prepaid') {
             $bal = ($account->loan_amount) - $payment;
+        }else{
+            $bal = ($account->loan_amount + $account->interest_amount) - $payment;
         }
-
-        $bal = ($account->loan_amount + $account->interest_amount) - $payment;
         return floatval(number_format($bal, 2, ".", ""));
     }
 
@@ -1364,6 +1369,26 @@ class LoanAccount extends Model
         $loan_account = LoanAccount::find($id);
         return $loan_account->payment_status;
     }
+
+    /** SCOPE PAYMENTS THAT STATUS IS OPEN */
+    public function pendingPayments()
+    {
+        return $this->hasMany(Payment::class, 'loan_account_id')
+            ->where('status', Payment::STATUS_OPEN);
+    }
+
+    /* GET LOAN ACCOUNT WITH PAYMENTS STATUS IS OPEN */
+    public function getLoanAccount($id)
+    {
+        $account = LoanAccount::where('loan_account_id', $id)
+            ->without(['payments', 'documents', 'borrower', 'branch', 'product', 'accountOfficer'])
+            ->with(['pendingPayments' => function ($query) use ($id) {
+                $query->where('status', Payment::STATUS_OPEN)
+                    ->where('loan_account_id', $id)->first();
+            }])->find($id);
+        return $account;
+    }
+
     public static function getLoanStatus($id)
     {
 

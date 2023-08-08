@@ -1,17 +1,28 @@
 <template>
 	<div id="printContent" class="d-flex flex-column" style="flex:8;">
-		<notifications group="foo" />
+		<div v-if="loading" class="black-screen d-flex flex-column align-items-center justify-content-center" style="padding-left:0px;">
+			<div class="loading-container d-flex align-items-center justify-content-center mb-36">
+				<span class="loading-text">LOADING</span>
+				<img :src="baseURL() + 'img/loading_default.png'" class="rotating" alt="" style="width:300px;height:300px">
+			</div>
+			<span class="font-lg" style="color:#ddd">Please wait until the process is complete</span>
+		</div>
+		<form @submit.prevent="fetchReports" action="">
 		<div class="d-flex flex-row font-md align-items-center mb-16">
 			<span class="font-lg text-primary-dark no-print" style="flex:4">Prepaid Interest</span>
 			<div class="d-flex flex-row align-items-center mr-24 no-print" style="flex:2">
-				<span class="mr-10">Post Date: </span>
-				<input v-model="filter.due_from" type="date" class="form-control flex-1">
+				<span class="mr-10">Due Date: </span>
+				<input v-model="filter.due_from" type="date" class="form-control flex-1" required>
+			</div>
+			<div class="d-flex flex-row align-items-center mr-24 justify-content-start flex-1">
+				<button class="btn btn-primary">Generate</button>
 			</div>
 			<!-- <div class="d-flex flex-row align-items-center" style="flex:2">
 				<span class="mr-10">To: </span>
 				<input type="date" class="form-control">
 			</div> -->
 		</div>
+		</form>
 		<div class="sep mb-45"></div>
 		<img :src="this.baseURL()+'/img/company_header_fit.png'" class="mb-24" alt="">
 
@@ -95,6 +106,7 @@ export default {
 	props:['pbranch','token'],
 	data(){
 		return {
+			loading:false,
 			branch:{},
 			reports:[],
 			filter:{
@@ -105,6 +117,7 @@ export default {
 	},
 	methods:{
 		async fetchReports(){
+			this.loading = true;
 			await axios.post(this.baseURL() + 'api/report/prepaid', this.filter, {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
@@ -114,9 +127,11 @@ export default {
 			})
 			.then(function (response) {
 				this.reports = response.data.data;
+				this.loading = false;
 			}.bind(this))
 			.catch(function (error) {
 				console.log(error);
+				this.loading = false;
 			}.bind(this));
 		},
 		async saveJournalEntry(){
@@ -175,10 +190,10 @@ export default {
 				if(!this.isEmptyObj(r.history)){
 					var counter = 0;
 					for(var i in r.history){
+						var mCount = 8;
 						var row = [];
 						var total = 0;
 						if(counter==0){
-							var mCount = 8;
 							row.push(r.client);
 							row.push(this.formatToCurrency(r.amount_loan));
 							overall[1] += r.amount_loan;
@@ -197,18 +212,21 @@ export default {
 							}
 						}
 						row.push(i);
-						
 						for(k in monNum){
 							for(var j in r.history[i]){
 								if(monNum[k] == j){
 									total += r.history[i][j];
-									overall[mCount] += r.history[i][j];
+									overall[20] += r.history[i][j];
+									if(mCount < 20){
+										overall[mCount] += r.history[i][j];
+									}
 									mCount++;
 									row.push(this.formatToCurrency(r.history[i][j]));
 								}
 							}
 						}
-						overall[20] += total;
+						// overall[20] += total;
+						// console.log(total + ' - ' + overall[20]);
 						row.push(this.formatToCurrency(total));
 						rows.push(row);
 					};
@@ -254,14 +272,14 @@ export default {
 		}
 	},
 	watch:{
-		filter: {
-			handler(val){
-				if(val.due_from && val.branch_id){
-					this.fetchReports();
-				}
-			},
-			deep: true
-		}
+		// filter: {
+		// 	handler(val){
+		// 		if(val.due_from && val.branch_id){
+		// 			this.fetchReports();
+		// 		}
+		// 	},
+		// 	deep: true
+		// }
 	},
 	mounted(){
 		this.branch = JSON.parse(this.pbranch);

@@ -179,14 +179,14 @@
 							<span class="">Date Release</span>
 							<span>:</span>
 						</div>
-						<span class="flex-1 text-primary-dark">{{loanaccount.date_release.split('-').join('/')}}</span>
+						<span class="flex-1 text-primary-dark">{{dateToMDY(new Date(loanaccount.date_release))}}</span>
 					</div>
 					<div class="d-flex flex-row mb-12">
 						<div class="d-flex flex-row flex-1 justify-content-between pr-24">
 							<span class="">Due Date</span>
 							<span>:</span>
 						</div>
-						<span class="flex-1 text-primary-dark">{{dateToYMD(dueDate).split('-').join('/')}}</span>
+						<span class="flex-1 text-primary-dark">{{dateToMDY(new Date(loanaccount.due_date))}}</span>
 					</div>
 
 				</div>
@@ -222,11 +222,11 @@
 							</div>
 							<div class="d-flex mb-7">
 								<span class="mr-5">Date Release: </span>
-								<span>{{loanaccount.date_release}}</span>
+								<span>{{dateToMDY(new Date(loanaccount.date_release))}}</span>
 							</div>
 							<div class="d-flex mb-7">
 								<span class="mr-5">Amount Granted: </span>
-								<span>{{loanaccount.loan_amount}}</span>
+								<span>{{formatToCurrency(loanaccount.loan_amount)}}</span>
 							</div>
 							<div class="d-flex mb-7">
 								<span class="mr-5">Term: </span>
@@ -269,7 +269,7 @@
 							</div>
 							<div class="d-flex mb-7">
 								<span class="mr-5">Due Date: </span>
-								<span class="">{{dateToYMD(dueDate).split('-').join('/')}}</span>
+								<span class="">{{dateToMDY(new Date(loanaccount.due_date))}}</span>
 							</div>
 							<div class="d-flex mb-7">
 								<span class="mr-5">Loan Type: </span>

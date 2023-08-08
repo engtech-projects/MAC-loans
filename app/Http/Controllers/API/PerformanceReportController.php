@@ -40,7 +40,7 @@ class PerformanceReportController extends BaseController
 
         if(isset($branchId)) {
             $response = $this->performanceReport->getDateReports($branchId);
-            return $this->sendResponse($response,"Date range fetch");
+            return $this->sendResponse($response,"Fetch report dates");
         }else {
             return $this->sendError("No branch found",null,404);
         }

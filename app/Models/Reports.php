@@ -17,180 +17,181 @@ class Reports extends Model
     const BRANCH_AO_WRITEOFF = "write_off";
     const BRANCH_AO_DELINQUENT = "delinquent";
 
-    protected $prepaidReports = null;
+    public function getLoanAccounts($filters = [], $without = [])
+    {
 
-    public function getLoanAccounts($filters = [], $without = []) {
+        $loanAccount = Loanaccount::where(['loan_accounts.status' => 'released']);
 
-        $loanAccount = Loanaccount::where([ 'loan_accounts.status' => 'released']);
-
-    	if( isset($filters['branch_id']) && $filters['branch_id'] ){
+        if (isset($filters['branch_id']) && $filters['branch_id']) {
             $branch = Branch::find($filters['branch_id']);
-    		$loanAccount->where([ 'loan_accounts.branch_code' => $branch->branch_code ]);
+            $loanAccount->where(['loan_accounts.branch_code' => $branch->branch_code]);
         }
 
-        if( isset($filters['date_from']) && isset($filters['date_to']) ){
+        if (isset($filters['date_from']) && isset($filters['date_to'])) {
             /*$loanAccount = LoanAccount::whereBetween(DB::raw('date(loan_accounts.date_release)'), [ $filters['date_from'], $filters['date_to'] ]);*/
 
             $loanAccount->whereDate('loan_accounts.date_release', '>=', $filters['date_from']);
             $loanAccount->whereDate('loan_accounts.date_release', '<=', $filters['date_to']);
         }
 
-        if( isset($filters['due_from']) ){
+        if (isset($filters['due_from'])) {
             $loanAccount->whereDate('loan_accounts.due_date', '>=', $filters['due_from']);
         }
-        if(isset($filters['due_to'])){
+        if (isset($filters['due_to'])) {
             $loanAccount->whereDate('loan_accounts.due_date', '<=', $filters['due_to']);
         }
 
 
-    	if( isset($filters['product_id']) && $filters['product_id'] ){
-    		$loanAccount->where([ 'loan_accounts.product_id' => $filters['product_id'] ]);
-    	}
+        if (isset($filters['product_id']) && $filters['product_id']) {
+            $loanAccount->where(['loan_accounts.product_id' => $filters['product_id']]);
+        }
 
-    	if( isset($filters['cycle_no']) && $filters['cycle_no'] ){
-    		$loanAccount->where([ 'loan_accounts.cycle_no' => $filters['cycle_no'] ]);
-    	}
+        if (isset($filters['cycle_no']) && $filters['cycle_no']) {
+            $loanAccount->where(['loan_accounts.cycle_no' => $filters['cycle_no']]);
+        }
 
-    	if( isset($filters['center']) && $filters['center'] ){
-            if($filters['center'] == "No Center"){
+        if (isset($filters['center']) && $filters['center']) {
+            if ($filters['center'] == "No Center") {
                 $loanAccount->whereNull('loan_accounts.center_id');
-            }else{
-                $loanAccount->where([ 'loan_accounts.center_id' => $filters['center'] ]);
+            } else {
+                $loanAccount->where(['loan_accounts.center_id' => $filters['center']]);
             }
-    	}
-
-    	if( isset($filters['product']) && $filters['product'] ){
-    		$loanAccount->where([ 'loan_accounts.product_id' => $filters['product'] ]);
-    	}
-
-        if( isset($filters['account_officer']) && $filters['account_officer'] ){
-            $loanAccount->where([ 'loan_accounts.ao_id' => $filters['account_officer'] ]);
         }
 
-        if( isset($filters['loan_status']) && $filters['loan_status'] ){
-            $loanAccount->where([ 'loan_accounts.loan_status' => $filters['loan_status'] ]);
+        if (isset($filters['product']) && $filters['product']) {
+            $loanAccount->where(['loan_accounts.product_id' => $filters['product']]);
         }
 
-        if( isset($filters['payment_status']) && $filters['payment_status'] ){
-            $loanAccount->where([ 'loan_accounts.payment_status' => $filters['payment_status'] ]);
+        if (isset($filters['account_officer']) && $filters['account_officer']) {
+            $loanAccount->where(['loan_accounts.ao_id' => $filters['account_officer']]);
         }
 
-        if( isset($filters['type']) && $filters['type'] ){
-            $loanAccount->where([ 'loan_accounts.type' => $filters['type'] ]);
+        if (isset($filters['loan_status']) && $filters['loan_status']) {
+            $loanAccount->where(['loan_accounts.loan_status' => $filters['loan_status']]);
+        }
+
+        if (isset($filters['payment_status']) && $filters['payment_status']) {
+            $loanAccount->where(['loan_accounts.payment_status' => $filters['payment_status']]);
+        }
+
+        if (isset($filters['type']) && $filters['type']) {
+            $loanAccount->where(['loan_accounts.type' => $filters['type']]);
         }
 
 
-    	return $loanAccount->whereIn('loan_status', [LoanAccount::LOAN_ONGOING, LoanAccount::LOAN_PASTDUE,LoanAccount::LOAN_RESTRUCTED, LoanAccount::LOAN_RES_WO_PDI])
-        ->without($without)->get([
-			'loan_accounts.loan_account_id',
-			'loan_accounts.account_num',
-			'loan_accounts.date_release',
-			'loan_accounts.terms',
-			'loan_accounts.loan_amount',
-			'loan_accounts.interest_amount',
-			'loan_accounts.document_stamp',
-			'loan_accounts.filing_fee',
-			'loan_accounts.insurance',
-			'loan_accounts.notarial_fee',
-			'loan_accounts.prepaid_interest',
-			'loan_accounts.affidavit_fee',
-			'loan_accounts.total_deduction',
-			'loan_accounts.no_of_installment',
-			'loan_accounts.net_proceeds',
-			'loan_accounts.borrower_id',
-			'loan_accounts.product_id',
-			'loan_accounts.ao_id',
-			'loan_accounts.center_id',
-			'loan_accounts.branch_code',
-            'loan_accounts.release_type',
-            'loan_accounts.cycle_no',
-            'loan_accounts.memo',
-            'loan_accounts.due_date',
-            'loan_accounts.payment_mode',
-            'loan_accounts.payment_status',
-            'loan_accounts.loan_status',
-        ]);
+        return $loanAccount->whereIn('loan_status', [LoanAccount::LOAN_ONGOING, LoanAccount::LOAN_PASTDUE, LoanAccount::LOAN_RESTRUCTED, LoanAccount::LOAN_RES_WO_PDI])
+            ->without($without)->get([
+                'loan_accounts.loan_account_id',
+                'loan_accounts.account_num',
+                'loan_accounts.date_release',
+                'loan_accounts.terms',
+                'loan_accounts.loan_amount',
+                'loan_accounts.interest_amount',
+                'loan_accounts.document_stamp',
+                'loan_accounts.filing_fee',
+                'loan_accounts.insurance',
+                'loan_accounts.notarial_fee',
+                'loan_accounts.prepaid_interest',
+                'loan_accounts.affidavit_fee',
+                'loan_accounts.total_deduction',
+                'loan_accounts.no_of_installment',
+                'loan_accounts.net_proceeds',
+                'loan_accounts.borrower_id',
+                'loan_accounts.product_id',
+                'loan_accounts.ao_id',
+                'loan_accounts.center_id',
+                'loan_accounts.branch_code',
+                'loan_accounts.release_type',
+                'loan_accounts.cycle_no',
+                'loan_accounts.memo',
+                'loan_accounts.due_date',
+                'loan_accounts.payment_mode',
+                'loan_accounts.payment_status',
+                'loan_accounts.loan_status',
+            ]);
     }
 
-    public function getPayments($filters = []) {
+    public function getPayments($filters = [])
+    {
 
 
         /* $payments = Payment::where([ 'payment.status' => 'paid'])->select('transaction_date');
         $payments->join('loan_accounts', 'loan_accounts.loan_account_id', '=', 'payment.loan_account_id'); */
 
-        $payments = Payment::join('loan_accounts','loan_accounts.loan_account_id','=','payment.loan_account_id')
-        ->join('amortization','amortization.id','=','payment.amortization_id')
-        ->select(
-            'loan_accounts.loan_account_id',
-            'payment.transaction_date',
-            'loan_accounts.borrower_id',
-            'amortization.id',
-            'amortization.interest as amortization_interest',
-            'amortization.principal as amortization_principal',
-            'payment.interest as interest',
-            'payment.or_no',
-            'payment.principal',
-            'payment.pdi',
-            'payment.pdi_approval_no',
-            'payment.over_payment',
-            'payment.rebates',
-            'payment.amount_applied',
-            'payment.vat',
-            'payment.payment_type',
-            'payment.memo_type',
-            'loan_accounts.center_id'
-        ) ->where(['payment.status' => 'paid']);
+        $payments = Payment::join('loan_accounts', 'loan_accounts.loan_account_id', '=', 'payment.loan_account_id')
+            ->join('amortization', 'amortization.id', '=', 'payment.amortization_id')
+            ->select(
+                'loan_accounts.loan_account_id',
+                'payment.transaction_date',
+                'loan_accounts.borrower_id',
+                'amortization.id',
+                'amortization.interest as amortization_interest',
+                'amortization.principal as amortization_principal',
+                'payment.interest as interest',
+                'payment.or_no',
+                'payment.principal',
+                'payment.pdi',
+                'payment.pdi_approval_no',
+                'payment.over_payment',
+                'payment.rebates',
+                'payment.amount_applied',
+                'payment.vat',
+                'payment.payment_type',
+                'payment.memo_type',
+                'loan_accounts.center_id'
+            )->where(['payment.status' => 'paid']);
 
 
 
 
-    	if( isset($filters['branch_id']) && $filters['branch_id'] ){
+        if (isset($filters['branch_id']) && $filters['branch_id']) {
             $branch = Branch::find($filters['branch_id']);
-    		$payments->where([ 'payment.branch_id' => $branch->branch_code ]);
+            $payments->where(['payment.branch_id' => $branch->branch_code]);
         }
 
 
-        if( isset($filters['product_id']) ){
-            $payments->where([ 'loan_accounts.product_id' => $filters['product_id'] ]);
+        if (isset($filters['product_id'])) {
+            $payments->where(['loan_accounts.product_id' => $filters['product_id']]);
         }
 
-        if( isset($filters['product']) ){
-            $payments->where([ 'loan_accounts.product_id' => $filters['product'] ]);
+        if (isset($filters['product'])) {
+            $payments->where(['loan_accounts.product_id' => $filters['product']]);
         }
 
-        if( isset($filters['account_officer']) ){
-            $payments->where([ 'loan_accounts.ao_id' => $filters['account_officer'] ]);
+        if (isset($filters['account_officer'])) {
+            $payments->where(['loan_accounts.ao_id' => $filters['account_officer']]);
         }
 
-        if( isset($filters['center']) ){
-            $payments->where([ 'loan_accounts.center_id' => $filters['center'] ]);
+        if (isset($filters['center'])) {
+            $payments->where(['loan_accounts.center_id' => $filters['center']]);
         }
 
-        if( isset($filters['date_from']) && isset($filters['date_to']) ){
+        if (isset($filters['date_from']) && isset($filters['date_to'])) {
             $payments->whereDate('payment.transaction_date', '>=', $filters['date_from']);
             $payments->whereDate('payment.transaction_date', '<=', $filters['date_to']);
         }
 
         return $payments->get();
-
     }
 
     /* start transaction reports */
-    public function transactionReports($filters = []) {
+    public function transactionReports($filters = [])
+    {
 
-    	$report = new Reports();
+        $report = new Reports();
 
-    	$report->product = $this->getReleaseByProduct($filters);
-    	$report->client = $this->getReleaseByClient($filters);
+        $report->product = $this->getReleaseByProduct($filters);
+        $report->client = $this->getReleaseByClient($filters);
 
-    	return $report;
+        return $report;
     }
 
-    public function getReleaseByProduct($filters) {
+    public function getReleaseByProduct($filters)
+    {
         // if( isset($filters['product']) && $filters['product'] ){
         //     $products = Product::where([ 'status' => 'active', 'product_id' => $filters['product'] ])->get(['product_id', 'product_code', 'product_name', 'interest_rate']);
         // }else{
-            $products = Product::where([ 'status' => 'active' ])->get(['product_id', 'product_code', 'product_name', 'interest_rate']);
+        $products = Product::where(['status' => 'active'])->get(['product_id', 'product_code', 'product_name', 'interest_rate']);
         // }
 
         $paymentTypes = config('enums.payment_type');
@@ -227,7 +228,7 @@ class Reports extends Model
             $accounts = $this->getLoanAccounts($filters);
             $payments = $this->getPayments($filters);
 
-            if( count($accounts) ){
+            if (count($accounts)) {
 
                 foreach ($accounts as $account) {
 
@@ -243,26 +244,26 @@ class Reports extends Model
                     $data[$key]['release']['net_proceeds'] += $account->net_proceeds;
                     $data[$key]['release']['memo'] += $account->memo;
 
-                    if( str_contains(strtolower($account->release_type), 'cash')  ){
-                         $data[$key]['release']['cash'] += $account->net_proceeds;
+                    if (str_contains(strtolower($account->release_type), 'cash')) {
+                        $data[$key]['release']['cash'] += $account->net_proceeds;
                     }
 
-                    if( str_contains(strtolower($account->release_type), 'check') ){
-                         $data[$key]['release']['check'] += $account->net_proceeds;
+                    if (str_contains(strtolower($account->release_type), 'check')) {
+                        $data[$key]['release']['check'] += $account->net_proceeds;
                     }
                 }
             }
 
 
-            if( count($payments) ) {
+            if (count($payments)) {
 
                 foreach ($payments as $k => $payment) {
 
                     foreach ($paymentTypes as $type) {
 
-                        if( $payment->payment_type == $type ){
+                        if ($payment->payment_type == $type) {
 
-                            if( !isset($data[$key]['payment'][$type]) ){
+                            if (!isset($data[$key]['payment'][$type])) {
                                 $data[$key]['payment'][$type] = [
 
                                     'principal' => 0,
@@ -281,27 +282,25 @@ class Reports extends Model
                             $data[$key]['payment'][$type]['pdi'] += $payment->pdi;
                             $data[$key]['payment'][$type]['over'] += $payment->over_payment;
                             $data[$key]['payment'][$type]['discount'] += $payment->rebates;
-                            $data[$key]['payment'][$type]['total_payment'] += $payment->amount_applied-$payment->rebates;
+                            $data[$key]['payment'][$type]['total_payment'] += $payment->amount_applied - $payment->rebates;
                             $data[$key]['payment'][$type]['net_int'] += $payment->interest;
                             $data[$key]['payment'][$type]['vat'] += $payment->vat;
-                            if($payment->memo_type){
-                                if(!isset($data[$key]['payment'][$type]["memo"][$payment->memo_type])){
+                            if ($payment->memo_type) {
+                                if (!isset($data[$key]['payment'][$type]["memo"][$payment->memo_type])) {
                                     $data[$key]['payment'][$type]["memo"][$payment->memo_type] = 0;
                                 }
-                                $data[$key]['payment'][$type]["memo"][$payment->memo_type] += $payment->amount_applied-$payment->rebates;
+                                $data[$key]['payment'][$type]["memo"][$payment->memo_type] += $payment->amount_applied - $payment->rebates;
                             }
                         }
-
                     }
-
                 }
-
             }
         }
         return $data;
     }
 
-    public function getReleaseByClient($filters, $collection = true) {
+    public function getReleaseByClient($filters, $collection = true)
+    {
 
         $data = [];
         $accounts = $this->getLoanAccounts($filters);
@@ -313,7 +312,7 @@ class Reports extends Model
                 'cycle_no' => $account->cycle_no,
                 'product_id' => $account->product_id,
                 'account_num' => $account->account_num,
-                'borrower' => $account->borrower->fullname() ,
+                'borrower' => $account->borrower->fullname(),
                 'date_loan' => $account->date_release,
                 'date_release' => $account->date_release,
                 'term' => $account->terms,
@@ -331,31 +330,30 @@ class Reports extends Model
             ];
         }
 
-        if( !$collection ) {
+        if (!$collection) {
 
             return $data;
-
         }
 
         foreach ($payments as $payment) {
 
             $borrower = LoanAccount::find($payment->loan_account_id);
             /* if($borrower) { */
-                $data['collection'][] = [
-                    'borrower' => $borrower ? Borrower::find($borrower->borrower_id)->fullname() : '',
-                    'date_paid' => $payment->transaction_date,
-                    'or' => $payment->or_no,
-                    'payment_type' => $payment->payment_type,
-                    'principal' => $payment->principal,
-                    'interest' => $payment->interest,
-                    'pdi' => $payment->pdi,
-                    'over' => $payment->over_payment,
-                    'discount' => $payment->rebates,
-                    'total_payment' => $payment->amount_applied-$payment->rebates,
-                    'net_int' => $payment->interest,
-                    'vat' => $payment->vat,
-                    'memo_type' => $payment->memo_type
-                ];
+            $data['collection'][] = [
+                'borrower' => $borrower ? Borrower::find($borrower->borrower_id)->fullname() : '',
+                'date_paid' => $payment->transaction_date,
+                'or' => $payment->or_no,
+                'payment_type' => $payment->payment_type,
+                'principal' => $payment->principal,
+                'interest' => $payment->interest,
+                'pdi' => $payment->pdi,
+                'over' => $payment->over_payment,
+                'discount' => $payment->rebates,
+                'total_payment' => $payment->amount_applied - $payment->rebates,
+                'net_int' => $payment->interest,
+                'vat' => $payment->vat,
+                'memo_type' => $payment->memo_type
+            ];
             //}
 
         }
@@ -410,42 +408,43 @@ class Reports extends Model
     /* start transaction reports */
 
     /* start release reports */
-    public function releaseReports($filters = [], $category) {
+    public function releaseReports($filters = [], $category)
+    {
 
-    	switch ($category) {
-    		case 'product':
+        switch ($category) {
+            case 'product':
 
-    			return $this->getReleaseByProduct($filters);
-    			break;
+                return $this->getReleaseByProduct($filters);
+                break;
 
-    		case 'client':
+            case 'client':
 
-    			$type = $filters['type'];
-                if( $type == 'all' ){
+                $type = $filters['type'];
+                if ($type == 'all') {
                     unset($filters['type']);
                 }
 
-    			if( $type == 'new' ){
-    				$filters['cycle_no'] = 1;
-    			}
+                if ($type == 'new') {
+                    $filters['cycle_no'] = 1;
+                }
 
-                if( $type == 'center' || $type == 'product' || $type == 'account_officer' ) {
+                if ($type == 'center' || $type == 'product' || $type == 'account_officer') {
                     $filters[$type] = $filters['spec'];
                 }
                 unset($filters['spec']);
                 unset($filters['type']);
 
 
-    			return $this->getReleaseByClient($filters, false);
-    			break;
+                return $this->getReleaseByClient($filters, false);
+                break;
 
-    		case 'account_officer':
-       //          $type = $filters['type'];
-    			// if( $type == 'new' ){
-       //              $filters['cycle_no'] = 1;
-       //          }
+            case 'account_officer':
+                //          $type = $filters['type'];
+                // if( $type == 'new' ){
+                //              $filters['cycle_no'] = 1;
+                //          }
                 return $this->getReleaseByAccountOfficer($filters);
-    			break;
+                break;
 
             case 'dst':
                 return $this->getReleaseByDST($filters);
@@ -455,50 +454,51 @@ class Reports extends Model
                 return $this->releaseInsurance($filters);
                 break;
 
-    		default:
-    			# code...
-    			break;
-    	}
+            default:
+                # code...
+                break;
+        }
     }
 
-    public function getReleaseByDST($filters) {
+    public function getReleaseByDST($filters)
+    {
         $accounts = $this->getLoanAccounts($filters);
-        $branches = Branch::where("status","active")->get();
+        $branches = Branch::where("status", "active")->get();
         $branchIds = [];
         $branchId2 = [];
-        foreach($branches as $brnch){
-            if(!isset( $branchIds[$brnch->branch_code] )){
-                 $branchIds[$brnch->branch_code] = $brnch->branch_id;
+        foreach ($branches as $brnch) {
+            if (!isset($branchIds[$brnch->branch_code])) {
+                $branchIds[$brnch->branch_code] = $brnch->branch_id;
             }
-            if(!isset( $branchId2[$brnch->branch_id] )){
-                 $branchId2[$brnch->branch_id] = 0;
+            if (!isset($branchId2[$brnch->branch_id])) {
+                $branchId2[$brnch->branch_id] = 0;
             }
         }
         $dstSummary = [];
         foreach ($accounts as $value) {
-            if(!isset($dstSummary[$value->terms])){
+            if (!isset($dstSummary[$value->terms])) {
                 $dstSummary[$value->terms] = [];
                 $dstSummary[$value->terms]['branches'] = $branchId2;
             }
-            if(!isset($dstSummary[$value->terms]['total_amount'])){
+            if (!isset($dstSummary[$value->terms]['total_amount'])) {
                 $dstSummary[$value->terms]['total_amount'] = 0;
             }
             $dstSummary[$value->terms]['term'] = $value->terms;
             $dstSummary[$value->terms]['branches'][$branchIds[$value->branch_code]] += $value->loan_amount;
             $dstSummary[$value->terms]['total_amount'] += $value->loan_amount;
-            $dstSummary[$value->terms]['amount'] = $value->terms <= 360 ? round($dstSummary[$value->terms]['total_amount']*1.5/200*$value->terms/365 , 2) : round($dstSummary[$value->terms]['total_amount'] *1.5/200,2);
-
+            $dstSummary[$value->terms]['amount'] = $value->terms <= 360 ? round($dstSummary[$value->terms]['total_amount'] * 1.5 / 200 * $value->terms / 365, 2) : round($dstSummary[$value->terms]['total_amount'] * 1.5 / 200, 2);
         }
 
         return $dstSummary;
     }
 
-    public function getReleaseByAccountOfficer($filters) {
+    public function getReleaseByAccountOfficer($filters)
+    {
 
-        if( $filters['account_officer'] == 'all' ){
+        if ($filters['account_officer'] == 'all') {
             $officers = AccountOfficer::where(['status' => 'active'])->get();
-        }else{
-            $officers = AccountOfficer::where(['status' => 'active', 'ao_id' => $filters['account_officer'] ])->get();
+        } else {
+            $officers = AccountOfficer::where(['status' => 'active', 'ao_id' => $filters['account_officer']])->get();
         }
 
         // if( $filters['type'] != 'all' ){
@@ -506,7 +506,7 @@ class Reports extends Model
         //     $officers = AccountOfficer::where(['status' => 'active', 'ao_id' => $aoId ])->get()->toArray();
         // }
 
-        $products = Product::where([ 'status' => 'active' ])->get(['product_id', 'product_code', 'product_name', 'interest_rate']);
+        $products = Product::where(['status' => 'active'])->get(['product_id', 'product_code', 'product_name', 'interest_rate']);
 
         $data = [];
         foreach ($officers as $key => $value) {
@@ -528,7 +528,7 @@ class Reports extends Model
                 $filters['account_officer'] = $value['ao_id'];
                 $accounts = $this->getLoanAccounts($filters);
 
-                if( count($accounts) > 0 ) {
+                if (count($accounts) > 0) {
 
                     // $data[$key]['products'][$k] = [
                     //     'reference' => $v['product_code'] . ' - ' . $v['product_name'],
@@ -539,37 +539,38 @@ class Reports extends Model
                     //     'total_released' => null,
                     // ];
 
-            //         $v['reference'] = $v['product_code'] . ' - ' . $v['product_name'];
-            //         // $v['repeat_account'] = 0;
-            //         // $v['repeat_account_amount'] = 0;
-            //         // $v['new_account'] = 0;
-            //         // $v['new_account_amount'] = 0;
+                    //         $v['reference'] = $v['product_code'] . ' - ' . $v['product_name'];
+                    //         // $v['repeat_account'] = 0;
+                    //         // $v['repeat_account_amount'] = 0;
+                    //         // $v['new_account'] = 0;
+                    //         // $v['new_account_amount'] = 0;
                     foreach ($accounts as $account) {
 
-                        if( $account->cycle_no > 1 ){
+                        if ($account->cycle_no > 1) {
                             $data[$key]['products'][$k]['repeat_account'] += 1;
                             $data[$key]['products'][$k]['repeat_account_amount_released'] += $account->loan_amount;
-            //         //         $v['repeat_account'] += 1;
-            //         //         $v['repeat_account_amount'] += $account->loan_amount;
-                        }else{
+                            //         //         $v['repeat_account'] += 1;
+                            //         //         $v['repeat_account_amount'] += $account->loan_amount;
+                        } else {
                             $data[$key]['products'][$k]['new_account'] += 1;
                             $data[$key]['products'][$k]['new_account_amount_released'] += $account->loan_amount;
-            //         //          $v['new_account'] += 1;
-            //         //          $v['new_account_amount'] += $account->loan_amount;
+                            //         //          $v['new_account'] += 1;
+                            //         //          $v['new_account_amount'] += $account->loan_amount;
                         }
 
                         $data[$key]['products'][$k]['total_released'] = $data[$key]['products'][$k]['new_account_amount_released'] + $data[$key]['products'][$k]['repeat_account_amount_released'];
                     }
                 }
 
-            //     // $officers[$key] = $v;
+                //     // $officers[$key] = $v;
             }
         }
         return $data;
         // return $filters;
     }
 
-    public function releaseInsurance($filters = []){
+    public function releaseInsurance($filters = [])
+    {
         $accounts = $this->getLoanAccounts($filters);
         $insurance = [];
         foreach ($accounts as $key => $value) {
@@ -590,9 +591,10 @@ class Reports extends Model
     /* end release reports */
 
     /* start repayment report */
-    public function repaymentByProduct($filters = []) {
+    public function repaymentByProduct($filters = [])
+    {
 
-        $products = Product::where([ 'status' => 'active' ])->get(['product_id', 'product_code', 'product_name', 'interest_rate']);
+        $products = Product::where(['status' => 'active'])->get(['product_id', 'product_code', 'product_name', 'interest_rate']);
         $paymentTypes = config('enums.payment_type');
 
         $data = [];
@@ -607,15 +609,15 @@ class Reports extends Model
 
             $payments = $this->getPayments($filters);
 
-            if( count($payments) ) {
+            if (count($payments)) {
 
                 foreach ($payments as $k => $payment) {
 
                     foreach ($paymentTypes as $type) {
 
-                        if( $payment->payment_type == $type ){
+                        if ($payment->payment_type == $type) {
 
-                            if( !isset($data[$key]['payment'][$type]) ){
+                            if (!isset($data[$key]['payment'][$type])) {
                                 $data[$key]['payment'][$type] = [
                                     'principal' => 0,
                                     'interest' => 0,
@@ -633,32 +635,28 @@ class Reports extends Model
                             $data[$key]['payment'][$type]['pdi'] += $payment->pdi;
                             $data[$key]['payment'][$type]['over'] += $payment->over_payment;
                             $data[$key]['payment'][$type]['discount'] += $payment->rebates;
-                            $data[$key]['payment'][$type]['total_payment'] += $payment->amount_applied-$payment->rebates;
+                            $data[$key]['payment'][$type]['total_payment'] += $payment->amount_applied - $payment->rebates;
                             $data[$key]['payment'][$type]['net_int'] += $payment->interest;
                             $data[$key]['payment'][$type]['vat'] += $payment->vat;
-                            if($payment->memo_type){
-                                if(!isset($data[$key]['payment'][$type]["memo"][$payment->memo_type])){
+                            if ($payment->memo_type) {
+                                if (!isset($data[$key]['payment'][$type]["memo"][$payment->memo_type])) {
                                     $data[$key]['payment'][$type]["memo"][$payment->memo_type] = 0;
                                 }
-                                $data[$key]['payment'][$type]["memo"][$payment->memo_type] += $payment->amount_applied-$payment->rebates;
+                                $data[$key]['payment'][$type]["memo"][$payment->memo_type] += $payment->amount_applied - $payment->rebates;
                             }
                         }
-
                     }
-
                 }
-
             }
-
-
         }
 
         return $data;
     }
 
-    public function repaymentByClient($filters = []) {
+    public function repaymentByClient($filters = [])
+    {
 
-        if( $filters["type"] == 'center' || $filters["type"] == 'product' || $filters["type"] == 'account_officer' ) {
+        if ($filters["type"] == 'center' || $filters["type"] == 'product' || $filters["type"] == 'account_officer') {
             $filters[$filters["type"]] = $filters['spec'];
         }
         $payments = $this->getPayments($filters);
@@ -675,7 +673,7 @@ class Reports extends Model
                 'pdi' => ($payment->pdi_approval_no) ? 0 : $payment->pdi,
                 'overpayment' => $payment->over_payment,
                 'rebates' => $payment->rebates,
-                'total' => $payment->amount_applied-$payment->rebates,
+                'total' => $payment->amount_applied - $payment->rebates,
                 'net_interest' => $payment->interest,
                 'vat' => $payment->vat,
                 'payment_type' => $payment->payment_type,
@@ -690,21 +688,23 @@ class Reports extends Model
     }
     /* end repayment report */
 
-    public function repaymentByAccountOfficer($filters = []) {
+    public function repaymentByAccountOfficer($filters = [])
+    {
     }
 
-    public function branchCollectionReport($filters = []) {
+    public function branchCollectionReport($filters = [])
+    {
 
         $branch = Branch::find($filters['branch_id']);
 
         $accounts = LoanAccount::join('center', 'center.center_id', '=', 'loan_accounts.center_id');
 
-        if( isset($filters['account_officer']) && $filters['account_officer'] ){
-            $accounts->where([ 'loan_accounts.ao_id' => $filters['account_officer'] ]);
+        if (isset($filters['account_officer']) && $filters['account_officer']) {
+            $accounts->where(['loan_accounts.ao_id' => $filters['account_officer']]);
         }
 
-        if( isset($filters['center']) && $filters['center'] ){
-            $accounts->where([ 'loan_accounts.center_id' => $filters['center'] ]);
+        if (isset($filters['center']) && $filters['center']) {
+            $accounts->where(['loan_accounts.center_id' => $filters['center']]);
         }
 
         $accounts->where(['loan_accounts.branch_code' => $branch->branch_code]);
@@ -714,7 +714,7 @@ class Reports extends Model
 
         $data = [];
 
-        if( count($accounts) > 0 ) {
+        if (count($accounts) > 0) {
 
             foreach ($accounts as $key => $value) {
 
@@ -736,25 +736,23 @@ class Reports extends Model
                 $data[$key]['weekly_amortization'] = $value->amortization()['total'];
                 $data[$key]['contact'] = $borrower->contact_number;
                 $data[$key]['address'] = $borrower->address;
-
             }
-
-
         }
         return $d = [
 
-                    'name' =>  '',
-                    'data' => $data,
+            'name' =>  '',
+            'data' => $data,
 
-                ];
+        ];
     }
 
-    public function branchMaturityReport($filters = []) {
+    public function branchMaturityReport($filters = [])
+    {
         $matureLoans = [];
         $loanAccounts = $this->getLoanAccounts($filters);
         foreach ($loanAccounts as $key => $value) {
-            if($value->loan_status != LoanAccount::PAYMENT_PAID) {
-                array_push($matureLoans,[
+            if ($value->loan_status != LoanAccount::PAYMENT_PAID) {
+                array_push($matureLoans, [
                     'loan_account_id' => $value->loan_account_id,
                     'loan_account_num' => $value->loan_account_num,
                     'client' => $value->borrower->fullname(),
@@ -777,24 +775,23 @@ class Reports extends Model
             $matureLoans[$key]["center"] = $value->center_id ? $value->center->center : ''; */
         }
         return $matureLoans;
-
     }
 
-    public function clientPaymentStatus($filters = []){
+    public function clientPaymentStatus($filters = [])
+    {
         $data = [
             "ongoing" => [],
             "closed" => []
         ];
-        $closedLoanAccounts = Loanaccount::where([ 'loan_accounts.status' => 'released', "borrower_id" => $filters["borrower_id"], "loan_accounts.loan_status" => LoanAccount::LOAN_PAID])->get();
-        $ongoingLoanAccounts = Loanaccount::where([ 'loan_accounts.status' => 'released', "borrower_id" => $filters["borrower_id"] ])->where("loan_accounts.loan_status", "!=", LoanAccount::LOAN_PAID)->get();
-        foreach($closedLoanAccounts as $closedKey => $account){
+        $closedLoanAccounts = Loanaccount::where(['loan_accounts.status' => 'released', "borrower_id" => $filters["borrower_id"], "loan_accounts.loan_status" => LoanAccount::LOAN_PAID])->get();
+        $ongoingLoanAccounts = Loanaccount::where(['loan_accounts.status' => 'released', "borrower_id" => $filters["borrower_id"]])->where("loan_accounts.loan_status", "!=", LoanAccount::LOAN_PAID)->get();
+        foreach ($closedLoanAccounts as $closedKey => $account) {
             $amort = $account->amortizationStatusReport($filters["as_of"]);
             $maxLate = 0;
             $paidAmort = 0;
             foreach ($amort as $key => $value) {
                 $maxLate = $maxLate < $value["days_late"] ? $value["days_late"] : $maxLate;
                 $paidAmort += in_array($value['amor_status'], ["Paid", "Paid Late"]) ? 1 : 0;
-
             }
             $tempData = [
                 "cumulative_loan" => $account->cycle_no,
@@ -807,7 +804,7 @@ class Reports extends Model
             ];
             $data["closed"][] = $tempData;
         }
-        foreach($ongoingLoanAccounts as $ongoingKey => $account){
+        foreach ($ongoingLoanAccounts as $ongoingKey => $account) {
             $amort = $account->amortizationStatusReport($filters["as_of"]);
             $maxLate = 0;
             $paidAmort = 0;
@@ -815,7 +812,7 @@ class Reports extends Model
             foreach ($amort as $key => $value) {
                 $maxLate = $maxLate < $value["days_late"] ? $value["days_late"] : $maxLate;
                 $paidAmort += in_array($value['amor_status'], ["Paid"]) ? 1 : 0;
-                $expected_todate += $value['amor_status']!= 'Approaching' ? 1 : 0;
+                $expected_todate += $value['amor_status'] != 'Approaching' ? 1 : 0;
             }
             $tempData = [
                 "cumulative_loan" => $account->cycle_no,
@@ -826,7 +823,7 @@ class Reports extends Model
                 "max_late" => $maxLate,
                 "expected_todate" => $expected_todate,
                 "amort_ontime" => $paidAmort,
-                "ontime_percentage" => $expected_todate == 0 ? 0 : round((($paidAmort / $expected_todate)*100),2),
+                "ontime_percentage" => $expected_todate == 0 ? 0 : round((($paidAmort / $expected_todate) * 100), 2),
                 "business_activity" => 0,
                 "amortizations" => $amort
             ];
@@ -835,124 +832,117 @@ class Reports extends Model
         return $data;
     }
 
-    public function branchAOReport($filters = []) {
+    public function branchAOReport($filters = [])
+    {
         $tranDate = new EndTransaction();
         $branch = Branch::find($filters['branch_id']);
         $data = [];
-        if($filters["group"] == Reports::BRANCH_AO_PERFORMANCE){
+        if ($filters["group"] == Reports::BRANCH_AO_PERFORMANCE) {
             $accOfficers = NULL;
             $transDate = new EndTransaction();
             $transactionDateNow = $transDate->getTransactionDate($filters['branch_id'])->date_end;
 
-            if( isset($filters["branch_id"]) && $filters["branch_id"] ) {
+            if (isset($filters["branch_id"]) && $filters["branch_id"]) {
 
 
-                $accOfficers =  AccountOfficer::join('account_officer_branch','account_officer.ao_id', '=', 'account_officer_branch.ao_id')
-                                        ->join('branch','account_officer_branch.branch_id', '=', 'branch.branch_id')
-                                        ->where([
-                                            'account_officer.status' => AccountOfficer::STATUS_ACTIVE,
-                                            'branch.branch_id' => $filters['branch_id']
-                                        ])
-                                        ->select('account_officer.ao_id', 'account_officer.name')
-                                        ->without('branch', 'branch_registered')
-                                        ->orderBy('account_officer.name', 'ASC')
-                                        ->groupBy('account_officer.ao_id')
-                                        ->get()
-                                        ->toArray();
-            }else{
+                $accOfficers =  AccountOfficer::join('account_officer_branch', 'account_officer.ao_id', '=', 'account_officer_branch.ao_id')
+                    ->join('branch', 'account_officer_branch.branch_id', '=', 'branch.branch_id')
+                    ->where([
+                        'account_officer.status' => AccountOfficer::STATUS_ACTIVE,
+                        'branch.branch_id' => $filters['branch_id']
+                    ])->select('account_officer.ao_id', 'account_officer.name')
+                    ->without('branch', 'branch_registered')
+                    ->orderBy('account_officer.name', 'ASC')
+                    ->groupBy('account_officer.ao_id')
+                    ->get()
+                    ->toArray();
+            } else {
 
-                $accOfficers = AccountOfficer::where(["status"=> AccountOfficer::STATUS_ACTIVE])
-                                        ->select('account_officer.ao_id', 'account_officer.name')
-                                        ->without('branch', 'branch_registered')
-                                        ->orderBy('account_officer.name', 'ASC')
-                                        ->groupBy('account_officer.ao_id')
-                                        ->get()
-                                        ->toArray();
+                $accOfficers = AccountOfficer::where(["status" => AccountOfficer::STATUS_ACTIVE])
+                    ->select('account_officer.ao_id', 'account_officer.name')
+                    ->without('branch', 'branch_registered')
+                    ->orderBy('account_officer.name', 'ASC')
+                    ->groupBy('account_officer.ao_id')
+                    ->get()
+                    ->toArray();
             }
 
             $products = Product::where(["status" => Product::STATUS_ACTIVE])
-                                ->select('product_id', 'product_code', 'product_name')
-                                ->get()
-                                ->toArray();
-            foreach ( $accOfficers as $aoKey => $aoValue ) {
-                foreach ( $products as $prodKey => $prodValue ) {
+                ->select('product_id', 'product_code', 'product_name')
+                ->get()
+                ->toArray();
+            foreach ($accOfficers as $aoKey => $aoValue) {
+                foreach ($products as $prodKey => $prodValue) {
                     $tempProd = $prodValue;
 
                     $allAOProd = LoanAccount::where([
-                        "status"=>LoanAccount::STATUS_RELEASED,
-                        "ao_id"=>$aoValue["ao_id"],
-                        "product_id"=>$prodValue["product_id"],
+                        "status" => LoanAccount::STATUS_RELEASED,
+                        "ao_id" => $aoValue["ao_id"],
+                        "product_id" => $prodValue["product_id"],
                         "branch_code" => $branch->branch_code
                     ])
-                    ->whereIn('loan_status', [LoanAccount::LOAN_ONGOING, LoanAccount::LOAN_PASTDUE,LoanAccount::LOAN_RESTRUCTED, LoanAccount::LOAN_RES_WO_PDI])
-                    ->without(['documents', 'borrower', 'center', 'branch', 'product', 'accountOfficer', 'payments'])
-                    ->get();
+                        ->whereIn('loan_status', [LoanAccount::LOAN_ONGOING, LoanAccount::LOAN_PASTDUE, LoanAccount::LOAN_RESTRUCTED, LoanAccount::LOAN_RES_WO_PDI])
+                        ->without(['documents', 'borrower', 'center', 'branch', 'product', 'accountOfficer', 'payments'])
+                        ->get();
 
 
-                    if( count($allAOProd) > 0 ) {
+                    if (count($allAOProd) > 0) {
                         $tempProd["all"] = ["count" => 0, "amount" => 0];
                         $tempProd["delinquent"] = ["count" => 0, "amount" => 0, "rate" => 0];
                         $tempProd["pastdue"] = ["count" => 0, "amount" => 0, "rate" => 0];
 
-                        foreach ( $allAOProd as $key => $value ) {
+                        foreach ($allAOProd as $key => $value) {
                             $remainBal = $value->remainingBalance();
 
                             $principalBalance = $remainBal["principal"]["balance"];
                             $memoBal = $remainBal["memo"]["balance"];
-                            $currentAmort = $this->getCurrentAmortization($value->getCurrentAmortization(),$remainBal);
+                            $currentAmort = $this->getCurrentAmortization($value->getCurrentAmortization(), $remainBal);
 
 
                             $totalBal = $memoBal < 0 ? 0 : $memoBal;
 
-                            if($value->loan_status == LoanAccount::LOAN_RES_WO_PDI && $totalBal == 0 || $value->loan_status == LoanAccount::LOAN_RESTRUCTED && $totalBal == 0) {
+                            if ($value->loan_status == LoanAccount::LOAN_RES_WO_PDI && $totalBal == 0 || $value->loan_status == LoanAccount::LOAN_RESTRUCTED && $totalBal == 0) {
                                 continue;
-                            }else {
+                            } else {
                                 $tempProd["all"]["count"] += 1;
                                 $tempProd["all"]["amount"] += $principalBalance;
-                                if( $value->loan_status == LoanAccount::LOAN_ONGOING ) {
+                                if ($value->loan_status == LoanAccount::LOAN_ONGOING) {
 
-                                    if( $value->payment_status == LoanAccount::PAYMENT_DELINQUENT ) {
+                                    if ($value->payment_status == LoanAccount::PAYMENT_DELINQUENT) {
                                         $tempProd["delinquent"]["count"] += 1;
 
-                                        if($currentAmort) {
-                                            $tempProd["delinquent"]["amount"] += $currentAmort["amount_due"] > 0 ? $currentAmort["amount_due"] : 0 ;
+                                        if ($currentAmort) {
+                                            $tempProd["delinquent"]["amount"] += $currentAmort["amount_due"] > 0 ? $currentAmort["amount_due"] : 0;
                                         }
 
                                         // $tempProd["delinquent"]["account"] = $amortization;
                                         // break;
                                     }
-                                }else {
+                                } else {
                                     $tempProd["pastdue"]["count"] += 1;
                                     $tempProd["pastdue"]["amount"] += $principalBalance;
                                 }
-
-
                             }
-
                         }
-                        if($tempProd["all"]["count"] == 0) {
+                        if ($tempProd["all"]["count"] == 0) {
                             continue;
-                        }else {
-                            $tempProd["delinquent"]["rate"] = $tempProd["all"]["amount"] == 0 ? 0 :  round( (($tempProd["delinquent"]["amount"] / $tempProd["all"]["amount"]) * 100), 2); //round((($tempProd["delinquent"]["amount"] / $tempProd["all"]["amount"])*100));
-                            $tempProd["pastdue"]["rate"] = $tempProd["all"]["amount"] == 0 ? 0 : round( (($tempProd["pastdue"]["amount"] / $tempProd["all"]["amount"]) * 100), 2); //round((($tempProd["delinquent"]["amount"] / $tempProd["all"]["amount"])*100));
+                        } else {
+                            $tempProd["delinquent"]["rate"] = $tempProd["all"]["amount"] == 0 ? 0 :  round((($tempProd["delinquent"]["amount"] / $tempProd["all"]["amount"]) * 100), 2); //round((($tempProd["delinquent"]["amount"] / $tempProd["all"]["amount"])*100));
+                            $tempProd["pastdue"]["rate"] = $tempProd["all"]["amount"] == 0 ? 0 : round((($tempProd["pastdue"]["amount"] / $tempProd["all"]["amount"]) * 100), 2); //round((($tempProd["delinquent"]["amount"] / $tempProd["all"]["amount"])*100));
                             $accOfficers[$aoKey]["products"][] = $tempProd;
                         }
-
-
-
                     }
-
                 }
             }
             $data = $accOfficers;
-        }else if($filters["group"] == Reports::BRANCH_AO_WRITEOFF){
+        } else if ($filters["group"] == Reports::BRANCH_AO_WRITEOFF) {
             $writeoffAccounts = [];
-            $accOfficers = AccountOfficer::where(["status"=> AccountOfficer::STATUS_ACTIVE]);
-            if(isset($filters["branch_id"]) && $filters["branch_id"]){
-                $accOfficers = $accOfficers->where(["branch_id"=>$filters["branch_id"]]);
+            $accOfficers = AccountOfficer::where(["status" => AccountOfficer::STATUS_ACTIVE]);
+            if (isset($filters["branch_id"]) && $filters["branch_id"]) {
+                $accOfficers = $accOfficers->where(["branch_id" => $filters["branch_id"]]);
             }
-            if(isset($filters["account_officer"]) && $filters["account_officer"]){
-                $accOfficers = $accOfficers->where(["ao_id"=>$filters["account_officer"]]);
+            if (isset($filters["account_officer"]) && $filters["account_officer"]) {
+                $accOfficers = $accOfficers->where(["ao_id" => $filters["account_officer"]]);
             }
             $accOfficers = $accOfficers->get()->toArray();
             foreach ($accOfficers as $aoKey => $aoValue) {
@@ -980,16 +970,16 @@ class Reports extends Model
                 $writeoffAccounts[] = $tempData;
             }
             $data = $writeoffAccounts;
-        }else if($filters["group"] == Reports::BRANCH_AO_DELINQUENT){
-            $accOfficers = AccountOfficer::where(["status"=> AccountOfficer::STATUS_ACTIVE]);
-            if(isset($filters["branch_id"]) && $filters["branch_id"]){
-                $accOfficers = $accOfficers->where(["branch_id"=>$filters["branch_id"]]);
+        } else if ($filters["group"] == Reports::BRANCH_AO_DELINQUENT) {
+            $accOfficers = AccountOfficer::where(["status" => AccountOfficer::STATUS_ACTIVE]);
+            if (isset($filters["branch_id"]) && $filters["branch_id"]) {
+                $accOfficers = $accOfficers->where(["branch_id" => $filters["branch_id"]]);
             }
-            if(isset($filters["account_officer"]) && $filters["account_officer"]){
-                $accOfficers = $accOfficers->where(["ao_id"=>$filters["account_officer"]]);
+            if (isset($filters["account_officer"]) && $filters["account_officer"]) {
+                $accOfficers = $accOfficers->where(["ao_id" => $filters["account_officer"]]);
             }
             $accOfficers = $accOfficers->get()->toArray();
-            $centers = Center::where(["status"=>"active"])
+            $centers = Center::where(["status" => "active"])
                 ->get()->toArray();
             $centers[] = null;
             foreach ($accOfficers as $aoKey => $value) {
@@ -999,9 +989,9 @@ class Reports extends Model
                     $filtersCopy["payment_status"] = "delinquent";
                     $filtersCopy["account_officer"] = $aoKey;
                     $centerName = $centVal ? $centVal["center"] : "No Center";
-                    if($centerName != "No Center"){
+                    if ($centerName != "No Center") {
                         $filtersCopy["center"] = $centVal["center_id"];
-                    }else{
+                    } else {
                         $filtersCopy["center"] = $centerName;
                     }
                     $accounts = $this->getLoanAccounts($filtersCopy);
@@ -1035,9 +1025,10 @@ class Reports extends Model
     }
 
 
-    private function getCurrentAmortization($currentAmort,$remainBal) {
+    private function getCurrentAmortization($currentAmort, $remainBal)
+    {
         $amortization = null;
-        if($currentAmort) {
+        if ($currentAmort) {
             $amortization = [
                 'current_principal'         =>      $currentAmort["principal"],
                 'adv_principal'             =>      $currentAmort["advance_principal"],
@@ -1052,32 +1043,33 @@ class Reports extends Model
         return $amortization;
     }
 
-    public function branchLoanListingReport($filters = []){
+    public function branchLoanListingReport($filters = [])
+    {
         /* $accOfficers = AccountOfficer::where(["status"=> AccountOfficer::STATUS_ACTIVE]); */
-        $accOfficers =  AccountOfficer::join('account_officer_branch','account_officer.ao_id', '=', 'account_officer_branch.ao_id')
-        ->join('branch','account_officer_branch.branch_id', '=', 'branch.branch_id')
-        ->where([
-            'account_officer.status' => AccountOfficer::STATUS_ACTIVE,
-        ]);
+        $accOfficers =  AccountOfficer::join('account_officer_branch', 'account_officer.ao_id', '=', 'account_officer_branch.ao_id')
+            ->join('branch', 'account_officer_branch.branch_id', '=', 'branch.branch_id')
+            ->where([
+                'account_officer.status' => AccountOfficer::STATUS_ACTIVE,
+            ]);
 
-        if(isset($filters["branch_id"]) && $filters["branch_id"]){
-            $accOfficers = $accOfficers->where(["branch.branch_id"=>$filters["branch_id"]]);
+        if (isset($filters["branch_id"]) && $filters["branch_id"]) {
+            $accOfficers = $accOfficers->where(["branch.branch_id" => $filters["branch_id"]]);
         }
-        if(isset($filters["account_officer"]) && $filters["account_officer"]){
-            $accOfficers = $accOfficers->where(["account_officer.ao_id"=>$filters["account_officer"]]);
+        if (isset($filters["account_officer"]) && $filters["account_officer"]) {
+            $accOfficers = $accOfficers->where(["account_officer.ao_id" => $filters["account_officer"]]);
         }
         $accOfficers = $accOfficers->without('branch', 'branch_registered')->select('account_officer.ao_id', 'account_officer.name')->get()->toArray();
-        $centers = Center::where(["status"=>"active"]);
-        if(isset($filters["center"]) && $filters["center"]){
-            $centers = $centers->where(["center_id"=>$filters["center"]]);
+        $centers = Center::where(["status" => "active"]);
+        if (isset($filters["center"]) && $filters["center"]) {
+            $centers = $centers->where(["center_id" => $filters["center"]]);
             $centers = $centers->select('center_id', 'center')->get()->toArray();
-        }else{
+        } else {
             $centers = $centers->select('center_id', 'center')->get()->toArray();
-            $centers[] = ["center"=>"No Center", "center_id" => "No Center"];
+            $centers[] = ["center" => "No Center", "center_id" => "No Center"];
         }
-        $products = Product::where(["status"=>"active"]);
-        if(isset($filters["product"]) && $filters["product"]){
-            $products = $products->where(["product_id"=>$filters["product"]]);
+        $products = Product::where(["status" => "active"]);
+        if (isset($filters["product"]) && $filters["product"]) {
+            $products = $products->where(["product_id" => $filters["product"]]);
         }
         $products = $products->select('product_id', 'product_code', 'product_name')->get()->toArray();
 
@@ -1100,8 +1092,8 @@ class Reports extends Model
                         'documents', 'borrower', 'center', 'branch', 'product', 'accountOfficer', 'payments'
                     ]);
 
-                    if( count($accounts) > 0 ) {
-                        foreach($accounts as $key => $account) {
+                    if (count($accounts) > 0) {
+                        foreach ($accounts as $key => $account) {
                             $totalBal = $account->outstandingBalance($account->loan_account_id);
                             $oBalance = $totalBal < 0 ? 0 : $totalBal;
                             $remainingBal = $account->remainingBalance();
@@ -1112,9 +1104,9 @@ class Reports extends Model
                             $current_amort = $account->getCurrentAmortization();
 
 
-                            if($account->loan_status == LoanAccount::LOAN_RES_WO_PDI && $oBalance == 0 || $account->loan_status == LoanAccount::LOAN_RESTRUCTED && $oBalance == 0) {
+                            if ($account->loan_status == LoanAccount::LOAN_RES_WO_PDI && $oBalance == 0 || $account->loan_status == LoanAccount::LOAN_RESTRUCTED && $oBalance == 0) {
                                 continue;
-                            }else {
+                            } else {
                                 $amountDue = 0;
                                 $amortPrincipal = 0;
                                 $advPrincipal = 0;
@@ -1123,7 +1115,7 @@ class Reports extends Model
                                 $advInterest = 0;
                                 $shortInterest = 0;
 
-                                if($current_amort) {
+                                if ($current_amort) {
                                     $amortPrincipal = $current_amort["principal"];
                                     $advPrincipal = $current_amort["advance_principal"];
                                     $shortPrincipal = $current_amort["short_principal"];
@@ -1141,8 +1133,8 @@ class Reports extends Model
                                 $accOfficers[$aoKey]["products"][$prodValue["product_name"]]["centers"][$centVal["center"]]['accounts'][] = [
                                     'borrower_name' => isset($account->borrower) ? $account->borrower->fullname() : '',
                                     "account_num" => $account->account_num,
-                                    "date_loan" => Carbon::createFromFormat('Y-m-d',$account->date_release)->format('m/d/Y'),
-                                    "maturity" => Carbon::createFromFormat('Y-m-d',$account->due_date)->format('m/d/Y'),
+                                    "date_loan" => Carbon::createFromFormat('Y-m-d', $account->date_release)->format('m/d/Y'),
+                                    "maturity" => Carbon::createFromFormat('Y-m-d', $account->due_date)->format('m/d/Y'),
                                     "amount_loan" => $account->loan_amount,
                                     "principal_amount" => abs(($amortPrincipal + $shortPrincipal) - $advPrincipal),
                                     "interest_amount" => abs($amortInterest + $shortInterest - $advInterest),
@@ -1161,7 +1153,7 @@ class Reports extends Model
                                     "interest_balance" => $interestBal - $reb,
                                     "outstanding_balance" => $oBalance,
                                     "amortization" => $principal + $interest, //$account->amortization()["principal"] + $account->amortization()["interest"],
-                                    "amort_dist" => ['principal' => $principal, 'interest' => $interest ],
+                                    "amort_dist" => ['principal' => $principal, 'interest' => $interest],
                                     // "current_amort" => $current_amort,
                                     "type" => $account->payment_mode,
                                     "loan_status" => $account->loan_status,
@@ -1169,47 +1161,45 @@ class Reports extends Model
                                 ];
 
                                 $acc = $accOfficers[$aoKey]["products"][$prodValue["product_name"]]["centers"][$centVal["center"]]['accounts'];
-                                usort($acc,function($a,$b) {
-                                    return strcmp($a['borrower_name'],$b['borrower_name']);
+                                usort($acc, function ($a, $b) {
+                                    return strcmp($a['borrower_name'], $b['borrower_name']);
                                 });
 
                                 $accOfficers[$aoKey]["products"][$prodValue["product_name"]]["centers"][$centVal["center"]]['accounts'] = $acc;
                             }
-
                         }
-
                     }
                 }
-
             }
         }
 
         return $accOfficers;
     }
 
-    public function aoRevenueReport($filters = []){
-        $accOfficers = AccountOfficer::where(["status"=> AccountOfficer::STATUS_ACTIVE]);
-        if(isset($filters["branch_id"]) && $filters["branch_id"]){
-            $accOfficers = $accOfficers->where(["branch_id"=>$filters["branch_id"]]);
+    public function aoRevenueReport($filters = [])
+    {
+        $accOfficers = AccountOfficer::where(["status" => AccountOfficer::STATUS_ACTIVE]);
+        if (isset($filters["branch_id"]) && $filters["branch_id"]) {
+            $accOfficers = $accOfficers->where(["branch_id" => $filters["branch_id"]]);
         }
         $accOfficers = $accOfficers->get()->toArray();
         $report = [];
-        foreach($accOfficers as $aoValue){
+        foreach ($accOfficers as $aoValue) {
             $loanAccounts = $this->getLoanAccounts(["account_officer" => $aoValue['ao_id']]);
             $outstanding_loan_portfolio = 0;
             $filing_fee = 0;
             $interest_income = 0;
             $penalty = 0;
             $pdi = 0;
-            foreach($loanAccounts as $loanAccount){
+            foreach ($loanAccounts as $loanAccount) {
                 $outstanding_loan_portfolio += $loanAccount->remainingBalance()['principal']['balance'];
             }
-            $loanAccountsDate = $this->getLoanAccounts( array_merge($filters,["account_officer" => $aoValue['ao_id']]) );
-            foreach($loanAccountsDate as $loanAccount){
+            $loanAccountsDate = $this->getLoanAccounts(array_merge($filters, ["account_officer" => $aoValue['ao_id']]));
+            foreach ($loanAccountsDate as $loanAccount) {
                 $filing_fee += $loanAccount->filing_fee;
             }
-            $payments = $this->getPayments(array_merge($filters,["account_officer" => $aoValue['ao_id']]));
-            foreach($payments as $payment){
+            $payments = $this->getPayments(array_merge($filters, ["account_officer" => $aoValue['ao_id']]));
+            foreach ($payments as $payment) {
                 $interest_income += $payment->interest;
                 $penalty += $payment->penalty_approval_no ? 0 : $payment->penalty;
                 $pdi += $payment->pdi_approval_no ? 0 : $payment->pdi;
@@ -1226,11 +1216,12 @@ class Reports extends Model
         return $report;
     }
 
-    public function loanAgingReport($filters = []){
+    public function loanAgingReport($filters = [])
+    {
         $loanAccounts = $this->getLoanAccounts($filters);
         $data = [];
-        foreach($loanAccounts as $loanAccount){
-            if($loanAccount->loan_status == LoanAccount::LOAN_PAID){
+        foreach ($loanAccounts as $loanAccount) {
+            if ($loanAccount->loan_status == LoanAccount::LOAN_PAID) {
                 continue;
             }
             $curAmort = $loanAccount->getCurrentAmortization();
@@ -1238,9 +1229,9 @@ class Reports extends Model
             $dueAmt = $curAmort->short_principal + $curAmort->principal + $curAmort->interest + $curAmort->short_interest;
             $bal = $remBal["memo"]["balance"];
             $late = $loanAccount->daysMissed($loanAccount->getCurrentAmortization()['delinquent']['missed'], $filters['as_of'], true);
-            if($loanAccount->loan_status == LoanAccount::LOAN_ONGOING && $loanAccount->payment_status != LoanAccount::PAYMENT_DELINQUENT){
+            if ($loanAccount->loan_status == LoanAccount::LOAN_ONGOING && $loanAccount->payment_status != LoanAccount::PAYMENT_DELINQUENT) {
                 // Here for Current Accounts
-                if(!isset($data["current"])){
+                if (!isset($data["current"])) {
                     $data["current"] = [
                         "num_accts" => 0,
                         "loan_amt" => 0,
@@ -1252,9 +1243,9 @@ class Reports extends Model
                 $data["current"]["loan_amt"] += $loanAccount->loan_amount;
                 $data["current"]["balance"] += $bal;
                 $data["current"]["due_amt"] += $dueAmt;
-            }else if($loanAccount->loan_status == LoanAccount::LOAN_ONGOING && $loanAccount->payment_status == LoanAccount::PAYMENT_DELINQUENT){
+            } else if ($loanAccount->loan_status == LoanAccount::LOAN_ONGOING && $loanAccount->payment_status == LoanAccount::PAYMENT_DELINQUENT) {
                 // Here for Delinquent Accounts
-                if(!isset($data["delinquent"])){
+                if (!isset($data["delinquent"])) {
                     $data["delinquent"] = [
                         "1 to 30" => [
                             "num_accts" => 0,
@@ -1289,24 +1280,24 @@ class Reports extends Model
                     ];
                 }
                 $day = "";
-                if($late >= 1 && $late <= 30){
+                if ($late >= 1 && $late <= 30) {
                     $day = "1 to 30";
-                }else if($late >= 31 && $late <= 60){
+                } else if ($late >= 31 && $late <= 60) {
                     $day = "31 to 60";
-                }else if($late >= 61 && $late <= 90){
+                } else if ($late >= 61 && $late <= 90) {
                     $day = "61 to 90";
-                }else if($late >= 91 && $late <= 180){
+                } else if ($late >= 91 && $late <= 180) {
                     $day = "91 to 180";
-                }else if($late > 180){
+                } else if ($late > 180) {
                     $day = "180 above";
                 }
                 $data["delinquent"][$day]["num_accts"] += 1;
                 $data["delinquent"][$day]["loan_amt"] += $loanAccount->loan_amount;
                 $data["delinquent"][$day]["balance"] += $bal;
                 $data["delinquent"][$day]["due_amt"] += $dueAmt;
-            }else{
+            } else {
                 // Here for other Statuses
-                if(!isset($data[$loanAccount->loan_status])){
+                if (!isset($data[$loanAccount->loan_status])) {
                     $data[$loanAccount->loan_status] = [
                         "1 to 30" => [
                             "num_accts" => 0,
@@ -1341,17 +1332,17 @@ class Reports extends Model
                     ];
                 }
                 $day = "";
-                if($late >= 1 && $late <= 30){
+                if ($late >= 1 && $late <= 30) {
                     $day = "1 to 30";
-                }else if($late >= 31 && $late <= 60){
+                } else if ($late >= 31 && $late <= 60) {
                     $day = "31 to 60";
-                }else if($late >= 61 && $late <= 90){
+                } else if ($late >= 61 && $late <= 90) {
                     $day = "61 to 90";
-                }else if($late >= 91 && $late <= 180){
+                } else if ($late >= 91 && $late <= 180) {
                     $day = "91 to 180";
-                }else if($late > 180){
+                } else if ($late > 180) {
                     $day = "180 above";
-                }else{
+                } else {
                     continue;
                 }
                 $data[$loanAccount->loan_status][$day]["num_accts"] += 1;
@@ -1363,16 +1354,17 @@ class Reports extends Model
         return $data;
     }
 
-    public function cancelledRepaymentByClient($filters = []) {
+    public function cancelledRepaymentByClient($filters = [])
+    {
 
         $payments = Payment::join('loan_accounts', 'payment.loan_account_id', '=', 'loan_accounts.loan_account_id')
-                        ->where(['payment.branch_id' => $filters['branch_id'], 'payment.status' => 'cancelled'])
-                        ->whereDate('payment.cancelled_date', '>=', $filters['date_from'])
-                        ->whereDate('payment.cancelled_date', '<=', $filters['date_to'])
-                        ->orderBy('payment.transaction_date', 'ASC')
-                        ->get([
-                            'payment.*', 'loan_accounts.borrower_id', 'loan_accounts.account_num',
-                        ]);
+            ->where(['payment.branch_id' => $filters['branch_id'], 'payment.status' => 'cancelled'])
+            ->whereDate('payment.cancelled_date', '>=', $filters['date_from'])
+            ->whereDate('payment.cancelled_date', '<=', $filters['date_to'])
+            ->orderBy('payment.transaction_date', 'ASC')
+            ->get([
+                'payment.*', 'loan_accounts.borrower_id', 'loan_accounts.account_num',
+            ]);
 
         $data = [];
 
@@ -1394,42 +1386,52 @@ class Reports extends Model
                 'penalty_waive' => ($payment->penalty_approval_no) ? 0 : $payment->penalty,
                 'rebates' => $payment->rebates,
                 'overpayment' => $payment->over_payment,
-                'total' => $payment->amount_applied-$payment->rebates,
+                'total' => $payment->amount_applied - $payment->rebates,
                 'remarks' => $payment->remarks,
                 'payment_type' => $payment->payment_type
             ];
-
         }
 
         return $data;
     }
 
-    public function microGroup($filters = [], $weeksAndDays, $monthStart, $monthEnd){
-        $data = ["monday"=>[],"tuesday"=>[],"wednesday"=>[],"thursday"=>[],"friday"=>[]];
+    public function microGroup($filters = [], $weeksAndDays, $monthStart, $monthEnd)
+    {
+        $data = ["monday" => [], "tuesday" => [], "wednesday" => [], "thursday" => [], "friday" => []];
         foreach ($data as $weekDay => $weekDayData) {
             //get centers where center.day_sched
-            $centers = Center::where(["center.day_sched"=>$weekDay,"status"=>"active"]) // center daysched  or use center sched in loan account?
-                ->get();
+            $centers = Center::where(["center.day_sched" => $weekDay, "status" => "active"]) // center daysched  or use center sched in loan account?
+                ->orderBy('center.center')->get();
             foreach ($centers as $centerId => $centerVal) {
                 $data[$weekDay][$centerVal->center]["all"]["account_officer"]  = "test_data_api_result_ACCOUNT_OFFICER";
                 $data[$weekDay][$centerVal->center]["all"]["area_of_operation"]  = $centerVal->area;
                 $no_of_clients = LoanAccount::join("product", 'loan_accounts.product_id', '=', 'product.product_id')
                     ->join("branch", "branch.branch_code", "loan_accounts.branch_code")
-                    ->where(["loan_accounts.center_id"=>$centerVal->center_id, "product.product_name"=>'micro group', "branch.branch_id"=>$filters["branch_id"]])
+                    ->whereIn(
+                        "loan_accounts.loan_status",
+                        [LoanAccount::LOAN_ONGOING, LoanAccount::LOAN_PASTDUE]
+                    )
+                    ->where(["loan_accounts.center_id" => $centerVal->center_id, "product.product_name" => 'micro group', "branch.branch_id" => $filters["branch_id"]])
                     ->groupBy("loan_accounts.center_id")
-                    ->select([DB::raw("ifnull(count(loan_accounts.loan_account_id),0) as no_of_clients")])
+                    ->select([
+                        DB::raw("ifnull(count(loan_accounts.loan_account_id),0) as no_of_clients"),
+                        DB::raw("COUNT(CASE WHEN loan_status = 'Past Due' THEN 1 ELSE null END) as pastdue_count"),
+                        DB::raw("COUNT(CASE WHEN payment_status = 'Current' AND loan_status = 'Ongoing' THEN 1 ELSE null END) as current_count")
+                    ])
                     ->first();
                 $data[$weekDay][$centerVal->center]["all"]['no_of_clients'] = $no_of_clients ? $no_of_clients->no_of_clients : 0;
+                $data[$weekDay][$centerVal->center]["all"]['no_of_pastdue'] = $no_of_clients ? $no_of_clients->pastdue_count : 0;
+                $data[$weekDay][$centerVal->center]["all"]['no_of_current'] = $no_of_clients ? $no_of_clients->current_count : 0;
                 $data[$weekDay][$centerVal->center]["all"]["start"] = $monthStart;
                 $data[$weekDay][$centerVal->center]["all"]["end"] = $monthEnd;
                 $monthPayments = Payment::join("loan_accounts", 'payment.loan_account_id', '=', 'loan_accounts.loan_account_id')
                     ->join("product", 'loan_accounts.product_id', '=', 'product.product_id')
                     ->join("branch", "branch.branch_code", "loan_accounts.branch_code")
-                    ->where(["loan_accounts.center_id"=>$centerVal->center_id, "product.product_name"=>'micro group', "branch.branch_id"=>$filters["branch_id"]])
+                    ->where(["loan_accounts.center_id" => $centerVal->center_id, "product.product_name" => 'micro group', "branch.branch_id" => $filters["branch_id"]])
                     ->whereDate('payment.transaction_date', '>=', $monthStart)
                     ->whereDate('payment.transaction_date', '<=', $monthEnd)
                     ->groupBy("loan_accounts.loan_account_id")
-                    ->select(["loan_accounts.loan_account_id",DB::raw("sum(payment.amount_applied-payment.rebates) as total_paid")])
+                    ->select(["loan_accounts.loan_account_id", DB::raw("sum(payment.amount_applied-payment.rebates) as total_paid")])
                     ->get();
                 $data[$weekDay][$centerVal->center]["all"]["month_payments"] = $monthPayments;
                 $data[$weekDay][$centerVal->center]["all"]["num_of_payments"] = 0;
@@ -1438,18 +1440,18 @@ class Reports extends Model
                     $data[$weekDay][$centerVal->center]["all"]["num_of_payments"] += 1;
                     $data[$weekDay][$centerVal->center]["all"]["total_paid"] += $value->total_paid;
                 }
-                foreach($weeksAndDays as $week => $weekData){
-                    $data[$weekDay][$centerVal->center]["weeklyData"][$week] = ["num_of_payments"=>0, "total_paid"=>0];
+                foreach ($weeksAndDays as $week => $weekData) {
+                    $data[$weekDay][$centerVal->center]["weeklyData"][$week] = ["num_of_payments" => 0, "total_paid" => 0];
                     $data[$weekDay][$centerVal->center]["weeklyData"][$week]["start"] = $weekData['start'];
                     $data[$weekDay][$centerVal->center]["weeklyData"][$week]["end"] = $weekData['end'];
                     $loanAccounts = Payment::join("loan_accounts", 'payment.loan_account_id', '=', 'loan_accounts.loan_account_id')
                         ->join("product", 'loan_accounts.product_id', '=', 'product.product_id')
                         ->join("branch", "branch.branch_code", "loan_accounts.branch_code")
-                        ->where(["loan_accounts.center_id"=>$centerVal->center_id, "product.product_name"=>'micro group', "branch.branch_id"=>$filters["branch_id"]])
+                        ->where(["loan_accounts.center_id" => $centerVal->center_id, "product.product_name" => 'micro group', "branch.branch_id" => $filters["branch_id"]])
                         ->whereDate('payment.transaction_date', '>=', $weekData['start'])
                         ->whereDate('payment.transaction_date', '<=', $weekData['end'])
                         ->groupBy("loan_accounts.loan_account_id")
-                        ->select([DB::raw("count(payment.payment_id) as num_of_payments"),DB::raw("sum(payment.amount_applied-payment.rebates) as total_paid")])
+                        ->select([DB::raw("count(payment.payment_id) as num_of_payments"), DB::raw("sum(payment.amount_applied-payment.rebates) as total_paid")])
                         ->get();
                     foreach ($loanAccounts as $key => $value) {
                         $data[$weekDay][$centerVal->center]["weeklyData"][$week]["num_of_payments"] += 1;
@@ -1461,36 +1463,37 @@ class Reports extends Model
         return $data;
     }
 
-    public function microIndividual($filters = [], $weeksAndDays, $monthStart, $monthEnd){
-        $centers = Center::where(["status"=>"active"])->get();
+    public function microIndividual($filters = [], $weeksAndDays, $monthStart, $monthEnd)
+    {
+        $centers = Center::where(["status" => "active"])->get();
         $data = Payment::join("loan_accounts", 'payment.loan_account_id', '=', 'loan_accounts.loan_account_id')
             ->join("center", "loan_accounts.center_id", "=", "center.center_id")
             ->join("product", 'loan_accounts.product_id', '=', 'product.product_id')
             ->join("branch", "branch.branch_code", "loan_accounts.branch_code")
-            ->where(["product.product_name"=>'micro individual',"branch.branch_id"=>$filters["branch_id"]])
+            ->where(["product.product_name" => 'micro individual', "branch.branch_id" => $filters["branch_id"]])
             ->whereDate('payment.transaction_date', '>=', $monthStart)
             ->whereDate('payment.transaction_date', '<=', $monthEnd)
             ->groupBy("loan_accounts.borrower_id", "loan_accounts.center_id", "center.center", "center.day_sched", "loan_accounts.day_schedule")
             ->select([DB::raw("count(payment.payment_id) as num_of_payments"), DB::raw("sum(payment.amount_applied-payment.rebates) as total_paid"), "loan_accounts.borrower_id", "loan_accounts.center_id", "center.center", "loan_accounts.day_schedule as loanSched", "center.day_sched as centerSched"])
             ->get()->toArray();
-        foreach($data as $key => $paymentData) {
+        foreach ($data as $key => $paymentData) {
             $data[$key]["borrower"] = Borrower::find($paymentData['borrower_id'])->fullname();
-            foreach($weeksAndDays as $week => $weekData){
+            foreach ($weeksAndDays as $week => $weekData) {
                 $loanAccounts = Payment::join("loan_accounts", 'payment.loan_account_id', '=', 'loan_accounts.loan_account_id')
                     ->join("product", 'loan_accounts.product_id', '=', 'product.product_id')
                     ->join("branch", "branch.branch_code", "loan_accounts.branch_code")
                     ->where([
-                        "loan_accounts.center_id"=>$paymentData['center_id'],
-                        "loan_accounts.borrower_id"=>$paymentData['borrower_id'],
-                        "product.product_name"=>"micro individual",
-                        "branch.branch_id"=>$filters["branch_id"]
-                        ])
+                        "loan_accounts.center_id" => $paymentData['center_id'],
+                        "loan_accounts.borrower_id" => $paymentData['borrower_id'],
+                        "product.product_name" => "micro individual",
+                        "branch.branch_id" => $filters["branch_id"]
+                    ])
                     ->whereDate('payment.transaction_date', '>=', $weekData['start'])
                     ->whereDate('payment.transaction_date', '<=', $weekData['end'])
                     ->groupBy("loan_accounts.borrower_id", "loan_accounts.center_id")
-                    ->select([DB::raw("count(payment.payment_id) as num_of_payments"),DB::raw("sum(payment.amount_applied-payment.rebates) as total_paid")])
+                    ->select([DB::raw("count(payment.payment_id) as num_of_payments"), DB::raw("sum(payment.amount_applied-payment.rebates) as total_paid")])
                     ->first();
-                $data[$key]["weeklyData"][$week] = $loanAccounts ? $loanAccounts : ["num_of_payments"=>0, "total_paid"=>0];
+                $data[$key]["weeklyData"][$week] = $loanAccounts ? $loanAccounts : ["num_of_payments" => 0, "total_paid" => 0];
                 $data[$key]["weeklyData"][$week]["start"] = $weekData['start'];
                 $data[$key]["weeklyData"][$week]["end"] = $weekData['end'];
             }
@@ -1498,37 +1501,35 @@ class Reports extends Model
         return $data;
     }
 
-    public function birTaxReport($filters=[]){
+    public function birTaxReport($filters = [])
+    {
         $data = Payment::join("loan_accounts", 'payment.loan_account_id', '=', 'loan_accounts.loan_account_id')
-        ->join("borrower_info", 'loan_accounts.borrower_id', '=', 'borrower_info.borrower_id')
-        ->where(["payment.branch_id"=>$filters["branch_id"], "payment.status"=>"paid"])
-        ->whereDate('payment.transaction_date', '>=', $filters['date_from'])
-        ->whereDate('payment.transaction_date', '<=', $filters['date_to'])
-        ->groupBy("borrower_info.firstname","borrower_info.middlename","borrower_info.lastname",)
-        ->select([
-            // DB::raw("'".$filters["date_to"]."' as TAX_MONTH"),
-            // DB::raw("'' as SEQ_NO"),
-            DB::raw("REPLACE(REPLACE(REPLACE(borrower_info.lastname,'ñ','n'),'Ñ','N'),'-',' ') as LAST_NAME"),
-            DB::raw("REPLACE(REPLACE(REPLACE(borrower_info.firstname,'ñ','n'),'Ñ','N'),'-',' ') as FIRST_NAME"),
-            DB::raw("UPPER(SUBSTRING(borrower_info.middlename,1,1)) as MIDDLE_NAM"),
-            DB::raw("'' as ADDRESS"),
-            DB::raw("'' as ADDRESS2"),
-            DB::raw("SUM(payment.interest+payment.pdi+payment.penalty-payment.vat) as GSALES"),
-            DB::raw("SUM(payment.interest+payment.pdi+payment.penalty-payment.vat) as GTSALES"),
-            DB::raw("'' as GESALES"),
-            DB::raw("SUM(payment.vat) as TOUTTAX"),
-            DB::raw("'12.00' as TAX_RATE"),
-        ])
-        ->having('GSALES','>',0)
-        ->having('GTSALES','>',0)
-        ->having('TOUTTAX','>',0)
-        ->orderBy('LASTNAME')
-        // ->toSql();
-        ->get()->toArray();
+            ->join("borrower_info", 'loan_accounts.borrower_id', '=', 'borrower_info.borrower_id')
+            ->where(["payment.branch_id" => $filters["branch_id"], "payment.status" => "paid"])
+            ->whereDate('payment.transaction_date', '>=', $filters['date_from'])
+            ->whereDate('payment.transaction_date', '<=', $filters['date_to'])
+            ->groupBy("borrower_info.firstname", "borrower_info.middlename", "borrower_info.lastname",)
+            ->select([
+                // DB::raw("'".$filters["date_to"]."' as TAX_MONTH"),
+                // DB::raw("'' as SEQ_NO"),
+                DB::raw("REPLACE(REPLACE(REPLACE(borrower_info.lastname,'ñ','n'),'Ñ','N'),'-',' ') as LAST_NAME"),
+                DB::raw("REPLACE(REPLACE(REPLACE(borrower_info.firstname,'ñ','n'),'Ñ','N'),'-',' ') as FIRST_NAME"),
+                DB::raw("UPPER(SUBSTRING(borrower_info.middlename,1,1)) as MIDDLE_NAM"),
+                DB::raw("'' as ADDRESS"),
+                DB::raw("'' as ADDRESS2"),
+                DB::raw("SUM(payment.interest+payment.pdi+payment.penalty-payment.vat) as GSALES"),
+                DB::raw("SUM(payment.interest+payment.pdi+payment.penalty-payment.vat) as GTSALES"),
+                DB::raw("'' as GESALES"),
+                DB::raw("SUM(payment.vat) as TOUTTAX"),
+                DB::raw("'12.00' as TAX_RATE"),
+            ])
+            // ->toSql();
+            ->get()->toArray();
         return $data;
     }
 
-    public function prepaidReport($filters=[]){
+    public function prepaidReport($filters = [])
+    {
         $loanAccounts = $this->getLoanAccounts($filters);
         $data = [];
         foreach ($loanAccounts as $key => $value) {
@@ -1542,8 +1543,8 @@ class Reports extends Model
             $dueDate = new Carbon($value->due_date);
             $dueDate = $dueDate->firstOfMonth()->startOfDay();
             $history = [];
-            while($loanMonth->lte($dueDate)){
-                if(!isset($history[$loanMonth->format('Y')])){
+            while ($loanMonth->lte($dueDate)) {
+                if (!isset($history[$loanMonth->format('Y')])) {
                     $history[$loanMonth->format('Y')] = [
                         "01" => 0,
                         "02" => 0,
@@ -1560,10 +1561,10 @@ class Reports extends Model
                     ];
                 }
 
-                if($loanMonth->lte($currentMonth)){
+                if ($loanMonth->lte($currentMonth)) {
                     $history[$loanMonth->format('Y')][$loanMonth->format('m')] = $monthly;
                     $balance -= $monthly;
-                    if($balance < 0 ){
+                    if ($balance < 0) {
                         $history[$loanMonth->format('Y')][$loanMonth->format('m')] = round($monthly + $balance, 2);
                         $balance = 0;
                     }
@@ -1585,5 +1586,4 @@ class Reports extends Model
         }
         return $data;
     }
-
 }

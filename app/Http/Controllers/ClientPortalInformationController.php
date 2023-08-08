@@ -11,7 +11,7 @@ class ClientPortalInformationController extends Controller
     public function personalInformationList(){
 		return view('client_portal_information.personal_information_list')->with([
 			'nav' => ['client information', 'personal information list'],
-			'title' => 'Personal Information List',
+			'title' => 'MAC | Personal Information List',
 		]);
 	}
 
@@ -19,14 +19,14 @@ class ClientPortalInformationController extends Controller
 		return view('client_portal_information.personal_information_details')->with([
 			'nav' => ['client information', 'personal information list'],
 			'id' => Session::get('id'),
-			'title' => 'Personal Information',
+			'title' => 'MAC | Personal Information',
 		]);
 	}
 
 	public function statementOfAccountsList(){
 		return view('client_portal_information.statement_of_accounts_list')->with([
 			'nav' => ['client information', 'statement of accounts list'],
-			'title' => 'Statement of Account List',
+			'title' => 'MAC | Statement of Account List',
 		]);
 	}
 
@@ -34,13 +34,13 @@ class ClientPortalInformationController extends Controller
 		return view('client_portal_information.personal_information_details_edit')->with([
 			'nav' => ['client information', 'personal information list'],
 			'id' => Session::get('id'),
-			'title' => 'Edit Personal Information',
+			'title' => 'MAC | Edit Personal Information',
 		]);
 	}
 	public function balanceInquiry(){
 		return view('client_portal_information.balance_inquiry')->with([
 			'nav' => ['client information', 'balance inquiry'],
-			'title' => 'Balance Inquiry',
+			'title' => 'MAC | Balance Inquiry',
 			'id' => Session::get("id")
 		]);
 	}
@@ -49,7 +49,7 @@ class ClientPortalInformationController extends Controller
 		return view('client_portal_information.account_statement_details')->with([
 			'nav' => ['client information', 'statement of accounts list'],
 			'id' => Session::get('id'),
-			'title' => 'Statement of Account Details',
+			'title' => 'MAC | Statement of Account Details',
 		]);
 	}
 	

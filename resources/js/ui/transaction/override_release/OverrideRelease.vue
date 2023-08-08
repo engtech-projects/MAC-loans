@@ -348,6 +348,7 @@ export default {
 			}.bind(this));
 		},
 		batchOverride:function(){
+			this.loading = true;
 			var accounts = [];
 			this.loanAccounts.map(function(account){
 				if(account.checked){

@@ -70,9 +70,15 @@
 		@endif
 		@if(Auth::user()->hasAccess('view BIR report'))
 		<div class="report-item-nav <?php echo isActiveNav($nav[1], 'bir'); ?>">
-			<div class="pxy-25 d-flex justify-content-between align-items-center hover-light report-nav-item <?php echo isActiveNav($nav[1], 'bir'); ?>">
+			<div class="light-bb pxy-25 d-flex justify-content-between align-items-center hover-light report-nav-item <?php echo isActiveNav($nav[1], 'bir'); ?>">
 				<a href="{{route('reports.bir')}}" class="text-20 base-link">BIR</a>
 			</div>
 		</div>
 		@endif
+		<div class="report-item-nav <?php echo isActiveNav($nav[1], 'insurance'); ?>">
+			<div class="pxy-25 d-flex justify-content-between align-items-center hover-light report-nav-item <?php echo isActiveNav($nav[1], 'insurance'); ?>">
+				<a href="{{route('reports.release.insurance')}}" class="text-20 base-link">Insurance</a>
+			</div>
+		</div>
+		
 	</div>

@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="csrf-token" content="{{ csrf_token() }}">
   <link rel="icon" href="{{ url('favicon.ico') }}">
-  <title> {{isset($title)? $title : 'Title'}} </title>
+  <title> {{isset($title)? $title : 'MAC | Dashboard'}} </title>
   
   @include('_includes.styles')
  
