@@ -1422,7 +1422,7 @@ class LoanAccount extends Model
     public function getLoanAccountStatusByBranch($date, $status)
     {
 
-        $date = Carbon::createFromFormat('Y-m-d', $date);
+        $date = $date ? Carbon::createFromFormat('Y-m-d', $date) : null;
         $months = getMonths();
         $accounts = self::query()
             ->selectRaw('YEAR(date_release) as year,
@@ -1430,21 +1430,25 @@ class LoanAccount extends Model
             COUNT(*) AS no_of_accounts')
             ->released()
             ->without(['documents', 'borrower', 'center', 'product', 'accountOfficer', 'payments'])
-            ->whereMonth('date_release', $date->month)
-            ->whereYear('date_release', $date->year)
             ->groupBy('year', 'month', 'branch_code')
             ->orderBy('year')
             ->orderBy('month');
+
+        if (isset($date)) {
+            $accounts = $accounts->whereMonth('date_release', $date->month)
+                ->whereYear('date_release', $date->year);
+        }
+
         if ($status === "Delinquent") {
-            $accounts = $accounts->delinquent()->get();
+            $accounts = $accounts->delinquent();
         }
         if ($status === "Pastdue") {
-            $accounts = $accounts->pastDue()->get();
+            $accounts = $accounts->pastDue();
         }
 
         $groupAccounts = [];
 
-        foreach ($accounts as $account) {
+        foreach ($accounts->get() as $account) {
             $year = $account->year;
             $branch = $account->branch->branch_name;
             $month = $account->month;
@@ -1464,7 +1468,7 @@ class LoanAccount extends Model
 
     public function getLoanAccountReleases($date)
     {
-        $date = Carbon::createFromFormat('Y-m-d', $date);
+        $date = $date ? Carbon::createFromFormat('Y-m-d', $date) : null;
         $months = getMonths();
         $pastdueAccounts = self::query()
             ->selectRaw('YEAR(date_release) as year,
@@ -1472,16 +1476,18 @@ class LoanAccount extends Model
             COUNT(*) AS total_account_released')
             ->released()
             ->without(['documents', 'borrower', 'center', 'product', 'accountOfficer', 'payments'])
-            ->whereMonth('date_release', $date->month)
-            ->whereYear('date_release', $date->year)
             ->groupBy('year', 'month', 'branch_code')
             ->orderBy('year')
-            ->orderBy('month')
-            ->get();
+            ->orderBy('month');
+
+        if (isset($date)) {
+            $pastdueAccounts = $pastdueAccounts->whereMonth('date_release', $date->month)
+                ->whereYear('date_release', $date->year);
+        }
 
         $groupReleasedAccounts = [];
 
-        foreach ($pastdueAccounts as $account) {
+        foreach ($pastdueAccounts->get() as $account) {
             $year = $account->year;
             $branch = $account->branch->branch_name;
             $month = $account->month;
@@ -1501,7 +1507,8 @@ class LoanAccount extends Model
 
     public function getBranchPortFolio($date)
     {
-        $date = Carbon::createFromFormat('Y-m-d', $date);
+
+        $date = $date ? Carbon::createFromFormat('Y-m-d', $date) : null;
         $months = getMonths();
         $branchPortfolio = self::query()
             ->selectRaw('YEAR(date_release) as year,MONTH(date_release) as month,
@@ -1510,15 +1517,18 @@ class LoanAccount extends Model
         COUNT(*) AS no_of_accounts')
             ->released()
             ->without(['documents', 'borrower', 'center', 'product', 'accountOfficer', 'payments'])
-            ->whereMonth('date_release', $date->month)
-            ->whereYear('date_release', $date->year)
             ->groupBy('year', 'month', 'branch_code')
             ->orderBy('year')
-            ->orderBy('month')
-            ->get();
+            ->orderBy('month');
+
+        if (isset($date)) {
+            $branchPortfolio = $branchPortfolio->whereMonth('date_release', $date->month)
+                ->whereYear('date_release', $date->year);
+        }
+
 
         $groupDelinquentAccounts = [];
-        foreach ($branchPortfolio as $account) {
+        foreach ($branchPortfolio->get() as $account) {
             $year = $account->year;
             $branch = $account->branch->branch_name;
             $month = $account->month;
@@ -1536,6 +1546,6 @@ class LoanAccount extends Model
             ];
         }
 
-        return $groupDelinquentAccounts ?? "No records found.";
+        return $groupDelinquentAccounts;
     }
 }

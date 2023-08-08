@@ -81,18 +81,19 @@ class Payment extends Model
 
     public function getCollectionPaymentByBranch($date)
     {
-        $date = Carbon::createFromFormat('Y-m-d', $date);
+        $date = $date ? Carbon::createFromFormat('Y-m-d', $date) : null;
         $months = getMonths();
         $paymentsYearly = self::selectRaw('YEAR(transaction_date) AS year, branch_id as branch_id, MONTH(transaction_date) as month,COUNT(*) as account')
-            ->whereMonth('transaction_date', $date->month)
-            ->whereYear('transaction_date', $date->year)
             ->groupBy('year', 'month', 'branch_id')
             ->orderBy('year')
-            ->orderBy('month')
-            ->get();
+            ->orderBy('month');
 
+        if (isset($date)) {
+            $paymentsYearly = $paymentsYearly->whereMonth('transaction_date', $date->month)
+                ->whereYear('transaction_date', $date->year);
+        }
         $groupPayments = [];
-        foreach ($paymentsYearly as $payment) {
+        foreach ($paymentsYearly->get() as $payment) {
             $year = $payment->year;
             $branch = $payment->branch->branch_name;
             $month = $payment->month;

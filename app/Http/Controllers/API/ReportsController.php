@@ -320,11 +320,12 @@ class ReportsController extends BaseController
 
     public function performanceReport(Request $request)
     {
-        $date = Carbon::createFromFormat('Y-m-d', $request["date"])->format('Y-m-d');
+        $date = null;
         if (isset($request["date"])) {
-            $reports = new Reports();
-            $performanceReport = $reports->performanceReport($date);
+            $date = Carbon::createFromFormat('Y-m-d', $request["date"])->format('Y-m-d');
         }
+        $reports = new Reports();
+        $performanceReport = $reports->performanceReport($date);
         return $this->sendResponse($performanceReport, "Performance Report");
     }
 
