@@ -19,7 +19,6 @@ class Reports extends Model
 
     public function getLoanAccounts($filters = [], $without = [])
     {
-
         $loanAccount = Loanaccount::where(['loan_accounts.status' => 'released']);
 
         if (isset($filters['branch_id']) && $filters['branch_id']) {
@@ -66,9 +65,9 @@ class Reports extends Model
             $loanAccount->where(['loan_accounts.ao_id' => $filters['account_officer']]);
         }
 
-        if (isset($filters['loan_status']) && $filters['loan_status']) {
+        /* if (isset($filters['loan_status']) && $filters['loan_status']) {
             $loanAccount->where(['loan_accounts.loan_status' => $filters['loan_status']]);
-        }
+        } */
 
         if (isset($filters['payment_status']) && $filters['payment_status']) {
             $loanAccount->where(['loan_accounts.payment_status' => $filters['payment_status']]);
@@ -77,15 +76,21 @@ class Reports extends Model
         if (isset($filters['type']) && $filters['type']) {
             $loanAccount->where(['loan_accounts.type' => $filters['type']]);
         }
-        if (isset($filters['loan_status']) && $filters['loan_status']) {
-            if (isset($filters["report"]) && $filters["report"]) {
-                $loanAccount->where(['loan_accounts.loan_status' => $filters['loan_status']]);
-                return $loanAccount->get();
+
+        if (isset($filters["report"]) && $filters["report"] === "status_summary") {
+            if (isset($filters["loan_status"]) && $filters["loan_status"] === LoanAccount::PAYMENT_CURRENT || $filters["loan_status"] === LoanAccount::PAYMENT_DELINQUENT) {
+                return $loanAccount->where(
+                    "payment_status",
+                    $filters["loan_status"]
+                )->where('loan_status', LoanAccount::LOAN_ONGOING)->get();
+            } else {
+                return $loanAccount->where(['loan_accounts.loan_status' => $filters['loan_status']])->get();
             }
-            $loanAccount->where(['loan_accounts.loan_status' => $filters['loan_status']]);
+        } else {
+            if (isset($filters["loan_status"]) && $filters["loan_status"]) {
+                $loanAccount->where(['loan_accounts.loan_status' => $filters['loan_status']]);
+            }
         }
-
-
         return $loanAccount->whereIn('loan_status', [LoanAccount::LOAN_ONGOING, LoanAccount::LOAN_PASTDUE, LoanAccount::LOAN_RESTRUCTED, LoanAccount::LOAN_RES_WO_PDI])
             ->without($without)->get([
                 'loan_accounts.loan_account_id',
@@ -117,6 +122,7 @@ class Reports extends Model
                 'loan_accounts.loan_status',
             ]);
     }
+
 
     public function getPayments($filters = [])
     {
@@ -1064,8 +1070,6 @@ class Reports extends Model
             ->where([
                 'account_officer.status' => AccountOfficer::STATUS_ACTIVE,
             ]);
-
-
         if (isset($filters["branch_id"]) && $filters["branch_id"]) {
             $accOfficers = $accOfficers->where(["branch.branch_id" => $filters["branch_id"]]);
         }
@@ -1093,6 +1097,7 @@ class Reports extends Model
                 $accOfficers[$aoKey]["products"][$prodValue["product_name"]] = $prodValue;
                 foreach ($centers as $centKey => $centVal) {
                     // $accOfficers[$aoKey]["products"][$prodValue["product_name"]]["centers"][$centVal["center"]] = $centVal;
+
                     $accounts = $this->getLoanAccounts([
                         'account_officer' => $aoValue["ao_id"],
                         'product' => $prodValue["product_id"],
@@ -1101,7 +1106,6 @@ class Reports extends Model
                         'loan_status' => $filters["loan_status"],
                         'report' => $filters["report"]
                     ]);
-
 
                     if (count($accounts) > 0) {
                         foreach ($accounts as $key => $account) {
@@ -1171,12 +1175,12 @@ class Reports extends Model
                                     "status" => $account->payment_status,
                                 ];
 
-                                $acc = $accOfficers[$aoKey]["products"][$prodValue["product_name"]]["centers"][$centVal["center"]]['accounts'];
+                                /* $acc = $accOfficers[$aoKey]["products"][$prodValue["product_name"]]["centers"][$centVal["center"]]['accounts'];
                                 usort($acc, function ($a, $b) {
                                     return strcmp($a['borrower_name'], $b['borrower_name']);
                                 });
 
-                                $accOfficers[$aoKey]["products"][$prodValue["product_name"]]["centers"][$centVal["center"]]['accounts'] = $acc;
+                                $accOfficers[$aoKey]["products"][$prodValue["product_name"]]["centers"][$centVal["center"]]['accounts'] = $acc; */
                             }
                         }
                     }
