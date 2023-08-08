@@ -1231,7 +1231,7 @@
 																	<span class="">Due Date</span>
 																	<span>:</span>
 																</div>
-																<span class="flex-2 darker-bb">{{dueDate.split('-').join('/')}}</span>
+																<span class="flex-2 darker-bb">{{dateToMDY(new Date(loanDetails.due_date))}}</span>
 															</div>
 
 															<div class="d-flex flex-row">

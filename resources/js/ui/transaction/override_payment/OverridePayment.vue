@@ -573,6 +573,7 @@ export default {
             return result;
         },
         batchOverride: function () {
+            this.loading = true;
             let checkedPayments = [];
             this.paymentsClone = JSON.parse(JSON.stringify(this.payments));
             this.payments.map(

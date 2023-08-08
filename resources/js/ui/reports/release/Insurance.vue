@@ -1,17 +1,29 @@
 <template>
 	<div class="d-flex flex-column justify-content-between" style="flex:8;min-height:100vh;">
+		<div v-if="loading" class="black-screen d-flex flex-column align-items-center justify-content-center" style="padding-left:0px;">
+			<div class="loading-container d-flex align-items-center justify-content-center mb-36">
+				<span class="loading-text">LOADING</span>
+				<img :src="baseURL() + 'img/loading_default.png'" class="rotating" alt="" style="width:300px;height:300px">
+			</div>
+			<span class="font-lg" style="color:#ddd">Please wait until the process is complete</span>
+		</div>
 		<div>
+			<form @submit.prevent="fetchAccounts">
 			<div class="d-flex flex-row font-md align-items-center mb-16">
 				<span class="font-lg text-primary-dark" style="flex:6">Insurance Report</span>
 				<div class="d-flex flex-row align-items-center mr-24" style="flex:2">
 					<span class="mr-10">From: </span>
-					<input v-model="filter.date_from" type="date" class="form-control">
+					<input v-model="filter.date_from" type="date" required class="form-control">
 				</div>
-				<div class="d-flex flex-row align-items-center mr-64" style="flex:2">
+				<div class="d-flex flex-row align-items-center mr-24" style="flex:2">
 					<span class="mr-10">To: </span>
-					<input v-model="filter.date_to" type="date" class="form-control">
+					<input v-model="filter.date_to" type="date" required class="form-control">
+				</div>
+				<div class="d-flex flex-row align-items-center mr-24 justify-content-start flex-1">
+					<button class="btn btn-primary">Generate</button>
 				</div>
 			</div>
+			</form>
 			<div class="sep mb-45"></div>
 			<div id="printContent">
 				<img :src="this.baseURL()+'/img/company_header_fit.png'" class="mb-24" alt="">
@@ -91,6 +103,7 @@ export default {
 	props:['token','pbranch'],
 	data(){
 		return {
+			loading:false,
 			filter:{
 				date_from: null,
 				date_to: null,
@@ -106,6 +119,7 @@ export default {
 	},
 	methods:{
 		fetchAccounts:function(){
+			this.loading = true;
 			axios.post(this.baseURL() + 'api/report/release', this.filter, {
 			headers: {
 				'Authorization': 'Bearer ' + this.token,
@@ -114,10 +128,11 @@ export default {
 				}
 			})
 			.then(function (response) {
+				this.loading = false;
 				this.accounts = response.data.data;
-				console.log(response.data);
 			}.bind(this))
 			.catch(function (error) {
+				this.loading = false;
 				console.log(error);
 			}.bind(this));
 		}, 
@@ -136,7 +151,7 @@ export default {
 		 filter: {
 			handler(val){
 				if(val.date_from && val.date_to){
-					this.fetchAccounts();
+					// this.fetchAccounts();
 				}
 			},
 			deep: true

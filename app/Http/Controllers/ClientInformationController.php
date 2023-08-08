@@ -14,7 +14,7 @@ class ClientInformationController extends Controller
 		$this->checkAccess('view borrower');
 		return view('client_information.personal_information_list')->with([
 			'nav' => ['client information', 'personal information list'],
-			'title' => 'Personal Information List',
+			'title' => 'MAC | Personal Information List',
 		]);
 	}
 
@@ -23,7 +23,7 @@ class ClientInformationController extends Controller
 		return view('client_information.personal_information_details')->with([
 			'nav' => ['client information', 'personal information list'],
 			'id' => $id,
-			'title' => 'Personal Information',
+			'title' => 'MAC | Personal Information',
 		]);
 	}
 
@@ -31,7 +31,7 @@ class ClientInformationController extends Controller
 		$this->checkAccess('view statement of accounts');
 		return view('client_information.statement_of_accounts_list')->with([
 			'nav' => ['client information', 'statement of accounts list'],
-			'title' => 'Statement of Account List',
+			'title' => 'MAC | Statement of Account List',
 		]);
 	}
 
@@ -40,7 +40,7 @@ class ClientInformationController extends Controller
 		return view('client_information.personal_information_details_edit')->with([
 			'nav' => ['client information', 'personal information list'],
 			'id' => $id,
-			'title' => 'Edit Personal Information',
+			'title' => 'MAC | Edit Personal Information',
 		]);
 	}
 
@@ -49,14 +49,14 @@ class ClientInformationController extends Controller
 		return view('client_information.account_statement_details')->with([
 			'nav' => ['client information', 'statement of accounts list'],
 			'id' => $id,
-			'title' => 'Statement of Account Details',
+			'title' => 'MAC | Statement of Account Details',
 		]);
 	}
 	public function balanceInquiry($id){
 		$this->checkAccess('view balance inquiry');
 		return view('client_information.balance_inquiry')->with([
 			'nav' => ['client information', 'balance inquiry'],
-			'title' => 'Balance Inquiry',
+			'title' => 'MAC | Balance Inquiry',
 			'id' => $id
 		]);
 	}
@@ -65,7 +65,7 @@ class ClientInformationController extends Controller
 		$this->checkAccess('view balance inquiry');
 		return view('client_information.balance_inquiry_list')->with([
 			'nav' => ['client information', 'balance inquiry'],
-			'title' => 'Balance Inquiry Loan Account List',
+			'title' => 'MAC | Balance Inquiry Loan Account List',
 		]);
 	}
 	
