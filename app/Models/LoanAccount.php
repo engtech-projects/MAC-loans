@@ -64,6 +64,10 @@ class LoanAccount extends Model
         'loan_status',
     ];
 
+    protected $attributes = [
+        'payment_status' => 'Current',
+    ];
+
     const STATUS_RELEASED = "released";
     const STATUS_PENDING = "pending";
     const PAYMENT_PAID = "Paid";
