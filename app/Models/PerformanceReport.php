@@ -27,29 +27,39 @@ class PerformanceReport extends Model
         return $query->whereDate('transaction_date', '=', $value);
     }
 
-    public function scopeBranch($query,$value)
+    public function scopeBranch($query, $value)
     {
-        return $query->where('branch_id','=',$value);
+        return $query->where('branch_id', '=', $value);
     }
-    public function accountOfficer() {
-        return $this->belongsTo(AccountOfficer::class,'ao_id','ao_id');
+    public function accountOfficer()
+    {
+        return $this->belongsTo(AccountOfficer::class, 'ao_id', 'ao_id');
+    }
+    public function performanceDetails()
+    {
+        return $this->hasMany(PerformanceReportDetail::class, 'report_id', 'report_id');
     }
     public function products()
     {
         return $this->hasMany(PerformanceReportDetail::class, 'report_id');
     }
+    public function branch()
+    {
+        return $this->belongsTo(Branch::class, 'branch_id');
+    }
 
     //GET LIST OF DATES AVAILABLE IN AO PERFORMANCE REPORTS
 
-    public function getDateReports($branchId) {
+    public function getDateReports($branchId)
+    {
         $transDate = $this->getTransactionDate($branchId);
-        $maxDate = self::branch($branchId)->orderBy("transaction_date","DESC")->pluck("transaction_date")->first();
+        $maxDate = self::branch($branchId)->orderBy("transaction_date", "DESC")->pluck("transaction_date")->first();
         $minDate = self::branch($branchId)->pluck("transaction_date")->first();
         $dateRange = [
             'min_date' => $minDate,
             'max_date' => $transDate
         ];
-        if(count($dateRange) > 0) {
+        if (count($dateRange) > 0) {
             return $dateRange;
         }
         return "No dates found";
@@ -57,26 +67,26 @@ class PerformanceReport extends Model
     //GET PERFORMANCE REPORT FROM PERFORMANCE REPORT MODEL
     public function getAOPerformanceReport($request)
     {
-        $performanceReport = self::with(['products','accountOfficer' => function($query){
+        $performanceReport = self::with(['products', 'accountOfficer' => function ($query) {
             $query->select([
                 'ao_id',
                 'name'
             ])
-            ->without(['branch_registered','branch']);
+                ->without(['branch_registered', 'branch']);
         }, 'products.product' => function ($query) {
             $query->select(['product_id', 'product_name', 'product_code']);
         }])
-        ->transactionDate($request->input("transaction_date"))
-        ->branch($request->input("branch_id"))
-        ->get();
+            ->transactionDate($request->input("transaction_date"))
+            ->branch($request->input("branch_id"))
+            ->get();
         $aoReports = [];
-        if (count($performanceReport)>0) {
+        if (count($performanceReport) > 0) {
             foreach ($performanceReport as $aoKey => $accOfficer) {
                 $aoReports[] = [
                     'ao_id' => $accOfficer->accountOfficer->ao_id,
                     'name' => $accOfficer->accountOfficer->name,
                 ];
-                foreach($accOfficer["products"] as $prodKey => $product) {
+                foreach ($accOfficer["products"] as $prodKey => $product) {
                     $aoReports[$aoKey]["products"][] = [
                         "product_id" => $product["product_id"],
                         "product_code" => $product->product["product_code"],
@@ -101,7 +111,6 @@ class PerformanceReport extends Model
             return $aoReports;
         }
         return "No reports found.";
-
     }
 
     //GET TRANSACTION DATE FROM ENDTRANSACTION MODEL
@@ -149,5 +158,24 @@ class PerformanceReport extends Model
         }
 
         return $accountOfficers;
+    }
+
+
+    public function getPerformancePortfolio()
+    {
+        $performandaceReport = null;
+        $branches = Branch::query()
+            ->with([
+                'performanceReports.performanceDetails'
+            ])
+            ->get();
+        foreach ($branches as $bKey => $branch) {
+            $performandaceReport[] = $branch;
+            dd($branch);
+            /* foreach ($branch->performanceReport as $pKey => $performanceReport) {
+                $performanceReport[$bKey]["performance_report"] = $performanceReport;
+            } */
+        }
+        return $performandaceReport;
     }
 }

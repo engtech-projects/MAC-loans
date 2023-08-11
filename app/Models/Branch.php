@@ -20,4 +20,9 @@ class Branch extends Model
     {
         return $this->hasOne(EndTransaction::class, 'branch_id', 'branch_id')->latest();
     }
+
+    public function performanceReports()
+    {
+        return $this->hasMany(PerformanceReport::class,'branch_id');
+    }
 }

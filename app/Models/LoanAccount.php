@@ -1508,6 +1508,9 @@ class LoanAccount extends Model
     public function getBranchPortFolio($date)
     {
 
+        $performanceReport = new PerformanceReport();
+        $portfolio = $performanceReport->getPerformancePortfolio();
+        return $portfolio;
         $date = $date ? Carbon::createFromFormat('Y-m-d', $date) : null;
         $months = getMonths();
         $branchPortfolio = self::query()
