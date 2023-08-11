@@ -37,7 +37,7 @@
 			</div>	
 			<div class="d-flex flex-row align-items-center justify-content-start flex-1 mr-24">
 				<span class="mr-10 text-block">Status: </span>
-				<select required v-model="filter.status" name="" id="selectProductClient" class="form-control flex-1">
+				<select required v-model="filter.loan_status" name="" id="selectProductClient" class="form-control flex-1">
 					<option value="Current">Current</option>
 					<option value="Delinquent">Delinquent</option>
 					<option value="Past Due">Past Due</option>
@@ -677,12 +677,14 @@ export default {
 			loading:false,
 			branch:{},
 			filter:{
-				date:null,
+				transaction_date:null,
 				type:'loan_listing',
 				branch_id:'',
 				account_officer:'all',
 				product:'all',
 				center:'all',
+				loan_status:'',
+				report:'status_summary'
 			},
 			products:[],
 			centers:[],
@@ -766,7 +768,7 @@ export default {
 					}
 				})
 				.then(function (response) {
-					this.filter.as_of = response.data.data.date_end;
+					this.filter.transaction_date = response.data.data.date_end;
 				}.bind(this))
 				.catch(function (error) {
 					console.log(error);
@@ -861,7 +863,7 @@ export default {
 								
 								row.push('');
 								row.push(account.loan_status=='Ongoing'?account.status:account.loan_status);
-								if(sstatus == this.filter.status){
+								// if(sstatus == this.filter.loan_status){
 									centerTotal[4] += account.amount_loan;
 									centerTotal[5] += account.principal_balance;
 									centerTotal[6] += account.interest_balance;
@@ -870,7 +872,7 @@ export default {
 									// centerTotal[9] += account.distribution.short_interest + account.distribution.interest
 									centerTotal[10] += account.amount_due;
 									table.rows.push(row);
-								}
+								// }
 							}
 							productTotal[4] += centerTotal[4];
 							productTotal[5] += centerTotal[5];
