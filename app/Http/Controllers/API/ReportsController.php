@@ -308,6 +308,7 @@ class ReportsController extends BaseController
 			"group" => $group,
 			"individual" => $individual
 		];
+
 		return $this->sendResponse($data, '');
 
 	}
