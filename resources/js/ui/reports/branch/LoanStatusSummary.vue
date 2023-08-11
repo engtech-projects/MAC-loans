@@ -17,22 +17,22 @@
 			<div class="d-flex flex-row align-items-center mr-24 justify-content-start flex-1">
 				<span class="mr-10 text-block">Acc. Officer: </span>
 				<select required v-model="filter.account_officer" name="" id="selectProductClient" class="form-control flex-1">
+					<option value="all">All Account Officers</option>
 					<option v-for="a,o in aos.filter(ao=>ao.branch_id==branch.branch_id)" :key="o" :value="a.ao_id">{{a.name}}</option>
-					<option value="all">All</option>
 				</select>
 			</div>
 			<div class="d-flex flex-row align-items-center mr-24 justify-content-start flex-1">
 				<span class="mr-10 text-block">Product: </span>
 				<select required v-model="filter.product" name="" id="selectProductClient" class="form-control flex-1">
-					<option v-for="p,i in products" :key="i" :value="p.product_id">{{p.product_name}}</option>
-					<option value="all">All</option>
+					<option value="all">All Products</option>
+					<option v-for="p,i in products.filter(p=>p.status=='active')" :key="i" :value="p.product_id">{{p.product_name}}</option>
 				</select>
 			</div>		
 			<div class="d-flex flex-row align-items-center mr-24 justify-content-start flex-1">
 				<span class="mr-10 text-block">Center: </span>
 				<select required v-model="filter.center" name="" id="selectProductClient" class="form-control flex-1">
-					<option v-for="c,n in centers" :key="n" :value="c.center_id">{{c.center}}</option>
-					<option value="all">All</option>
+					<option value="all">All Centers</option>
+					<option v-for="c,n in centers.filter(c=>c.status=='active')" :key="n" :value="c.center_id">{{c.center}}</option>
 				</select>
 			</div>	
 			<div class="d-flex flex-row align-items-center justify-content-start flex-1 mr-24">
@@ -114,7 +114,7 @@
 								<tr v-for="rws,j in fr.rows" :key="j">
 									<td v-for="rw,k in rws" :key="k">{{rw}}</td>
 								</tr>
-								<tr v-if="fr.product=='002 - Micro Group'" class="bg-skyblue text-bold">
+                				<tr v-if="fr.product=='002 - Micro Group'" class="bg-skyblue text-bold">
 									<td v-for="tc,l in fr.centerTotal" :key="l">{{tc===""||tc==="CENTER SUB-TOTAL"||l==1?tc:formatToCurrency(tc)}}</td>
 								</tr>
 								<tr v-if="fr.productTotal" class="bg-green-mint text-bold">
@@ -819,7 +819,7 @@ export default {
 					var hasProductAccounts = false;
 					var product = ao.products[p];
 					var productTotal = ['PRODUCT SUB-TOTAL',0,'','',0,0,0,'','','',0,'',''];
-					for(var c in this.processCenter(product.centers, p)){
+					for(var c in product.centers){
 						var center = product.centers[c];
 						var centerTotal = ['CENTER SUB-TOTAL',0,'','',0,0,0,'','','',0,'',''];
 						if(center.accounts){
@@ -836,15 +836,13 @@ export default {
 							for(var ac in center.accounts){
 								var account = center.accounts[ac];
 								var sstatus = account.loan_status=='Ongoing'?account.status:account.loan_status;
+								// console.log(sstatus);
 								var row = [];
 								row.push(account.borrower_name);
                                 row.push(account.account_num);
 								row.push(account.date_loan);
 								row.push(account.maturity);
-								centerTotal[1]++;
-								productTotal[1]++;
-								aoTotal[1]++;
-								total[1]++;
+
 								row.push(this.formatToCurrency(account.amount_loan));
 								
 								row.push(this.formatToCurrency(account.principal_balance));
@@ -862,6 +860,9 @@ export default {
 								row.push('');
 								row.push(account.loan_status=='Ongoing'?account.status:account.loan_status);
 								if(sstatus == this.filter.status){
+									hasProductAccounts = true;
+									hasAoAccounts = true;
+									centerTotal[1]++;
 									centerTotal[4] += account.amount_loan;
 									centerTotal[5] += account.principal_balance;
 									centerTotal[6] += account.interest_balance;
@@ -872,6 +873,7 @@ export default {
 									table.rows.push(row);
 								}
 							}
+							productTotal[1] += centerTotal[1];
 							productTotal[4] += centerTotal[4];
 							productTotal[5] += centerTotal[5];
 							productTotal[6] += centerTotal[6];
@@ -883,10 +885,11 @@ export default {
 							if(table.rows.length){
 								tables.push(table);
 							}
-							hasProductAccounts = true;
-							hasAoAccounts = true;
+							// hasProductAccounts = true;
+							// hasAoAccounts = true;
 						}
 					}
+					aoTotal[1] += productTotal[1];
 					aoTotal[4] += productTotal[4];
 					aoTotal[5] += productTotal[5];
 					aoTotal[6] += productTotal[6];
@@ -898,6 +901,7 @@ export default {
 						tables[tables.length-1].productTotal = productTotal;
 					}
 				}
+				total[1] += aoTotal[1];
 				total[4] += aoTotal[4];
 				total[5] += aoTotal[5];
 				total[6] += aoTotal[6];
