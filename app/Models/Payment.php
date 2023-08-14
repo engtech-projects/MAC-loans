@@ -83,7 +83,10 @@ class Payment extends Model
     {
         $date = $date ? Carbon::createFromFormat('Y-m-d', $date) : null;
         $months = getMonths();
-        $paymentsYearly = self::selectRaw('YEAR(transaction_date) AS year, branch_id as branch_id, MONTH(transaction_date) as month,COUNT(*) as account')
+        $paymentsYearly = self::selectRaw('YEAR(transaction_date) AS year, branch_id as branch_id, MONTH(transaction_date) as month,
+        COUNT(*) as account,
+        SUM(amount_applied) as total_collection')
+            ->distinct()
             ->groupBy('year', 'month', 'branch_id')
             ->when($date !== null, function ($query) use ($date) {
                 $query->whereMonth('transaction_date', $date->month)
@@ -100,12 +103,14 @@ class Payment extends Model
             $monthName = $months[$month - 1];
             if (!isset($groupPayments[$branch][$year])) {
                 $groupPayments[$branch][$year] = array_fill_keys($months, [
-                    'no_of_accounts' => 0
+                    'no_of_accounts' => 0,
+                    'total_collection' => 0
                 ]);
             }
 
             $groupPayments[$branch][$year][$monthName] = [
-                'no_of_accounts' => $payment->account
+                'no_of_accounts' => $payment->account,
+                'total_collection' => $payment->total_collection
             ];
         }
         return $groupPayments;
