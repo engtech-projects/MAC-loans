@@ -85,15 +85,15 @@ class Payment extends Model
         $months = getMonths();
         $paymentsYearly = self::selectRaw('YEAR(transaction_date) AS year, branch_id as branch_id, MONTH(transaction_date) as month,COUNT(*) as account')
             ->groupBy('year', 'month', 'branch_id')
+            ->when($date !== null, function ($query) use ($date) {
+                $query->whereMonth('transaction_date', $date->month)
+                    ->whereYear('transaction_date', $date->year);
+            })
             ->orderBy('year')
-            ->orderBy('month');
-
-        if (isset($date)) {
-            $paymentsYearly = $paymentsYearly->whereMonth('transaction_date', $date->month)
-                ->whereYear('transaction_date', $date->year);
-        }
+            ->orderBy('month')
+            ->get();
         $groupPayments = [];
-        foreach ($paymentsYearly->get() as $payment) {
+        foreach ($paymentsYearly as $payment) {
             $year = $payment->year;
             $branch = $payment->branch->branch_name;
             $month = $payment->month;

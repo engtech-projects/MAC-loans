@@ -161,21 +161,67 @@ class PerformanceReport extends Model
     }
 
 
-    public function getPerformancePortfolio()
+    public function getPerformancePortfolio($date)
     {
-        $performandaceReport = null;
-        $branches = Branch::query()
+        $date = $date ? Carbon::createFromFormat('Y-m-d', $date) : null;
+        $months = getMonths();
+        $branchePerformanceReport = Branch::query()
+            ->select('branch_id', 'branch_name')
             ->with([
-                'performanceReports.performanceDetails'
-            ])
-            ->get();
-        foreach ($branches as $bKey => $branch) {
-            $performandaceReport[] = $branch;
-            dd($branch);
-            /* foreach ($branch->performanceReport as $pKey => $performanceReport) {
-                $performanceReport[$bKey]["performance_report"] = $performanceReport;
-            } */
+                'performanceReports' => function ($query) use ($date) {
+                    $query->selectRaw('YEAR(transaction_date) as year, MONTH(transaction_date) as month,report_id,branch_id')
+                        ->groupBy('year', 'month', 'branch_id', 'report_id')
+                        ->when($date !== null, function ($query) use ($date) {
+                            $query->whereMonth('transaction_date', $date->month)
+                                ->whereYear('transaction_date', $date->year);
+                        })
+                        ->orderBy('year')
+                        ->orderBy('month');
+                },
+                'performanceReports.performanceDetails' => function ($query) {
+                    $query->selectRaw('SUM(portfolio_accounts) as no_of_accounts,
+                    SUM(portfolio) as total_portfolio,
+                    SUM(delinquent_accounts) no_of_delinquent,
+                    SUM(delinquent) as total_delinquent,
+                    SUM(pastdue_accounts) no_of_pastdue,
+                    SUM(pastdue) as total_pastdue,
+                    report_id')->groupBy('report_id');
+                }
+            ])->get();
+
+
+
+        $performandaceReport = [];
+        foreach ($branchePerformanceReport as $branch) {
+            foreach ($branch->performanceReports as $prKey => $report) {
+                $year = $report->year;
+                $month = $report->month;
+                $monthName = $months[$month - 1];
+                foreach ($report->performanceDetails as $pdKey => $reportDetail) {
+
+                    if (!isset($performandaceReport[$branch->branch_name][$year])) {
+                        $performandaceReport[$branch->branch_name][$year] = array_fill_keys($months, [
+                            'no_of_accounts' => 0,
+                            'total_portfolio' => 0,
+                            'no_of_delinquent' => 0,
+                            'total_delinquent' => 0,
+                            'no_of_pastdue' => 0,
+                            'total_pastdue' => 0,
+                        ]);
+                    }
+                    $performandaceReport[$branch->branch_name][$year][$monthName] = [
+                        'no_of_accounts' => $reportDetail->no_of_accounts,
+                        'total_portfolio' => $reportDetail->total_portfolio,
+                        'no_of_delinquent' => $reportDetail->no_of_delinquent,
+                        'total_delinquent' => $reportDetail->total_delinquent,
+                        'no_of_pastdue' => $reportDetail->no_of_pastdue,
+                        'total_pastdue' => $reportDetail->total_pastdue,
+
+                    ];
+                }
+            }
         }
+
         return $performandaceReport;
     }
 }

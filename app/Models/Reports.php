@@ -1470,15 +1470,11 @@ class Reports extends Model
         $payments = new Payment();
         $accounts = new LoanAccount();
         $collection = $payments->getCollectionPaymentByBranch($date);
-        $delinquentAccounts = $accounts->getLoanAccountStatusByBranch($date, "Delinquent");
         $branchPortfolio = $accounts->getBranchPortfolio($date);
-        $pastDueAccounts = $accounts->getLoanAccountStatusByBranch($date, "Pastdue");
         $accountReleases = $accounts->getLoanAccountReleases($date);
         $data = [
             "portfolio" => $branchPortfolio,
             "collection" => $collection,
-            "delinquents" => $delinquentAccounts,
-            "pastdue" => $pastDueAccounts,
             "releases" => $accountReleases
         ];
 
