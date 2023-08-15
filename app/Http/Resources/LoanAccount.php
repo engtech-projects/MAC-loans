@@ -20,6 +20,7 @@ class LoanAccount extends JsonResource
 
         $remaining_balance = $this->remainingBalance();
         return [
+            'account' => $this->getLoanAccountById(),
             'current_amortization' => $this->getCurrentAmortization(),
             'loan_account_id' => $this->loan_account_id,
             'account_num' => $this->account_num,

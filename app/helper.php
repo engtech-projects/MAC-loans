@@ -1,5 +1,12 @@
 <?php
 
+use App\Models\EndTransaction;
+
+function transactionDate($branchId) {
+    $tranDate = new EndTransaction();
+    $transactionDateNow = $tranDate->getTransactionDate($branchId)->date_end;
+    return $transactionDateNow;
+}
 function isActive($nav1, $nav2){
 	return $nav1 == $nav2;
 }
