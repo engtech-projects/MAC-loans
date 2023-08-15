@@ -30,4 +30,5 @@ class Branch extends Model
     {
         return $this->hasMany(Payment::class,'branch_id','branch_id');
     }
+
 }

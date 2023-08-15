@@ -88,7 +88,8 @@ class Payment extends Model
         $paymentsYearly = Branch::query()->select('branch_id', 'branch_name')
             ->with('payments', function ($query) use ($date) {
                 $query->when($date, function ($query, $date) {
-                    $query->whereYear('transaction_date', $date->year)
+                    $query->where('status', 'paid')
+                        ->whereYear('transaction_date', $date->year)
                         ->whereMonth('transaction_date', $date->month);
                 });
                 $query->selectRaw(

@@ -1470,10 +1470,12 @@ class LoanAccount extends Model
     {
         $date = $date ? Carbon::createFromFormat('Y-m-d', $date) : null;
         $months = getMonths();
-        $pastdueAccounts = self::query()
+
+        $accountReleases = self::query()
             ->selectRaw('YEAR(date_release) as year,
             branch_code as branch_code,MONTH(date_release) as month,
-            COUNT(*) AS total_account_released')
+            COUNT(*) AS no_of_accounts,
+            SUM(net_proceeds) as total_net_proceeds')
             ->released()
             ->without(['documents', 'borrower', 'center', 'product', 'accountOfficer', 'payments'])
             ->when($date !== null, function ($query) use ($date) {
@@ -1481,24 +1483,27 @@ class LoanAccount extends Model
                     ->whereYear('date_release', $date->year);
             })
             ->groupBy('year', 'month', 'branch_code')
-            ->orderBy('year')
-            ->orderBy('month');
+            ->orderBy('year','DESC')
+            ->orderBy('month','DESC')
+            ->get();
 
         $groupReleasedAccounts = [];
 
-        foreach ($pastdueAccounts as $account) {
+        foreach ($accountReleases as $account) {
             $year = $account->year;
             $branch = $account->branch->branch_name;
             $month = $account->month;
             $monthName = $months[$month - 1];
             if (!isset($groupReleasedAccounts[$branch][$year])) {
                 $groupReleasedAccounts[$branch][$year] = array_fill_keys($months, [
-                    'total_account_released' => 0
+                    'no_of_accounts' => 0,
+                    'total_net_proceeds' => 0
                 ]);
             }
 
             $groupReleasedAccounts[$branch][$year][$monthName] = [
-                'total_account_released' => $account->total_account_released
+                'no_of_accounts' => $account->no_of_accounts,
+                'total_net_proceeds' => $account->total_net_proceeds
             ];
         }
         return $groupReleasedAccounts;
