@@ -86,7 +86,11 @@ class Payment extends Model
 
 
         $paymentsYearly = Branch::query()->select('branch_id', 'branch_name')
-            ->with('payments', function ($query) {
+            ->with('payments', function ($query) use ($date) {
+                $query->when($date, function ($query, $date) {
+                    $query->whereYear('transaction_date', $date->year)
+                        ->whereMonth('transaction_date', $date->month);
+                });
                 $query->selectRaw(
                     'branch_id,
                     YEAR(transaction_date) as year,
@@ -97,11 +101,6 @@ class Payment extends Model
                     ->groupBy('year', 'month', 'branch_id')
                     ->orderBy('year', 'DESC')
                     ->orderBy('month', 'DESC');
-            }, function ($query, $date) {
-                $query->when($date, function ($query, $date) {
-                    $query->whereMonth('transaction_date', $date->month)
-                        ->whereYear('transaction_date', $date->year);
-                });
             })->get();
         $groupPayments = [];
         /* dd($paymentsYearly->toArray()); */

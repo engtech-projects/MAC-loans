@@ -175,8 +175,8 @@ class PerformanceReport extends Model
                             $query->whereMonth('transaction_date', $date->month)
                                 ->whereYear('transaction_date', $date->year);
                         })
-                        ->orderBy('year')
-                        ->orderBy('month');
+                        ->orderBy('year','DESC')
+                        ->orderBy('month','DESC');
                 },
                 'performanceReports.performanceDetails' => function ($query) {
                     $query->selectRaw('SUM(portfolio_accounts) as no_of_accounts,
