@@ -53,11 +53,6 @@ class PerformanceReport extends Model
     public function getDateReports($branchId)
     {
         $transDate = $this->getTransactionDate($branchId);
-
-
-        $maxDate = self::with('branch')->orderBy("transaction_date",'DESC')
-        ->pluck('transaction_date')
-        ->first();
         $minDate = self::with('branch')
         ->orderBy('transaction_date')
         ->pluck("transaction_date")
