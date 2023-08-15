@@ -83,37 +83,46 @@ class Payment extends Model
     {
         $date = $date ? Carbon::createFromFormat('Y-m-d', $date) : null;
         $months = getMonths();
-        $paymentsYearly = self::selectRaw('YEAR(transaction_date) AS year, branch_id as branch_id,
-        MONTH(transaction_date) as month,
-        SUM(amount_applied) as total_collection')
-            ->distinct()
-            ->groupBy('year', 'month', 'branch_id')
-            ->selectRaw('COUNT(loan_account_id) as no_of_accounts')
-            ->when($date !== null, function ($query) use ($date) {
-                $query->whereMonth('transaction_date', $date->month)
-                    ->whereYear('transaction_date', $date->year);
-            })
-            ->orderBy('year')
-            ->orderBy('month')
-            ->distinct()
-            ->get();
-        $groupPayments = [];
-        foreach ($paymentsYearly as $payment) {
-            $year = $payment->year;
-            $branch = $payment->branch->branch_name;
-            $month = $payment->month;
-            $monthName = $months[$month - 1];
-            if (!isset($groupPayments[$branch][$year])) {
-                $groupPayments[$branch][$year] = array_fill_keys($months, [
-                    'no_of_accounts' => 0,
-                    'total_collection' => 0
-                ]);
-            }
 
-            $groupPayments[$branch][$year][$monthName] = [
-                'no_of_accounts' => $payment->no_of_accounts,
-                'total_collection' => $payment->total_collection
-            ];
+
+        $paymentsYearly = Branch::query()->select('branch_id', 'branch_name')
+            ->with('payments', function ($query) {
+                $query->selectRaw(
+                    'branch_id,
+                    YEAR(transaction_date) as year,
+                    MONTH(transaction_date) as month,
+                    SUM(amount_applied) as total_collection,
+                    count(distinct loan_account_id) as no_of_accounts',
+                )
+                    ->groupBy('year', 'month', 'branch_id')
+                    ->orderBy('year', 'DESC')
+                    ->orderBy('month', 'DESC');
+            }, function ($query, $date) {
+                $query->when($date, function ($query, $date) {
+                    $query->whereMonth('transaction_date', $date->month)
+                        ->whereYear('transaction_date', $date->year);
+                });
+            })->get();
+        $groupPayments = [];
+        /* dd($paymentsYearly->toArray()); */
+        foreach ($paymentsYearly as $branch) {
+            $branchName = $branch->branch_name;
+            foreach ($branch->payments as $payment) {
+                $year = $payment->year;
+
+                $month = $payment->month;
+                $monthName = $months[$month - 1];
+                if (!isset($groupPayments[$branchName][$year])) {
+                    $groupPayments[$branchName][$year] = array_fill_keys($months, [
+                        'no_of_accounts' => 0,
+                        'total_collection' => 0
+                    ]);
+                }
+                $groupPayments[$branchName][$year][$monthName] = [
+                    'no_of_accounts' => $payment->no_of_accounts,
+                    'total_collection' => $payment->total_collection
+                ];
+            }
         }
         return $groupPayments;
     }
