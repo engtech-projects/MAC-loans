@@ -171,7 +171,7 @@ class PerformanceReport extends Model
                 'performanceReports' => function ($query) use ($date) {
                     $query->selectRaw('YEAR(transaction_date) as year, MONTH(transaction_date) as month,report_id,branch_id')
                         ->groupBy('year', 'month', 'branch_id', 'report_id')
-                        ->when($date !== null, function ($query) use ($date) {
+                        ->when($date, function ($query,$date) {
                             $query->whereMonth('transaction_date', $date->month)
                                 ->whereYear('transaction_date', $date->year);
                         })
