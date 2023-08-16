@@ -130,8 +130,8 @@ class PaymentController extends BaseController
 
             # update amortization
             if ($amortization->principal_balance < $loanAccount->remainingBalance()["principal"]["balance"] || $amortization->interest_balance < $loanAccount->remainingBalance()["interest"]["balance"]) {
-                $tranDate = new EndTransaction();
-                $currentDay = Carbon::createFromFormat('Y-m-d', $tranDate->getTransactionDate($payment->branch_id)->date_end);
+
+                $currentDay = transactionDate($payment->branch_id);
                 $schedDate = Carbon::createFromFormat('Y-m-d', $amortization->amortization_date);
 
                 if ($currentDay->lt($schedDate)) {
@@ -169,8 +169,7 @@ class PaymentController extends BaseController
 
         $branchId = $request->input('branch_id');
 
-        $endTransaction = new EndTransaction();
-        $eod = $endTransaction->getTransactionDate($branchId);
+        $eod = transactionDate($branchId);
 
         $payment = new Payment();
         $list =  $payment->overriddenList(array('branch_id' => $branchId, 'transaction_date' => $eod->date_end));
@@ -237,8 +236,8 @@ class PaymentController extends BaseController
     public function paymentSummary($branchId)
     {
 
-        $endTransaction = new EndTransaction();
-        $dateEnd = $endTransaction->getTransactionDate($branchId);
+
+        $dateEnd = transactionDate($branchId);
 
         $payment = new Payment();
         $paymentList = $payment->paymentList($dateEnd, $branchId);
