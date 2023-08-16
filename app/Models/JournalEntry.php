@@ -63,6 +63,7 @@ class JournalEntry extends Model
      */
     public function generateJournalEntryCode($bookCode)
     {
+
         $transaction = self::where('book_id', JournalBook::GENERAL_JOURNAL_BOOK)
             ->orderBy('journal_id', 'DESC')
             ->pluck('journal_no')
@@ -93,7 +94,7 @@ class JournalEntry extends Model
             'book_id'               =>          $book->book_id,
             'journal_date'          =>          $journalDate,
             'branch_id'             =>          $entry["branch_id"],
-            'source'                =>          'Releases',
+            'source'                =>          'UID',
             'amount'                =>          $entry["amount"],
             'status'                =>          self::STATUS_UNPOSTED,
             'remarks'               =>          'Remarks',

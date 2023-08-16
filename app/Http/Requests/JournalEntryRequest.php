@@ -26,7 +26,6 @@ class JournalEntryRequest extends FormRequest
     public function rules()
     {
         return [
-            'book_id' => 'required',
             'branch_id' => 'required',
             'amount' => 'required|regex:/^[0-9]+(\.[0-9][0-9]?)?$/'
         ];
@@ -44,7 +43,6 @@ class JournalEntryRequest extends FormRequest
     public function messages()
     {
         return [
-            'book_id.required' => "Journal Book is required.",
             'branch_id.required' => "Branch is required.",
             'amount.required' => "Amount is required.",
             'amount.regex' => "Invalid amount format, must be decimal or number."

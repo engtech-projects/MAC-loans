@@ -11,8 +11,8 @@
 		<div class="d-flex flex-row font-md align-items-center mb-16">
 			<span class="font-lg text-primary-dark no-print" style="flex:4">Prepaid Interest</span>
 			<div class="d-flex flex-row align-items-center mr-24 no-print" style="flex:2">
-				<span class="mr-10">Due Date: </span>
-				<input v-model="filter.due_from" type="date" class="form-control flex-1" required>
+				<span class="mr-10">Post Date: </span>
+				<input v-model="filter.due_from" type="month" class="form-control flex-1" required>
 			</div>
 			<div class="d-flex flex-row align-items-center mr-24 justify-content-start flex-1">
 				<button class="btn btn-primary">Generate</button>
@@ -136,11 +136,10 @@ export default {
 		},
 		async saveJournalEntry(){
 			var data = {
-				journal_id:1,
 				branch_id: this.branch.branch_id,
 				amount:this.filteredReports.monthlyTotal[this.dateToM(new Date(this.filter.due_from)) - 1]
 			}
-			await axios.post(this.baseURL() + 'api/report/savejournalenttry', data, {
+			await axios.post(this.baseURL() + 'api/report/create-journal-entry', data, {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
 					'Content-Type': 'application/json',
