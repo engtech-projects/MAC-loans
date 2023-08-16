@@ -56,31 +56,32 @@ class Amortization extends Model
         return $this->belongsTo(LoanAccount::class, 'loan_account_id', 'loan_account_id');
     }
 
-    public function setCurrentAmortization($loanAccountId)
+    public function setCurrentAmortization($account)
     {
-        $account = LoanAccount::select('loan_account_id', 'branch_code', 'product_id')
-            ->find($loanAccountId) ?? null;
+        $account = $account ?? null;
         $branchId = $account->branch->branch_id;
         $transactionDate = transactionDate($branchId);
         $currentAmortization =  Amortization::query()
-            ->when($account, function ($query) use ($account, $transactionDate) {
-                $query->when($account->product->product_name === "Pension Loan", function ($query) use ($transactionDate) {
+            /* ->when($account, function ($query) use ($account, $transactionDate) {
+                $query->when($account->payment_mode === "Monthly", function ($query) use ($transactionDate) {
                     $endOfMonth = $transactionDate->endOfMonth();
                     $query->whereDate('amortization_date', '<=', $endOfMonth);
                 }, function ($query) use ($transactionDate) {
                     $query->whereDate('amortization_date', '<=', $transactionDate);
-                })->whereIn('status', ['open', 'delinquent', 'paid'])
-                    ->orderBy('amortization_date', "DESC");
-            })->firstWhere('loan_account_id', $loanAccountId);
-
-        if ($currentAmortization === null) {
+                });
+            }) */
+            ->whereDate('amortization_date', '<=', $transactionDate)
+            ->whereIn('status', ['open', 'delinquent'])
+            ->orderBy('amortization_date', "DESC")
+            ->firstWhere('loan_account_id', $account->loan_account_id);
+        if (!$currentAmortization) {
             $currentAmortization = Amortization::query()
                 ->whereDate('amortization_date', '>', $transactionDate)
                 ->whereIn('status', ['open', 'delinquent'])
                 ->orderBy('amortization_date')
-                ->firstWhere("loan_account_id", $loanAccountId);
+                ->firstWhere("loan_account_id", $account->loan_account_id);
         }
-        return $currentAmortization;
+        return $currentAmortization ?? null;
     }
     public function getCurrentAmortization($amortizations)
     {

@@ -383,31 +383,42 @@ class LoanAccount extends Model
     }
 
 
-    public function getLoanAccountById()
+    public function getLoanAccountById($with = [], $without = [], $columns = [])
     {
-        $loanAccount = self::where('loan_account_id',$this->loan_account_id)
-        ->with('amortizations')
-        ->get();
+        $loanAccount = self::query()
+            ->select($columns)
+            ->with($with)
+            ->without($without)
+            ->firstWhere('loan_account_id', $this->loan_account_id);
         return $loanAccount;
     }
     public function currentAmortization()
     {
-        $amortization = new Amortization();
-        $currentAmortization = $amortization->setCurrentamortization($this->loan_account_id);
-        return $currentAmortization;
+        $columns = ['loan_account_id', 'branch_code', 'product_id', 'payment_mode'];
+        $without = ['documents', 'borrower', 'center', 'product', 'accountOfficer', 'payments'];
+        $account = $this->getLoanAccountById([], $without, $columns);
 
-        /*  $account = LoanAccount::find($loanAccountId);
+        $amortization = new Amortization();
+        $currentAmortization = $amortization->setCurrentamortization($account);
+        return $currentAmortization;
+    }
+
+    /* public function currentAmortization()
+    {
+
+        $transactionDate = transactionDate($this->branch->branch_id);
+        $account = LoanAccount::find($this->loan_account_id);
         if ($account->product->name == 'Pension Loan') {
-            $transDate = Carbon::createFromFormat('Y-m-d', $dateNow)->endOfMonth();
+            $transDate = $transactionDate->endOfMonth();
             $amortization = Amortization::whereDate('amortization_date', '<=', $transDate)
-                ->where('loan_account_id', $loanAccountId)
+                ->where('loan_account_id', $this->loanAccountId)
                 ->whereIn('status', ['open', 'delinquent', 'paid'])
                 ->orderBy('amortization_date', 'DESC')
                 ->limit(1)
                 ->first();
         } else {
-            $amortization = Amortization::whereDate('amortization_date', '<=', $dateNow)
-                ->where('loan_account_id', $loanAccountId)
+            $amortization = Amortization::whereDate('amortization_date', '<=', $transactionDate)
+                ->where('loan_account_id', $this->loan_account_id)
                 ->whereIn('status', ['open', 'delinquent', 'paid'])
                 ->orderBy('amortization_date', 'DESC')
                 ->limit(1)
@@ -418,17 +429,19 @@ class LoanAccount extends Model
 
         if ((isset($amortization->status) && $amortization->status == 'paid') || $amortization == null) {
 
-            $amortization = Amortization::whereDate('amortization_date', '>', $dateNow)
-                ->where('loan_account_id', $loanAccountId)
+            $amortization = Amortization::whereDate('amortization_date', '>', $transactionDate)
+                ->where('loan_account_id', $this->loan_account_id)
                 ->whereIn('status', ['open', 'delinquent'])
                 ->orderBy('amortization_date', 'ASC')
                 ->limit(1)
                 ->first();
-        } */
+        }
 
 
-        return $currentAmortization;
-    }
+        return $amortization;
+    } */
+
+
     public function getAmortizationMissed()
     {
         $transactionDateNow = transactionDate($this->branch->branch_id);
@@ -506,6 +519,30 @@ class LoanAccount extends Model
 
     public function getLoanCurrentAmortization()
     {
+        $amortization = $this->currentAmortization();
+        $transactionDate = transactionDate($this->branch->branch_id);
+        if ($this->payment_mode === "Monthly") {
+            $endOfMonth = $transactionDate->endOfMonth();
+            if($this->product->product_name === "Allotment Loan" ) {
+                $endOfMonth = $transactionDate->startOfday()->addDays(15);
+            }
+            if ($endOfMonth <= $amortization->amortization_date) {
+                $amortization->principal = 0;
+                $amortization->interest = 0;
+            }
+        } else if ($this->payment_mode === "Bi-Monthly") {
+
+            if ($transactionDate->startOfday()->addDays(15) < $amortization->amortization_date) {
+                $amortization->principal = 0;
+                $amortization->interest = 0;
+            }
+        }else if($this->payment_mode === "Weekly") {
+            if ($transactionDate->startOfday()->addDays(7) < $amortization->amortization_date) {
+                $amortization->principal = 0;
+                $amortization->interest = 0;
+            }
+        }
+        return $amortization;
     }
     public function getCurrentAmortization()
     {
