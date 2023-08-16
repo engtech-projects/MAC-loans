@@ -528,13 +528,12 @@ class LoanAccount extends Model
                 $amortization->interest = 0;
             }
         } else if ($this->payment_mode === "Bi-Monthly") {
-
-            if ($transactionDate->startOfday()->addDays(15) < $amortization->amortization_date) {
+            if ($transactionDate->startOfday()->addDays(15)<=$amortization->amortization_date) {
                 $amortization->principal = 0;
                 $amortization->interest = 0;
             }
         }else if($this->payment_mode === "Weekly") {
-            if ($transactionDate->startOfday()->addDays(7) < $amortization->amortization_date) {
+            if ($transactionDate->startOfday()->addDays(7)<=$amortization->amortization_date) {
                 $amortization->principal = 0;
                 $amortization->interest = 0;
             }
