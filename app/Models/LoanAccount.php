@@ -523,9 +523,6 @@ class LoanAccount extends Model
         $transactionDate = transactionDate($this->branch->branch_id);
         if ($this->payment_mode === "Monthly") {
             $endOfMonth = $transactionDate->endOfMonth();
-            if($this->product->product_name === "Allotment Loan" ) {
-                $endOfMonth = $transactionDate->startOfday()->addDays(15);
-            }
             if ($endOfMonth <= $amortization->amortization_date) {
                 $amortization->principal = 0;
                 $amortization->interest = 0;
