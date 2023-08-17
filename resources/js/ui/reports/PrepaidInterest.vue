@@ -49,7 +49,7 @@
 						<tr>
 							<th>Client</th>
 							<th>Amount</th>
-							<th>Date</th>
+							<th>Maturity Date</th>
 							<th>Term</th>
 							<th>Total UID</th>
 							<th>Bal.</th>
@@ -196,7 +196,7 @@ export default {
 							row.push(r.client);
 							row.push(this.formatToCurrency(r.amount_loan));
 							overall[1] += r.amount_loan;
-							row.push(r.due_date);
+							row.push(this.dateToMDY(new Date(r.due_date)));
 							row.push(r.term);
 							row.push(this.formatToCurrency(r.total_uid));
 							overall[4] += r.total_uid;
