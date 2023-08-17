@@ -396,7 +396,7 @@ class LoanAccount extends Model
         $columns = ['loan_account_id', 'branch_code', 'product_id', 'payment_mode'];
         $without = ['documents', 'borrower', 'center', 'product', 'accountOfficer', 'payments'];
         $account = $this->getLoanAccountById([], $without, $columns)
-        ->firstWhere('loan_account_id', $this->loan_account_id);
+            ->firstWhere('loan_account_id', $this->loan_account_id);
 
         $amortization = new Amortization();
         $currentAmortization = $amortization->setCurrentamortization($account);
@@ -517,15 +517,16 @@ class LoanAccount extends Model
         return $amort;
     }
 
-    public function getLastPaidAmortization() {
+    public function getLastPaidAmortization()
+    {
         $columns = ['loan_account_id', 'branch_code', 'product_id', 'payment_mode'];
         $without = ['documents', 'borrower', 'center', 'product', 'accountOfficer', 'payments'];
         $lastpaidAmort = $this->getLoanAccountById([], $without, $columns)
-        ->with('amortizations',function($query) {
-            $query->where('status','paid')->orderBy('id','DESC')->first();
-        })
-        ->firstWhere('loan_account_id', $this->loan_account_id);
-        return $lastpaidAmort;
+            ->with('amortizations', function ($query) {
+                $query->where('status', 'paid')->orderBy('id', 'DESC')->first();
+            })
+            ->firstWhere('loan_account_id', $this->loan_account_id);
+        return $lastpaidAmort->amortizations;
     }
 
     public function getLoanCurrentAmortization()
@@ -533,9 +534,26 @@ class LoanAccount extends Model
         $amortization = $this->currentAmortization();
         $transactionDate = transactionDate($this->branch->branch_id);
         $lastPaidAmort = $this->getLastPaidAmortization();
-        dd($lastPaidAmort->toArray());
 
-        if ($this->payment_mode === "Monthly") {
+        if (count($lastPaidAmort) > 0) {
+            foreach ($lastPaidAmort as $amort) {
+                if ($this->payment_mode === "Monthly") {
+                    $endOfMonth = $transactionDate->endOfMonth();
+                    if ($endOfMonth <= $amortization->amortization_date) {
+                        $amortization->principal = 0;
+                        $amortization->interest = 0;
+                    }
+                } else {
+                    if ($transactionDate->startOfDay() <= $amort["amortization_date"]) {
+                        $amortization->principal = 0;
+                        $amortization->interest = 0;
+                    }
+                }
+            }
+        }
+
+
+        /* if ($this->payment_mode === "Monthly") {
             $endOfMonth = $transactionDate->endOfMonth();
 
             if ($endOfMonth <= $amortization->amortization_date) {
@@ -543,12 +561,29 @@ class LoanAccount extends Model
                 $amortization->interest = 0;
             }
         } else if ($this->payment_mode === "Bi-Monthly") {
-            if ($transactionDate->startOfday()<$amortization->amortization_date) {
+            if (count($lastPaidAmort) > 0) {
+                foreach($lastPaidAmort as $amort) {
+                    if ($transactionDate->startOfDay() <=$amort["amortization_date"]) {
+                        $amortization->principal = 0;
+                        $amortization->interest = 0;
+                    }
+                }
+
+            }
+        } else if ($this->payment_mode === "Weekly") {
+            if ($transactionDate->startOfday() <= $amortization->amortization_date) {
                 $amortization->principal = 0;
                 $amortization->interest = 0;
             }
-        }else if($this->payment_mode === "Weekly") {
-            if ($transactionDate->startOfday()<=$amortization->amortization_date) {
+        } */
+        return $amortization;
+    }
+
+    public function isMonthlyAmortization($amortization, $transactionDate)
+    {
+        if ($this->payment_mode === "Monthly") {
+            $endOfMonth = $transactionDate->endOfMonth();
+            if ($endOfMonth <= $amortization->amortization_date) {
                 $amortization->principal = 0;
                 $amortization->interest = 0;
             }
@@ -558,25 +593,43 @@ class LoanAccount extends Model
 
     public function checkPaymentMode($amortization)
     {
+        $amortization = $this->currentAmortization();
         $transactionDate = transactionDate($this->branch->branch_id);
-        if ($this->payment_mode === "Monthly") {
-            $endOfMonth = $transactionDate->endOfMonth();
-            if ($endOfMonth <= $amortization->amortization_date) {
-                $amortization->principal = 0;
-                $amortization->interest = 0;
+        $lastPaidAmort = $this->getLastPaidAmortization();
+        $montlyAmortization = $this->isMonthlyAmortization($amortization, $transactionDate);
+        if (count($lastPaidAmort) > 0) {
+            foreach ($lastPaidAmort as $amort) {
+                if ($this->payment_mode === "Monthly") {
+                    $amortization = $montlyAmortization;
+                } else {
+                    if ($transactionDate->startOfDay() <= $amort["amortization_date"]) {
+                        $amortization->principal = 0;
+                        $amortization->interest = 0;
+                    }
+                }
             }
-        } else if ($this->payment_mode === "Bi-Monthly") {
-            if ($transactionDate->startOfday()->addDays(15)<=$amortization->amortization_date) {
-                $amortization->principal = 0;
-                $amortization->interest = 0;
-            }
-        }else if($this->payment_mode === "Weekly") {
-            /* dd($transactionDate->startOfday()->addDays(7),$amortization->amortization_date); */
-            if ($transactionDate->startOfday()>=$amortization->amortization_date) {
-                $amortization->principal = 0;
-                $amortization->interest = 0;
+        } else {
+            if ($this->payment_mode === "Monthly") {
+                $amortization = $montlyAmortization;
             }
         }
+
+        /*  if (count($lastPaidAmort) > 0) {
+            foreach ($lastPaidAmort as $amort) {
+                if ($this->payment_mode === "Monthly") {
+                    $endOfMonth = $transactionDate->endOfMonth();
+                    if ($endOfMonth <= $amortization->amortization_date) {
+                        $amortization->principal = 0;
+                        $amortization->interest = 0;
+                    }
+                } else {
+                    if ($transactionDate->startOfDay() <= $amort["amortization_date"]) {
+                        $amortization->principal = 0;
+                        $amortization->interest = 0;
+                    }
+                }
+            }
+        } */
         return [
             'principal' => $amortization->principal,
             'interest' => $amortization->interest

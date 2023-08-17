@@ -71,7 +71,7 @@ class Amortization extends Model
                 });
             }) */
             ->whereDate('amortization_date', '<=', $transactionDate)
-            ->whereIn('status', ['open', 'delinquent','paid'])
+            ->whereIn('status', ['open', 'delinquent'])
             ->orderBy('amortization_date', "DESC")
             ->firstWhere('loan_account_id', $account->loan_account_id);
         if (!$currentAmortization) {
