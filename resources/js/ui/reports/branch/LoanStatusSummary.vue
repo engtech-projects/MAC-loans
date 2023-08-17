@@ -17,22 +17,22 @@
 			<div class="d-flex flex-row align-items-center mr-24 justify-content-start flex-1">
 				<span class="mr-10 text-block">Acc. Officer: </span>
 				<select required v-model="filter.account_officer" name="" id="selectProductClient" class="form-control flex-1">
+					<option value="all">All Account Officers</option>
 					<option v-for="a,o in aos.filter(ao=>ao.branch_id==branch.branch_id)" :key="o" :value="a.ao_id">{{a.name}}</option>
-					<option value="all">All</option>
 				</select>
 			</div>
 			<div class="d-flex flex-row align-items-center mr-24 justify-content-start flex-1">
 				<span class="mr-10 text-block">Product: </span>
 				<select required v-model="filter.product" name="" id="selectProductClient" class="form-control flex-1">
-					<option v-for="p,i in products" :key="i" :value="p.product_id">{{p.product_name}}</option>
-					<option value="all">All</option>
+					<option value="all">All Products</option>
+					<option v-for="p,i in products.filter(p=>p.status=='active')" :key="i" :value="p.product_id">{{p.product_name}}</option>
 				</select>
 			</div>		
 			<div class="d-flex flex-row align-items-center mr-24 justify-content-start flex-1">
 				<span class="mr-10 text-block">Center: </span>
 				<select required v-model="filter.center" name="" id="selectProductClient" class="form-control flex-1">
-					<option v-for="c,n in centers" :key="n" :value="c.center_id">{{c.center}}</option>
-					<option value="all">All</option>
+					<option value="all">All Centers</option>
+					<option v-for="c,n in centers.filter(c=>c.status=='active')" :key="n" :value="c.center_id">{{c.center}}</option>
 				</select>
 			</div>	
 			<div class="d-flex flex-row align-items-center justify-content-start flex-1 mr-24">
