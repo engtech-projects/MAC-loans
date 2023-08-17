@@ -42,10 +42,10 @@
 					<option value="Delinquent">Delinquent</option>
 					<option value="Past Due">Past Due</option>
 					<option value="Restructed">Restructed</option>
-					<option value="Res WO/ PDI">Res WO/ PDI</option>
+					<option value="Res WO/PDI">Res WO/PDI</option>
 					<option value="Case Filed">Case Filed</option>
-					<option value="Litegated">Litegated</option>
-					<option value="Write-Off">Write-Off</option>
+					<option value="Litigated">Litigated</option>
+					<option value="Write-off">Write-Off</option>
 				</select>
 			</div>		
 			<div class="d-flex flex-row align-items-center justify-content-start">
@@ -70,7 +70,7 @@
 				</div>
 				<span class="text-center text-primary-dark text-bold font-md mb-5">{{branch.branch_name}} Branch ({{branch.branch_code}})</span>
 							<div class="d-flex flex-row justify-content-center text-primary-dark">
-								<span class="text-center text-primary-dark text-bold">As of {{filter.as_of?dateToMDY2(new Date(filter.as_of)).split('-').join('/'):'---'}}</span>
+								<span class="text-center text-primary-dark text-bold">As of {{filter.transaction_date?dateToMDY2(new Date(filter.transaction_date)).split('-').join('/'):'---'}}</span>
 							</div>
 			</div>
 
