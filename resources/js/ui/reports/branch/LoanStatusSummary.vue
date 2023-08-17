@@ -77,6 +77,7 @@
 
 
 			<section class="d-flex flex-column mb-16 p-10 light-border">
+				<span v-if="!filteredReports.length">No records found.</span>
 				<div v-for="fr,i in filteredReports" :key="i">
 					<section v-if="fr.rows.length">
 						<div class="d-flex bg-yellow-verylight mb-5">
