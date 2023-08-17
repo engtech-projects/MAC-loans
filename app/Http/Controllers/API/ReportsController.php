@@ -158,7 +158,6 @@ class ReportsController extends BaseController
         switch ($type) {
 
             case 'collection':
-
                 $filters = [
                     'account_officer' => $request->input('account_officer'),
                     'center' => $request->input('center'),
@@ -218,6 +217,9 @@ class ReportsController extends BaseController
                     'account_officer' => $request->input('account_officer'),
                     'product' => $request->input('product'),
                     'center' => $request->input('center'),
+                    'loan_status' => $request->input("loan_status"),
+                    'report' => $request->input("report"),
+                    'payment_status' => $request->input("payment_status")
                 ];
                 if ($filters['account_officer'] == "all") {
                     unset($filters['account_officer']);
@@ -322,14 +324,12 @@ class ReportsController extends BaseController
       }
 
       public function consolidatedReports(Request $request) {
-
         $type = $request->input('type');
         $filters = [];
         $report = new Reports();
 
         $branchReport = NULL;
         switch ($type) {
-
           case 'maturity':
 
             $filters = [
@@ -512,7 +512,6 @@ class ReportsController extends BaseController
             'branch_id' => $request->input("branch") ? $request->input("branch") : $request->input("branch_id")
         ];
         $report = new Reports();
-
         $prepaid = $report->prepaidReport($filters);
         return $this->sendResponse($prepaid, "Consolidated Report");
     }
@@ -524,8 +523,6 @@ class ReportsController extends BaseController
         $journals = $journalEntry->getJounalBookById();
         return $journals;
     }
-
-
 
     // public function releaseByClientReports(Request $request) {
 
