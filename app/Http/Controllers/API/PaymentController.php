@@ -129,24 +129,30 @@ class PaymentController extends BaseController
             $payment->save();
 
             # update amortization
-            if ($amortization->principal_balance < $loanAccount->remainingBalance()["principal"]["balance"] || $amortization->interest_balance < $loanAccount->remainingBalance()["interest"]["balance"]) {
+            if ($amortization->principal_balance < $loanAccount->remainingBalance()["principal"]["balance"] && $amortization->interest_balance < $loanAccount->remainingBalance()["interest"]["balance"]) {
 
                 $currentDay = transactionDate($payment->branch_id);
-                $schedDate = Carbon::createFromFormat('Y-m-d', $amortization->amortization_date);
+                $schedDate = $amortization->amortization_date;
 
                 if ($currentDay->lt($schedDate)) {
                     $amortization->status = 'open';
                 } else {
                     $amortization->status = 'delinquent';
                 }
-                // $loanAccount->payment_status = 'delinquent';
-                // Amortization::find($payment->amortization_id)->update([ 'status' => 'delinquent' ]);
-                // LoanAccount::find($payment->loan_account_id)->update(['payment_status' => 'Delinquent']);
+                /* if ($amortization->interest_balance < $loanAccount->remainingBalance()["interest"]["balance"]) {
+                    dd([
+                        "current_amort" => $amortization->toArray(),
+                        "prinicpal_balance" => $amortization->principal_balance,
+                        "remaining_principal_bal" => $loanAccount->remainingBalance()["principal"]["balance"],
+                        "amortization_interest_balance" => $amortization->interest_balance,
+                        "remaining_interest_bal" => $loanAccount->remainingBalance()["interest"]["balance"]
+                    ]);
+                } */
+
             } else {
+
                 $amortization->status = 'paid';
                 $loanAccount->payment_status = 'Current';
-                // Amortization::find($payment->amortization_id)->update([ 'status' => 'paid' ]);
-                // LoanAccount::find($payment->loan_account_id)->update(['payment_status' => 'Current']);
             }
 
             $balance = $loanAccount->outstandingBalance($loanAccount->loan_account_id);
