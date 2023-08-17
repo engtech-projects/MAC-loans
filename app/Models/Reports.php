@@ -21,7 +21,7 @@ class Reports extends Model
     {
         $loanAccount = Loanaccount::where(['loan_accounts.status' => 'released']);
 
-        if (isset($filters['branch_id']) && $filters['branch_id']) {
+      if (isset($filters['branch_id']) && $filters['branch_id']) {
             $branch = Branch::find($filters['branch_id']);
             $loanAccount->where(['loan_accounts.branch_code' => $branch->branch_code]);
         }
@@ -122,7 +122,6 @@ class Reports extends Model
                 'loan_accounts.loan_status',
             ]);
     }
-
 
     public function getPayments($filters = [])
     {
@@ -1056,7 +1055,6 @@ class Reports extends Model
         return $amortization;
     }
 
-
     public function setLoanAccountsByFilter($filters = [])
     {
         $accounts = $this->getLoanAccounts($filters);
@@ -1416,17 +1414,27 @@ class Reports extends Model
         foreach ($data as $weekDay => $weekDayData) {
             //get centers where center.day_sched
             $centers = Center::where(["center.day_sched" => $weekDay, "status" => "active"]) // center daysched  or use center sched in loan account?
-                ->get();
+                ->orderBy('center.center')->get();
             foreach ($centers as $centerId => $centerVal) {
                 $data[$weekDay][$centerVal->center]["all"]["account_officer"]  = "test_data_api_result_ACCOUNT_OFFICER";
                 $data[$weekDay][$centerVal->center]["all"]["area_of_operation"]  = $centerVal->area;
                 $no_of_clients = LoanAccount::join("product", 'loan_accounts.product_id', '=', 'product.product_id')
                     ->join("branch", "branch.branch_code", "loan_accounts.branch_code")
+                    ->whereIn(
+                        "loan_accounts.loan_status",
+                        [LoanAccount::LOAN_ONGOING, LoanAccount::LOAN_PASTDUE]
+                    )
                     ->where(["loan_accounts.center_id" => $centerVal->center_id, "product.product_name" => 'micro group', "branch.branch_id" => $filters["branch_id"]])
                     ->groupBy("loan_accounts.center_id")
-                    ->select([DB::raw("ifnull(count(loan_accounts.loan_account_id),0) as no_of_clients")])
+                    ->select([
+                        DB::raw("ifnull(count(loan_accounts.loan_account_id),0) as no_of_clients"),
+                        DB::raw("COUNT(CASE WHEN loan_status = 'Past Due' THEN 1 ELSE null END) as pastdue_count"),
+                        DB::raw("COUNT(CASE WHEN payment_status = 'Current' AND loan_status = 'Ongoing' THEN 1 ELSE null END) as current_count")
+                    ])
                     ->first();
                 $data[$weekDay][$centerVal->center]["all"]['no_of_clients'] = $no_of_clients ? $no_of_clients->no_of_clients : 0;
+                $data[$weekDay][$centerVal->center]["all"]['no_of_pastdue'] = $no_of_clients ? $no_of_clients->pastdue_count : 0;
+                $data[$weekDay][$centerVal->center]["all"]['no_of_current'] = $no_of_clients ? $no_of_clients->current_count : 0;
                 $data[$weekDay][$centerVal->center]["all"]["start"] = $monthStart;
                 $data[$weekDay][$centerVal->center]["all"]["end"] = $monthEnd;
                 $monthPayments = Payment::join("loan_accounts", 'payment.loan_account_id', '=', 'loan_accounts.loan_account_id')

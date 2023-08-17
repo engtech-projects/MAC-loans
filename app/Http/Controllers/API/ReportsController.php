@@ -4,6 +4,8 @@ namespace App\Http\Controllers\API;
 
 // use App\Http\Controllers\Controller;
 use App\Http\Controllers\API\BaseController as BaseController;
+use App\Models\EndTransaction;
+use App\Models\JournalEntry;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use App\Models\Reports;
@@ -156,7 +158,6 @@ class ReportsController extends BaseController
         switch ($type) {
 
             case 'collection':
-
                 $filters = [
                     'account_officer' => $request->input('account_officer'),
                     'center' => $request->input('center'),
@@ -313,49 +314,48 @@ class ReportsController extends BaseController
         $group = $report->microGroup($filters, $weeksAndDays, $monthStart, $monthEnd);
         $individual = $report->microIndividual($filters, $weeksAndDays, $monthStart, $monthEnd);
         $data = [
-            "schedule" => $weeksOfMonth,
-            "group" => $group,
-            "individual" => $individual
+          "schedule" => $weeksOfMonth,
+          "group" => $group,
+          "individual" => $individual
         ];
+
         return $this->sendResponse($data, '');
-    }
 
-    public function consolidatedReports(Request $request)
-    {
+      }
 
+      public function consolidatedReports(Request $request) {
         $type = $request->input('type');
         $filters = [];
         $report = new Reports();
 
         $branchReport = NULL;
         switch ($type) {
+          case 'maturity':
 
-            case 'maturity':
+            $filters = [
+              'due_from' => $request->input('date_from'),
+              'due_to' => $request->input('date_to'),
+              'account_officer' => $request->input('account_officer'),
+              'center' => $request->input('center')
+            ];
+            if($request->input('due_from')){
+              $filters["due_from"] = $request->input('due_from');
+            }
+            if($request->input('due_to')){
+              $filters["due_to"] = $request->input('due_to');
+            }
+            if($filters['center'] == "all"){
+              unset($filters['center']);
+            }
+            if($filters['account_officer'] == "all"){
+              unset($filters['account_officer']);
+            }
 
-                $filters = [
-                    'due_from' => $request->input('date_from'),
-                    'due_to' => $request->input('date_to'),
-                    'account_officer' => $request->input('account_officer'),
-                    'center' => $request->input('center')
-                ];
-                if ($request->input('due_from')) {
-                    $filters["due_from"] = $request->input('due_from');
-                }
-                if ($request->input('due_to')) {
-                    $filters["due_to"] = $request->input('due_to');
-                }
-                if ($filters['center'] == "all") {
-                    unset($filters['center']);
-                }
-                if ($filters['account_officer'] == "all") {
-                    unset($filters['account_officer']);
-                }
+            $branchReport = $report->branchMaturityReport($filters);
 
-                $branchReport = $report->branchMaturityReport($filters);
-
-                break;
-            case 'client_payment_status':
-                # code...
+            break;
+          case 'client_payment_status':
+            # code...
                 //  no consolidated client payment status
                 break;
             case 'account_officer':
@@ -512,10 +512,16 @@ class ReportsController extends BaseController
             'branch_id' => $request->input("branch") ? $request->input("branch") : $request->input("branch_id")
         ];
         $report = new Reports();
-
         $prepaid = $report->prepaidReport($filters);
-
         return $this->sendResponse($prepaid, "Consolidated Report");
+    }
+
+    public function saveJournalEntry(Request $request)
+    {
+        $eod = new EndTransaction();
+        $journalEntry = new JournalEntry();
+        $journals = $journalEntry->getJounalBookById();
+        return $journals;
     }
 
     // public function releaseByClientReports(Request $request) {

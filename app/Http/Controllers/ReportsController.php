@@ -47,7 +47,7 @@ class ReportsController extends Controller
 	}
 
 	public function releaseInsurance(){
-		$this->checkAccess('view release report');
+		$this->checkAccess('view BIR report');
 		return view('reports.release.insurance')->with([
 			'nav' => ['reports', 'insurance',''],
 			'title' => 'MAC | Reports - Release',
