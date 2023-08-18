@@ -129,7 +129,7 @@ class PaymentController extends BaseController
             $payment->save();
 
             # update amortization
-            if ($amortization->principal_balance < $loanAccount->remainingBalance()["principal"]["balance"] && $amortization->interest_balance < $loanAccount->remainingBalance()["interest"]["balance"]) {
+            if ($amortization->principal_balance < $loanAccount->remainingBalance()["principal"]["balance"] || $amortization->interest_balance <$loanAccount->remainingBalance()["interest"]["balance"]) {
 
                 $currentDay = transactionDate($payment->branch_id);
                 $schedDate = $amortization->amortization_date;
@@ -139,15 +139,22 @@ class PaymentController extends BaseController
                 } else {
                     $amortization->status = 'delinquent';
                 }
-                /* if ($amortization->interest_balance < $loanAccount->remainingBalance()["interest"]["balance"]) {
+
+                /* if($payment->principal >=$amortization->principal && $payment->interest >=$amortization->interest) {
+                    $amortization->status = 'paid';
+                    $loanAccount->payment_status = 'Current';
+                } */
+                if ($amortization->interest_balance < $loanAccount->remainingBalance()["interest"]["balance"]) {
+                    /* dd($amortization->interest_balance,$loanAccount->remainingBalance()["interest"]["balance"]);
                     dd([
+                        "payment" => $payment->toArray(),
                         "current_amort" => $amortization->toArray(),
                         "prinicpal_balance" => $amortization->principal_balance,
                         "remaining_principal_bal" => $loanAccount->remainingBalance()["principal"]["balance"],
                         "amortization_interest_balance" => $amortization->interest_balance,
                         "remaining_interest_bal" => $loanAccount->remainingBalance()["interest"]["balance"]
-                    ]);
-                } */
+                    ]); */
+                }
 
             } else {
 

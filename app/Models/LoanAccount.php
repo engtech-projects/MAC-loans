@@ -956,7 +956,6 @@ class LoanAccount extends Model
         if (!$amortizationId) {
             return Payment::where(['loan_account_id' => $loanAccountId, 'status' => 'paid'])->get();
         }
-
         return Payment::where(['loan_account_id' => $loanAccountId, 'status' => 'paid', 'amortization_id' => $amortizationId])->get();
     }
 
