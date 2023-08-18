@@ -779,7 +779,7 @@
                                             </div>
                                             <span
                                                 class="flex-2 text-primary-dark"
-                                                >{{dateToMDY(new Date(lastTransactionDate))}}</span
+                                                >{{lastTransaction}}</span
                                             >
                                         </div>
                                         <div class="d-flex flex-row mb-12">

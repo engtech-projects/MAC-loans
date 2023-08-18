@@ -270,7 +270,7 @@
                             <span>:</span>
                         </div>
                         <span class="flex-2 text-primary-dark">{{
-                            dateToMDY(new Date(lastTransactionDate))
+                            lastTransactionDate
                         }}</span>
                     </div>
                     <div class="d-flex flex-row mb-12">
@@ -2279,7 +2279,7 @@ export default {
         },
         lastTransactionDate: function () {
             return this.loanAccount.payments.length > 0
-                ? this.dateToMDY2(
+                ? this.dateToMDY(
                       new Date(
                           this.loanAccount.payments[
                               this.loanAccount.payments.length - 1

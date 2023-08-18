@@ -153,7 +153,7 @@
 							<span class="">Last Transaction</span>
 							<span>:</span>
 						</div>
-						<span class="flex-2 text-primary-dark">{{dateToMDY(new Date(lastTransactionDate))}}</span>
+						<span class="flex-2 text-primary-dark">{{lastTransactionDate}}</span>
 					</div>
 					<div class="d-flex flex-row mb-12">
 						<div class="d-flex flex-row flex-1 justify-content-between pr-24">
@@ -1136,7 +1136,7 @@ export default {
 			return this.pborrower.photo? this.pborrower.photo : this.baseURL()+'/img/user.png';
 		},
 		lastTransactionDate:function(){
-			return this.loanAccount.payments.length > 0 ? this.dateToMDY2(new Date(this.loanAccount.payments[this.loanAccount.payments.length-1].transaction_date)) : 'None';
+			return this.loanAccount.payments.length > 0 ? this.dateToMDY(new Date(this.loanAccount.payments[this.loanAccount.payments.length-1].transaction_date)) : 'None';
 		},
 		amountDistributed:function(){
 			return this.loanAccount.current_amortization?parseFloat(this.payment.amount_paid) + parseFloat(this.loanAccount.current_amortization.advance_principal):0;
