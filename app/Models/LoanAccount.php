@@ -588,23 +588,19 @@ class LoanAccount extends Model
                 $amortization->interest = 0;
             }
         }
-        return [
-            "amortization_principal" => $amortization->principal,
-            "amortization_interest" => $amortization->interest,
-        ];
+        return $amortization;
     }
 
     public function checkPaymentMode($amortization)
     {
-        $amortization = $this->currentAmortization();
         $transactionDate = transactionDate($this->branch->branch_id);
         $lastPaidAmort = $this->getLastPaidAmortization();
         if (count($lastPaidAmort) > 0) {
             foreach ($lastPaidAmort as $amort) {
                 if ($this->payment_mode === "Monthly") {
                     $montlyAmortization = $this->isMonthlyAmortization($amortization, $transactionDate);
-                    $amortization->principal = $montlyAmortization["amortization_principal"];
-                    $amortization->interest = $montlyAmortization["amortization_interest"];
+                    $amortization->principal = $montlyAmortization->principal;
+                    $amortization->interest = $montlyAmortization->interest;
                 } else {
                     if ($transactionDate->startOfDay() <= $amort["amortization_date"]) {
                         $amortization->principal = 0;
@@ -635,10 +631,7 @@ class LoanAccount extends Model
                 }
             }
         } */
-        return [
-            'principal' => $amortization->principal,
-            'interest' => $amortization->interest
-        ];
+       return $amortization;
     }
     public function getCurrentAmortization()
     {
@@ -743,8 +736,8 @@ class LoanAccount extends Model
             $amortization->day_late = $dayDiff;
 
             $amortizationPayment = $this->checkPaymentMode($amortization);
-            $amortization->principal = $amortizationPayment["principal"];
-            $amortization->interest = $amortizationPayment["interest"];
+            $amortization->principal = $amortizationPayment->principal;
+            $amortization->interest = $amortizationPayment->interest;
 
             if ($dayDiff >= 0 && $amortization->advance_principal < $amortization->short_principal + $amortization->principal) {
                 Amortization::find($amortization->id)->update(['status' => 'delinquent']);
