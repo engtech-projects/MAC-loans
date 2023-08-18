@@ -14,6 +14,8 @@ class Amortization extends Model
     protected $table = 'amortization';
     protected $primaryKey = 'id';
 
+    const AMORTIZATION_DELINQUENT = "delinquent";
+
     protected $fillable = [
         'loan_account_id',
         'amortization_date',
@@ -35,6 +37,7 @@ class Amortization extends Model
         'amortization_date' => "date:Y-m-d"
     ];
 
+
     /* public function getPreferencesAttribute($value)
     {
         // Accessing the "preferences" attribute will automatically decode the JSON string
@@ -54,6 +57,10 @@ class Amortization extends Model
     public function account()
     {
         return $this->belongsTo(LoanAccount::class, 'loan_account_id', 'loan_account_id');
+    }
+
+    public function scopeDelinquent($query) {
+        return $query->where('status',self::AMORTIZATION_DELINQUENT);
     }
 
     public function setCurrentAmortization($account)
