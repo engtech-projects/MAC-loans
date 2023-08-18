@@ -153,7 +153,7 @@
 							<span class="">Last Transaction</span>
 							<span>:</span>
 						</div>
-						<span class="flex-2 text-primary-dark">{{lastTransactionDate}}</span>
+						<span class="flex-2 text-primary-dark">{{dateToMDY(new Date(lastTransactionDate))}}</span>
 					</div>
 					<div class="d-flex flex-row mb-12">
 						<div class="d-flex flex-row flex-1 justify-content-between pr-24">
