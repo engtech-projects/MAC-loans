@@ -2361,10 +2361,7 @@ export default {
         },
         duePrincipal: function () {
             return this.totalPrincipal >
-                this.loanAccount.current_amortization.advance_principal
-                ? this.totalPrincipal -
-                      this.loanAccount.current_amortization.advance_principal
-                : 0;
+                this.loanAccount.current_amortization.advance_principal ? this.totalPrincipal - this.loanAccount.current_amortization.advance_principal : 0;
         },
         totalDue: function () {
             return (

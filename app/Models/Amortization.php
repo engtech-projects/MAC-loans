@@ -59,11 +59,13 @@ class Amortization extends Model
         return $this->belongsTo(LoanAccount::class, 'loan_account_id', 'loan_account_id');
     }
 
-    public function scopeDelinquent($query) {
-        return $query->where('status',self::AMORTIZATION_DELINQUENT);
+    public function scopeDelinquent($query)
+    {
+        return $query->where('status', self::AMORTIZATION_DELINQUENT);
     }
 
-    public function updateAmortization($id) {
+    public function updateAmortization($id)
+    {
         $amortization = Amortization::find($id);
         $amortization->status = "delinquent";
         $amortization->save();
@@ -77,13 +79,13 @@ class Amortization extends Model
             ->whereDate('amortization_date', '<=', $transactionDate)
             ->whereIn('status', ['open', 'delinquent', 'paid'])
             ->orderBy('amortization_date', "DESC")
+            ->limit(1)
             ->firstWhere('loan_account_id', $account->loan_account_id);
-
         if ((isset($currentAmortization->status) && $currentAmortization->status == 'paid') || $currentAmortization == null) {
             $currentAmortization = Amortization::query()
                 ->whereDate('amortization_date', '>', $transactionDate)
                 ->whereIn('status', ['open', 'delinquent'])
-                ->firstWhere('loan_account_id',$account->loan_account_id);
+                ->firstWhere('loan_account_id', $account->loan_account_id);
         }
         return $currentAmortization ?? null;
     }
