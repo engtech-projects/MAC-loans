@@ -63,6 +63,10 @@ class Amortization extends Model
     {
         return $query->where('status', self::AMORTIZATION_DELINQUENT);
     }
+    public function scopePaid($query)
+    {
+        return $query->where('status', 'paid');
+    }
 
     public function updateAmortization($id)
     {
