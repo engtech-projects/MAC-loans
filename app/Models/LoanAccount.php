@@ -107,6 +107,11 @@ class LoanAccount extends Model
         return $query->where('center_id', $value);
     }
 
+    public function scopeAccountId($query)
+    {
+        return $query->firstWhere('loan_account_id', $this->loan_account_id);
+    }
+
 
     public static function getCycleNo($id)
     {
@@ -383,9 +388,10 @@ class LoanAccount extends Model
         return $data;
     }
 
-    public function getAccount()
+    public function getAccount($columns, $without)
     {
-        /* $account = self::select($columns)->without($without); */
+        $account = self::select($columns)->without($without);
+        return $account;
     }
     public function getLoanAccountById($without = [], $columns = [])
     {
@@ -646,7 +652,10 @@ class LoanAccount extends Model
     {
 
         $columns = ['loan_account_id', 'branch_code', 'product_id', 'payment_mode'];
-        $without = ['documents', 'borrower', 'center', 'product', 'accountOfficer'];
+        $without = ['documents', 'borrower', 'center', 'product', 'accountOfficer', 'payments'];
+
+        /* $account = $this->getAccount($columns, $without);
+        $accountPayments = $account->with('payments')->accountId(); */
 
         $account = $this->getLoanAccountById($without, $columns);
         $transactionDateNow = transactionDate($this->branch->branch_id);
@@ -729,8 +738,6 @@ class LoanAccount extends Model
             // get delinquents
 
             $amortization->delinquent = $this->getDelinquent($this->loan_account_id, $amortization->id, $amortization->advance_principal);
-
-
             if ($dayDiff > 0 && $amortization->advance_principal < $amortization->short_principal + $amortization->principal) {
                 $amortization->short_principal = $amortization->delinquent['principal'];
                 $amortization->short_interest = $amortization->delinquent['interest'];

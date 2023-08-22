@@ -129,12 +129,12 @@ class PaymentController extends BaseController
             $payment->save();
 
             # update amortization
-            if ($amortization->principal_balance < $loanAccount->remainingBalance()["principal"]["balance"] || $amortization->interest_balance <$loanAccount->remainingBalance()["interest"]["balance"]) {
+            if ($amortization->principal_balance < $loanAccount->remainingBalance()["principal"]["balance"] || $amortization->interest_balance < $loanAccount->remainingBalance()["interest"]["balance"]) {
 
                 $currentDay = transactionDate($payment->branch_id);
                 $schedDate = $amortization->amortization_date;
 
-                if ($currentDay->lt($schedDate)) {
+                if ($currentDay <= $schedDate) {
                     $amortization->status = 'open';
                 } else {
                     $amortization->status = 'delinquent';
@@ -155,7 +155,6 @@ class PaymentController extends BaseController
                         "remaining_interest_bal" => $loanAccount->remainingBalance()["interest"]["balance"]
                     ]); */
                 }
-
             } else {
 
                 $amortization->status = 'paid';
