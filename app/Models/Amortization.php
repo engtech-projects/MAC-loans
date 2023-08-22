@@ -72,6 +72,7 @@ class Amortization extends Model
     }
     public function setCurrentAmortization($account)
     {
+
         $account = $account ?? null;
         $branchId = $account->branch->branch_id;
         $transactionDate = transactionDate($branchId);
