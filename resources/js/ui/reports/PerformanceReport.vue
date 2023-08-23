@@ -1108,15 +1108,17 @@ export default {
 			})
 			.then(function (response) {
 				this.loading = false;
-				this.reports = response.data.data;
+				this.reports = this.setData(response.data.data);
 			}.bind(this))
 			.catch(function (error) {
 				this.loading = false;
 				console.log(error);
 			}.bind(this));
 		},
-		sortData:function(){
-
+		setData:function(data){
+			data['past due'] = data['portfolio'];
+			data['delinquent'] = data['portfolio'];
+			return data;
 		},
 		addDummyData:function(data){
 			for(var i in data){
@@ -1153,7 +1155,16 @@ export default {
 			var sort = ['Portfolio','Delinquent','Past Due','Releases','Collection']
 			var vars = {collection:'total_collection',
 						portfolio:'total_portfolio',
-						releases:'total_net_proceeds'};
+						releases:'total_net_proceeds',
+						'past due':'total_pastdue',
+						delinquent:'total_delinquent'
+						};
+			var vars2 = {collection:'no_of_accounts',
+						portfolio:'no_of_accounts',
+						releases:'no_of_accounts',
+						'past due':'no_of_pastdue',
+						delinquent:'no_of_delinquent'
+						};
 			var clusters = [];
 			for(let s in sort){
 				for(let i in this.reports){
@@ -1171,7 +1182,7 @@ export default {
 								row.push(k);
 								for(let m in year){
 									let month = year[m];
-									row.push(month.no_of_accounts);
+									row.push(month[vars2[i]]);
 									row.push(this.formatToCurrency(month[vars[i]]));
 									cluster.total[mcount]+=month.no_of_accounts;
 									cluster.total[mcount+1]+=month[vars[i]];
