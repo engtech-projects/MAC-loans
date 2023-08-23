@@ -47,7 +47,7 @@
                         <span class="text-primary-dark">Time: {{todayTime(new Date())}} {{(new Date()).getHours() > 12? 'PM':'AM'}}</span>
                     </div>
 				</div>
-				<span class="text-center text-primary-dark text-bold font-md mb-5">{{branch.branch_name}} Branch ({{branch.branch_code}})</span>
+				<span class="text-center text-primary-dark text-bold font-md mb-5">All Branches</span>
 				<div class="d-flex flex-row justify-content-center text-primary-dark">
 					<span class="text-center text-primary-dark text-bold">As of {{filter.date?dateToMDY2(new Date(filter.date)).split('-').join('/'):'---'}}</span>
 				</div>
@@ -61,27 +61,39 @@
 							<tr>
 								<th>Area</th>
 								<th>Year</th>
-								<th colspan="2">January</th>
-								<th colspan="2">February</th>
-								<th colspan="2">March</th>
-								<th colspan="2">April</th>
-								<th colspan="2">May</th>
-								<th colspan="2">June</th>
-								<th colspan="2">July</th>
-								<th colspan="2">August</th>
-								<th colspan="2">September</th>
-								<th colspan="2">October</th>
-								<th colspan="2">November</th>
-								<th colspan="2">December</th>
+								<th></th>
+								<th>January</th>
+								<th></th>
+								<th>February</th>
+								<th></th>
+								<th>March</th>
+								<th></th>
+								<th>April</th>
+								<th></th>
+								<th>May</th>
+								<th></th>
+								<th>June</th>
+								<th></th>
+								<th>July</th>
+								<th></th>
+								<th>August</th>
+								<th></th>
+								<th>September</th>
+								<th></th>
+								<th>October</th>
+								<th></th>
+								<th>November</th>
+								<th></th>
+								<th>December</th>
 								<th></th>
 							</tr>
 						</thead>
 						<tbody>
-							<tr v-for="rows,j in c.rows" :key="j">
+							<tr v-for="rows,j in c.rows" :key="j" :style="rows[0]!=''?'border-top:1px solid #dee2e6!important':''">
 								<td v-for="row,k in rows" :key="k">{{row}}</td>
 							</tr>
 							<tr class="bg-green-mint text-bold">
-								<td v-for="ttl, l in c.total" :key="l">{{l>1&&l%2==0?formatToCurrency(ttl):ttl}}</td>
+								<td v-for="ttl, l in c.total" :key="l">{{l>1&&l%2!=0?formatToCurrency(ttl):ttl}}</td>
 							</tr>
 						</tbody>
 						<!-- <tbody>
@@ -1103,6 +1115,32 @@ export default {
 				console.log(error);
 			}.bind(this));
 		},
+		sortData:function(){
+
+		},
+		addDummyData:function(data){
+			for(var i in data){
+				var year = 2024;
+				data[i]['Nasipit'] = JSON.parse(JSON.stringify(data[i]["Butuan City"]));
+				for(var j=0;j<5;j++){
+					var ndata = data[i]['Nasipit']['2023'];
+					data[i]['Nasipit'][year] = JSON.parse(JSON.stringify(ndata));
+					year++;
+				}
+				data[i]['Gingoog'] = JSON.parse(JSON.stringify(data[i]["Butuan City"]));
+				for(var j=0;j<3;j++){
+					var ndata = data[i]['Gingoog']['2023'];
+					data[i]['Gingoog'][year] = JSON.parse(JSON.stringify(ndata));
+					year++;
+				}
+				for(var j=0;j<5;j++){
+					var ndata = data[i]['Butuan City']['2023'];
+					data[i]['Butuan City'][year] = JSON.parse(JSON.stringify(ndata));
+					year++;
+				}
+			}
+			return data;
+		},
 		print:function(){
 			var content = document.getElementById('printContent').innerHTML;
 			var target = document.querySelector('.to-print');
@@ -1112,35 +1150,40 @@ export default {
 	},
 	computed:{
 		processedReports:function(){
+			var sort = ['Portfolio','Delinquent','Past Due','Releases','Collection']
 			var vars = {collection:'total_collection',
 						portfolio:'total_portfolio',
 						releases:'total_net_proceeds'};
 			var clusters = [];
-			for(let i in this.reports){
-				var cluster = {rows:[],name:i,total:['','',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]};
-				var report = this.reports[i];
-				for(let j in report){
-					var row = [];
-					var area = report[j];
-					var count = 0;
-					for(let k in area){
-						var mcount = 2;
-						var year = area[k];
-						row[0] = count==0?j.toUpperCase():'';
-						row.push(k);
-						for(let m in year){
-							let month = year[m];
-							row.push(this.formatToCurrency(month[vars[i]]));
-							row.push(month.no_of_accounts);
-							cluster.total[mcount]+=month[vars[i]];
-							cluster.total[mcount+1]+=month.no_of_accounts;
-							mcount+=2;
+			for(let s in sort){
+				for(let i in this.reports){
+					if(i.toLocaleLowerCase() == sort[s].toLocaleLowerCase()){
+						var cluster = {rows:[],name:i,total:['','',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]};
+						var report = this.reports[i];
+						for(let j in report){
+							var area = report[j];
+							var count = 0;
+							for(let k in area){
+								var row = [];
+								var mcount = 2;
+								var year = area[k];
+								row[0] = count==0?j.toUpperCase():'';
+								row.push(k);
+								for(let m in year){
+									let month = year[m];
+									row.push(month.no_of_accounts);
+									row.push(this.formatToCurrency(month[vars[i]]));
+									cluster.total[mcount]+=month.no_of_accounts;
+									cluster.total[mcount+1]+=month[vars[i]];
+									mcount+=2;
+								}
+								cluster.rows.push(row);
+								count++;
+							}
 						}
-						count++;
+						clusters.push(cluster);
 					}
 				}
-				cluster.rows.push(row);
-				clusters.push(cluster);
 			}
 			return clusters;
 		}
