@@ -1184,7 +1184,7 @@ export default {
 									let month = year[m];
 									row.push(month[vars2[i]]);
 									row.push(this.formatToCurrency(month[vars[i]]));
-									cluster.total[mcount]+=month.no_of_accounts;
+									cluster.total[mcount]+=month[vars2[i]];
 									cluster.total[mcount+1]+=month[vars[i]];
 									mcount+=2;
 								}
