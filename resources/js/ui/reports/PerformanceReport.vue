@@ -49,7 +49,7 @@
 				</div>
 				<span class="text-center text-primary-dark text-bold font-md mb-5">All Branches</span>
 				<div class="d-flex flex-row justify-content-center text-primary-dark">
-					<span class="text-center text-primary-dark text-bold">As of {{filter.date?dateToMDY2(new Date(filter.date)).split('-').join('/'):'---'}}</span>
+					<span class="text-center text-primary-dark text-bold">As of {{filter.date?dateToMDY2(new Date(filter.date)).split('-').join('/'):dateToMDY2(new Date(transactionDate)).split('-').join('/')}}</span>
 				</div>
 			</div>
 			<section class="d-flex flex-column mb-45">
@@ -1087,8 +1087,9 @@ export default {
 			loading:false,
 			branch:{},
 			filter:{
-				date:'',
+				date:null,
 			},
+			transactionDate:null,
 			products:[],
 			centers:[],
 			aos:[],
@@ -1098,8 +1099,8 @@ export default {
 	methods:{
 		async fetchReport(){
 			this.loading = true;
-			this.filter.branch_id = this.branch.branch_id;
-			await axios.post(this.baseURL() + 'api/report/performance-report', this.filter, {
+			var data = this.filter.date?this.filter:{};
+			await axios.post(this.baseURL() + 'api/report/performance-report', data, {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
 					'Content-Type': 'application/json',
@@ -1119,6 +1120,21 @@ export default {
 			data['past due'] = data['portfolio'];
 			data['delinquent'] = data['portfolio'];
 			return data;
+		},
+		async fetchTransactionDate(){
+			await axios.get(this.baseURL() + 'api/eod/eodtransaction/' + this.branch.branch_id,{
+				headers: {
+					'Authorization': 'Bearer ' + this.token,
+					'Content-Type': 'application/json',
+					'Accept': 'application/json'
+					}
+				})
+				.then(function (response) {
+					this.transactionDate = response.data.data.date_end;
+				}.bind(this))
+				.catch(function (error) {
+					console.log(error);
+				}.bind(this));
 		},
 		addDummyData:function(data){
 			for(var i in data){
@@ -1201,6 +1217,7 @@ export default {
 	},
 	mounted(){
 		this.branch = JSON.parse(this.pbranch);
+		this.fetchTransactionDate();
 		this.fetchReport();
 	}
 }
