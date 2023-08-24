@@ -696,8 +696,9 @@ class LoanAccount extends Model
         return $status;
     }
 
-    private function setAmortizationDetails($account, $amortization, $transactionDateNow, $prevAmort = null, $partiallyPaid = null)
+    private function setAmortizationDetails($account, $amortization, $transactionDateNow, $prevAmort = null, $payment, $amortizationStatus)
     {
+
 
         $firstAmortization = (object) $this->getFirstAmortization();
         $totalAmort = $firstAmortization->principal + $firstAmortization->interest;
@@ -726,13 +727,34 @@ class LoanAccount extends Model
 
         $amortization->pdi = $amortization->pdi ? $amortization->pdi : 0;
         $amortization->delinquent = $this->setDelinquentAmortization($account, $amortization->advance_principal, $prevAmort);
-        if ($partiallyPaid) {
-            $amortization->principal = $partiallyPaid["principal"];
-            $amortization->interest = $partiallyPaid["interest"];
-            $amortization->short_principal = $partiallyPaid["short_principal"];
-            $amortization->short_interest = $partiallyPaid["short_interest"];
-            $amortization->short_penalty = $partiallyPaid["short_penalty"];
-            $amortization->over_payment = $partiallyPaid["over_payment"];
+
+
+        $partiallyPaid = $this->getAmortizationPartiallyPaid(
+            $payment,
+            $amortization,
+            $prevAmort,
+            $transactionDateNow
+        );
+
+
+
+
+
+
+        if ($amortizationStatus === self::AMORTIZATION_PAID) {
+        } else if ($amortizationStatus === self::AMORTIZATION_PARTIALLY_PAID) {
+
+            if ($partiallyPaid) {
+                $amortization->principal = $partiallyPaid["principal"];
+                $amortization->interest = $partiallyPaid["interest"];
+                $amortization->short_principal = $partiallyPaid["short_principal"];
+                $amortization->short_interest = $partiallyPaid["short_interest"];
+                $amortization->short_penalty = $partiallyPaid["short_penalty"];
+                $amortization->over_payment = $partiallyPaid["over_payment"];
+            }
+        } else {
+
+
         }
 
         $penaltyMissed = $amortization->delinquent['missed'];
@@ -746,6 +768,10 @@ class LoanAccount extends Model
             $amortization->short_principal = $amortization->delinquent['principal'] - (in_array($prevAmort ? $prevAmort->id : $amortization->id, $amortization->delinquent['ids']) ? $amortization->principal : 0);
             $amortization->short_interest = $amortization->delinquent['interest'] - (in_array($prevAmort ? $prevAmort->id : $amortization->id, $amortization->delinquent['ids']) ? $amortization->interest : 0);
         }
+
+
+
+
 
 
 
@@ -773,7 +799,9 @@ class LoanAccount extends Model
         if ($payment) {
             $amortization->total = $amortization->total - ($amortization->principal + $amortization->interest);
             //chec previous amortization
+
             if ($prevAmort) {
+
                 $lastAmort = $prevAmort->amortizations->first();
                 //check if there is previous amortization and last amortization sched
                 if ($lastAmort) {
@@ -787,6 +815,7 @@ class LoanAccount extends Model
                     $amortization->interest = 0;
                 }
             }
+
 
             /* $amortization->short_principal = $isPaidLastAmort ? 0 : $payment->short_principal;
             $amortization->short_interest = $isPaidLastAmort ? 0 : $payment->short_interest;
@@ -827,67 +856,18 @@ class LoanAccount extends Model
             );
 
             $this->setDelinquent($this->loan_account_id, $amortization->id, $transactionDateNow);
-            if ($amortizationStatus === self::AMORTIZATION_PAID) {
-                $amortization = $this->checkPaymentMode($amortization, $lastPaidAmort);
-                $amortization = $this->setNextAmortization($account, $amortization, $transactionDateNow);
-
-                $amortization->schedule_principal = $amortization->principal;
-                $amortization->schedule_interest = $amortization->interest;
-
-                $partiallyPaid = $this->getAmortizationPartiallyPaid(
-                    $payment,
-                    $amortization,
-                    $prevAmort,
-                    $transactionDateNow
-                );
-                $amortization = $this->setAmortizationDetails(
-                    $account,
-                    $amortization,
-                    $transactionDateNow,
-                    $prevAmort,
-                    $partiallyPaid
-                );
-            } else if ($amortizationStatus === self::AMORTIZATION_PARTIALLY_PAID) {
-                $amortization = $this->checkPaymentMode($amortization, $lastPaidAmort);
-                $amortization = $this->setNextAmortization($account, $amortization, $transactionDateNow);
-
-                $amortization->schedule_principal = $amortization->principal;
-                $amortization->schedule_interest = $amortization->interest;
-
-                $partiallyPaid = $this->getAmortizationPartiallyPaid(
-                    $payment,
-                    $amortization,
-                    $prevAmort,
-                    $transactionDateNow
-                );
-                $amortization = $this->setAmortizationDetails(
-                    $account,
-                    $amortization,
-                    $transactionDateNow,
-                    $prevAmort,
-                    $partiallyPaid
-                );
-            } else {
-                $amortization = $this->checkPaymentMode($amortization, $lastPaidAmort);
-                $amortization = $this->setNextAmortization($account, $amortization, $transactionDateNow);
-
-                $amortization->schedule_principal = $amortization->principal;
-                $amortization->schedule_interest = $amortization->interest;
-
-                $partiallyPaid = $this->getAmortizationPartiallyPaid(
-                    $payment,
-                    $amortization,
-                    $prevAmort,
-                    $transactionDateNow
-                );
-                $amortization = $this->setAmortizationDetails(
-                    $account,
-                    $amortization,
-                    $transactionDateNow,
-                    $prevAmort,
-                    $partiallyPaid
-                );
-            }
+            $amortization = $this->checkPaymentMode($amortization, $lastPaidAmort);
+            $amortization = $this->setNextAmortization($account, $amortization, $transactionDateNow);
+            $amortization->schedule_principal = $amortization->principal;
+            $amortization->schedule_interest = $amortization->interest;
+            $amortization = $this->setAmortizationDetails(
+                $account,
+                $amortization,
+                $transactionDateNow,
+                $prevAmort,
+                $payment,
+                $amortizationStatus
+            );
         }
 
         return $amortization;
