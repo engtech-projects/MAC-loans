@@ -663,6 +663,7 @@
                                                     class="form-control form-input mw-250"
                                                     id="transactionDate"
                                                     step=".01"
+													:disabled="payment.payment_type=='Memo'&&payment.memo_type=='Rebates and Discount'"
                                                 />
                                             </div>
                                         </div>
