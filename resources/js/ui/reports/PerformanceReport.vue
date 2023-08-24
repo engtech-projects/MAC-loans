@@ -1087,7 +1087,7 @@ export default {
 			loading:false,
 			branch:{},
 			filter:{
-				date:null,
+				date:'',
 			},
 			products:[],
 			centers:[],
@@ -1184,7 +1184,7 @@ export default {
 									let month = year[m];
 									row.push(month[vars2[i]]);
 									row.push(this.formatToCurrency(month[vars[i]]));
-									cluster.total[mcount]+=month[vars2[i]];
+									cluster.total[mcount]+=parseFloat(month[vars2[i]]);
 									cluster.total[mcount+1]+=month[vars[i]];
 									mcount+=2;
 								}
@@ -1201,6 +1201,7 @@ export default {
 	},
 	mounted(){
 		this.branch = JSON.parse(this.pbranch);
+		this.fetchReport();
 	}
 }
 </script>
