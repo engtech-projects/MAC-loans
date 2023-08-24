@@ -889,7 +889,7 @@ class LoanAccount extends Model
                     $amortization,
                     $transactionDateNow,
                     $prevAmort,
-                    $transactionDateNow
+                    $partiallyPaid
                 );
             }
         }
