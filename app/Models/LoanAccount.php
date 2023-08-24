@@ -726,6 +726,14 @@ class LoanAccount extends Model
 
         $amortization->pdi = $amortization->pdi ? $amortization->pdi : 0;
         $amortization->delinquent = $this->setDelinquentAmortization($account, $amortization->advance_principal, $prevAmort);
+        if ($partiallyPaid) {
+            $amortization->principal = $partiallyPaid["principal"];
+            $amortization->interest = $partiallyPaid["interest"];
+            $amortization->short_principal = $partiallyPaid["short_principal"];
+            $amortization->short_interest = $partiallyPaid["short_interest"];
+            $amortization->short_penalty = $partiallyPaid["short_penalty"];
+            $amortization->over_payment = $partiallyPaid["over_payment"];
+        }
 
         $penaltyMissed = $amortization->delinquent['missed'];
         if ($dayDiff > 0 && $amortization->advance_principal < $amortization->short_principal + $amortization->principal) {
@@ -740,25 +748,15 @@ class LoanAccount extends Model
         }
 
 
+
         $amortization->short_pdi = 0;
         $amortization->short_penalty = $amortization->delinquent['penalty'];
-
-        if ($partiallyPaid) {
-            $amortization->principal = $partiallyPaid["principal"];
-            $amortization->interest = $partiallyPaid["interest"];
-            $amortization->short_principal = $partiallyPaid["short_principal"];
-            $amortization->short_interest = $partiallyPaid["short_interest"];
-            $amortization->short_penalty = $partiallyPaid["short_penalty"];
-            $amortization->over_payment = $partiallyPaid["over_payment"];
-        }
 
 
 
         if ($dayDiff > 10 && $amortization->advance_principal < $amortization->schedule_principal) {
             $penaltyMissed = array_merge(array_unique($amortization->delinquent['missed']), $amortization->delinquent['ids']);
         }
-
-
         $amortization->penalty = $this->getPenalty($penaltyMissed, $totalAmort, $transactionDateNow);
         // $amortization->penalty = $this->getPenalty($amortization->delinquent['missed'], ($amortization->principal + $amortization->interest));
         $amortization->total = ($amortization->principal + $amortization->interest) + ($amortization->short_principal + $amortization->short_interest);
@@ -768,13 +766,12 @@ class LoanAccount extends Model
 
         return $amortization;
     }
+
     private function getAmortizationPartiallyPaid($payment, $amortization, $prevAmort, $transactionDateNow)
     {
 
         if ($payment) {
             $amortization->total = $amortization->total - ($amortization->principal + $amortization->interest);
-
-
             //chec previous amortization
             if ($prevAmort) {
                 $lastAmort = $prevAmort->amortizations->first();
@@ -790,7 +787,6 @@ class LoanAccount extends Model
                     $amortization->interest = 0;
                 }
             }
-
 
             /* $amortization->short_principal = $isPaidLastAmort ? 0 : $payment->short_principal;
             $amortization->short_interest = $isPaidLastAmort ? 0 : $payment->short_interest;
