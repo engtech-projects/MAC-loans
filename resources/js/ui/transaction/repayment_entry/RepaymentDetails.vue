@@ -2172,7 +2172,7 @@ export default {
                 this.loanAccount?.current_amortization.id;
             if (
                 parseFloat(this.payment.amount_paid) > 0 &&
-                this.checkRebates()
+                this.checkRebates() || this.payment.memo_type == 'Rebates and Discount'
             ) {
                 axios
                     .post(this.baseURL() + "api/payment", this.payment, {
