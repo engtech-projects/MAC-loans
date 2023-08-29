@@ -72,7 +72,7 @@ class Amortization extends Model
 
     public function scopeAccountId($query, $accountId)
     {
-        return $query->firstWhere('loan_account_id', $accountId);
+        return $query->where('loan_account_id', $accountId);
     }
 
     public function scopeStatus($query, $status)
@@ -103,22 +103,22 @@ class Amortization extends Model
         $amortization = Amortization::query()
             ->whereDate('amortization_date', '<=', $transactionDateNow)
             ->whereIn('status', ['open', 'delinquent', 'paid'])
-            ->orderBy('amortization_date', "DESC")
-            ->limit(1)
-            ->first()
+            ->orderBy('id')
             ->accountId($accountId);
+        $currentAmortization = $amortization->first();
+        if (!$currentAmortization) {
+            if ((isset($currentAmortization["status"]) && $currentAmortization["status"] == 'paid') || $currentAmortization == null) {
+                $amortization = Amortization::whereIn('status', ['open', 'delinquent', 'paid'])
+                    ->whereDate('amortization_date', '>=', $transactionDateNow)
+                    ->whereIn('status', ['open', 'delinquent', 'paid'])
+                    ->orderBy('id')
+                    ->accountId($accountId);
 
-        if ((isset($amortization["status"]) && $amortization["status"] == 'paid') || $amortization == null) {
-            $amortization = Amortization::whereIn('status', ['open', 'delinquent', 'paid'])
-                ->whereDate('amortization_date', '>=', $transactionDateNow)
-                ->whereIn('status', ['open', 'delinquent', 'paid'])
-                ->orderBy('amortization_date', "DESC")
-                ->limit(1)
-                ->first()
-                ->accountId($accountId);
+                $currentAmortization = $amortization->first();
+            }
         }
 
-        return $amortization;
+        return $currentAmortization;
     }
 
     public function getAmortizationPayments($id)
@@ -130,7 +130,7 @@ class Amortization extends Model
     public function getNextAmortization($accountId)
     {
 
-        return Amortization::query()->status('open')->accountId($accountId);
+        return Amortization::query()->status('open')->accountId($accountId)->first();
     }
 
     public function updateAmortization($id)
@@ -159,10 +159,40 @@ class Amortization extends Model
         }
         return $currentAmortization ?? null;
     }
+    public function getLastPaidAmortization($accountId)
+    {
+        return Amortization::query()->accountId($accountId)->paid()->orderBy('id', 'DESC')->first();
+    }
+    public function getDelinquentAmortization($accountId, $lastPaidAmort, $currentAmortId)
+    {
+        $id = $lastPaidAmort ? $lastPaidAmort->id : null;
+        if (!$lastPaidAmort) {
+            return null;
+        }
+        $amortization = Amortization::query()->when($id, function ($query, $id) {
+            $query->where('id', '>', $id);
+        }, function ($query) use ($currentAmortId) {
+            $query->where('id', '<', $currentAmortId);
+        })->accountId($accountId)->delinquent()->get();
+        return $amortization;
+    }
     public function getCurrentAmortization($amortizations)
     {
         $currentAmortization = $amortizations->where('id', 301902)->with('account')->first();
         return $currentAmortization;
+    }
+    public function getPrevAmort($accountId, $id)
+    {
+        if (!$id) {
+            return $amortization = Amortization::accountId($accountId)
+                ->first();
+        }
+        $amortization =  Amortization::accountId($accountId)
+            ->orderBy('id', 'DESC')
+            ->where('id', '<', $id)
+            ->first();
+
+        return $amortization;
     }
 
     public function createAmortizationSched(LoanAccount $account, $dateRelease = null)
