@@ -663,6 +663,7 @@
                                                     class="form-control form-input mw-250"
                                                     id="transactionDate"
                                                     step=".01"
+													:disabled="payment.payment_type=='Memo'&&payment.memo_type=='Rebates and Discount'"
                                                 />
                                             </div>
                                         </div>
@@ -1680,6 +1681,11 @@ export default {
                         credit: 0,
                         balance: 0,
                     },
+                    rebates: {
+                        debit: 0,
+                        credit: 0,
+                        balance: 0,
+                    },
                 },
                 loan_status_view: "",
             },
@@ -1871,6 +1877,11 @@ export default {
                         balance: 0,
                     },
                     penalty: {
+                        debit: 0,
+                        credit: 0,
+                        balance: 0,
+                    },
+                    rebates: {
                         debit: 0,
                         credit: 0,
                         balance: 0,
@@ -2171,7 +2182,7 @@ export default {
                 this.loanAccount?.current_amortization.id;
             if (
                 parseFloat(this.payment.amount_paid) > 0 &&
-                this.checkRebates()
+                this.checkRebates() || this.payment.memo_type == 'Rebates and Discount'
             ) {
                 axios
                     .post(this.baseURL() + "api/payment", this.payment, {
@@ -2428,8 +2439,9 @@ export default {
             );
         },
         outstandingInterestRemaining: function () {
+            const intBal = this.loanAccount.remainingBalance.interest.balance - this.loanAccount.remainingBalance.rebates.credit;
             return (
-                this.loanAccount.remainingBalance.interest.balance -
+                intBal -
                 this.payment.interest -
                 this.rebatesApplied
             );
