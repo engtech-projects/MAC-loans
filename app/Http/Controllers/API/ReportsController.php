@@ -314,48 +314,60 @@ class ReportsController extends BaseController
         $group = $report->microGroup($filters, $weeksAndDays, $monthStart, $monthEnd);
         $individual = $report->microIndividual($filters, $weeksAndDays, $monthStart, $monthEnd);
         $data = [
-          "schedule" => $weeksOfMonth,
-          "group" => $group,
-          "individual" => $individual
+            "schedule" => $weeksOfMonth,
+            "group" => $group,
+            "individual" => $individual
         ];
 
         return $this->sendResponse($data, '');
+    }
 
-      }
+    public function performanceReport(Request $request)
+    {
+        $date = null;
+        if (isset($request["date"])) {
+            $date = Carbon::createFromFormat('Y-m-d', $request["date"])->format('Y-m-d');
+        }
+        $reports = new Reports();
+        $performanceReport = $reports->performanceReport($date);
+        return $this->sendResponse($performanceReport, "Performance Report");
+    }
 
-      public function consolidatedReports(Request $request) {
+    public function consolidatedReports(Request $request)
+    {
         $type = $request->input('type');
         $filters = [];
         $report = new Reports();
 
         $branchReport = NULL;
         switch ($type) {
-          case 'maturity':
 
-            $filters = [
-              'due_from' => $request->input('date_from'),
-              'due_to' => $request->input('date_to'),
-              'account_officer' => $request->input('account_officer'),
-              'center' => $request->input('center')
-            ];
-            if($request->input('due_from')){
-              $filters["due_from"] = $request->input('due_from');
-            }
-            if($request->input('due_to')){
-              $filters["due_to"] = $request->input('due_to');
-            }
-            if($filters['center'] == "all"){
-              unset($filters['center']);
-            }
-            if($filters['account_officer'] == "all"){
-              unset($filters['account_officer']);
-            }
+            case 'maturity':
 
-            $branchReport = $report->branchMaturityReport($filters);
+                $filters = [
+                    'due_from' => $request->input('date_from'),
+                    'due_to' => $request->input('date_to'),
+                    'account_officer' => $request->input('account_officer'),
+                    'center' => $request->input('center')
+                ];
+                if ($request->input('due_from')) {
+                    $filters["due_from"] = $request->input('due_from');
+                }
+                if ($request->input('due_to')) {
+                    $filters["due_to"] = $request->input('due_to');
+                }
+                if ($filters['center'] == "all") {
+                    unset($filters['center']);
+                }
+                if ($filters['account_officer'] == "all") {
+                    unset($filters['account_officer']);
+                }
 
-            break;
-          case 'client_payment_status':
-            # code...
+                $branchReport = $report->branchMaturityReport($filters);
+
+                break;
+            case 'client_payment_status':
+                # code...
                 //  no consolidated client payment status
                 break;
             case 'account_officer':

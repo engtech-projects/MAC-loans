@@ -36,18 +36,14 @@ class PerformanceReportController extends BaseController
 
     public function fetchReportsDate(Request $request)
     {
-        $branchId = $request->query("branchId");
 
+        $branchId = $request->query("branchId");
         if(isset($branchId)) {
             $response = $this->performanceReport->getDateReports($branchId);
             return $this->sendResponse($response,"Fetch report dates");
         }else {
             return $this->sendError("No branch found",null,404);
         }
-
-
-
-
 
     }
 

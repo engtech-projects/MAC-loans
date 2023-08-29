@@ -138,11 +138,16 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('report/journal-entries', [JournalEntryController::class, 'index']);
 
 
+    Route::post('report/performance-report',[ReportsController::class,'performanceReport']);
+
+    /** Account Officer Performance Reports */
     Route::post('report/branch/performancereport',[PerformanceReportController::class, 'index']);
     Route::post('report/branch/performancereport/create',[PerformanceReportController::class, 'store']);
     Route::get('report/branch/performancereport/dates',[PerformanceReportController::class, 'fetchReportsDate']);
 
+
   	Route::post('uploadfile/{id}', [LoanAccountController::class, 'uploadFile']);
+
 
     Route::get('eod/eodtransaction/{branch_id}', [EODController::class, 'getTransactionDate']);
     Route::post('eod/eodtransaction/create', [EODController::class, 'createTransactionDate']);
