@@ -291,7 +291,7 @@ class Reports extends Model
 
                             $data[$key]['payment'][$type]['principal'] += $payment->principal;
                             $data[$key]['payment'][$type]['interest'] += $payment->interest;
-                            $data[$key]['payment'][$type]['pdi'] += $payment->pdi;
+                            $data[$key]['payment'][$type]['pdi'] += ($payment->pdi_approval_no) ? 0 : $payment->pdi;
                             $data[$key]['payment'][$type]['over'] += $payment->over_payment;
                             $data[$key]['payment'][$type]['discount'] += $payment->rebates;
                             $data[$key]['payment'][$type]['total_payment'] += $payment->amount_applied - $payment->rebates;
@@ -358,7 +358,7 @@ class Reports extends Model
                 'payment_type' => $payment->payment_type,
                 'principal' => $payment->principal,
                 'interest' => $payment->interest,
-                'pdi' => $payment->pdi,
+                'pdi' => ($payment->pdi_approval_no) ? 0 : $payment->pdi,
                 'over' => $payment->over_payment,
                 'discount' => $payment->rebates,
                 'total_payment' => $payment->amount_applied - $payment->rebates,
@@ -644,7 +644,7 @@ class Reports extends Model
 
                             $data[$key]['payment'][$type]['principal'] += $payment->principal;
                             $data[$key]['payment'][$type]['interest'] += $payment->interest;
-                            $data[$key]['payment'][$type]['pdi'] += $payment->pdi;
+                            $data[$key]['payment'][$type]['pdi'] += ($payment->pdi_approval_no) ? 0 : $payment->pdi;
                             $data[$key]['payment'][$type]['over'] += $payment->over_payment;
                             $data[$key]['payment'][$type]['discount'] += $payment->rebates;
                             $data[$key]['payment'][$type]['total_payment'] += $payment->amount_applied - $payment->rebates;
