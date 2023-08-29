@@ -1681,6 +1681,11 @@ export default {
                         credit: 0,
                         balance: 0,
                     },
+                    rebates: {
+                        debit: 0,
+                        credit: 0,
+                        balance: 0,
+                    },
                 },
                 loan_status_view: "",
             },
@@ -1872,6 +1877,11 @@ export default {
                         balance: 0,
                     },
                     penalty: {
+                        debit: 0,
+                        credit: 0,
+                        balance: 0,
+                    },
+                    rebates: {
                         debit: 0,
                         credit: 0,
                         balance: 0,
@@ -2429,8 +2439,9 @@ export default {
             );
         },
         outstandingInterestRemaining: function () {
+            const intBal = this.loanAccount.remainingBalance.interest.balance - this.loanAccount.remainingBalance.rebates.credit;
             return (
-                this.loanAccount.remainingBalance.interest.balance -
+                intBal -
                 this.payment.interest -
                 this.rebatesApplied
             );

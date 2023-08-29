@@ -17,35 +17,35 @@
 			<div class="d-flex flex-row align-items-center mr-24 justify-content-start flex-1">
 				<span class="mr-10 text-block">Acc. Officer: </span>
 				<select required v-model="filter.account_officer" name="" id="selectProductClient" class="form-control flex-1">
+					<option value="all">All Account Officers</option>
 					<option v-for="a,o in aos.filter(ao=>ao.branch_id==branch.branch_id)" :key="o" :value="a.ao_id">{{a.name}}</option>
-					<option value="all">All</option>
 				</select>
 			</div>
 			<div class="d-flex flex-row align-items-center mr-24 justify-content-start flex-1">
 				<span class="mr-10 text-block">Product: </span>
 				<select required v-model="filter.product" name="" id="selectProductClient" class="form-control flex-1">
-					<option v-for="p,i in products" :key="i" :value="p.product_id">{{p.product_name}}</option>
-					<option value="all">All</option>
+					<option value="all">All Products</option>
+					<option v-for="p,i in products.filter(p=>p.status=='active')" :key="i" :value="p.product_id">{{p.product_name}}</option>
 				</select>
 			</div>		
 			<div class="d-flex flex-row align-items-center mr-24 justify-content-start flex-1">
 				<span class="mr-10 text-block">Center: </span>
 				<select required v-model="filter.center" name="" id="selectProductClient" class="form-control flex-1">
-					<option v-for="c,n in centers" :key="n" :value="c.center_id">{{c.center}}</option>
-					<option value="all">All</option>
+					<option value="all">All Centers</option>
+					<option v-for="c,n in centers.filter(c=>c.status=='active')" :key="n" :value="c.center_id">{{c.center}}</option>
 				</select>
 			</div>	
 			<div class="d-flex flex-row align-items-center justify-content-start flex-1 mr-24">
 				<span class="mr-10 text-block">Status: </span>
-				<select required v-model="filter.status" name="" id="selectProductClient" class="form-control flex-1">
+				<select required v-model="filter.loan_status" name="" id="selectProductClient" class="form-control flex-1">
 					<option value="Current">Current</option>
 					<option value="Delinquent">Delinquent</option>
 					<option value="Past Due">Past Due</option>
 					<option value="Restructed">Restructed</option>
-					<option value="Res WO/ PDI">Res WO/ PDI</option>
+					<option value="Res WO/PDI">Res WO/PDI</option>
 					<option value="Case Filed">Case Filed</option>
-					<option value="Litegated">Litegated</option>
-					<option value="Write-Off">Write-Off</option>
+					<option value="Litigated">Litigated</option>
+					<option value="Write-off">Write-Off</option>
 				</select>
 			</div>		
 			<div class="d-flex flex-row align-items-center justify-content-start">
@@ -70,13 +70,14 @@
 				</div>
 				<span class="text-center text-primary-dark text-bold font-md mb-5">{{branch.branch_name}} Branch ({{branch.branch_code}})</span>
 							<div class="d-flex flex-row justify-content-center text-primary-dark">
-								<span class="text-center text-primary-dark text-bold">As of {{filter.as_of?dateToMDY2(new Date(filter.as_of)).split('-').join('/'):'---'}}</span>
+								<span class="text-center text-primary-dark text-bold">As of {{filter.transaction_date?dateToMDY2(new Date(filter.transaction_date)).split('-').join('/'):'---'}}</span>
 							</div>
 			</div>
 
 
 
 			<section class="d-flex flex-column mb-16 p-10 light-border">
+				<span v-if="!filteredReports.length">No records found.</span>
 				<div v-for="fr,i in filteredReports" :key="i">
 					<section v-if="fr.rows.length">
 						<div class="d-flex bg-yellow-verylight mb-5">
@@ -677,12 +678,14 @@ export default {
 			loading:false,
 			branch:{},
 			filter:{
-				date:null,
+				transaction_date:null,
 				type:'loan_listing',
 				branch_id:'',
 				account_officer:'all',
 				product:'all',
 				center:'all',
+				loan_status:'',
+				report:'status_summary'
 			},
 			products:[],
 			centers:[],
@@ -766,7 +769,7 @@ export default {
 					}
 				})
 				.then(function (response) {
-					this.filter.as_of = response.data.data.date_end;
+					this.filter.transaction_date = response.data.data.date_end;
 				}.bind(this))
 				.catch(function (error) {
 					console.log(error);
@@ -861,7 +864,7 @@ export default {
 								
 								row.push('');
 								row.push(account.loan_status=='Ongoing'?account.status:account.loan_status);
-								if(sstatus == this.filter.status){
+								// if(sstatus == this.filter.loan_status){
 									centerTotal[4] += account.amount_loan;
 									centerTotal[5] += account.principal_balance;
 									centerTotal[6] += account.interest_balance;
@@ -870,7 +873,7 @@ export default {
 									// centerTotal[9] += account.distribution.short_interest + account.distribution.interest
 									centerTotal[10] += account.amount_due;
 									table.rows.push(row);
-								}
+								// }
 							}
 							productTotal[4] += centerTotal[4];
 							productTotal[5] += centerTotal[5];

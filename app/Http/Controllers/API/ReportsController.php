@@ -4,6 +4,8 @@ namespace App\Http\Controllers\API;
 
 // use App\Http\Controllers\Controller;
 use App\Http\Controllers\API\BaseController as BaseController;
+use App\Models\EndTransaction;
+use App\Models\JournalEntry;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use App\Models\Reports;
@@ -156,7 +158,6 @@ class ReportsController extends BaseController
         switch ($type) {
 
             case 'collection':
-
                 $filters = [
                     'account_officer' => $request->input('account_officer'),
                     'center' => $request->input('center'),
@@ -216,6 +217,9 @@ class ReportsController extends BaseController
                     'account_officer' => $request->input('account_officer'),
                     'product' => $request->input('product'),
                     'center' => $request->input('center'),
+                    'loan_status' => $request->input("loan_status"),
+                    'report' => $request->input("report"),
+                    'payment_status' => $request->input("payment_status")
                 ];
                 if ($filters['account_officer'] == "all") {
                     unset($filters['account_officer']);
@@ -331,7 +335,6 @@ class ReportsController extends BaseController
 
     public function consolidatedReports(Request $request)
     {
-
         $type = $request->input('type');
         $filters = [];
         $report = new Reports();
@@ -521,10 +524,16 @@ class ReportsController extends BaseController
             'branch_id' => $request->input("branch") ? $request->input("branch") : $request->input("branch_id")
         ];
         $report = new Reports();
-
         $prepaid = $report->prepaidReport($filters);
-
         return $this->sendResponse($prepaid, "Consolidated Report");
+    }
+
+    public function saveJournalEntry(Request $request)
+    {
+        $eod = new EndTransaction();
+        $journalEntry = new JournalEntry();
+        $journals = $journalEntry->getJounalBookById();
+        return $journals;
     }
 
     // public function releaseByClientReports(Request $request) {

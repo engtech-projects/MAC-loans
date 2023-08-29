@@ -345,7 +345,7 @@
 											<span>Interest Balance</span>
 											<span>:</span>
 										</div>
-										<span class="flex-3 pl-10">P {{formatToCurrency(loanDetails.remaining_balance.interest.balance)}}</span>
+										<span class="flex-3 pl-10">P {{formatToCurrency(loanDetails.remaining_balance.interest.balance - loanDetails.remaining_balance.rebates.credit)}}</span>
 									</div>
 									<div class="d-flex justify-content-between py-5 text-primary-dark">
 										<div class="flex-4 d-flex justify-content-between">
