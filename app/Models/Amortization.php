@@ -112,6 +112,13 @@ class Amortization extends Model
 
         return $currentAmortization;
     }
+
+    public function getPrevAmort($id, $accountId)
+    {
+        return Amortization::accountId($accountId)
+            ->orderBy('id', 'DESC')
+            ->firstWhere('id', '<', $id);
+    }
     public function getNextAmortization($accountId)
     {
         return Amortization::query()->where('status', 'open')->accountId($accountId)->first();

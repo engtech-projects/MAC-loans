@@ -731,7 +731,7 @@ class LoanAccount extends Model
             $endOfMonth = $amortization->amortization_date->endOfMonth();
             $startOfMonth = $amortization->amortization_date->startOfMonth();
             if ($transactionDateNow > $endOfMonth) {
-                $amortization->update(['status' => self::AMORTIZATION_DELINQUENT]);
+                Amortization::find($amortization->id)->update(['status' => Amortization::AMORTIZATION_DELINQUENT]);
                 $isNext = true;
             }
             if ($transactionDateNow < $startOfMonth) {
@@ -740,7 +740,7 @@ class LoanAccount extends Model
             }
         } else {
             if ($transactionDateNow > $amortization->amortization_date) {
-                $amortization->update(['status' => self::AMORTIZATION_DELINQUENT]);
+                Amortization::find($amortization->id)->update(['status' => Amortization::AMORTIZATION_DELINQUENT]);
                 $isNext = true;
             }
         }
@@ -751,20 +751,15 @@ class LoanAccount extends Model
         return $amortization ?? null;
     }
 
-    private function getPrevAmort($id)
-    {
-        return Amortization::where('loan_account_id', $this->loan_account_id)
-            ->orderBy('id', 'DESC')
-            ->firstWhere('id', '<', $id);
-    }
 
 
-    private function loanAmortizationDueDetails($amortization, $account, $transactionDateNow, $amortizationPayments, $lastPaidAmort)
+
+    private function loanAmortizationDueDetails($amortization, $account, $transactionDateNow, $amortizationPayments, $lastPaidAmort, $amortizationInstance)
     {
 
         if ($amortization) {
 
-            $prevAmort = $this->getPrevAmort($amortization->id);
+            $prevAmort = $amortizationInstance->getPrevAmort($amortization->id, $this->loan_account_id); //$this->getPrevAmort($amortization->id);
             $firstAmortization = (object) $this->getFirstAmortization();
             $totalAmort = $firstAmortization->principal + $firstAmortization->interest;
             $dayDiff = $amortization->amortization_date->diffInDays($transactionDateNow, false);
@@ -859,7 +854,7 @@ class LoanAccount extends Model
             $amortization->schedule_interest = $amortization->interest;
 
             $amortization = $this->setNextAmortization($amortization, $account, $transactionDateNow, $lastPaidAmort, $accountPayments, $amortizationInstance);
-            $amortization = $this->loanAmortizationDueDetails($amortization, $account, $transactionDateNow, $accountPayments, $lastPaidAmort);
+            $amortization = $this->loanAmortizationDueDetails($amortization, $account, $transactionDateNow, $accountPayments, $lastPaidAmort, $amortizationInstance);
         }
         return $amortization;
     }
