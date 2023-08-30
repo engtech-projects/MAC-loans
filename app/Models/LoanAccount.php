@@ -814,7 +814,8 @@ class LoanAccount extends Model
 
             $payment = $amortizationPayments->last();
             $isDelinquent = $this->isDelinquentAmortization($amortization, $dayDiff);
-            $dayDiffPrevAmort = $prevAmort->amortization_date->diffInDays($transactionDateNow, false);
+            $dayDiffPrevAmort = $prevAmort ? $prevAmort->amortization_date->diffInDays($transactionDateNow, false) : null;
+            $amortStatus = $prevAmort ? $prevAmort->status : null;
 
 
             if ($isDelinquent) {
@@ -834,7 +835,7 @@ class LoanAccount extends Model
 
             $payment = $amortizationPayments->last();
 
-            if ($prevAmort->status === 'paid') {
+            if ($amortStatus === 'paid') {
                 if ($dayDiffPrevAmort <= 0) {
                     $amortization->principal = 0;
                     $amortization->interest = 0;
@@ -875,12 +876,8 @@ class LoanAccount extends Model
     {
         $lastPaidAmort = $this->getLastpaidAmortization();
         $transactionDateNow = transactionDate($this->branch->branch_id);
-
-
         $amortization = $this->currentLoanAmortization($account);
-
         $accountPayments = $this->getPayment($account, $amortization->id);
-        $payment = $accountPayments->last() ?? null;
 
         if ($amortization) {
             $amortization = $this->setLoanAmortization($amortization, $account, $transactionDateNow, $lastPaidAmort, $accountPayments);
