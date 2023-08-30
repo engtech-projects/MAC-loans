@@ -765,15 +765,9 @@ class LoanAccount extends Model
         if ($amortization) {
 
             $prevAmort = $this->getPrevAmort($amortization->id);
-
-
             $firstAmortization = (object) $this->getFirstAmortization();
             $totalAmort = $firstAmortization->principal + $firstAmortization->interest;
             $dayDiff = $amortization->amortization_date->diffInDays($transactionDateNow, false);
-
-            $amortization->schedule_principal = $amortization->principal;
-            $amortization->schedule_interest = $amortization->interest;
-
             $amortization->day_late = $dayDiff;
 
             $amortization->advance_principal = $this->getAdvancePrincipal($this->loan_account_id, $amortization->id);
@@ -861,6 +855,9 @@ class LoanAccount extends Model
         $accountPayments = $this->getPayment($account, $amortization->id);
 
         if ($amortization) {
+            $amortization->schedule_principal = $amortization->principal;
+            $amortization->schedule_interest = $amortization->interest;
+
             $amortization = $this->setNextAmortization($amortization, $account, $transactionDateNow, $lastPaidAmort, $accountPayments, $amortizationInstance);
             $amortization = $this->loanAmortizationDueDetails($amortization, $account, $transactionDateNow, $accountPayments, $lastPaidAmort);
         }
