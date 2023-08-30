@@ -820,10 +820,10 @@ class LoanAccount extends Model
 
                 $amortization->total = $amortization->total - ($amortization->principal + $amortization->interest);
 
-                /* if ($amortization->id === $payment->amortization_id) {
+                if ($amortization->id === $payment->amortization_id) {
                     $amortization->principal = 0;
                     $amortization->interest = 0;
-                } */
+                }
 
                 $amortization->short_principal = $payment->short_principal;
                 $amortization->short_interest = $payment->short_interest;
