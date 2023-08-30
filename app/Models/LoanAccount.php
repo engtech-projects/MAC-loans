@@ -778,7 +778,7 @@ class LoanAccount extends Model
             $amortization->principal = round($amortization->principal);
             $amortization->interest = round($amortization->interest);
 
-            if ($transactionDateNow < $startOfMonth && $this->payment_mode === self::MONTHLY_PAYMENT) {
+            if ($transactionDateNow <= $startOfMonth && $this->payment_mode === self::MONTHLY_PAYMENT) {
                 $amortization->principal = 0;
                 $amortization->interest = 0;
             }
@@ -857,13 +857,12 @@ class LoanAccount extends Model
 
             $isMonthlyPayment = $this->checkPaymentMode();
             if ($isMonthlyPayment) {
-                $startOfMonth = $amortization->amortization_date->startOfMonth();
                 $endOfMonth = $amortization->amortization_date->endOfMonth();
                 if ($transactionDateNow > $endOfMonth) {
-                    Amortization::find($amortization->id)->update(['status' => Amortization::AMORTIZATION_DELINQUENT]);
                     $amortization = $amortizationInstance->getNextAmortization($this->loan_account_id);
                 }
             } else {
+
                 if ($transactionDateNow > $amortization->amortization_date) {
                     Amortization::find($amortization->id)->update(['status' => Amortization::AMORTIZATION_DELINQUENT]);
                     $amortization = $amortizationInstance->getNextAmortization($this->loan_account_id);
