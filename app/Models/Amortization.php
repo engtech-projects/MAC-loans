@@ -96,19 +96,23 @@ class Amortization extends Model
             ->whereDate('amortization_date', '<=', $transactionDateNow)
             ->whereIn('status', ['open', 'delinquent', 'paid'])
             ->orderBy('id')
-            ->accountId($accountId);
-        $currentAmortization = $amortization->first();
+            ->accountId($accountId)
+            ->first();
+        $currentAmortization = $amortization;
         if (!$currentAmortization) {
             if ((isset($currentAmortization["status"]) && $currentAmortization["status"] == 'paid') || $currentAmortization == null) {
-                $amortization = Amortization::whereIn('status', ['open', 'delinquent', 'paid'])
-                    ->whereDate('amortization_date', '>=', $transactionDateNow)
-                    ->whereIn('status', ['open', 'delinquent', 'paid'])
+                $amortization = Amortization::whereIn('status', ['open', 'delinquent'])
+                    ->whereDate('amortization_date', '>', $transactionDateNow)
+                    ->whereIn('status', ['open', 'delinquent'])
                     ->orderBy('id')
-                    ->accountId($accountId);
+                    ->accountId($accountId)
+                    ->first();
 
-                $currentAmortization = $amortization->first();
+                $currentAmortization = $amortization;
             }
         }
+
+
 
         return $currentAmortization;
     }
