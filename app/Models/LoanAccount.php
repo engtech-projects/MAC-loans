@@ -729,14 +729,9 @@ class LoanAccount extends Model
 
         if ($this->payment_mode === self::MONTHLY_PAYMENT) {
             $endOfMonth = $amortization->amortization_date->endOfMonth();
-            $startOfMonth = $amortization->amortization_date->startOfMonth();
             if ($transactionDateNow > $endOfMonth) {
                 Amortization::find($amortization->id)->update(['status' => Amortization::AMORTIZATION_DELINQUENT]);
                 $isNext = true;
-            }
-            if ($transactionDateNow < $startOfMonth) {
-                $amortization->principal = 0;
-                $amortization->interest = 0;
             }
         } else {
             if ($transactionDateNow > $amortization->amortization_date) {
@@ -770,11 +765,18 @@ class LoanAccount extends Model
 
             $amortization->delinquent = $this->setDelinquentAmortization($account, $amortization->advance_principal, $lastPaidAmort, $amortization, $prevAmort);
 
-
-
-
+            $startOfMonth = $amortization->amortization_date->startOfMonth();
+            $amortization->schedule_principal = $amortization->principal;
+            $amortization->schedule_interest = $amortization->interest;
             $amortization->principal = round($amortization->principal);
             $amortization->interest = round($amortization->interest);
+
+            if ($transactionDateNow < $startOfMonth && $this->payment_mode === self::MONTHLY_PAYMENT) {
+                $amortization->principal = 0;
+                $amortization->interest = 0;
+            }
+
+
 
 
             $amortization->pdi = $amortization->pdi ? $amortization->pdi : 0;
@@ -850,9 +852,6 @@ class LoanAccount extends Model
         $accountPayments = $this->getPayment($account, $amortization->id);
 
         if ($amortization) {
-            $amortization->schedule_principal = $amortization->principal;
-            $amortization->schedule_interest = $amortization->interest;
-
             $amortization = $this->setNextAmortization($amortization, $account, $transactionDateNow, $lastPaidAmort, $accountPayments, $amortizationInstance);
             $amortization = $this->loanAmortizationDueDetails($amortization, $account, $transactionDateNow, $accountPayments, $lastPaidAmort, $amortizationInstance);
         }
