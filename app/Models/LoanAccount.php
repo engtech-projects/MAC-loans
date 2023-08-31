@@ -847,7 +847,6 @@ class LoanAccount extends Model
                 $dateSched = $amortization->amortization_date->startOfMonth();
                 $endMonth = $amortization->amortization_date->endOfMonth();
                 $dayDiff = $transactionDateNow->diffIndays($endMonth);
-
             } else {
                 if ($transactionDateNow > $amortSched && $shortAdvance) {
                     Amortization::find($amortization->id)->update(['status' => 'delinquent']);
