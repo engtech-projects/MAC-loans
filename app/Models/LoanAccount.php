@@ -937,7 +937,7 @@ class LoanAccount extends Model
             } else {
                 if ($transactionDateNow > $amortSched && $shortAdvance) {
                     Amortization::find($amortization->id)->update(['status' => 'delinquent']);
-                    if ($transactionDateNow > $amortization->amortization_date->endOfMonth()) {
+                    if ($transactionDateNow > $amortization->amortization_date->startOfDay()) {
                         LoanAccount::find($this->loan_account_id)->update(['payment_status' => 'Delinquent']);
                     }
                 }
