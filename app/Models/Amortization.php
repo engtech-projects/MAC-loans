@@ -84,19 +84,16 @@ class Amortization extends Model
 
     public function updateAmortization($id)
     {
-        $amortization = Amortization::find($id);
+        $amortization = Amortization::query()->find($id);
         $amortization->status = "delinquent";
         $amortization->save();
     }
 
 
-    public function currentAmortization($accountId, $paymentMode, $branchId, $firstAmort)
+    public function currentAmortization($accountId, $paymentMode, $transactionDateNow)
     {
-        $transDate = transactionDate($branchId);
+        $transDate = $transactionDateNow;
         $endOfMonth = $transDate->endOfMonth();
-        $status = $firstAmort ? $firstAmort->status : null;
-
-
         if ($paymentMode == 'Monthly') {
             $transDate = $transDate->endOfMonth();
             $amortization = Amortization::whereDate('amortization_date', '<=', $endOfMonth)
@@ -111,6 +108,7 @@ class Amortization extends Model
                 ->limit(1)
                 ->accountId($accountId)->first();
         }
+
         if ((isset($amortization->status) && $amortization->status == 'paid' || $amortization == null)) {
             if ($paymentMode == 'Monthly') {
                 $amortization = Amortization::whereDate('amortization_date', '>', $endOfMonth)
@@ -127,15 +125,28 @@ class Amortization extends Model
             }
         }
 
+
         return $amortization;
     }
 
     public function getFirstAmortization($accountId)
     {
-        return Amortization::select(['principal', 'interest', 'status'])->accountId($accountId)->first();
+        return Amortization::query()
+            ->select(['principal', 'interest', 'status'])
+            ->accountId($accountId)
+            ->first();
     }
 
-    public function getCurrentAmortizationByAccount($accountId, $transactionDateNow, $paymentMode)
+    public function getLastPaidAmortization($accountId)
+    {
+        return Amortization::query()
+            ->accountId($accountId)
+            ->paid()
+            ->orderBy('id', 'DESC')
+            ->first();
+    }
+
+    /*     public function getCurrentAmortizationByAccount($accountId, $transactionDateNow, $paymentMode)
     {
         $endOfMonth = $transactionDateNow->endOfMonth();
         $amortization = Amortization::query()
@@ -165,11 +176,11 @@ class Amortization extends Model
         }
 
         return $currentAmortization;
-    }
+    } */
 
     public function getPrevAmort($id, $accountId)
     {
-        return Amortization::accountId($accountId)
+        return Amortization::query()->accountId($accountId)
             ->orderBy('id', 'DESC')
             ->firstWhere('id', '<', $id);
     }
