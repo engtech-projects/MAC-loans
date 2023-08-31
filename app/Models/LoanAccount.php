@@ -921,7 +921,7 @@ class LoanAccount extends Model
 
                 $accountPayments = $this->getPayment($this->loan_account_id, $prevAmortId);
                 $isPartiallyPaid = $accountPayments->last();
-                if ($transactionDateNow <= $amortSched->startOfMonth()) {
+                if ($transactionDateNow < $amortSched->startOfMonth()) {
                     $amortization->principal = 0;
                     $amortization->interest = 0;
                 }
@@ -932,7 +932,7 @@ class LoanAccount extends Model
                     }
                 }
                 if ($isPartiallyPaid && ($isPartiallyPaid->short_principal || $isPartiallyPaid->short_interest)) {
-                    /* dd("gfgfg"); */
+
                 }
             } else {
                 if ($transactionDateNow > $amortSched && $shortAdvance) {
