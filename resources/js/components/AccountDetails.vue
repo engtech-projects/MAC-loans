@@ -357,7 +357,7 @@
 								</div>
 								<div>
 									<span class="text-lg text-bold text-primary-dark">TOTAL</span>
-									<span class="text-block bg-primary-dark text-white px-16 text-45 mr-36">P {{formatToCurrency(loanDetails.remaining_balance.memo.balance)}}</span>
+									<span class="text-block bg-primary-dark text-white px-16 text-45 mr-36">P {{formatToCurrency(loanDetails.remaining_balance.memo.balance+loanDetails.remaining_balance.pdi.balance + loanDetails.remaining_balance.penalty.balance )}}</span>
 								</div>
 							</div>
 							<div class="flex-1 px-16"></div>
