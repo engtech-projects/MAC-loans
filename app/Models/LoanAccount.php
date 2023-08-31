@@ -872,11 +872,13 @@ class LoanAccount extends Model
 
             $amortization->schedule_principal = $amortization->principal;
             $amortization->schedule_interest = $amortization->interest;
+
             if ($this->payment_mode == 'Lumpsum' && $transactionDateNow < $amortSched) {
                 $amortization->principal = 0;
                 $amortization->interest = 0;
             }
 
+            $this->setDelinquent($this->loan_account_id, $amortization->id, $transactionDateNow);
 
             // get advance principal
             $amortization->advance_principal = $this->getAdvancePrincipal($this->loan_account_id, $amortization->id);
@@ -952,7 +954,8 @@ class LoanAccount extends Model
                 $penaltyMissed = array_merge(array_unique($amortization->delinquent['missed']), [$amortization->id]);
             }
 
-            $amortization->penalty = $this->getPenalty($amortization->delinquent['missed'], $totalAmort, $transactionDateNow);
+
+            $amortization->penalty = $this->getPenalty($penaltyMissed, $totalAmort, $transactionDateNow);
 
             // $amortization->penalty = $this->getPenalty($amortization->delinquent['missed'], ($amortization->principal + $amortization->interest));
             $amortization->total = ($amortization->principal + $amortization->interest) + ($amortization->short_principal + $amortization->short_interest);
@@ -1597,13 +1600,14 @@ class LoanAccount extends Model
             foreach ($amortizations as $amortization) {
 
                 $dateSched = $amortization->amortization_date->startOfDay();
-                $dayDiff = $currentDay->diffInDays($dateSched);
+                $dayDiff = $dateSched->diffInDays($currentDay);
                 if ($dayDiff > 10) {
                     $counter++;
                 }
-            }
 
+            }
             $penalty = ($totalAmortization * ($percent / 100)) * $counter;
+
         }
 
 
