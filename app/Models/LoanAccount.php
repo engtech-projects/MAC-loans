@@ -110,6 +110,11 @@ class LoanAccount extends Model
         return $query->where('center_id', $value);
     }
 
+    public function scopeBorrower($query, $id)
+    {
+        return $query->where('borrower_id', $id);
+    }
+
     public function scopeDelinquent($query)
     {
         return $query->where('payment_status', self::PAYMENT_DELINQUENT);
@@ -1487,8 +1492,8 @@ class LoanAccount extends Model
                     ->whereYear('date_release', $date->year);
             })
             ->groupBy('year', 'month', 'branch_code')
-            ->orderBy('year','DESC')
-            ->orderBy('month','DESC')
+            ->orderBy('year', 'DESC')
+            ->orderBy('month', 'DESC')
             ->get();
 
         $groupReleasedAccounts = [];

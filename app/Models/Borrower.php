@@ -55,7 +55,8 @@ class Borrower extends Authenticatable
     {
         return $this->firstname . $this->lastname;
     }
-    public function getAgeAttribute() {
+    public function getAgeAttribute()
+    {
         return Carbon::parse($this->attributes['birthdate'])->age;
     }
 
@@ -186,8 +187,28 @@ class Borrower extends Authenticatable
         return $this->hasMany(OutstandingObligations::class, 'borrower_id');
     }
 
-    public function accounts() {
+    public function accounts()
+    {
         return $this->hasMany(LoanAccount::class, 'loan_account_id');
+    }
+
+    public function borrowerAccounts()
+    {
+        $accounts = LoanAccount::query()
+            ->select('loan_account_id','branch_code')
+            ->without('documents')
+            ->where(['borrower_id' => $this->borrower_id, 'status' => 'released'])
+            ->where('loan_status', '!=', LoanAccount::PAYMENT_PAID)
+            ->orderBy('date_release', 'DESC')
+            ->get();
+
+
+        if (count($accounts) > 0) {
+            foreach ($accounts as $account) {
+                $account->remainingBalance = $account->remainingBalance();
+            }
+        }
+        return $accounts;
     }
 
     public function loanAccounts()
