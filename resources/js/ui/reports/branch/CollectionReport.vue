@@ -32,7 +32,7 @@
 								</div>
 								<span class="font-30 text-bold text-center text-primary-dark flex-1">COLLECTION SHEET REPORT</span>
 								<div class="flex-1 d-flex justify-content-end" style="padding-right:16px">
-									<current-transactiondate :branch="branch.branch_id" :token="token" :reports="true"></current-transactiondate>
+									<!-- <current-transactiondate :branch="branch.branch_id" :token="token" :reports="true"></current-transactiondate> -->
 									<span class="text-primary-dark">Time: {{todayTime(new Date())}} {{(new Date()).getHours() > 12? 'PM':'AM'}}</span>
 								</div>
 							</div>
@@ -238,8 +238,11 @@ export default {
 				}
 			})
 			.then(function (response) {
-				console.log(response);
+				// console.log(response);
 				this.collections = response.data.data.data
+				if(this.collections.length){
+					console.log(new Date(this.filter.as_of).getTime() + ' - ' + new Date(this.collections[0].maturity_date).getTime());
+				}
 			}.bind(this))
 			.catch(function (error) {
 				console.log(error);
@@ -301,7 +304,7 @@ export default {
 				return 1;
 			}
 			return 0;
-		}
+		},
 	},
 	computed:{
 		total:function(){
