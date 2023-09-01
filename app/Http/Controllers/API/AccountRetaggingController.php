@@ -8,6 +8,7 @@ use App\Models\Branch;
 use App\Models\LoanAccount;
 use Illuminate\Http\Request;
 
+
 class AccountRetaggingController extends BaseController
 {
 
@@ -18,13 +19,16 @@ class AccountRetaggingController extends BaseController
     }
     public function index(Request $request)
     {
+
         $branchId = $request->branch_id;
         $accounts = $this->account->getRetaggingList($branchId);
         return $this->sendResponse($accounts, "Account fetched");
     }
 
-    public  function edit(LoanAccount $account, $id)
+
+    public  function update(LoanAccount $account, $id, Request $request)
     {
-        return $account->findOrFail($id);
+        $collection = $account->accountRetaggingUpdate($id, $request->input());
+        return $this->sendResponse($collection, "Account Updated");
     }
 }

@@ -154,9 +154,9 @@ class LoanAccount extends Model
         return $this->hasOne(AccountOfficer::class, 'ao_id', 'ao_id');
     }
 
-    public function scopeBranchCode($branchCode)
+    public function scopeBranchCode($query, $branchCode)
     {
-        return $this->where('branch_code', $branchCode);
+        return $query->where('branch_code', $branchCode);
     }
 
     // public function borrower() {
@@ -173,17 +173,13 @@ class LoanAccount extends Model
 
     public function getRetaggingList($branchId)
     {
-        $branch = Branch::select('branch_code')->findOrFail($branchId);
-        $branchCode = $branch->branch_code;
-
-        return $this->getAccounts(
-            $branchCode,
-            ['loan_account_id', 'loan_amount', 'product_id', 'borrower_id', 'center_id', 'branch_code', 'date_release', 'account_num', 'ao_id', 'loan_status'],
-            ['payments', 'borrower', 'documents']
-        )->with(['accountOfficer' => function ($query) {
-            $query->select('ao_id', 'name')->without('branch', 'branch_registered');
-        }, 'borrower:borrower_id,birthdate,firstname,lastname,middlename', 'branch:branch_id,branch_code', 'product:product_id,product_name', 'center:center_id,center'])
-            ->where('branch_code', $branch->branch_code)
+        $branch = Branch::query()->findOrFail($branchId);
+        return $this->getAccounts($branch->branch_code, ['loan_account_id', 'loan_amount', 'product_id', 'borrower_id', 'center_id', 'branch_code', 'date_release', 'account_num', 'ao_id', 'loan_status'], ['payments', 'borrower', 'documents'])
+            ->with(['accountOfficer' =>
+            function ($query) {
+                $query->select('ao_id', 'name')->without('branch', 'branch_registered');
+            }, 'borrower:borrower_id,birthdate,firstname,lastname,middlename', 'branch:branch_id,branch_code', 'product:product_id,product_name', 'center:center_id,center'])
+            ->branchCode($branch->branch_code)
             ->get();
     }
     public function borrowerPhoto()
@@ -1394,6 +1390,22 @@ class LoanAccount extends Model
             $amortizations[] = $tempAmort;
         }
         return collect($amortizations)->sortBy("amort_no")->values()->all();
+    }
+
+    public function updateAccount($id, $data)
+    {
+        $account = self::findOrFail($id)->first();
+        return tap($account)->update($data);
+    }
+
+    public function accountRetaggingUpdate($id, $request)
+    {
+
+        if ($request) {
+            unset($request["_method"]);
+            return $this->updateAccount($id, $request);
+        }
+        return false;
     }
 
     public function updateLoanAccount($accountNum)
