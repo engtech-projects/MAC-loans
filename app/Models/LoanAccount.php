@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Schema;
 use PhpParser\Node\Expr\Cast\Object_;
 
 class LoanAccount extends Model
@@ -153,10 +154,38 @@ class LoanAccount extends Model
         return $this->hasOne(AccountOfficer::class, 'ao_id', 'ao_id');
     }
 
+    public function scopeBranchCode($branchCode)
+    {
+        return $this->where('branch_code', $branchCode);
+    }
+
     // public function borrower() {
     //    return Borrower::with(['businessInfo','employmentInfo','householdMembers','outstandingObligations'])->find($this->borrower_id);
     // }
 
+    public function getAccounts($branchCode, $columns = [], $without = [])
+    {
+        if (!$columns) {
+            $columns = Schema::getColumnListing('loan_accounts');
+        }
+        return $this->query()->select($columns)->without($without);
+    }
+
+    public function getRetaggingList($branchId)
+    {
+        $branch = Branch::select('branch_code')->findOrFail($branchId);
+        $branchCode = $branch->branch_code;
+
+        return $this->getAccounts(
+            $branchCode,
+            ['loan_account_id', 'loan_amount', 'product_id', 'borrower_id', 'center_id', 'branch_code', 'date_release', 'account_num', 'ao_id', 'loan_status'],
+            ['payments', 'borrower', 'documents']
+        )->with(['accountOfficer' => function ($query) {
+            $query->select('ao_id', 'name')->without('branch', 'branch_registered');
+        }, 'borrower:borrower_id,birthdate,firstname,lastname,middlename', 'branch:branch_id,branch_code', 'product:product_id,product_name', 'center:center_id,center'])
+            ->where('branch_code', $branch->branch_code)
+            ->get();
+    }
     public function borrowerPhoto()
     {
 
@@ -1487,8 +1516,8 @@ class LoanAccount extends Model
                     ->whereYear('date_release', $date->year);
             })
             ->groupBy('year', 'month', 'branch_code')
-            ->orderBy('year','DESC')
-            ->orderBy('month','DESC')
+            ->orderBy('year', 'DESC')
+            ->orderBy('month', 'DESC')
             ->get();
 
         $groupReleasedAccounts = [];
