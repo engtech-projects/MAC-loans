@@ -47,16 +47,16 @@ class BorrowerController extends BaseController
 
     public function borrowerList($branchId, Request $request)
     {
-        $account = new LoanAccount();
+
         $branch = Branch::select('branch_code', 'branch_id')->findOrFail($branchId);
         $branchCode = $branch->branch_code;
+
         $brrwrs = Borrower::with(['accounts' => function ($query) use ($branchCode) {
             $query->select('loan_account_id', 'branch_code', 'loan_status')
                 ->without('documents', 'borrower', 'accountOfficer', 'branch', 'payments')
                 ->where('loan_status', '!=', 'Paid')
                 ->where('branch_code', $branchCode);
-        }])
-            ->orderBy('date_registered', 'DESC')->get();
+        }])->orderBy('date_registered', 'DESC')->get();
 
         foreach ($brrwrs as $bKey => $borrower) {
 

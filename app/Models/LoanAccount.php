@@ -1213,7 +1213,11 @@ class LoanAccount extends Model
         $transaction_date =  Carbon::createFromFormat("Y-m-d", $transactionDateNow)->startOfDay();
         $due_date = $this->due_date != null ? Carbon::createFromFormat("Y-m-d", $this->due_date)->startOfDay() : null;
         $days_late = $due_date != null ? $due_date->diffInDays($transaction_date, false) : 0;
-        $account = LoanAccount::where(['loan_account_id' => $this->loan_account_id])->first();
+        $account = LoanAccount::query()
+            ->select('loan_account_id', 'account_num','due_date', 'loan_amount','branch_code', 'interest_amount', 'prepaid_interest')
+            ->without('documents', 'accountOfficer', 'payments')
+            ->where(['loan_account_id' => $this->loan_account_id])
+            ->first();
         $payments = Payment::where(['loan_account_id' => $this->loan_account_id, 'status' => 'paid'])->orderBy('payment_id', 'DESC')->get();
 
         $accountSummary = [
