@@ -102,26 +102,28 @@ class Amortization extends Model
         } else {
             $amortization = Amortization::whereDate('amortization_date', '<=', $transDate)
                 ->whereIn('status', ['open', 'delinquent', 'paid'])
-                ->orderBy('amortization_date', 'ASC')
+                ->orderBy('amortization_date', 'DESC')
+                ->limit(1)
                 ->accountId($accountId)->first();
         }
+
         if ((isset($amortization->status) && $amortization->status == 'paid' || $amortization == null)) {
             if ($paymentMode == 'Monthly') {
                 $amortization = Amortization::whereDate('amortization_date', '>', $transDate)
                     ->whereIn('status', ['open', 'delinquent'])
+                    /* ->orderBy('amortization_date', 'ASC') */
                     ->limit(1)
                     ->accountId($accountId)
                     ->first();
             } else {
                 $amortization = Amortization::whereDate('amortization_date', '>', $transDate)
                     ->whereIn('status', ['open', 'delinquent'])
+                    /* ->orderBy('amortization_date', 'ASC') */
                     ->limit(1)
                     ->accountId($accountId)
                     ->first();
             }
         }
-
-
         return $amortization;
     }
 
