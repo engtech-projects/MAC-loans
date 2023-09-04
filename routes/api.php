@@ -110,8 +110,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::post('account/update-account-amortization/{account}', [LoanAccountController::class, 'updateAccountAmortization']);
 
-    Route::post('account/retagging', [AccountRetaggingController::class, 'index']);
-    Route::post('account/retagging/{LoanAccount}', [AccountRetaggingController::class, 'edit']);
+    Route::post('account/retagging/', [AccountRetaggingController::class, 'index']);
     Route::put('account/retagging/{LoanAccount}', [AccountRetaggingController::class, 'update']);
 
 
