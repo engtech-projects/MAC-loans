@@ -770,11 +770,8 @@ class LoanAccount extends Model
             $isPartiallyPaid = $accountPayments->last();
             if ($isPartiallyPaid && ($isPartiallyPaid->short_principal || $isPartiallyPaid->short_interest)) {
                 $amortization->total = $amortization->total - ($amortization->principal + $amortization->interest);
-                if ($amortSched < $transactionDateNow) {
-                    $amortization->principal = 0;
-                    $amortization->interest = 0;
-                }
-
+                $amortization->principal = 0;
+                $amortization->interest = 0;
                 $amortization->short_principal = $isPartiallyPaid->short_principal;
                 $amortization->short_interest = $isPartiallyPaid->short_interest;
                 $amortization->short_penalty = $isPartiallyPaid->short_penalty;
@@ -846,7 +843,8 @@ class LoanAccount extends Model
         $firstAmortization = $amortization->getFirstAmortization($this->loan_account_id);
         $totalAmort = $firstAmortization->principal + $firstAmortization->interest;
         if ($lastPaidAmort) {
-            $delinquents = $this->getPrevAmortization($this->loan_account_id, $current->id, ['delinquent'], $lastPaidAmort->id, false, 'DESC');
+            $id = $lastPaidAmort->id;
+            $delinquents = $this->getPrevAmortization($this->loan_account_id, $current->id, ['delinquent'], $id, false, 'DESC');
         } else {
             $delinquents = $this->getPrevAmortization($this->loan_account_id, $current->id, ['delinquent'], null, false, 'DESC');
         }
