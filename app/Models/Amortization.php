@@ -92,7 +92,8 @@ class Amortization extends Model
 
     public function currentAmortization($accountId, $paymentMode, $currentDay)
     {
-        $transDate = $paymentMode === 'Monthly' ? $currentDay->endOfMonth() : $currentDay->startOfDay();
+
+        $transDate = $paymentMode === 'Monthly' ? $currentDay->copy()->endOfMonth() : $currentDay->copy()->startOfDay();
         if ($paymentMode == 'Monthly') {
             $amortization = Amortization::whereDate('amortization_date', '<=', $transDate)
                 ->whereIn('status', ['open', 'delinquent', 'paid'])
