@@ -4,8 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Carbon\Carbon;
 use GuzzleHttp\Psr7\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
@@ -728,6 +728,7 @@ class LoanAccount extends Model
         $amortizationInstance = new Amortization();
         $lastPaidAmort = $amortizationInstance->getLastpaidAmortization($this->loan_account_id);
         $transactionDateNow = transactionDate($this->branch->branch_id);
+
         $firstAmortization = $amortizationInstance->getFirstAmortization($this->loan_account_id);
         $amortization = $amortizationInstance->currentAmortization($this->loan_account_id, $this->payment_mode, $transactionDateNow);
         if ($amortization) {
@@ -738,7 +739,7 @@ class LoanAccount extends Model
             $prevAmortId = $prevAmort ? $prevAmort->id : null;
             $prevAmortSched = $prevAmort ? $prevAmort->amortization_date : null;
 
-            $amortSched = $this->payment_mode === 'Monthly' ? $amortization->amortization_date->startOfMonth() : $amortization->amortization_date->startOfDay();
+            $amortSched = $this->payment_mode === 'Monthly' ? $amortization->amortization_date->startOfMonth() : $amortization->amortization_date;
             $dayDiff = $amortSched->diffInDays($transactionDateNow, false);
             $amortization->day_late = $dayDiff;
 
@@ -811,7 +812,6 @@ class LoanAccount extends Model
                         LoanAccount::find($this->loan_account_id)->update(['payment_status' => 'Delinquent']);
                     }
                 }
-
                 if ($transactionDateNow < $amortSched && $prevAmortStatus === 'paid') {
                     $amortization->principal = 0;
                     $amortization->interest = 0;
@@ -1218,7 +1218,7 @@ class LoanAccount extends Model
     {
 
         $currentDay = $dateNow;
-        $dDate = Carbon::createFromFormat('Y-m-d', $dueDate);
+        $dDate = Carbon::createFormat('Y-m-d', $dueDate);
 
         if ($dDate->lt($currentDay)) {
 
