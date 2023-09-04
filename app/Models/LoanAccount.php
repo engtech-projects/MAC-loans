@@ -1394,7 +1394,7 @@ class LoanAccount extends Model
 
     public function updateAccount($id, $data)
     {
-        $account = self::findOrFail($id)->first();
+        $account = self::findOrFail($id);
         return tap($account)->update($data);
     }
 
