@@ -108,7 +108,7 @@ class Amortization extends Model
                 ->accountId($accountId)->first();
         }
 
-        if ((isset($amortization->status) && $amortization->status == 'paid' || $amortization->status == 'delinquent' || $amortization == null)) {
+        if ((isset($amortization->status) && $amortization->status == 'paid' ||  $amortization->status == 'delinquent' || $amortization == null)) {
             if ($paymentMode == 'Monthly') {
                 $amortization = Amortization::whereDate('amortization_date', '>', $transDate)
                     ->whereIn('status', ['open', 'delinquent'])
