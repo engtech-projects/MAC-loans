@@ -770,8 +770,11 @@ class LoanAccount extends Model
             $isPartiallyPaid = $accountPayments->last();
             if ($isPartiallyPaid && ($isPartiallyPaid->short_principal || $isPartiallyPaid->short_interest)) {
                 $amortization->total = $amortization->total - ($amortization->principal + $amortization->interest);
-                $amortization->principal = 0;
-                $amortization->interest = 0;
+                if ($amortSched < $transactionDateNow) {
+                    $amortization->principal = 0;
+                    $amortization->interest = 0;
+                }
+
                 $amortization->short_principal = $isPartiallyPaid->short_principal;
                 $amortization->short_interest = $isPartiallyPaid->short_interest;
                 $amortization->short_penalty = $isPartiallyPaid->short_penalty;
