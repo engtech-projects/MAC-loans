@@ -64,7 +64,6 @@ class LoanAccount extends Model
         'payment_status',
         'loan_status',
     ];
-
     protected $attributes = [
         'payment_status' => 'Current',
     ];
@@ -180,6 +179,7 @@ class LoanAccount extends Model
                 $query->select('ao_id', 'name')->without('branch', 'branch_registered');
             }, 'borrower:borrower_id,birthdate,firstname,lastname,middlename', 'branch:branch_id,branch_code', 'product:product_id,product_name', 'center:center_id,center'])
             ->branchCode($branch->branch_code)
+            ->released()
             ->get();
     }
     public function borrowerPhoto()
@@ -1395,16 +1395,16 @@ class LoanAccount extends Model
     public function updateAccount($id, $data)
     {
         $account = self::findOrFail($id);
-        return tap($account)->update($data);
+        return $account->update($data);
     }
 
     public function accountRetaggingUpdate($id, $request)
     {
-
         if ($request) {
             unset($request["_method"]);
             return $this->updateAccount($id, $request);
         }
+
         return false;
     }
 
