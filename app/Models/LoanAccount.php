@@ -1093,6 +1093,16 @@ class LoanAccount extends Model
         ];
     }
 
+    public function amortization()
+    {
+        $account = LoanAccount::where(['loan_account_id' => $this->loan_account_id])->first();
+        return [
+            "principal" => ceil($account->loan_amount / $account->no_of_installment),
+            "interest" => ceil($account->interest_amount / $account->no_of_installment),
+            "total" => ceil($account->interest_amount / $account->no_of_installment) + ceil($account->loan_amount / $account->no_of_installment),
+        ];
+    }
+
     /*  public function getDelinquentAmortization($lastPaidAmort, $currentAmort)
     {
         $amortizations = null;
