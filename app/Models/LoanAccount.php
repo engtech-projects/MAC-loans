@@ -85,6 +85,7 @@ class LoanAccount extends Model
     const BIMONTHLY_PAYMENT = "Bi-Monthly";
     const WEEKLY_PAYMENT = "Weekly";
     const LUMPSUM_PAYMENT = "Lumpsum";
+    const STATUS_RELEASE = "released";
 
 
 
@@ -116,6 +117,11 @@ class LoanAccount extends Model
     public function scopeCenter($query, $value)
     {
         return $query->where('center_id', $value);
+    }
+
+    public function scopeRelease($query)
+    {
+        return $query->where('status', self::STATUS_RELEASE);
     }
 
     public function scopeAccountId($query)
@@ -504,44 +510,6 @@ class LoanAccount extends Model
         return count($amortization->missed_amort ? $amortization->missed_amort : []);
     } */
 
-    public function getLoanDetails()
-    {
-        $loan_details = LoanAccount::join('account_officer', 'account_officer.ao_id', '=', 'loan_accounts.ao_id')
-            ->join('borrower_info', 'borrower_info.borrower_id', '=', 'loan_accounts.borrower_id')
-            ->join('product', 'product.product_id', '=', 'loan_accounts.product_id')
-            ->select(
-                'loan_accounts.loan_account_id',
-                'loan_accounts.account_num',
-                'loan_accounts.co_borrower_name',
-                'loan_accounts.co_borrower_address',
-                'loan_accounts.co_maker_name',
-                'loan_accounts.co_maker_address',
-                'borrower_info.contact_number',
-                'loan_accounts.date_release',
-                'loan_accounts.loan_amount',
-                'loan_accounts.loan_status',
-                'loan_accounts.payment_status',
-                'loan_accounts.interest_rate',
-                'loan_accounts.interest_amount',
-                'loan_accounts.due_date',
-                'loan_accounts.payment_mode',
-                'loan_accounts.no_of_installment',
-                'loan_accounts.terms',
-                'loan_accounts.type',
-                'loan_accounts.cycle_no',
-                'product.product_name'
-
-
-            )
-
-            ->where('loan_account_id', '=', $this->loan_account_id)->first();
-        $loan_details->current_amortization = $this->getCurrentAmortization();
-        $loan_details->remaining_balance = $this->remainingBalance();
-        $loan_details->amortization = $this->amortization();
-        $loan_details->loan_status_view =  $this->getStatusView();
-        return $loan_details;
-    }
-
     public function getFirstAmortization()
     {
         $columns = ['loan_account_id', 'loan_amount'];
@@ -719,7 +687,7 @@ class LoanAccount extends Model
         $amortization = Amortization::query()->where('status','open')->first()->accountId();
     } */
 
-    public function setNextAmortization($amortization, $transactionDateNow, $lastPaidAmort, $amortizationInstance)
+    /*     public function setNextAmortization($amortization, $transactionDateNow, $lastPaidAmort, $amortizationInstance)
     {
 
         $isNext = false;
@@ -743,7 +711,7 @@ class LoanAccount extends Model
             $amortization = $amortizationInstance->getNextAmortization($this->loan_account_id);
         }
         return $amortization ?? null;
-    }
+    } */
 
     public function checkPaymentMode()
     {
@@ -755,7 +723,7 @@ class LoanAccount extends Model
     }
 
 
-    private function getLoanAmortization($account)
+    private function getLoanAmortization()
     {
         $amortizationInstance = new Amortization();
         $lastPaidAmort = $amortizationInstance->getLastpaidAmortization($this->loan_account_id);
@@ -770,7 +738,6 @@ class LoanAccount extends Model
             $prevAmortId = $prevAmort ? $prevAmort->id : null;
             $prevAmortSched = $prevAmort ? $prevAmort->amortization_date : null;
 
-            $isPaid = null;
             $amortSched = $this->payment_mode === 'Monthly' ? $amortization->amortization_date->startOfMonth() : $amortization->amortization_date->startOfDay();
             $dayDiff = $amortSched->diffInDays($transactionDateNow, false);
             $amortization->day_late = $dayDiff;
@@ -791,7 +758,7 @@ class LoanAccount extends Model
             $amortization->advance_interest = $this->getAdvanceInterest($this->loan_account_id, $amortization->id);
             $totalAmort = $firstAmortization->principal + $firstAmortization->interest;
             $amortization->pdi = $amortization->pdi ? $amortization->pdi : 0;
-            $amortization->delinquent = $this->setDelinquentAmortization($account, $amortization->advance_principal, $lastPaidAmort, $amortization);
+            $amortization->delinquent = $this->setDelinquentAmortization($amortization->advance_principal, $lastPaidAmort, $amortization);
             $amortization->short_principal = $amortization->delinquent['principal']; //- (in_array($amortization->id, $amortization->delinquent['ids']) ? $amortization->principal : 0);
             $amortization->short_interest = $amortization->delinquent['interest']; //- (in_array($amortization->id, $amortization->delinquent['ids']) ? $amortization->interest : 0);
             $amortization->short_pdi = 0;
@@ -809,21 +776,14 @@ class LoanAccount extends Model
                 $amortization->short_penalty = $isPartiallyPaid->short_penalty;
                 $amortization->over_payment = $isPartiallyPaid->over_payment;
             }
-
-            //$penaltyMissed = array_unique($amortization->delinquent['missed']);
             $amortization->day_late = $dayDiff;
 
 
             $totalPrincipal = $amortization->short_principal + $amortization->principal;
             $shortAdvance = $amortization->advance_principal < $totalPrincipal ? true : false;
-            /* if (!$shortAdvance) {
-                $amortization->principal = 0;
-                $amortization->interest = 0;
-            }
- */
+
 
             if ($isMonthlyPayment) {
-
                 $accountPayments = $this->getPayment($this->loan_account_id, $prevAmortId);
                 $isPartiallyPaid = $accountPayments->last();
                 if ($transactionDateNow < $amortSched->startOfMonth()) {
@@ -840,7 +800,7 @@ class LoanAccount extends Model
                 if ($isPartiallyPaid && ($isPartiallyPaid->short_principal || $isPartiallyPaid->short_interest)) {
                 }
 
-                $endMonth = $prevAmortSched->endOfMonth();
+                $endMonth = $prevAmortSched ? $prevAmortSched->endOfMonth() : $amortSched->endOfMonth();
                 if ($transactionDateNow > $endMonth) {
                     $dayDiff = $endMonth->diffIndays($transactionDateNow);
                 }
@@ -858,7 +818,7 @@ class LoanAccount extends Model
                 }
             }
 
-            $amortization->delinquent = $this->setDelinquentAmortization($account, $amortization->advance_principal, $lastPaidAmort, $amortization, $prevAmort);
+            $amortization->delinquent = $this->setDelinquentAmortization($amortization->advance_principal, $lastPaidAmort, $amortization);
 
 
             if ($dayDiff > 10 && $amortization->advance_principal < $amortization->schedule_principal) {
@@ -874,18 +834,36 @@ class LoanAccount extends Model
         return $amortization;
     }
 
+    public function getTotalPenalty()
+    {
+
+        $amortization = new Amortization();
+        $transactionDateNow = transactionDate($this->branch->branch_id);
+        $lastPaidAmort = $amortization->getLastPaidAmortization($this->account_id);
+        $current = $amortization->currentAmortization($this->loan_account_id, $this->payment_mode, $transactionDateNow);
+        $firstAmortization = $amortization->getFirstAmortization($this->loan_account_id);
+        $totalAmort = $firstAmortization->principal + $firstAmortization->interest;
+        if ($lastPaidAmort) {
+            $delinquents = $this->getPrevAmortization($this->loan_account_id, $current->id, ['delinquent'], $lastPaidAmort->id, false, 'DESC');
+        } else {
+            $delinquents = $this->getPrevAmortization($this->loan_account_id, $current->id, ['delinquent'], null, false, 'DESC');
+        }
+
+        $ids = [];
+        foreach ($delinquents as $delinquent) {
+            $ids[] = $delinquent->id;
+        }
+        return $this->getPenalty($ids, $totalAmort, $transactionDateNow);
+    }
+
     public function getCurrentAmortization()
     {
-        $columns = ['loan_account_id', 'branch_code', 'product_id', 'payment_mode'];
-        $without = ['documents', 'borrower', 'center', 'product', 'accountOfficer', 'payments'];
-        $account = $this->getAccount($columns, $without);
+
 
         if ($this->status == LoanAccount::STATUS_PENDING || !$this->isAccountHasSchedule() || $this->loan_status == LoanAccount::LOAN_PAID) {
             return false;
         }
-        if ($account) {
-            $currentAmortization = $this->getLoanAmortization($account);
-        }
+        $currentAmortization = $this->getLoanAmortization();
         return $currentAmortization ?? null;
     }
 
@@ -893,7 +871,7 @@ class LoanAccount extends Model
     {
 
         $cond = '<';
-        $current = Amortization::find($amortizationId);
+        $current = Amortization::find($amortizationId, ['status']);
         if ($current) {
             if ($current->status === 'delinquent') {
                 $cond = '<=';
@@ -1039,93 +1017,12 @@ class LoanAccount extends Model
     }
 
 
-    /* public function setDelinquentAmortization($account, $advancePrincipal = 0, $prevAmort, $currentAmort, $payment)
+
+    public function setDelinquentAmortization($advancePrincipal = 0, $lastPaidAmort, $currentAmort)
     {
-        $delinquents = $this->getDelinquentAmortization($account);
-        $ids = [];
-        $missed = [];
-        $totalPrincipal = 0;
-        $totalInterest = 0;
-        $totalPdi = 0;
-        $totalPenalty = 0;
-        $balance = 0;
-        $lastAmortizationStatus = null;
-
-        if ($currentAmort) {
-            $lastAmort = $prevAmort->amortizations->first();
-            $lastAmortizationStatus = $lastAmort ? $lastAmort->status : null;
-
-            if ($lastAmort && $lastAmort->status === self::AMORTIZATION_DELINQUENT) {
-                if ($delinquents) {
-                    foreach ($delinquents as $delinquent) {
-                        $ids[] = $delinquent->id;
-                        $payments = $this->getPaymentDelinquents($account, $delinquent->id);
-                        $delinquent->payments = $payments;
-                        if (isset($delinquent->payments) && count($delinquent->payments) > 0) {
-                            $isNotAdvancePayment = true;
-                            foreach ($delinquent->payments as $payment) {
-                                $totalPrincipal += $payment->short_principal;
-                                $totalInterest += $payment->short_interest;
-                                $totalPdi += $payment->short_pdi;
-                                $totalPenalty += $payment->short_penalty;
-                                $isNotAdvancePayment = (bool)$payment->total_payable;
-                                break;
-                            }
-                            if (!$isNotAdvancePayment) {
-                                $totalPrincipal += round($delinquent->principal);
-                                $totalInterest += round($delinquent->interest);
-                            }
-                            break;
-                        } else {
-                            $missed[] = $delinquent->id;
-                        }
-
-                        $totalPrincipal += round($delinquent->principal);
-                        $totalInterest += round($delinquent->interest);
-                    }
-                }
-            }
-        }
-
-
-        if ($advancePrincipal) {
-            if (count($missed) > 0) {
-                $balance = $advancePrincipal;
-                // $balance = 0;
-                $missedAmortizations = Amortization::whereIn('id', $missed)->orderBy('id', 'ASC')->get();
-                foreach ($missedAmortizations as $key => $missedAmortization) {
-
-                    if ($balance >=  $missedAmortization->principal) {
-                        $balance -= $missedAmortization->principal;
-                        $pos = array_search($missedAmortization->id, $missed);
-                        unset($missed[$pos]);
-                    } else {
-                        LoanAccount::find($this->loan_account_id)->update(['payment_status' => 'Delinquent']);
-                        break;
-                    }
-                }
-            }
-        } else {
-            if (count($ids)) {
-                LoanAccount::find($this->loan_account_id)->update(['payment_status' => 'Delinquent']);
-            }
-        }
-
-        return [
-            'ids' => $ids,
-            'principal' => $totalPrincipal,
-            'interest' => $totalInterest,
-            'penalty' => $totalPenalty,
-            'balance' => $balance,
-            'pdi' =>  $totalPdi,
-            'advance' => $advancePrincipal,
-            'missed' => array_values($missed)
-        ];
-    } */
-
-    public function setDelinquentAmortization($account, $advancePrincipal = 0, $lastPaidAmort, $currentAmort)
-    {
-        $delinquents = $this->getDelinquentAmortization($account, $lastPaidAmort, $currentAmort);
+        $amortization = new Amortization();
+        /* $delinquents = $this->getDelinquentAmortization($lastPaidAmort, $currentAmort); */
+        $delinquents = $amortization->getDelinquentAmortization($this->loan_account_id, $lastPaidAmort, $currentAmort);
         $ids = [];
         $missed = [];
         $totalPrincipal = 0;
@@ -1136,7 +1033,7 @@ class LoanAccount extends Model
         if (count($delinquents) > 0) {
             foreach ($delinquents as $delinquent) {
                 $ids[] = $delinquent->id;
-                $payments = $this->getPaymentDelinquents($account, $delinquent->id);
+                $payments = $this->getPaymentDelinquents($delinquent->id);
                 $delinquent->payments = $payments;
                 if (isset($delinquent->payments) && count($delinquent->payments) > 0) {
                     $isNotAdvancePayment = true;
@@ -1196,7 +1093,7 @@ class LoanAccount extends Model
         ];
     }
 
-    public function getDelinquentAmortization($account, $lastPaidAmort, $currentAmort)
+    /*  public function getDelinquentAmortization($lastPaidAmort, $currentAmort)
     {
         $amortizations = null;
         if ($lastPaidAmort) {
@@ -1213,7 +1110,7 @@ class LoanAccount extends Model
             $amortizations = $account->amortizations;
         }
         return $amortizations;
-    }
+    } */
 
     public function getLastPaidAmortization()
     {
@@ -1230,30 +1127,23 @@ class LoanAccount extends Model
         return $lastPaidAmort->amortizations->first();
     }
 
-    public function getPaymentDelinquents($account, $amortizationId = null)
+    public function getPaymentDelinquents($amortizationId = null)
     {
-        $account = $account->with('payments', function ($query) use ($amortizationId) {
-            $query->when($amortizationId, function ($query, $amortizationId) {
-                $query->select([
-                    'loan_account_id',
-                    'amortization_id',
-                    'short_principal',
-                    'short_pdi',
-                    'short_penalty',
-                    'total_payable'
-                ])->where('amortization_id', $amortizationId);
-            }, function ($query) {
-                $query->select([
-                    'loan_account_id',
-                    'amortization_id',
-                    'short_principal',
-                    'short_pdi',
-                    'short_penalty',
-                    'total_payable'
-                ]);
-            })->paid();
-        })->accountId();
-        return $account->payments;
+        $payments = Payment::query()->when($amortizationId, function ($query, $amortizationId) {
+            $query->where('amortization_id', $amortizationId);
+        })->select([
+            'loan_account_id',
+            'amortization_id',
+            'short_principal',
+            'short_pdi',
+            'short_penalty',
+            'total_payable'
+        ])
+            ->where('loan_account_id', $this->loan_account_id)
+            ->orderBy('payment_id', 'DESC')
+            ->paid()
+            ->get();
+        return $payments;
     }
 
     public function getDelinquentPayment($loan_account_id, $amortization_id = null)
@@ -1361,15 +1251,15 @@ class LoanAccount extends Model
         $penalty = 0;
         if (count($missed)) {
             $currentDay = $dateNow;
-            $amortizations = Amortization::whereIn('id', $missed)->orderBy('id', 'ASC')->get();
+            $amortizations = Amortization::find($missed)->pluck('amortization_date');
             $counter = 0;
 
-            foreach ($amortizations as $amortization) {
+            foreach ($amortizations as $date) {
 
-                $dateSched = $amortization->amortization_date->startOfDay();
+                $dateSched = $date->startOfDay();
                 $dayDiff = $dateSched->diffInDays($currentDay);
                 if ($this->payment_mode === 'Monthly') {
-                    $endMonth = $amortization->amortization_date->endOfMonth();
+                    $endMonth = $date->endOfMonth();
                     $dayDiff = $endMonth->diffInDays($currentDay);
                 }
                 if ($dayDiff > 10) {
@@ -1379,8 +1269,6 @@ class LoanAccount extends Model
 
             $penalty = ($totalAmortization * ($percent / 100)) * $counter;
         }
-
-
         return $penalty;
     }
 
@@ -1414,7 +1302,7 @@ class LoanAccount extends Model
     public function outstandingBalance($loanAccountId)
     {
 
-        $account = LoanAccount::where(['loan_account_id' => $loanAccountId])->first();
+        $account = LoanAccount::select('loan_account_id', 'interest_amount', 'loan_amount', 'type')->where(['loan_account_id' => $loanAccountId])->without('payments', 'documents')->first();
         $payment = $this->getPaymentTotalPrincipalInterest($loanAccountId);
 
         if ($account->type == 'Prepaid') {
@@ -1425,15 +1313,6 @@ class LoanAccount extends Model
         return floatval(number_format($bal, 2, ".", ""));
     }
 
-    public function amortization()
-    {
-        $account = LoanAccount::where(['loan_account_id' => $this->loan_account_id])->first();
-        return [
-            "principal" => ceil($account->loan_amount / $account->no_of_installment),
-            "interest" => ceil($account->interest_amount / $account->no_of_installment),
-            "total" => ceil($account->interest_amount / $account->no_of_installment) + ceil($account->loan_amount / $account->no_of_installment),
-        ];
-    }
 
     public function showLoanDetails()
     {
@@ -1501,8 +1380,13 @@ class LoanAccount extends Model
         $transaction_date =   $transactionDateNow->startOfDay();
         $due_date = $this->due_date != null ? Carbon::createFromFormat("Y-m-d", $this->due_date)->startOfDay() : null;
         $days_late = $due_date != null ? $due_date->diffInDays($transaction_date, false) : 0;
-        $account = LoanAccount::where(['loan_account_id' => $this->loan_account_id])->first();
-        $payments = Payment::where(['loan_account_id' => $this->loan_account_id, 'status' => 'paid'])->orderBy('payment_id', 'DESC')->get();
+        $account = LoanAccount::query()
+            ->select(['loan_account_id', 'branch_code', 'loan_amount', 'interest_amount', 'prepaid_interest', 'account_num', 'interest_amount'])
+            ->without(['borrower', 'documents', 'accountOfficer', 'branch', 'product'])
+            ->where(['loan_account_id' => $this->loan_account_id])->first();
+        $payments = $account->payments;
+        /*         $account = LoanAccount::where(['loan_account_id' => $this->loan_account_id])->first();
+        $payments = Payment::where(['loan_account_id' => $this->loan_account_id, 'status' => 'paid'])->orderBy('payment_id', 'DESC')->get(); */
 
         $accountSummary = [
             'memo' => [
@@ -1536,11 +1420,13 @@ class LoanAccount extends Model
             ]
         ];
         // SET PDI AND PENALTY IN THE ACCOUNT SUMMARY
-        $currentAmortization = $account->getCurrentAmortization();
+
+        /* $currentAmortization = $this->getCurrentAmortization();
         if ($currentAmortization) {
             $accountSummary['penalty']['debit'] += $currentAmortization['penalty'];
             $accountSummary['pdi']['debit'] += $currentAmortization['pdi'];
-        }
+        } */
+        $accountSummary['penalty']['debit'] += $this->getTotalPenalty();
 
 
 

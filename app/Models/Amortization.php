@@ -129,6 +129,23 @@ class Amortization extends Model
         return $amortization;
     }
 
+
+    public function getDelinquentAmortization($accountId, $lastPaidAmort, $currentAmort)
+    {
+        $id = $currentAmort->id;
+        $cond = '<=';
+        if ($lastPaidAmort) {
+            $id = $lastPaidAmort->id;
+            $cond = '>';
+        }
+        $amortizations = self::query()
+            ->where('id', $cond, $id)
+            ->delinquent()
+            ->accountId($accountId)
+            ->get();
+        return $amortizations;
+    }
+
     public function getFirstAmortization($accountId)
     {
         return Amortization::query()
