@@ -65,6 +65,7 @@ class EndTransaction extends Model
         }
 
         if (!$eod) {
+
             // if there is no transaction date. create a fake closed transaction date yesterday.
             $eod = new EndTransaction();
             $eod->branch_id = $branchId;
@@ -192,7 +193,7 @@ class EndTransaction extends Model
             $journalEntry->amount = $netProceeds;
             $journalEntry->payee = '';
             $journalEntry->status = $status;
-            $journalEntry->remarks = 'Loan Releases for the day ' . Carbon::createFromFormat('Y-m-d', $dateEnd)->format('m/d/Y');
+            $journalEntry->remarks = 'Loan Releases for the day ' . $dateEnd;
             $journalEntry->save();
 
             $entryData = [];
