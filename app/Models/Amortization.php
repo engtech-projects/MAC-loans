@@ -155,6 +155,7 @@ class Amortization extends Model
 
     public function getLastPaidAmortization($accountId)
     {
+
         return Amortization::query()
             ->accountId($accountId)
             ->paid()
