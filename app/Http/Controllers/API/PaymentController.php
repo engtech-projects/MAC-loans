@@ -133,7 +133,6 @@ class PaymentController extends BaseController
 
                 $currentDay = transactionDate($payment->branch_id);
                 $schedDate = $amortization->amortization_date;
-
                 if ($currentDay <= $schedDate) {
                     $amortization->status = 'open';
                 } else {
