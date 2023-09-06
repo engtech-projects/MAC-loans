@@ -352,7 +352,7 @@ class EndTransaction extends Model
             $journalEntry->amount = $amountApplied;
             $journalEntry->payee = '';
             $journalEntry->status = $status;
-            $journalEntry->remarks = 'Loan Repayments for the day ' . Carbon::createFromFormat('Y-m-d', $dateEnd)->format('m/d/Y');
+            $journalEntry->remarks = 'Loan Repayments for the day ' . $dateEnd;
             $journalEntry->save();
 
 
