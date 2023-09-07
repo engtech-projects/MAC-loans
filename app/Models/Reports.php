@@ -21,7 +21,7 @@ class Reports extends Model
     {
         $loanAccount = Loanaccount::where(['loan_accounts.status' => 'released']);
 
-      if (isset($filters['branch_id']) && $filters['branch_id']) {
+        if (isset($filters['branch_id']) && $filters['branch_id']) {
             $branch = Branch::find($filters['branch_id']);
             $loanAccount->where(['loan_accounts.branch_code' => $branch->branch_code]);
         }
@@ -90,6 +90,9 @@ class Reports extends Model
             if (isset($filters["loan_status"]) && $filters["loan_status"]) {
                 $loanAccount->where(['loan_accounts.loan_status' => $filters['loan_status']]);
             }
+        }
+        if (isset($filters["report"]) && $filters["report"] === "release") {
+            return $loanAccount->without('documents', 'payments')->get();
         }
         return $loanAccount->whereIn('loan_status', [LoanAccount::LOAN_ONGOING, LoanAccount::LOAN_PASTDUE, LoanAccount::LOAN_RESTRUCTED, LoanAccount::LOAN_RES_WO_PDI])
             ->without($without)->get([
@@ -317,6 +320,7 @@ class Reports extends Model
         $data = [];
         $accounts = $this->getLoanAccounts($filters);
         $payments = $this->getPayments($filters);
+
 
         foreach ($accounts as $account) {
 
