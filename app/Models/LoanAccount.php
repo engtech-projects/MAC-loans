@@ -1185,7 +1185,7 @@ class LoanAccount extends Model
         $transactionDateNow = transactionDate($this->branch->branch_id);
         $transaction_date =   $transactionDateNow;
         $due_date = $this->due_date != null ? $this->due_date : null;
-        $days_late = $due_date != null ? $due_date->diffInDays($transaction_date, false) : 0;
+        /* $days_late = $due_date != null ? $due_date->diffInDays($transaction_date, false) : 0; */
         $account = LoanAccount::query()
             ->select(['loan_account_id', 'branch_code', 'loan_amount', 'interest_amount', 'prepaid_interest', 'account_num', 'interest_amount'])
             ->without(['borrower', 'documents', 'accountOfficer', 'branch', 'product'])
