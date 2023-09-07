@@ -630,17 +630,19 @@ class LoanAccount extends Model
         $current = $amortization->currentAmortization($this->loan_account_id, $this->payment_mode, $transactionDateNow);
         $firstAmortization = $amortization->getFirstAmortization($this->loan_account_id);
         $totalAmort = $firstAmortization->principal + $firstAmortization->interest;
-        if ($lastPaidAmort) {
-            $id = $lastPaidAmort->id;
-            $delinquents = $this->getPrevAmortization($this->loan_account_id, $current->id, ['delinquent'], $id, false, 'DESC');
-        } else {
-            $delinquents = $this->getPrevAmortization($this->loan_account_id, $current->id, ['delinquent'], null, false, 'DESC');
+        $ids = [];
+        if ($current) {
+            if ($lastPaidAmort) {
+                $id = $lastPaidAmort->id;
+                $delinquents = $this->getPrevAmortization($this->loan_account_id, $current->id, ['delinquent'], $id, false, 'DESC');
+            } else {
+                $delinquents = $this->getPrevAmortization($this->loan_account_id, $current->id, ['delinquent'], null, false, 'DESC');
+            }
+            foreach ($delinquents as $delinquent) {
+                $ids[] = $delinquent->id;
+            }
         }
 
-        $ids = [];
-        foreach ($delinquents as $delinquent) {
-            $ids[] = $delinquent->id;
-        }
         return $this->getPenalty($ids, $totalAmort, $transactionDateNow);
     }
 
