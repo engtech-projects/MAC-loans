@@ -26,7 +26,8 @@ class ReportsController extends BaseController
         $filters = [
             'date_from' => $request->input('date_from'),
             'date_to' => $request->input('date_to'),
-            'branch_id' => $request->input('branch_id')
+            'branch_id' => $request->input('branch_id'),
+            'report' => 'release'
         ];
 
 
@@ -54,7 +55,8 @@ class ReportsController extends BaseController
                 $filters = [
                     'date_from' => $request->input('date_from'),
                     'date_to' => $request->input('date_to'),
-                    'branch_id' => $request->input('branch_id')
+                    'branch_id' => $request->input('branch_id'),
+                    'report' => 'release'
 
                 ];
 
@@ -73,7 +75,8 @@ class ReportsController extends BaseController
                     'date_from' => $request->input('date_from'),
                     'date_to' => $request->input('date_to'),
                     'branch_id' => $request->input('branch_id'),
-                    'account_officer' => $request->input('account_officer')
+                    'account_officer' => $request->input('account_officer'),
+                    'report' => 'release'
                 ];
 
 
@@ -95,6 +98,7 @@ class ReportsController extends BaseController
                     'branch_id' => $request->input('branch_id'),
                     'type' => $request->input('type'),
                     'spec' => $request->input('spec'),
+                    'report' => 'release'
                 ];
 
                 break;
@@ -103,12 +107,14 @@ class ReportsController extends BaseController
                     'date_from' => $request->input('date_from'),
                     'date_to' => $request->input('date_to'),
                     'branch_id' => $request->input('branch_id'),
+                    'report' => 'release'
                 ];
                 break;
             case 'dst':
                 $filters = [
                     'date_from' => $request->input('date_from'),
                     'date_to' => $request->input('date_to'),
+                    'report' => 'release'
                 ];
                 break;
         }
