@@ -1549,7 +1549,7 @@ class Reports extends Model
             // DB::raw("'' as SEQ_NO"),
             DB::raw("REPLACE(REPLACE(REPLACE(borrower_info.lastname,'ñ','n'),'Ñ','N'),'-',' ') as LAST_NAME"),
             DB::raw("REPLACE(REPLACE(REPLACE(borrower_info.firstname,'ñ','n'),'Ñ','N'),'-',' ') as FIRST_NAME"),
-            DB::raw("UPPER(SUBSTRING(borrower_info.middlename,1,1)) as MIDDLE_NAME"),
+            DB::raw("UPPER(SUBSTRING(borrower_info.middlename,1,1)) as MIDDLE_NAM"),
             DB::raw("'' as ADDRESS"),
             DB::raw("'' as ADDRESS2"),
             DB::raw("SUM(payment.interest+payment.pdi+payment.penalty-payment.vat) as GSALES"),
