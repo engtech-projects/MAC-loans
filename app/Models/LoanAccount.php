@@ -584,7 +584,9 @@ class LoanAccount extends Model
                         LoanAccount::find($this->loan_account_id)->update(['payment_status' => 'Delinquent']);
                     }
                 }
-                if ($transactionDateNow < $amortSched && $prevAmortStatus === 'paid') {
+
+                /* dd($transactionDateNow,$prevAmortSched); */
+                if ($transactionDateNow <= $prevAmortSched && $prevAmortStatus === 'paid') {
                     $amortization->principal = 0;
                     $amortization->interest = 0;
                 }
