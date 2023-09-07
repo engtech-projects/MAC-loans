@@ -1010,7 +1010,7 @@ class LoanAccount extends Model
     {
 
         $currentDay = $dateNow;
-        $dDate = Carbon::createFormat('Y-m-d', $dueDate);
+        $dDate = $dueDate;
 
         if ($dDate->lt($currentDay)) {
 
