@@ -543,11 +543,14 @@ class LoanAccount extends Model
             if ($isPartiallyPaid && ($isPartiallyPaid->short_principal || $isPartiallyPaid->short_interest)) {
                 $amortization->total = $amortization->total - ($amortization->principal + $amortization->interest);
                 $amortization->principal = 0;
+                $amortization->penalty = 0;
                 $amortization->interest = 0;
                 $amortization->short_principal = $isPartiallyPaid->short_principal;
                 $amortization->short_interest = $isPartiallyPaid->short_interest;
                 $amortization->short_penalty = $isPartiallyPaid->short_penalty;
                 $amortization->over_payment = $isPartiallyPaid->over_payment;
+            } else {
+                $amortization->penalty = $this->getPenalty($amortization->delinquent['missed'], $totalAmort, $transactionDateNow);
             }
             $amortization->day_late = $dayDiff;
 
@@ -599,7 +602,6 @@ class LoanAccount extends Model
                 array_merge(array_unique($amortization->delinquent['missed']), [$amortization->id]);
             }
 
-            $amortization->penalty = $this->getPenalty($amortization->delinquent['missed'], $totalAmort, $transactionDateNow);
             $amortization->total = ($amortization->principal + $amortization->interest) + ($amortization->short_principal + $amortization->short_interest);
             $amortization->totalPaid = $this->getPaymentTotal($this->loan_account_id);
             $amortization->outstandingBalance = $this->outstandingBalance($this->loan_account_id);
@@ -714,7 +716,6 @@ class LoanAccount extends Model
                         $totalPdi += $payment->short_pdi;
                         $totalPenalty += $payment->short_penalty;
                         $isNotAdvancePayment = (bool)$payment->total_payable;
-
                         break;
                     }
                     if (!$isNotAdvancePayment) { // if advanced payment only add principal and interest
@@ -731,7 +732,6 @@ class LoanAccount extends Model
                 $totalInterest += round($delinquent->interest);
             }
         }
-
         if ($advancePrincipal) {
             if (count($missed) > 0) {
                 $balance = $advancePrincipal;
@@ -830,7 +830,6 @@ class LoanAccount extends Model
                     }
 
                     break;
-
                 } else {
                     $missed[] = $delinquent->id;
                 }
