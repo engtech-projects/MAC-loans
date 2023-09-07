@@ -1012,7 +1012,7 @@ class LoanAccount extends Model
         $currentDay = $dateNow;
         $dDate = $dueDate;
 
-        if ($dDate->lt($currentDay)) {
+        if ($dDate <= $currentDay) {
 
             return $currentDay->diffInDays($dDate);
         }
@@ -1185,7 +1185,7 @@ class LoanAccount extends Model
     {
         $transactionDateNow = transactionDate($this->branch->branch_id);
         $transaction_date =   $transactionDateNow->startOfDay();
-        $due_date = $this->due_date != null ? Carbon::createFromFormat("Y-m-d", $this->due_date)->startOfDay() : null;
+        $due_date = $this->due_date != null ? $this->due_date->startOfDay() : null;
         $days_late = $due_date != null ? $due_date->diffInDays($transaction_date, false) : 0;
         $account = LoanAccount::query()
             ->select(['loan_account_id', 'branch_code', 'loan_amount', 'interest_amount', 'prepaid_interest', 'account_num', 'interest_amount'])
