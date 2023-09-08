@@ -1529,7 +1529,7 @@ class Reports extends Model
                 DB::raw("'' as GESALES"),
                 DB::raw("SUM(payment.vat) as TOUTTAX"),
                 DB::raw("'12.00' as TAX_RATE"),
-                DB::raw("SUM(payment.interest+payment.pdi+payment.penalty-payment.vat+(payment.vat)) as GTSALES")
+                DB::raw("SUM(payment.interest+payment.pdi+payment.penalty) as GTSALES")
             ])
             ->having('GSALES', '>', 0)
             ->having('GTSALES', '>', 0)
