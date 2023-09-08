@@ -516,7 +516,7 @@ class ReportsController extends BaseController
             $totalTouttax += $taxEntry['TOUTTAX'];
             $totalGtSales += $taxEntry['GTSALES'];
             $record = $table->appendRecord();
-            $record->set('TAX_MONTH', Carbon::createFromDate($request->input("date_to"))->format('Y/m/d'));
+            $record->set('TAX_MONTH', Carbon::createFromDate($request->input("date_to"))->format('m/d/Y'));
             $record->set('SEQ_NO', $seqNo);
             foreach ($taxEntry as $title => $value) {
                 $record->set($title, $value);
