@@ -90,16 +90,43 @@ class Amortization extends Model
     }
 
 
-    public function currentAmortization($accountId, $paymentMode, $currentDay)
+    public function currentAmortization($accountId, $paymentMode, $currentDay, $loanStatus)
     {
 
         $transDate = $paymentMode === 'Monthly' ? $currentDay->copy()->endOfMonth() : $currentDay->copy()->startOfDay();
-        if ($paymentMode == 'Monthly') {
-            $amortization = Amortization::whereDate('amortization_date', '<=', $transDate)
-                ->whereIn('status', ['open', 'paid'])
-                ->orderBy('amortization_date', 'DESC')
-                ->limit(1)
-                ->accountId($accountId)->first();
+
+        $amortization = Amortization::when(
+            Amortization::where('amortization_date', '<=', $transDate)->exists(),
+            function ($query) use ($transDate) {
+                $query->where('amortization_date', '<=', $transDate)
+                    ->whereIn('status', ['open']);
+            },
+            function ($query) use ($transDate) {
+                $query->where('amortization_date', '>', $transDate)
+                    ->whereIn('status', ['open', 'paid', 'delinquent']);
+            }
+        )
+            /*  ->where('status', '!=', 'paid')
+            ->orWhere(function ($query) use($transDate) {
+                $query->where('status', 'paid')
+                    ->where('amortization_date', '>', $transDate);
+            }) */
+            ->orWhere(function ($query) use ($transDate) {
+                $query->whereIn('status', ['delinquent', 'open'])
+                    ->where('amortization_date', '>', $transDate)
+                    ->whereIn('status', ['open', 'paid']);
+            })
+            ->orWhere(function ($query) use ($transDate) {
+                $query->where('status', 'paid')
+                    ->where('amortization_date', '>', $transDate)
+                    ->whereIn('status', ['open', 'delinquent']);
+            })
+            ->limit(1)
+            ->accountId($accountId)
+            ->first();
+        return $amortization;
+        /* if ($loanStatus === LoanAccount::LOAN_PASTDUE) {
+            $amortization = Amortization::accountId($accountId)->orderBy('id', 'DESC')->first();
         } else {
             $amortization = Amortization::whereDate('amortization_date', '<=', $transDate)
                 ->whereIn('status', ['open', 'paid'])
@@ -107,25 +134,18 @@ class Amortization extends Model
                 ->limit(1)
                 ->accountId($accountId)
                 ->first();
-        }
-        if ((isset($amortization->status) && $amortization->status == 'paid'  || $amortization == null)) {
-            if ($paymentMode == 'Monthly') {
-                $amortization = Amortization::whereDate('amortization_date', '>', $transDate)
+
+            if ((isset($amortization->status) && $amortization->status == 'paid'  || $amortization == null)) {
+
+                $amortization = Amortization::whereDate('amortization_date', '>=', $transDate)
                     ->whereIn('status', ['open', 'delinquent'])
-                    /* ->orderBy('amortization_date', 'ASC') */
-                    ->limit(1)
-                    ->accountId($accountId)
-                    ->first();
-            } else {
-                $amortization = Amortization::whereDate('amortization_date', '>', $transDate)
-                    ->whereIn('status', ['open', 'delinquent'])
-                    /* ->orderBy('amortization_date', 'ASC') */
                     ->limit(1)
                     ->accountId($accountId)
                     ->first();
             }
         }
-        return $amortization;
+
+        return $amortization; */
     }
 
 
