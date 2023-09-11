@@ -503,8 +503,20 @@ class LoanAccount extends Model
         $amortization = $amortizationInstance->currentAmortization($this->loan_account_id, $this->payment_mode, $transactionDateNow, $this->loan_status);
         $isPastDue = $this->checkPastDue($this->due_date, $transactionDateNow);
         /*         $lastPaidAmort = $this->getPrevAmortization($this->loan_account_id, $amortization->id, ['paid'], null, true, 'DESC'); */
-        if ($amortization) {
 
+        if ($isPastDue && $amortization) {
+            if ($this->loan_status == LoanAccount::LOAN_ONGOING) {
+                LoanAccount::where(['loan_account_id' => $this->loan_account_id])->update(['loan_status' => LoanAccount::LOAN_PASTDUE]);
+                $this->payment_status = LoanAccount::PAYMENT_DELINQUENT;
+                $this->loan_status = LoanAccount::LOAN_PASTDUE;
+                // $this->save();
+            }
+            Amortization::find($amortization->id)->update(['status', 'delinquent']);
+            $amortization->pdi = $this->getPDI($this->loan_amount, $this->interest_rate, $isPastDue);
+        }
+
+
+        if ($amortization) {
             $isMonthlyPayment = $this->checkPaymentMode();
             $prevAmort = $amortizationInstance->getPrevAmort($amortization->id, $this->loan_account_id);
             $prevAmortStatus = $prevAmort ? $prevAmort->status : null;
@@ -524,16 +536,6 @@ class LoanAccount extends Model
             $amortization->schedule_interest = $amortization->interest;
 
 
-            if ($isPastDue && $amortization) {
-                if ($this->loan_status == LoanAccount::LOAN_ONGOING) {
-                    LoanAccount::where(['loan_account_id' => $this->loan_account_id])->update(['loan_status' => LoanAccount::LOAN_PASTDUE]);
-                    $this->payment_status = LoanAccount::PAYMENT_DELINQUENT;
-                    $this->loan_status = LoanAccount::LOAN_PASTDUE;
-                    // $this->save();
-                }
-                Amortization::find($amortization->id)->update(['status', 'delinquent']);
-                $amortization->pdi = $this->getPDI($this->loan_amount, $this->interest_rate, $isPastDue);
-            }
 
             if ($this->payment_mode == 'Lumpsum' && $transactionDateNow < $amortSched) {
                 $amortization->principal = 0;
@@ -544,7 +546,8 @@ class LoanAccount extends Model
             $amortization->advance_principal = $this->getAdvancePrincipal($this->loan_account_id, $amortization->id);
             $amortization->advance_interest = $this->getAdvanceInterest($this->loan_account_id, $amortization->id);
             $totalAmort = $firstAmortization->principal + $firstAmortization->interest;
-            $amortization->pdi = $amortization->pdi ? $amortization->pdi : 0;
+
+            $amortization->pdi = $amortization->pdi ?? 0;
             $accountPayments = $this->getPayment($this->loan_account_id, $amortization->id);
             $isPartiallyPaid = $accountPayments->last();
             $totalPrincipal = $isPartiallyPaid ? $isPartiallyPaid->short_principal + $amortization->principal : $amortization->principal;
@@ -621,24 +624,24 @@ class LoanAccount extends Model
         return $amortization;
     }
 
-    public function getTotalPenalty()
+    public function getTotalPenalty($transactionDateNow)
     {
 
         $amortization = new Amortization();
-        $transactionDateNow = transactionDate($this->branch->branch_id);
         $lastPaidAmort = $amortization->getLastPaidAmortization($this->account_id);
-        /*         $this->setDelinquent($this->loan_account_id, $transactionDateNow); */
+        /*         $this->setDelinquent($this->loan_account_id, $transactionDateNow, $this->payment_mode); */
         $current = $amortization->currentAmortization($this->loan_account_id, $this->payment_mode, $transactionDateNow, $this->loan_status);
         $firstAmortization = $amortization->getFirstAmortization($this->loan_account_id);
         $totalAmort = $firstAmortization->principal + $firstAmortization->interest;
         $ids = [];
 
         if ($current) {
+            $currentAmortId = $current->id;
             if ($lastPaidAmort) {
-                $id = $lastPaidAmort->id;
-                $delinquents = $this->getPrevAmortization($this->loan_account_id, $current->id, ['delinquent'], $id, false, 'DESC');
+                $lastpaidAmortId = $lastPaidAmort->id;
+                $delinquents = $this->getPrevAmortization($this->loan_account_id, $currentAmortId, ['delinquent'], $lastpaidAmortId, false, 'DESC');
             } else {
-                $delinquents = $this->getPrevAmortization($this->loan_account_id, $current->id, ['delinquent'], null, false, 'DESC');
+                $delinquents = $this->getPrevAmortization($this->loan_account_id, $currentAmortId, ['delinquent'], null, false, 'DESC');
             }
             foreach ($delinquents as $delinquent) {
                 $ids[] = $delinquent->id;
@@ -646,6 +649,16 @@ class LoanAccount extends Model
         }
 
         return $this->getPenalty($ids, $totalAmort, $transactionDateNow);
+    }
+    public function getTotalPdi($transactionDateNow)
+    {
+        $isPastDue = $this->checkPastDue($this->due_date, $transactionDateNow);
+
+        $pdi = 0;
+        if ($isPastDue) {
+            $pdi = $this->getPDI($this->loan_amount, $this->interest_rate, $isPastDue);
+        }
+        return $pdi;
     }
 
     public function getCurrentAmortization()
@@ -706,7 +719,6 @@ class LoanAccount extends Model
             $delinquents = $this->getPrevAmortization($loanAccountId, $amortizationId, ['delinquent'], $lastPaidAmort->id, false, 'DESC');
         }
         $delinquents = $this->getPrevAmortization($loanAccountId, $amortizationId, ['delinquent'], null, false, 'DESC'); */
-
 
         $balance = 0;
         $ids = [];
@@ -1239,8 +1251,8 @@ class LoanAccount extends Model
             $accountSummary['penalty']['debit'] += $currentAmortization['penalty'];
             $accountSummary['pdi']['debit'] += $currentAmortization['pdi'];
         } */
-        $accountSummary['penalty']['debit'] += $this->getTotalPenalty();
-
+        $accountSummary['penalty']['debit'] += $this->getTotalPenalty($transactionDateNow);
+        $accountSummary['pdi']['debit'] += $this->getTotalPdi($transactionDateNow);
 
 
 
