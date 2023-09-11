@@ -45,7 +45,7 @@ class PaymentController extends BaseController
 
         $pendingPayment = $payment->getOngoingPayment($request->input());
         if ($pendingPayment) {
-            $message = "There is still a pending payment for this account, please override " . ($pendingPayment->or_no ? "OR #: " . $pendingPayment->or_no  : "Ref. #: " . $pendingPayment->reference_no);
+            $message = "There is still a pending payment for this account, please override " . ($pendingPayment->or_no ? "OR #: " . $pendingPayment->or_no : "Ref. #: " . $pendingPayment->reference_no);
             return $this->sendError("Failed fetch account.", $message);
         }
         return $this->sendResponse(new PaymentResource($payment->addPayment($request)), 'Payment');
@@ -68,7 +68,7 @@ class PaymentController extends BaseController
 
             //Check loan account payments if there is pending payments.
             if ($pendingPayments) {
-                $message = "There is still a pending payment for this account, please override " . ($pendingPayments->or_no ? "OR #: " . $pendingPayments->or_no  : "Ref. #: " . $pendingPayments->reference_no);
+                $message = "There is still a pending payment for this account, please override " . ($pendingPayments->or_no ? "OR #: " . $pendingPayments->or_no : "Ref. #: " . $pendingPayments->reference_no);
                 return $this->sendError("Pending Payment.", $message, 422);
             }
             //Check loan account if it is already paid.
@@ -155,7 +155,6 @@ class PaymentController extends BaseController
                     ]); */
                 }
             } else {
-
                 $amortization->status = 'paid';
                 $loanAccount->payment_status = 'Current';
             }
@@ -183,7 +182,7 @@ class PaymentController extends BaseController
         $eod = transactionDate($branchId);
 
         $payment = new Payment();
-        $list =  $payment->overriddenList(array('branch_id' => $branchId, 'transaction_date' => $eod->date_end));
+        $list = $payment->overriddenList(array('branch_id' => $branchId, 'transaction_date' => $eod->date_end));
 
         if (count($list) > 0) {
             return $this->sendResponse(PaymentLoanAccountResource::collection($list), 'Payments');

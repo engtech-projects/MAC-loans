@@ -460,8 +460,8 @@ class LoanAccount extends Model
             ->with('amortizations', function ($query) {
                 $query->select('loan_account_id', 'principal', 'interest')->orderBy('id', 'DESC')->first();
             })
-            ->accountId();
-
+            ->accountId()
+            ->first();
         return $account->amortizations[0];
     }
 
@@ -621,10 +621,11 @@ class LoanAccount extends Model
         return $amortization;
     }
 
-    public function getAmortizationDue(Amortization $amortization)
+    public function getAmortizationDue()
     {
+        $amortization = new Amortization();
         $firstAmortization = $amortization->getFirstAmortization($this->loan_account_id);
-        $amortizationDue = $firstAmortization->principal + $firstAmortization->interest;
+        $amortizationDue = $firstAmortization["principal"] + $firstAmortization["interest"];
         return $amortizationDue;
     }
     public function getTotalPenalty($transactionDateNow)
@@ -634,7 +635,7 @@ class LoanAccount extends Model
         $lastPaidAmort = $amortization->getLastPaidAmortization($this->account_id);
         /*         $this->setDelinquent($this->loan_account_id, $transactionDateNow, $this->payment_mode); */
         $current = $amortization->currentAmortization($this->loan_account_id, $this->payment_mode, $transactionDateNow, $this->loan_status);
-        $totalAmort = $this->getAmortizationDue($amortization);
+        $totalAmort = $this->getAmortizationDue();
         $ids = [];
 
         if ($current) {
