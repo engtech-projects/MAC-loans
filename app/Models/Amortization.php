@@ -104,7 +104,7 @@ class Amortization extends Model
             },
             function ($query) use ($transDate) {
                 $query->where('amortization_date', '>', $transDate)
-                    ->whereIn('status', ['open', 'paid', 'delinquent']);
+                    ->whereIn('status', ['open', 'delinquent']);
             }
         )
             ->orWhere(function ($query) use ($transDate) {
@@ -117,12 +117,13 @@ class Amortization extends Model
                     ->where('amortization_date', '>', $transDate)
                     ->whereIn('status', ['open', 'delinquent']);
             })
-            ->limit(1)
+
             ->accountId($accountId)
+            ->limit(1)
             ->first();
 
         if (!$amortization) {
-            $lastAmortization  = Amortization::query()
+            $lastAmortization = Amortization::query()
                 ->where('status', 'delinquent')
                 ->accountId($accountId)
                 ->limit(1)
@@ -238,7 +239,7 @@ class Amortization extends Model
         $account = $account ?? null;
         $branchId = $account->branch->branch_id;
         $transactionDate = transactionDate($branchId);
-        $currentAmortization =  Amortization::query()
+        $currentAmortization = Amortization::query()
             ->whereDate('amortization_date', '<=', $transactionDate)
             ->whereIn('status', ['open', 'delinquent', 'paid'])
             ->orderBy('amortization_date', "DESC")
@@ -358,7 +359,7 @@ class Amortization extends Model
         $amortizaton = array();
         $dateArr = [];
 
-        $dateSched =  $this->getSpecialSched($amortizationDateStart);
+        $dateSched = $this->getSpecialSched($amortizationDateStart);
         $schedules = $this->buildSched($dateSched, $installments);
 
         for ($i = 0; $i < $installments; $i++) {
@@ -473,11 +474,11 @@ class Amortization extends Model
             $data = array(
                 'loan_account_id' => $value['loan_account_id'],
                 'amortization_date' => $value['amortization_date'],
-                'principal' =>  floatval(preg_replace('/[^\d.]/', '', $value['principal'])),
-                'interest' =>  floatval(preg_replace('/[^\d.]/', '', $value['interest'])),
-                'total' =>  floatval(preg_replace('/[^\d.]/', '', $value['total'])),
-                'principal_balance' =>  floatval(preg_replace('/[^\d.]/', '', $value['principal_balance'])),
-                'interest_balance' =>  floatval(preg_replace('/[^\d.]/', '', $value['interest_balance'])),
+                'principal' => floatval(preg_replace('/[^\d.]/', '', $value['principal'])),
+                'interest' => floatval(preg_replace('/[^\d.]/', '', $value['interest'])),
+                'total' => floatval(preg_replace('/[^\d.]/', '', $value['total'])),
+                'principal_balance' => floatval(preg_replace('/[^\d.]/', '', $value['principal_balance'])),
+                'interest_balance' => floatval(preg_replace('/[^\d.]/', '', $value['interest_balance'])),
                 'status' => 'open',
             );
             Amortization::create($data);
