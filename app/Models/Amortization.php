@@ -124,6 +124,10 @@ class Amortization extends Model
             ->limit(1)
             ->accountId($accountId)
             ->first();
+
+        if (!$amortization) {
+            $amortization = Amortization::where('status', 'delinquent')->accountId($accountId)->orderBy('id', 'DESC')->first();
+        }
         return $amortization;
         /* if ($loanStatus === LoanAccount::LOAN_PASTDUE) {
             $amortization = Amortization::accountId($accountId)->orderBy('id', 'DESC')->first();

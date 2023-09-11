@@ -499,10 +499,10 @@ class LoanAccount extends Model
         $transactionDateNow = transactionDate($this->branch->branch_id);
 
         $firstAmortization = $amortizationInstance->getFirstAmortization($this->loan_account_id);
-        $this->setDelinquent($this->loan_account_id, $transactionDateNow);
+        $this->setDelinquent($this->loan_account_id, $transactionDateNow, $this->payment_mode);
         $amortization = $amortizationInstance->currentAmortization($this->loan_account_id, $this->payment_mode, $transactionDateNow, $this->loan_status);
-
-        $lastPaidAmort = $this->getPrevAmortization($this->loan_account_id, $amortization->id, ['paid'], null, true, 'DESC');
+        $isPastDue = $this->checkPastDue($this->due_date, $transactionDateNow);
+        /*         $lastPaidAmort = $this->getPrevAmortization($this->loan_account_id, $amortization->id, ['paid'], null, true, 'DESC'); */
         if ($amortization) {
 
             $isMonthlyPayment = $this->checkPaymentMode();
@@ -522,7 +522,7 @@ class LoanAccount extends Model
 
             $amortization->schedule_principal = $amortization->principal;
             $amortization->schedule_interest = $amortization->interest;
-            $isPastDue = $this->checkPastDue($this->due_date, $transactionDateNow);
+
 
             if ($isPastDue && $amortization) {
                 if ($this->loan_status == LoanAccount::LOAN_ONGOING) {
@@ -551,18 +551,15 @@ class LoanAccount extends Model
             $shortAdvance = $amortization->advance_principal < $totalPrincipal ? true : false;
 
             if ($isMonthlyPayment) {
-                $accountPayments = $this->getPayment($this->loan_account_id, $prevAmortId);
-                $isPartiallyPaid = $accountPayments->last();
                 if ($transactionDateNow < $amortSched->startOfMonth()) {
-
                     $amortization->principal = 0;
                     $amortization->interest = 0;
                 }
                 if ($transactionDateNow > $amortSched->endOfMonth() && $shortAdvance) {
-                    Amortization::find($amortization->id)->update(['status' => 'delinquent']);
+                    /* Amortization::find($amortization->id)->update(['status' => 'delinquent']);
                     if ($transactionDateNow > $amortization->amortization_date->endOfMonth()) {
                         LoanAccount::find($this->loan_account_id)->update(['payment_status' => 'Delinquent']);
-                    }
+                    } */
                 }
                 if ($isPartiallyPaid && ($isPartiallyPaid->short_principal || $isPartiallyPaid->short_interest)) {
                 }
@@ -573,10 +570,10 @@ class LoanAccount extends Model
                 }
             } else {
                 if ($transactionDateNow > $amortSched && $shortAdvance) {
-                    Amortization::find($amortization->id)->update(['status' => 'delinquent']);
+                    /* Amortization::find($amortization->id)->update(['status' => 'delinquent']);
                     if ($transactionDateNow > $amortization->amortization_date->startOfDay()) {
                         LoanAccount::find($this->loan_account_id)->update(['payment_status' => 'Delinquent']);
-                    }
+                    } */
                 }
 
                 /* dd($transactionDateNow,$prevAmortSched); */
@@ -585,7 +582,6 @@ class LoanAccount extends Model
                     $amortization->interest = 0;
                 }
             }
-            $this->setDelinquent($this->loan_account_id, $amortization->id, $transactionDateNow);
             $amortization->delinquent = $this->getDelinquent($this->loan_account_id, $amortization->id, $amortization->advance_principal);
             $amortization->short_principal = $amortization->delinquent['principal']; //- (in_array($amortization->id, $amortization->delinquent['ids']) ? $amortization->principal : 0);
             $amortization->short_interest = $amortization->delinquent['interest']; //- (in_array($amortization->id, $amortization->delinquent['ids']) ? $amortization->interest : 0);
@@ -611,7 +607,7 @@ class LoanAccount extends Model
 
 
 
-            $amortization->delinquent = $this->getDelinquent($this->loan_account_id, $amortization->id, $amortization->advance_principal);
+            /*             $amortization->delinquent = $this->getDelinquent($this->loan_account_id, $amortization->id, $amortization->advance_principal); */
 
 
             if ($dayDiff > 10 && $amortization->advance_principal < $amortization->schedule_principal) {
@@ -631,7 +627,7 @@ class LoanAccount extends Model
         $amortization = new Amortization();
         $transactionDateNow = transactionDate($this->branch->branch_id);
         $lastPaidAmort = $amortization->getLastPaidAmortization($this->account_id);
-        $this->setDelinquent($this->loan_account_id, $transactionDateNow);
+        /*         $this->setDelinquent($this->loan_account_id, $transactionDateNow); */
         $current = $amortization->currentAmortization($this->loan_account_id, $this->payment_mode, $transactionDateNow, $this->loan_status);
         $firstAmortization = $amortization->getFirstAmortization($this->loan_account_id);
         $totalAmort = $firstAmortization->principal + $firstAmortization->interest;
@@ -788,15 +784,23 @@ class LoanAccount extends Model
         ];
     }
 
-    public function setDelinquent($loanAccountId, $currentDay)
+    public function setDelinquent($loanAccountId, $currentDay, $paymentMode)
     {
         /* $amortizations = $this->getPrevAmortization($loanAccountId, $amortizationId); */
-        $amortizations = Amortization::where('amortization_date', '<', $currentDay)->where('loan_account_id', $loanAccountId)->get();
+
+        $amortizations = Amortization::select('id', 'amortization_date', 'status')
+            ->where('amortization_date', '<=', $currentDay)
+            /* ->when($paymentMode === 'Monthly', function ($query) use ($currentDay) {
+                $query->where('amortization_date', '<=', $currentDay);
+            }, function ($query) use ($currentDay) {
+                $query->where('amortization_date', '<=', $currentDay);
+            }) */
+            ->where('status', 'open')
+            ->where('loan_account_id', $loanAccountId)
+            ->get();
         if (count($amortizations) > 0) {
-
             foreach ($amortizations as $amortization) {
-
-                $schedDate = $amortization->amortization_date;
+                $schedDate = $paymentMode === 'Monthly' ? $amortization->amortization_date->endOfMonth() : $amortization->amortization_date->startOfDay();
                 if ($schedDate < $currentDay) {
                     $amortization->status = 'delinquent';
                     $amortization->save();
@@ -1016,7 +1020,6 @@ class LoanAccount extends Model
         $dDate = $dueDate;
 
         if ($dDate <= $currentDay) {
-
             return $currentDay->diffInDays($dDate);
         }
 
