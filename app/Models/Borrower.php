@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Hash;
 
+use function PHPUnit\Framework\isEmpty;
+
 class Borrower extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
@@ -192,17 +194,25 @@ class Borrower extends Authenticatable
         return $this->hasMany(LoanAccount::class, 'loan_account_id');
     }
 
-    public function loanAccounts()
+    public function loanAccounts($attributes = [])
     {
-        $id = $this->borrower_id;
-/*         $activeAccounts = Borrower::query()->with('accounts', function ($query) use ($id) {
-            $query->where('borrower_id', $id)->release();
-        })->where('borrower_id', $id)
-            ->get(); */
+        $with = [];
+        $without = [];
+        if (!empty($attributes)) {
+            $with = $attributes["with"];
+            $without = $attributes["without"];
+        }
 
+        $id = $this->borrower_id;
+        /*         $activeAccounts = Borrower::query()->with('accounts', function ($query) use ($id) {
+                    $query->where('borrower_id', $id)->release();
+                })->where('borrower_id', $id)
+                    ->get(); */
         $activeAccounts = LoanAccount::query()
-            ->without('documents', 'branch', 'payments', 'product', 'accountOfficer')
-            ->where(['borrower_id' => $this->borrower_id, 'status' => 'released'])->orderBy('date_release', 'DESC')
+            ->without($without)
+            ->with($with)
+            ->where(['borrower_id' => $this->borrower_id, 'status' => 'released'])
+            ->orderBy('date_release', 'DESC')
             ->get();
 
         if (count($activeAccounts) > 0) {

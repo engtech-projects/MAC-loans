@@ -543,7 +543,7 @@ class LoanAccount extends Model
 
             $amortization->advance_principal = $this->getAdvancePrincipal($this->loan_account_id, $amortization->id);
             $amortization->advance_interest = $this->getAdvanceInterest($this->loan_account_id, $amortization->id);
-            $totalAmort = $this->getAmortizationDue($amortizationInstance);
+            $totalAmort = $this->getAmortizationDue();
             $amortization->pdi = $amortization->pdi ?? 0;
             $accountPayments = $this->getPayment($this->loan_account_id, $amortization->id);
             $isPartiallyPaid = $accountPayments->last();
@@ -625,20 +625,21 @@ class LoanAccount extends Model
     {
         $amortization = new Amortization();
         $firstAmortization = $amortization->getFirstAmortization($this->loan_account_id);
-        $amortizationDue = $firstAmortization["principal"] + $firstAmortization["interest"];
+        $amortizationDue = $firstAmortization ? $firstAmortization["principal"] + $firstAmortization["interest"] : 0;
         return $amortizationDue;
     }
     public function getTotalPenalty($transactionDateNow)
     {
 
         $amortization = new Amortization();
-        $lastPaidAmort = $amortization->getLastPaidAmortization($this->account_id);
+        $lastPaidAmort = $amortization->getLastPaidAmortization($this->loan_account_id);
         /*         $this->setDelinquent($this->loan_account_id, $transactionDateNow, $this->payment_mode); */
         $current = $amortization->currentAmortization($this->loan_account_id, $this->payment_mode, $transactionDateNow, $this->loan_status);
         $totalAmort = $this->getAmortizationDue();
         $ids = [];
 
         if ($current) {
+
             $currentAmortId = $current->id;
             if ($lastPaidAmort) {
                 $lastpaidAmortId = $lastPaidAmort->id;
@@ -1014,11 +1015,12 @@ class LoanAccount extends Model
         return $totalPayment;
     }
 
-    public function getPaymentTotalPrincipalInterest($loanAccountId)
+    public function getPaymentTotalPrincipalInterest($loanAccountId, $payments = null)
     {
 
+
         $paymentTotal = 0;
-        $payments = $this->getPayment($loanAccountId);
+        /* $payments = $this->getPayment($loanAccountId); */
         foreach ($payments as $payment) {
             $paymentTotal += $payment->principal;
             $paymentTotal += $payment->interest;
@@ -1130,7 +1132,7 @@ class LoanAccount extends Model
     {
 
         $account = LoanAccount::select('loan_account_id', 'interest_amount', 'loan_amount', 'type')->where(['loan_account_id' => $loanAccountId])->without('payments', 'documents')->first();
-        $payment = $this->getPaymentTotalPrincipalInterest($loanAccountId);
+        $payment = $this->getPaymentTotalPrincipalInterest($loanAccountId, $account->payments);
 
         if ($account->type == 'Prepaid') {
             $bal = ($account->loan_amount) - $payment;
@@ -1209,8 +1211,9 @@ class LoanAccount extends Model
         /* $days_late = $due_date != null ? $due_date->diffInDays($transaction_date, false) : 0; */
         $account = LoanAccount::query()
             ->select(['loan_account_id', 'branch_code', 'loan_amount', 'interest_amount', 'prepaid_interest', 'account_num', 'interest_amount'])
-            ->without(['borrower', 'documents', 'accountOfficer', 'branch', 'product'])
-            ->where(['loan_account_id' => $this->loan_account_id])->first();
+            ->without(['borrower', 'documents', 'accountOfficer', 'center', 'branch', 'product'])
+            ->where(['loan_account_id' => $this->loan_account_id])
+            ->first();
         $payments = $account->payments;
         /*         $account = LoanAccount::where(['loan_account_id' => $this->loan_account_id])->first();
         $payments = Payment::where(['loan_account_id' => $this->loan_account_id, 'status' => 'paid'])->orderBy('payment_id', 'DESC')->get(); */
@@ -1247,14 +1250,8 @@ class LoanAccount extends Model
             ]
         ];
         // SET PDI AND PENALTY IN THE ACCOUNT SUMMARY
-
-        /* $currentAmortization = $this->getCurrentAmortization();
-        if ($currentAmortization) {
-            $accountSummary['penalty']['debit'] += $currentAmortization['penalty'];
-            $accountSummary['pdi']['debit'] += $currentAmortization['pdi'];
-        } */
-        $accountSummary['penalty']['debit'] += $this->getTotalPenalty($transactionDateNow);
-        $accountSummary['pdi']['debit'] += $this->getTotalPdi($transactionDateNow);
+        $accountSummary['penalty']['debit'] += /* 2;  */$this->getTotalPenalty($transactionDateNow);
+        $accountSummary['pdi']['debit'] += /* 2;  */$this->getTotalPdi($transactionDateNow);
 
 
 

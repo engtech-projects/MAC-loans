@@ -82,7 +82,7 @@ class BorrowerController extends BaseController
 
 
 
-        return  $this->sendResponse($borrowers, 'Borrowers');
+        return $this->sendResponse($borrowers, 'Borrowers');
     }
 
 
