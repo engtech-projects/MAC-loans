@@ -17,9 +17,9 @@
                         placeholder="Search"
                     />
                     <div><i class="fa fa-search"></i></div>
-					<div class="results-container d-flex flex-column justify-content-start">
+					<!-- <div class="results-container d-flex flex-column justify-content-start">
 						<a v-for="b,f in filteredBorrowers" @click.prevent="selectBorrower(b)" href="" :key="f">{{b.lastname + ', ' + b.firstname}}</a>
-					</div>
+					</div> -->
                 </div>
                 <table class="table table-stripped" id="clientsList">
                     <thead>
@@ -961,7 +961,7 @@ export default {
 				page: 1,
 				range: 10
 			},
-			retaggingField:'',
+			retaggingField:null,
 			retagValue:null,
             filter: "",
 			products:[],
@@ -971,6 +971,7 @@ export default {
                 borrower_num: "############",
                 photo: null,
             },
+			retagLists:[],
 			borrowers:[],
             loanAccounts: [],
             loanAccount: {
@@ -1068,7 +1069,7 @@ export default {
 			this.pagination.page = page;
 		},
 		async retagList(){
-			await axios.post(this.baseURL() + 'api/account/retag-list/' + this.pbranch, {}, {
+			await axios.post(this.baseURL() + 'api/account/retagging', {branch_id:this.pbranch}, {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
 					'Content-Type': 'application/json',
@@ -1076,7 +1077,7 @@ export default {
 				}
 			})
 			.then(function (response) {
-				console.log(response.data);
+				this.retagLists = response.data.data;
 			}.bind(this))
 			.catch(function (error) {
 				console.log(error);
@@ -1111,7 +1112,7 @@ export default {
 					}else{
 
 					}
-					console.log(a);
+					// console.log(a);
 					this.retag(a);
 				}
 			});
@@ -1181,7 +1182,7 @@ export default {
                 })
                 .then(
                     function (response) {
-						console.log(response.data);
+						// console.log(response.data);
 						this.borrowers = response.data.data;
                         // this.loanAccounts = this.setAccounts(response.data.data);
                     }.bind(this)
@@ -1203,7 +1204,7 @@ export default {
                 })
                 .then(
                     function (response) {
-						console.log(response.data);
+						// console.log(response.data);
                     }.bind(this)
                 )
                 .catch(
@@ -1258,7 +1259,7 @@ export default {
     },
     computed: {
 		canRetagg:function(){
-			return this.filteredAccounts.filter(a => a.checked).length && this.retaggingField.length;
+			return this.filteredAccounts.filter(a => a.checked).length && this.retaggingField;
 		},
 		loanAccountStatusColor:function(){
 			if(this.loanAccount.loan_status == "Past Due"){
@@ -1296,37 +1297,42 @@ export default {
  			return [];
 		},
         filteredAccounts: function () {
-            return this.loanAccounts.filter(
+            return this.retagLists.filter(
                 (data) =>
-                    data.account_num.includes(this.filter) ||
-                    data.borrower.firstname
-                        .toLowerCase()
-                        .includes(this.filter.toLowerCase()) ||
-                    data.borrower.lastname
-                        .toLowerCase()
-                        .includes(this.filter.toLowerCase()) ||
-                    (data.borrower.firstname + " " + data.borrower.lastname)
-                        .toLowerCase()
-                        .includes(this.filter.toLowerCase()) ||
-                    (data.borrower.lastname + " " + data.borrower.firstname)
-                        .toLowerCase()
-                        .includes(this.filter.toLowerCase()) ||
-                    data.product.product_name
-                        .toLowerCase()
-                        .includes(this.filter.toLowerCase()) ||
-                    data.loan_status
-                        .toLowerCase()
-                        .includes(this.filter.toLowerCase()) ||
-                    data.account_officer.name
-                        .toLowerCase()
-                        .includes(this.filter.toLowerCase()) ||
-                    (data.center ? data.center.center : "")
-                        .toLowerCase()
-                        .includes(this.filter.toLowerCase()) ||
-                    data.date_release
-                        .replaceAll("-", "/")
-                        .includes(this.filter.toLowerCase())
-            );
+					{
+					if(this.filter && data.hasOwnProperty('borrower') && data.borrower){
+					return data.account_num.includes(this.filter) ||
+						(data.borrower && 
+						data.borrower.firstname
+							.toLowerCase()
+							.includes(this.filter.toLowerCase())) ||
+						data.borrower.lastname
+							.toLowerCase()
+							.includes(this.filter.toLowerCase()) ||
+						(data.borrower.firstname + " " + data.borrower.lastname)
+							.toLowerCase()
+							.includes(this.filter.toLowerCase()) ||
+						(data.borrower.lastname + " " + data.borrower.firstname)
+							.toLowerCase()
+							.includes(this.filter.toLowerCase()) ||
+						data.product.product_name
+							.toLowerCase()
+							.includes(this.filter.toLowerCase()) ||
+						data.loan_status
+							.toLowerCase()
+							.includes(this.filter.toLowerCase()) ||
+						data.account_officer.name
+							.toLowerCase()
+							.includes(this.filter.toLowerCase()) ||
+						(data.center ? data.center.center : "")
+							.toLowerCase()
+							.includes(this.filter.toLowerCase()) ||
+						(data.date_release &&
+							data.date_release.replaceAll("-", "/")
+							.includes(this.filter.toLowerCase()))
+					}
+					return this.retagLists;
+		});
         },
 		paginate:function(){
 			var result = [];
