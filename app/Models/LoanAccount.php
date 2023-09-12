@@ -589,7 +589,6 @@ class LoanAccount extends Model
             $amortization->short_penalty = $amortization->delinquent['penalty'];
 
 
-
             if ($isPartiallyPaid && ($isPartiallyPaid->short_principal || $isPartiallyPaid->short_interest)) {
                 $amortization->total = $amortization->total - ($amortization->principal + $amortization->interest);
                 $amortization->principal = 0;
@@ -605,6 +604,9 @@ class LoanAccount extends Model
             $amortization->day_late = $dayDiff;
 
 
+            if ($amortization->balance < $amortization->principal) {
+
+            }
 
 
             /*             $amortization->delinquent = $this->getDelinquent($this->loan_account_id, $amortization->id, $amortization->advance_principal); */
@@ -771,9 +773,13 @@ class LoanAccount extends Model
                 $missedAmortizations = Amortization::whereIn('id', $missed)->orderBy('id', 'ASC')->get();
                 foreach ($missedAmortizations as $key => $missedAmortization) {
                     if ($balance >= $missedAmortization->principal) {
+
                         $balance -= $missedAmortization->principal;
                         $pos = array_search($missedAmortization->id, $missed);
                         unset($missed[$pos]);
+                        if ($balance < $missedAmortization->principal) {
+                            LoanAccount::find($loanAccountId)->update(['payment_status' => 'Delinquent']);
+                        }
                     } else {
                         LoanAccount::find($loanAccountId)->update(['payment_status' => 'Delinquent']);
                         break;
