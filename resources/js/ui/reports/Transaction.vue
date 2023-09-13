@@ -287,7 +287,7 @@
 								<th>Type</th>
 							</thead>
 							<tbody>
-								<tr v-for="t,i in transactions.client.release" :key="i">
+								<tr v-for="t,i in transactions.client.release.sort((a, b) => a.borrower.localeCompare(b.borrower))" :key="i">
 									<td>{{t.borrower}}</td>
 									<td>{{t.date_loan}}</td>
 									<td>{{t.term}}</td>
@@ -377,7 +377,7 @@
 								<th>Type</th>
 							</thead>
 							<tbody>
-								<tr v-for="t,i in transactions.client.collection" :key="i">
+								<tr v-for="t,i in transactions.client.collection.sort((a, b) => a.borrower.localeCompare(b.borrower))" :key="i">
 									<td>{{t.borrower}}</td>
 									<td>{{t.date_paid}}</td>
 									<td>{{t.or}}</td>

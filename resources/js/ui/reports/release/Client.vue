@@ -74,7 +74,7 @@
 							<th>Type</th>
 						</thead>
 						<tbody>
-							<tr v-for="r,i in release" :key="i">
+							<tr v-for="r,i in release.sort((a, b) => a.borrower.localeCompare(b.borrower))" :key="i">
 								<td>{{r.account_num}}</td>
 								<td>{{r.borrower}}</td>
 								<td>{{r.date_loan}}</td>
