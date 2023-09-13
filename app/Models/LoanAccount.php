@@ -525,17 +525,11 @@ class LoanAccount extends Model
             $prevAmortStatus = $prevAmort ? $prevAmort->status : null;
 
 
-            $id = null;
+            $id = $amortization->id;
             if ($prevAmortStatus === 'delinquent') {
                 $prev = $amortizationInstance->getPreviousAmortization($this->loan_account_id, $amortization->id, 'delinquent');
                 $id = $prev->id;
-            } else if ($prevAmortStatus === 'paid') {
-                $id = $amortization->id;
             }
-
-
-
-
 
             $amortSched = $this->payment_mode === 'Monthly' ? $amortization->amortization_date->startOfMonth() : $amortization->amortization_date;
             $dayDiff = $amortSched->diffInDays($transactionDateNow, false);
@@ -794,8 +788,6 @@ class LoanAccount extends Model
                         $pos = array_search($missedAmortization->id, $missed);
                         unset($missed[$pos]);
                     } else {
-                        /* $pos = array_search($missedAmortization->id, $missed);
-                        unset($missed[$pos]); */
                         LoanAccount::find($loanAccountId)->update(['payment_status' => 'Delinquent']);
                         break;
                     }
