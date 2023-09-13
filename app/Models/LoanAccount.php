@@ -491,6 +491,7 @@ class LoanAccount extends Model
     }
 
 
+
     private function getLoanAmortization()
     {
         $amortizationInstance = new Amortization();
@@ -515,12 +516,24 @@ class LoanAccount extends Model
 
 
         if ($amortization) {
+            $prev = null;
             $isMonthlyPayment = $this->checkPaymentMode();
             $prevAmort = $amortizationInstance->getPrevAmort($amortization->id, $this->loan_account_id);
             $prevAmortStatus = $prevAmort ? $prevAmort->status : null;
             $prevAmortId = $prevAmort ? $prevAmort->id : null;
             $prevAmortSched = $prevAmort ? $prevAmort->amortization_date : null;
             $prevAmortStatus = $prevAmort ? $prevAmort->status : null;
+
+
+
+            /* if ($prevAmortStatus === 'delinquent') {
+                $prev = $amortizationInstance->getPreviousAmortization($this->loan_account_id, $amortization->id, 'delinquent');
+            } else if ($prevAmortStatus === 'paid') {
+                $prev = $amortizationInstance->getPreviousAmortization($this->loan_account_id, $amortization->id, 'paid');
+            } */
+
+
+
 
 
             $amortSched = $this->payment_mode === 'Monthly' ? $amortization->amortization_date->startOfMonth() : $amortization->amortization_date;
@@ -580,8 +593,8 @@ class LoanAccount extends Model
                 }
             }
 
-            $amortization->short_principal = $amortization->delinquent['principal']; //- (in_array($amortization->id, $amortization->delinquent['ids']) ? $amortization->principal : 0);
-            $amortization->short_interest = $amortization->delinquent['interest'] -(in_array($amortization->id, $amortization->delinquent['ids']) ? $amortization->interest : 0);
+            $amortization->short_principal = $amortization->delinquent['principal']; //- (in_array($prevAmortId, $amortization->delinquent['ids']) ? $amortization->principal : 0);
+            $amortization->short_interest = $amortization->delinquent['interest']; //- (in_array($prevAmortId, $amortization->delinquent['ids']) ? $amortization->interest : 0);
             $amortization->short_pdi = 0;
             $amortization->short_penalty = $amortization->delinquent['penalty'];
 
@@ -589,7 +602,6 @@ class LoanAccount extends Model
 
 
             if ($isPartiallyPaid && ($isPartiallyPaid->short_principal || $isPartiallyPaid->short_interest)) {
-
                 $amortization->total = $amortization->total - ($amortization->principal + $amortization->interest);
                 $amortization->principal = 0;
                 $amortization->penalty = 0;
@@ -717,11 +729,6 @@ class LoanAccount extends Model
         }
 
 
-        /* if ($lastPaidAmort) {
-            $delinquents = $this->getPrevAmortization($loanAccountId, $amortizationId, ['delinquent'], $lastPaidAmort->id, false, 'DESC');
-        }
-        $delinquents = $this->getPrevAmortization($loanAccountId, $amortizationId, ['delinquent'], null, false, 'DESC'); */
-
         $balance = $advancePrincipal;
         $ids = [];
         $missed = [];
@@ -729,19 +736,21 @@ class LoanAccount extends Model
         $totalInterest = 0;
         $totalPdi = 0;
         $totalPenalty = 0;
+        $totalShort = 0;
         // identify missed payments
-        if ($delinquents) {
-            foreach ($delinquents as $delinquent) {
 
+
+        if ($delinquents) {
+            $lastDelinquent = $delinquents->last();
+            foreach ($delinquents as $delinquent) {
                 $ids[] = $delinquent->id;
                 /* $payments = $this->getDelinquentPayment($loanAccountId, $delinquent->id); */
-                /* $payments = $this->getDelinquentPayment($loanAccountId, $delinquent->id); */
-
                 if (isset($delinquent->payments) && count($delinquent->payments) > 0) {
                     $isNotAdvancePayment = true;
+                    $totalShort = $lastDelinquent->payments->last()->short_interest;
                     foreach ($delinquent->payments as $payment) {
                         $totalPrincipal += $payment->short_principal;
-                        $totalInterest += $payment->short_interest;
+                        $totalInterest += $payment->short_interest - $totalShort;
                         $totalPdi += $payment->short_pdi;
                         $totalPenalty += $payment->short_penalty;
                         $isNotAdvancePayment = (bool) $payment->total_payable;
@@ -763,6 +772,9 @@ class LoanAccount extends Model
                 $totalPrincipal += round($delinquent->principal);
                 $totalInterest += round($delinquent->interest);
             }
+
+
+
 
         }
 
@@ -794,8 +806,6 @@ class LoanAccount extends Model
             }
         }
 
-
-
         return [
             'ids' => $ids,
             'principal' => $totalPrincipal,
@@ -804,6 +814,7 @@ class LoanAccount extends Model
             'balance' => $balance,
             'pdi' => $totalPdi,
             'advance' => $advancePrincipal,
+            'short' => $totalShort,
             'missed' => array_values($missed)
         ];
     }
