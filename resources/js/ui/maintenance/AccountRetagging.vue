@@ -1,5 +1,12 @@
 <template>
     <div class="container-fluid px-16">
+		<div v-if="loading" class="black-screen d-flex flex-column align-items-center justify-content-center" style="padding-left:0px;">
+			<div class="loading-container d-flex align-items-center justify-content-center mb-36">
+				<span class="loading-text">LOADING</span>
+				<img :src="baseURL() + 'img/loading_default.png'" class="rotating" alt="" style="width:300px;height:300px">
+			</div>
+			<span class="font-lg" style="color:#ddd">Please wait until the process is complete</span>
+		</div>
 		<notifications group="foo" />
         <div class="mb-16"></div>
         <div class="mb-24 bb-primary-dark pb-7 text-block">
@@ -910,9 +917,7 @@
                                             </div>
                                             <span
                                                 class="flex-2 text-primary-dark"
-                                                >{{
-                                                    formatToCurrency(loanAccount.remainingBalance.principal.balance)
-                                                }}
+                                                >0.00
                                             </span
                                             >
                                         </div>
@@ -925,9 +930,7 @@
                                             </div>
                                             <span
                                                 class="flex-2 text-primary-dark"
-                                                >{{
-                                                    formatToCurrency(loanAccount.remainingBalance.interest.balance)
-                                                }}
+                                                >0.00
                                             </span
                                             >
                                         </div>
@@ -956,6 +959,7 @@ export default {
     props: ["pbranch", "token",'ploanstatus'],
     data() {
         return {
+			loading:false,
 			selectedBorrower:{},
 			pagination:{
 				page: 1,
@@ -1069,6 +1073,7 @@ export default {
 			this.pagination.page = page;
 		},
 		async retagList(){
+			this.loading = true;
 			await axios.post(this.baseURL() + 'api/account/retagging', {branch_id:this.pbranch}, {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
@@ -1078,6 +1083,7 @@ export default {
 			})
 			.then(function (response) {
 				this.retagLists = response.data.data;
+				this.loading = false;
 			}.bind(this))
 			.catch(function (error) {
 				console.log(error);
