@@ -23,7 +23,7 @@
                         id="searchBar"
                         placeholder="Search"
                     />
-                    <div><i class="fa fa-search"></i></div>
+                    <div class="btn btn-primary" style="border-radius:0" @click="search()"><i class="fa fa-search text-white"></i></div>
 					<!-- <div class="results-container d-flex flex-column justify-content-start">
 						<a v-for="b,f in filteredBorrowers" @click.prevent="selectBorrower(b)" href="" :key="f">{{b.lastname + ', ' + b.firstname}}</a>
 					</div> -->
@@ -78,7 +78,7 @@
                             <td>
                                 <a
                                     href="#"
-                                    @click.prevent="loanAccount = account"
+                                    @click.prevent="fetchAccountInfo(account.loan_account_id)"
                                     class="text-green-bright text-md"
                                     data-toggle="modal"
                                     data-target="#retagDetailsModal"
@@ -917,7 +917,7 @@
                                             </div>
                                             <span
                                                 class="flex-2 text-primary-dark"
-                                                >0.00
+                                                >{{formatToCurrency(loanAccount.remaining_balance.principal.balance)}}
                                             </span
                                             >
                                         </div>
@@ -930,7 +930,7 @@
                                             </div>
                                             <span
                                                 class="flex-2 text-primary-dark"
-                                                >0.00
+                                                >{{formatToCurrency(loanAccount.remaining_balance.interest.balance)}}
                                             </span
                                             >
                                         </div>
@@ -959,6 +959,7 @@ export default {
     props: ["pbranch", "token",'ploanstatus'],
     data() {
         return {
+			searchKey:null,
 			loading:false,
 			selectedBorrower:{},
 			pagination:{
@@ -1014,7 +1015,7 @@ export default {
                 interest_rate: "",
                 interest_amount: "",
 				loan_status:'',
-				remainingBalance:{
+				remaining_balance:{
 					principal:{
 						balance:0
 					},
@@ -1065,10 +1066,13 @@ export default {
                     },
                 },
             },
-			loanStatus:['Write-Off','Case Filed','Litigated','Restructured','Restructured w/o PDI']
+			loanStatus:['Ongoing','Paid','Past Due','Restructured','Restructured w/o PDI','Case Filed','Litigated','Write-Off']
         };
     },
     methods: {
+		search:function(){
+			this.searchKey = this.filter;
+		},
 		setPage:function(page){
 			this.pagination.page = page;
 		},
@@ -1082,14 +1086,23 @@ export default {
 				}
 			})
 			.then(function (response) {
-				this.retagLists = response.data.data;
+				this.retagLists = this.setRetagList(response.data.data);
 				this.loading = false;
 			}.bind(this))
 			.catch(function (error) {
 				console.log(error);
 			}.bind(this));
 		},
+		setRetagList:function(retagList){
+			for(var i in retagList){
+				if(!retagList[i].borrower){
+					retagList[i].borrower = {firstname:'',lastname:'',middlename:''};
+				}
+			}
+			return retagList;
+		},
 		async retag(account){
+			this.loading = true;
 			await axios.post(this.baseURL() + 'api/account/update/' + account.loan_account_id, account, {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
@@ -1098,9 +1111,11 @@ export default {
 				}
 			})
 			.then(function (response) {
+				this.loading = false;
 				this.notify('','Account # ' + account.account_num + ' has been updated.', 'success');
 			}.bind(this))
 			.catch(function (error) {
+				this.loading = false;
 				console.log(error);
 			}.bind(this));
 		},
@@ -1122,7 +1137,7 @@ export default {
 					this.retag(a);
 				}
 			});
-			this.fetchBorrowers();
+			// this.fetchBorrowers();
 		},
 		notify:function(title, text, type){
 			this.$notify({
@@ -1177,9 +1192,9 @@ export default {
 				console.log(error);
 			}.bind(this));
 		},
-        async fetchBorrowers() {
+        async fetchAccountInfo(id) {
             await axios
-                .get(this.baseURL() + "api/borrower/list/" + this.pbranch, {
+                .get(this.baseURL() + "api/account/show/" + id, {
                     headers: {
                         Authorization: "Bearer " + this.token,
                         "Content-Type": "application/json",
@@ -1188,9 +1203,7 @@ export default {
                 })
                 .then(
                     function (response) {
-						// console.log(response.data);
-						this.borrowers = response.data.data;
-                        // this.loanAccounts = this.setAccounts(response.data.data);
+						this.loanAccount = response.data.data;
                     }.bind(this)
                 )
                 .catch(
@@ -1276,8 +1289,8 @@ export default {
 			return "text-ocean";
 		},
         borrowerPhoto: function () {
-            return this.loanAccount.photo
-                ? this.loanAccount.photo
+            return this.loanAccount.borrower_photo
+                ? this.loanAccount.borrower_photo
                 : this.baseURL() + "/img/user.png";
         },
         lastTransaction: function () {
@@ -1306,36 +1319,36 @@ export default {
             return this.retagLists.filter(
                 (data) =>
 					{
-					if(this.filter && data.hasOwnProperty('borrower') && data.borrower){
-					return data.account_num.includes(this.filter) ||
+					if(this.searchKey && data.hasOwnProperty('borrower') && data.borrower){
+					return data.account_num.includes(this.searchKey) ||
 						(data.borrower && 
 						data.borrower.firstname
 							.toLowerCase()
-							.includes(this.filter.toLowerCase())) ||
+							.includes(this.searchKey.toLowerCase())) ||
 						data.borrower.lastname
 							.toLowerCase()
-							.includes(this.filter.toLowerCase()) ||
+							.includes(this.searchKey.toLowerCase()) ||
 						(data.borrower.firstname + " " + data.borrower.lastname)
 							.toLowerCase()
-							.includes(this.filter.toLowerCase()) ||
+							.includes(this.searchKey.toLowerCase()) ||
 						(data.borrower.lastname + " " + data.borrower.firstname)
 							.toLowerCase()
-							.includes(this.filter.toLowerCase()) ||
+							.includes(this.searchKey.toLowerCase()) ||
 						data.product.product_name
 							.toLowerCase()
-							.includes(this.filter.toLowerCase()) ||
+							.includes(this.searchKey.toLowerCase()) ||
 						data.loan_status
 							.toLowerCase()
-							.includes(this.filter.toLowerCase()) ||
+							.includes(this.searchKey.toLowerCase()) ||
 						data.account_officer.name
 							.toLowerCase()
-							.includes(this.filter.toLowerCase()) ||
+							.includes(this.searchKey.toLowerCase()) ||
 						(data.center ? data.center.center : "")
 							.toLowerCase()
-							.includes(this.filter.toLowerCase()) ||
+							.includes(this.searchKey.toLowerCase()) ||
 						(data.date_release &&
 							data.date_release.replaceAll("-", "/")
-							.includes(this.filter.toLowerCase()))
+							.includes(this.searchKey.toLowerCase()))
 					}
 					return this.retagLists;
 		});
@@ -1353,8 +1366,14 @@ export default {
 			return result;
 		},
     },
+	watch:{
+		'filter'(newVal){
+			if(newVal == ''){
+				this.searchKey = null;
+			}
+		}
+	},
     mounted() {
-        this.fetchBorrowers();
 		this.fetchCenters();
 		this.fetchOfficers();
 		this.fetchProducts();
