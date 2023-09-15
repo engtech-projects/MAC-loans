@@ -588,23 +588,39 @@ class LoanAccount extends Model
                 }
             }
 
-            $amortization->short_principal = $amortization->delinquent['principal']; //- (in_array($prevAmortId, $amortization->delinquent['ids']) ? $amortization->principal : 0);
-            $amortization->short_interest = $amortization->delinquent['interest']; //- (in_array($prevAmortId, $amortization->delinquent['ids']) ? $amortization->interest : 0);
+            $amortization->short_principal = $amortization->delinquent['principal']; // - (in_array($id, $amortization->delinquent['ids']) ? $amortization->principal : 0);
+            $amortization->short_interest = $amortization->delinquent['interest']; //- (in_array($id, $amortization->delinquent['ids']) ? $amortization->interest : 0);
             $amortization->short_pdi = 0;
             $amortization->short_penalty = $amortization->delinquent['penalty'];
 
 
-
             if ($isPartiallyPaid && ($isPartiallyPaid->short_principal || $isPartiallyPaid->short_interest)) {
-                $amortization->total = $amortization->total - ($amortization->principal + $amortization->interest);
-                $amortization->principal = 0;
-                $amortization->penalty = 0;
-                $amortization->interest = 0;
-                $amortization->short_principal = $isPartiallyPaid->short_principal;
-                $amortization->short_interest = $isPartiallyPaid->short_interest;
-                $amortization->short_penalty = $isPartiallyPaid->short_penalty;
-                $amortization->over_payment = $isPartiallyPaid->over_payment;
+                if ($id === $isPartiallyPaid->amortization_id) {
+                    if ($id != $amortization->id) {
+
+                        $amortization->short_principal = $isPartiallyPaid->short_principal;
+                        $amortization->short_interest = $isPartiallyPaid->short_interest;
+                    } else {
+
+                        $amortization->total = $amortization->total - ($amortization->principal + $amortization->interest);
+                        $amortization->principal = 0;
+                        $amortization->penalty = 0;
+                        $amortization->interest = 0;
+                        $amortization->short_principal = $isPartiallyPaid->short_principal;
+                        $amortization->short_interest = $isPartiallyPaid->short_interest;
+                        $amortization->short_penalty = $isPartiallyPaid->short_penalty;
+                        $amortization->over_payment = $isPartiallyPaid->over_payment;
+                    }
+                } else {
+
+                    /*  $amortization->short_principal = $isPartiallyPaid->short_principal;
+                     $amortization->short_interest = $isPartiallyPaid->short_interest;
+                     $amortization->short_penalty = $isPartiallyPaid->short_penalty;
+                     $amortization->over_payment = $isPartiallyPaid->over_payment; */
+                    $amortization->penalty = $this->getPenalty($amortization->delinquent['missed'], $totalAmort, $transactionDateNow);
+                }
             } else {
+                $amortization->short_interest -= $amortization->delinquent["short"];
                 $amortization->penalty = $this->getPenalty($amortization->delinquent['missed'], $totalAmort, $transactionDateNow);
             }
             $amortization->day_late = $dayDiff;
