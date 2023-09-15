@@ -746,17 +746,16 @@ class LoanAccount extends Model
         $totalPenalty = 0;
         $totalShort = 0;
         // identify missed payments
-
+        $delinquentsPayments = [];
 
         if ($delinquents) {
             $lastDelinquent = $delinquents->last();
             foreach ($delinquents as $delinquent) {
                 $ids[] = $delinquent->id;
-                /* $payments = $this->getDelinquentPayment($loanAccountId, $delinquent->id); */
                 if (isset($delinquent->payments) && count($delinquent->payments) > 0) {
                     $isNotAdvancePayment = true;
-                    $totalShort = $lastDelinquent->payments->last()->short_interest;
 
+                    $totalShort = $lastDelinquent->payments->last()->short_interest;
                     foreach ($delinquent->payments as $payment) {
                         $totalPrincipal += $payment->short_principal;
                         $totalInterest += $payment->short_interest;
@@ -767,41 +766,29 @@ class LoanAccount extends Model
                     }
 
                     if (!$isNotAdvancePayment) { // if advanced payment only add principal and interest
-                        /* array_push($missed, $delinquent->id); */
+                        array_push($missed, $delinquent->id);
                         $totalPrincipal += round($delinquent->principal);
                         $totalInterest += round($delinquent->interest);
                     }
                     break;
 
                 } else {
-                    array_push($missed, $delinquent->id);
-
+                    $missed[] = $delinquent->id;
                 }
-
-
                 $totalPrincipal += round($delinquent->principal);
                 $totalInterest += round($delinquent->interest);
             }
-
-
-
-
         }
-
-
-
         if ($advancePrincipal) {
             if (count($missed) > 0) {
-
                 $missedAmortizations = Amortization::whereIn('id', $missed)->orderBy('id', 'ASC')->get();
-
                 foreach ($missedAmortizations as $key => $missedAmortization) {
-
                     if ($balance >= $missedAmortization->principal) {
                         $balance -= $missedAmortization->principal;
                         $pos = array_search($missedAmortization->id, $missed);
                         unset($missed[$pos]);
                     } else {
+
                         LoanAccount::find($loanAccountId)->update(['payment_status' => 'Delinquent']);
                         break;
                     }
