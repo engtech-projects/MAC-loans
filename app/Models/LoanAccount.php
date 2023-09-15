@@ -767,7 +767,7 @@ class LoanAccount extends Model
                     }
 
                     if (!$isNotAdvancePayment) { // if advanced payment only add principal and interest
-                        array_push($missed, $delinquent->id);
+                        /* array_push($missed, $delinquent->id); */
                         $totalPrincipal += round($delinquent->principal);
                         $totalInterest += round($delinquent->interest);
                     }
