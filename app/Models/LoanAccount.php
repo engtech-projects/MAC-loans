@@ -762,8 +762,13 @@ class LoanAccount extends Model
                         $totalPdi += $payment->short_pdi;
                         $totalPenalty += $payment->short_penalty;
                         $isNotAdvancePayment = (bool) $payment->total_payable;
+
+
+                        $pos = array_search($payment->amortization_id, $missed);
+                        unset($missed[$pos]);
                         break;
                     }
+
 
                     if (!$isNotAdvancePayment) { // if advanced payment only add principal and interest
 /*                         array_push($missed, $delinquent->id); */
