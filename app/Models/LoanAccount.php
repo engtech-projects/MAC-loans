@@ -504,6 +504,8 @@ class LoanAccount extends Model
                 $this->loan_status = LoanAccount::LOAN_PASTDUE;
                 // $this->save();
             }
+            $amortization->principal = 0;
+            $amortization->interest = 0;
             Amortization::find($amortization->id)->update(['status', 'delinquent']);
             $amortization->pdi = $this->getPDI($this->loan_amount, $this->interest_rate, $isPastDue);
         }
@@ -592,7 +594,6 @@ class LoanAccount extends Model
             $amortization->short_pdi = 0;
             $amortization->short_penalty = $amortization->delinquent['penalty'];
 
-
             if ($isPartiallyPaid && ($isPartiallyPaid->short_principal || $isPartiallyPaid->short_interest)) {
                 $amortization->total = $amortization->total - ($amortization->principal + $amortization->interest);
 
@@ -612,7 +613,6 @@ class LoanAccount extends Model
             if ($dayDiff > 10 && $amortization->advance_principal < $amortization->schedule_principal) {
                 array_merge(array_unique($amortization->delinquent['missed']), [$amortization->id]);
             }
-
             $amortization->total = ($amortization->principal + $amortization->interest) + ($amortization->short_principal + $amortization->short_interest);
             $amortization->totalPaid = $this->getPaymentTotal($this->loan_account_id);
             $amortization->outstandingBalance = $this->outstandingBalance($this->loan_account_id);
