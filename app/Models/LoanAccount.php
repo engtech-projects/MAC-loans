@@ -497,18 +497,7 @@ class LoanAccount extends Model
         $isPastDue = $this->checkPastDue($this->due_date, $transactionDateNow);
         /*         $lastPaidAmort = $this->getPrevAmortization($this->loan_account_id, $amortization->id, ['paid'], null, true, 'DESC'); */
 
-        if ($isPastDue && $amortization) {
-            if ($this->loan_status == LoanAccount::LOAN_ONGOING) {
-                LoanAccount::where(['loan_account_id' => $this->loan_account_id])->update(['loan_status' => LoanAccount::LOAN_PASTDUE]);
-                $this->payment_status = LoanAccount::PAYMENT_DELINQUENT;
-                $this->loan_status = LoanAccount::LOAN_PASTDUE;
-                // $this->save();
-            }
-            $amortization->principal = 0;
-            $amortization->interest = 0;
-            Amortization::find($amortization->id)->update(['status', 'delinquent']);
-            $amortization->pdi = $this->getPDI($this->loan_amount, $this->interest_rate, $isPastDue);
-        }
+
 
 
         if ($amortization) {
@@ -537,7 +526,18 @@ class LoanAccount extends Model
             $amortization->schedule_principal = $amortization->principal;
             $amortization->schedule_interest = $amortization->interest;
 
-
+            if ($isPastDue && $amortization) {
+                if ($this->loan_status == LoanAccount::LOAN_ONGOING) {
+                    LoanAccount::where(['loan_account_id' => $this->loan_account_id])->update(['loan_status' => LoanAccount::LOAN_PASTDUE]);
+                    $this->payment_status = LoanAccount::PAYMENT_DELINQUENT;
+                    $this->loan_status = LoanAccount::LOAN_PASTDUE;
+                    // $this->save();
+                }
+                $amortization->principal = 0;
+                $amortization->interest = 0;
+                Amortization::find($amortization->id)->update(['status', 'delinquent']);
+                $amortization->pdi = $this->getPDI($this->loan_amount, $this->interest_rate, $isPastDue);
+            }
 
             if ($this->payment_mode == 'Lumpsum' && $transactionDateNow < $amortSched) {
                 $amortization->principal = 0;
