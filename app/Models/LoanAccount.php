@@ -535,7 +535,11 @@ class LoanAccount extends Model
                 }
                 $amortization->principal = 0;
                 $amortization->interest = 0;
-                Amortization::find($amortization->id)->update(['status', 'delinquent']);
+                Amortization::where('id',$amortization->id)->update([
+                    'status' => 'delinquent'
+                ]);
+
+
                 $amortization->pdi = $this->getPDI($this->loan_amount, $this->interest_rate, $isPastDue);
             }
 
