@@ -114,7 +114,7 @@ class PaymentController extends BaseController
             $payment = Payment::find($value['payment_id']);
             $amortization = Amortization::find($payment->amortization_id);
             $loanAccount = LoanAccount::find($payment->loan_account_id);
-
+            $paymentMode = $loanAccount->payment_mode;
             if ($payment->reference_id) {
                 $acc = LoanAccount::find($payment->reference_id);
 
@@ -132,8 +132,9 @@ class PaymentController extends BaseController
             if ($amortization->principal_balance < $loanAccount->remainingBalance()["principal"]["balance"] || $amortization->interest_balance < $loanAccount->remainingBalance()["interest"]["balance"]) {
 
                 $currentDay = transactionDate($payment->branch_id);
-                $schedDate = $amortization->amortization_date;
-                if ($currentDay <= $schedDate) {
+                $schedDate = $paymentMode === 'Monthly' ? $amortization->amortization_date->endOfMonth() : $amortization->amortization_date->startOfDay();
+
+                if ($currentDay < $schedDate) {
                     $amortization->status = 'open';
                 } else {
                     $amortization->status = 'delinquent';
