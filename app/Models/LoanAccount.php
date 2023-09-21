@@ -1044,6 +1044,7 @@ class LoanAccount extends Model
     {
 
         $penalty = 0;
+
         if (count($missed)) {
             $currentDay = $dateNow->copy()->startOfDay();
             $amortizations = Amortization::find($missed)->pluck('amortization_date');
@@ -1054,12 +1055,18 @@ class LoanAccount extends Model
                 $dateSched = $date->startOfDay();
                 $dayDiff = $dateSched->diffInDays($currentDay);
                 if ($this->payment_mode === 'Monthly') {
-                    $endMonth = $date->endOfMonth();
+                    $endMonth = $this->loan_status === self::LOAN_PASTDUE ? $dateSched : $date->endOfMonth();
                     $dayDiff = $endMonth->diffInDays($currentDay, false);
-
-                    if ($dayDiff >= 10) {
-                        $counter++;
+                    if ($this->loan_status === self::LOAN_PASTDUE) {
+                        if ($dayDiff > 10) {
+                            $counter++;
+                        }
+                    } else {
+                        if ($dayDiff >= 10) {
+                            $counter++;
+                        }
                     }
+
                 } else {
                     if ($dayDiff > 10) {
                         $counter++;
