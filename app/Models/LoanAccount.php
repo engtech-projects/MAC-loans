@@ -759,9 +759,9 @@ class LoanAccount extends Model
                         $balance -= $missedAmortization->principal;
                         unset($missed[$pos]);
                     } else {
-                        if ($missed[$pos] === $missedAmortization->id && $balance < $missedAmortization->principal) {
+                        /* if ($missed[$pos] === $missedAmortization->id && $balance < $missedAmortization->principal) {
                             unset($missed[$pos]);
-                        }
+                        } */
                         LoanAccount::find($loanAccountId)->update(['payment_status' => 'Delinquent']);
                         break;
                     }
