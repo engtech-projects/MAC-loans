@@ -759,6 +759,9 @@ class LoanAccount extends Model
                         $balance -= $missedAmortization->principal;
                         unset($missed[$pos]);
                     } else {
+                        if ($balance > 0) {
+                            unset($missed[$pos]);
+                        }
                         /* if ($missed[$pos] === $missedAmortization->id && $balance < $missedAmortization->principal) {
                             unset($missed[$pos]);
                         } */
