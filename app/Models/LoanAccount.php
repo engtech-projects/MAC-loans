@@ -175,18 +175,17 @@ class LoanAccount extends Model
         $branch = Branch::query()->findOrFail($request["branch_id"]);
         $productId = $request["product"] ?? null;
         $accountOfficerId = $request["account_officer"] ?? null;
-        $loanStatus = $request["payment_status"] ?? null;
-        $borrowerName = $request["borrower_name"] ?? null;
-        $data = $this->getAccounts($branch->branch_code, ['loan_account_id', 'payment_status', 'loan_status', 'loan_amount', 'product_id', 'borrower_id', 'center_id', 'branch_code', 'date_release', 'account_num', 'ao_id', 'loan_status'], ['payments', 'borrower', 'documents'])
+        $loanStatus = $request["loan_status"] ?? null;
+        $borrower = $request["borrower"] ?? null;
+        $centerId = $request["center"] ?? null;
+
+        $data = $this->getAccounts($branch->branch_code, ['loan_account_id', 'center_id', 'account_num', 'payment_status', 'loan_status', 'loan_amount', 'product_id', 'borrower_id', 'center_id', 'branch_code', 'date_release', 'account_num', 'ao_id', 'loan_status'], ['payments', 'borrower', 'documents'])
             ->with([
                 'accountOfficer' =>
                     function ($query) {
                         $query->select('ao_id', 'name')->without('branch', 'branch_registered');
                     },
-                'borrower' =>
-                    function ($query) {
-                        $query->select('borrower_id', 'birthdate', 'firstname', 'lastname', 'middlename');
-                    },
+                'borrower:borrower_id,firstname,lastname,middlename',
                 'branch:branch_id,branch_code',
                 'product:product_id,product_name',
                 'center:center_id,center'
@@ -197,18 +196,33 @@ class LoanAccount extends Model
             ->when($accountOfficerId, function ($query, $accountOfficerId) {
                 $query->where('ao_id', $accountOfficerId);
             })
+            ->when($centerId, function ($query, $centerId) {
+                $query->where('center_id', $centerId);
+            })
             ->when($loanStatus, function ($query, $loanStatus) {
-                $query->where('payment_status', $loanStatus);
+                $query->where('loan_status', $loanStatus);
             })
             ->branchCode($branch->branch_code)
             ->released()
             ->get();
 
-        $collection = collect($data);
-        $data = $collection->filter(function ($item) use ($borrowerName) {
-            return str_contains(strtolower($item->borrower->fullname), strtolower($borrowerName));
+
+        $data = collect($data)->filter(function ($item) use ($borrower) {
+            $propertiesToSearch = ['fullname', 'account_num'];
+            foreach ($propertiesToSearch as $property) {
+                if ($property === 'fullname') {
+                    if (str_contains(strtolower($item->borrower[$property]), strtolower($borrower))) {
+                        return true;
+                    }
+                } else {
+                    if (str_contains(strtolower($item[$property]), strtolower($borrower))) {
+                        return true;
+                    }
+                }
+            }
+            return false;
         });
-        return !$data->isEmpty() ? $data : "No borrower found name " . $borrowerName;
+        return !$data->isEmpty() ? array_values($data->toArray()) : "No borrower found. ";
     }
     public function borrowerPhoto()
     {

@@ -20,7 +20,7 @@ class Borrower extends Authenticatable
     protected $table = 'borrower_info';
     protected $primaryKey = 'borrower_id';
     public static $snakeAttributes = false;
-    protected $appends = ['age','fullname'];
+    protected $appends = ['age', 'fullname'];
 
     protected $fillable = [
         'borrower_id',
@@ -58,7 +58,12 @@ class Borrower extends Authenticatable
     }
     public function getAgeAttribute()
     {
-        return Carbon::parse($this->attributes['birthdate'])->age;
+        return $this->getAge();
+    }
+
+    public function getAge()
+    {
+        return Carbon::parse($this->birthdate)->age;
     }
 
     public function generateDefaultPassword()
