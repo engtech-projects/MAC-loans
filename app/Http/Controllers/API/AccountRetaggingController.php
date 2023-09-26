@@ -19,14 +19,13 @@ class AccountRetaggingController extends BaseController
     }
     public function index(Request $request)
     {
-
         $branchId = $request->branch_id;
-        $accounts = $this->account->getRetaggingList($branchId);
+        $accounts = $this->account->getRetaggingList($request->input());
         return $this->sendResponse($accounts, "Account fetched");
     }
 
 
-    public  function update(LoanAccount $account, $id, Request $request)
+    public function update(LoanAccount $account, $id, Request $request)
     {
         $collection = $account->accountRetaggingUpdate($id, $request->input());
         return $this->sendResponse($collection, "Account Updated");

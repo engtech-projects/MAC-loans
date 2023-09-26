@@ -20,7 +20,7 @@ class Borrower extends Authenticatable
     protected $table = 'borrower_info';
     protected $primaryKey = 'borrower_id';
     public static $snakeAttributes = false;
-    protected $appends = ['age'];
+    protected $appends = ['age','fullname'];
 
     protected $fillable = [
         'borrower_id',
@@ -51,11 +51,13 @@ class Borrower extends Authenticatable
         'password',
     ];
 
+
     public function generateDefaultUsername()
     {
         return $this->firstname . $this->lastname;
     }
-    public function getAgeAttribute() {
+    public function getAgeAttribute()
+    {
         return Carbon::parse($this->attributes['birthdate'])->age;
     }
 
@@ -67,6 +69,11 @@ class Borrower extends Authenticatable
     public function generateBorrowerNum()
     {
         return str_pad($this->borrower_id, 7, '0', STR_PAD_LEFT);
+    }
+
+    public function getFullnameAttribute()
+    {
+        return $this->fullname();
     }
 
     public function fullname()
@@ -186,7 +193,8 @@ class Borrower extends Authenticatable
         return $this->hasMany(OutstandingObligations::class, 'borrower_id');
     }
 
-    public function accounts() {
+    public function accounts()
+    {
         return $this->hasMany(LoanAccount::class, 'loan_account_id');
     }
 

@@ -97,7 +97,7 @@ class LoanAccount extends Model
         $accountNumber = $num->pluck('account_num');
         if (count($accountNumber) > 0) {
             $series = explode('-', $accountNumber);
-            $identifier = (int)$series[2] + 1;
+            $identifier = (int) $series[2] + 1;
         } else {
             $identifier = 1;
         }
@@ -170,17 +170,45 @@ class LoanAccount extends Model
         return $this->query()->select($columns)->without($without);
     }
 
-    public function getRetaggingList($branchId)
+    public function getRetaggingList($request)
     {
-        $branch = Branch::query()->findOrFail($branchId);
-        return $this->getAccounts($branch->branch_code, ['loan_account_id', 'loan_amount', 'product_id', 'borrower_id', 'center_id', 'branch_code', 'date_release', 'account_num', 'ao_id', 'loan_status'], ['payments', 'borrower', 'documents'])
-            ->with(['accountOfficer' =>
-            function ($query) {
-                $query->select('ao_id', 'name')->without('branch', 'branch_registered');
-            }, 'borrower:borrower_id,birthdate,firstname,lastname,middlename', 'branch:branch_id,branch_code', 'product:product_id,product_name', 'center:center_id,center'])
+        $branch = Branch::query()->findOrFail($request["branch_id"]);
+        $productId = $request["product"] ?? null;
+        $accountOfficerId = $request["account_officer"] ?? null;
+        $loanStatus = $request["payment_status"] ?? null;
+        $borrowerName = $request["borrower_name"] ?? null;
+        $data = $this->getAccounts($branch->branch_code, ['loan_account_id', 'payment_status', 'loan_status', 'loan_amount', 'product_id', 'borrower_id', 'center_id', 'branch_code', 'date_release', 'account_num', 'ao_id', 'loan_status'], ['payments', 'borrower', 'documents'])
+            ->with([
+                'accountOfficer' =>
+                    function ($query) {
+                        $query->select('ao_id', 'name')->without('branch', 'branch_registered');
+                    },
+                'borrower' =>
+                    function ($query) {
+                        $query->select('borrower_id', 'birthdate', 'firstname', 'lastname', 'middlename');
+                    },
+                'branch:branch_id,branch_code',
+                'product:product_id,product_name',
+                'center:center_id,center'
+            ])
+            ->when($productId, function ($query, $productId) {
+                $query->where('product_id', $productId);
+            })
+            ->when($accountOfficerId, function ($query, $accountOfficerId) {
+                $query->where('ao_id', $accountOfficerId);
+            })
+            ->when($loanStatus, function ($query, $loanStatus) {
+                $query->where('payment_status', $loanStatus);
+            })
             ->branchCode($branch->branch_code)
             ->released()
             ->get();
+
+        $collection = collect($data);
+        $data = $collection->filter(function ($item) use ($borrowerName) {
+            return str_contains(strtolower($item->borrower->fullname), strtolower($borrowerName));
+        });
+        return !$data->isEmpty() ? $data : "No borrower found name " . $borrowerName;
     }
     public function borrowerPhoto()
     {
@@ -410,7 +438,7 @@ class LoanAccount extends Model
 
     public function getAmortization()
     {
-        $data = (object)[];
+        $data = (object) [];
         $tranDate = new EndTransaction();
         $transactionDateNow = $tranDate->getTransactionDate($this->branch->branch_id)->date_end;
         $data->current_amortization = $this->currentAmortization($this->loan_account_id, $transactionDateNow);
@@ -518,7 +546,7 @@ class LoanAccount extends Model
         $loan_details->current_amortization = $this->getCurrentAmortization();
         $loan_details->remaining_balance = $this->remainingBalance();
         $loan_details->amortization = $this->amortization();
-        $loan_details->loan_status_view =  $this->getStatusView();
+        $loan_details->loan_status_view = $this->getStatusView();
         return $loan_details;
     }
 
@@ -777,7 +805,7 @@ class LoanAccount extends Model
                         $totalInterest += $payment->short_interest;
                         $totalPdi += $payment->short_pdi;
                         $totalPenalty += $payment->short_penalty;
-                        $isNotAdvancePayment = (bool)$payment->total_payable;
+                        $isNotAdvancePayment = (bool) $payment->total_payable;
                         break;
                     }
                     if (!$isNotAdvancePayment) { // if advanced payment only add principal and interest
@@ -804,7 +832,7 @@ class LoanAccount extends Model
                 $missedAmortizations = Amortization::whereIn('id', $missed)->orderBy('id', 'ASC')->get();
                 foreach ($missedAmortizations as $key => $missedAmortization) {
 
-                    if ($balance >=  $missedAmortization->principal) {
+                    if ($balance >= $missedAmortization->principal) {
                         $balance -= $missedAmortization->principal;
                         $pos = array_search($missedAmortization->id, $missed);
                         unset($missed[$pos]);
@@ -1157,7 +1185,7 @@ class LoanAccount extends Model
                         $totalInterest += $payment->short_interest;
                         $pdi += $payment->short_pdi;
                         $penalty += $payment->short_penalty;
-                        $isNotAdvancePayment = (bool)$payment->total_payable;
+                        $isNotAdvancePayment = (bool) $payment->total_payable;
                         break;
                     }
                     if (!$isNotAdvancePayment) { // if advanced payment only add principal and interest
@@ -1180,7 +1208,7 @@ class LoanAccount extends Model
                     $missedAmortizations = Amortization::whereIn('id', $missed)->orderBy('id', 'ASC')->get();
 
                     foreach ($missedAmortizations as $key => $missedAmortization) {
-                        if ($balance >=  $missedAmortization->principal) {
+                        if ($balance >= $missedAmortization->principal) {
                             $balance -= $missedAmortization->principal;
                             $pos = array_search($missedAmortization->id, $ids);
                             unset($missed[$pos]);
@@ -1203,7 +1231,7 @@ class LoanAccount extends Model
 
             } */
 
-            if ($dayDiff > 10  && $advPrincipal < $amortization->principal) {
+            if ($dayDiff > 10 && $advPrincipal < $amortization->principal) {
                 $penaltyMissed = array_merge($missed, [$amortization->id]);
             }
 
@@ -1230,7 +1258,7 @@ class LoanAccount extends Model
     {
         $tranDate = new EndTransaction();
         $transactionDateNow = $tranDate->getTransactionDate($this->branch->branch_id)->date_end;
-        $transaction_date =  Carbon::createFromFormat("Y-m-d", $transactionDateNow)->startOfDay();
+        $transaction_date = Carbon::createFromFormat("Y-m-d", $transactionDateNow)->startOfDay();
         $due_date = $this->due_date != null ? Carbon::createFromFormat("Y-m-d", $this->due_date)->startOfDay() : null;
         $days_late = $due_date != null ? $due_date->diffInDays($transaction_date, false) : 0;
         $account = LoanAccount::where(['loan_account_id' => $this->loan_account_id])->first();
@@ -1304,10 +1332,10 @@ class LoanAccount extends Model
         // calculate balance
 
         $accountSummary['principal']['balance'] = $accountSummary['principal']['debit'] - $accountSummary['principal']['credit'];
-        $accountSummary['interest']['balance'] =  $accountSummary['interest']['debit'] - $accountSummary['interest']['credit'];
-        $accountSummary['penalty']['balance'] =  $accountSummary['penalty']['debit'] - $accountSummary['penalty']['credit'];
-        $accountSummary['pdi']['balance'] =  $accountSummary['pdi']['debit'] - $accountSummary['pdi']['credit'];
-        $accountSummary['rebates']['balance'] =  $accountSummary['rebates']['debit'] - $accountSummary['rebates']['credit'];
+        $accountSummary['interest']['balance'] = $accountSummary['interest']['debit'] - $accountSummary['interest']['credit'];
+        $accountSummary['penalty']['balance'] = $accountSummary['penalty']['debit'] - $accountSummary['penalty']['credit'];
+        $accountSummary['pdi']['balance'] = $accountSummary['pdi']['debit'] - $accountSummary['pdi']['credit'];
+        $accountSummary['rebates']['balance'] = $accountSummary['rebates']['debit'] - $accountSummary['rebates']['credit'];
 
         $accountSummary['memo']['account'] = $account->account_num;
         $accountSummary['memo']['balance'] = $accountSummary['principal']['balance'] + $accountSummary['interest']['balance'] + $accountSummary['rebates']['balance'];
@@ -1412,12 +1440,12 @@ class LoanAccount extends Model
     {
         $loanAccount = LoanAccount::find($this->loan_account_id);
         $loanAccount->update([
-            'account_num'   =>  $accountNum
+            'account_num' => $accountNum
         ]);
         $loanAccount->save();
         if ($loanAccount) {
             Document::where('loan_account_id', $this->loan_account_id)->update([
-                'promissory_number'   =>      $accountNum
+                'promissory_number' => $accountNum
             ]);
         }
     }
@@ -1441,10 +1469,12 @@ class LoanAccount extends Model
     {
         $account = LoanAccount::where('loan_account_id', $id)
             ->without(['payments', 'documents', 'borrower', 'branch', 'product', 'accountOfficer'])
-            ->with(['pendingPayments' => function ($query) use ($id) {
-                $query->where('status', Payment::STATUS_OPEN)
-                    ->where('loan_account_id', $id)->first();
-            }])->find($id);
+            ->with([
+                'pendingPayments' => function ($query) use ($id) {
+                    $query->where('status', Payment::STATUS_OPEN)
+                        ->where('loan_account_id', $id)->first();
+                }
+            ])->find($id);
         return $account;
     }
 
