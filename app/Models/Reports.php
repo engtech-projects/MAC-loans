@@ -685,6 +685,8 @@ class Reports extends Model
     {
 
         $branch = Branch::find($filters['branch_id']);
+        $transDate = new EndTransaction();
+        $transactionDateNow = $transDate->getTransactionDate($branch->branch_id)->date_end;
 
         $accounts = LoanAccount::join('center', 'center.center_id', '=', 'loan_accounts.center_id');
 
@@ -704,32 +706,30 @@ class Reports extends Model
         $data = [];
 
         if (count($accounts) > 0) {
-
+            $amortization = new Amortization();
             foreach ($accounts as $key => $value) {
-
-                $loanAccount = LoanAccount::find($value['loan_account_id']);
-                $currentAmortization = $loanAccount->getCurrentAmortization();
-
-                $borrower = Borrower::find($value['borrower_id']);
+                $currentAmortization = $value->getCurrentAmortization();
+                $amortizationSchedule = $amortization->getAmortizationDateByPaymentMode($value->payment_mode, $currentAmortization->amortization_date);
+                $isAmortizationDue = $amortization->isAmortizationDue($transactionDateNow, $amortizationSchedule);
                 $data[$key]['center'] = $value->center_id;
                 $data[$key]['account_officer'] = $value->ao_id;
-                $data[$key]['client'] = $borrower->fullname();
+                $data[$key]['client'] = $value->borrower->fullname();
                 $data[$key]['date_loan'] = $value['date_release'];
                 $data[$key]['maturity_date'] = $value['due_date'];
                 $data[$key]['amount_loan'] = $value['loan_amount'];
-                $data[$key]['outstanding_balance'] = $loanAccount->remainingBalance()["memo"]["balance"];
-                $data[$key]['principal_balance'] = $loanAccount->remainingBalance()["principal"]["balance"];
-                $data[$key]['delinquent'] = LoanAccount::getPaymentStatus($loanAccount->loan_account_id) === 'Delinquent' ? $currentAmortization['delinquent']['principal'] + $currentAmortization['delinquent']['interest'] : 0;
+                $data[$key]['outstanding_balance'] = $value->remainingBalance()["memo"]["balance"];
+                $data[$key]['principal_balance'] = $value->remainingBalance()["principal"]["balance"];
+                $data[$key]['delinquent'] = LoanAccount::getPaymentStatus($value->loan_account_id) === 'Delinquent' ? $currentAmortization['delinquent']['principal'] + $currentAmortization['delinquent']['interest'] : 0;
                 $data[$key]['penalty'] = $currentAmortization->penalty + $currentAmortization->pdi;
-                $data[$key]['amount_due'] = $currentAmortization->total + ($currentAmortization->penalty + $currentAmortization->pdi);
+                $data[$key]['amount_due'] = !$isAmortizationDue && $currentAmortization->status === "paid" ? 0 : $currentAmortization->total + ($currentAmortization->penalty + $currentAmortization->pdi);
                 $data[$key]['weekly_amortization'] = $value->amortization()['total'];
-                $data[$key]['contact'] = $borrower->contact_number;
-                $data[$key]['address'] = $borrower->address;
+                $data[$key]['contact'] = $value->borrower->contact_number;
+                $data[$key]['address'] = $value->borrower->address;
             }
         }
         return $d = [
 
-            'name' =>  '',
+            'name' => '',
             'data' => $data,
 
         ];
@@ -834,7 +834,7 @@ class Reports extends Model
             if (isset($filters["branch_id"]) && $filters["branch_id"]) {
 
 
-                $accOfficers =  AccountOfficer::join('account_officer_branch', 'account_officer.ao_id', '=', 'account_officer_branch.ao_id')
+                $accOfficers = AccountOfficer::join('account_officer_branch', 'account_officer.ao_id', '=', 'account_officer_branch.ao_id')
                     ->join('branch', 'account_officer_branch.branch_id', '=', 'branch.branch_id')
                     ->where([
                         'account_officer.status' => AccountOfficer::STATUS_ACTIVE,
@@ -916,7 +916,7 @@ class Reports extends Model
                         if ($tempProd["all"]["count"] == 0) {
                             continue;
                         } else {
-                            $tempProd["delinquent"]["rate"] = $tempProd["all"]["amount"] == 0 ? 0 :  round((($tempProd["delinquent"]["amount"] / $tempProd["all"]["amount"]) * 100), 2); //round((($tempProd["delinquent"]["amount"] / $tempProd["all"]["amount"])*100));
+                            $tempProd["delinquent"]["rate"] = $tempProd["all"]["amount"] == 0 ? 0 : round((($tempProd["delinquent"]["amount"] / $tempProd["all"]["amount"]) * 100), 2); //round((($tempProd["delinquent"]["amount"] / $tempProd["all"]["amount"])*100));
                             $tempProd["pastdue"]["rate"] = $tempProd["all"]["amount"] == 0 ? 0 : round((($tempProd["pastdue"]["amount"] / $tempProd["all"]["amount"]) * 100), 2); //round((($tempProd["delinquent"]["amount"] / $tempProd["all"]["amount"])*100));
                             $accOfficers[$aoKey]["products"][] = $tempProd;
                         }
@@ -941,7 +941,7 @@ class Reports extends Model
                 $accounts = $this->getLoanAccounts($filtersCopy);
                 $tempData = [
                     "ao_id" => $aoValue["ao_id"],
-                    "ao_name" =>  $aoValue['name'],
+                    "ao_name" => $aoValue['name'],
                     "num_of_accounts" => 0,
                     "principal_balance" => 0,
                     /* "pastdue" => 0,
@@ -1019,13 +1019,13 @@ class Reports extends Model
         $amortization = null;
         if ($currentAmort) {
             $amortization = [
-                'current_principal'         =>      $currentAmort["principal"],
-                'adv_principal'             =>      $currentAmort["advance_principal"],
-                'short_principal'           =>      $currentAmort["short_principal"],
-                'amort_interest'            =>      $currentAmort["interest"],
-                'adv_interest'              =>      $currentAmort["advance_interest"],
-                'short_interest'            =>      $currentAmort["short_interest"],
-                'amount_due'                =>      ceil(($currentAmort["principal"] + $currentAmort["short_principal"] - $currentAmort["advance_principal"]) + ($currentAmort["interest"] + $currentAmort["short_interest"] - $currentAmort["advance_interest"]) + ($remainBal["pdi"]["balance"] + $remainBal["rebates"]["balance"]))
+                'current_principal' => $currentAmort["principal"],
+                'adv_principal' => $currentAmort["advance_principal"],
+                'short_principal' => $currentAmort["short_principal"],
+                'amort_interest' => $currentAmort["interest"],
+                'adv_interest' => $currentAmort["advance_interest"],
+                'short_interest' => $currentAmort["short_interest"],
+                'amount_due' => ceil(($currentAmort["principal"] + $currentAmort["short_principal"] - $currentAmort["advance_principal"]) + ($currentAmort["interest"] + $currentAmort["short_interest"] - $currentAmort["advance_interest"]) + ($remainBal["pdi"]["balance"] + $remainBal["rebates"]["balance"]))
             ];
         }
 
@@ -1040,7 +1040,7 @@ class Reports extends Model
     public function branchLoanListingReport($filters = [])
     {
         /* $accOfficers = AccountOfficer::where(["status"=> AccountOfficer::STATUS_ACTIVE]); */
-        $accOfficers =  AccountOfficer::join('account_officer_branch', 'account_officer.ao_id', '=', 'account_officer_branch.ao_id')
+        $accOfficers = AccountOfficer::join('account_officer_branch', 'account_officer.ao_id', '=', 'account_officer_branch.ao_id')
             ->join('branch', 'account_officer_branch.branch_id', '=', 'branch.branch_id')
             ->where([
                 'account_officer.status' => AccountOfficer::STATUS_ACTIVE,
@@ -1142,7 +1142,8 @@ class Reports extends Model
                                     "principal_balance" => $principalBal,
                                     "interest_balance" => $interestBal - $reb,
                                     "outstanding_balance" => $oBalance,
-                                    "amortization" => $principal + $interest, //$account->amortization()["principal"] + $account->amortization()["interest"],
+                                    "amortization" => $principal + $interest,
+                                    //$account->amortization()["principal"] + $account->amortization()["interest"],
                                     "amort_dist" => ['principal' => $principal, 'interest' => $interest],
                                     // "current_amort" => $current_amort,
                                     "type" => $account->payment_mode,
@@ -1353,7 +1354,9 @@ class Reports extends Model
             ->whereDate('payment.cancelled_date', '<=', $filters['date_to'])
             ->orderBy('payment.transaction_date', 'ASC')
             ->get([
-                'payment.*', 'loan_accounts.borrower_id', 'loan_accounts.account_num',
+                'payment.*',
+                'loan_accounts.borrower_id',
+                'loan_accounts.account_num',
             ]);
 
         $data = [];
@@ -1393,8 +1396,8 @@ class Reports extends Model
             $centers = Center::where(["center.day_sched" => $weekDay, "status" => "active"]) // center daysched  or use center sched in loan account?
                 ->orderBy('center.center')->get();
             foreach ($centers as $centerId => $centerVal) {
-                $data[$weekDay][$centerVal->center]["all"]["account_officer"]  = "test_data_api_result_ACCOUNT_OFFICER";
-                $data[$weekDay][$centerVal->center]["all"]["area_of_operation"]  = $centerVal->area;
+                $data[$weekDay][$centerVal->center]["all"]["account_officer"] = "test_data_api_result_ACCOUNT_OFFICER";
+                $data[$weekDay][$centerVal->center]["all"]["area_of_operation"] = $centerVal->area;
                 $no_of_clients = LoanAccount::join("product", 'loan_accounts.product_id', '=', 'product.product_id')
                     ->join("branch", "branch.branch_code", "loan_accounts.branch_code")
                     ->whereIn(
@@ -1516,7 +1519,7 @@ class Reports extends Model
             ->where(["payment.branch_id" => $filters["branch_id"], "payment.status" => "paid"])
             ->whereDate('payment.transaction_date', '>=', $filters['date_from'])
             ->whereDate('payment.transaction_date', '<=', $filters['date_to'])
-            ->groupBy("borrower_info.firstname", "borrower_info.middlename", "borrower_info.lastname",)
+            ->groupBy("borrower_info.firstname", "borrower_info.middlename", "borrower_info.lastname", )
             ->select([
                 // DB::raw("'".$filters["date_to"]."' as TAX_MONTH"),
                 // DB::raw("'' as SEQ_NO"),
