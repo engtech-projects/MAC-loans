@@ -65,6 +65,11 @@ class Payment extends Model
         'rebates' => 'MEM'
     ];
 
+    public function scopePaid($query)
+    {
+        return $query->where('status', 'paid');
+    }
+
     public function account()
     {
         return $this->belongsTo(LoanAccount::class, 'loan_account_id');

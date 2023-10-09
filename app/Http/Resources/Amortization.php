@@ -15,14 +15,14 @@ class Amortization extends JsonResource
     public function toArray($request)
     {
         return [
-            'loan_account_id' => $this->loan_account_id, 
-            'amortization_date' => $this->amortization_date, 
+            'loan_account_id' => $this->loan_account_id,
+            'amortization_date' => $this->amortization_date,
             'principal' => $this->principal,
-            'interest' => $this->interest, 
-            'total' => $this->total, 
-            'principal_balance' => $this->principal_balance, 
-            'interest_balance' => $this->interest_balance, 
-            'status' => $this->status,        
+            'interest' => $this->interest,
+            'total' => $this->total,
+            'principal_balance' => $this->principal_balance,
+            'interest_balance' => $this->interest_balance,
+            'status' => $this->status,
         ];
     }
 }
