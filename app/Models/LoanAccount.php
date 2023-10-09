@@ -66,6 +66,10 @@ class LoanAccount extends Model
         'loan_status',
     ];
 
+    protected $attributes = [
+        'payment_status' => 'Current',
+    ];
+
     const STATUS_RELEASED = "released";
     const STATUS_PENDING = "pending";
     const PAYMENT_PAID = "Paid";
@@ -113,14 +117,21 @@ class LoanAccount extends Model
         return $query->where('center_id', $value);
     }
 
-    public function scopeRelease($query)
-    {
-        return $query->where('status', self::STATUS_RELEASE);
-    }
-
     public function scopeAccountId($query)
     {
         return $query->firstWhere('loan_account_id', $this->loan_account_id);
+    }
+    public function scopeDelinquent($query)
+    {
+        return $query->where('payment_status', self::PAYMENT_DELINQUENT);
+    }
+    public function scopePastdue($query)
+    {
+        return $query->where('loan_status', self::LOAN_PASTDUE);
+    }
+    public function scopeReleased($query)
+    {
+        return $query->where('status', self::STATUS_RELEASED);
     }
 
 
@@ -1403,9 +1414,106 @@ class LoanAccount extends Model
     {
         $accounts = LoanAccount::where('branch_code', '=', $branch->branch_code)
             ->where('loan_status', '!=', LoanAccount::LOAN_PAID)
-            ->without('documents')
-            ->without('payments')
+            ->without(['documents', 'payments'])
             ->get();
         return $accounts;
+    }
+
+    public function getLoanAccountStatusByBranch($date, $status)
+    {
+
+        $date = $date ? Carbon::createFromFormat('Y-m-d', $date) : null;
+        $months = getMonths();
+        $accounts = self::query()
+            ->selectRaw('YEAR(date_release) as year,
+            branch_code as branch_code,MONTH(date_release) as month,
+            COUNT(*) AS no_of_accounts')
+            ->released()
+            ->without(['documents', 'borrower', 'center', 'product', 'accountOfficer', 'payments'])
+            ->groupBy('year', 'month', 'branch_code')
+            ->when($date !== null, function ($query) use ($date) {
+                $query->whereMonth('date_release', $date->month)
+                    ->whereYear('date_release', $date->year);
+            })
+            ->orderBy('year')
+            ->orderBy('month')
+            ->get();
+
+        if ($status === "Delinquent") {
+            $accounts = $accounts->delinquent();
+        }
+        if ($status === "Pastdue") {
+            $accounts = $accounts->pastDue();
+        }
+
+        $groupAccounts = [];
+
+        foreach ($accounts as $account) {
+            $year = $account->year;
+            $branch = $account->branch->branch_name;
+            $month = $account->month;
+            $monthName = $months[$month - 1];
+            if (!isset($groupAccounts[$branch][$year])) {
+                $groupAccounts[$branch][$year] = array_fill_keys($months, [
+                    'no_of_accounts' => 0
+                ]);
+            }
+
+            $groupAccounts[$branch][$year][$monthName] = [
+                'no_of_accounts' => $account->no_of_accounts
+            ];
+        }
+        return $groupAccounts;
+    }
+
+    public function getLoanAccountReleases($date)
+    {
+        $date = $date ? Carbon::createFromFormat('Y-m-d', $date) : null;
+        $months = getMonths();
+
+        $accountReleases = self::query()
+            ->selectRaw('YEAR(date_release) as year,
+            branch_code as branch_code,MONTH(date_release) as month,
+            COUNT(*) AS no_of_accounts,
+            SUM(net_proceeds) as total_net_proceeds')
+            ->released()
+            ->without(['documents', 'borrower', 'center', 'product', 'accountOfficer', 'payments'])
+            ->when($date !== null, function ($query) use ($date) {
+                $query->whereMonth('date_release', $date->month)
+                    ->whereYear('date_release', $date->year);
+            })
+            ->groupBy('year', 'month', 'branch_code')
+            ->orderBy('year','DESC')
+            ->orderBy('month','DESC')
+            ->get();
+
+        $groupReleasedAccounts = [];
+
+        foreach ($accountReleases as $account) {
+            $year = $account->year;
+            $branch = $account->branch->branch_name;
+            $month = $account->month;
+            $monthName = $months[$month - 1];
+            if (!isset($groupReleasedAccounts[$branch][$year])) {
+                $groupReleasedAccounts[$branch][$year] = array_fill_keys($months, [
+                    'no_of_accounts' => 0,
+                    'total_net_proceeds' => 0
+                ]);
+            }
+
+            $groupReleasedAccounts[$branch][$year][$monthName] = [
+                'no_of_accounts' => $account->no_of_accounts,
+                'total_net_proceeds' => $account->total_net_proceeds
+            ];
+        }
+        return $groupReleasedAccounts;
+    }
+
+    public function getBranchPortFolio($date)
+    {
+
+        $performanceReport = new PerformanceReport();
+        $portfolio = $performanceReport->getPerformancePortfolio($date);
+        return $portfolio;
     }
 }

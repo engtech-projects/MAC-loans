@@ -64,7 +64,7 @@
 							</thead>
 							<tbody>
 								<tr v-if="!accounts.length"><td><i>No records found.</i></td></tr>
-								<tr v-else v-for="a,i in accounts" :key="i">
+								<tr v-else v-for="a,i in accounts.sort((a, b) => a.name.localeCompare(b.name))" :key="i">
 									<td>{{a.account_num}}</td>
 									<td>{{a.name}}</td>
 									<td>{{dateToMDY(new Date(a.birthdate))}}</td>

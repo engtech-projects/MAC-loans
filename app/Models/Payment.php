@@ -2,9 +2,11 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class Payment extends Model
@@ -63,7 +65,6 @@ class Payment extends Model
         'rebates' => 'MEM'
     ];
 
-
     public function scopePaid($query)
     {
         return $query->where('status', 'paid');
@@ -77,9 +78,58 @@ class Payment extends Model
     {
         return $this->belongsTo(LoanAccount::class, 'loan_account_id');
     }
-
-    public function getTotalPayment()
+    public function branch()
     {
+        return $this->belongsTo(Branch::class, 'branch_id');
+    }
+
+
+    public function getCollectionPaymentByBranch($date)
+    {
+        $date = $date ? Carbon::createFromFormat('Y-m-d', $date) : null;
+        $months = getMonths();
+
+
+        $paymentsYearly = Branch::query()->select('branch_id', 'branch_name')
+            ->with('payments', function ($query) use ($date) {
+                $query->when($date, function ($query, $date) {
+                    $query->where('status', 'paid')
+                        ->whereYear('transaction_date', $date->year)
+                        ->whereMonth('transaction_date', $date->month);
+                });
+                $query->selectRaw(
+                    'branch_id,
+                    YEAR(transaction_date) as year,
+                    MONTH(transaction_date) as month,
+                    SUM(amount_applied) as total_collection,
+                    count(distinct loan_account_id) as no_of_accounts',
+                )
+                    ->groupBy('year', 'month', 'branch_id')
+                    ->orderBy('year', 'DESC')
+                    ->orderBy('month', 'DESC');
+            })->get();
+        $groupPayments = [];
+        /* dd($paymentsYearly->toArray()); */
+        foreach ($paymentsYearly as $branch) {
+            $branchName = $branch->branch_name;
+            foreach ($branch->payments as $payment) {
+                $year = $payment->year;
+
+                $month = $payment->month;
+                $monthName = $months[$month - 1];
+                if (!isset($groupPayments[$branchName][$year])) {
+                    $groupPayments[$branchName][$year] = array_fill_keys($months, [
+                        'no_of_accounts' => 0,
+                        'total_collection' => 0
+                    ]);
+                }
+                $groupPayments[$branchName][$year][$monthName] = [
+                    'no_of_accounts' => $payment->no_of_accounts,
+                    'total_collection' => $payment->total_collection
+                ];
+            }
+        }
+        return $groupPayments;
     }
 
     public function addPayment(Request $request)

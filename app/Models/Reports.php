@@ -19,7 +19,6 @@ class Reports extends Model
 
     public function getLoanAccounts($filters = [], $without = [])
     {
-
         $loanAccount = Loanaccount::where(['loan_accounts.status' => 'released']);
 
         if (isset($filters['branch_id']) && $filters['branch_id']) {
@@ -66,9 +65,9 @@ class Reports extends Model
             $loanAccount->where(['loan_accounts.ao_id' => $filters['account_officer']]);
         }
 
-        if (isset($filters['loan_status']) && $filters['loan_status']) {
+        /* if (isset($filters['loan_status']) && $filters['loan_status']) {
             $loanAccount->where(['loan_accounts.loan_status' => $filters['loan_status']]);
-        }
+        } */
 
         if (isset($filters['payment_status']) && $filters['payment_status']) {
             $loanAccount->where(['loan_accounts.payment_status' => $filters['payment_status']]);
@@ -78,37 +77,26 @@ class Reports extends Model
             $loanAccount->where(['loan_accounts.type' => $filters['type']]);
         }
 
+        if (isset($filters["report"]) && $filters["report"] === "status_summary") {
+            if (isset($filters["loan_status"]) && $filters["loan_status"] === LoanAccount::PAYMENT_CURRENT || $filters["loan_status"] === LoanAccount::PAYMENT_DELINQUENT) {
+                return $loanAccount->where(
+                    "payment_status",
+                    $filters["loan_status"]
+                )->where('loan_status', LoanAccount::LOAN_ONGOING)->get();
+            } else {
+                return $loanAccount->where(['loan_accounts.loan_status' => $filters['loan_status']])->get();
+            }
+        } else {
+            if (isset($filters["loan_status"]) && $filters["loan_status"]) {
+                $loanAccount->where(['loan_accounts.loan_status' => $filters['loan_status']]);
+            }
+        }
+        if (isset($filters["report"]) && $filters["report"] === "release") {
+            return $loanAccount->without('documents', 'payments')->get();
+        }
 
         return $loanAccount->whereIn('loan_status', [LoanAccount::LOAN_ONGOING, LoanAccount::LOAN_PASTDUE, LoanAccount::LOAN_RESTRUCTED, LoanAccount::LOAN_RES_WO_PDI])
-            ->without($without)->get([
-                'loan_accounts.loan_account_id',
-                'loan_accounts.account_num',
-                'loan_accounts.date_release',
-                'loan_accounts.terms',
-                'loan_accounts.loan_amount',
-                'loan_accounts.interest_amount',
-                'loan_accounts.document_stamp',
-                'loan_accounts.filing_fee',
-                'loan_accounts.insurance',
-                'loan_accounts.notarial_fee',
-                'loan_accounts.prepaid_interest',
-                'loan_accounts.affidavit_fee',
-                'loan_accounts.total_deduction',
-                'loan_accounts.no_of_installment',
-                'loan_accounts.net_proceeds',
-                'loan_accounts.borrower_id',
-                'loan_accounts.product_id',
-                'loan_accounts.ao_id',
-                'loan_accounts.center_id',
-                'loan_accounts.branch_code',
-                'loan_accounts.release_type',
-                'loan_accounts.cycle_no',
-                'loan_accounts.memo',
-                'loan_accounts.due_date',
-                'loan_accounts.payment_mode',
-                'loan_accounts.payment_status',
-                'loan_accounts.loan_status',
-            ]);
+            ->without(['payments', 'documents', 'branch'])->get();
     }
 
     public function getPayments($filters = [])
@@ -279,7 +267,7 @@ class Reports extends Model
 
                             $data[$key]['payment'][$type]['principal'] += $payment->principal;
                             $data[$key]['payment'][$type]['interest'] += $payment->interest;
-                            $data[$key]['payment'][$type]['pdi'] += $payment->pdi;
+                            $data[$key]['payment'][$type]['pdi'] += ($payment->pdi_approval_no) ? 0 : $payment->pdi;
                             $data[$key]['payment'][$type]['over'] += $payment->over_payment;
                             $data[$key]['payment'][$type]['discount'] += $payment->rebates;
                             $data[$key]['payment'][$type]['total_payment'] += $payment->amount_applied - $payment->rebates;
@@ -305,6 +293,7 @@ class Reports extends Model
         $data = [];
         $accounts = $this->getLoanAccounts($filters);
         $payments = $this->getPayments($filters);
+
 
         foreach ($accounts as $account) {
 
@@ -346,7 +335,7 @@ class Reports extends Model
                 'payment_type' => $payment->payment_type,
                 'principal' => $payment->principal,
                 'interest' => $payment->interest,
-                'pdi' => $payment->pdi,
+                'pdi' => ($payment->pdi_approval_no) ? 0 : $payment->pdi,
                 'over' => $payment->over_payment,
                 'discount' => $payment->rebates,
                 'total_payment' => $payment->amount_applied - $payment->rebates,
@@ -632,7 +621,7 @@ class Reports extends Model
 
                             $data[$key]['payment'][$type]['principal'] += $payment->principal;
                             $data[$key]['payment'][$type]['interest'] += $payment->interest;
-                            $data[$key]['payment'][$type]['pdi'] += $payment->pdi;
+                            $data[$key]['payment'][$type]['pdi'] += ($payment->pdi_approval_no) ? 0 : $payment->pdi;
                             $data[$key]['payment'][$type]['over'] += $payment->over_payment;
                             $data[$key]['payment'][$type]['discount'] += $payment->rebates;
                             $data[$key]['payment'][$type]['total_payment'] += $payment->amount_applied - $payment->rebates;
@@ -1043,6 +1032,11 @@ class Reports extends Model
         return $amortization;
     }
 
+    public function setLoanAccountsByFilter($filters = [])
+    {
+        $accounts = $this->getLoanAccounts($filters);
+    }
+
     public function branchLoanListingReport($filters = [])
     {
         /* $accOfficers = AccountOfficer::where(["status"=> AccountOfficer::STATUS_ACTIVE]); */
@@ -1051,7 +1045,6 @@ class Reports extends Model
             ->where([
                 'account_officer.status' => AccountOfficer::STATUS_ACTIVE,
             ]);
-
         if (isset($filters["branch_id"]) && $filters["branch_id"]) {
             $accOfficers = $accOfficers->where(["branch.branch_id" => $filters["branch_id"]]);
         }
@@ -1074,9 +1067,6 @@ class Reports extends Model
         $products = $products->select('product_id', 'product_code', 'product_name')->get()->toArray();
 
         // $accounts = $this->getLoanAccounts($filters);
-        $count = 0;
-        $z = 0;
-
         foreach ($accOfficers as $aoKey => $aoValue) {
             foreach ($products as $prodKey => $prodValue) {
                 $accOfficers[$aoKey]["products"][$prodValue["product_name"]] = $prodValue;
@@ -1087,9 +1077,9 @@ class Reports extends Model
                         'account_officer' => $aoValue["ao_id"],
                         'product' => $prodValue["product_id"],
                         'center' => $centVal["center_id"],
-                        'branch_id' => $filters["branch_id"]
-                    ], [
-                        'documents', 'borrower', 'center', 'branch', 'product', 'accountOfficer', 'payments'
+                        'branch_id' => $filters["branch_id"],
+                        'loan_status' => $filters["loan_status"],
+                        'report' => $filters["report"]
                     ]);
 
                     if (count($accounts) > 0) {
@@ -1463,6 +1453,24 @@ class Reports extends Model
         return $data;
     }
 
+
+
+    public function performanceReport($date)
+    {
+        $payments = new Payment();
+        $accounts = new LoanAccount();
+        $collection = $payments->getCollectionPaymentByBranch($date);
+        $branchPortfolio = $accounts->getBranchPortfolio($date);
+        $accountReleases = $accounts->getLoanAccountReleases($date);
+        $data = [
+            "portfolio" => $branchPortfolio,
+            "collection" => $collection,
+            "releases" => $accountReleases
+        ];
+
+        return $data;
+    }
+
     public function microIndividual($filters = [], $weeksAndDays, $monthStart, $monthEnd)
     {
         $centers = Center::where(["status" => "active"])->get();
@@ -1518,11 +1526,15 @@ class Reports extends Model
                 DB::raw("'' as ADDRESS"),
                 DB::raw("'' as ADDRESS2"),
                 DB::raw("SUM(payment.interest+payment.pdi+payment.penalty-payment.vat) as GSALES"),
-                DB::raw("SUM(payment.interest+payment.pdi+payment.penalty-payment.vat) as GTSALES"),
                 DB::raw("'' as GESALES"),
                 DB::raw("SUM(payment.vat) as TOUTTAX"),
                 DB::raw("'12.00' as TAX_RATE"),
+                DB::raw("SUM(payment.interest+payment.pdi+payment.penalty) as GTSALES")
             ])
+            ->having('GSALES', '>', 0)
+            ->having('GTSALES', '>', 0)
+            ->having('TOUTTAX', '>', 0)
+            ->orderBy('LASTNAME')
             // ->toSql();
             ->get()->toArray();
         return $data;

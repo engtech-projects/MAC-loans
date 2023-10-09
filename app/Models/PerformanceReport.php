@@ -27,29 +27,41 @@ class PerformanceReport extends Model
         return $query->whereDate('transaction_date', '=', $value);
     }
 
-    public function scopeBranch($query,$value)
+    public function scopeBranch($query, $value)
     {
-        return $query->where('branch_id','=',$value);
+        return $query->where('branch_id', '=', $value);
     }
-    public function accountOfficer() {
-        return $this->belongsTo(AccountOfficer::class,'ao_id','ao_id');
+    public function accountOfficer()
+    {
+        return $this->belongsTo(AccountOfficer::class, 'ao_id', 'ao_id');
+    }
+    public function performanceDetails()
+    {
+        return $this->hasMany(PerformanceReportDetail::class, 'report_id', 'report_id');
     }
     public function products()
     {
         return $this->hasMany(PerformanceReportDetail::class, 'report_id');
     }
+    public function branch()
+    {
+        return $this->belongsTo(Branch::class, 'branch_id');
+    }
 
     //GET LIST OF DATES AVAILABLE IN AO PERFORMANCE REPORTS
 
-    public function getDateReports($branchId) {
+    public function getDateReports($branchId)
+    {
         $transDate = $this->getTransactionDate($branchId);
-        $maxDate = self::branch($branchId)->orderBy("transaction_date","DESC")->pluck("transaction_date")->first();
-        $minDate = self::branch($branchId)->pluck("transaction_date")->first();
+        $minDate = self::with('branch')
+        ->orderBy('transaction_date')
+        ->pluck("transaction_date")
+        ->first();
         $dateRange = [
             'min_date' => $minDate,
             'max_date' => $transDate
         ];
-        if(count($dateRange) > 0) {
+        if (count($dateRange) > 0) {
             return $dateRange;
         }
         return "No dates found";
@@ -57,26 +69,26 @@ class PerformanceReport extends Model
     //GET PERFORMANCE REPORT FROM PERFORMANCE REPORT MODEL
     public function getAOPerformanceReport($request)
     {
-        $performanceReport = self::with(['products','accountOfficer' => function($query){
+        $performanceReport = self::with(['products', 'accountOfficer' => function ($query) {
             $query->select([
                 'ao_id',
                 'name'
             ])
-            ->without(['branch_registered','branch']);
+                ->without(['branch_registered', 'branch']);
         }, 'products.product' => function ($query) {
             $query->select(['product_id', 'product_name', 'product_code']);
         }])
-        ->transactionDate($request->input("transaction_date"))
-        ->branch($request->input("branch_id"))
-        ->get();
+            ->transactionDate($request->input("transaction_date"))
+            ->branch($request->input("branch_id"))
+            ->get();
         $aoReports = [];
-        if (count($performanceReport)>0) {
+        if (count($performanceReport) > 0) {
             foreach ($performanceReport as $aoKey => $accOfficer) {
                 $aoReports[] = [
                     'ao_id' => $accOfficer->accountOfficer->ao_id,
                     'name' => $accOfficer->accountOfficer->name,
                 ];
-                foreach($accOfficer["products"] as $prodKey => $product) {
+                foreach ($accOfficer["products"] as $prodKey => $product) {
                     $aoReports[$aoKey]["products"][] = [
                         "product_id" => $product["product_id"],
                         "product_code" => $product->product["product_code"],
@@ -101,7 +113,6 @@ class PerformanceReport extends Model
             return $aoReports;
         }
         return "No reports found.";
-
     }
 
     //GET TRANSACTION DATE FROM ENDTRANSACTION MODEL
@@ -149,5 +160,70 @@ class PerformanceReport extends Model
         }
 
         return $accountOfficers;
+    }
+
+
+    public function getPerformancePortfolio($date)
+    {
+        $date = $date ? Carbon::createFromFormat('Y-m-d', $date) : null;
+        $months = getMonths();
+        $branchePerformanceReport = Branch::query()
+            ->select('branch_id', 'branch_name')
+            ->with([
+                'performanceReports' => function ($query) use ($date) {
+                    $query->selectRaw('YEAR(transaction_date) as year, MONTH(transaction_date) as month,report_id,branch_id')
+                        ->groupBy('year', 'month', 'branch_id', 'report_id')
+                        ->when($date, function ($query,$date) {
+                            $query->whereMonth('transaction_date', $date->month)
+                                ->whereYear('transaction_date', $date->year);
+                        })
+                        ->orderBy('year','DESC')
+                        ->orderBy('month','DESC');
+                },
+                'performanceReports.performanceDetails' => function ($query) {
+                    $query->selectRaw('SUM(portfolio_accounts) as no_of_accounts,
+                    SUM(portfolio) as total_portfolio,
+                    SUM(delinquent_accounts) no_of_delinquent,
+                    SUM(delinquent) as total_delinquent,
+                    SUM(pastdue_accounts) no_of_pastdue,
+                    SUM(pastdue) as total_pastdue,
+                    report_id')->groupBy('report_id');
+                }
+            ])->get();
+
+
+
+        $performandaceReport = [];
+        foreach ($branchePerformanceReport as $branch) {
+            foreach ($branch->performanceReports as $prKey => $report) {
+                $year = $report->year;
+                $month = $report->month;
+                $monthName = $months[$month - 1];
+                foreach ($report->performanceDetails as $pdKey => $reportDetail) {
+
+                    if (!isset($performandaceReport[$branch->branch_name][$year])) {
+                        $performandaceReport[$branch->branch_name][$year] = array_fill_keys($months, [
+                            'no_of_accounts' => 0,
+                            'total_portfolio' => 0,
+                            'no_of_delinquent' => 0,
+                            'total_delinquent' => 0,
+                            'no_of_pastdue' => 0,
+                            'total_pastdue' => 0,
+                        ]);
+                    }
+                    $performandaceReport[$branch->branch_name][$year][$monthName] = [
+                        'no_of_accounts' => $reportDetail->no_of_accounts,
+                        'total_portfolio' => $reportDetail->total_portfolio,
+                        'no_of_delinquent' => $reportDetail->no_of_delinquent,
+                        'total_delinquent' => $reportDetail->total_delinquent,
+                        'no_of_pastdue' => $reportDetail->no_of_pastdue,
+                        'total_pastdue' => $reportDetail->total_pastdue,
+
+                    ];
+                }
+            }
+        }
+
+        return $performandaceReport;
     }
 }

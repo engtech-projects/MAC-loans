@@ -11,8 +11,8 @@
 		<div class="d-flex flex-row font-md align-items-center mb-16">
 			<span class="font-lg text-primary-dark no-print" style="flex:4">Prepaid Interest</span>
 			<div class="d-flex flex-row align-items-center mr-24 no-print" style="flex:2">
-				<span class="mr-10">Due Date: </span>
-				<input v-model="filter.due_from" type="date" class="form-control flex-1" required>
+				<span class="mr-10">Post Date: </span>
+				<input v-model="filter.due_from" type="month" class="form-control flex-1" required>
 			</div>
 			<div class="d-flex flex-row align-items-center mr-24 justify-content-start flex-1">
 				<button class="btn btn-primary">Generate</button>
@@ -40,7 +40,7 @@
 				</div>
 				<span class="text-center text-primary-dark text-bold font-md mb-5">{{branch.branch_name}} Branch ({{branch.branch_code}})</span>
 				<div class="d-flex flex-row justify-content-center text-primary-dark">
-					<span class="text-center text-primary-dark text-bold">Due Date: {{filter.due_from?dateToMDY2(new Date(filter.due_from)).split('-').join('/'):'---'}}</span>
+					<span class="text-center text-primary-dark text-bold">Post Date: {{filter.due_from?dateToMDY2(new Date(filter.due_from)).split('-').join('/'):'---'}}</span>
 				</div>
 			</div>
 			<section class="d-flex flex-column mb-45">
@@ -49,7 +49,7 @@
 						<tr>
 							<th>Client</th>
 							<th>Amount</th>
-							<th>Date</th>
+							<th>Maturity Date</th>
 							<th>Term</th>
 							<th>Total UID</th>
 							<th>Bal.</th>
@@ -96,7 +96,7 @@
 
 		<div class="d-flex flex-row-reverse mb-45">
 			<a href="#" @click.prevent="print()" class="btn btn-default min-w-150 no-print">Print</a>
-			<!-- <a href="#" class="btn btn-success min-w-150 mr-24">Download Excel</a> -->
+			<a href="#" @click="saveJournalEntry" class="btn btn-success min-w-150 mr-24">Post</a>
 		</div>
 	</div>
 </template>
@@ -112,7 +112,7 @@ export default {
 			filter:{
 				due_from:null,
 				branch_id:null,
-			}
+			},
 		}
 	},
 	methods:{
@@ -133,6 +133,33 @@ export default {
 				console.log(error);
 				this.loading = false;
 			}.bind(this));
+		},
+		async saveJournalEntry(){
+			var data = {
+				branch_id: this.branch.branch_id,
+				amount:this.filteredReports.monthlyTotal[this.dateToM(new Date(this.filter.due_from)) - 1]
+			}
+			await axios.post(this.baseURL() + 'api/report/create-journal-entry', data, {
+				headers: {
+					'Authorization': 'Bearer ' + this.token,
+					'Content-Type': 'application/json',
+					'Accept': 'application/json'
+				}
+			})
+			.then(function (response) {
+				this.notify('','Journal Entry has been successfully posted.', 'success');
+			}.bind(this))
+			.catch(function (error) {
+				console.log(error);
+			}.bind(this));
+		},
+		notify:function(title, text, type){
+			this.$notify({
+				group: 'foo',
+				title: title,
+				text: text,
+				type: type,
+			});
 		},
 		print:function(){
 			var content = document.getElementById('printContent').innerHTML;
@@ -169,7 +196,7 @@ export default {
 							row.push(r.client);
 							row.push(this.formatToCurrency(r.amount_loan));
 							overall[1] += r.amount_loan;
-							row.push(r.due_date);
+							row.push(this.dateToMDY(new Date(r.due_date)));
 							row.push(r.term);
 							row.push(this.formatToCurrency(r.total_uid));
 							overall[4] += r.total_uid;
@@ -222,16 +249,24 @@ export default {
 				}
 			});
 			var finalOverall = [];
+			var ovcount = 0;
+			var monthlyTotal = [];
 			overall.forEach(ov=>{
 				if(ov!==''&&ov!='TOTAL'){
 					finalOverall.push(this.formatToCurrency(ov))
 				}else{
 					finalOverall.push(ov);
 				}
+				if(ovcount > 7){
+					monthlyTotal.push(ov)
+				}
+				ovcount++;
 			});
+			
 			return {
 				rows:rows,
-				overall:finalOverall.slice(0,21)
+				overall:finalOverall.slice(0,21),
+				monthlyTotal:monthlyTotal.slice(0,12)
 			}
 		}
 	},
