@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Hash;
 
+use function PHPUnit\Framework\isEmpty;
+
 class Borrower extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
@@ -55,7 +57,8 @@ class Borrower extends Authenticatable
     {
         return $this->firstname . $this->lastname;
     }
-    public function getAgeAttribute() {
+    public function getAgeAttribute()
+    {
         return Carbon::parse($this->attributes['birthdate'])->age;
     }
 
@@ -186,14 +189,30 @@ class Borrower extends Authenticatable
         return $this->hasMany(OutstandingObligations::class, 'borrower_id');
     }
 
-    public function accounts() {
+    public function accounts()
+    {
         return $this->hasMany(LoanAccount::class, 'loan_account_id');
     }
 
-    public function loanAccounts()
+    public function loanAccounts($attributes = [])
     {
-        $activeAccounts = LoanAccount::where(['borrower_id' => $this->borrower_id, 'status' => 'released'])->orderBy('date_release', 'DESC')
-            /*                             ->where('loan_status', '!=', LoanAccount::LOAN_PAID) */
+        $with = [];
+        $without = [];
+        if (!empty($attributes)) {
+            $with = $attributes["with"];
+            $without = $attributes["without"];
+        }
+
+        $id = $this->borrower_id;
+        /*         $activeAccounts = Borrower::query()->with('accounts', function ($query) use ($id) {
+                    $query->where('borrower_id', $id)->release();
+                })->where('borrower_id', $id)
+                    ->get(); */
+        $activeAccounts = LoanAccount::query()
+            ->without($without)
+            ->with($with)
+            ->where(['borrower_id' => $this->borrower_id, 'status' => 'released'])
+            ->orderBy('date_release', 'DESC')
             ->get();
 
         if (count($activeAccounts) > 0) {
