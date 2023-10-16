@@ -595,7 +595,7 @@
 								</div>
 							</div>
 							<p class="mb-45">
-								Received payment from MICRO ACCESS LOANS CORPORATION - {{pbranch.branch_name}} BRANCH ({{pbranch.branch_code}}) The sum of <span class="allcaps">{{numToWords(parseFloat(loanaccount.net_proceeds))}}</span> Pesos only.
+								Received payment from MICRO ACCESS LOANS CORPORATION - {{pbranch.branch_name}} BRANCH ({{pbranch.branch_code}}) The sum of <b><span class="allcaps ">{{numToWords(parseFloat(loanaccount.net_proceeds))}}</span> PESOS only. </b>
 							</p>
 							<div class="d-flex flex-row">
 								<span class="flex-1">Received By: <span class="text-lg text-bold" style="margin-left:10px;border-bottom:1px solid #222;padding-right:100px;">{{loanaccount.borrower.firstname + ' ' + loanaccount.borrower.middlename.charAt(0).toUpperCase() + '. ' + loanaccount.borrower.lastname}}</span></span>
