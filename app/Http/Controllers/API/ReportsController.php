@@ -445,12 +445,12 @@ class ReportsController extends BaseController
         $tableCreator = new TableCreator($filepath, $header);
         $tableCreator->addColumn(new Column([
             'name'   => 'TAX_MONTH',
-            'type'   => FieldType::CHAR,
+            'type'   => FieldType::DATE,
             'length' => 20,
         ]))
             ->addColumn(new Column([
                 'name'   => 'SEQ_NO',
-                'type'   => FieldType::CHAR,
+                'type'   => FieldType::NUMERIC,
                 'length' => 20,
             ]))
             ->addColumn(new Column([
@@ -484,6 +484,11 @@ class ReportsController extends BaseController
                 'length' => 20,
             ]))
             ->addColumn(new Column([
+                'name'   => 'GTSALES',
+                'type'   => FieldType::CHAR,
+                'length' => 20,
+            ]))
+            ->addColumn(new Column([
                 'name'   => 'GESALES',
                 'type'   => FieldType::CHAR,
                 'length' => 20,
@@ -498,38 +503,20 @@ class ReportsController extends BaseController
                 'type'   => FieldType::CHAR,
                 'length' => 20,
             ]))
-            ->addColumn(new Column([
-                'name'   => 'GTSALES',
-                'type'   => FieldType::CHAR,
-                'length' => 20,
-            ]))
             ->save(); //creates file
 
         $table = new TableEditor($filepath);
         $report = new Reports();
         $taxEntries = $report->birTaxReport($request);
-        $totalGtSales = 0;
-        $totalGSales = 0;
-        $totalTouttax = 0;
         foreach ($taxEntries as $seqNo => $taxEntry) {
-            $totalGSales += $taxEntry['GSALES'];
-            $totalTouttax += $taxEntry['TOUTTAX'];
-            $totalGtSales += $taxEntry['GTSALES'];
             $record = $table->appendRecord();
-            $record->set('TAX_MONTH', Carbon::createFromDate($request->input("date_to"))->format('m/d/Y'));
+            $record->set('TAX_MONTH', Carbon::createFromDate($request->input("date_to")));
             $record->set('SEQ_NO', $seqNo);
             foreach ($taxEntry as $title => $value) {
                 $record->set($title, $value);
             }
             $table->writeRecord();
         }
-        $record = $table->appendRecord();
-        $record->set('TAX_MONTH', "TOTAL ");
-        $record->set('SEQ_NO', null);
-        $record->set('GSALES', $totalGSales);
-        $record->set('TOUTTAX', $totalTouttax);
-        $record->set('GTSALES', $totalGtSales);
-        $table->writeRecord();
         $table->save()->close();
         return $this->sendResponse(["entries" => $taxEntries, "downloadURL" => url('/' . $filepath)], "BIR Tax Report");
     }

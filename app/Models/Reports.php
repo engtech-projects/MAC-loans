@@ -94,9 +94,36 @@ class Reports extends Model
         if (isset($filters["report"]) && $filters["report"] === "release") {
             return $loanAccount->without('documents', 'payments')->get();
         }
-
         return $loanAccount->whereIn('loan_status', [LoanAccount::LOAN_ONGOING, LoanAccount::LOAN_PASTDUE, LoanAccount::LOAN_RESTRUCTED, LoanAccount::LOAN_RES_WO_PDI])
-            ->without(['payments', 'documents', 'branch'])->get();
+            ->without($without)->get([
+                'loan_accounts.loan_account_id',
+                'loan_accounts.account_num',
+                'loan_accounts.date_release',
+                'loan_accounts.terms',
+                'loan_accounts.loan_amount',
+                'loan_accounts.interest_amount',
+                'loan_accounts.document_stamp',
+                'loan_accounts.filing_fee',
+                'loan_accounts.insurance',
+                'loan_accounts.notarial_fee',
+                'loan_accounts.prepaid_interest',
+                'loan_accounts.affidavit_fee',
+                'loan_accounts.total_deduction',
+                'loan_accounts.no_of_installment',
+                'loan_accounts.net_proceeds',
+                'loan_accounts.borrower_id',
+                'loan_accounts.product_id',
+                'loan_accounts.ao_id',
+                'loan_accounts.center_id',
+                'loan_accounts.branch_code',
+                'loan_accounts.release_type',
+                'loan_accounts.cycle_no',
+                'loan_accounts.memo',
+                'loan_accounts.due_date',
+                'loan_accounts.payment_mode',
+                'loan_accounts.payment_status',
+                'loan_accounts.loan_status',
+            ]);
     }
 
     public function getPayments($filters = [])
@@ -1150,12 +1177,12 @@ class Reports extends Model
                                     "status" => $account->payment_status,
                                 ];
 
-                                $acc = $accOfficers[$aoKey]["products"][$prodValue["product_name"]]["centers"][$centVal["center"]]['accounts'];
+                                /* $acc = $accOfficers[$aoKey]["products"][$prodValue["product_name"]]["centers"][$centVal["center"]]['accounts'];
                                 usort($acc, function ($a, $b) {
                                     return strcmp($a['borrower_name'], $b['borrower_name']);
                                 });
 
-                                $accOfficers[$aoKey]["products"][$prodValue["product_name"]]["centers"][$centVal["center"]]['accounts'] = $acc;
+                                $accOfficers[$aoKey]["products"][$prodValue["product_name"]]["centers"][$centVal["center"]]['accounts'] = $acc; */
                             }
                         }
                     }
@@ -1512,31 +1539,31 @@ class Reports extends Model
     public function birTaxReport($filters = [])
     {
         $data = Payment::join("loan_accounts", 'payment.loan_account_id', '=', 'loan_accounts.loan_account_id')
-            ->join("borrower_info", 'loan_accounts.borrower_id', '=', 'borrower_info.borrower_id')
-            ->where(["payment.branch_id" => $filters["branch_id"], "payment.status" => "paid"])
-            ->whereDate('payment.transaction_date', '>=', $filters['date_from'])
-            ->whereDate('payment.transaction_date', '<=', $filters['date_to'])
-            ->groupBy("borrower_info.firstname", "borrower_info.middlename", "borrower_info.lastname",)
-            ->select([
-                // DB::raw("'".$filters["date_to"]."' as TAX_MONTH"),
-                // DB::raw("'' as SEQ_NO"),
-                DB::raw("REPLACE(REPLACE(REPLACE(borrower_info.lastname,'ñ','n'),'Ñ','N'),'-',' ') as LAST_NAME"),
-                DB::raw("REPLACE(REPLACE(REPLACE(borrower_info.firstname,'ñ','n'),'Ñ','N'),'-',' ') as FIRST_NAME"),
-                DB::raw("UPPER(SUBSTRING(borrower_info.middlename,1,1)) as MIDDLE_NAM"),
-                DB::raw("'' as ADDRESS"),
-                DB::raw("'' as ADDRESS2"),
-                DB::raw("SUM(payment.interest+payment.pdi+payment.penalty-payment.vat) as GSALES"),
-                DB::raw("'' as GESALES"),
-                DB::raw("SUM(payment.vat) as TOUTTAX"),
-                DB::raw("'12.00' as TAX_RATE"),
-                DB::raw("SUM(payment.interest+payment.pdi+payment.penalty) as GTSALES")
-            ])
-            ->having('GSALES', '>', 0)
-            ->having('GTSALES', '>', 0)
-            ->having('TOUTTAX', '>', 0)
-            ->orderBy('LASTNAME')
-            // ->toSql();
-            ->get()->toArray();
+        ->join("borrower_info", 'loan_accounts.borrower_id', '=', 'borrower_info.borrower_id')
+        ->where(["payment.branch_id" => $filters["branch_id"], "payment.status" => "paid"])
+        ->whereDate('payment.transaction_date', '>=', $filters['date_from'])
+        ->whereDate('payment.transaction_date', '<=', $filters['date_to'])
+        ->groupBy("borrower_info.firstname", "borrower_info.middlename", "borrower_info.lastname",)
+        ->select([
+            // DB::raw("'".$filters["date_to"]."' as TAX_MONTH"),
+            // DB::raw("'' as SEQ_NO"),
+            DB::raw("REPLACE(REPLACE(REPLACE(borrower_info.lastname,'ñ','n'),'Ñ','N'),'-',' ') as LAST_NAME"),
+            DB::raw("REPLACE(REPLACE(REPLACE(borrower_info.firstname,'ñ','n'),'Ñ','N'),'-',' ') as FIRST_NAME"),
+            DB::raw("UPPER(SUBSTRING(borrower_info.middlename,1,1)) as MIDDLE_NAM"),
+            DB::raw("'' as ADDRESS"),
+            DB::raw("'' as ADDRESS2"),
+            DB::raw("SUM(payment.interest+payment.pdi+payment.penalty-payment.vat) as GSALES"),
+            DB::raw("SUM(payment.interest+payment.pdi+payment.penalty-payment.vat) as GTSALES"),
+            DB::raw("'' as GESALES"),
+            DB::raw("SUM(payment.vat) as TOUTTAX"),
+            DB::raw("'12.00' as TAX_RATE"),
+        ])
+        ->having('GSALES','>',0)
+        ->having('GTSALES','>',0)
+        ->having('TOUTTAX','>',0)
+        ->orderBy('LASTNAME')
+        // ->toSql();
+        ->get()->toArray();
         return $data;
     }
 
