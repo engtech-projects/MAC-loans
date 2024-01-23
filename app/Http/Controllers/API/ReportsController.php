@@ -265,11 +265,11 @@ class ReportsController extends BaseController
     public function microReports(Request $request)
     {
         /*
-		{
-			date : "2022-11",
-			branch_id : 1
-		}
-		*/
+        {
+            date : "2022-11",
+            branch_id : 1
+        }
+        */
         $type = $request->input("type");
         $filters = [
             'date' => $request->input('date'),
@@ -310,15 +310,16 @@ class ReportsController extends BaseController
 
         $report = new Reports();
 
-		$group = $report->microGroup($filters, $weeksAndDays, $monthStart, $monthEnd);
-		$individual = $report->microIndividual($filters, $weeksAndDays, $monthStart, $monthEnd);
-		$data = [
-			"schedule" => $weeksOfMonth,
-			"group" => $group,
-			"individual" => $individual
-		];
+        $group = $report->microGroup($filters, $weeksAndDays, $monthStart, $monthEnd);
+        $individual = $report->microIndividual($filters, $weeksAndDays, $monthStart, $monthEnd);
+        $data = [
+            "schedule" => $weeksOfMonth,
+            "group" => $group,
+            "individual" => $individual
+        ];
 
-		return $this->sendResponse($data, '');
+        return $this->sendResponse($data, '');
+    }
 
     public function consolidatedReports(Request $request)
     {
@@ -426,63 +427,63 @@ class ReportsController extends BaseController
 
         $tableCreator = new TableCreator($filepath, $header);
         $tableCreator->addColumn(new Column([
-            'name'   => 'TAX_MONTH',
-            'type'   => FieldType::DATE,
+            'name' => 'TAX_MONTH',
+            'type' => FieldType::DATE,
             'length' => 20,
         ]))
             ->addColumn(new Column([
-                'name'   => 'SEQ_NO',
-                'type'   => FieldType::NUMERIC,
+                'name' => 'SEQ_NO',
+                'type' => FieldType::NUMERIC,
                 'length' => 20,
             ]))
             ->addColumn(new Column([
-                'name'   => 'LAST_NAME',
-                'type'   => FieldType::CHAR,
+                'name' => 'LAST_NAME',
+                'type' => FieldType::CHAR,
                 'length' => 20,
             ]))
             ->addColumn(new Column([
-                'name'   => 'FIRST_NAME',
-                'type'   => FieldType::CHAR,
+                'name' => 'FIRST_NAME',
+                'type' => FieldType::CHAR,
                 'length' => 20,
             ]))
             ->addColumn(new Column([
-                'name'   => 'MIDDLE_NAM',
-                'type'   => FieldType::CHAR,
+                'name' => 'MIDDLE_NAM',
+                'type' => FieldType::CHAR,
                 'length' => 20,
             ]))
             ->addColumn(new Column([
-                'name'   => 'ADDRESS',
-                'type'   => FieldType::CHAR,
+                'name' => 'ADDRESS',
+                'type' => FieldType::CHAR,
                 'length' => 20,
             ]))
             ->addColumn(new Column([
-                'name'   => 'ADDRESS2',
-                'type'   => FieldType::CHAR,
+                'name' => 'ADDRESS2',
+                'type' => FieldType::CHAR,
                 'length' => 20,
             ]))
             ->addColumn(new Column([
-                'name'   => 'GSALES',
-                'type'   => FieldType::CHAR,
+                'name' => 'GSALES',
+                'type' => FieldType::CHAR,
                 'length' => 20,
             ]))
             ->addColumn(new Column([
-                'name'   => 'GTSALES',
-                'type'   => FieldType::CHAR,
+                'name' => 'GTSALES',
+                'type' => FieldType::CHAR,
                 'length' => 20,
             ]))
             ->addColumn(new Column([
-                'name'   => 'GESALES',
-                'type'   => FieldType::CHAR,
+                'name' => 'GESALES',
+                'type' => FieldType::CHAR,
                 'length' => 20,
             ]))
             ->addColumn(new Column([
-                'name'   => 'TOUTTAX',
-                'type'   => FieldType::CHAR,
+                'name' => 'TOUTTAX',
+                'type' => FieldType::CHAR,
                 'length' => 20,
             ]))
             ->addColumn(new Column([
-                'name'   => 'TAX_RATE',
-                'type'   => FieldType::CHAR,
+                'name' => 'TAX_RATE',
+                'type' => FieldType::CHAR,
                 'length' => 20,
             ]))
             ->save(); //creates file
