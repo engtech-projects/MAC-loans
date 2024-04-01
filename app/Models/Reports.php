@@ -1177,12 +1177,12 @@ class Reports extends Model
                                     "status" => $account->payment_status,
                                 ];
 
-                                /* $acc = $accOfficers[$aoKey]["products"][$prodValue["product_name"]]["centers"][$centVal["center"]]['accounts'];
+                                 $acc = $accOfficers[$aoKey]["products"][$prodValue["product_name"]]["centers"][$centVal["center"]]['accounts'];
                                 usort($acc, function ($a, $b) {
                                     return strcmp($a['borrower_name'], $b['borrower_name']);
                                 });
 
-                                $accOfficers[$aoKey]["products"][$prodValue["product_name"]]["centers"][$centVal["center"]]['accounts'] = $acc; */
+                                $accOfficers[$aoKey]["products"][$prodValue["product_name"]]["centers"][$centVal["center"]]['accounts'] = $acc; 
                             }
                         }
                     }
