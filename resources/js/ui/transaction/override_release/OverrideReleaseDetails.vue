@@ -548,7 +548,7 @@
 										<span class="flex-1 mw-150">Pay to</span>
 										<div class="d-flex flex-1">
 											<span class="mr-5">: </span>
-											<span> {{loanaccount.borrower.lastname + ', ' + loanaccount.borrower.firstname + ' ' + loanaccount.borrower.middlename.charAt(0).toUpperCase() + '.'}}</span>
+											<span> {{loanaccount.borrower.lastname + ', ' + loanaccount.borrower.firstname + ' ' + loanaccount.borrower.middlename.charAt(0).toUpperCase() + './ ' + loanaccount.co_borrower_name}}</span>
 										</div>
 									</div>
 									<div class="d-flex flex-row">
@@ -569,7 +569,7 @@
 										</div>
 									</div>
 								</div>
-								<div class="flex-1"></div>
+								<!-- <div class="flex-1"></div> -->
 							</div>
 						</section>
 
@@ -595,10 +595,10 @@
 								</div>
 							</div>
 							<p class="mb-45">
-								Received payment from MICRO ACCESS LOANS CORPORATION - {{pbranch.branch_name}} BRANCH ({{pbranch.branch_code}}) The sum of <b><span class="allcaps ">{{numToWords(parseFloat(loanaccount.net_proceeds))}}</span> PESOS only. </b>
+								MICRO ACCESS LOANS CORPORATION - {{pbranch.branch_name}} BRANCH ({{pbranch.branch_code}}) The sum of <b><span class="allcaps ">{{numToWords(parseFloat(loanaccount.net_proceeds))}}</span> PESOS only. </b>
 							</p>
 							<div class="d-flex flex-row">
-								<span class="flex-1">Received By: <span class="text-lg text-bold" style="margin-left:10px;border-bottom:1px solid #222;padding-right:100px;">{{loanaccount.borrower.firstname + ' ' + loanaccount.borrower.middlename.charAt(0).toUpperCase() + '. ' + loanaccount.borrower.lastname}}</span></span>
+								<!-- <span class="flex-1">Received By: <span class="text-lg text-bold" style="margin-left:10px;border-bottom:1px solid #222;padding-right:100px;">{{loanaccount.borrower.firstname + ' ' + loanaccount.borrower.middlename.charAt(0).toUpperCase() + '. ' + loanaccount.borrower.lastname}}</span></span> -->
 								<span class="flex-1">Disbursed By: _________________________________</span>
 							</div>
 						</section>
@@ -686,8 +686,10 @@
 							</table>
 
 							<p class="mb-72">
-								I/We acknowledge and understand the statement above prior to the signing and consummation of the credit transaction and that I/We fully agree to the to the terms and conditions stated on promissory note.
+								<!-- I/We acknowledge and understand the statement above prior to the signing and consummation of the credit transaction and that I/We fully agree to the to the terms and conditions stated on promissory note. -->
+								I/We received the amount stated above from Micro Access Loans Corporation and acknowledge, understand the statement above prior to the signing and consummation of the credit transaction and that I/We fully agreed to the terms and conditions stated on promissory note.
 							</p>
+							<p>Received By:</p>
 
 							<div class="d-flex flex-row px-45">
 								<div class="d-flex flex-column flex-1">

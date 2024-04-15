@@ -544,7 +544,7 @@
 						</div>
 						<section>
 							<p class="text-20" style="line-height:1.3;font-size:17px!important">
-								I/We {{borrower.lastname + ', ' + borrower.firstname + ' ' + borrower.middlename.charAt(0) + '.'}} borrowed and received the amount of <span class="allcaps">{{numToWords(loanDetails.loan_amount)}} PESOS</span> (P {{formatToCurrency(loanDetails.loan_amount)}}) and promise to pay jointly and severally (solidarily) to the MICRO ACCESS LOANS CORPORATION until full payment of the said amount including interest rate of ( {{formatToCurrency(loanDetails.interest_rate)}}% ) per month. And with the following terms and conditions stated below:
+								I/We {{borrower.lastname + ', ' + borrower.firstname + ' ' + borrower.middlename.charAt(0) + '. and ' + loanDetails.co_borrower_name}} borrowed and received the amount of <span class="allcaps">{{numToWords(loanDetails.loan_amount)}} PESOS</span> (P {{formatToCurrency(loanDetails.loan_amount)}}) and promise to pay jointly and severally (solidarily) to the MICRO ACCESS LOANS CORPORATION until full payment of the said amount including interest rate of ( {{formatToCurrency(loanDetails.interest_rate)}}% ) per month. And with the following terms and conditions stated below:
 							</p>
 						</section>
 						<span class="bbt-8 py-7 text-center text-20 text-bold mb-16">TERMS AND CONDITIONS</span>
@@ -751,7 +751,7 @@
 										<span class="flex-1 mw-150">Pay to</span>
 										<div class="d-flex flex-1">
 											<span class="mr-5">: </span>
-											<span> {{borrower.lastname + ', ' + borrower.firstname + ' ' + borrower.middlename.charAt(0).toUpperCase() + '.'}}</span>
+											<span> {{borrower.lastname + ', ' + borrower.firstname + ' ' + borrower.middlename.charAt(0).toUpperCase() + './ ' + loanDetails.co_borrower_name}}</span>
 										</div>
 									</div>
 									<div class="d-flex flex-row">
@@ -772,7 +772,7 @@
 										</div>
 									</div>
 								</div>
-								<div class="flex-1"></div>
+								<!-- <div class="flex-1"></div> -->
 							</div>
 						</section>
 
@@ -798,10 +798,10 @@
 								</div>
 							</div>
 							<p class="mb-45">
-								Received payment from MICRO ACCESS LOANS CORPORATION - BUTUAN BRANCH (001) The sum of <span class="allcaps">{{numToWords(parseFloat(loanDetails.net_proceeds))}}</span> Pesos only.
+								MICRO ACCESS LOANS CORPORATION - BUTUAN BRANCH (001) The sum of <span class="allcaps">{{numToWords(parseFloat(loanDetails.net_proceeds))}}</span> Pesos only.
 							</p>
 							<div class="d-flex flex-row">
-								<span class="flex-1">Received By: _________________________________</span>
+								<!-- <span class="flex-1">Received By: _________________________________</span> -->
 								<span class="flex-1">Disbursed By: _________________________________</span>
 							</div>
 						</section>
@@ -889,9 +889,10 @@
 							</table>
 
 							<p class="mb-72">
-								I/We acknowledge and understand the statement above prior to the signing and consummation of the credit transaction and that I/We fully agree to the to the terms and conditions stated on promissory note.
+								<!-- I/We acknowledge and understand the statement above prior to the signing and consummation of the credit transaction and that I/We fully agree to the to the terms and conditions stated on promissory note. -->
+								I/We received the amount stated above from Micro Access Loans Corporation and acknowledge, understand the statement above prior to the signing and consummation of the credit transaction and that I/We fully agreed to the terms and conditions stated on promissory note.
 							</p>
-
+							<p class="mb-72">Received By:</p>
 							<div class="d-flex flex-row px-45">
 								<div class="d-flex flex-column flex-1">
 									<span class="text-center bt-dark-2 py-12 mb-45">Borrow Sign / Printed Name</span>
