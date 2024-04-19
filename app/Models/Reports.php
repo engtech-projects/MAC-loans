@@ -645,7 +645,7 @@ class Reports extends Model
                                     'vat' => 0,
                                 ];
                             }
-
+        
                             $data[$key]['payment'][$type]['principal'] += $payment->principal;
                             $data[$key]['payment'][$type]['interest'] += $payment->interest;
                             $data[$key]['payment'][$type]['pdi'] += ($payment->pdi_approval_no) ? 0 : $payment->pdi;
@@ -691,6 +691,7 @@ class Reports extends Model
                 'rebates' => $payment->rebates,
                 'total' => $payment->amount_applied - $payment->rebates,
                 'net_interest' => $payment->interest,
+                'net_pdi' => $payment->pdi,
                 'vat' => $payment->vat,
                 'payment_type' => $payment->payment_type,
                 'memo_type' => $payment->memo_type,
