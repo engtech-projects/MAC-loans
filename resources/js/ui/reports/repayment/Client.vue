@@ -57,6 +57,7 @@
 				<section class="d-flex flex-column flex-1">
 					<table class="table td-nb table-thin th-nbt">
 						<thead>
+							<th></th>
 							<th>Borrower's Name</th>
 							<th>Date Pay</th>
 							<th>O.R#</th>
@@ -68,14 +69,15 @@
 							<th>Over</th>
 							<th>Discount</th>
 							<th>Tot. Payment</th>
-							<th>Net Int.</th>
-							<th>Net PDI.</th>
-							<th>VAT</th>
+							<th>VATable Int.</th>
+							<th>VATable PDI.</th>
+							<th>Total VAT</th>
 							<th>Type</th>
 						</thead>
 						<tbody>
 							<tr v-if="!reports.length"><td><i>No records found.</i></td></tr>
 							<tr v-for="r,i in reports" :key="i">
+								<td>{{ i+ 1 }}</td>
 								<td>{{r.borrower}}</td>
 								<td>{{r.payment_date}}</td>
 								<td>{{r.or}}</td>
@@ -87,13 +89,14 @@
 								<td>{{formatToCurrency(r.overpayment)}}</td>
 								<td>{{formatToCurrency(r.rebates)}}</td>
 								<td>{{formatToCurrency(r.total)}}</td>
-								<td>{{formatToCurrency(r.net_interest/(1.12) *.12)}}</td>
-								<td>{{formatToCurrency(r.net_pdi /(1.12) *.12)}}</td>
+								<td>{{formatToCurrency(r.net_interest/(1.12))}}</td>
+								<td>{{formatToCurrency(r.net_pdi /(1.12))}}</td>
 								<td>{{formatToCurrency(r.vat)}}</td>
 								<td>{{r.payment_type}}</td>
 							</tr>
 							
 							<tr class="border-cell-gray-7">
+								<td></td>
 								<td></td>
 								<td></td>
 								<td></td>
@@ -328,19 +331,19 @@ export default {
 			return this.accountOfficers.filter(ao=>ao.status=='active'&&ao.branch_id==this.branch.branch_id);
 		},
 		total:function(){
-			var result = ['TOTAL','','',0,0,0,0,0,0,0,0,0,0,0,''];
+			var result = ['TOTAL','','','',0,0,0,0,0,0,0,0,0,0,0,''];
 			this.reports.forEach(r => {
-				result[3] += r.amortization_principal;
-				result[4] += r.principal;
-				result[5] += r.amortization_interest;
-				result[6] += r.interest;
-				result[7] += r.pdi;
-				result[8] += r.overpayment;
-				result[9] += r.rebates;
-				result[10] += r.total;
-				result[11] += r.net_interest / (1.12) *.12;
-				result[12] += r.net_pdi / (1.12) *.12;
-				result[13] += r.vat;
+				result[4] += r.amortization_principal;
+				result[5] += r.principal;
+				result[6] += r.amortization_interest;
+				result[7] += r.interest;
+				result[8] += r.pdi;
+				result[9] += r.overpayment;
+				result[10] += r.rebates;
+				result[11] += r.total;
+				result[12] += r.net_interest / (1.12);
+				result[13] += r.net_pdi / (1.12);
+				result[14] += r.vat;
 			});
 			return result;
 		},
