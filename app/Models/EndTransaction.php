@@ -260,7 +260,7 @@ class EndTransaction extends Model
                         case 'Rebates':
 
                             if ($payment->rebates > 0 && $payment->rebates_approval_no) {
-                                $ledger[$key]['debit'] += $payment->rebates;
+                             //   $ledger[$key]['debit'] += $payment->rebates;
                             }
 
                             break;
@@ -271,7 +271,7 @@ class EndTransaction extends Model
                                 $r = $payment->rebates;
                             }
 
-                            $ledger[$key]['credit'] += ($payment->interest + $r);
+                            $ledger[$key]['credit'] += ($payment->interest);
                             break;
                         case 'Penalty Income':
 

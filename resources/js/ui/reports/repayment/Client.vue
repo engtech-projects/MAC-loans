@@ -67,7 +67,6 @@
 							<th>Int.</th>
 							<th>PD Int.</th>
 							<th>Over</th>
-							<th>Discount</th>
 							<th>Tot. Payment</th>
 							<th>VATable Int.</th>
 							<th>VATable PDI.</th>
@@ -84,10 +83,9 @@
 								<td>{{formatToCurrency(r.amortization_principal)}}</td>
 								<td>{{formatToCurrency(r.principal)}}</td>
 								<td>{{formatToCurrency(r.amortization_interest)}}</td>
-								<td>{{formatToCurrency(r.interest)}}</td>
+								<td>{{formatToCurrency(r.interest - r.rebates) }}</td>
 								<td>{{formatToCurrency(r.pdi)}}</td>
 								<td>{{formatToCurrency(r.overpayment)}}</td>
-								<td>{{formatToCurrency(r.rebates)}}</td>
 								<td>{{formatToCurrency(r.total)}}</td>
 								<td>{{formatToCurrency(r.net_interest/(1.12))}}</td>
 								<td>{{formatToCurrency(r.net_pdi /(1.12))}}</td>
@@ -331,19 +329,18 @@ export default {
 			return this.accountOfficers.filter(ao=>ao.status=='active'&&ao.branch_id==this.branch.branch_id);
 		},
 		total:function(){
-			var result = ['TOTAL','','','',0,0,0,0,0,0,0,0,0,0,0,''];
+			var result = ['TOTAL','','','',0,0,0,0,0,0,0,0,0,0,''];
 			this.reports.forEach(r => {
 				result[4] += r.amortization_principal;
 				result[5] += r.principal;
 				result[6] += r.amortization_interest;
-				result[7] += r.interest;
+				result[7] += r.interest-r.rebates;
 				result[8] += r.pdi;
 				result[9] += r.overpayment;
-				result[10] += r.rebates;
-				result[11] += r.total;
-				result[12] += r.net_interest / (1.12);
-				result[13] += r.net_pdi / (1.12);
-				result[14] += r.vat;
+				result[10] += r.total;
+				result[11] += r.interest / (1.12);
+				result[12] += r.pdi / (1.12);
+				result[13] += r.vat;
 			});
 			return result;
 		},
