@@ -338,7 +338,7 @@ export default {
 				result[8] += r.pdi;
 				result[9] += r.overpayment;
 				result[10] += r.total;
-				result[11] += r.interest / (1.12);
+				result[11] += (r.interest-r.rebates) / (1.12);
 				result[12] += r.pdi / (1.12);
 				result[13] += r.vat;
 			});
