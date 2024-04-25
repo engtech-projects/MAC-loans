@@ -253,7 +253,7 @@ class EndTransaction extends Model
                         case 'Cash':
 
                             if (Str::contains(Str::lower($payment->payment_type), 'cash')) {
-                                $ledger[$key]['debit'] += $payment->amount_applied;
+                                $ledger[$key]['debit'] += ($payment->amount_applied - $payment->rebates);
                             }
 
                             break;
@@ -296,7 +296,7 @@ class EndTransaction extends Model
                         case 'Memo':
 
                             if (Str::contains(Str::lower($payment->payment_type), 'memo')) {
-                                $ledger[$key]['debit'] += $payment->amount_applied;
+                                $ledger[$key]['debit'] += ($payment->amount_applied - $payment->rebates);
                             }
 
                             break;
