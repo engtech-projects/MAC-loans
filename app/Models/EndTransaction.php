@@ -298,8 +298,6 @@ class EndTransaction extends Model
                             if (Str::contains(Str::lower($payment->payment_type), 'memo') && !Str::contains(Str::lower($payment->memo_type), 'interbranch')) {
 
                                 $ledger[$key]['debit'] += $payment->amount_applied;
-                            }else{
-                                unset($ledger[$key]);
                             }
 
                             break;
@@ -309,9 +307,6 @@ class EndTransaction extends Model
                             if (Str::contains(Str::lower($payment->payment_type), 'memo') && Str::contains(Str::lower($payment->memo_type), 'interbranch')) {
 
                                 $ledger[$key]['debit'] += $payment->amount_applied;
-
-                            }else{
-                                unset($ledger[$key]);
                             }
 
                             break;
