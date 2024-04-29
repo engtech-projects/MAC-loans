@@ -295,7 +295,17 @@ class EndTransaction extends Model
                             // 	break;
                         case 'Memo':
 
-                            if (Str::contains(Str::lower($payment->payment_type), 'memo')) {
+                            if (Str::contains(Str::lower($payment->payment_type), 'memo') && !Str::contains(Str::lower($payment->memo_type), 'interbranch')) {
+
+                                $ledger[$key]['debit'] += ($payment->amount_applied - $payment->rebates);
+                            }
+
+                            break;
+
+                        case 'Memo - Interbranch':
+
+                            if (Str::contains(Str::lower($payment->payment_type), 'memo') && Str::contains(Str::lower($payment->memo_type), 'interbranch')) {
+
                                 $ledger[$key]['debit'] += ($payment->amount_applied - $payment->rebates);
                             }
 
