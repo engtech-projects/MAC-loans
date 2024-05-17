@@ -41,91 +41,92 @@
 						</form>
 					</div>
 					<div class="sep mb-45"></div>
-					<img :src="this.baseURL()+'/img/company_header_fit.png'" class="mb-24" alt="">
+					<div id="printContent">
+						<img :src="this.baseURL()+'/img/company_header_fit.png'" class="mb-24" alt="">
 
 
-					<section class="mb-72" id="performanceReport">
-						<div class="d-flex flex-column mb-24">
-							<div class="d-flex flex-row align-items-center">
-								<div class="flex-1 d-flex flex-column">
+						<section class="mb-72" id="performanceReport">
+							<div class="d-flex flex-column mb-24">
+								<div class="d-flex flex-row align-items-center">
+									<div class="flex-1 d-flex flex-column">
 
+									</div>
+									<span class="font-30 text-bold text-primary-dark text-center">LOAN LISTING REPORT</span>
+									<div class="flex-1 d-flex justify-content-end" style="padding-right:16px">
+										<current-transactiondate :branch="branch.branch_id" :token="token" :reports="true"></current-transactiondate>
+										<span class="text-primary-dark">Time: {{todayTime(new Date())}} {{(new Date()).getHours() > 12? 'PM':'AM'}}</span>
+									</div>
 								</div>
-								<span class="font-30 text-bold text-primary-dark text-center">LOAN LISTING REPORT</span>
-								<div class="flex-1 d-flex justify-content-end" style="padding-right:16px">
-									<current-transactiondate :branch="branch.branch_id" :token="token" :reports="true"></current-transactiondate>
-									<span class="text-primary-dark">Time: {{todayTime(new Date())}} {{(new Date()).getHours() > 12? 'PM':'AM'}}</span>
+								<span class="text-center text-primary-dark text-bold font-md mb-5">{{branch.branch_name}} Branch ({{branch.branch_code}})</span>
+								<div class="d-flex flex-row justify-content-center text-primary-dark">
+									<span class="text-center text-primary-dark text-bold">As of {{filter.as_of?dateToMDY2(new Date(filter.as_of)).split('-').join('/'):'---'}}</span>
 								</div>
 							</div>
-							<span class="text-center text-primary-dark text-bold font-md mb-5">{{branch.branch_name}} Branch ({{branch.branch_code}})</span>
-							<div class="d-flex flex-row justify-content-center text-primary-dark">
-								<span class="text-center text-primary-dark text-bold">As of {{filter.as_of?dateToMDY2(new Date(filter.as_of)).split('-').join('/'):'---'}}</span>
-							</div>
-						</div>
-						<section class="d-flex flex-column mb-16 p-10 light-border">
-							<section v-for="fr,i in filteredReports" :key="i">
-								<div class="d-flex bg-yellow-verylight mb-5">
-									<div class="d-flex flex-column text-primary-dark p-7 mr-24">
-										<span class="font-md text-bold">Account Officer</span>
-										<span class="font-sm">{{fr.ao}}</span>
+							<section class="d-flex flex-column mb-16 p-10 light-border">
+								<section v-for="fr,i in filteredReports" :key="i">
+									<div class="d-flex bg-yellow-verylight mb-5">
+										<div class="d-flex flex-column text-primary-dark p-7 mr-24">
+											<span class="font-md text-bold">Account Officer</span>
+											<span class="font-sm">{{fr.ao}}</span>
+										</div>
+										<div class="d-flex flex-column text-primary-dark p-7 mr-24">
+											<span class="font-md text-bold">Product</span>
+											<span class="font-sm">{{fr.product}}</span>
+										</div>
+										<div class="d-flex flex-column text-primary-dark p-7 flex-1">
+											<span class="font-md text-bold">Center Name</span>
+											<span class="font-sm">{{fr.center}}</span>
+										</div>
 									</div>
-									<div class="d-flex flex-column text-primary-dark p-7 mr-24">
-										<span class="font-md text-bold">Product</span>
-										<span class="font-sm">{{fr.product}}</span>
-									</div>
-									<div class="d-flex flex-column text-primary-dark p-7 flex-1">
-										<span class="font-md text-bold">Center Name</span>
-										<span class="font-sm">{{fr.center}}</span>
-									</div>
-								</div>
-								<div class="bb-dark-8"></div>
-								<table class="table table-stripped mb-24">
-									<thead>
-										<th>Borrower's Name</th>
-                                        <th>Account Number</th>
-										<th>Date Loan</th>
-										<th>Maturity</th>
-										<th>Amnt. Loan</th>
-										<th>Principal Bal.</th>
-										<th>Interest Bal.</th>
-										<th>Amort.</th>
-                                        <th>Bitay Principal</th>
-                                        <th>Bitay Interest</th>
-										<th>Amnt. Due</th>
-										<th># Days</th>
-										<th>STATUS</th>
-									</thead>
-									<tbody>
-										<tr v-for="rws,j in fr.rows" :key="j">
-											<td v-for="rw,k in rws" :key="k">{{rw}}</td>
-										</tr>
-										<tr v-if="fr.product=='002 - Micro Group'" class="bg-skyblue text-bold">
-											<td v-for="tc,l in fr.centerTotal" :key="l">{{tc===""||tc==="CENTER SUB-TOTAL"||l==1?tc:formatToCurrency(tc)}}</td>
-										</tr>
-										<tr v-if="fr.productTotal" class="bg-green-mint text-bold">
-											<td v-for="tp,m in fr.productTotal" :key="m">{{tp===""||tp==="PRODUCT SUB-TOTAL"||m==1?tp:formatToCurrency(tp)}}</td>
-										</tr>
-										<tr v-if="fr.aoTotal" class="bg-purple-light text-bold">
-											<td v-for="ta,n in fr.aoTotal" :key="n">{{ta===""||ta==="OFFICER SUB-TOTAL"||n==1?ta:formatToCurrency(ta)}}</td>
-										</tr>
-										<tr v-if="fr.total" class="bg-primary-dark text-white text-bold">
-											<td v-for="tt,o in fr.total" :key="o">{{tt===""||tt==="TOTAL"||o==1?tt:formatToCurrency(tt)}}</td>
-										</tr>
-									</tbody>
-								</table>
+									<div class="bb-dark-8"></div>
+									<table class="table table-stripped mb-24">
+										<thead>
+											<th>Borrower's Name</th>
+	                                        <th>Account Number</th>
+											<th>Date Loan</th>
+											<th>Maturity</th>
+											<th>Amnt. Loan</th>
+											<th>Principal Bal.</th>
+											<th>Interest Bal.</th>
+											<th>Amort.</th>
+	                                        <th>Bitay Principal</th>
+	                                        <th>Bitay Interest</th>
+											<th>Amnt. Due</th>
+											<th># Days</th>
+											<th>STATUS</th>
+										</thead>
+										<tbody>
+											<tr v-for="rws,j in fr.rows" :key="j">
+												<td v-for="rw,k in rws" :key="k">{{rw}}</td>
+											</tr>
+											<tr v-if="fr.product=='002 - Micro Group'" class="bg-skyblue text-bold">
+												<td v-for="tc,l in fr.centerTotal" :key="l">{{tc===""||tc==="CENTER SUB-TOTAL"||l==1?tc:formatToCurrency(tc)}}</td>
+											</tr>
+											<tr v-if="fr.productTotal" class="bg-green-mint text-bold">
+												<td v-for="tp,m in fr.productTotal" :key="m">{{tp===""||tp==="PRODUCT SUB-TOTAL"||m==1?tp:formatToCurrency(tp)}}</td>
+											</tr>
+											<tr v-if="fr.aoTotal" class="bg-purple-light text-bold">
+												<td v-for="ta,n in fr.aoTotal" :key="n">{{ta===""||ta==="OFFICER SUB-TOTAL"||n==1?ta:formatToCurrency(ta)}}</td>
+											</tr>
+											<tr v-if="fr.total" class="bg-primary-dark text-white text-bold">
+												<td v-for="tt,o in fr.total" :key="o">{{tt===""||tt==="TOTAL"||o==1?tt:formatToCurrency(tt)}}</td>
+											</tr>
+										</tbody>
+									</table>
+								</section>
 							</section>
 						</section>
-					</section>
 
-					<section class="d-flex flex-row mb-72">
-						<span class="flex-2 pb-24 text-bold darker-bb mr-64">Prepared By:</span>
-						<span class="flex-2 pb-24 text-bold darker-bb mr-64">Certified Corrected By:</span>
-						<span class="flex-2 pb-24 text-bold darker-bb mr-64">Approved By:</span>
-						<span class="flex-1"></span>
-					</section>
-
+						<section class="d-flex flex-row mb-72">
+							<span class="flex-2 pb-24 text-bold darker-bb mr-64">Prepared By:</span>
+							<span class="flex-2 pb-24 text-bold darker-bb mr-64">Certified Corrected By:</span>
+							<span class="flex-2 pb-24 text-bold darker-bb mr-64">Approved By:</span>
+							<span class="flex-1"></span>
+						</section>
+					</div>
 					<div class="d-flex flex-row justify-content-end mb-45">
 						<div class="d-flex flex-row-reverse">
-							<a href="#" class="btn btn-default min-w-150">Print</a>
+							<a href="#" class="btn btn-default min-w-150" @click="print()">Print</a>
 							<a href="#" class="btn btn-success min-w-150 mr-24">Download Excel</a>
 						</div>
 					</div>
