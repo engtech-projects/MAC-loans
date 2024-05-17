@@ -253,14 +253,14 @@ class EndTransaction extends Model
                         case 'Cash':
 
                             if (Str::contains(Str::lower($payment->payment_type), 'cash')) {
-                                $ledger[$key]['debit'] += $payment->amount_applied;
+                                $ledger[$key]['debit'] += ($payment->amount_applied - $payment->rebates);
                             }
 
                             break;
                         case 'Rebates':
 
                             if ($payment->rebates > 0 && $payment->rebates_approval_no) {
-                                $ledger[$key]['debit'] += $payment->rebates;
+                             //   $ledger[$key]['debit'] += $payment->rebates;
                             }
 
                             break;
@@ -271,7 +271,7 @@ class EndTransaction extends Model
                                 $r = $payment->rebates;
                             }
 
-                            $ledger[$key]['credit'] += ($payment->interest + $r);
+                            $ledger[$key]['credit'] += ($payment->interest);
                             break;
                         case 'Penalty Income':
 
@@ -297,7 +297,7 @@ class EndTransaction extends Model
 
                             if (Str::contains(Str::lower($payment->payment_type), 'memo') && !Str::contains(Str::lower($payment->memo_type), 'interbranch')) {
 
-                                $ledger[$key]['debit'] += $payment->amount_applied;
+                                $ledger[$key]['debit'] += ($payment->amount_applied - $payment->rebates);
                             }
 
                             break;
@@ -306,7 +306,7 @@ class EndTransaction extends Model
 
                             if (Str::contains(Str::lower($payment->payment_type), 'memo') && Str::contains(Str::lower($payment->memo_type), 'interbranch')) {
 
-                                $ledger[$key]['debit'] += $payment->amount_applied;
+                                $ledger[$key]['debit'] += ($payment->amount_applied - $payment->rebates);
                             }
 
                             break;
