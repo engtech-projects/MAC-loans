@@ -112,6 +112,23 @@
 								<td></td>
 								<td></td>
 							</tr>
+							<tr>
+								<th></th>
+								<th></th>
+								<th></th>
+								<th></th>
+								<th>Amort. Principal</th>
+								<th>Total Principal</th>
+								<th>Amort. Int.</th>
+								<th>Total Int</th>
+								<th>PD Int.</th>
+								<th>Over</th>
+								<th>Tot. Payment</th>
+								<th>VATable Int.</th>
+								<th>VATable PDI.</th>
+								<th>Total VAT</th>
+								<th></th>
+							</tr>
 							<tr class="tr-pt-7 text-bold">
 								<td v-for="t,p in total" :key="p">{{(t!==''&&t!=='TOTAL')?formatToCurrency(parseFloat(t)):t}}</td>
 							</tr>

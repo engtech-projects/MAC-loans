@@ -139,7 +139,8 @@
 								<th>Over</th>
 								<th>Discount</th>
 								<th>Total Payment</th>
-								<th>Net Int.</th>
+								<th>VATable Int</th>
+								<th>VATable PDI</th>
 								<th>VAT</th>
 							</thead>
 							<tbody>
@@ -150,12 +151,13 @@
 									<td style="padding:7px!important">TOTAL</td>
 									<td style="padding:7px!important"></td>
 									<td style="padding:7px!important">{{formatToCurrency(paymentSummary.total.principal)}}</td>
-									<td style="padding:7px!important">{{formatToCurrency(paymentSummary.total.interest)}}</td>
+									<td style="padding:7px!important">{{formatToCurrency(paymentSummary.total.interest - paymentSummary.total.discount)}}</td>
 									<td style="padding:7px!important">{{formatToCurrency(paymentSummary.total.pdint)}}</td>
 									<td style="padding:7px!important">{{formatToCurrency(paymentSummary.total.over)}}</td>
 									<td style="padding:7px!important">{{formatToCurrency(paymentSummary.total.discount)}}</td>
 									<td style="padding:7px!important">{{formatToCurrency(paymentSummary.total.totalPayment)}}</td>
 									<td style="padding:7px!important">{{formatToCurrency(paymentSummary.total.netInt)}}</td>
+									<td style="padding:7px!important">{{formatToCurrency(paymentSummary.total.pdivat)}}</td>
 									<td style="padding:7px!important">{{formatToCurrency(paymentSummary.total.vat)}}</td>
 								</tr>
 							</tbody>
@@ -392,6 +394,7 @@
 									<td>{{t.payment_type}}</td>
 								</tr>
 								<tr class="border-cell-gray-7">
+									<td></td>
 									<td></td>
 									<td></td>
 									<td></td>
@@ -740,7 +743,7 @@ export default {
 		},
 
 		paymentSummary:function(){
-			var result = {row:[],total:{principal:0,interest:0,pdint:0,over:0,discount:0,totalPayment:0,netInt:0,vat:0}};
+			var result = {row:[],total:{principal:0,interest:0,pdint:0,over:0,discount:0,totalPayment:0,netInt:0,pdivat:0,vat:0}};
 			this.paymentSummaryTotal = {
 				cash:0,
 				check:0,
@@ -754,7 +757,7 @@ export default {
 				pos:0
 			}
 			this.transactions.product.forEach((t,p)=>{
-				var totalRow = ['TOTAL PRODUCT', '',0,0,0,0,0,0,0,0];
+				var totalRow = ['TOTAL PRODUCT', '',0,0,0,0,0,0,0,0,0];
 				var index = 2;
 				var refIndex = 0;
 				for(var i in t.payment){
@@ -807,9 +810,13 @@ export default {
 					totalRow[index] += t.payment[i].total_payment;
 					result.total.totalPayment += t.payment[i].total_payment;
 					index++;
-					row.push(this.formatToCurrency(t.payment[i].net_int));
-					totalRow[index] += t.payment[i].net_int;
-					result.total.netInt += t.payment[i].net_int;
+					row.push(this.formatToCurrency((t.payment[i].interest - t.payment[i].discount)/1.12));
+					totalRow[index] += (t.payment[i].interest - t.payment[i].discount)/1.12;
+					result.total.netInt += (t.payment[i].interest - t.payment[i].discount)/1.12;
+					index++;
+					row.push(this.formatToCurrency(t.payment[i].pdi/1.12));
+					totalRow[index] += t.payment[i].pdi/1.12;
+					result.total.pdivat += t.payment[i].pdi/1.12;
 					index++;
 					row.push(this.formatToCurrency(t.payment[i].vat));
 					totalRow[index] += t.payment[i].vat;
@@ -817,9 +824,9 @@ export default {
 					result.row.push(row);
 				}
 				if(index != 2){
-					result.row.push([' ','','','','','','','','',''])
+					result.row.push([' ','','','','','','','','','',''])
 					result.row.push(totalRow)
-					result.row.push(['  ','','','','','','','','',''])
+					result.row.push(['  ','','','','','','','','','',''])
 				}
 			})
 			return result;
