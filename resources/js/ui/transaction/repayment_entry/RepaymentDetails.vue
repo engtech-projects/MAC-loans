@@ -2327,10 +2327,14 @@ export default {
             );
         },
         totalInterest: function () {
-            return (
-                this.loanAccount.current_amortization.interest +
+            if(this.loanAccount.current_amortization) {
+                if(this.loanAccount.loan_status_view == "Delinquent") {
+                    return this.loanAccount.current_amortization.short_interest
+                }
+                return this.loanAccount.current_amortization.interest +
                 this.loanAccount.current_amortization.short_interest
-            );
+            }
+            return 0;
         },
         totalPrincipal: function () {
             return this.loanAccount.current_amortization
