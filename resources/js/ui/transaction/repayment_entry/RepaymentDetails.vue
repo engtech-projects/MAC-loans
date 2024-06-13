@@ -2328,19 +2328,25 @@ export default {
         },
         totalInterest: function () {
             if(this.loanAccount.current_amortization) {
-                if(this.loanAccount.loan_status_view == "Delinquent") {
+                if(this.loanAccount.current_amortization.status == "delinquent" && this.loanAccount.payment_mode == "Weekly") {
                     return this.loanAccount.current_amortization.short_interest
                 }
                 return this.loanAccount.current_amortization.interest +
                 this.loanAccount.current_amortization.short_interest
+            }else {
+                return 0;
             }
-            return 0;
         },
         totalPrincipal: function () {
-            return this.loanAccount.current_amortization
-                ? this.loanAccount.current_amortization.principal +
+            if(this.loanAccount.current_amortization) {
+                if(this.loanAccount.current_amortization.status == "delinquent" && this.loanAccount.payment_mode == "Weekly") {
+                    return this.loanAccount.current_amortization.short_principal
+                }
+                return this.loanAccount.current_amortization.principal +
                       this.loanAccount.current_amortization.short_principal
-                : 0;
+            }else {
+                return 0;
+            }
         },
 
         duePdi: function () {
@@ -2375,17 +2381,8 @@ export default {
                 : this.dueInterest - this.rebatesApplied;
         },
         duePrincipal: function () {
-        if(this.loanAccount.current_amortization) {
-                if(this.loanAccount.loan_status_view == "Delinquent") {
-                    return this.loanAccount.current_amortization.short_principal
-                }
-                return this.loanAccount.current_amortization.principal +
-                      this.loanAccount.current_amortization.short_principal
-            }
-            return 0;
-
-            /* return this.totalPrincipal >
-                this.loanAccount.current_amortization.advance_principal ? this.totalPrincipal - this.loanAccount.current_amortization.advance_principal : 0; */
+            return this.totalPrincipal >
+                this.loanAccount.current_amortization.advance_principal ? this.totalPrincipal - this.loanAccount.current_amortization.advance_principal : 0;
         },
         totalDue: function () {
             return (
