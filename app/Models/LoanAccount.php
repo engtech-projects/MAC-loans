@@ -592,6 +592,10 @@ class LoanAccount extends Model
                     $amortization->interest = 0;
                 }
             }
+            if (in_array($amortization->id, $amortization->delinquent['ids'])) {
+                $amortization->principal = 0;
+                $amortization->interest = 0;
+            }
 
             $amortization->short_principal = $amortization->delinquent['principal']; //- (in_array($id, $amortization->delinquent['ids']) ? $amortization->principal : 0);
             $amortization->short_interest = $amortization->delinquent['interest']; //- (in_array($id, $amortization->delinquent['ids']) ? $amortization->interest : 0);
