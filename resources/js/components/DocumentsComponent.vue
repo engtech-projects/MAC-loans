@@ -1138,6 +1138,7 @@
 															<th>INTEREST</th>
 															<th>TOTAL</th>
 															<th>BALANCE</th>
+
 														</thead>
 														<tbody>
 															<tr v-for="(sched, i) in amortizationSched" :key="i">
@@ -1146,7 +1147,7 @@
 																<td>{{sched.principal}}</td>
 																<td>{{sched.interest}}</td>
 																<td>{{sched.total}}</td>
-																<td>{{sched.principal_balance + sched.interest_balance}}</td>
+																<td>{{formatToCurrency(parseFloat(sched.principal_balance.replace(",","")) + parseFloat(sched.interest_balance.replace(",","")))}}</td>
 															</tr>
 															<tr class="dark-bt bg-very-light">
 																<td colspan="2"><b>TOTAL</b></td>
@@ -1399,6 +1400,7 @@ export default {
 				},
 				current_amortization:{
 					principal_balance:0,
+					// interest_balance:0,
 				},
 				remaining_balance:{
 					memo:{
@@ -1548,6 +1550,13 @@ export default {
 			}.bind(this));
 			return amount;
 		},
+		// prinBal:function(){
+		// 	var amount = 0;
+		// 	this.amortizationSched.map(function(sched){
+		// 		amount += parseFloat(this.formatToAmount(sched.principal_balance))+ parseFloat(this.formatToAmount(sched.in));
+		// 	}.bind(this));
+		// 	return amount;
+		// },
 		totalPayable:function(){
 			return this.totalPrincipal + this.totalInterest;
 		},
