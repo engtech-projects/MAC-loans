@@ -111,7 +111,6 @@ class LoanAccountController extends BaseController
         }
 
         return $this->sendResponse($account, 'Account fetched.');
-
     }
 
     public function updateLoanAccount(Request $request, LoanAccount $account)
@@ -275,8 +274,7 @@ class LoanAccountController extends BaseController
     {
         $amortization = new Amortization();
         $dateRelease = ($request->input('date_release') ? $request->input('date_release') : date('Y-m-d'));
-        $account = LoanAccount::find($request->input('loan_account_id'));
-        return $this->sendResponse(($amortization->createAmortizationSched($account, $dateRelease)), 'Amortization Schedule Drafted');
+        return $this->sendResponse(($amortization->createAmortizationSched($request->input(), $dateRelease)), 'Amortization Schedule Drafted');
     }
 
     public function generateSMESched(Request $request)
@@ -343,7 +341,6 @@ class LoanAccountController extends BaseController
                         "total" => ceil($account->interest_amount / $account->no_of_installment) + ceil($account->loan_amount / $account->no_of_installment),
                     ]
                 ];
-
             }
         }
         return $accountDetails;
@@ -355,7 +352,6 @@ class LoanAccountController extends BaseController
         $account->fill($validated);
         $account->save();
         return $this->sendResponse(new LoanAccountResource($account), 'Co-maker successfully updated');
-
     }
 
     public function fixShortAdv(Request $request)
@@ -512,5 +508,4 @@ class LoanAccountController extends BaseController
             ])->save();
         }
     }
-
 }
