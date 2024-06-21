@@ -240,6 +240,7 @@ class Amortization extends Model
     {
         if ($account['loan_account_id'] != null) {
             $account = LoanAccount::find($account['loan_account_id'])->first();
+            $amortizationDateStart = $account->date_release;
         }
 
 
@@ -247,11 +248,8 @@ class Amortization extends Model
         $interestAmount = $account['interest_amount'];
         $installments = $account['no_of_installment'];
 
-        if ($dateRelease) {
-            $amortizationDateStart = Carbon::createFromFormat('Y-m-d', $dateRelease);
-        } else {
-            $amortizationDateStart = Carbon::createFromFormat('Y-m-d', $account->date_release);
-        }
+        $amortizationDateStart = transactionDate($account['branch']['branch_id']);
+
 
         $principal = ceil($account['loan_amount'] / $installments);
         $interest = ceil($interestAmount / $installments);
@@ -269,7 +267,7 @@ class Amortization extends Model
         } else if ($account['payment_mode'] == "Monthly") {
             $days = 30;
         } else if ($account['payment_mode'] == "Lumpsum") {
-            $days = $account->terms;
+            $days = $account['terms'];
         }
 
         for ($i = 0; $i < $installments; $i++) {
@@ -316,6 +314,7 @@ class Amortization extends Model
                 'total' => number_format(strtolower($account['type']) != "prepaid" ? $total : $principal, 2),
                 'principal_balance' => number_format($principalBalance, 2),
                 'interest_balance' => number_format(strtolower($account['type']) != "prepaid" ? $interestBalance : 0, 2),
+                'total_balance' => number_format(strtolower($account['type']) != "prepaid" ? $interestBalance + $principalBalance : 0, 2), //$principalBalance+$interestBalance,
                 'status' => 'open',
             ];
 
