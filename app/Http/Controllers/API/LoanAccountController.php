@@ -273,7 +273,7 @@ class LoanAccountController extends BaseController
     public function generateAmortizationSched(Request $request)
     {
         $amortization = new Amortization();
-        $dateRelease = $request->input('date_release');
+        $dateRelease = ($request->input('date_release') ? $request->input('date_release') : date('Y-m-d'));
         return $this->sendResponse(($amortization->createAmortizationSched($request->input(), $dateRelease)), 'Amortization Schedule Drafted');
     }
 
