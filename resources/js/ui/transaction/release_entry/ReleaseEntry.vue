@@ -1390,9 +1390,6 @@
 			},
 			switchTab:function(tab){
 				this.activeTab = tab;
-                if(tab == 'sme-schedule-tab') {
-                    this.amortSched();
-                }
 				document.getElementById(tab).click();
 			},
 			export2Word:function(element, filename = ''){
