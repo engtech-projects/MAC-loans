@@ -1539,33 +1539,64 @@ class Reports extends Model
 
     public function birTaxReport($filters = [])
     {
-        $data = Payment::join("loan_accounts", 'payment.loan_account_id', '=', 'loan_accounts.loan_account_id')
-        ->join("borrower_info", 'loan_accounts.borrower_id', '=', 'borrower_info.borrower_id')
-        ->where(["payment.branch_id" => $filters["branch_id"], "payment.status" => "paid"])
-        ->whereDate('payment.transaction_date', '>=', $filters['date_from'])
-        ->whereDate('payment.transaction_date', '<=', $filters['date_to'])
-        ->groupBy("borrower_info.firstname", "borrower_info.middlename", "borrower_info.lastname",)
-        ->select([
-            // DB::raw("'".$filters["date_to"]."' as TAX_MONTH"),
-            // DB::raw("'' as SEQ_NO"),
-            DB::raw("REPLACE(REPLACE(REPLACE(borrower_info.lastname,'ñ','n'),'Ñ','N'),'-',' ') as LAST_NAME"),
-            DB::raw("REPLACE(REPLACE(REPLACE(borrower_info.firstname,'ñ','n'),'Ñ','N'),'-',' ') as FIRST_NAME"),
-            DB::raw("UPPER(SUBSTRING(borrower_info.middlename,1,1)) as MIDDLE_NAM"),
-            DB::raw("'' as ADDRESS"),
-            DB::raw("'' as ADDRESS2"),
-            DB::raw("SUM(payment.interest+payment.pdi+payment.penalty-payment.vat) as GSALES"),
-            DB::raw("SUM(payment.interest+payment.pdi+payment.penalty-payment.vat) as GTSALES"),
-            DB::raw("'' as GESALES"),
-            DB::raw("SUM(payment.vat) as TOUTTAX"),
-            DB::raw("'12.00' as TAX_RATE"),
-        ])
-        ->having('GSALES','>',0)
-        ->having('GTSALES','>',0)
-        ->having('TOUTTAX','>',0)
-        ->orderBy('LASTNAME')
-        // ->toSql();
-        ->get()->toArray();
-        return $data;
+        // Fetch the raw data first
+        $rawData = Payment::join("loan_accounts", 'payment.loan_account_id', '=', 'loan_accounts.loan_account_id')
+            ->join("borrower_info", 'loan_accounts.borrower_id', '=', 'borrower_info.borrower_id')
+            ->where(["payment.branch_id" => $filters["branch_id"], "payment.status" => "paid"])
+            ->whereDate('payment.transaction_date', '>=', $filters['date_from'])
+            ->whereDate('payment.transaction_date', '<=', $filters['date_to'])
+            ->groupBy("borrower_info.firstname", "borrower_info.middlename", "borrower_info.lastname")
+            ->select([
+                DB::raw("borrower_info.lastname as LAST_NAME_RAW"),
+                DB::raw("borrower_info.firstname as FIRST_NAME_RAW"),
+                DB::raw("UPPER(SUBSTRING(borrower_info.middlename, 1, 1)) as MIDDLE_NAM"),
+                DB::raw("'' as ADDRESS"),
+                DB::raw("'' as ADDRESS2"),
+                DB::raw("SUM(payment.interest + payment.pdi + payment.penalty - payment.vat) as GSALES"),
+                DB::raw("SUM(payment.interest + payment.pdi + payment.penalty - payment.vat) as GTSALES"),
+                DB::raw("'' as GESALES"),
+                DB::raw("SUM(payment.vat) as TOUTTAX"),
+                DB::raw("'12.00' as TAX_RATE"),
+            ])
+            ->having('GSALES', '>', 0)
+            ->having('GTSALES', '>', 0)
+            ->having('TOUTTAX', '>', 0)
+            ->orderBy('borrower_info.lastname')
+            ->get()
+            ->toArray();
+
+        // Function to capitalize each part of the name
+        function capitalizeNameParts($name) {
+            $parts = explode(' ', $name);
+            $capitalizedParts = array_map(function($part) {
+                return ucfirst(strtolower($part));
+            }, $parts);
+            return implode(' ', $capitalizedParts);
+        }
+
+        // Process the fetched data
+        $processedData = array_map(function($row) {
+            // Capitalize each part of the names
+            $row['LAST_NAME'] = capitalizeNameParts(str_replace(['ñ', 'Ñ', '-'], ['n', 'N', ' '], $row['LAST_NAME_RAW']));
+            $row['FIRST_NAME'] = capitalizeNameParts(str_replace(['ñ', 'Ñ', '-'], ['n', 'N', ' '], $row['FIRST_NAME_RAW']));
+            
+            // Handle middle name initials like "ma."
+            if (!empty($row['MIDDLE_NAME'])) {
+                $row['MIDDLE_NAME'] = strtoupper($row['MIDDLE_NAME']) . '.'; // Ensure middle name is in uppercase with a period
+            }
+
+            unset($row['LAST_NAME_RAW'], $row['FIRST_NAME_RAW']);
+            return $row;
+        }, $rawData);
+
+
+        // foreach ($rawData as &$row){
+        //     $row['GSALES'] = (int) $row['GSALES'];
+        //     $row['GTSALES'] = (int) $row['GTSALES'];
+        //     $row['TOUTTAX'] = (int) $row['TOUTTAX'];
+        // }
+        return $processedData;
+        
     }
 
     public function prepaidReport($filters = [])
