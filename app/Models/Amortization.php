@@ -199,7 +199,6 @@ class Amortization extends Model
             ->first();
 
         if (isset($amortization->status) && $amortization->status === 'Paid') {
-
         }
 
         return $amortization;
@@ -237,42 +236,44 @@ class Amortization extends Model
         return $currentAmortization ?? null;
     }
 
-    public function createAmortizationSched(LoanAccount $account, $dateRelease = null)
+    public function createAmortizationSched($account, $dateRelease = null)
     {
-
-        $interestAmount = $account->interest_amount;
-        $installments = $account->no_of_installment;
-
-        if ($dateRelease) {
-            $amortizationDateStart = Carbon::createFromFormat('Y-m-d', $dateRelease);
-        } else {
-            $amortizationDateStart = Carbon::createFromFormat('Y-m-d', $account->date_release);
+        if ($account['loan_account_id'] != null) {
+            $account = LoanAccount::find($account['loan_account_id'])->first();
+            $amortizationDateStart = $account->date_release;
         }
 
-        $principal = ceil($account->loan_amount / $installments);
+
+
+        $interestAmount = $account['interest_amount'];
+        $installments = $account['no_of_installment'];
+
+        $amortizationDateStart = transactionDate($account['branch']['branch_id']);
+
+
+        $principal = ceil($account['loan_amount'] / $installments);
         $interest = ceil($interestAmount / $installments);
-        $principalBalance = $account->loan_amount;
+        $principalBalance = $account['loan_amount'];
         $interestBalance = $interestAmount;
-        $totalAmount = $account->loan_amount + $interestAmount;
+        $totalAmount = $account['loan_amount'] + $interestAmount;
 
         $amortizaton = array();
         $days = null;
 
-        if ($account->payment_mode == "Weekly") {
+        if ($account['payment_mode'] == "Weekly") {
             $days = 7;
-        } else if ($account->payment_mode == "Bi-Monthly") {
+        } else if ($account['payment_mode'] == "Bi-Monthly") {
             $days = 15;
-        } else if ($account->payment_mode == "Monthly") {
+        } else if ($account['payment_mode'] == "Monthly") {
             $days = 30;
-        } else if ($account->payment_mode == "Lumpsum") {
-            $days = $account->terms;
+        } else if ($account['payment_mode'] == "Lumpsum") {
+            $days = $account['terms'];
         }
 
         for ($i = 0; $i < $installments; $i++) {
-            
-            if( $days == 30 && $account->product_id == 3 ) {
+            if ($days == 30 && $account['product_id'] == 3) {
                 $amortizationDate = $amortizationDateStart->addMonthNoOverflow();
-            }else{
+            } else {
                 $amortizationDate = $amortizationDateStart->addDays($days);
             }
 
@@ -306,15 +307,17 @@ class Amortization extends Model
                 $total = $total + $totalAmount;
             }
             $amortization[] = [
-                'loan_account_id' => $account->loan_account_id,
+                'loan_account_id' => $account['loan_account_id'] ? $account['loan_account_id'] : null,
                 'amortization_date' => $amortizationDate->toDateString(),
                 'principal' => number_format($principal, 2),
-                'interest' => number_format(strtolower($account->type) != "prepaid" ? $interest : 0, 2),
-                'total' => number_format(strtolower($account->type) != "prepaid" ? $total : $principal, 2),
+                'interest' => number_format(strtolower($account['type']) != "prepaid" ? $interest : 0, 2),
+                'total' => number_format(strtolower($account['type']) != "prepaid" ? $total : $principal, 2),
                 'principal_balance' => number_format($principalBalance, 2),
-                'interest_balance' => number_format(strtolower($account->type) != "prepaid" ? $interestBalance : 0, 2),
+                'interest_balance' => number_format(strtolower($account['type']) != "prepaid" ? $interestBalance : 0, 2),
+                'total_balance' => number_format(strtolower($account['type']) != "prepaid" ? $interestBalance + $principalBalance : 0, 2), //$principalBalance+$interestBalance,
                 'status' => 'open',
             ];
+
 
             $amortizationDateStart = $amortizationDate;
         }

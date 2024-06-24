@@ -633,7 +633,7 @@
 																<td>{{sched.principal}}</td>
 																<td>{{sched.interest}}</td>
 																<td>{{sched.total}}</td>
-																<td>{{sched.principal_balance}}</td>
+																<td>{{sched.total_balance}}</td>
 															</tr>
 															<tr class="dark-bt bg-very-light">
 																<td colspan="2"><b>TOTAL</b></td>
@@ -1390,6 +1390,9 @@
 			},
 			switchTab:function(tab){
 				this.activeTab = tab;
+                if(tab == 'sme-schedule-tab') {
+                    this.amortSched();
+                }
 				document.getElementById(tab).click();
 			},
 			export2Word:function(element, filename = ''){

@@ -2327,16 +2327,26 @@ export default {
             );
         },
         totalInterest: function () {
-            return (
-                this.loanAccount.current_amortization.interest +
+            if(this.loanAccount.current_amortization) {
+                if(this.loanAccount.current_amortization.status == "delinquent" && this.loanAccount.payment_mode == "Weekly") {
+                    return this.loanAccount.current_amortization.short_interest
+                }
+                return this.loanAccount.current_amortization.interest +
                 this.loanAccount.current_amortization.short_interest
-            );
+            }else {
+                return 0;
+            }
         },
         totalPrincipal: function () {
-            return this.loanAccount.current_amortization
-                ? this.loanAccount.current_amortization.principal +
+            if(this.loanAccount.current_amortization) {
+                if(this.loanAccount.current_amortization.status == "delinquent" && this.loanAccount.payment_mode == "Weekly") {
+                    return this.loanAccount.current_amortization.short_principal
+                }
+                return this.loanAccount.current_amortization.principal +
                       this.loanAccount.current_amortization.short_principal
-                : 0;
+            }else {
+                return 0;
+            }
         },
 
         duePdi: function () {
