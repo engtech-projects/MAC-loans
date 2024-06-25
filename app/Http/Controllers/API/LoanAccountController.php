@@ -281,8 +281,8 @@ class LoanAccountController extends BaseController
     {
         $amortization = new Amortization();
         $dateRelease = ($request->input('date_release') ? $request->input('date_release') : date('Y-m-d'));
-        $account = LoanAccount::find($request->input('loan_account_id'));
-        return $this->sendResponse(($amortization->specialSchedule($account, $dateRelease)), 'Amortization Schedule Drafted');
+        /* $account = LoanAccount::find($request->input('loan_account_id')); */
+        return $this->sendResponse(($amortization->specialSchedule($request->input(), $dateRelease)), 'Amortization Schedule Drafted');
     }
 
     public function createAmortizationSched(LoanAccount $account)

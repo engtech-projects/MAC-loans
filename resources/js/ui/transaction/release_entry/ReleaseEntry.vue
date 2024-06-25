@@ -1132,7 +1132,7 @@
 				}.bind(this));
 			},
 			amortSched:function(){
-				axios.post(this.baseURL() + 'api/account/generate-amortization', this.loanDetails, {
+				axios.post(this.baseURL() + 'api/account/generate-sme', this.loanDetails, {
 					headers: {
 						'Authorization': 'Bearer ' + this.token,
 						'Content-Type': 'application/json',
