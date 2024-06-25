@@ -330,14 +330,16 @@ class Amortization extends Model
     {
 
         if ($account['loan_account_id'] != null) {
-            $account = LoanAccount::find($account['loan_account_id'])->first();
-            $amortizationDateStart = Carbon::createFromFormat('Y-m-d', $account->date_release);
+            $account = LoanAccount::find($account['loan_account_id']);
+            if ($account['date_release']) {
+                $amortizationDateStart = Carbon::createFromFormat('Y-m-d', $account['date_release']);
+            }
         }
 
 
         $interestAmount = $account['interest_amount'];
         $installments = $account['no_of_installment'];
-/*         $account['branch']['branch_id'] */
+        /*         $account['branch']['branch_id'] */
         $amortizationDateStart = transactionDate(1);
 
         $interestAmount = $account['interest_amount'];
