@@ -1051,11 +1051,12 @@
                                                     </div>
                                                     <span class="flex-1"
                                                         >P
-                                                        {{
+                                                        <!-- {{
                                                             formatToCurrency(
                                                                 duePenalty
                                                             )
-                                                        }}</span
+                                                        }} -->
+                                                        </span
                                                     >
                                                 </div>
                                                 <div
@@ -1155,7 +1156,8 @@
                                                             formatToCurrency(
                                                                 payment.penalty
                                                             )
-                                                        }}</span
+                                                        }}
+                                                        </span
                                                     >
                                                 </div>
                                                 <div
@@ -2081,15 +2083,15 @@ export default {
                 }
                 this.payment.short_pdi = this.duePdi - this.payment.pdi;
                 // penalty
-                if (amount >= this.duePenalty) {
-                    amount -= this.duePenalty;
-                    this.payment.penalty = this.duePenalty;
-                } else {
-                    this.payment.penalty = amount;
-                    amount = 0;
-                }
-                this.payment.short_penalty =
-                    this.duePenalty - this.payment.penalty;
+                // if (amount >= this.duePenalty) {
+                //     amount -= this.duePenalty;
+                //     this.payment.penalty = this.duePenalty;
+                // } else {
+                //     this.payment.penalty = amount;
+                //     amount = 0;
+                // }
+                // this.payment.short_penalty =
+                //     this.duePenalty - this.payment.penalty;
                 // interest
                 amount += this.dueRebates;
                 if (amount > this.dueInterest) {

@@ -596,7 +596,7 @@ class LoanAccount extends Model
             $amortization->short_principal = $amortization->delinquent['principal']; //- (in_array($id, $amortization->delinquent['ids']) ? $amortization->principal : 0);
             $amortization->short_interest = $amortization->delinquent['interest']; //- (in_array($id, $amortization->delinquent['ids']) ? $amortization->interest : 0);
             $amortization->short_pdi = 0;
-            $amortization->short_penalty = $amortization->delinquent['penalty'];
+            // $amortization->short_penalty = $amortization->delinquent['penalty'];
 
             if ($isPartiallyPaid && ($isPartiallyPaid->short_principal || $isPartiallyPaid->short_interest)) {
                 $amortization->total = $amortization->total - ($amortization->principal + $amortization->interest);
@@ -609,7 +609,7 @@ class LoanAccount extends Model
             } else {
                 $amortization->short_principal = $amortization->delinquent["principal"];
                 $amortization->short_interest = $amortization->delinquent["interest"];
-                $amortization->short_penalty = $amortization->delinquent["penalty"];
+                // $amortization->short_penalty = $amortization->delinquent["penalty"];
             }
             $amortization->penalty = $this->getPenalty($amortization->delinquent['missed'], $totalAmort, $transactionDateNow);
             $amortization->day_late = $dayDiff;
@@ -1241,7 +1241,7 @@ class LoanAccount extends Model
             ]
         ];
         // SET PDI AND PENALTY IN THE ACCOUNT SUMMARY
-        $accountSummary['penalty']['debit'] += /* 2;  */$this->getTotalPenalty($transactionDateNow);
+        // $accountSummary['penalty']['debit'] += /* 2;  */$this->getTotalPenalty($transactionDateNow);
         $accountSummary['pdi']['debit'] += /* 2;  */$this->getTotalPdi($transactionDateNow);
 
 
@@ -1255,7 +1255,7 @@ class LoanAccount extends Model
                 $accountSummary['interest']['credit'] += $payment->interest;
 
                 if (!$payment->penalty_approval_no) {
-                    $accountSummary['penalty']['credit'] += $payment->penalty;
+                    // $accountSummary['penalty']['credit'] += $payment->penalty;
                 }
 
                 if (!$payment->pdi_approval_no) {
@@ -1268,13 +1268,13 @@ class LoanAccount extends Model
             }
         }
 
-        $accountSummary['penalty']['debit'] += $accountSummary['penalty']['credit'];
+        // $accountSummary['penalty']['debit'] += $accountSummary['penalty']['credit'];
         $accountSummary['pdi']['debit'] += $accountSummary['pdi']['credit'];
         // calculate balance
 
         $accountSummary['principal']['balance'] = $accountSummary['principal']['debit'] - $accountSummary['principal']['credit'];
         $accountSummary['interest']['balance'] = $accountSummary['interest']['debit'] - $accountSummary['interest']['credit'];
-        $accountSummary['penalty']['balance'] = $accountSummary['penalty']['debit'] - $accountSummary['penalty']['credit'];
+        // $accountSummary['penalty']['balance'] = $accountSummary['penalty']['debit'] - $accountSummary['penalty']['credit'];
         $accountSummary['pdi']['balance'] = $accountSummary['pdi']['debit'] - $accountSummary['pdi']['credit'];
         $accountSummary['rebates']['balance'] = $accountSummary['rebates']['debit'] - $accountSummary['rebates']['credit'];
 
