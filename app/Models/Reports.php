@@ -701,7 +701,11 @@ class Reports extends Model
             ];
         }
 
-        return collect($data)->sortBy('borrower')->values();
+        return collect($data)->sortBy([
+            ['borrower', 'asc'],
+            ['payment_date', 'asc'],
+            ['or','asc']
+        ])->values();
     }
     /* end repayment report */
 
