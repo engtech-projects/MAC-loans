@@ -691,7 +691,7 @@ class Reports extends Model
                 'rebates' => $payment->rebates,
                 'total' => $payment->amount_applied - $payment->rebates,
                 'net_interest' => $payment->interest,
-                'net_pdi' => $payment->pdi,
+                'net_pdi' => ($payment->pdi_approval_no) ? 0 : $payment->pdi,
                 'vat' => $payment->vat,
                 'payment_type' => $payment->payment_type,
                 'memo_type' => $payment->memo_type,
