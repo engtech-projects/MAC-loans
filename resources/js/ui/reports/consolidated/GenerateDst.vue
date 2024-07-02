@@ -25,10 +25,11 @@
 				</select>
 			</div>				 -->
 		</div>
-		<div class="sep mb-45"></div>
+		<div id="printContent">
+		<!-- <div class="sep mb-45"></div> -->
 		<img :src="this.baseURL()+'/img/company_header_fit.png'" class="mb-24" alt="">
 
-
+		
 		<section class="mb-72" id="performanceReport">
 			<div class="d-flex flex-column mb-24">
 				<div class="d-flex flex-row align-items-center">
@@ -79,10 +80,11 @@
 			<span class="flex-2 pb-24 text-bold darker-bb mr-64">Approved By:</span>
 			<span class="flex-1"></span>
 		</section>
+	    </div>
 
 		<div class="d-flex flex-row justify-content-end mb-45">
 			<div class="d-flex flex-row-reverse">
-				<a href="#" class="btn btn-default min-w-150">Print</a>
+				<a @click="print()" class="btn btn-default min-w-150">Print</a>
 				<!-- <a href="#" class="btn btn-success min-w-150 mr-24">Download Excel</a> -->
 			</div>
 		</div>
@@ -121,6 +123,12 @@ export default {
 			.catch(function (error) {
 				console.log(error);
 			}.bind(this));
+		},
+		print:function(){
+			var content = document.getElementById('printContent').innerHTML;
+			var target = document.querySelector('.to-print');
+			target.innerHTML = content;
+			window.print();
 		},
     },
 	computed:{
