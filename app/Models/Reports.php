@@ -502,7 +502,7 @@ class Reports extends Model
             $dstSummary[$value->terms]['term'] = $value->terms;
             $dstSummary[$value->terms]['branches'][$branchIds[$value->branch_code]] += $value->loan_amount;
             $dstSummary[$value->terms]['total_amount'] += $value->loan_amount;
-            $dstSummary[$value->terms]['amount'] = $value->document_stamp;
+            $dstSummary[$value->terms]['amount'] += $value->document_stamp;
         }
 
         return $dstSummary;
