@@ -1,25 +1,3 @@
-<style>
-@media print {
-    @page {
-        size: landscape;
-    }
-    body {
-        margin: 0;
-        padding: 0;
-    }
-    /* Additional print styles can be added here */
-	.section-collection{
-		page-break-before: always;
-	}
-}
-
-/* .section-collection{
-	text-align: center;
-} */
-
-
-</style>
-
 <template>
 	<div class="d-flex flex-column" style="flex:8;">
 		<div class="d-flex flex-row font-md align-items-center mb-16">
@@ -81,7 +59,7 @@
 										<th>Cont. #</th>
 										<th>Address</th>
 										<th>Payment</th>
-										<th>Signature</th>
+										<th>Sig</th>
 									</thead>
 									<tbody>
 										<tr v-for="c,i in collections.sort(sortClient)" :key="i">
@@ -97,8 +75,8 @@
 											<td>{{formatToCurrency(c.weekly_amortization)}}</td>
 											<td>{{c.contact}}</td>
 											<td>{{c.address}}</td>
-											<td></td>
-											<td></td>
+											<td style="border:1px solid #333"></td>
+											<td style="border:1px solid #333"></td>
 										</tr>
 										<tr v-if="!collections.length"><td><i>No data available.</i></td></tr>
 										<tr class="border-cell-gray-7">
@@ -143,80 +121,66 @@
 								</table>
 							</div>
 						</section>
-
-						<div class="sep-dark mb-16"></div>
-						
-						<section class="d-flex mb-24 section-collection flex-column  ">
-							<div class="flex-row ">
-								
-								<div class="d-flex flex-column pb-15">
-									<span class="font-26 text-bold text-center text-primary-dark lh-1 text-center text-block">CASH BREAKDOWN</span>
-								</div>
-								
-							
-							</div>
-							<div>
-									<table class="flex-1 table table-bordered">
-										<thead>
-											<th>Cash Breakdown</th>
-											<th>Pc(s)</th>
-											<th>Total Amount</th>
-										</thead>
-										<tbody>
-											<tr>
-												<td>1,000.00</td>
-												<td></td>
-												<td></td>
-											</tr>
-											<tr>
-												<td>500.00</td>
-												<td></td>
-												<td></td>
-											</tr>
-											<tr>
-												<td>200.00</td>
-												<td></td>
-												<td></td>
-											</tr>
-											<tr>
-												<td>100.00</td>
-												<td></td>
-												<td></td>
-											</tr>
-											<tr>
-												<td>50.00</td>
-												<td></td>
-												<td></td>
-											</tr>
-											<tr>
-												<td>20.00</td>
-												<td></td>
-												<td></td>
-											</tr>
-											<tr>
-												<td>10.00</td>
-												<td></td>
-												<td></td>
-											</tr>
-											<tr>
-												<td>5.00</td>
-												<td></td>
-												<td></td>
-											</tr>
-											<tr>
-												<td>1.00</td>
-												<td></td>
-												<td></td>
-											</tr>
-											<tr>
-												<td>0.25</td>
-												<td></td>
-												<td></td>
-											</tr>
-										</tbody>
-									</table>
-								</div>
-							
+						<section class="d-flex mb-24">
+							<table class="flex-1 table table-bordered">
+								<thead>
+									<th>Cash Breakdown</th>
+									<th>Pc(s)</th>
+									<th>Total Amount</th>
+								</thead>
+								<tbody>
+									<tr>
+										<td>1,000.00</td>
+										<td></td>
+										<td></td>
+									</tr>
+									<tr>
+										<td>500.00</td>
+										<td></td>
+										<td></td>
+									</tr>
+									<tr>
+										<td>200.00</td>
+										<td></td>
+										<td></td>
+									</tr>
+									<tr>
+										<td>100.00</td>
+										<td></td>
+										<td></td>
+									</tr>
+									<tr>
+										<td>50.00</td>
+										<td></td>
+										<td></td>
+									</tr>
+									<tr>
+										<td>20.00</td>
+										<td></td>
+										<td></td>
+									</tr>
+									<tr>
+										<td>10.00</td>
+										<td></td>
+										<td></td>
+									</tr>
+									<tr>
+										<td>5.00</td>
+										<td></td>
+										<td></td>
+									</tr>
+									<tr>
+										<td>1.00</td>
+										<td></td>
+										<td></td>
+									</tr>
+									<tr>
+										<td>0.25</td>
+										<td></td>
+										<td></td>
+									</tr>
+								</tbody>
+							</table>
 							<div class="flex-1"></div>
 						</section>
 

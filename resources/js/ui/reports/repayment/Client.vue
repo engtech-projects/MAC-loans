@@ -90,7 +90,7 @@
 								<td>{{formatToCurrency(r.net_interest/(1.12))}}</td>
 								<td>{{formatToCurrency(r.net_pdi /(1.12))}}</td>
 								<td>{{formatToCurrency(r.vat)}}</td>
-								<td> {{ r.payment_type === "Cash Payment" ? "Cash" : r.payment_type }}</td>
+								<td>{{r.payment_type}}</td>
 							</tr>
 							
 							<tr class="border-cell-gray-7">
