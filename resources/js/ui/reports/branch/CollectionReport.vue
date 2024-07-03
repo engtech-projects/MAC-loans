@@ -1,3 +1,26 @@
+<style>
+@media print {
+    @page {
+        size: landscape;
+    }
+    body {
+        margin: 0;
+        padding: 0;
+    }
+    /* Additional print styles can be added here */
+	.section-collection{
+		page-break-before: always;
+	}
+}
+
+/* .section-collection{
+	text-align: center;
+} */
+
+
+</style>
+
+
 <template>
 	<div class="d-flex flex-column" style="flex:8;">
 		<div class="d-flex flex-row font-md align-items-center mb-16">
