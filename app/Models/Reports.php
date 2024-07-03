@@ -495,6 +495,7 @@ class Reports extends Model
             if (!isset($dstSummary[$value->terms])) {
                 $dstSummary[$value->terms] = [];
                 $dstSummary[$value->terms]['branches'] = $branchId2;
+                $dstSummary[$value->terms]['amount'] = 0;
             }
             if (!isset($dstSummary[$value->terms]['total_amount'])) {
                 $dstSummary[$value->terms]['total_amount'] = 0;
