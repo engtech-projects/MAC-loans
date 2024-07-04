@@ -1,3 +1,23 @@
+<style scoped>
+@media print {
+    body {
+        margin: 0;
+        padding: 0;
+    }
+    /* Additional print styles can be added here */
+	.section-collection{
+		page-break-before: always;
+	}
+}
+
+/* .section-collection{
+	text-align: center;
+} */
+
+
+</style>
+
+
 <template>
 	<div class="d-flex flex-column" style="flex:8;">
 		<div class="d-flex flex-row font-md align-items-center mb-16">
@@ -227,6 +247,7 @@ export default {
 			var content = document.getElementById('printContent').innerHTML;
 			var target = document.querySelector('.to-print');
 			target.innerHTML = content;
+			target.innerHTML += '<style type="text/css" media="print">@page { size: landscape; }</style>';
 			window.print();
 		},
 		async fetchCollections(){
