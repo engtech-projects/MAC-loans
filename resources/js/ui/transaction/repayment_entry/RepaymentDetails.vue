@@ -2458,8 +2458,8 @@ export default {
         outstandingSurchargeRemaining: function () {
             return (
                 this.duePdi +
-                this.duePenalty -
-                this.payment.penalty -
+                // this.duePenalty -
+                // this.payment.penalty -
                 this.payment.pdi
             );
         },
