@@ -288,8 +288,8 @@
 								<th>Net Prcds</th>
 								<th>Type</th>
 							</thead>
-							<tbody>
-								<tr v-for="t,i in transactions.client.release.sort((a, b) => a.borrower.localeCompare(b.borrower))" :key="i">
+							<tbody v-if="transactions">
+								<tr v-for="t,i in transactions?.client?.release?.sort((a, b) => a.borrower.localeCompare(b.borrower))" :key="i">
 									<td>{{t.borrower}}</td>
 									<td>{{t.date_loan}}</td>
 									<td>{{t.term}}</td>
@@ -325,6 +325,11 @@
 									<td></td>
 									<td v-for="c,i in totalReleasesClient" :key="i">{{formatToCurrency(c)}}</td>
 									<td></td>
+								</tr>
+							</tbody>
+							<tbody v-else>
+								<tr>
+									<td colspan="13">NO DATA</td>
 								</tr>
 							</tbody>
 						</table>
@@ -378,8 +383,8 @@
 								<th>VAT</th>
 								<th>Type</th>
 							</thead>
-							<tbody>
-								<tr v-for="t,i in transactions.client.collection.sort((a, b) => a.borrower.localeCompare(b.borrower))" :key="i">
+							<tbody v-if="transaction">
+								<tr v-for="t,i in transactions?.client?.collection?.sort((a, b) => a.borrower.localeCompare(b.borrower))" :key="i">
 									<td>{{t.borrower}}</td>
 									<td>{{t.date_paid}}</td>
 									<td>{{t.or}}</td>
@@ -415,6 +420,11 @@
 									<td></td>
 									<td v-for="c,i in totalCollectionClient" :key="i">{{formatToCurrency(c)}}</td>
 									<td></td>
+								</tr>
+							</tbody>
+							<tbody v-else>
+								<tr>
+									<td colspan="13">NO DATA</td>
 								</tr>
 							</tbody>
 						</table>
