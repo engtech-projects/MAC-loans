@@ -531,7 +531,7 @@
 					<div class="d-flex flex-column" style="padding:0 50px;">
 						<div class="d-flex flex-row align-items-center mb-24 darker-bb pb-10">
 							<div class="flex-1">
-								<span class="text-primary-dark font-26">{{pbranch.branch_name}} BRANCH ({{pbranch.branch_code}})</span>
+								<span class="text-primary-dark font-25">{{pbranch.branch_name}} BRANCH ({{pbranch.branch_code}})</span>
 							</div>
 							<div class="d-flex flex-column">
 								<span class="font-26 text-bold text-primary-dark lh-1">CASH VOUCHER</span>
@@ -544,7 +544,7 @@
 						<section class="mb-16">
 							<div class="d-flex flex-row">
 								<div class="d-flex flex-column flex-2">
-									<div class="d-flex flex-row mb-10">
+									<div class="d-flex flex-row">
 										<span class="flex-1 mw-150">Pay to</span>
 										<div class="d-flex flex-1">
 											<span class="mr-5">: </span>
@@ -573,12 +573,12 @@
 							</div>
 						</section>
 
-						<div class="sep-dark mb-16"></div>
+						<!-- <div class="sep-dark mb-16"></div> -->
 
 						<section class="mb-24">
 							<div class="d-flex flex-row mb-24">
 								<div class="d-flex flex-column flex-2">
-									<div class="d-flex flex-row mb-10">
+									<div class="d-flex flex-row ">
 										<span class="flex-1 mw-150">Particular</span>
 										<div class="d-flex flex-2">
 											<span class="mr-5">: </span>
@@ -589,21 +589,21 @@
 										<span class="flex-1 mw-150">Net Amount</span>
 										<div class="d-flex flex-2">
 											<span class="mr-5">: </span>
-											<span> P {{formatToCurrency(loanaccount.net_proceeds)}}</span>
+											<b><span> P {{formatToCurrency(loanaccount.net_proceeds)}}</span></b>
 										</div>
 									</div>
 								</div>
 							</div>
-							<p class="mb-45">
-								MICRO ACCESS LOANS CORPORATION - {{pbranch.branch_name}} BRANCH ({{pbranch.branch_code}}) The sum of <b><span class="allcaps ">{{numToWords(parseFloat(loanaccount.net_proceeds))}}</span> PESOS only. </b>
+							<p class="mb-35 " >
+								Received payment from <b>MICRO ACCESS LOANS CORPORATION - {{pbranch.branch_name}} BRANCH ({{pbranch.branch_code}})</b> The sum of <b><span class="allcaps ">{{numToWords(parseFloat(loanaccount.net_proceeds))}}</span> </b PESOS only. </b>
 							</p>
-							<div class="d-flex flex-row">
+							<div class="d-flex flex-row darker-bb pb-10">
 								<!-- <span class="flex-1">Received By: <span class="text-lg text-bold" style="margin-left:10px;border-bottom:1px solid #222;padding-right:100px;">{{loanaccount.borrower.firstname + ' ' + loanaccount.borrower.middlename.charAt(0).toUpperCase() + '. ' + loanaccount.borrower.lastname}}</span></span> -->
 								<span class="flex-1">Disbursed By: _________________________________</span>
 							</div>
 						</section>
 
-						<div class="sep-dark mb-16"></div>
+						<!-- <div class="sep-dark mb-16" ></div> -->
 
 						<section>
 							<div class="d-flex flex-row justify-content-center mb-16 darker-bb pb-10">
@@ -675,12 +675,12 @@
 										<td>5,000.00</td>
 										<td>0.00</td>
 									</tr>-->
-									<tr class="bg-black">
-										<td>TOTAL</td>
+									<tr >
+										<td ><b>TOTAL</b></td>
 										<td></td>
 										<td></td>
-										<td>{{formatToCurrency(totalDebit)}}</td>
-										<td>{{formatToCurrency(totalCredit)}}</td>
+										<td><b>{{formatToCurrency(totalDebit)}}</b></td>
+										<td><b>{{formatToCurrency(totalCredit)}}</b></td>
 									</tr>
 								</tbody>
 							</table>
@@ -1002,6 +1002,7 @@ export default {
 		printVoucher:function(){
 			var content = document.getElementById('voucherPrintContent').innerHTML;
 			var target = document.querySelector('.to-print');
+			target.innerHTML += '<style type="text/css" media="print">@page { size: portrait;} font-family:"Courier New" margin</style>';
 			var cancel = document.querySelector('#cancelVoucherModal');
 			target.innerHTML = content;
 			cancel.click();

@@ -1,21 +1,30 @@
-<style scoped>
+<style>
 @media print {
     body {
-        margin: 0;
+        margin-top: 0.19;
+
         padding: 0;
+		/* font-family: "Courier New"; */
+		font-family: "Courier New", Courier, monospace;
     }
     /* Additional print styles can be added here */
 	.section-collection{
 		page-break-before: always;
+		
 	}
 }
 
-/* .section-collection{
+.section-collection{
 	text-align: center;
-} */
+}
+
+.table th, .table td{
+	padding: 0.20rem;
+}
 
 
 </style>
+
 
 
 <template>
@@ -41,21 +50,23 @@
 			</div>
 		</div>
 		<div class="sep mb-45"></div>
-		<div id="printContent">
-			<img :src="this.baseURL()+'/img/company_header_fit.png'" class="mb-24" alt="">
+		<div id="printContent" class="mt-0.2" style="font-family: 'Courier New', Courier, monospace;">
+			<!-- <img :src="this.baseURL()+'/img/company_header_fit.png'" class="mb-24" alt=""> -->
 				<section class="" id="clientSection">
-						<div class="d-flex flex-column mb-24">
+						<div class="d-flex flex-column mb-24" style="font-size:25px;">
 							<div class="d-flex flex-row align-items-center">
 								<div class="flex-1 d-flex flex-column">
-									<span v-if="filter.account_officer">Account Officer</span>
-									<span v-if="filter.account_officer" class="text-bold">{{branch.branch_code}} - {{accountOfficer.name}}</span>
+									
+									
 								</div>
 								<span class="font-30 text-bold text-center text-primary-dark flex-1">COLLECTION SHEET REPORT</span>
+
 								<div class="flex-1 d-flex justify-content-end" style="padding-right:16px">
 									<current-transactiondate :branch="branch.branch_id" :token="token" :reports="true"></current-transactiondate>
 									<span class="text-primary-dark">Time: {{todayTime(new Date())}} {{(new Date()).getHours() > 12? 'PM':'AM'}}</span>
 								</div>
 							</div>
+							<span class="text-center text-primary-dark text-bold font-md mb-5">MICRO ACCESS LOAN CORPORATION</span>
 							<span class="text-center text-primary-dark text-bold font-md mb-5">{{branch.branch_name + ' Branch (' + branch.branch_code + ')'}}</span>
 							<div class="d-flex flex-row justify-content-center text-primary-dark">
 								<span class="text-center text-primary-dark text-bold">As of {{filter.as_of?dateToMDY2(new Date(filter.as_of)).split('-').join('/'):'---'}}</span>
@@ -63,23 +74,28 @@
 						</div>
 						<section class="d-flex flex-column mb-16">
 							<div>
-								<span class="text-block p-7 text-bold bg-yellow-pale">{{centerName}}</span>
-								<table class="table table-thin table-stripped" style="font-size:14.2px;">
+								<div class="d-flex flex-row" style="font-size:25px;">
+									
+									<span v-if="filter.account_officer" class="text-bold">{{branch.branch_code}} - {{accountOfficer.name}}  - {{centerName}}</span>
+								
+								</div>
+								
+								<table class="table table-thin table-stripped" style="font-size:25px;">
 									<thead>
-										<th>Client</th>
+										<th style="width: 10px;">Client</th>
 										<th>Date Loan</th>
 										<th>Maturity Date</th>
 										<th>Amount Loan</th>
-										<th>Outstanding Bal.</th>
+										<th>Outstand Bal.</th>
 										<th>Principal Bal.</th>
-										<th>Delinquent</th>
+										<th>Delnqt</th>
 										<th>Penalty</th>
 										<th>Amt. Due</th>
 										<th>Weekly Amort.</th>
 										<th>Cont. #</th>
 										<th>Address</th>
 										<th>Payment</th>
-										<th>Sig</th>
+										<th>Signature</th>
 									</thead>
 									<tbody>
 										<tr v-for="c,i in collections.sort(sortClient)" :key="i">
@@ -95,8 +111,8 @@
 											<td>{{formatToCurrency(c.weekly_amortization)}}</td>
 											<td>{{c.contact}}</td>
 											<td>{{c.address}}</td>
-											<td style="border:1px solid #333"></td>
-											<td style="border:1px solid #333"></td>
+											<td ></td>
+											<td ></td>
 										</tr>
 										<tr v-if="!collections.length"><td><i>No data available.</i></td></tr>
 										<tr class="border-cell-gray-7">
@@ -141,7 +157,7 @@
 								</table>
 							</div>
 						</section>
-						<section class="d-flex mb-24">
+						<section class="d-flex mb-24" style="font-size:25px;">
 							<table class="flex-1 table table-bordered">
 								<thead>
 									<th>Cash Breakdown</th>
@@ -247,7 +263,7 @@ export default {
 			var content = document.getElementById('printContent').innerHTML;
 			var target = document.querySelector('.to-print');
 			target.innerHTML = content;
-			target.innerHTML += '<style type="text/css" media="print">@page { size: landscape; }</style>';
+			target.innerHTML += '<style type="text/css" media="print">@page { size: landscape;} font-family:"Courier New"</style>';
 			window.print();
 		},
 		async fetchCollections(){

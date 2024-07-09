@@ -1,3 +1,20 @@
+<style>
+@media print {
+
+
+    body {
+        margin-top: 0.19;
+		font-family: "Courier New", Courier, monospace;
+    }
+    /* Additional print styles can be added here */
+
+}
+
+
+</style>
+
+
+
 <template>
 	<div class="container-fluid" style="padding:0!important">
 		<notifications group="foo" />
@@ -660,7 +677,7 @@
 
 
 										<div class="tab-pane fade" id="promissory-note" role="tabpanel" aria-labelledby="custom-content-below-home-tab">
-											<img :src="baseUrl+'/img/company_header.png'" style="width:100%" class="mb-45" alt="Company Header">
+											<!-- <img :src="baseUrl+'/img/company_header.png'" style="width:100%" class="mb-45" alt="Company Header"> -->
 											<div class="d-flex flex-column" style="padding:0 50px;">
 												<div class="d-flex flex-row align-items-center mb-36">
 													<div class="flex-1">
@@ -668,11 +685,12 @@
 													</div>
 													<div class="d-flex flex-column">
 														<span class="font-26 text-bold text-primary-dark lh-1">PROMISSORY NOTE</span>
+														<span class="text-center text-primary-dark text-bold font-md mb-5">MICRO ACCESS LOAN CORPORATION</span>
 														<span class="text-center text-primary-dark font-20">{{loanDetails.documents.promissory_number}}</span>
 													</div>
 													<div class="flex-1 d-flex justify-content-end pr-10">
 														<span class=" mr-10">{{dateFullDay(new Date())}} {{dateToYMD(new Date()).split('-').join('/')}}</span>
-														<span class="">Time: {{todayTime(new Date())}} {{(new Date()).getHours() > 12? 'PM':'AM'}}</span>
+														<!-- <span class="">Time: {{todayTime(new Date())}} {{(new Date()).getHours() > 12? 'PM':'AM'}}</span> -->
 													</div>
 												</div>
 												<section>
@@ -1337,6 +1355,7 @@
 			printPromissory:function(){
 				var content = document.getElementById('promissory-note').innerHTML;
 				var target = document.querySelector('.to-print');
+				target.innerHTML += '<style type="text/css" media="print">@page { size: 8in 13in; .page{transform: scale(70) body{ margin-top:0.3; margin-}}';
 				target.innerHTML = content;
 				var cancelButton = document.getElementById('cancelDacionModal');
 				cancelButton.click();
