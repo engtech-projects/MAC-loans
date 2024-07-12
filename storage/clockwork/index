@@ -1,0 +1,13 @@
+1720761134-1368-237948994,1720761132.0368,GET,/MAC-loans/public/reports/repayment/client,"App\Http\Controllers\ReportsController@repaymentClient",200,5774.0778923035,request
+1720761138-9043-964768596,1720761138.7523,GET,/MAC-loans/public/api/eod/eodtransaction/1,"App\Http\Controllers\API\EODController@getTransactionDate",200,420.00317573547,request
+1720761138-9221-1048458697,1720761138.7483,GET,/MAC-loans/public/api/eod/eodtransaction/1,"App\Http\Controllers\API\EODController@getTransactionDate",200,424.21293258667,request
+1720761138-8856-825233465,1720761138.7694,GET,/MAC-loans/public/api/product,"App\Http\Controllers\API\ProductController@index",200,403.90276908875,request
+1720761139-3747-778790533,1720761139.2444,GET,/MAC-loans/public/api/center,"App\Http\Controllers\API\CenterController@index",200,324.83005523682,request
+1720761139-7492-1292231086,1720761139.6455,GET,/MAC-loans/public/api/accountofficer,"App\Http\Controllers\API\AccountOfficerController@index",200,337.43500709534,request
+1720761148-6566-197013085,1720761148.5155,POST,/MAC-loans/public/api/report/repayment,"App\Http\Controllers\API\ReportsController@repaymentReports",200,1085.2339267731,request
+1720761148-3053-212671824,1720761148.2113,POST,/MAC-loans/public/api/report/repayment,"App\Http\Controllers\API\ReportsController@repaymentReports",200,2261.8610858917,request
+1720761149-9044-1093640588,1720761149.7837,POST,/MAC-loans/public/api/report/repayment,"App\Http\Controllers\API\ReportsController@repaymentReports",200,1690.9279823303,request
+1720761157-7281-434672105,1720761157.6389,GET,/MAC-loans/public/reports/bir,"App\Http\Controllers\ReportsController@birReport",200,362.76698112488,request
+1720761158-7081-692169883,1720761158.5663,GET,/MAC-loans/public/api/eod/eodtransaction/1,"App\Http\Controllers\API\EODController@getTransactionDate",200,358.67404937744,request
+1720761158-7169-265576517,1720761158.5703,GET,/MAC-loans/public/js/index.js.map,,404,452.93688774109,request
+1720761164-6829-1650243674,1720761164.5954,POST,/MAC-loans/public/api/report/bir,"App\Http\Controllers\API\ReportsController@birTaxReport",500,552.9088973999,request
