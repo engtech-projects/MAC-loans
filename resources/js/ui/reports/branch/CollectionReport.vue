@@ -89,11 +89,11 @@
 										<th>Outstand Bal.</th>
 										<th>Principal Bal.</th>
 										<th>Delnqt</th>
-										<th>Penalty</th>
+										<!-- <th>Penalty</th> -->
 										<th>Amt. Due</th>
 										<th>Weekly Amort.</th>
 										<th>Cont. #</th>
-										<th>Address</th>
+										<!-- <th>Address</th> -->
 										<th>Payment</th>
 										<th>Signature</th>
 									</thead>
@@ -106,11 +106,11 @@
 											<td>{{formatToCurrency(c.outstanding_balance)}}</td>
 											<td>{{formatToCurrency(c.principal_balance)}}</td>
 											<td>{{formatToCurrency(c.delinquent)}}</td>
-											<td>{{formatToCurrency(c.penalty)}}</td>
+											<!-- <td>{{formatToCurrency(c.penalty)}}</td> -->
 											<td>{{formatToCurrency(c.amount_due)}}</td>
 											<td>{{formatToCurrency(c.weekly_amortization)}}</td>
 											<td>{{c.contact}}</td>
-											<td>{{c.address}}</td>
+											<!-- <td>{{c.address}}</td> -->
 											<td ></td>
 											<td ></td>
 										</tr>
@@ -263,7 +263,7 @@ export default {
 			var content = document.getElementById('printContent').innerHTML;
 			var target = document.querySelector('.to-print');
 			target.innerHTML = content;
-			target.innerHTML += '<style type="text/css" media="print">@page { size: landscape;} font-family:"Courier New"</style>';
+			target.innerHTML += '<style type="text/css" media="print">@page { size: portrait;} font-family:"Courier New"</style>';
 			window.print();
 		},
 		async fetchCollections(){
