@@ -683,6 +683,7 @@
                                                 type="checkbox"
                                                 class="form-check-input"
                                                 style="margin: 0"
+                                                @change="clearInput('pdi')"
                                             />
                                             <span
                                                 class="ml-18 text-primary-dark text-24 lh-1"
@@ -713,6 +714,7 @@
                                                 type="checkbox"
                                                 class="form-check-input"
                                                 style="margin: 0"
+                                                @change="clearInput('penalty')"
                                             />
                                             <span
                                                 class="ml-18 text-primary-dark text-24 lh-1"
@@ -745,6 +747,7 @@
                                                 type="checkbox"
                                                 class="form-check-input"
                                                 style="margin: 0"
+                                                @change="clearInput('rebates')"
                                             />
                                             <span
                                                 class="ml-18 text-primary-dark text-24 lh-1"
@@ -1050,7 +1053,7 @@
                                                         <span>:</span>
                                                     </div>
                                                     <span class="flex-1"
-                                                        >P
+                                                        >P 0.00
                                                         <!-- {{
                                                             formatToCurrency(
                                                                 duePenalty
@@ -1734,6 +1737,14 @@ export default {
         };
     },
     methods: {
+        clearInput(type) {
+            if (!this.waive[type]) {
+                this.payment[`${type}_approval_no`] = '';
+                if (type === 'rebates') {
+                    this.payment.rebatesInputted = null;
+                }
+            }
+        },
         addAnotherBank: function () {
             if (
                 this.payment.bank_name &&
@@ -2175,7 +2186,36 @@ export default {
             }
             return true;
         },
+        checkApprovalNumber(approvalNumber) {
+            // Check if approvalNumber is null or undefined, and default to an empty string if so
+            const trimmedApprovalNumber = (approvalNumber || '').trim();
+
+            // Check if the trimmed approval number is empty or just zero
+            if (trimmedApprovalNumber === '' || trimmedApprovalNumber === '0') {
+                this.notify(
+                    "",
+                    "Invalid approval number.",
+                    "error"
+                );
+                return false; // Indicates that the check failed
+            }
+            
+            return true; // Indicates that the check passed
+        },
         pay: function () {
+            const checks = [
+                { condition: this.waive.pdi, approvalNumber: this.payment.pdi_approval_no },
+                { condition: this.waive.penalty, approvalNumber: this.payment.penalty_approval_no },
+                { condition: this.waive.rebates, approvalNumber: this.payment.rebates_approval_no }
+            ];
+
+            // Validate approval numbers based on checkboxes
+            for (const check of checks) {
+                if (check.condition && !this.checkApprovalNumber(check.approvalNumber)) {
+                    return; // Exit if any approval number check fails
+                }
+            }
+            
             this.payment.loan_account_id = this.loanAccount.loan_account_id;
             this.payment.pdi += this.pdiWaive;
             this.payment.penalty += this.penaltyWaive;
@@ -2390,8 +2430,8 @@ export default {
             return (
                 this.duePrincipal +
                 this.dueInterestRebates +
-                this.duePdi +
-                this.duePenalty
+                this.duePdi 
+                // this.duePenalty
             );
         },
         excessAdvancePrincipal: function () {
@@ -2432,7 +2472,7 @@ export default {
             return this.loanAccount.remainingBalance.interest.balance;
         },
         outstandingSurcharge: function () {
-            return this.duePdi + this.duePenalty;
+            return this.duePdi;
         },
         outstandingTotal: function () {
             return (
@@ -2457,7 +2497,7 @@ export default {
         },
         outstandingSurchargeRemaining: function () {
             return (
-                this.duePdi +
+                this.duePdi -
                 // this.duePenalty -
                 // this.payment.penalty -
                 this.payment.pdi
