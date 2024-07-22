@@ -251,7 +251,7 @@
 									</div>
 									<div class="body mb-64">
 										<p>
-											As our valued client, building and preserving good relationship with you is what concerns us most. We want to provide quick access to loans and continuous credit line for your utmost convenience. For the continuation of your credit line and to further our relationship, we are closely monitoring your account.It has then come to our attention that your accunt is in delinquent status. The total delinquent amount has reached to Php {{formatToCurrency(loanDetails.remaining_balance.memo.balance)}}. Please take note that one of our agreement stated in your Loan Promissory Note No. {{loanDetails.documents.promissory_number}} dated {{dateToMDY(new Date(loanDetails.documents.date_release))}} that in case of default/delinquent, this promissory note will be due and demandable.
+											As our valued client, building and preserving good relationship with you is what concerns us most. We want to provide quick access to loans and continuous credit line for your utmost convenience. For the continuation of your credit line and to further our relationship, we are closely monitoring your account.It has then come to our attention that your accunt is in delinquent status. The total delinquent amount has reached to Php {{formatToCurrency( (loanDetails.remaining_balance.interest.balance + loanDetails.remaining_balance.principal.balance)-(loanDetails.current_amortization.interest_balance + loanDetails.current_amortization.principal_balance ) )}}. Please take note that one of our agreement stated in your Loan Promissory Note No. {{loanDetails.documents.promissory_number}} dated {{dateToMDY(new Date(loanDetails.documents.date_release))}} that in case of default/delinquent, this promissory note will be due and demandable.
 										</p>
 										<p>
 											We therefore, hope and expect that you will be able to settle your obligation the soonest posssible. Please give this matter your greatest attention to avoid embarassment.
@@ -1570,6 +1570,12 @@
 														<td>{{formatToCurrency(loanDetails.remaining_balance.penalty.debit + loanDetails.remaining_balance.pdi.debit)}}</td>
 														<td>{{formatToCurrency(loanDetails.remaining_balance.penalty.credit + loanDetails.remaining_balance.pdi.credit)}}</td>
 														<td>{{formatToCurrency(loanDetails.remaining_balance.penalty.balance + loanDetails.remaining_balance.pdi.balance)}}</td>
+													</tr>
+													<tr>
+														<td class="text-bold">TOTAL</td>
+														<td ></td>
+														<td ></td>
+														<td>{{formatToCurrency((loanDetails.remaining_balance.principal.balance + loanDetails.remaining_balance.interest.balance + loanDetails.remaining_balance.rebates.balance)+loanDetails.remaining_balance.penalty.balance + loanDetails.remaining_balance.pdi.balance)}}</td>
 													</tr>
 												</tbody>
 											</table>
