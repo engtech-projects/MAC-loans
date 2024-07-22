@@ -596,7 +596,7 @@ class LoanAccount extends Model
             $amortization->short_principal = $amortization->delinquent['principal']; //- (in_array($id, $amortization->delinquent['ids']) ? $amortization->principal : 0);
             $amortization->short_interest = $amortization->delinquent['interest']; //- (in_array($id, $amortization->delinquent['ids']) ? $amortization->interest : 0);
             $amortization->short_pdi = 0;
-            // $amortization->short_penalty = $amortization->delinquent['penalty'];
+            $amortization->short_penalty = $amortization->delinquent['penalty'];
 
             if ($isPartiallyPaid && ($isPartiallyPaid->short_principal || $isPartiallyPaid->short_interest)) {
                 $amortization->total = $amortization->total - ($amortization->principal + $amortization->interest);
@@ -609,7 +609,7 @@ class LoanAccount extends Model
             } else {
                 $amortization->short_principal = $amortization->delinquent["principal"];
                 $amortization->short_interest = $amortization->delinquent["interest"];
-                // $amortization->short_penalty = $amortization->delinquent["penalty"];
+                $amortization->short_penalty = $amortization->delinquent["penalty"];
             }
             $amortization->penalty = $this->getPenalty($amortization->delinquent['missed'], $totalAmort, $transactionDateNow);
             $amortization->day_late = $dayDiff;
