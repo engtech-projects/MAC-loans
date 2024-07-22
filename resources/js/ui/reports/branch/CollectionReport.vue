@@ -2,7 +2,7 @@
 @media print {
     body {
         margin-top: 0.19;
-
+		
         padding: 0;
 		/* font-family: "Courier New"; */
 		font-family: "Courier New", Courier, monospace;
@@ -80,7 +80,7 @@
 								
 								</div>
 								
-								<table class="table table-thin table-stripped" style="font-size:25px;">
+								<table class="table table-thin table-stripped" style="font-size:20px;">
 									<thead>
 										<th style="width: 10px;">Client</th>
 										<th>Date Loan</th>
@@ -89,11 +89,11 @@
 										<th>Outstand Bal.</th>
 										<th>Principal Bal.</th>
 										<th>Delnqt</th>
-										<th>Penalty</th>
+										<!-- <th>Penalty</th> -->
 										<th>Amt. Due</th>
 										<th>Weekly Amort.</th>
 										<th>Cont. #</th>
-										<th>Address</th>
+										<!-- <th>Address</th> -->
 										<th>Payment</th>
 										<th>Signature</th>
 									</thead>
@@ -106,11 +106,11 @@
 											<td>{{formatToCurrency(c.outstanding_balance)}}</td>
 											<td>{{formatToCurrency(c.principal_balance)}}</td>
 											<td>{{formatToCurrency(c.delinquent)}}</td>
-											<td>{{formatToCurrency(c.penalty)}}</td>
+											<!-- <td>{{formatToCurrency(c.penalty)}}</td> -->
 											<td>{{formatToCurrency(c.amount_due)}}</td>
 											<td>{{formatToCurrency(c.weekly_amortization)}}</td>
 											<td>{{c.contact}}</td>
-											<td>{{c.address}}</td>
+											<!-- <td>{{c.address}}</td> -->
 											<td ></td>
 											<td ></td>
 										</tr>
@@ -157,7 +157,7 @@
 								</table>
 							</div>
 						</section>
-						<section class="d-flex mb-24" style="font-size:25px;">
+						<section class="d-flex mb-24" style="font-size:20px;">
 							<table class="flex-1 table table-bordered">
 								<thead>
 									<th>Cash Breakdown</th>
@@ -263,7 +263,7 @@ export default {
 			var content = document.getElementById('printContent').innerHTML;
 			var target = document.querySelector('.to-print');
 			target.innerHTML = content;
-			target.innerHTML += '<style type="text/css" media="print">@page { size: landscape;} font-family:"Courier New"</style>';
+			target.innerHTML += '<style type="text/css" media="print">@page { size: portrait; } .to-print { scale:10in; margin-left: 0.80in; margin-right: 0.80in;  margin-top: 0.25in; margin-bottom: 0; font-family:"Courier New" } </style>';
 			window.print();
 		},
 		async fetchCollections(){
@@ -273,6 +273,7 @@ export default {
 					'Content-Type': 'application/json',
 					'Accept': 'application/json'
 				}
+
 			})
 			.then(function (response) {
 				console.log(response);
