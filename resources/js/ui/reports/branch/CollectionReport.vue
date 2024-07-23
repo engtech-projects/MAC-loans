@@ -2,7 +2,7 @@
 @media print {
     body {
         margin-top: 0.19;
-		
+
         padding: 0;
 		/* font-family: "Courier New"; */
 		font-family: "Courier New", Courier, monospace;
@@ -22,6 +22,12 @@
 	padding: 0.20rem;
 }
 
+.collection-sheet td {
+	border-bottom: 1px dashed black;
+}
+.collection-sheet th {
+	border-bottom: 1px dashed black;
+}
 
 </style>
 
@@ -30,7 +36,7 @@
 <template>
 	<div class="d-flex flex-column" style="flex:8;">
 		<div class="d-flex flex-row font-md align-items-center mb-16">
-			<span class="font-lg text-primary-dark" style="flex:4">Transaction</span>
+			<span class="font-lg text-primary-dark" style="flex:4">Transactionss</span>
 			<div class="d-flex flex-row align-items-center mr-24" style="flex:2">
 				<!-- <span class="mr-10">Date: </span>
 				<input type="date" class="form-control"> -->
@@ -80,9 +86,9 @@
 								
 								</div>
 								
-								<table class="table table-thin table-stripped" style="font-size:20px;">
-									<thead>
-										<th style="width: 10px;">Client</th>
+								<table class="table-stripped" style="font-size:15px;">
+									<thead class="collection-sheet">
+										<th>Client</th>
 										<th>Date Loan</th>
 										<th>Maturity Date</th>
 										<th>Amount Loan</th>
@@ -95,10 +101,10 @@
 										<th>Cont. #</th>
 										<!-- <th>Address</th> -->
 										<th>Payment</th>
-										<th>Signature</th>
+										<!-- <th>Signature</th> -->
 									</thead>
 									<tbody>
-										<tr v-for="c,i in collections.sort(sortClient)" :key="i">
+										<tr class="collection-sheet" v-for="c,i in collections.sort(sortClient)" :key="i">
 											<td>{{c.client}}</td>
 											<td>{{c.date_loan.replaceAll('-','/')}}</td>
 											<td>{{c.maturity_date.replaceAll('-','/')}}</td>
@@ -112,7 +118,7 @@
 											<td>{{c.contact}}</td>
 											<!-- <td>{{c.address}}</td> -->
 											<td ></td>
-											<td ></td>
+											<!-- <td ></td> -->
 										</tr>
 										<tr v-if="!collections.length"><td><i>No data available.</i></td></tr>
 										<tr class="border-cell-gray-7">
@@ -127,7 +133,7 @@
 											<td></td>
 											<td></td>
 											<td></td>
-											<td></td>
+											<!-- <td></td> -->
 										</tr>
 										<tr class="py-7">
 											<td class="py-7"></td>
@@ -141,7 +147,7 @@
 											<td></td>
 											<td></td>
 											<td></td>
-											<td></td>
+											<!-- <td></td> -->
 										</tr>
 										<tr class="tr-py-7 text-bold bg-green-mint">
 											<td>TOTAL</td>
@@ -157,7 +163,7 @@
 								</table>
 							</div>
 						</section>
-						<section class="d-flex mb-24" style="font-size:20px;">
+						<!-- <section class="d-flex mb-24" style="font-size:25px;">
 							<table class="flex-1 table table-bordered">
 								<thead>
 									<th>Cash Breakdown</th>
@@ -218,14 +224,14 @@
 								</tbody>
 							</table>
 							<div class="flex-1"></div>
-						</section>
+						</section> -->
 
 					
 				</section>
 			
-			<div class="d-flex mb-24">
+			<!-- <div class="d-flex mb-24">
 				<img :src="this.baseURL()+'/img/logo-footer.png'" class="w-100" alt="">
-			</div>
+			</div> -->
 		</div>
 		<!-- <div class="d-flex flex-row justify-content-end mb-24">
 			<a href="#" class="text-green text-md text-bold mr-24">Previous Page</a>
@@ -263,7 +269,7 @@ export default {
 			var content = document.getElementById('printContent').innerHTML;
 			var target = document.querySelector('.to-print');
 			target.innerHTML = content;
-			target.innerHTML += '<style type="text/css" media="print">@page { size: portrait; } .to-print { scale:10in; margin-left: 0.80in; margin-right: 0.80in;  margin-top: 0.25in; margin-bottom: 0; font-family:"Courier New" } </style>';
+			target.innerHTML += '<style type="text/css" media="print">@page { size: portrait;} font-family:"Courier New"</style>';
 			window.print();
 		},
 		async fetchCollections(){
@@ -273,7 +279,6 @@ export default {
 					'Content-Type': 'application/json',
 					'Accept': 'application/json'
 				}
-
 			})
 			.then(function (response) {
 				console.log(response);
