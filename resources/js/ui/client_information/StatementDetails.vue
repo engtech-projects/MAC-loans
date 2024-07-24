@@ -152,7 +152,7 @@
 					<td>{{a.collection_rate}}%</td>
 					<td>{{a.payment_history}}</td>
 					<td>{{a.loan_status}}</td>
-					<td><a @click.prevent="editAccount=a" href="" data-toggle="modal" data-target="#editAccountModal"><i class="fa fa-edit"></i> Edit</a></td>
+					<td><a v-show="hasAccessToEdit" @click.prevent="editAccount=a" href="" data-toggle="modal" data-target="#editAccountModal"><i class="fa fa-edit"></i> Edit</a></td>
 				</tr>
 				<tr v-if="filteredAccounts.length == 0">
 					<td>No accounts found.</td>
@@ -1920,6 +1920,8 @@
 					range: 3
 				},
 				editAccount:{},
+                authUser:{},
+                hasAccessToEdit:false,
 				loading:false,
 				loanAccount:{},
 				activeBrowse:false,
@@ -2090,6 +2092,24 @@
 			}
 		},
 		methods:{
+            async fetchAuthUser() {
+                await axios.get(this.baseURL() + 'api/auth', {
+				headers: {
+					'Authorization': 'Bearer ' + this.token,
+						'Content-Type': 'application/json',
+						'Accept': 'application/json'
+					}
+				})
+				.then(function (response) {
+                    this.authUser = response.data
+                    this.hasAccessToEdit = this.authUser.accessibility.some(accessibility => accessibility['permission'] === 'edit payment in statement of account');
+
+
+				}.bind(this))
+				.catch(function (error) {
+					console.log(error);
+				}.bind(this));
+            },
 			setPage:function(page){
 				this.pagination.page = page;
 			},
@@ -2359,6 +2379,7 @@
 			},
 		},
 		mounted(){
+            this.fetchAuthUser();
 			this.branch = JSON.parse(this.pbranch);
 			// console.log(this.extractFileName("http://mac-loans.test/storage/borrowers/1/12/hello.pdf"));
 			this.fetchBorrower();
