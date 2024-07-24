@@ -194,6 +194,8 @@
 											<th>Over Payment</th>
 											<th>Total Payment</th>
 											<th>Total Payable</th>
+                                            <th>Cheque No.</th>
+                                            <th>Bank Name</th>
 											<th>Remarks</th>
 											<th></th>
 										</thead>
@@ -211,6 +213,8 @@
 												<td>{{formatToCurrency(p.over_payment)}}</td>
 												<td>{{formatToCurrency(p.amount_applied)}}</td>
 												<td>{{formatToCurrency(p.total_payable)}}</td>
+                                                <td>{{ p.cheque_no }}</td>
+                                                <td>{{ p.bank_name }}</td>
 												<td>{{p.status == 'cancelled' ? 'Cancelled' + (p.remarks ? ' - ' + p.remarks : '') : ''}}</td>
 												<td><a v-show="hasAccessToEdit" @click.prevent="editPayment=p" data-toggle="modal" data-target="#editPaymentModal" href=""><i class="fa fa-edit"></i></a></td>
 											</tr>
