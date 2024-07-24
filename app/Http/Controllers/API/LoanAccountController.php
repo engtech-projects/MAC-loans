@@ -111,7 +111,6 @@ class LoanAccountController extends BaseController
         }
 
         return $this->sendResponse($account, 'Account fetched.');
-
     }
 
     public function updateLoanAccount(Request $request, LoanAccount $account)
@@ -343,7 +342,6 @@ class LoanAccountController extends BaseController
                         "total" => ceil($account->interest_amount / $account->no_of_installment) + ceil($account->loan_amount / $account->no_of_installment),
                     ]
                 ];
-
             }
         }
         return $accountDetails;
@@ -355,7 +353,6 @@ class LoanAccountController extends BaseController
         $account->fill($validated);
         $account->save();
         return $this->sendResponse(new LoanAccountResource($account), 'Co-maker successfully updated');
-
     }
 
     public function fixShortAdv(Request $request)
@@ -512,5 +509,4 @@ class LoanAccountController extends BaseController
             ])->save();
         }
     }
-
 }

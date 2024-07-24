@@ -44,6 +44,9 @@ Route::post('borrower_login', [AuthController::class, 'borrowerLogin'])->name('a
 
 
 Route::middleware(['auth:sanctum'])->group(function () {
+    Route::get('auth', function () {
+        return auth()->user();
+    });
     Route::get('logout', [AuthController::class, 'logout'])->name('api.logout');
     Route::resource('user', UserController::class);
     Route::resource('product', ProductController::class);
@@ -58,7 +61,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::resource('deduction', DeductionController::class);
 
 
-    Route::get('borrower/accounts/{borrower_id}',[BorrowerController::class,'getBorrowerAccounts']);
+    Route::get('borrower/accounts/{borrower_id}', [BorrowerController::class, 'getBorrowerAccounts']);
 
     Route::get('borrower/accounts/{borrower_id}', [BorrowerController::class, 'getBorrowerAccounts']);
 
@@ -74,7 +77,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     // override payment list
     Route::post('payment/list/', [PaymentController::class, 'overridePaymentList']);
-    Route::post('payment/account',[PaymentController::class, 'checkLoanAccount']);
+    Route::post('payment/account', [PaymentController::class, 'checkLoanAccount']);
     Route::post('payment/override/', [PaymentController::class, 'overridePayment']);
     Route::get('payment/summary/{branch}', [PaymentController::class, 'paymentSummary']);
     Route::delete('payment/delete/{id}', [PaymentController::class, 'destroy']);
@@ -138,15 +141,15 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('report/journal-entries', [JournalEntryController::class, 'index']);
 
 
-    Route::post('report/performance-report',[ReportsController::class,'performanceReport']);
+    Route::post('report/performance-report', [ReportsController::class, 'performanceReport']);
 
     /** Account Officer Performance Reports */
-    Route::post('report/branch/performancereport',[PerformanceReportController::class, 'index']);
-    Route::post('report/branch/performancereport/create',[PerformanceReportController::class, 'store']);
-    Route::get('report/branch/performancereport/dates',[PerformanceReportController::class, 'fetchReportsDate']);
+    Route::post('report/branch/performancereport', [PerformanceReportController::class, 'index']);
+    Route::post('report/branch/performancereport/create', [PerformanceReportController::class, 'store']);
+    Route::get('report/branch/performancereport/dates', [PerformanceReportController::class, 'fetchReportsDate']);
 
 
-  	Route::post('uploadfile/{id}', [LoanAccountController::class, 'uploadFile']);
+    Route::post('uploadfile/{id}', [LoanAccountController::class, 'uploadFile']);
 
 
     Route::get('eod/eodtransaction/{branch_id}', [EODController::class, 'getTransactionDate']);

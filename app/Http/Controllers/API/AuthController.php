@@ -45,6 +45,7 @@ class AuthController extends BaseController
         return $this->sendError('Invalid Credentials / Cannot access specified branch', ['error' => 'Unauthorised'], 200);
 
     }
+    
 
     public function borrowerLogin(Request $request) {
     	$credentials = $request->only('username', 'password');
