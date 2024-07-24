@@ -212,7 +212,7 @@
 												<td>{{formatToCurrency(p.amount_applied)}}</td>
 												<td>{{formatToCurrency(p.total_payable)}}</td>
 												<td>{{p.status == 'cancelled' ? 'Cancelled' + (p.remarks ? ' - ' + p.remarks : '') : ''}}</td>
-												<td><a @click.prevent="editPayment=p" data-toggle="modal" data-target="#editPaymentModal" href=""><i class="fa fa-edit"></i>Edit</a></td>
+												<td><a v-show="hasAccessToEdit" @click.prevent="editPayment=p" data-toggle="modal" data-target="#editPaymentModal" href=""><i class="fa fa-edit"></i></a></td>
 											</tr>
 											<tr v-if="loanDetails.payments.length==0">
 												<td>No payments yet.</td>
@@ -544,7 +544,7 @@
 											<button @click="updatePayment()" data-dismiss="modal" class="btn btn-success" style="margin-bottom:1rem;width:100%;height:47px;">UPDATE</button>
 										</div>
 									</div>
-									
+
 									<div class="d-flex flex-column flex-lg-row">
 										<div class="form-group mb-10 mr-16 flex-1">
 											<label for="transactionDate" class="form-label">Amortization Schedule</label>
@@ -652,6 +652,8 @@
 				amortSched:[],
 				editPayment:{},
 				editAmort:{},
+                authUser:{},
+                hasAccessToEdit:false,
 				loanDetails:{
 					loan_account_id:null,
 					cycle_no : 1,
@@ -754,6 +756,24 @@
 			}
 		},
 		methods:{
+            async fetchAuthUser() {
+                await axios.get(this.baseURL() + 'api/auth', {
+				headers: {
+					'Authorization': 'Bearer ' + this.token,
+						'Content-Type': 'application/json',
+						'Accept': 'application/json'
+					}
+				})
+				.then(function (response) {
+                    this.authUser = response.data
+                    this.hasAccessToEdit = this.authUser.accessibility.some(accessibility => accessibility['permission'] === 'edit payment in statement of account');
+
+
+				}.bind(this))
+				.catch(function (error) {
+					console.log(error);
+				}.bind(this));
+            },
 			async fetchAmortSched(){
 				await axios.get(this.baseURL() + 'api/account/amortizations/' + this.loanDetails.loan_account_id, {
 				headers: {
@@ -944,6 +964,7 @@
 			}
 		},
 		mounted(){
+            this.fetchAuthUser();
 			this.fetchAccount(this.ploanDetails);
 		}
 	}
