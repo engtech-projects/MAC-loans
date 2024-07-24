@@ -770,7 +770,7 @@
 				})
 				.then(function (response) {
                     this.authUser = response.data
-                    this.hasAccessToEdit = this.authUser.accessibility.some(accessibility => accessibility['permission'] === 'edit payment in statement of account');
+                    this.hasAccessToEdit = this.authUser.accessibility.some(accessibility => accessibility['permission'] === 'edit statement of account');
 
 
 				}.bind(this))
