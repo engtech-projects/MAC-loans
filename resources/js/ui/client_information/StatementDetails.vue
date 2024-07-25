@@ -1479,6 +1479,8 @@
 										<th>Rebates</th>
 										<th>Over Payment</th>
 										<th>Total Payment</th>
+										<th>Cheque No.</th>
+										<th>Bank Name</th>
 										<th>Remarks</th>
 									</thead>
 									<tbody>
@@ -1494,6 +1496,8 @@
 											<td>{{formatToCurrency(py.rebates)}}</td>
 											<td>{{formatToCurrency(py.over_payment)}}</td>
 											<td>{{formatToCurrency(py.amount_applied)}}</td>
+											<td>{{ py.cheque_no }}</td>
+											<td>{{py.bank_name}}<td></td>
 											<td>{{py.status == 'cancelled' ? 'Cancelled' + (py.remarks ? ' - ' + py.remarks : '') : ''}}</td>
 										</tr>
 										<tr v-if="loanDetails.payments.length < 1">
