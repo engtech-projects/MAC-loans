@@ -1470,7 +1470,7 @@
 									<thead>
 										<th>Date</th>
 										<th>O.R #</th>
-										<th>Reference</th>
+										<!-- <th>Reference</th> -->
 										<th>Principal</th>
 										<th>Interest</th>
 										<th>PDI</th>
@@ -1486,7 +1486,7 @@
 										<tr v-for="(py,x) in loanDetails.payments" :key="x">
 											<td>{{dateToYMD(new Date(py.transaction_date)).split('-').join('/')}}</td>
 											<td>{{py.or_no}}</td>
-											<td>{{py.reference_no}}</td>
+											<!-- <td>{{py.reference_no}}</td> -->
 											<td>{{formatToCurrency(py.principal)}}</td>
 											<td>{{formatToCurrency(py.interest)}}</td>
 											<td>{{formatToCurrency(py.pdi)}}</td>
