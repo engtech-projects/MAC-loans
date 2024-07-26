@@ -591,7 +591,7 @@
 																	<span class="">Product</span>
 																	<span>:</span>
 																</div>
-																<span class="flex-2">{{productName}}</span>
+																<span class="flex-2">{{loanDetails.product}}</span>
 															</div>
 														</div>
 													</div>
@@ -1480,7 +1480,7 @@
 										<th>Total Payment</th>
 										<th>Cheque No.</th>
 										<th>Bank Name</th>
-										
+
 									</thead>
 									<tbody>
 										<tr v-for="(py,x) in loanDetails.payments" :key="x">
@@ -1496,7 +1496,7 @@
 											<td>{{formatToCurrency(py.amount_applied)}}</td>
 											<td>{{ py.cheque_no }}</td>
 											<td>{{py.bank_name}}<td></td>
-											
+
 										</tr>
 										<tr v-if="loanDetails.payments.length < 1">
 											<td>No payment records found.</td>
@@ -2109,7 +2109,7 @@
 				})
 				.then(function (response) {
                     this.authUser = response.data
-                    this.hasAccessToEdit = this.authUser.accessibility.some(accessibility => accessibility['permission'] === 'edit payment in statement of account');
+                    this.hasAccessToEdit = this.authUser.accessibility.some(accessibility => accessibility['permission'] === 'edit statement of account');
 
 
 				}.bind(this))

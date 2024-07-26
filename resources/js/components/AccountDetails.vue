@@ -184,7 +184,7 @@
 										<thead>
 											<th>Date</th>
 											<th>O.R. #</th>
-			
+
 											<th>Reference</th>
 											<th>Principal</th>
 											<th>Interest</th>
@@ -196,7 +196,7 @@
 											<th>Total Payable</th>
                                             <th>Cheque No.</th>
                                             <th>Bank Name</th>
-		
+
 											<th></th>
 										</thead>
 										<tbody>
@@ -770,7 +770,7 @@
 				})
 				.then(function (response) {
                     this.authUser = response.data
-                    this.hasAccessToEdit = this.authUser.accessibility.some(accessibility => accessibility['permission'] === 'edit payment in statement of account');
+                    this.hasAccessToEdit = this.authUser.accessibility.some(accessibility => accessibility['permission'] === 'edit statement of account');
 
 
 				}.bind(this))
