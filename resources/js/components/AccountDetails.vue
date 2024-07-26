@@ -184,7 +184,7 @@
 										<thead>
 											<th>Date</th>
 											<th>O.R. #</th>
-											<th>Trans. #</th>
+			
 											<th>Reference</th>
 											<th>Principal</th>
 											<th>Interest</th>
@@ -196,7 +196,7 @@
 											<th>Total Payable</th>
                                             <th>Cheque No.</th>
                                             <th>Bank Name</th>
-											<th>Remarks</th>
+		
 											<th></th>
 										</thead>
 										<tbody>
@@ -204,7 +204,7 @@
 												<td>{{dateToMDY(new Date(p.transaction_date))}}</td>
 												<td>{{p.or_no}}</td>
 												<td>{{p.transaction_number}}</td>
-												<td>{{p.reference_no}}</td>
+												<!-- <td>{{p.reference_no}}</td> -->
 												<td>{{formatToCurrency(p.principal)}}</td>
 												<td>{{formatToCurrency(p.interest)}}</td>
 												<td>{{formatToCurrency(p.pdi)}}</td>
@@ -215,7 +215,7 @@
 												<td>{{formatToCurrency(p.total_payable)}}</td>
                                                 <td>{{ p.cheque_no }}</td>
                                                 <td>{{ p.bank_name }}</td>
-												<td>{{p.status == 'cancelled' ? 'Cancelled' + (p.remarks ? ' - ' + p.remarks : '') : ''}}</td>
+												<!-- <td>{{p.status == 'cancelled' ? 'Cancelled' + (p.remarks ? ' - ' + p.remarks : '') : ''}}</td> -->
 												<td><a v-show="hasAccessToEdit" @click.prevent="editPayment=p" data-toggle="modal" data-target="#editPaymentModal" href=""><i class="fa fa-edit"></i></a></td>
 											</tr>
 											<tr v-if="loanDetails.payments.length==0">

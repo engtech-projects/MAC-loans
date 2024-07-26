@@ -1470,8 +1470,7 @@
 									<thead>
 										<th>Date</th>
 										<th>O.R #</th>
-										<th>Trans. #</th>
-										<th>Reference</th>
+										<!-- <th>Reference</th> -->
 										<th>Principal</th>
 										<th>Interest</th>
 										<th>PDI</th>
@@ -1479,14 +1478,15 @@
 										<th>Rebates</th>
 										<th>Over Payment</th>
 										<th>Total Payment</th>
-										<th>Remarks</th>
+										<th>Cheque No.</th>
+										<th>Bank Name</th>
+										
 									</thead>
 									<tbody>
 										<tr v-for="(py,x) in loanDetails.payments" :key="x">
 											<td>{{dateToYMD(new Date(py.transaction_date)).split('-').join('/')}}</td>
 											<td>{{py.or_no}}</td>
-											<td>{{py.transaction_number}}</td>
-											<td>{{py.reference_no}}</td>
+											<!-- <td>{{py.reference_no}}</td> -->
 											<td>{{formatToCurrency(py.principal)}}</td>
 											<td>{{formatToCurrency(py.interest)}}</td>
 											<td>{{formatToCurrency(py.pdi)}}</td>
@@ -1494,7 +1494,9 @@
 											<td>{{formatToCurrency(py.rebates)}}</td>
 											<td>{{formatToCurrency(py.over_payment)}}</td>
 											<td>{{formatToCurrency(py.amount_applied)}}</td>
-											<td>{{py.status == 'cancelled' ? 'Cancelled' + (py.remarks ? ' - ' + py.remarks : '') : ''}}</td>
+											<td>{{ py.cheque_no }}</td>
+											<td>{{py.bank_name}}<td></td>
+											
 										</tr>
 										<tr v-if="loanDetails.payments.length < 1">
 											<td>No payment records found.</td>
@@ -1548,8 +1550,8 @@
 													</tr>
 													<tr>
 														<td class="text-bold" style="padding-top:24px;padding-bottom:5px;">CURRENT CHARGES</td>
-														<td></td>
-														<td></td>
+														<td class="text-bold" style="padding-top:24px;padding-bottom:5px;">Charge</td>
+														<td class="text-bold" style="padding-top:24px;padding-bottom:5px;">Waived</td>
 														<td></td>
 													</tr>
 													<tr>
