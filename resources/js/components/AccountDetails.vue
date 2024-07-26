@@ -760,6 +760,24 @@
 			}
 		},
 		methods:{
+            async fetchAuthUser() {
+                await axios.get(this.baseURL() + 'api/auth', {
+				headers: {
+					'Authorization': 'Bearer ' + this.token,
+						'Content-Type': 'application/json',
+						'Accept': 'application/json'
+					}
+				})
+				.then(function (response) {
+                    this.authUser = response.data
+                    this.hasAccessToEdit = this.authUser.accessibility.some(accessibility => accessibility['permission'] === 'edit payment in statement of account');
+
+
+				}.bind(this))
+				.catch(function (error) {
+					console.log(error);
+				}.bind(this));
+            },
 			async fetchAmortSched(){
 				await axios.get(this.baseURL() + 'api/account/amortizations/' + this.loanDetails.loan_account_id, {
 				headers: {
