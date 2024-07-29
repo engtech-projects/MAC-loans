@@ -8,11 +8,16 @@
 			</div>
 			<span class="font-lg" style="color:#ddd">Please wait until the process is complete</span>
 		</div>
+		<div class="sep mb-24"></div>
 		<div class="container-fluid">
 			<div class="mb-16"></div>
 			<div class="d-flex justify-content-between mb-24 bb-primary-dark pb-7 text-block">
+
 				<h1 class="m-0 font-35">Statement of Account Details</h1>
-		</div><!-- /.col -->
+				
+
+		</div>
+		<!-- /.col -->
 
 
 	<div class="sep mb-24"></div>
@@ -1329,10 +1334,13 @@
 			<div class="modal-dialog modal-lg minw-70" role="document">
 				<div class="modal-content">
 					<div class="modal-body" id="soaPrintContent">
-						<img :src="this.baseURL()+'/img/company_header.png'" style="width:100%" class="mb-16" alt="Company Header">
+						<!-- <img :src="this.baseURL()+'/img/company_header.png'" style="width:100%" class="mb-16" alt="Company Header"> -->
+						 
 						<div class="d-flex flex-column" style="padding:0 50px;">
 							<span class="text-center text-block dark-bb pb-10 text-bold font-lg mb-16">STATEMENT OF ACCOUNT</span>
-
+							<span class="text-center text-primary-dark text-bold font-md mb-5">MICRO ACCESS LOAN CORPORATION</span>
+							<span class="text-center text-primary-dark text-bold font-md mb-5">{{branch.branch_name + ' Branch (' + branch.branch_code + ')'}}</span>
+							<span class="text-center text-primary-dark text-bold">As of {{filter.as_of?dateToMDY2(new Date(filter.as_of)).split('-').join('/'):'---'}}</span>
 							<div class="d-flex flex-row mb-24">
 
 								<div class="d-flex flex-column flex-2">
@@ -1365,20 +1373,20 @@
 										<span>&nbsp;</span>
 									</div>
 									<div class="d-flex mb-7">
-										<span class="mr-5">Co-Borrower: </span>
-										<span>{{loanDetails.co_borrower_name}}</span>
+										<span class="mr-5 text-bold">Co-Borrower: </span>
+										<span class="text-primary-dark text-bold">{{loanDetails.co_borrower_name}}</span>
 									</div>
 									<div class="d-flex mb-7">
-										<span class="mr-5">Co-Address: </span>
-										<span>{{loanDetails.co_borrower_address}}</span>
+										<span class="mr-5 text-bold" >Co-Address: </span>
+										<span class="text-primary-dark text-bold">{{loanDetails.co_borrower_address}}</span>
 									</div>
 									<div class="d-flex mb-7">
-										<span class="mr-5">Co-Maker: </span>
-										<span>{{loanDetails.co_maker_name}}</span>
+										<span class="mr-5 text-bold">Co-Maker: </span>
+										<span class="text-primary-dark text-bold">{{loanDetails.co_maker_name}}</span>
 									</div>
 									<div class="d-flex mb-7">
-										<span class="mr-5">Co-Address: </span>
-										<span>{{loanDetails.co_maker_address}}</span>
+										<span class="mr-5 text-bold">Co-Address: </span>
+										<span class="text-primary-dark text-bold">{{loanDetails.co_maker_address}}</span>
 									</div>
 								</div>
 								<div class="flex-1"></div>
@@ -1404,10 +1412,10 @@
 										<span class="mr-5">Interest: </span>
 										<span class="">{{formatToCurrency(loanDetails.interest_amount)}}</span>
 									</div>
-									<!-- <div class="d-flex mb-7">
+									<div class="d-flex mb-7">
 										<span class="mr-5">Int. Rate: </span>
 										<span class="">{{loanDetails.interest_rate + '%'}}</span>
-									</div> -->
+									</div>
 									<div class="d-flex mb-7">
 										<span class="mr-5">Mode: </span>
 										<span class="">{{loanDetails.payment_mode}}</span>
@@ -1435,7 +1443,7 @@
 								</div>
 							</div>
 
-							<section class=" mb-24 d-flex flex-column">
+							<!-- <section class=" mb-24 d-flex flex-column">
 								<span class="text-bold bg-yellow" style="padding:0 5px;">Release</span>
 								<table class="table th-nb td-nb table-thin">
 									<thead>
@@ -1462,7 +1470,7 @@
 										</tr>
 									</tbody>
 								</table>
-							</section>
+							</section> -->
 
 							<section class="mb-24 d-flex flex-column">
 								<span class="text-bold bg-gray" style="padding:0 5px;">Payment</span>
@@ -1495,7 +1503,7 @@
 											<td>{{formatToCurrency(py.over_payment)}}</td>
 											<td>{{formatToCurrency(py.amount_applied)}}</td>
 											<td>{{ py.cheque_no }}</td>
-											<td>{{py.bank_name}}<td></td>
+											<td>{{py.bank_name}}</td>
 
 										</tr>
 										<tr v-if="loanDetails.payments.length < 1">
@@ -1594,11 +1602,11 @@
 								</div>
 							</section>
 							<div class="d-flex flex-row-reverse mb-45">
-								<a @click.prevent="printContent('soaPrintContent')" href="#" class="btn btn-default min-w-150">Print</a>
+								<a @click.prevent="printContent('soaPrintContent')" href="#"  class="btn btn-default min-w-150">Print</a>
 								<!-- <a href="#" class="btn btn-success min-w-150 mr-24">Download Excel</a> -->
 							</div>
 							<div class="d-flex mb-24">
-								<img :src="this.baseURL()+'/img/logo-footer.png'" class="w-100" alt="Company Footer">
+								<!-- <img :src="this.baseURL()+'/img/logo-footer.png'" class="w-100" alt="Company Footer"> -->
 							</div>
 						</div>
 					</div>
@@ -2283,10 +2291,29 @@
 				}.bind(this));
 			},
 
-			printContent:function(content){
-				var content = document.getElementById(content).innerHTML;
+			// // printContent:function(content){
+			// 	var content = document.getElementById(content).innerHTML;
+			// 	var target = document.querySelector('.to-print');
+			// 	var cancel = document.querySelector('#cancelVoucherModal');
+			// 	target.innerHTML = content;
+			// 	cancel.click();
+			// 	window.print();
+			// }, --!>
+			
+			printContent:function(content) {
+				var contentElement = document.getElementById(content);
+				if(!contentElement) return;
+				var content = contentElement.innerHTML;
 				var target = document.querySelector('.to-print');
 				var cancel = document.querySelector('#cancelVoucherModal');
+
+				if (content === 'soaPrintContent'){
+					// target.innerHTML += '<style type="text/css" media="print">@page { size: portrait; } .to-print { scale:10in; margin-left: 0.80in; margin-right: 0.80in;  margin-top: 0.25in; margin-bottom: 0; font-family:"Courier New" } </style>';
+					target.style.transform = 'scale(65)';
+				} else {
+					target.style.transform = '';
+				}
+
 				target.innerHTML = content;
 				cancel.click();
 				window.print();
