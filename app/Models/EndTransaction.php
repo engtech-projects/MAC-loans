@@ -232,7 +232,8 @@ class EndTransaction extends Model
         if (count($payments) > 0) {
 
             $ledger = $repaymentLedger->ledger('repayment');
-
+            $cheque_nos = "";
+            $cheque_date = "";
             $amountApplied = 0;
             foreach ($payments as $payment) {
 
@@ -248,7 +249,8 @@ class EndTransaction extends Model
                             if (Str::contains(Str::lower($payment->payment_type), 'check')) {
                                 $ledger[$key]['debit'] += $payment->amount_applied;
                             }
-
+                            $cheque_nos .= $payment->cheque_no ? $payment->cheque_no . ";" : ""; 
+                            $cheque_date = $payment->transaction_date;
                             break;
                         case 'Cash':
 
@@ -357,8 +359,8 @@ class EndTransaction extends Model
             $journalEntry->branch_id = $branch->branch_id;
             $journalEntry->book_id = $loanPaymentsBook;
             $journalEntry->source = 'Repayments';
-            $journalEntry->cheque_no;
-            $journalEntry->cheque_date;
+            $journalEntry->cheque_no = $cheque_nos;
+            $journalEntry->cheque_date = $cheque_date;
             $journalEntry->amount = $amountApplied;
             $journalEntry->payee = '';
             $journalEntry->status = $status;
