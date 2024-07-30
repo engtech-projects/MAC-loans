@@ -13,49 +13,52 @@ class GeneralLedger extends Model
     protected $primaryKey = 'gl_id';
 
     protected $fillable = [
-    	'loans',
-		'code',
-		'accounting',
-		'type',
+        'loans',
+        'code',
+        'accounting',
+        'type',
     ];
+    const CASH_IN_BANK_BDO = 'Cash in Bank - BDO';
+    const CASH_IN_BANK_METROBANK = 'Cash in Bank - BDO';
+    const BDO = 'BDO';
+    const METROBANK = 'METROBANK';
+    const BDO_ACCT = "1060";
+    const METROBANK_ACC = "1050";
 
 
-    public function ledger($type) {
+    public function ledger($type)
+    {
 
-    	$glAccounts = GeneralLedger::where(['type' => $type])->get();
+        $glAccounts = GeneralLedger::where(['type' => $type])->get();
 
-    	$ledger = [];
-    	foreach ($glAccounts as $gl) {
+        $ledger = [];
+        foreach ($glAccounts as $gl) {
 
-			$ledger[] = array(
-				'id' => ChartOfAccounts::where(['account_number' => $gl->code])->first()->account_id,
-				'acct' => $gl->code,
-				'title' => $gl->accounting,
-				'reference' => $gl->loans,
-				'sl' => '',
-				'debit' => 0,
-				'credit' => 0
-			);
-	    }
+            $ledger[] = array(
+                'id' => ChartOfAccounts::where(['account_number' => $gl->code])->first()->account_id,
+                'acct' => $gl->code,
+                'title' => $gl->accounting,
+                'reference' => $gl->loans,
+                'sl' => '',
+                'debit' => 0,
+                'credit' => 0
+            );
+        }
 
-    	return $ledger;
+        return $ledger;
     }
 
-    public function getDataFromLedger(Array $ledger, $identifier, $recordType = 'debit') {
+    public function getDataFromLedger(array $ledger, $identifier, $recordType = 'debit')
+    {
 
 
-    	foreach ($ledger as $key => $value) {
+        foreach ($ledger as $key => $value) {
 
 
-    		if( $value['reference'] === $identifier ){
+            if ($value['reference'] === $identifier) {
 
-    			return $value[$recordType];
-
-    		}
-
-    	}
-
+                return $value[$recordType];
+            }
+        }
     }
-
 }
-

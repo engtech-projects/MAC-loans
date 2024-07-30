@@ -235,11 +235,10 @@ class EndTransaction extends Model
             $cheque_nos = "";
             $cheque_date = "";
             $amountApplied = 0;
-            foreach ($payments as $payment) {
 
+            foreach ($payments as $payment) {
                 $amountApplied += $payment->amount_applied;
                 foreach ($ledger as $key => $value) {
-
                     switch ($value['reference']) {
                         case 'Loan Receivable':
                             $ledger[$key]['credit'] += $payment->principal;
@@ -249,7 +248,7 @@ class EndTransaction extends Model
                             if (Str::contains(Str::lower($payment->payment_type), 'check')) {
                                 $ledger[$key]['debit'] += $payment->amount_applied;
                             }
-                            $cheque_nos .= $payment->cheque_no ? $payment->cheque_no . ";" : ""; 
+                            $cheque_nos .= $payment->cheque_no ? $payment->cheque_no . ";" : "";
                             $cheque_date = $payment->transaction_date;
                             break;
                         case 'Cash':
@@ -258,11 +257,12 @@ class EndTransaction extends Model
                                 $ledger[$key]['debit'] += ($payment->amount_applied - $payment->rebates);
                             }
 
+
                             break;
                         case 'Rebates':
 
                             if ($payment->rebates > 0 && $payment->rebates_approval_no) {
-                             //   $ledger[$key]['debit'] += $payment->rebates;
+                                //   $ledger[$key]['debit'] += $payment->rebates;
                             }
 
                             break;
@@ -316,8 +316,14 @@ class EndTransaction extends Model
                         case 'POS':
 
                             if (Str::contains(Str::lower($payment->payment_type), 'pos')) {
-                                $ledger[$key]['debit'] += $payment->amount_applied;
+                                if ($payment->bank_name === GeneralLedger::BDO && $ledger[$key]['acct'] == GeneralLedger::BDO_ACCT) {
+                                    $ledger[$key]['debit'] += $payment->amount_applied;
+                                }
+                                if ($payment->bank_name == GeneralLedger::METROBANK && $ledger[$key]['acct'] == GeneralLedger::METROBANK_ACC) {
+                                    $ledger[$key]['debit'] += $payment->amount_applied;
+                                }
                             }
+
 
                             break;
 

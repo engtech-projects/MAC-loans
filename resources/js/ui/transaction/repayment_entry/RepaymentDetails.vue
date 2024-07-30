@@ -1578,7 +1578,7 @@ export default {
     data() {
         return {
             modal: false,
-            banks: ["Land Bank", "PNB", "BDO"],
+            banks: ["Land Bank", "PNB", "BDO", "Metro Bank"],
             chequeAdd: false,
             paymentType: "Cash Payment",
             transactionDate: {
@@ -2199,7 +2199,7 @@ export default {
                 );
                 return false; // Indicates that the check failed
             }
-            
+
             return true; // Indicates that the check passed
         },
         pay: function () {
@@ -2215,7 +2215,7 @@ export default {
                     return; // Exit if any approval number check fails
                 }
             }
-            
+
             this.payment.loan_account_id = this.loanAccount.loan_account_id;
             this.payment.pdi += this.pdiWaive;
             this.payment.penalty += this.penaltyWaive;
@@ -2430,7 +2430,7 @@ export default {
             return (
                 this.duePrincipal +
                 this.dueInterestRebates +
-                this.duePdi 
+                this.duePdi
                 // this.duePenalty
             );
         },
