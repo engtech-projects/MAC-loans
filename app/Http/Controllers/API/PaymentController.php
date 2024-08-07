@@ -42,7 +42,11 @@ class PaymentController extends BaseController
         // $request->merge(['branch_id' => 2]);
 
         // $payment->addPayment($request);
-
+        $endTransaction = new EndTransaction();
+        $dateEnd = $endTransaction->getTransactionDate($request->input("branch_id"));
+        if ($dateEnd->status !== 'open') {
+            return $this->sendError("Transaction Date is Closed.", $dateEnd);
+        }
         $pendingPayment = $payment->getOngoingPayment($request->input());
         if ($pendingPayment) {
             $message = "There is still a pending payment for this account, please override " . ($pendingPayment->or_no ? "OR #: " . $pendingPayment->or_no : "Ref. #: " . $pendingPayment->reference_no);

@@ -168,7 +168,9 @@ class Payment extends Model
         $payment->vat = 0.00;
         $payment->reference_id = $request->input('reference_id');
         $payment->remarks = $request->input('remarks');
-        $payment->transaction_date = $request->input("transaction_date");
+        $endTransaction = new EndTransaction();
+        $dateEnd = $endTransaction->getTransactionDate($request->input("branch_id"));
+        $payment->transaction_date = $dateEnd->date_end;
 
         if ($payment->interest > 0 || $payment->pdi > 0 || $payment->penalty > 0) {
             $pdi = 0;
