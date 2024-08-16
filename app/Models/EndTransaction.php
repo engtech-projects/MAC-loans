@@ -244,17 +244,21 @@ class EndTransaction extends Model
                         case 'Loan Receivable':
                             $ledger[$key]['credit'] += $payment->principal;
                             break;
+                        case 'Gcash':
+                            if (Str::lower($payment->payment_type) == 'gcash') {
+                                $ledger[$key]['debit'] += ($payment->amount_applied - $payment->rebates);
+                            }
+                            break;
                         case 'Check':
 
                             if (Str::contains(Str::lower($payment->payment_type), 'check')) {
                                 $ledger[$key]['debit'] += $payment->amount_applied;
                             }
-                            $cheque_nos .= $payment->cheque_no ? $payment->cheque_no . ";" : ""; 
+                            $cheque_nos .= $payment->cheque_no ? $payment->cheque_no . ";" : "";
                             $cheque_date = $payment->transaction_date;
                             break;
                         case 'Cash':
-
-                            if (Str::contains(Str::lower($payment->payment_type), 'cash')) {
+                            if (Str::lower($payment->payment_type) == 'cash') {
                                 $ledger[$key]['debit'] += ($payment->amount_applied - $payment->rebates);
                             }
 
@@ -262,7 +266,7 @@ class EndTransaction extends Model
                         case 'Rebates':
 
                             if ($payment->rebates > 0 && $payment->rebates_approval_no) {
-                             //   $ledger[$key]['debit'] += $payment->rebates;
+                                //   $ledger[$key]['debit'] += $payment->rebates;
                             }
 
                             break;

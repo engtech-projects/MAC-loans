@@ -53,10 +53,12 @@ class Payment extends Model
         'transaction_date',
         'cancelled_date',
         'cancelled_by',
+        'gcash_no'
     ];
 
     public $pCodes = [
         'cash' => 'CSH',
+        'Gcash' => 'GCS',
         'check' => 'CHK',
         'pos' => 'POS',
         'deduct' => 'MDB',
@@ -171,6 +173,7 @@ class Payment extends Model
         $endTransaction = new EndTransaction();
         $dateEnd = $endTransaction->getTransactionDate($request->input("branch_id"));
         $payment->transaction_date = $dateEnd->date_end;
+        $payment->gcash_no = $request->input('gcash_no');
 
         if ($payment->interest > 0 || $payment->pdi > 0 || $payment->penalty > 0) {
             $pdi = 0;
@@ -272,6 +275,9 @@ class Payment extends Model
         if ($paymentType) {
 
             if (Str::contains(Str::lower($paymentType), 'cash')) {
+                if ($paymentType == 'Gcash') {
+                    return $this->pCodes['Gcash'] . '-' . str_pad($paymentId, 7, '0', STR_PAD_LEFT);
+                }
                 return $this->pCodes['cash'] . '-' . str_pad($paymentId, 7, '0', STR_PAD_LEFT);
             }
             if (Str::contains(Str::lower($paymentType), 'check')) {

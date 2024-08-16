@@ -429,6 +429,10 @@
                                             </select>
                                         </div>
                                     </div>
+                                    <div class="form-group mb-10 mr-16 flex-1" v-if="payment.payment_type=='Gcash'">
+									<label for="transactionDate" class="form-label">Gcash #</label>
+									<input required v-model="payment.gcash_no" type="text" class="form-control form-input" id="transactionDate">
+								</div>
                                     <div
                                         class="form-group mb-10 mr-16 flex-1"
                                         v-if="payment.payment_type != 'Memo'"
@@ -1701,6 +1705,7 @@ export default {
                 branch_id: this.pbranch,
                 payment_type: "Cash Payment",
                 or_no: null,
+                gcash_no:null,
                 cheque_no: null,
                 bank_name: null,
                 reference_no: null,
@@ -2199,7 +2204,7 @@ export default {
                 );
                 return false; // Indicates that the check failed
             }
-            
+
             return true; // Indicates that the check passed
         },
         pay: function () {
@@ -2215,7 +2220,7 @@ export default {
                     return; // Exit if any approval number check fails
                 }
             }
-            
+
             this.payment.loan_account_id = this.loanAccount.loan_account_id;
             this.payment.pdi += this.pdiWaive;
             this.payment.penalty += this.penaltyWaive;
@@ -2430,7 +2435,7 @@ export default {
             return (
                 this.duePrincipal +
                 this.dueInterestRebates +
-                this.duePdi 
+                this.duePdi
                 // this.duePenalty
             );
         },
