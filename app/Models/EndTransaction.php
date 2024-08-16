@@ -236,18 +236,14 @@ class EndTransaction extends Model
             $cheque_date = "";
             $amountApplied = 0;
             foreach ($payments as $payment) {
-
                 $amountApplied += $payment->amount_applied;
                 foreach ($ledger as $key => $value) {
-
                     switch ($value['reference']) {
                         case 'Loan Receivable':
                             $ledger[$key]['credit'] += $payment->principal;
                             break;
                         case 'Gcash':
-                            if (Str::lower($payment->payment_type) == 'gcash') {
-                                $ledger[$key]['debit'] += ($payment->amount_applied - $payment->rebates);
-                            }
+                            $ledger[$key]['debit'] += ($payment->amount_applied - $payment->rebates);
                             break;
                         case 'Check':
 
@@ -258,10 +254,9 @@ class EndTransaction extends Model
                             $cheque_date = $payment->transaction_date;
                             break;
                         case 'Cash':
-                            if (Str::lower($payment->payment_type) == 'cash') {
+                            if (Str::contains(Str::lower($payment->payment_type), 'cash')) {
                                 $ledger[$key]['debit'] += ($payment->amount_applied - $payment->rebates);
                             }
-
                             break;
                         case 'Rebates':
 
