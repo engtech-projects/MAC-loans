@@ -243,7 +243,9 @@ class EndTransaction extends Model
                             $ledger[$key]['credit'] += $payment->principal;
                             break;
                         case 'Gcash':
-                            $ledger[$key]['debit'] += ($payment->amount_applied - $payment->rebates);
+                            if ($payment->payment_type == 'Gcash') {
+                                $ledger[$key]['debit'] += ($payment->amount_applied - $payment->rebates);
+                            }
                             break;
                         case 'Check':
 
@@ -254,7 +256,7 @@ class EndTransaction extends Model
                             $cheque_date = $payment->transaction_date;
                             break;
                         case 'Cash':
-                            if (Str::contains(Str::lower($payment->payment_type), 'cash')) {
+                            if ($payment->payment_type == 'Cash Payment') {
                                 $ledger[$key]['debit'] += ($payment->amount_applied - $payment->rebates);
                             }
                             break;
