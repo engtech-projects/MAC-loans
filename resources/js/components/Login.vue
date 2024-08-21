@@ -3,7 +3,12 @@
 		<div class="card-header text-center">
 		<!-- <span href="" class="h1"><b>δάνειο</b>s</span> -->
 		<span href="" class="h1"><img :src="baseURL()+'/img/logo-side.png'" alt=""></span>
+        <div class="col-md-12">
+                            <h6 class="text-uppercase">loans</h6>
+                        </div>
+
 		</div>
+
 		<div class="card-body">
 			<p class="login-box-msg">Sign in</p>
 
