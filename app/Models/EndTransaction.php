@@ -325,6 +325,8 @@ class EndTransaction extends Model
                             $ledger[$key]['credit'] += $payment->vat;
                             break;
                     }
+                    round($ledger[$key]['credit'], 2);
+                    round($ledger[$key]['debit'], 2);
                 }
             }
 
