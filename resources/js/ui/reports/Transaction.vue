@@ -147,7 +147,7 @@
 								<tr :class="rowBorders(p[0])" v-for="p,i in paymentSummary.row" :key="i">
 									<td v-for="j,k in p" :key="k">{{p[0]=='TOTAL PRODUCT'&&k>1?formatToCurrency(j):j}}</td>
 								</tr>
-								<tr class="bg-primary-dark text-white text-bold">
+								<tr class="text-bold">
 									<td style="padding:7px!important">TOTAL</td>
 									<td style="padding:7px!important"></td>
 									<td style="padding:7px!important">{{formatToCurrency(paymentSummary.total.principal)}}</td>
