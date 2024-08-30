@@ -300,7 +300,7 @@ export default {
 			if(fr[0]=='OFFICER SUB-TOTAL'){
 				return 'bbt-8-light text-primary-dark text-bold';
 			}else if(fr[0]=='TOTAL'){
-				return 'text-white text-bold bg-primary-dark'
+				return 'text-bold'
 			}
 			
 		}
