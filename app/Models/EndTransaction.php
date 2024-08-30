@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Log;
 
 class EndTransaction extends Model
 {
@@ -235,6 +236,12 @@ class EndTransaction extends Model
             $cheque_nos = "";
             $cheque_date = "";
             $amountApplied = 0;
+            $vats = [
+                "Rebates" => 0,
+                "Interest Income" => 0,
+                "Penalty Income" => 0,
+                "Pastdue Interest" => 0,
+            ];
             foreach ($payments as $payment) {
                 $amountApplied += $payment->amount_applied;
                 foreach ($ledger as $key => $value) {
@@ -263,9 +270,9 @@ class EndTransaction extends Model
                         case 'Rebates':
 
                             if ($payment->rebates > 0 && $payment->rebates_approval_no) {
-                                //   $ledger[$key]['debit'] += $payment->rebates;
-                            }
+                            //    $ledger[$key]['debit'] += $payment->rebates;
 
+                            }
                             break;
                         case 'Interest Income':
                             // rebates
@@ -273,13 +280,16 @@ class EndTransaction extends Model
                             if ($payment->rebates > 0 && $payment->rebates_approval_no) {
                                 $r = $payment->rebates;
                             }
-
+                            
+                            $vats["Interest Income"] += $this->roundedIncomeVat($payment->interest);
                             $ledger[$key]['credit'] += ($payment->interest);
+                            
                             break;
                         case 'Penalty Income':
 
                             if ($payment->penalty > 0 && !$payment->penalty_approval_no) {
                                 $ledger[$key]['credit'] += $payment->penalty;
+                                $vats["Penalty Income"] += $this->roundedIncomeVat($payment->penalty);
                             }
 
                             break;
@@ -290,6 +300,7 @@ class EndTransaction extends Model
 
                             if ($payment->pdi > 0 && !$payment->pdi_approval_no) {
                                 $ledger[$key]['credit'] += $payment->pdi;
+                                $vats["Pastdue Interest"] += $this->roundedIncomeVat($payment->pdi);
                             }
 
                             break;
@@ -333,12 +344,13 @@ class EndTransaction extends Model
 
             foreach ($ledger as $k => $v) {
 
-                switch ($v['reference']) {
+                switch ($v['reference']) { 
                     case 'VAT':
-                        $rebates = $repaymentLedger->getDataFromLedger($ledger, 'Rebates');
-                        $interestIncome = $repaymentLedger->getDataFromLedger($ledger, 'Interest Income', 'credit');
-
-                        $ledger[$k]['debit'] = round(($interestIncome - $rebates) / 1.12 * 0.12, 2);
+                        $ledger[$k]['debit'] = $vats["Interest Income"];
+                        // $rebates = $repaymentLedger->getDataFromLedger($ledger, 'Rebates');
+                        // $interestIncome = $repaymentLedger->getDataFromLedger($ledger, 'Interest Income', 'credit');
+                        // round($ledger[$k]['debit'],2);
+                        // echo round($ledger[$k]['debit'],2);
                         break;
 
                     case 'Penalty':
@@ -352,6 +364,7 @@ class EndTransaction extends Model
                         $ledger[$k]['debit'] = round($pdi / 1.12 * 0.12, 2);
                         break;
                 }
+                round($ledger[$k]['debit'],2);
             }
 
             $journalEntry = new JournalEntry();
@@ -418,5 +431,9 @@ class EndTransaction extends Model
         $transactionDate = EndTransaction::where(['branch_id' => $branchId, 'status' => 'open'])->get()->last();
         $transactionDate->status = 'closed';
         return $transactionDate->save();
+    }
+    public function roundedIncomeVat($amount)
+    {
+        return round($amount / 1.12 * 0.12, 2);
     }
 }
