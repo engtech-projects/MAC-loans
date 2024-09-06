@@ -917,11 +917,25 @@
 				return this.loanDetails.current_amortization.schedule_interest + this.loanDetails.current_amortization.schedule_principal;
 			},
 			totalInterest:function(){
-				return this.loanDetails.current_amortization.interest + this.loanDetails.current_amortization.short_interest;
-			},
+				if(this.loanDetails.current_amortization) {
+	                if(this.loanDetails.current_amortization.status == "delinquent" && this.loanDetails.payment_mode == "Weekly") {
+	                    return this.loanDetails.current_amortization.short_interest
+	                }
+                	return this.loanDetails.current_amortization.interest + this.loanDetails.current_amortization.short_interest
+	            }else {
+	                return 0;
+	            }
+        	},
 			totalPrincipal:function(){
-				return this.loanDetails.current_amortization.principal + this.loanDetails.current_amortization.short_principal;
-			},
+				if(this.loanDetails.current_amortization) {
+	                if(this.loanDetails.current_amortization.status == "delinquent" && this.loanDetails.payment_mode == "Weekly") {
+	                    return this.loanDetails.current_amortization.short_principal
+	                }
+	                return this.loanDetails.current_amortization.principal + this.loanDetails.current_amortization.short_principal
+	            }else {
+	                return 0;
+	            }
+	        },
 			duePdi:function(){
 				if(this.loanDetails.remaining_balance){
 					return this.loanDetails.remaining_balance.pdi.balance;
