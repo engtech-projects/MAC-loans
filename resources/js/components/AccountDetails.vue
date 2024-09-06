@@ -319,7 +319,7 @@
 											<span>Penalty</span>
 											<span>:</span>
 										</div>
-										<span class="flex-3 pl-10">P {{formatToCurrency(duePenalty)}}</span>
+										<span class="flex-3 pl-10">P 0.00</span>
 									</div>
 									<div class="d-flex justify-content-between py-5 text-primary-dark">
 										<div class="flex-4 d-flex justify-content-between">
@@ -952,7 +952,7 @@
 				return this.totalPrincipal > this.loanDetails.current_amortization.advance_principal ? this.totalPrincipal - this.loanDetails.current_amortization.advance_principal : 0;
 			},
 			totalDue:function(){
-				return this.duePrincipal + this.dueInterest + this.duePdi + this.duePenalty;
+				return this.duePrincipal + this.dueInterest + this.duePdi;
 			},
 			excessAdvancePrincipal:function(){
 				return this.loanDetails.current_amortization.advance_principal < this.totalPrincipal ? 0 : this.loanDetails.current_amortization.advance_principal - this.totalPrincipal;
@@ -970,7 +970,7 @@
 				return this.outstandingInterest;
 			},
 			outstandingSurchargeRemaining: function(){
-				return this.duePdi + this.duePenalty;
+				return this.duePdi;
 			},
 			outstandingTotalRemaining:function(){
 				return this.outstandingPrincipalRemaining + this.outstandingInterestRemaining + this.outstandingSurchargeRemaining;
