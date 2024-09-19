@@ -202,10 +202,18 @@ class EndTransaction extends Model
 
                 if ($value['debit'] > 0 || $value['credit'] > 0) {
 
+
+                    // Check the value of journal_details_title
+                    if(in_array($value['title'], ['Notarial Payable', 'Documentary Stamp Tax Payable', 'Loan Insurance Payable' ])){
+                        $subsidiary_id = '0000';
+                    } else {
+                        $subsidiary_id = $branch->branch_code; // Otherwise, set subsidiary_id to branch_code
+                    }
+
                     $entryData[] = [
                         'journal_id' => $journalEntry->journal_id,
                         'account_id' => $value['id'],
-                        'subsidiary_id' => $branch->branch_code,
+                        'subsidiary_id' => $subsidiary_id,
                         'journal_details_account_no' => $value['acct'],
                         'journal_details_title' => $value['title'],
                         'journal_details_debit' => $value['debit'],
