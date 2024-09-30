@@ -151,7 +151,7 @@
 									<td style="padding:7px!important">TOTAL</td>
 									<td style="padding:7px!important"></td>
 									<td style="padding:7px!important">{{formatToCurrency(paymentSummary.total.principal)}}</td>
-									<td style="padding:7px!important">{{formatToCurrency(paymentSummary.total.interest - paymentSummary.total.discount)}}</td>
+									<td style="padding:7px!important">{{formatToCurrency(paymentSummary.total.interest)}}</td>
 									<td style="padding:7px!important">{{formatToCurrency(paymentSummary.total.pdint)}}</td>
 									<td style="padding:7px!important">{{formatToCurrency(paymentSummary.total.over)}}</td>
 									<td style="padding:7px!important">{{formatToCurrency(paymentSummary.total.discount)}}</td>
