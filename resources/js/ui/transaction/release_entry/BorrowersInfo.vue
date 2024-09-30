@@ -615,13 +615,13 @@
 			},
 			resetData:function(data){
 				if(data == 'outstandingObligations'){
-					this.data[data] = {creditor : '',amount : 0,balance : 0,term : '',due_date : '',amortization : 0}
+					this.data[data] = {id : null,creditor : '',amount : 0,balance : 0,term : '',due_date : '',amortization : 0}
 				}else if(data == 'householdMembers'){
-					this.data[data] = {dependent : '',age : 0,relationship : '',occupation : '',contact_no : 0,sbe_address : ''}
+					this.data[data] = {id : null,dependent : '',age : 0,relationship : '',occupation : '',contact_no : 0,sbe_address : ''}
 				}else if(data == 'employmentInfo'){
 					this.data[data] = {id : null,company_name : '',company_address : '',contact_no : '',years_employed : '',position : '',salary : ''}
 				}else if(data == 'businessInfo'){
-					this.data[data] = {business_name :'',business_type : '',business_address : '',contact_no : '',years_in_business : '',income : 0,}
+					this.data[data] = {id : null,business_name :'',business_type : '',business_address : '',contact_no : '',years_in_business : '',income : 0,}
 				}
 			},
 			removeData:function(data, index){
