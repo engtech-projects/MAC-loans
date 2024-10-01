@@ -383,7 +383,7 @@
 								<th>VAT</th>
 								<th>Type</th>
 							</thead>
-							<tbody v-if="transaction">
+							<tbody v-if="transactions">
 								<tr v-for="t,i in transactions?.client?.collection?.sort((a, b) => a.borrower.localeCompare(b.borrower))" :key="i">
 									<td>{{t.borrower}}</td>
 									<td>{{t.date_paid}}</td>
@@ -820,9 +820,9 @@ export default {
 					totalRow[index] += t.payment[i].total_payment;
 					result.total.totalPayment += t.payment[i].total_payment;
 					index++;
-					row.push(this.formatToCurrency((t.payment[i].interest - t.payment[i].discount)/1.12));
-					totalRow[index] += (t.payment[i].interest - t.payment[i].discount)/1.12;
-					result.total.netInt += (t.payment[i].interest - t.payment[i].discount)/1.12;
+					row.push(this.formatToCurrency(t.payment[i].interest/1.12));
+					totalRow[index] += t.payment[i].interest/1.12;
+					result.total.netInt += t.payment[i].interest/1.12;
 					index++;
 					row.push(this.formatToCurrency(t.payment[i].pdi/1.12));
 					totalRow[index] += t.payment[i].pdi/1.12;
