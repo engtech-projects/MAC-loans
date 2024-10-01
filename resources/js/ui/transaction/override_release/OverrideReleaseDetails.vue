@@ -72,6 +72,14 @@
 
 					<div class="d-flex flex-row mb-12">
 						<div class="d-flex flex-row flex-1 justify-content-between pr-24">
+							<span class="">Affidavit</span>
+							<span>:</span>
+						</div>
+						<span class="flex-1 text-primary-dark">{{formatToCurrency(loanaccount.affidavit_fee)}}</span>
+					</div>
+
+					<div class="d-flex flex-row mb-12">
+						<div class="d-flex flex-row flex-1 justify-content-between pr-24">
 							<span class="">Prepaid Interest</span>
 							<span>:</span>
 						</div>
@@ -87,19 +95,22 @@
 					</div>
 
 					<div class="d-flex flex-row mb-12">
-						<div class="d-flex flex-row flex-1 justify-content-between pr-24">
+						<div class="d-flex flex-row flex-1 justify-content-between pr-24 text-bold">
 							<span class="">Net Amount</span>
 							<span>:</span>
 						</div>
-						<span class="flex-1 text-primary-dark">{{formatToCurrency(loanaccount.net_proceeds)}}</span>
+						<span class="flex-1 text-bold text-primary-dark">{{formatToCurrency(loanaccount.net_proceeds)}}</span>
 					</div>
 
+					
+					
+
 					<div class="d-flex flex-row mb-12">
-						<div class="d-flex flex-row flex-1 justify-content-between pr-24">
-							<span class="">Affidavit</span>
+						<div class="d-flex flex-row flex-1 justify-content-between pr-24 text-bold">
+							<span class="">Amort Total</span>
 							<span>:</span>
 						</div>
-						<span class="flex-1 text-primary-dark">{{formatToCurrency(loanaccount.affidavit_fee)}}</span>
+						<span class="flex-1 text-primary-dark text-bold">{{amortAmount}}</span>
 					</div>
 					<div class="d-flex flex-row mb-12">
 						<div class="d-flex flex-row flex-1 justify-content-between pr-24">
@@ -108,23 +119,24 @@
 						</div>
 						<span class="flex-1 text-primary-dark">{{loanaccount.release_type}}</span>
 					</div>
+
 				</div>
 				<div class="d-flex flex-column flex-1">
-					<h4 class="text-primary-dark mb-12">Loan Details</h4>
+					<h4 class="text-primary-dark mb-12 ">Loan Details</h4>
 					<div class="d-flex flex-row mb-12">
-						<div class="d-flex flex-row flex-1 justify-content-between pr-24">
+						<div class="d-flex flex-row flex-1 justify-content-between pr-24 text-bold">
 							<span class="">Amount Loan</span>
 							<span>:</span>
 						</div>
-						<span class="flex-1 text-primary-dark">{{formatToCurrency(loanaccount.loan_amount)}}</span>
+						<span class="flex-1 text-primary-dark text-bold">{{formatToCurrency(loanaccount.loan_amount)}}</span>
 					</div>
 
 					<div class="d-flex flex-row mb-12">
-						<div class="d-flex flex-row flex-1 justify-content-between pr-24">
+						<div class="d-flex flex-row flex-1 justify-content-between pr-24 text-bold">
 							<span class="">Interest</span>
 							<span>:</span>
 						</div>
-						<span class="flex-1 text-primary-dark">{{formatToCurrency(loanaccount.interest_amount)}}</span>
+						<span class="flex-1 text-primary-dark text-bold">{{formatToCurrency(loanaccount.interest_amount)}}</span>
 					</div>
 
 					<div class="d-flex flex-row mb-12">
@@ -182,11 +194,11 @@
 						<span class="flex-1 text-primary-dark">{{dateToMDY(new Date(loanaccount.date_release))}}</span>
 					</div>
 					<div class="d-flex flex-row mb-12">
-						<div class="d-flex flex-row flex-1 justify-content-between pr-24">
+						<div class="d-flex flex-row flex-1 justify-content-between pr-24 text-bold">
 							<span class="">Due Date</span>
 							<span>:</span>
 						</div>
-						<span class="flex-1 text-primary-dark">{{dateToMDY(new Date(loanaccount.due_date))}}</span>
+						<span class="flex-1 text-primary-dark text-bold">{{dateToMDY(new Date(loanaccount.due_date))}}</span>
 					</div>
 
 				</div>
@@ -527,15 +539,17 @@
 			<div class="modal-dialog modal-lg minw-70" role="document">
 			<div class="modal-content">
 				<div class="modal-body font-md" id="voucherPrintContent">
-					<img :src="this.baseURL()+'/img/company_header.png'" style="width:100%" class="mb-24" alt="Company Header">
+					<!-- <img :src="this.baseURL()+'/img/company_header.png'" style="width:100%" class="mb-24" alt="Company Header"> -->
 					<div class="d-flex flex-column" style="padding:0 50px;">
 						<div class="d-flex flex-row align-items-center mb-24 darker-bb pb-10">
 							<div class="flex-1">
-								<span class="text-primary-dark font-25">{{pbranch.branch_name}} BRANCH ({{pbranch.branch_code}})</span>
+								<span class="text-primary-dark font-25">{{pbranch.branch_name}} Branch ({{pbranch.branch_code}})</span>
 							</div>
 							<div class="d-flex flex-column">
-								<span class="font-26 text-bold text-primary-dark lh-1">CASH VOUCHER</span>
+								<span class="text-center font-26 text-bold text-primary-dark lh-1">CASH VOUCHER</span>
+								<span class="text-center text-primary-dark text-bold font-md mb-5">MICRO ACCESS LOAN CORPORATION</span>
 							</div>
+							
 							<div class="flex-1 d-flex justify-content-end pr-10">
 								<span class=" mr-10">{{dateFullDay(new Date())}} {{dateToYMD(new Date()).split('-').join('/')}}</span>
 								<span class="">Time: {{todayTime(new Date())}} {{(new Date()).getHours() > 12? 'PM':'AM'}}</span>
@@ -708,7 +722,7 @@
 						</section>
 
 						<div class="mb-72"></div>
-						<img :src="this.baseURL()+'/img/logo-footer.png'" class="w-100 page-footer" alt="">
+						
 						<div class="d-flex flex-row-reverse mb-45 no-print" style="margin-top:24px">
 							<a @click="printVoucher()" href="#" class="btn btn-default min-w-150">Print</a>
 							<!-- <a href="#" @click.prevent="export2Word('voucherPrintContent', 'Voucher')" class="btn btn-success min-w-150 mr-24">Download Document</a> -->
@@ -1002,7 +1016,21 @@ export default {
 		printVoucher:function(){
 			var content = document.getElementById('voucherPrintContent').innerHTML;
 			var target = document.querySelector('.to-print');
-			target.innerHTML += '<style type="text/css" media="print">@page { size: portrait;} font-family:"Courier New" margin</style>';
+			// target.innerHTML += '<style type="text/css" media="print">@page { size: portrait;} font-family:"Courier New" margin</style>';
+			target.innerHTML += `
+			<style type="text/css" media="print">
+				@page {
+					size: 8.5in 11in portrait; /* Short/Letter size (8.5x11 inches) with portrait orientation */
+					margin: 0.5in; /* Adjust margins as needed */
+				.to-print {
+					transform: scale(108px); /* Custom scale of 75% for print */
+					ransform-origin: top left; /* Ensure scaling starts from the top left */
+					}	
+				}
+				body {
+					font-family: "Courier New"; /* Apply the desired font */
+				}
+			</style>`;
 			var cancel = document.querySelector('#cancelVoucherModal');
 			target.innerHTML = content;
 			cancel.click();

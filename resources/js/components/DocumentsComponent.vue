@@ -93,12 +93,21 @@
 								<div class="tab-content" id="custom-content-below-tabContent">
 
 									<div  class="tab-pane fade show active" id="reminder-letter" role="tabpanel" aria-labelledby="custom-content-below-home-tab">
-										<img :src="baseUrl+'/img/company_header.png'" style="width:100%" class="mb-45" alt="Company Header">
+										
 										<div class="d-flex flex-column font-md justify-content-between" style="padding:0 35px; min-height:420mm">
 											<div>
-												<div class="d-flex flex-column title align-items-start mb-24">
-												<span class="font-26 lh-1">MGA PAHINUMDOM</span>
+												<div class="flex-1">
+													<span class="text-primary-dark font-25">{{branch.branch_name}} Branch ({{branch.branch_code}})</span>
 												</div>
+												<div class="d-flex flex-column">
+													<span class="text-center font-26 text-bold text-primary-dark lh-1">MGA PAHINUMDOM</span>
+													<span class="text-center text-primary-dark text-bold font-md mb-5">MICRO ACCESS LOAN CORPORATION</span>
+												</div>
+												
+												<br>
+												<br>
+												<br>
+											
 												<section class="font-lg">
 													<ol class="mb-64">
 														<li class="mb-12">Ginadili ang pagdawat o pagbayad kong walay resibo. Gikinahanglan adunay e-isyu Nga resibo gikan sa Account Officer sa MAC.</li>
@@ -120,7 +129,7 @@
 											</div>
 											<div>
 												<div class="d-flex mb-24">
-													<img :src="this.baseURL()+'/img/logo-footer.png'" class="w-100" alt="">
+													<!-- <img :src="this.baseURL()+'/img/logo-footer.png'" class="w-100" alt=""> -->
 												</div>
 												<div class="mb-72"></div>
 												<div class="d-flex flex-row-reverse mb-45 no-print">
@@ -716,12 +725,16 @@
 
 
 									<div  class="tab-pane fade" id="dacion-en-pago" role="tabpanel" aria-labelledby="custom-content-below-home-tab">
-										<img :src="baseUrl+'/img/company_header.png'" style="width:100%" class="mb-16" alt="Company Header">
+										
 										<div class="d-flex flex-column font-md justify-content-between" style="padding:0 35px;min-height:420mm">
 											<div>
-												<div class="d-flex flex-column title align-items-center mb-24">
-													<span class="font-26 text-bold text-primary-dark lh-1">DACION EN PAGO</span>
-												</div>
+												<div class="flex-1">
+														<span class="text-primary-dark font-25">{{branch.branch_name}} Branch ({{branch.branch_code}})</span>
+													</div>
+													<div class="d-flex flex-column">
+														<span class="text-center font-26 text-bold text-primary-dark lh-1">DACION EN PAGO</span>
+														<span class="text-center text-primary-dark text-bold font-md mb-5">MICRO ACCESS LOAN CORPORATION</span>
+													</div>
 												<section style="font-size:16px!important;line-height:1.4em">
 													<span class="text-block mb-24">KNOW ALL MEN BY THESE PRESENTS:</span>
 													<p>
@@ -797,9 +810,7 @@
 												</section>
 											</div>
 											<div>
-												<div class="d-flex mb-24">
-													<img :src="this.baseURL()+'/img/logo-footer.png'" class="w-100" alt="">
-												</div>
+												
 												<div class="mb-72"></div>
 												<div class="d-flex flex-row-reverse mb-45 no-print">
 													<button @click="printContent('dacion-en-pago')" class="btn btn-default min-w-150">Print</button>
@@ -812,12 +823,16 @@
 
 
 									<div  class="tab-pane fade" id="doa-for-atm" role="tabpanel" aria-labelledby="custom-content-below-home-tab">
-										<img :src="baseUrl+'/img/company_header.png'" style="width:100%" class="mb-16" alt="Company Header">
+										
 										<div class="d-flex flex-column font-md justify-content-between" style="padding:0 35px;min-height:420mm;">
 											<div>
-												<div class="d-flex flex-column title align-items-center mb-24">
-													<span class="font-26 text-bold text-primary-dark lh-1">DEED OF ASSIGNMENT</span>
-												</div>
+												<div class="flex-1">
+														<span class="text-primary-dark font-25">{{branch.branch_name}} Branch ({{branch.branch_code}})</span>
+													</div>
+													<div class="d-flex flex-column">
+														<span class="text-center font-26 text-bold text-primary-dark lh-1">DEED OF ASSIGNMENT</span>
+														<span class="text-center text-primary-dark text-bold font-md mb-5">MICRO ACCESS LOAN CORPORATION</span>
+													</div>
 												<section style="font-size:16px!important;line-height:1.4em">
 													<span class="text-block mb-24 text-bold">KNOW ALL MEN BY THESE PRESENTS:</span>
 													<p>
@@ -853,7 +868,7 @@
 															<span>ASSIGNOR</span>
 														</div>
 														<div class="flex-1 d-flex flex-column align-items-center">
-															<b class="text-block">{{branch_mgr}}</b>
+															<b class="text-block">--</b>
 															<span>ASSIGNEE</span>
 														</div>
 													</div>
@@ -920,9 +935,7 @@
 												</section>
 											</div>
 											<div>
-												<div class="d-flex mb-24">
-													<img :src="this.baseURL()+'/img/logo-footer.png'" class="w-100" alt="">
-												</div>
+												
 												<div class="mb-72"></div>
 												<div class="d-flex flex-row-reverse mb-45 no-print">
 													<button @click="printContent('doa-for-atm')" class="btn btn-default min-w-150">Print</button>
@@ -1201,7 +1214,8 @@
 														I/We <b> {{borrower.lastname + ', ' + borrower.firstname + ' ' + borrower.middlename.charAt(0) + '. and ' + loanDetails.co_borrower_name}}</b>  borrowed and received the amount of <span class="allcaps"><b>{{numToWords(loanDetails.loan_amount)}} </b> PESOS</span> (P {{formatToCurrency(loanDetails.loan_amount)}}) and promise to pay jointly and severally (solidarily) to the <b>MICRO ACCESS LOANS CORPORATION</b>  until full payment of the said amount including interest rate of ( <b> {{formatToCurrency(loanDetails.interest_rate)}}%</b> ) per month. And with the following terms and conditions stated below:
 													</p>
 												</section>
-												<span class="bbt-8 py-7 text-center text-block text-20 text-bold mb-16">TERMS AND CONDITIONS</span>
+												<hr>
+												<span class="bbt-3 py-7 text-center text-block text-20 text-bold">TERMS AND CONDITIONS</span>
 												<section class="mb-24" style="font-size:16px!important;line-height:1.3em!important">
 													<div class="d-flex flex-row">
 														<div class="d-flex flex-column flex-1 font-md">
@@ -1248,7 +1262,8 @@
 														</div>
 													</div>
 												</section>
-												<span class="bbt-8 py-7 text-center text-block text-20 text-bold mb-16">OTHER CONDITIONS</span>
+												<hr>
+												<span class="bbt-1 py-7 text-center text-block text-20 text-bold">OTHER CONDITIONS</span>
 												<section class="font-md mb-24" style="font-size:15px!important;line-height:1.3em!important">
 													<p style="line-height:1.3" class="mb-36 text-justify">
 														In case of default, this note will be due and demandable without further demand, and an additional fee of (2%) per missed payment of the scheduled amortization as penalty, And in case this note be given to hands of an attorney an additional charged of (10%) of the total amount due will be charged as attorney's fee, further, the borrower is liable to litigation expenses, damages, etc. should the failure on the part of the borrower reach the courts. In cases that the borrower/s changes address/ transfer of residence without notice to <b>MICRO ACCESS LOANS CORPORATION </b> in writing, the address indicated in this note shall be the address for purposes of delivery of notices and other matters pertaining to the loan. Shall any issue/case that may arise as a result of this promissory note on any document in relation hereto, venue shall be at the civil courts of Butuan City, Agusan del Norte, to the exclusion of other court or at the option of <b>MICRO ACCESS LOANS CORPORATION</b> The Borrower/s hereby authorized the <b> MICRO ACCESS LOANS CORPORATION </b> to assign, sell or otherwise negotiate this note with any financial institution on its face value. Done this _____ day of ____________________.
@@ -1306,7 +1321,8 @@
 														<div class="flex-1"></div>
 													</div>
 												</section>
-												<span class="bbt-8 py-7 text-center text-block text-20 text-bold mb-16">COMAKER STATEMENT</span>
+												<hr>
+												<span class="bbt py text-center text-block text-20 text-bold ">COMAKER STATEMENT</span>
 												<section class="font-md mb-24" style="font-size:15px!important;line-height:1.3em!important">
 													<p class="mb-24">
 														I agree to become a co-maker to this Promissory Note, I aware of the joint and severally (solidarilly) accountability in this note that in case the principal borrower missed their due amortization, I will assume all the obligation including all other penalties until full payment as stated in the condition of this note.
@@ -1343,7 +1359,8 @@
 														<div class="flex-1"></div>
 													</div>
 												</section>
-												<span class="bbt-8 py-7 text-center text-block text-20 text-bold mb-16">ACKNOWLEDGEMENT</span>
+												<hr>
+												<span class="py-7 text-center text-block text-20 text-bold">ACKNOWLEDGEMENT</span>
 												<section class="font-md" style="font-size:15px!important;line-height:1.3em!important">
 													<div class= "mb-24">
 														<span class="text-block">Republic of the Philippines</span>
@@ -1368,9 +1385,7 @@
 												</section>
 											</div>
 											<div>
-												<div class="d-flex mb-24">
-													<img :src="this.baseURL()+'/img/logo-footer.png'" class="w-100" alt="">
-												</div>
+												
 												<div class="mb-72"></div>
 												<div class="d-flex flex-row-reverse mb-45 no-print">
 													<a @click.prevent="printContent('promissory-note')" href="#" class="btn btn-default min-w-150">Print</a>
@@ -1517,13 +1532,57 @@ export default {
 			}.bind(this))
 			.catch(function (error) {
 				console.log(error);
-			}.bind(this));
+			}.bind(this));P
 		},
 		printContent:function(printcontent){
 			var content = document.getElementById(printcontent).innerHTML;
 			var target = document.querySelector('.to-print');
 			target.innerHTML = content;
+
+
+			if (printcontent === 'doa-for-atm' || printcontent=== 'reminder-letter'){
+				var style = document.createElement('style');
+				style.innerHTML =  `
+						@media print {
+							@page {
+								size: 8.5in 11in portrait; /* Custom paper size */
+								margin: 10px; /* Custom margin */
+							}
+							body {
+								margin: 10px;; /* Custom body margin for print */
+							}
+							.to-print {
+								transform: scale(108px); /* Custom scale of 75% for print */
+								transform-origin: top left; /* Ensure scaling starts from the top left */
+							}
+						}
+					`;
+			}else {
+				var style = document.createElement('style');
+				style.innerHTML =  `
+						@media print {
+							@page {
+								size: 8.5in 14in portrait !important; /* Custom paper size */
+								margin: 10px; /* Custom margin */
+							}
+							body {
+								margin: 10px; /* Custom body margin for print */
+							}
+							.to-print {
+								transform: scale(108px); /* Custom scale of 75% for print */
+								transform-origin: top left; /* Ensure scaling starts from the top left */
+							}
+						}
+					`;
+			}
+			
+
+
+			document.head.appendChild(style);
 			window.print();
+			window.onafterprint = function() {
+				document.head.removeChild(style);
+			};
 		}
 	},
 	computed:{
