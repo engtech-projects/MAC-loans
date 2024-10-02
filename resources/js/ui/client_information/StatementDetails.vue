@@ -883,7 +883,7 @@
 										<td>5,000.00</td>
 										<td>0.00</td>
 									</tr>-->
-									<tr>
+									<tr class="bg-black">
 										<td>TOTAL</td>
 										<td></td>
 										<td></td>
@@ -900,13 +900,11 @@
 							<p class="mb-72">Received By:</p>
 							<div class="d-flex flex-row px-45">
 								<div class="d-flex flex-column flex-1">
-									<span class="text-center text-lg text-bold">{{loanaccount.borrower.firstname + ' ' + loanaccount.borrower.middlename.charAt(0).toUpperCase() + '. ' + loanaccount.borrower.lastname}}</span>
 									<span class="text-center bt-dark-2 py-12 mb-45">Borrow Sign / Printed Name</span>
 									<span class="text-center bt-dark-2 py-12 mb-45">Date Disbursed / Acknowledged</span>
 								</div>
 								<div class="flex-1"></div>
 								<div class="d-flex flex-column flex-1">
-									<span class="text-center text-lg text-bold">{{loanaccount.co_borrower_name}}</span>
 									<span class="text-center bt-dark-2 py-12 mb-45">Co-Borrow Sign / Printed Name</span>
 									<span class="text-center bt-dark-2 py-12 mb-45">MAC Representative Signature</span>
 								</div>
