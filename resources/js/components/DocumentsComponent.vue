@@ -1200,7 +1200,7 @@
 														<span class="text-primary-dark font-25">{{branch.branch_name}} Branch ({{branch.branch_code}})</span>
 													</div>
 													<div class="d-flex flex-column">
-														<span class="font-26 text-bold text-primary-dark lh-1">PROMISSORY NOTE</span>
+														<span style="display: block; text-align: center;" class="font-26 text-bold text-primary-dark lh-1">PROMISSORY NOTE</span>
 														<span class="text-center text-primary-dark text-bold font-md mb-5">MICRO ACCESS LOAN CORPORATION</span>
 														<span class="text-center text-primary-dark font-20">{{loanDetails.documents.promissory_number}}</span>
 													</div>
