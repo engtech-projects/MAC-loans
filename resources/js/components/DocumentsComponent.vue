@@ -93,7 +93,7 @@
 								<div class="tab-content" id="custom-content-below-tabContent">
 
 									<div  class="tab-pane fade show active" id="reminder-letter" role="tabpanel" aria-labelledby="custom-content-below-home-tab">
-										
+
 										<div class="d-flex flex-column font-md justify-content-between" style="padding:0 35px; min-height:420mm">
 											<div>
 												<div class="flex-1">
@@ -103,11 +103,11 @@
 													<span class="text-center font-26 text-bold text-primary-dark lh-1">MGA PAHINUMDOM</span>
 													<span class="text-center text-primary-dark text-bold font-md mb-5">MICRO ACCESS LOAN CORPORATION</span>
 												</div>
-												
+
 												<br>
 												<br>
 												<br>
-											
+
 												<section class="font-lg">
 													<ol class="mb-64">
 														<li class="mb-12">Ginadili ang pagdawat o pagbayad kong walay resibo. Gikinahanglan adunay e-isyu Nga resibo gikan sa Account Officer sa MAC.</li>
@@ -725,7 +725,7 @@
 
 
 									<div  class="tab-pane fade" id="dacion-en-pago" role="tabpanel" aria-labelledby="custom-content-below-home-tab">
-										
+
 										<div class="d-flex flex-column font-md justify-content-between" style="padding:0 35px;min-height:420mm">
 											<div>
 												<div class="flex-1">
@@ -810,7 +810,7 @@
 												</section>
 											</div>
 											<div>
-												
+
 												<div class="mb-72"></div>
 												<div class="d-flex flex-row-reverse mb-45 no-print">
 													<button @click="printContent('dacion-en-pago')" class="btn btn-default min-w-150">Print</button>
@@ -823,7 +823,7 @@
 
 
 									<div  class="tab-pane fade" id="doa-for-atm" role="tabpanel" aria-labelledby="custom-content-below-home-tab">
-										
+
 										<div class="d-flex flex-column font-md justify-content-between" style="padding:0 35px;min-height:420mm;">
 											<div>
 												<div class="flex-1">
@@ -935,7 +935,7 @@
 												</section>
 											</div>
 											<div>
-												
+
 												<div class="mb-72"></div>
 												<div class="d-flex flex-row-reverse mb-45 no-print">
 													<button @click="printContent('doa-for-atm')" class="btn btn-default min-w-150">Print</button>
@@ -1209,14 +1209,14 @@
 														<!-- <span class="">Time: {{todayTime(new Date())}} {{(new Date()).getHours() > 12? 'PM':'AM'}}</span> -->
 													</div>
 												</div>
-												<section>
+												<section style='padding-bottom:25px;'>
 													<p class="font-md" style="line-height:1.3;font-size:15px!important">
 														I/We <b> {{borrower.lastname + ', ' + borrower.firstname + ' ' + borrower.middlename.charAt(0) + '. and ' + loanDetails.co_borrower_name}}</b>  borrowed and received the amount of <span class="allcaps"><b>{{numToWords(loanDetails.loan_amount)}} </b> PESOS</span> (P {{formatToCurrency(loanDetails.loan_amount)}}) and promise to pay jointly and severally (solidarily) to the <b>MICRO ACCESS LOANS CORPORATION</b>  until full payment of the said amount including interest rate of ( <b> {{formatToCurrency(loanDetails.interest_rate)}}%</b> ) per month. And with the following terms and conditions stated below:
 													</p>
 												</section>
 												<hr>
 												<span class="bbt-3 py-7 text-center text-block text-20 text-bold">TERMS AND CONDITIONS</span>
-												<section class="mb-24" style="font-size:16px!important;line-height:1.3em!important">
+												<section class="mb-24" style="font-size:16px!important;line-height:1.3em!important;margin-top:20px">
 													<div class="d-flex flex-row">
 														<div class="d-flex flex-column flex-1 font-md">
 															<div class="d-flex flex-row">
@@ -1264,7 +1264,7 @@
 												</section>
 												<hr>
 												<span class="bbt-1 py-7 text-center text-block text-20 text-bold">OTHER CONDITIONS</span>
-												<section class="font-md mb-24" style="font-size:15px!important;line-height:1.3em!important">
+												<section class="font-md mb-24" style="font-weight:bolder; important; font-size:15px!important;line-height:1.3em!important">
 													<p style="line-height:1.3" class="mb-36 text-justify">
 														In case of default, this note will be due and demandable without further demand, and an additional fee of (2%) per missed payment of the scheduled amortization as penalty, And in case this note be given to hands of an attorney an additional charged of (10%) of the total amount due will be charged as attorney's fee, further, the borrower is liable to litigation expenses, damages, etc. should the failure on the part of the borrower reach the courts. In cases that the borrower/s changes address/ transfer of residence without notice to <b>MICRO ACCESS LOANS CORPORATION </b> in writing, the address indicated in this note shall be the address for purposes of delivery of notices and other matters pertaining to the loan. Shall any issue/case that may arise as a result of this promissory note on any document in relation hereto, venue shall be at the civil courts of Butuan City, Agusan del Norte, to the exclusion of other court or at the option of <b>MICRO ACCESS LOANS CORPORATION</b> The Borrower/s hereby authorized the <b> MICRO ACCESS LOANS CORPORATION </b> to assign, sell or otherwise negotiate this note with any financial institution on its face value. Done this _____ day of ____________________.
 													</p>
@@ -1385,7 +1385,7 @@
 												</section>
 											</div>
 											<div>
-												
+
 												<div class="mb-72"></div>
 												<div class="d-flex flex-row-reverse mb-45 no-print">
 													<a @click.prevent="printContent('promissory-note')" href="#" class="btn btn-default min-w-150">Print</a>
@@ -1532,7 +1532,7 @@ export default {
 			}.bind(this))
 			.catch(function (error) {
 				console.log(error);
-			}.bind(this));P
+			}.bind(this));
 		},
 		printContent:function(printcontent){
 			var content = document.getElementById(printcontent).innerHTML;
@@ -1575,7 +1575,7 @@ export default {
 						}
 					`;
 			}
-			
+
 
 
 			document.head.appendChild(style);
