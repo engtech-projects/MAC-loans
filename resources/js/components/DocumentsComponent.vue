@@ -1272,7 +1272,7 @@
 
 													<div class="d-flex flex-row">
 														<div class="flex-1"></div>
-														<div class="d-flex flex-column flex-3">
+														<div class="d-flex flex-column flex-3" style="font-weight: bolder;">
 															<div class="d-flex">
 																<span class="mr-5">{{fullName(borrower.firstname, borrower.middlename,borrower.lastname)}} </span>
 																<span></span>
@@ -1295,7 +1295,7 @@
 															</div>
 														</div>
 														<div class="d-flex flex-column flex-3 align-items-end">
-															<div>
+															<div style="font-weight: bolder;">
 																<div class="d-flex">
 																	<span class="mr-5">{{loanDetails.co_borrower_name}} </span>
 																	<span></span>
@@ -1316,7 +1316,7 @@
 																	<span class="mr-5">Date Issue : </span>
 																	<span>{{dateToYMD(new Date(loanDetails.co_borrower_id_date_issued)).split('-').join('/')}}</span>
 																</div>
-																</div>
+															</div>
 
 														</div>
 														<div class="flex-1"></div>
@@ -1324,7 +1324,7 @@
 												</section>
 												
 												<span class="bbt py text-center text-block text-20 text-bold ">COMAKER STATEMENT</span>
-												<section class="font-md mb-24" style="line-height:1.3em">
+												<section class="font-md" style="line-height:1.3em">
 													<p class="mb-24">
 														I agree to become a co-maker to this Promissory Note, I aware of the joint and severally (solidarilly) accountability in this note that in case the principal borrower missed their due amortization, I will assume all the obligation including all other penalties until full payment as stated in the condition of this note.
 													</p>
@@ -1362,10 +1362,10 @@
 												</section>
 												
 												<span class="py-7 text-center text-block text-20 text-bold">ACKNOWLEDGEMENT</span>
-												<section class="font-md">
+												<section class="font-md" >
 													<div class= "mb-24">
-														<span class="text-block">Republic of the Philippines</span>
-														<span>Butuan City</span>
+														<p class="text-block">Republic of the Philippines</p>
+														<p>Butuan City</p>
 													</div>
 													<p>
 														SUBSCRIBE AND SWORN before me this _______, day of __________ and tax identetification number written above,
