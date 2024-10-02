@@ -1200,7 +1200,7 @@
 														<span class="text-primary-dark font-25">{{branch.branch_name}} Branch ({{branch.branch_code}})</span>
 													</div>
 													<div class="d-flex flex-column">
-														<span class="font-26 text-bold text-primary-dark lh-1">PROMISSORY NOTE</span>
+														<span style="display: block; text-align: center;"  class="font-26 text-bold text-primary-dark lh-1">PROMISSORY NOTE</span>
 														<span class="text-center text-primary-dark text-bold font-md mb-5">MICRO ACCESS LOAN CORPORATION</span>
 														<span class="text-center text-primary-dark font-20">{{loanDetails.documents.promissory_number}}</span>
 													</div>
@@ -1209,16 +1209,16 @@
 														<!-- <span class="">Time: {{todayTime(new Date())}} {{(new Date()).getHours() > 12? 'PM':'AM'}}</span> -->
 													</div>
 												</div>
-												<section style='padding-bottom:25px;'>
-													<p class="font-md" style="line-height:1.3;font-size:15px!important">
+												<section>
+													<p>
 														I/We <b> {{borrower.lastname + ', ' + borrower.firstname + ' ' + borrower.middlename.charAt(0) + '. and ' + loanDetails.co_borrower_name}}</b>  borrowed and received the amount of <span class="allcaps"><b>{{numToWords(loanDetails.loan_amount)}} </b> PESOS</span> (P {{formatToCurrency(loanDetails.loan_amount)}}) and promise to pay jointly and severally (solidarily) to the <b>MICRO ACCESS LOANS CORPORATION</b>  until full payment of the said amount including interest rate of ( <b> {{formatToCurrency(loanDetails.interest_rate)}}%</b> ) per month. And with the following terms and conditions stated below:
 													</p>
 												</section>
-												<hr>
-												<span class="bbt-3 py-7 text-center text-block text-20 text-bold">TERMS AND CONDITIONS</span>
-												<section class="mb-24" style="font-size:16px!important;line-height:1.3em!important;margin-top:20px">
+												
+												<span class="bbt-3 text-center text-block text-20 text-bold">TERMS AND CONDITIONS</span>
+												<section>
 													<div class="d-flex flex-row">
-														<div class="d-flex flex-column flex-1 font-md">
+														<div style="width: 30px;"   class="d-flex flex-column flex-1 font-md">
 															<div class="d-flex flex-row">
 																<div class="d-flex flex-row flex-1 justify-content-between pr-24">
 																	<span class="flex-50">Interest Rate</span>
@@ -1228,21 +1228,22 @@
 															</div>
 
 															<div class="d-flex flex-row">
-																<div class="d-flex flex-row flex-1 justify-content-between pr-24">
-																	<span class="flex-50">Term (No. of days)</span>
+																<div class="d-flex justify-content-between pr-24">
+																	<span class="flex-24">Term (No. of days)</span>
 																	<span>:</span>
 																</div>
 																<span class="flex-2">{{loanDetails.terms}} day(s)</span>
 															</div>
 
 															<div class="d-flex flex-row">
-																<div class="d-flex flex-row flex-1 justify-content-between pr-24">
+																<div class="d-flex justify-content-between pr-24">
 																	<span class="">Mode of Payment</span>
 																	<span>:</span>
 																</div>
 																<span class="flex-2">{{loanDetails.payment_mode}}</span>
 															</div>
 														</div>
+
 														<div class="d-flex flex-column flex-1 font-md">
 															<div class="d-flex flex-row">
 																<div class="d-flex flex-row flex-1 justify-content-between pr-24">
@@ -1262,10 +1263,10 @@
 														</div>
 													</div>
 												</section>
-												<hr>
+												
 												<span class="bbt-1 py-7 text-center text-block text-20 text-bold">OTHER CONDITIONS</span>
-												<section class="font-md mb-24" style="font-weight:bolder; important; font-size:15px!important;line-height:1.3em!important">
-													<p style="line-height:1.3" class="mb-36 text-justify">
+												<section class="font-md mb-24">
+													<p style="line-height:1.3em" class="mb text-justify">
 														In case of default, this note will be due and demandable without further demand, and an additional fee of (2%) per missed payment of the scheduled amortization as penalty, And in case this note be given to hands of an attorney an additional charged of (10%) of the total amount due will be charged as attorney's fee, further, the borrower is liable to litigation expenses, damages, etc. should the failure on the part of the borrower reach the courts. In cases that the borrower/s changes address/ transfer of residence without notice to <b>MICRO ACCESS LOANS CORPORATION </b> in writing, the address indicated in this note shall be the address for purposes of delivery of notices and other matters pertaining to the loan. Shall any issue/case that may arise as a result of this promissory note on any document in relation hereto, venue shall be at the civil courts of Butuan City, Agusan del Norte, to the exclusion of other court or at the option of <b>MICRO ACCESS LOANS CORPORATION</b> The Borrower/s hereby authorized the <b> MICRO ACCESS LOANS CORPORATION </b> to assign, sell or otherwise negotiate this note with any financial institution on its face value. Done this _____ day of ____________________.
 													</p>
 
@@ -1321,13 +1322,13 @@
 														<div class="flex-1"></div>
 													</div>
 												</section>
-												<hr>
+												
 												<span class="bbt py text-center text-block text-20 text-bold ">COMAKER STATEMENT</span>
-												<section class="font-md mb-24" style="font-size:15px!important;line-height:1.3em!important">
+												<section class="font-md mb-24" style="line-height:1.3em">
 													<p class="mb-24">
 														I agree to become a co-maker to this Promissory Note, I aware of the joint and severally (solidarilly) accountability in this note that in case the principal borrower missed their due amortization, I will assume all the obligation including all other penalties until full payment as stated in the condition of this note.
 													</p>
-													<div class="d-flex flex-row align-items-center">
+													<div class="d-flex flex-row align-items-center"  style="font-weight: bolder;">
 														<div class="flex-1"></div>
 														<div class="d-flex flex-column flex-2 font-md">
 															<div class="d-flex">
@@ -1359,9 +1360,9 @@
 														<div class="flex-1"></div>
 													</div>
 												</section>
-												<hr>
+												
 												<span class="py-7 text-center text-block text-20 text-bold">ACKNOWLEDGEMENT</span>
-												<section class="font-md" style="font-size:15px!important;line-height:1.3em!important">
+												<section class="font-md">
 													<div class= "mb-24">
 														<span class="text-block">Republic of the Philippines</span>
 														<span>Butuan City</span>
@@ -1541,15 +1542,23 @@ export default {
 
 
 			if (printcontent === 'doa-for-atm' || printcontent=== 'reminder-letter'){
+
 				var style = document.createElement('style');
 				style.innerHTML =  `
 						@media print {
 							@page {
 								size: 8.5in 11in portrait; /* Custom paper size */
-								margin: 10px; /* Custom margin */
+								margin: 5px; /* Custom margin */
+								font-weight: bolder;
+								font-size:15px!important;
+								text-family: Sa
 							}
 							body {
-								margin: 10px;; /* Custom body margin for print */
+								margin: 5px;; /* Custom body margin for print */
+								font-weight: bolder;
+								font-size:15px!important;
+								font-family: "Arial", "Helvetica", sans-serif;
+								text-align: justify;
 							}
 							.to-print {
 								transform: scale(108px); /* Custom scale of 75% for print */
@@ -1559,14 +1568,23 @@ export default {
 					`;
 			}else {
 				var style = document.createElement('style');
+				
 				style.innerHTML =  `
 						@media print {
 							@page {
 								size: 8.5in 14in portrait !important; /* Custom paper size */
-								margin: 10px; /* Custom margin */
+								margin: 5px; /* Custom margin */
+								line-height:1.3em!important;
+								margin-left: -5px; /* Custom left margin */
+        						margin-right: -5px; /* Custom right margin */
 							}
 							body {
-								margin: 10px; /* Custom body margin for print */
+								margin: 5px; /* Custom body margin for print */
+								font-weight: bolder;
+								font-size:20px!important;
+								line-height:1.3em!important;
+								font-family: "Arial", "Helvetica", sans-serif;
+								text-align: justify;
 							}
 							.to-print {
 								transform: scale(108px); /* Custom scale of 75% for print */
