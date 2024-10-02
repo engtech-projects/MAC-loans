@@ -93,7 +93,7 @@
 								<div class="tab-content" id="custom-content-below-tabContent">
 
 									<div  class="tab-pane fade show active" id="reminder-letter" role="tabpanel" aria-labelledby="custom-content-below-home-tab">
-										
+
 										<div class="d-flex flex-column font-md justify-content-between" style="padding:0 35px; min-height:420mm">
 											<div>
 												<div class="flex-1">
@@ -103,11 +103,11 @@
 													<span class="text-center font-26 text-bold text-primary-dark lh-1">MGA PAHINUMDOM</span>
 													<span class="text-center text-primary-dark text-bold font-md mb-5">MICRO ACCESS LOAN CORPORATION</span>
 												</div>
-												
+
 												<br>
 												<br>
 												<br>
-											
+
 												<section class="font-lg">
 													<ol class="mb-64">
 														<li class="mb-12">Ginadili ang pagdawat o pagbayad kong walay resibo. Gikinahanglan adunay e-isyu Nga resibo gikan sa Account Officer sa MAC.</li>
@@ -725,7 +725,7 @@
 
 
 									<div  class="tab-pane fade" id="dacion-en-pago" role="tabpanel" aria-labelledby="custom-content-below-home-tab">
-										
+
 										<div class="d-flex flex-column font-md justify-content-between" style="padding:0 35px;min-height:420mm">
 											<div>
 												<div class="flex-1">
@@ -810,7 +810,7 @@
 												</section>
 											</div>
 											<div>
-												
+
 												<div class="mb-72"></div>
 												<div class="d-flex flex-row-reverse mb-45 no-print">
 													<button @click="printContent('dacion-en-pago')" class="btn btn-default min-w-150">Print</button>
@@ -823,7 +823,7 @@
 
 
 									<div  class="tab-pane fade" id="doa-for-atm" role="tabpanel" aria-labelledby="custom-content-below-home-tab">
-										
+
 										<div class="d-flex flex-column font-md justify-content-between" style="padding:0 35px;min-height:420mm;">
 											<div>
 												<div class="flex-1">
@@ -935,7 +935,7 @@
 												</section>
 											</div>
 											<div>
-												
+
 												<div class="mb-72"></div>
 												<div class="d-flex flex-row-reverse mb-45 no-print">
 													<button @click="printContent('doa-for-atm')" class="btn btn-default min-w-150">Print</button>
@@ -1213,15 +1213,9 @@
 													<p class="font-md" style="line-height:1.3;font-size:15px!important">
 														I/We <b> {{borrower.lastname + ', ' + borrower.firstname + ' ' + borrower.middlename.charAt(0) + '. and ' + loanDetails.co_borrower_name}}</b>  borrowed and received the amount of <span class="allcaps"><b>{{numToWords(loanDetails.loan_amount)}} </b> PESOS</span> (P {{formatToCurrency(loanDetails.loan_amount)}}) and promise to pay jointly and severally (solidarily) to the <b>MICRO ACCESS LOANS CORPORATION</b>  until full payment of the said amount including interest rate of ( <b> {{formatToCurrency(loanDetails.interest_rate)}}%</b> ) per month. And with the following terms and conditions stated below:
 													</p>
-<<<<<<< Updated upstream
-												</section>
-												<hr>
-												<span class="bbt-3 py-7 text-center text-block text-20 text-bold">TERMS AND CONDITIONS</span>
-=======
 												</div>
                                                 <div style="margin-top: 50px">
 												<span class="bbt-8 py-7 text-center text-block text-20 text-bold mb-16">TERMS AND CONDITIONS</span>
->>>>>>> Stashed changes
 												<section class="mb-24" style="font-size:16px!important;line-height:1.3em!important">
 													<div class="d-flex flex-row">
 														<div class="d-flex flex-column flex-1 font-md">
@@ -1396,7 +1390,7 @@
 												</section>
 											</div>
 											<div>
-												
+
 												<div class="mb-72"></div>
 												<div class="d-flex flex-row-reverse mb-45 no-print">
 													<a @click.prevent="printContent('promissory-note')" href="#" class="btn btn-default min-w-150">Print</a>
@@ -1543,7 +1537,7 @@ export default {
 			}.bind(this))
 			.catch(function (error) {
 				console.log(error);
-			}.bind(this));P
+			}.bind(this));
 		},
 		printContent:function(printcontent){
 			var content = document.getElementById(printcontent).innerHTML;
@@ -1586,7 +1580,7 @@ export default {
 						}
 					`;
 			}
-			
+
 
 
 			document.head.appendChild(style);
