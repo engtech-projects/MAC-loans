@@ -827,13 +827,13 @@
 										<div class="d-flex flex-column font-md justify-content-between" style="padding:0 35px;min-height:420mm;">
 											<div>
 												<div class="flex-1">
-														<span class="text-primary-dark font-25">{{branch.branch_name}} Branch ({{branch.branch_code}})</span>
+														<span class="text-primary-dark">{{branch.branch_name}} Branch ({{branch.branch_code}})</span>
 													</div>
 													<div class="d-flex flex-column">
-														<span class="text-center font-26 text-bold text-primary-dark lh-1">DEED OF ASSIGNMENT</span>
-														<span class="text-center text-primary-dark text-bold font-md mb-5">MICRO ACCESS LOAN CORPORATION</span>
+														<span class="text-center text-bold text-primary-dark lh-1">DEED OF ASSIGNMENT</span>
+														<span class="text-center text-primary-dark text-bold mb-5">MICRO ACCESS LOAN CORPORATION</span>
 													</div>
-												<section style="font-size:16px!important;line-height:1.4em">
+												<section style="line-height:1.4em">
 													<span class="text-block mb-24 text-bold">KNOW ALL MEN BY THESE PRESENTS:</span>
 													<p>
 														That I, <b><u> {{fullName(borrower.firstname, borrower.middlename,borrower.lastname)}} </u></b> Filipino, of legal age, married/single and a resident of <b> <u> {{borrower.address}}</u> </b> herein known as the <b>ASSIGNOR;</b>
@@ -862,7 +862,7 @@
 														IN WITNESS WHEREOF, the parties hereto have hereunto set their hands this _____ day of __________ at Butuan City, Philippines.
 													</p>
 
-													<div class="d-flex mb-45">
+													<div class="d-flex">
 														<div class="flex-1 d-flex flex-column align-items-center">
 															<b class="text-block allcaps">{{fullName(borrower.firstname, borrower.middlename,borrower.lastname)}}</b>
 															<span>ASSIGNOR</span>
@@ -876,7 +876,7 @@
 													<center class="text-sm text-bold">SIGNED IN THE PRESENCE OF</center>
 
 
-													<div class="d-flex mb-45">
+													<div class="d-flex">
 														<div class="flex-1 d-flex flex-column align-items-center">
 															<b class="allcaps text-block">{{loanDetails.co_borrower_name}}</b>
 															<span>Witness</span>
@@ -950,7 +950,6 @@
 
 
 									<div  class="tab-pane fade" id="moa-for-sme" role="tabpanel" aria-labelledby="custom-content-below-home-tab">
-										<img :src="baseUrl+'/img/company_header.png'" style="width:100%" class="mb-16" alt="Company Header">
 										<div class="d-flex flex-column font-md justify-content-between" style="padding:0 35px;min-height:420mm;">
 											<div>
 												<div class="d-flex flex-column title align-items-center mb-24">
@@ -1021,7 +1020,7 @@
 														<b>IN WITNESS WHEREOF</b>, the parties hereunto signed this instrument on this ________day of ____________ at ___________________ Butuan City, Philippines.
 													</p>
 
-													<div class="d-flex justify-content-center mb-24">
+													<div class="d-flex justify-content-center">
 														<div class="flex-1 text-center">
 															<b class="allcaps text-block">{{fullName(borrower.firstname,borrower.middlename,borrower.lastname)}}</b>
 															<span>Name and Signature of Borrower</span>
@@ -1032,7 +1031,7 @@
 														</div>
 													</div>
 
-													<div class="d-flex justify-content-center mb-24">
+													<div class="d-flex justify-content-center">
 														<div class="flex-1 text-center">
 															<b class="allcaps text-block">{{fullName(borrower.spouse_firstname,borrower.spouse_middlename,borrower.spouse_lastname)}} </b>
 															<span>Name and Signature of Marital Consent</span>
@@ -1043,9 +1042,9 @@
 														</div>
 													</div>
 
-													<center class="mb-16">SIGNED IN THE PRESENCE OF:</center>
+													<center>SIGNED IN THE PRESENCE OF:</center>
 
-													<div class="d-flex justify-content-center mb-24">
+													<div class="d-flex justify-content-center">
 														<div class="flex-1 text-center">
 															<b class="allcaps text-block">{{staff}}</b>
 														</div>
@@ -1116,9 +1115,7 @@
 												</section>
 											</div>
 											<div>
-												<div class="d-flex mb-24">
-													<img :src="this.baseURL()+'/img/logo-footer.png'" class="w-100" alt="">
-												</div>
+												
 												<div class="mb-72"></div>
 												<div class="d-flex flex-row-reverse mb-45 no-print">
 													<button @click="printContent('moa-for-sme')" class="btn btn-default min-w-150">Print</button>
@@ -1266,7 +1263,7 @@
 												
 												<span class="bbt-1 py-7 text-center text-block text-20 text-bold">OTHER CONDITIONS</span>
 												<section class="font-md mb-24">
-													<p style="line-height:1.3em" class="mb text-justify">
+													<p style="line-height:1.3em" class="">
 														In case of default, this note will be due and demandable without further demand, and an additional fee of (2%) per missed payment of the scheduled amortization as penalty, And in case this note be given to hands of an attorney an additional charged of (10%) of the total amount due will be charged as attorney's fee, further, the borrower is liable to litigation expenses, damages, etc. should the failure on the part of the borrower reach the courts. In cases that the borrower/s changes address/ transfer of residence without notice to <b>MICRO ACCESS LOANS CORPORATION </b> in writing, the address indicated in this note shall be the address for purposes of delivery of notices and other matters pertaining to the loan. Shall any issue/case that may arise as a result of this promissory note on any document in relation hereto, venue shall be at the civil courts of Butuan City, Agusan del Norte, to the exclusion of other court or at the option of <b>MICRO ACCESS LOANS CORPORATION</b> The Borrower/s hereby authorized the <b> MICRO ACCESS LOANS CORPORATION </b> to assign, sell or otherwise negotiate this note with any financial institution on its face value. Done this _____ day of ____________________.
 													</p>
 
@@ -1550,13 +1547,13 @@ export default {
 								size: 8.5in 11in portrait; /* Custom paper size */
 								margin: 5px; /* Custom margin */
 								font-weight: bolder;
-								font-size:15px!important;
+								font-size:80px!important;
 								text-family: Sa
 							}
 							body {
-								margin: 5px;; /* Custom body margin for print */
+								margin: 5px; /* Custom body margin for print */
 								font-weight: bolder;
-								font-size:15px!important;
+								font-size:20px!important;
 								font-family: "Arial", "Helvetica", sans-serif;
 								text-align: justify;
 							}

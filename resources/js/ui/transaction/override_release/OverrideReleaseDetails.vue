@@ -1,3 +1,22 @@
+<style>
+@media print {
+
+
+    body {
+        /* margin-top: 0.19; */
+		font-family: "Arial", "Helvetica", sans-serif;
+    }
+    /* Additional print styles can be added here */
+
+}
+
+
+</style>
+
+
+
+
+
 <template>
 	<div class="d-flex flex-column">
 		<notifications group="foo" />
@@ -546,8 +565,8 @@
 								<span class="text-primary-dark font-25">{{pbranch.branch_name}} Branch ({{pbranch.branch_code}})</span>
 							</div>
 							<div class="d-flex flex-column">
-								<span class="text-center font-26 text-bold text-primary-dark lh-1">CASH VOUCHER</span>
-								<span class="text-center text-primary-dark text-bold font-md mb-5">MICRO ACCESS LOAN CORPORATION</span>
+								<span class="text-center  text-bold text-primary-dark lh-1">CASH VOUCHER</span>
+								<span class="text-center text-primary-dark text-bold mb-5">MICRO ACCESS LOAN CORPORATION</span>
 							</div>
 							
 							<div class="flex-1 d-flex justify-content-end pr-10">
@@ -620,9 +639,9 @@
 						<!-- <div class="sep-dark mb-16" ></div> -->
 
 						<section>
-							<div class="d-flex flex-row justify-content-center mb-16 darker-bb pb-10">
+							<div class="d-flex flex-row justify-content-center mb-25 darker-bb pb-10">
 								<div class="d-flex flex-column">
-									<span class="font-26 text-bold text-primary-dark lh-1 text-center text-block">DISCLOSURE STATEMENT OF LOAN</span>
+									<span class="font-26  text-bold text-primary-dark lh-1 text-center text-block">DISCLOSURE STATEMENT OF LOAN</span>
 								</div>
 							</div>
 
@@ -707,13 +726,13 @@
 
 							<div class="d-flex flex-row px-45">
 								<div class="d-flex flex-column flex-1">
-									<span class="text-center text-lg text-bold">{{loanaccount.borrower.firstname + ' ' + loanaccount.borrower.middlename.charAt(0).toUpperCase() + '. ' + loanaccount.borrower.lastname}}</span>
+									<span class="text-center text-bold">{{loanaccount.borrower.firstname + ' ' + loanaccount.borrower.middlename.charAt(0).toUpperCase() + '. ' + loanaccount.borrower.lastname}}</span>
 									<span class="text-center bt-dark-2 py-12 mb-45">Borrow Sign / Printed Name</span>
 									<span class="text-center bt-dark-2 py-12 mb-45">Date Disbursed / Acknowledged</span>
 								</div>
 								<div class="flex-1"></div>
 								<div class="d-flex flex-column flex-1">
-									<span class="text-center text-lg text-bold">{{loanaccount.co_borrower_name}}</span>
+									<span class="text-center  text-bold">{{loanaccount.co_borrower_name}}</span>
 									<span class="text-center bt-dark-2 py-12 mb-45">Co-Borrow Sign / Printed Name</span>
 									<span class="text-center bt-dark-2 py-12 mb-45">MAC Representative Signature</span>
 								</div>
@@ -1017,24 +1036,37 @@ export default {
 			var content = document.getElementById('voucherPrintContent').innerHTML;
 			var target = document.querySelector('.to-print');
 			// target.innerHTML += '<style type="text/css" media="print">@page { size: portrait;} font-family:"Courier New" margin</style>';
-			target.innerHTML += `
-			<style type="text/css" media="print">
+			target.innerHTML = content;
+			
+			var style = document.createElement('style');
+			style.innerHTML += `
+			@media print {
 				@page {
 					size: 8.5in 11in portrait; /* Short/Letter size (8.5x11 inches) with portrait orientation */
-					margin: 0.5in; /* Adjust margins as needed */
+					margin: 5px; /* Adjust margins as needed */
 				.to-print {
 					transform: scale(108px); /* Custom scale of 75% for print */
 					ransform-origin: top left; /* Ensure scaling starts from the top left */
 					}	
 				}
 				body {
-					font-family: "Courier New"; /* Apply the desired font */
+					margin: 5px; /* Custom body margin for print */
+					font-weight: bolder;
+					font-size:25px!important;
+					line-height:1.3em!important;
+					font-family: "Arial", "Helvetica", sans-serif;
+					text-align: justify;
 				}
-			</style>`;
+				}
+				`;
+			document.head.appendChild(style);
+			window.print();
 			var cancel = document.querySelector('#cancelVoucherModal');
 			target.innerHTML = content;
 			cancel.click();
-			window.print();
+			window.onafterprint = function(){
+				document.head.removeChild(style);
+			};
 		},
 		export2Word:function(element, filename = ''){
 			var preHtml = "<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'><head><meta charset='utf-8'><title>Export HTML To Doc</title></head><body>";
