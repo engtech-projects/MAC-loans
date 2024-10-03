@@ -559,19 +559,31 @@
 			<div class="modal-content">
 				<div class="modal-body font-md" id="voucherPrintContent">
 					<!-- <img :src="this.baseURL()+'/img/company_header.png'" style="width:100%" class="mb-24" alt="Company Header"> -->
-					<div class="d-flex flex-column" style="padding:0 50px;">
-						<div class="d-flex flex-row align-items-center mb-24 darker-bb pb-10">
-							<div class="flex-1">
-								<span class="text-primary-dark font-25">{{pbranch.branch_name}} Branch ({{pbranch.branch_code}})</span>
+					<div class="d-flex flex-column" style="padding:30px 20px;">
+						<div class="d-flex justify-content-between align-items-center mb-36">
+							<!-- Left column: Branch name and promissory note number -->
+							<div class="d-flex flex-column flex-1">
+								<span class="text-primary-dark font-25">
+									{{pbranch.branch_name}} Branch ({{pbranch.branch_code}})
+								</span>
+								
 							</div>
-							<div class="d-flex flex-column">
-								<span class="text-center  text-bold text-primary-dark lh-1">CASH VOUCHER</span>
-								<span class="text-center text-primary-dark text-bold mb-5">MICRO ACCESS LOAN CORPORATION</span>
+
+							<!-- Center column: Promissory Note and Micro Access Loan Corporation -->
+							<div class="d-flex flex-column text-center">
+								<span class="font-16 text-bold text-primary-dark lh-1">
+									CASH VOUCHER
+								</span>
+								<span class="text-primary-dark text-bold font-md mb-5">
+									MICRO ACCESS LOAN CORPORATION
+								</span>
 							</div>
-							
-							<div class="flex-1 d-flex justify-content-end pr-10">
-								<span class=" mr-10">{{dateFullDay(new Date())}} {{dateToYMD(new Date()).split('-').join('/')}}</span>
-								<span class="">Time: {{todayTime(new Date())}} {{(new Date()).getHours() > 12? 'PM':'AM'}}</span>
+
+							<!-- Right column: Date and time -->
+							<div class="d-flex flex-column flex-1 text-right">
+								<span class="mr-10">
+									{{dateFullDay(new Date())}} {{dateToYMD(new Date()).split('-').join('/')}}
+								</span>
 							</div>
 						</div>
 						<section class="mb-16">
@@ -1052,7 +1064,7 @@ export default {
 				body {
 					margin: 5px; /* Custom body margin for print */
 					font-weight: bolder;
-					font-size:25px!important;
+					font-size:16px!important;
 					line-height:1.3em!important;
 					font-family: "Arial", "Helvetica", sans-serif;
 					text-align: justify;
