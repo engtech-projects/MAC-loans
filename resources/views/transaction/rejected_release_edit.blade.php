@@ -12,6 +12,8 @@
         token="{{Session::get('token')}}" 
         staff="{{Session::get('fullname')}}" 
         branch_mgr="{{Session::get('branch')->branch_manager}}"
+        branch_code="{{Session::get('branch')->branch_code}}"
+        branch_name="{{Session::get('branch')->branch_name}}"
         rejectid="{{request()->id}}" 
         ></release-entry>
     </section>

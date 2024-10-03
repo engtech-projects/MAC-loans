@@ -881,7 +881,7 @@ export default {
 			})
 			.then(function (response) {
 				this.amortizationSched = response.data.data;
-				this.loanaccount.due_date = this.amortizationSched[this.amortizationSched.length - 1].amortization_date;
+				this.loanaccount.due_date = this.dateToYMD(this.dueDate);
 				this.amortAmount = this.amortizationSched[0].total;
 			}.bind(this))
 			.catch(function (error) {
