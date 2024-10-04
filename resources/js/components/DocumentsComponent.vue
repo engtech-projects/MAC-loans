@@ -1684,7 +1684,9 @@ export default {
 			return this.loanDetails.remaining_balance ? this.loanDetails.remaining_balance.memo.balance : 0;
 		},
 		delinquentAmount: function() {
-			return (this.loanDetails.remaining_balance?.interest.balance || 0 + this.loanDetails.remaining_balance?.principal.balance || 0)-(this.loanDetails.current_amortization?.interest_balance || 0 + this.loanDetails.current_amortization?.principal_balance || 0 )
+			return((this.loanDetails.remaining_balance?.interest.balance || 0) - (this.loanDetails.current_amortization?.interest_balance || 0) || 0) +
+			((this.loanDetails.remaining_balance?.principal.balance || 0) - (this.loanDetails.current_amortization?.principal_balance || 0) || 0)
+
 		},
 
 	},
