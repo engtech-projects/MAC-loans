@@ -37,8 +37,9 @@
 		</div>
 		<div class="sep mb-45"></div>
 		<div id="printContent">
-			<img :src="this.baseURL()+'/img/company_header_fit.png'" class="mb-24" alt="">
-			<section class="" id="clientSection">
+			<!-- <img :src="this.baseURL()+'/img/company_header_fit.png'" class="mb-24" alt=""> -->
+			
+			<section class="" id="clientSection" style="font-weight: bolder; padding: 10px 10px;">
 				<div class="d-flex flex-column mb-16">
 					<div class="d-flex flex-row align-items-center">
 						<div class="flex-1"></div>
@@ -161,7 +162,7 @@
 				<span class="flex-1"></span>
 			</section>
 			<div class="d-flex mb-64" style="margin-top:auto">
-				<img :src="this.baseURL()+'/img/logo-footer.png'" class="w-100" alt="">
+				<!-- <img :src="this.baseURL()+'/img/logo-footer.png'" class="w-100" alt=""> -->
 			</div>
 		</div>
 		
