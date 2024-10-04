@@ -36,9 +36,9 @@
 		</div>
 		<div class="sep mb-45"></div>
 		<div id="printContent">
-			<img :src="this.baseURL()+'/img/company_header_fit.png'" class="mb-24" alt="">
+			
 
-			<section class="" id="clientSection">
+			<section class="" id="clientSection" style="font-weight: bolder; padding: 10px 10px;">
 				<div class="d-flex flex-column mb-16">
 					<div class="d-flex flex-row align-items-center">
 						<div class="flex-1"></div>
@@ -219,9 +219,7 @@
 				</section>
 				
 			</section>
-			<div class="d-flex mb-64 mt-auto">
-				<img :src="this.baseURL()+'/img/logo-footer.png'" class="w-100" alt="">
-			</div>
+			
 		</div>
 		<div class="d-flex flex-row justify-content-between mb-45">
 			<div class="d-flex flex-row-reverse justify-content-start flex-1">
