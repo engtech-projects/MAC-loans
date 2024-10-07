@@ -895,7 +895,7 @@
 														<span>Doc. No.___________</span>
 														<span>Page No.___________</span>
 														<span>Book No.___________</span>
-														<span>Series of____dfsd_______</span>
+														<span>Series of___________</span>
 													</div>
 												</section>
 											</div>
@@ -1392,7 +1392,7 @@
 			printPromissory:function(){
 				var content = document.getElementById('promissory-note').innerHTML;
 				var target = document.querySelector('.to-print');
-				target.innerHTML += '<style type="text/css" media="print">@page { size: 8in 13in; .page{transform: scale(70) body{ margin-top:0.3; margin-}}';
+				// target.innerHTML += '<style type="text/css" media="print">@page { size: 8in 13in; .page{transform: scale(70) body{ margin-top:0.3; margin-}}';
 				target.innerHTML = content;
 				var style = document.createElement('style');
 				style.innerHTML =  `
@@ -1404,6 +1404,7 @@
 								line-height:1.3em!important;
 								margin-left: -5px; /* Custom left margin */
         						margin-right: -5px; /* Custom right margin */
+								font-family: "Arial", "Helvetica", sans-serif;
 							}
 							body {
 								 /* Custom body margin for print */
@@ -1420,6 +1421,12 @@
 							}
 						}
 					`;
+				
+			document.head.appendChild(style);
+			window.print();
+			window.onafterprint = function() {
+				document.head.removeChild(style);
+			};
 				var cancelButton = document.getElementById('cancelDacionModal');
 				cancelButton.click();
 				window.print();
