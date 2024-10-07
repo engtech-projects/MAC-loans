@@ -903,7 +903,8 @@
 
 												<div class="mb-72"></div>
 												<div class="d-flex flex-row-reverse mb-45 no-print">
-													<a @click.prevent="printContent('promissory-note')" href="#" class="btn btn-default min-w-150">Print</a>
+													<!-- <a @click.prevent="printContent('promissory-note')" href="#" class="btn btn-default min-w-150">Print</a> -->
+													<a @click.prevent="printPromissory()" href="#" class="btn btn-default min-w-150">Print</a>
 													<!-- <a href="#" class="btn btn-success min-w-150 mr-24">Download Excel</a> -->
 												</div>
 											</div>
