@@ -4,7 +4,7 @@
 
     body {
         margin-top: 0.19;
-		font-family: "Courier New", Courier, monospace;
+		/* font-family: "Arial", "Helvetica", sans-serif; */
     }
     /* Additional print styles can be added here */
 
@@ -684,7 +684,7 @@
 													<!-- Left column: Branch name and promissory note number -->
 													<div class="d-flex flex-column flex-1">
 														<span class="text-primary-dark font-25">
-															{{branch.branch_name}} Branch ({{branch.branch_code}})
+															<span class="text-primary-dark font-25">{{branch_name}} Branch ({{branch_code}})</span>
 														</span>
 														<span class="font-20 text-primary-dark">
 															{{loanDetails.documents.promissory_number}}
