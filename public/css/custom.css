@@ -1495,16 +1495,25 @@
 }
 
 .logoutDD {
-	display:none;
-	position:absolute;
-	left:0;top:35px;
-	width:100%;
-	z-index:99999;
-	background-color:#fafafa;
-	padding:7px 15px;
-	box-shadow:1px 1px 2px #ccc;
+    display: none;
+    position: absolute;
+    left: 0;
+    top: 35px;
+    width: 100%;
+    z-index: 99999;
+    background-color: rgb(41,63,84);
+    padding: 7px 15px;
+    box-shadow: 1px 1px 2px #ccc;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    color: rgb(255,255,255);
 }
 
 .logoutContainer:hover .logoutDD {
-	display:flex;
+    display: flex;
+}
+
+.logoutDD:hover {
+    background-color: rgb(70,107,145);
 }

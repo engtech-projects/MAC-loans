@@ -6,6 +6,13 @@
       <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
     </li>
   </ul>
+  <ul class="navbar-nav" style="padding-top:7px">
+  <li class="nav-item">
+    <div class="d-flex align-items-center mr-45">
+      <span class="text-20 text-primary-dark mr-5"><strong>{{Session::get('branch.branch_name')}} Branch ({{Session::get('branch.branch_code')}})</strong></span>
+    </div>
+  </li>
+  </ul>
 
   <!-- Right navbar links -->
   <ul class="navbar-nav ml-auto" style="padding-top:7px">
@@ -106,14 +113,16 @@
       </a>
     </li>
     <li class="nav-item">
-        <div class="flex right-profile flex-center-y logoutContainer" style="position:relative;">
-      		<img src="{{ asset('img/user2-160x160.jpg')}}" class="img-circle elevation-2" alt="User Image">
-      		<span>{{Session::get('fullname')}}</span>
-      		<i class="fas fa-caret-down"></i>
-      		<div class="logoutDD" style="">
-      			<a href="{{route('logout')}}">Sign Out</a>
+      <div class="flex right-profile flex-center-y logoutContainer" style="position:relative;">
+    		<img src="{{ asset('img/user2-160x160.jpg')}}" class="img-circle elevation-2" alt="User Image">
+    		<span>{{Session::get('fullname')}}</span>
+    		<i class="fas fa-caret-down"></i>
+        <a href="{{route('logout')}}">
+      		<div class="logoutDD">
+      			<span>Sign Out</span>
       		</div>
-	     </div>
+        </a>
+     </div>
     </li>
   </ul>
 </nav>
