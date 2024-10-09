@@ -36,7 +36,7 @@
 <template>
 	<div class="d-flex flex-column" style="flex:8;">
 		<div class="d-flex flex-row font-md align-items-center mb-16">
-			<span class="font-lg text-primary-dark" style="flex:4">Transactionss</span>
+			<span class="font-lg text-primary-dark" style="flex:4">Transactions</span>
 			<div class="d-flex flex-row align-items-center mr-24" style="flex:2">
 				<!-- <span class="mr-10">Date: </span>
 				<input type="date" class="form-control"> -->
@@ -59,30 +59,42 @@
 		<div id="printContent" class="mt-0.2" style="font-family: 'Courier New', Courier, monospace;">
 			<!-- <img :src="this.baseURL()+'/img/company_header_fit.png'" class="mb-24" alt=""> -->
 				<section class="" id="clientSection">
-						<div class="d-flex flex-column mb-24" style="font-size:25px;">
-							<div class="d-flex flex-row align-items-center">
-								<div class="flex-1 d-flex flex-column">
-									
-									
-								</div>
-								<span class="font-30 text-bold text-center text-primary-dark flex-1">COLLECTION SHEET REPORT</span>
-
-								<div class="flex-1 d-flex justify-content-end" style="padding-right:16px">
-									<current-transactiondate :branch="branch.branch_id" :token="token" :reports="true"></current-transactiondate>
-									<span class="text-primary-dark">Time: {{todayTime(new Date())}} {{(new Date()).getHours() > 12? 'PM':'AM'}}</span>
-								</div>
-							</div>
-							<span class="text-center text-primary-dark text-bold font-md mb-5">MICRO ACCESS LOAN CORPORATION</span>
-							<span class="text-center text-primary-dark text-bold font-md mb-5">{{branch.branch_name + ' Branch (' + branch.branch_code + ')'}}</span>
-							<div class="d-flex flex-row justify-content-center text-primary-dark">
-								<span class="text-center text-primary-dark text-bold">As of {{filter.as_of?dateToMDY2(new Date(filter.as_of)).split('-').join('/'):'---'}}</span>
-							</div>
+					<div class="d-flex justify-content-between align-items-center mb-36">
+						<!-- Left column: Branch name and promissory note number -->
+						<div class="d-flex flex-column flex-1">
+							<span v-if="filter.account_officer" class="text-primary-dark font-25">
+							<!-- //	{{branch.branch_name}} Branch ({{branch.branch_code}}) -->
+							{{accountOfficer.name}}
+							</span>
+							<span class="text-bold"> {{centerName}}</span>
+							
 						</div>
+
+						<!-- Center column: Promissory Note and Micro Access Loan Corporation -->
+						<div class="d-flex flex-column text-center">
+							<span class="font-26 text-bold text-primary-dark lh-1">
+								COLLECTION SHEET REPORT
+							</span>
+							<span class="text-primary-dark text-bold font-md mb-5">
+								MICRO ACCESS LOAN CORPORATION
+							</span>
+							<span class="text-center text-primary-dark text-bold">
+								As of {{filter.as_of?dateToMDY2(new Date(filter.as_of)).split('-').join('/'):'---'}}
+							</span>
+						</div>
+
+						<!-- Right column: Date and time -->
+						<div class="d-flex flex-column flex-1 text-right">
+							<span class="mr-10">
+								{{dateFullDay(new Date())}} {{dateToYMD(new Date()).split('-').join('/')}}
+							</span>
+						</div>
+					</div>
 						<section class="d-flex flex-column mb-16">
 							<div>
 								<div class="d-flex flex-row" style="font-size:25px;">
 									
-									<span v-if="filter.account_officer" class="text-bold">{{branch.branch_code}} - {{accountOfficer.name}}  - {{centerName}}</span>
+									
 								
 								</div>
 								
@@ -269,7 +281,40 @@ export default {
 			var content = document.getElementById('printContent').innerHTML;
 			var target = document.querySelector('.to-print');
 			target.innerHTML = content;
-			target.innerHTML += '<style type="text/css" media="print">@page { size: portrait;} font-family:"Courier New"</style>';
+			//target.innerHTML += '<style type="text/css" media="print">@page { size: portrait;} font-family:"Courier New"</style>';
+			var style = document.createElement('style');
+			style.innerHTML =  `
+					@media print {
+						@page {
+							size: 8.5in 14in portrait !important; /* Custom paper size */
+								/* Custom margin */
+							padding:10px;
+							line-height:1.3em!important;
+							margin-left: -5px; /* Custom left margin */
+							margin-right: -5px; /* Custom right margin */
+						}
+						body {
+								/* Custom body margin for print */
+								padding:10px;
+							font-weight: bolder;
+							font-size:16px!important;
+							line-height:1.3em!important;
+							font-family: "Arial", "Helvetica", sans-serif;
+							text-align: justify;
+						}
+						.to-print {
+							transform: scale(108px); /* Custom scale of 75% for print */
+							transform-origin: top left; /* Ensure scaling starts from the top left */
+						}
+					}
+				`;
+			
+			document.head.appendChild(style);
+			window.print();
+			window.onafterprint = function() {
+				document.head.removeChild(style);
+			};
+			
 			window.print();
 		},
 		async fetchCollections(){
