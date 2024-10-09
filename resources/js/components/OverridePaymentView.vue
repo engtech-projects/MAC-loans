@@ -57,7 +57,7 @@
 					<tbody>
 						<tr v-for="p in filteredPayments" :key="p.payment_id">
 							<td>{{p.loan_details.account_num}}</td>
-							<td>{{p.loan_details.borrower.firstname + ' ' + p.loan_details.borrower.lastname}}</td>
+							<td>{{(p.loan_details.borrower.firstname + ' ' + p.loan_details.borrower.lastname).toUpperCase()}}</td>
 							<td>{{p.or_no}}</td>
 							<td>{{formatToCurrency(p.amount_applied - p.rebates)}}</td>
 							<td>{{p.payment_type}}</td>

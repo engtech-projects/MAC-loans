@@ -448,7 +448,7 @@
 						</thead>
 						<tbody>
 							<tr v-for="fo in filteredOverrides" :key="fo.loan_account_id">
-								<td>{{fo.borrower.lastname + ', ' + fo.borrower.firstname}}</td>
+								<td>{{(fo.borrower.lastname + ', ' + fo.borrower.firstname).toUpperCase()}}</td>
 								<td>{{formatToCurrency(fo.loan_amount)}}</td>
 								<td>{{formatToCurrency(fo.interest_amount)}}</td>
 								<td>{{formatToCurrency(fo.filing_fee)}}</td>

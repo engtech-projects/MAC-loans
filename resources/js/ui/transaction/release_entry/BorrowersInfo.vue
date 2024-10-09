@@ -20,11 +20,11 @@
 					</div>
 					<div class="form-group mb-10" style="flex: 5">
 						<label for="firstName" class="form-label">First Name</label>
-						<input v-model="borrower.firstname" required type="text" class="form-control form-input " id="firstName">
+						<input v-model="borrower.firstname" @input="capitalizeFirstLetter('firstname')" required type="text" class="form-control form-input " id="firstName">
 					</div>
 					<div class="form-group mb-10" style="flex: 5">
 						<label for="middleName" class="form-label">Middle Name</label>
-						<input v-model="borrower.middlename" required type="text" class="form-control form-input " id="middleName">
+						<input v-model="borrower.middlename" @input="capitalizeFirstLetter('middlename')" required type="text" class="form-control form-input " id="middleName">
 					</div>
 				</div>
 				<div class="upload-photo d-flex flex-column" style="flex:4">
@@ -35,7 +35,7 @@
 			<div class="d-flex flex-row">
 				<div class="form-group mb-10 mr-16" style="flex: 25">
 					<label for="lastName" class="form-label">Last Name</label>
-					<input v-model="borrower.lastname" required type="text" class="form-control form-input " id="lastName">
+					<input v-model="borrower.lastname" @input="capitalizeFirstLetter('lastname')" required type="text" class="form-control form-input " id="lastName">
 				</div>
 				<div class="form-group mb-10" style="flex: 6">
 					<label for="suffix" class="form-label">Suffix</label>
@@ -588,6 +588,13 @@
 
 			},
 
+			capitalizeFirstLetter(field) {
+	            this.borrower[field] = this.borrower[field]
+	                .toLowerCase()
+	                .split(' ')
+	                .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+	                .join(' ');
+	        },
 			submitForm:function(){
 				if(!this.pclient){
 					this.$emit('nextBorrower', this.borrower.birthdate)
