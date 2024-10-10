@@ -890,11 +890,9 @@ export default {
 		},
 		'loanDetails.transaction_date':function(){
 			if(this.loandetails.documents.date_release == "" || this.prejected){
-				console.log(this.prejected);
 				this.loandetails.documents.date_release = this.transactionDate.date_end;
 			}
 			if(this. loanDetails.transaction_date == "" || this.prejected){
-				console.log(this.prejected);
 				this.loanDetails.transaction_date = this.transactionDate.date_end;
 			}
 		},
@@ -1005,7 +1003,6 @@ export default {
 		this.fetchCenters();
 		this.loanDetails = this.loandetails;
 		this.setInterestRate();
-		console.log(this.prejected);
 	}
 }
 </script>

@@ -81,8 +81,14 @@
 				<div class="d-flex flex-row mb-24">
 					<div class="d-flex flex-row flex-2 mr-24">
 						<div class="d-flex flex-1 text-white p-10 bg-dark-gray mr-16 font-20 align-items-center">
-							<span class="mr-16">OR. Number :</span>
-							<span>{{ppayment.or_no}}</span>
+							<span v-if="ppayment.or_no">
+							  	<span class="mr-16">OR. Number :</span>
+							  	<span>{{ppayment.or_no}}</span>
+							</span>
+							<span v-else>
+							  	<span class="mr-16">Memo Ref :</span>
+							  	<span>{{ppayment.reference_no}}</span>
+							</span>
 						</div>
 						<div class="d-flex flex-1 text-white p-10 bg-green font-20 align-items-center">
 							<span class="mr-16">TOTAL PAYMENT :</span>
