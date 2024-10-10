@@ -1,17 +1,9 @@
 <style>
-@media print {
-    body {
-        margin-top: 0.19;
+.table-stripped td {
+    word-wrap: break-word; /* Break words when they are too long to fit within the cell */
+    word-break: break-word;
+    vertical-align: top; /* Align cell content to the top */
 
-        padding: 0;
-		/* font-family: "Courier New"; */
-		font-family: "Courier New", Courier, monospace;
-    }
-    /* Additional print styles can be added here */
-	.section-collection{
-		page-break-before: always;
-		
-	}
 }
 
 .section-collection{
@@ -93,166 +85,60 @@
 						<section class="d-flex flex-column mb-16">
 							<div>
 								<div class="d-flex flex-row" style="font-size:25px;">
-									
-									
-								
 								</div>
 								
-								<table class="table-stripped" style="font-size:15px;">
+								<table class="table-stripped">
 									<thead class="collection-sheet">
-										<th>Client</th>
-										<th>Date Loan</th>
-										<th>Maturity Date</th>
-										<th>Amount Loan</th>
-										<th>Outstand Bal.</th>
-										<th>Principal Bal.</th>
-										<th>Delnqt</th>
-										<!-- <th>Penalty</th> -->
-										<th>Amt. Due</th>
-										<th>Weekly Amort.</th>
-										<th>Cont. #</th>
-										<!-- <th>Address</th> -->
-										<th>Payment</th>
-										<!-- <th>Signature</th> -->
+										<th style="min-width: 80px;">Client</th>
+										<th style="min-width: 120px;">Date Loan</th>
+										<th style="min-width: 120px;">Maturity Date</th>
+										<th style="min-width: 120px;">Amount Loan</th>
+										<th style="min-width: 120px;">Outstand Bal.</th>
+										<th style="min-width: 120px;">Principal Bal.</th>
+										<th style="min-width: 120px;">Delnqt</th>
+										<th style="min-width: 120px;">Amt. Due</th>
+										<th style="min-width: 120px;">Weekly Amort.</th>
+										<th style="min-width: 120px;">Cont. #</th>
+										<th style="min-width: 120px;">Payment</th>
 									</thead>
 									<tbody>
-										<tr class="collection-sheet" v-for="c,i in collections.sort(sortClient)" :key="i">
-											<td>{{c.client}}</td>
+										<tr class="collection-sheet" v-for="c, i in collections.sort(sortClient)" :key="i">
+											<td style="white-space: normal;">{{c.client}}</td>
 											<td>{{c.date_loan.replaceAll('-','/')}}</td>
 											<td>{{c.maturity_date.replaceAll('-','/')}}</td>
 											<td>{{formatToCurrency(c.amount_loan)}}</td>
 											<td>{{formatToCurrency(c.outstanding_balance)}}</td>
 											<td>{{formatToCurrency(c.principal_balance)}}</td>
 											<td>{{formatToCurrency(c.delinquent)}}</td>
-											<!-- <td>{{formatToCurrency(c.penalty)}}</td> -->
 											<td>{{formatToCurrency(c.amount_due)}}</td>
 											<td>{{formatToCurrency(c.weekly_amortization)}}</td>
-											<td>{{c.contact}}</td>
-											<!-- <td>{{c.address}}</td> -->
-											<td ></td>
-											<!-- <td ></td> -->
+											<td style="white-space: normal;">{{c.contact}}</td>
+											<td></td>
 										</tr>
-										<tr v-if="!collections.length"><td><i>No data available.</i></td></tr>
+										<tr v-if="!collections.length"><td colspan="11"><i>No data available.</i></td></tr>
 										<tr class="border-cell-gray-7">
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
-											<!-- <td></td> -->
+											<td colspan="11"></td>
 										</tr>
 										<tr class="py-7">
-											<td class="py-7"></td>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
-											<!-- <td></td> -->
+											<td colspan="11"></td>
 										</tr>
 										<tr class="tr-py-7 text-bold bg-green-mint">
 											<td>TOTAL</td>
 											<td></td>
 											<td>{{collections.length}}</td>
-											<td v-for="t,i in total" :key="i">{{formatToCurrency(t)}}</td>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
+											<td v-for="t, i in total" :key="i">{{formatToCurrency(t)}}</td>
+											<td colspan="7"></td>
 										</tr>
 									</tbody>
-								</table>
+								</table>				
 							</div>
 						</section>
-						<!-- <section class="d-flex mb-24" style="font-size:25px;">
-							<table class="flex-1 table table-bordered">
-								<thead>
-									<th>Cash Breakdown</th>
-									<th>Pc(s)</th>
-									<th>Total Amount</th>
-								</thead>
-								<tbody>
-									<tr>
-										<td>1,000.00</td>
-										<td></td>
-										<td></td>
-									</tr>
-									<tr>
-										<td>500.00</td>
-										<td></td>
-										<td></td>
-									</tr>
-									<tr>
-										<td>200.00</td>
-										<td></td>
-										<td></td>
-									</tr>
-									<tr>
-										<td>100.00</td>
-										<td></td>
-										<td></td>
-									</tr>
-									<tr>
-										<td>50.00</td>
-										<td></td>
-										<td></td>
-									</tr>
-									<tr>
-										<td>20.00</td>
-										<td></td>
-										<td></td>
-									</tr>
-									<tr>
-										<td>10.00</td>
-										<td></td>
-										<td></td>
-									</tr>
-									<tr>
-										<td>5.00</td>
-										<td></td>
-										<td></td>
-									</tr>
-									<tr>
-										<td>1.00</td>
-										<td></td>
-										<td></td>
-									</tr>
-									<tr>
-										<td>0.25</td>
-										<td></td>
-										<td></td>
-									</tr>
-								</tbody>
-							</table>
-							<div class="flex-1"></div>
-						</section> -->
-
 					
 				</section>
-			
-			<!-- <div class="d-flex mb-24">
-				<img :src="this.baseURL()+'/img/logo-footer.png'" class="w-100" alt="">
-			</div> -->
 		</div>
-		<!-- <div class="d-flex flex-row justify-content-end mb-24">
-			<a href="#" class="text-green text-md text-bold mr-24">Previous Page</a>
-			<a href="#" class="text-green text-md text-bold">Next Page</a>
-		</div> -->
 		<div class="d-flex flex-row block mb-45">
 			<div class="d-flex justify-content-end block flex-1">
 				<a @click="print()" href="#" class="btn btn-default min-w-150">Print</a>
-				<!-- <a href="#" class="btn btn-success min-w-150 mr-24">Download Excel</a> -->
 			</div>
 		</div>
 	</div>
@@ -277,46 +163,45 @@ export default {
 		}
 	},
 	methods:{
-		print:function(){
-			var content = document.getElementById('printContent').innerHTML;
-			var target = document.querySelector('.to-print');
-			target.innerHTML = content;
-			//target.innerHTML += '<style type="text/css" media="print">@page { size: portrait;} font-family:"Courier New"</style>';
-			var style = document.createElement('style');
-			style.innerHTML =  `
-					@media print {
-						@page {
-							size: 8.5in 14in portrait !important; /* Custom paper size */
-								/* Custom margin */
-							padding:10px;
-							line-height:1.3em!important;
-							margin-left: -5px; /* Custom left margin */
-							margin-right: -5px; /* Custom right margin */
-						}
-						body {
-								/* Custom body margin for print */
-								padding:10px;
-							font-weight: bolder;
-							font-size:16px!important;
-							line-height:1.3em!important;
-							font-family: "Arial", "Helvetica", sans-serif;
-							text-align: justify;
-						}
-						.to-print {
-							transform: scale(108px); /* Custom scale of 75% for print */
-							transform-origin: top left; /* Ensure scaling starts from the top left */
-						}
-					}
-				`;
-			
-			document.head.appendChild(style);
-			window.print();
-			window.onafterprint = function() {
-				document.head.removeChild(style);
-			};
-			
-			window.print();
-		},
+		print: function() {
+    var content = document.getElementById('printContent').innerHTML;
+    var target = document.querySelector('.to-print');
+    target.innerHTML = content;
+
+    // Create a style element for print styles
+    var style = document.createElement('style');
+    style.type = 'text/css';
+    style.media = 'print';
+
+    style.innerHTML = `
+        @media print {
+            table {
+                table-layout: fixed;
+                width: 100%;
+                border-collapse: collapse;
+            }
+            th, td {
+                min-width: 80px;
+                padding: 8px;
+                text-align: left;
+                border: 1px solid #000;
+                word-wrap: break-word; /* Ensures long words wrap correctly */
+            }
+            .collection-sheet {
+                font-size: 12px; /* Adjust font size for printing */
+            }
+        }
+    `;
+
+    // Add the print styles to the document head
+    document.head.appendChild(style);
+
+    window.onafterprint = function() {
+        document.head.removeChild(style);
+    };
+
+    window.print();
+}.bind(this),
 		async fetchCollections(){
 			await axios.post(this.baseURL() + 'api/report/branch', this.filter, {
 				headers: {
