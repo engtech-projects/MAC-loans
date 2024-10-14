@@ -531,50 +531,70 @@ export default {
                 this.loading=false;
 			}.bind(this));
 		},
-		fetchProducts: function(){
-			axios.get(this.baseURL() + 'api/products/activeProducts', {
-				headers: {
-					'Authorization': 'Bearer ' + this.token,
-					'Content-Type': 'application/json',
-					'Accept': 'application/json'
-				}
-			})
-			.then(function (response) {
-				this.products = response.data.data;
-			}.bind(this))
-			.catch(function (error) {
-				console.log(error);
-			}.bind(this));
-		},
-		fetchAo: function(){
-			axios.get(this.baseURL() + 'api/accountofficer/getActivesInBranch/' + this.branch, {
-				headers: {
-					'Authorization': 'Bearer ' + this.token,
-					'Content-Type': 'application/json',
-					'Accept': 'application/json'
-				}
-			})
-			.then(function (response) {
-				this.accountOfficers = response.data.data;
-			}.bind(this))
-			.catch(function (error) {
-				console.log(error);
-			}.bind(this));
-		},
-		fetchCenters: function(){
-			axios.get(this.baseURL() + 'api/centers/activeCenters', {
-				headers: {
-					'Authorization': 'Bearer ' + this.token,
-					'Content-Type': 'application/json',
-					'Accept': 'application/json'
-				}
-			})
-			.then(function (response) {
-				this.centers = response.data.data;
-			}.bind(this))
-			.catch(function (error) {
-				console.log(error);
-			}.bind(this));
+		async fetchWithRetry(url, options, retries = 3, delay = 1000) {
+		    try {
+		        const response = await axios.get(url, options);
+		        return response;
+		    } catch (error) {
+		        if (retries > 0 && error.response && error.response.status === 500) {
+		        	console.log(`Retrying... ${retries} retries left`);
+		          	await new Promise(resolve => setTimeout(resolve, delay));
+		          	return this.fetchWithRetry(url, options, retries - 1, delay);
+		        } else {
+		          	throw error;
+		        }
+		    }
+	    },
+		async fetchProducts() {
+		    const url = this.baseURL() + 'api/products/activeProducts';
+		    const options = {
+		        headers: {
+		          	'Authorization': 'Bearer ' + this.token,
+		          	'Content-Type': 'application/json',
+		          	'Accept': 'application/json'
+		        }
+		    };
+		      
+		    try {
+		        const response = await this.fetchWithRetry(url, options);
+		        this.products = response.data.data;
+		    } catch (error) {
+		        console.error('Error fetching products:', error);
+		    }
+	    },
+	    async fetchAo() {
+		    const url = this.baseURL() + 'api/accountofficer/getActivesInBranch/' + this.branch;
+		    const options = {
+		        headers: {
+		          	'Authorization': 'Bearer ' + this.token,
+		          	'Content-Type': 'application/json',
+		          	'Accept': 'application/json'
+		        }
+		      };
+
+		    try {
+		        const response = await this.fetchWithRetry(url, options);
+		        this.accountOfficers = response.data.data;
+		    } catch (error) {
+		        console.error('Error fetching account officers:', error);
+		    }
+	    },
+	    async fetchCenters() {
+		    const url = this.baseURL() + 'api/centers/activeCenters';
+		    const options = {
+		        headers: {
+		          	'Authorization': 'Bearer ' + this.token,
+		          	'Content-Type': 'application/json',
+		          	'Accept': 'application/json'
+		        }
+		    };
+
+		    try {
+		        const response = await this.fetchWithRetry(url, options);
+		        this.centers = response.data.data;
+		    } catch (error) {
+		        console.error('Error fetching centers:', error);
+		    }
 		},
 		fetchPromissoryNo: function(){
 			if(this.loanDetails.product_id && this.loanDetails.product_id !== ''){

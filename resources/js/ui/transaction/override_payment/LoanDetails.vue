@@ -155,8 +155,8 @@
 			<div class="d-flex flex-row-reverse">
 				<button v-if="!canOverride(ppayment)" disabled class="btn btn-success min-w-150">Override</button>
 				<a href="#" v-if="canOverride(ppayment)" class="btn btn-success min-w-150" @click="override()">Override</a>
-				<button v-if="!canOverride(ppayment)&&JSON.parse(candelete)" href="#" disabled class="btn btn-bright-blue min-w-150 mr-16">Delete</button>
-				<a href="#" v-if="canOverride(ppayment)&&JSON.parse(candelete)" data-toggle="modal" data-target="#cancelModal" class="btn btn-bright-blue min-w-150 mr-16">Delete</a>
+				<button v-if="!canDelete(ppayment) && JSON.parse(candelete)" disabled class="btn btn-bright-blue min-w-150 mr-16">Delete</button>
+    			<a href="#" v-if="canDelete(ppayment)&&JSON.parse(candelete)" data-toggle="modal" data-target="#cancelModal" class="btn btn-bright-blue min-w-150 mr-16">Delete</a>
 			</div>
 		</section>
 
@@ -214,6 +214,13 @@ export default {
 			}
 			return true;
 		},
+		canDelete: function(payment) {
+	        // Disable delete button if payment.reference exists
+	        if (payment.reference) {
+	            return false;
+	        }
+	        return true;
+	    },
 		notify:function(title, text, type){
 			this.$notify({
 				group: 'foo',

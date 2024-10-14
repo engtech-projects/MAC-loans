@@ -119,7 +119,7 @@
 										display:none;
 										z-index:99999;
                                     "
-                                    >Reference account is still subject for approval.</span
+                                    >Memo Deduct Payment</span
                                 >
 								</i>
                             </td>
@@ -565,7 +565,7 @@ export default {
         canOverride: function (payment) {
             var result = true;
             payment.forEach((data) => {
-                if (data.reference && data.reference.status == "pending") {
+                if (data.reference) {
                     result = false;
                     return;
                 }
@@ -645,7 +645,12 @@ export default {
                     }
                 }.bind(this)
             );
-            return this.canOverride(pps) && pps.length > 1;
+            // Check if none of the selected payments have a reference status of "pending"
+            var allNotPending = pps.every(function (data) {
+                return !data.reference || data.reference.status !== "pending";
+            });
+
+            return allNotPending && pps.length > 1; // Ensure there are more than 1 selected payment
         },
         selected: function () {
             var amount = 0;
