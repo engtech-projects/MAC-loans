@@ -17,6 +17,7 @@
 					<option value="center">By Center</option>
 					<option value="product">By Product</option>
 					<option value="account_officer">By Account Officer</option>
+					<option value="payment_status">By Payment Status</option>
 				</select>
 			</div>
 			<div class="d-flex flex-row align-items-center" style="flex:2">
@@ -32,6 +33,9 @@
 				<select v-if="filter.type=='account_officer'" v-model="filter.spec" name="" id="selectProductClient" class="form-control">
 					<option v-for="a in filteredAos" :key="a.ao_id" :value="a.ao_id">{{a.name}}</option>
 				</select>
+				<select v-if="filter.type=='payment_status'" v-model="filter.spec" id="selectPaymentStatus" class="form-control">
+			        <option value="past_due" selected>Past Due</option>
+			    </select>
 			</div>
 		</div>
 		<div class="sep mb-45"></div>

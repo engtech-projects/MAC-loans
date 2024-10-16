@@ -113,3 +113,6 @@
 1728277570-2827-454009960,1728277570.193,GET,/MAC-loans/public/api/borrower/140,"App\Http\Controllers\API\BorrowerController@show",200,614.45498466492,request
 1728277590-2428-847822729,1728277590.154,POST,/MAC-loans/public/api/account/promissoryno,"App\Http\Controllers\API\LoanAccountController@getPromissoryNo",200,337.12005615234,request
 1728277598-5798-1467301458,1728277598.4879,POST,/MAC-loans/public/api/deduction/calculate,"App\Http\Controllers\API\DeductionController@calculateDeductions",200,254.52184677124,request
+1729063296-7484-657225076,1729063296.6781,POST,/MAC-loans/public/api/report/repayment,"App\Http\Controllers\API\ReportsController@repaymentReports",200,824.20706748962,request
+1729063302-3562-1525712951,1729063302.3009,POST,/MAC-loans/public/api/report/repayment,"App\Http\Controllers\API\ReportsController@repaymentReports",200,793.12896728516,request
+1729063309-0030-506385446,1729063308.9481,POST,/MAC-loans/public/api/report/repayment,"App\Http\Controllers\API\ReportsController@repaymentReports",200,409.57498550415,request

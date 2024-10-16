@@ -186,6 +186,10 @@ class Reports extends Model
             $payments->whereDate('payment.transaction_date', '<=', $filters['date_to']);
         }
 
+        if (isset($filters['type']) && $filters['type'] === 'payment_status' && $filters['spec'] === 'past_due') {
+            $payments->where('payment.pdi', '>', 0);
+        }
+
         return $payments->get();
     }
 
@@ -673,7 +677,7 @@ class Reports extends Model
     public function repaymentByClient($filters = [])
     {
 
-        if ($filters["type"] == 'center' || $filters["type"] == 'product' || $filters["type"] == 'account_officer') {
+        if ($filters["type"] == 'center' || $filters["type"] == 'product' || $filters["type"] == 'account_officer' || $filters["type"] == 'payment_status') {
             $filters[$filters["type"]] = $filters['spec'];
         }
         $payments = $this->getPayments($filters);
