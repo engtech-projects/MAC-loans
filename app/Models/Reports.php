@@ -1551,7 +1551,7 @@ class Reports extends Model
         // Fetch the raw data first
         $rawData = Payment::join("loan_accounts", 'payment.loan_account_id', '=', 'loan_accounts.loan_account_id')
             ->join("borrower_info", 'loan_accounts.borrower_id', '=', 'borrower_info.borrower_id')
-            ->where(["payment.branch_id" => $filters["branch_id"], "payment.status" => "paid"])
+            ->where([ "payment.status" => "paid"])
             ->whereDate('payment.transaction_date', '>=', $filters['date_from'])
             ->whereDate('payment.transaction_date', '<=', $filters['date_to'])
             ->groupBy("borrower_info.firstname", "borrower_info.middlename", "borrower_info.lastname")
