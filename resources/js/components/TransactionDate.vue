@@ -28,6 +28,7 @@ export default {
 				})
 				.then(function (response) {
 					this.transactionDate = response.data.data.date_end;
+					this.$emit('update-transaction-date', this.transactionDate);
 				}.bind(this))
 				.catch(function (error) {
 					console.log(error);

@@ -48,7 +48,7 @@
 						<div class="flex-1"></div>
 						<span class="font-30 text-bold text-primary-dark">SUMMARY OF LOAN REPAYMENTS</span>
 						<div class="flex-1 d-flex justify-content-end" style="padding-right:16px">
-							<current-transactiondate :branch="branch.branch_id" :token="token" :reports="true"></current-transactiondate>
+							<current-transactiondate :branch="branch.branch_id" :token="token" :reports="true" @update-transaction-date="setTransactionDate"></current-transactiondate>
 							<span class="text-primary-dark">Time: {{todayTime(new Date())}} {{(new Date()).getHours() > 12? 'PM':'AM'}}</span>
 						</div>
 					</div>
@@ -270,6 +270,10 @@ export default {
 			.catch(function (error) {
 				console.log(error);
 			}.bind(this));
+		},
+		setTransactionDate(transactionDate) {
+			this.filter.date_from = transactionDate;
+			this.filter.date_to = transactionDate;
 		},
 		async fetchProducts(){
 			await axios.get(this.baseURL() + 'api/product/', {
