@@ -344,6 +344,11 @@ class LoanAccount extends Model
         return $this->hasMany(Payment::class, 'loan_account_id')->whereIn('status', ['paid', 'cancelled']);
     }
 
+    public function rmemo()
+    {
+        return $this->hasOne(Payment::class, 'reference_id')->whereIn('status', ['rejected']);
+    }
+
     public function overrideReleaseAccounts($filters = array())
     {
 

@@ -148,7 +148,7 @@
 									<span class="">Day Schedule</span>
 									<span>:</span>
 								</div>
-								<span class="flex-1 text-primary-dark">{{loanAccount.day_schedule}}</span>
+								<span class="flex-1 text-primary-dark capitalize">{{loanAccount.day_schedule}}</span>
 							</div>
 
 
@@ -586,5 +586,8 @@ export default {
 <style lang="scss" scoped>
 	.loan-item.active {
 		background-color: #ccffcc;
+	}
+	.capitalize {
+		text-transform: capitalize;
 	}
 </style>

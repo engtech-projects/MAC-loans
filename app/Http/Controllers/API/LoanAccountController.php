@@ -237,7 +237,8 @@ class LoanAccountController extends BaseController
     {
 
         if ($account->memo > 0) {
-            Payment::where(['reference_id' => $account->loan_account_id])->delete();
+            Payment::where('reference_id', $account->loan_account_id)
+            ->update(['status' => 'rejected']);
         }
 
         $account->status = 'rejected';

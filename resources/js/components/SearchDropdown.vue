@@ -18,23 +18,30 @@
 
 <script>
 export default {
-	props:['data','id','name','reset', 'product'],
+	props: {
+	  data: Array,
+	  name: String,
+	  reset: Boolean,
+	  product: String,
+	  centerId: Number
+	},
 	data(){
 		return {
 			dd:false,
-			selectedData:{},
 			search:''
 		}
 	},
 	methods:{
 		select:function(selected){
 			this.dd=!this.dd;
-			this.selectedData = selected;
 			this.search = '';
 			this.$emit('sdSelect', selected)
 		}
 	},
 	computed:{
+		selectedData() {
+			return this.data.find(d => d.center_id === this.centerId) || {};
+		},
 		filteredData:function(){
 			return this.search.length>0?this.data.filter(d=>d[this.name].toLowerCase().includes(this.search.toLowerCase())):this.data;
 		}
@@ -42,7 +49,6 @@ export default {
 	watch:{
 		'reset':function(val){
 			if(val){
-				this.selectedData = {};
 				this.$emit('centerReset');
 			}
 		}
