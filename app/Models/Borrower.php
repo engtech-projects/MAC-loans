@@ -74,7 +74,7 @@ class Borrower extends Authenticatable
 
     public function fullname()
     {
-        return ucfirst($this->lastname) . ', ' . ucfirst($this->firstname) . ' ' . ucfirst($this->middlename) . ' ' . ucfirst($this->suffix);
+        return ucfirst($this->lastname) . ', ' . ucfirst($this->firstname) . ', ' . ucfirst($this->middlename) . ' ' . ucfirst($this->suffix);
     }
 
     public function directories()
