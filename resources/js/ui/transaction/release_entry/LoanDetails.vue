@@ -447,6 +447,8 @@ export default {
 			rebatesRefNo:'',
 			memoRefNo:'',
 			deductionComputation:0,
+			initialProductId: null,
+			initialPromNum: null
 		}
 	},
 	methods:{
@@ -802,6 +804,8 @@ export default {
 		},
 		'loandetails'(newValue) {
 			this.loanDetails = newValue;
+			this.initialProductId = this.loanDetails.product_id;
+			this.initialPromNum = this.loanDetails.documents.promissory_number;
 			if(this.prejected) {
 				this.loanDetails.memo = 0;
 			}
@@ -841,10 +845,13 @@ export default {
 				this.rebatesRefNo = '';
 			}
 		},
-		'loanDetails.product_id'(newValue, oldValue){
+		'loanDetails.product_id'(newValue){
 			this.setInterestRate();
-			if(newValue !== oldValue){
+			if(newValue && newValue !== this.initialProductId){
 				this.fetchPromissoryNo();
+			}else{
+			    this.loanDetails.documents.promissory_number = this.initialPromNum;
+			    this.loanDetails.account_num = this.initialPromNum;
 			}
 			this.deductionComputation = 0;
 		},
