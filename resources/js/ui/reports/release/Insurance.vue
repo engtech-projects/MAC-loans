@@ -95,6 +95,14 @@
 									<td>{{a.term / 30}} Mos</td>
 								</tr>
 							</tbody>
+							<tfoot>
+								<tr>
+								<td colspan="6"></td>
+								<td><strong>Total: {{formatToCurrency(totalAmountLoan)}}</strong></td>
+								<td><strong>Total: {{formatToCurrency(totalInsurance)}}</strong></td>
+								<td colspan="3"></td>
+								</tr>
+							</tfoot>
 						</table>
 					</section>
 				</section>
@@ -255,7 +263,12 @@ export default {
     },
   },
 	computed:{
-		
+		totalAmountLoan() {
+			return this.accounts.reduce((sum, account) => sum + (account.amount_loan || 0), 0);
+		},
+		totalInsurance() {
+			return this.accounts.reduce((sum, account) => sum + (account.insurance || 0), 0);
+		}
 	},
 	watch:{
 		 filter: {
