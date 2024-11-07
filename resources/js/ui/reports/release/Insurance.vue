@@ -108,8 +108,8 @@
 				
 				<div class="d-flex flex-row-reverse justify-content-start flex-1">
 					<a @click="print()" href="#" class="btn btn-default min-w-150">Print</a>
-					<a @click="exportToExcelAgeBelow70" href="#" class="btn btn-info min-w-150">Download Excel (Age <= 70)</a>
-       				<a @click="exportToExcelAgeAbove71" href="#" class="btn btn-warning min-w-150 mr-24">Download Excel (Age > 71)</a>
+					<a @click="exportToExcelAgeAbove71" href="#" class="btn btn-warning min-w-150 mr-24">Download Excel (Age Greater 71)</a>
+					<a @click="exportToExcelAgeBelow70" href="#" class="btn btn-info min-w-150">Download Excel (Age Less 70)</a>
 				</div>
 			</div>
 		</div>
