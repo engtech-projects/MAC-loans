@@ -74,7 +74,10 @@
 					</div>
 					<div class="form-group mb-24">
 						<label for="middleName" class="form-label">Password</label>
-						<input v-model="account.password" type="password" class="form-control form-input " id="password" required>
+						<div class="password-input-group">
+							<input :type="showPassword?'text':'password'" v-model="account.password" class="form-control form-input " id="password" placeholder="Change Password">
+							<button type="button" @click="togglePasswordVisibility" class="password-toggle-button"><i :class="showPassword?'fas fa-eye-slash':'fas fa-eye'"></i></button>
+						</div>
 					</div>
 					<div class="form-group mb-16">
 						<label for="firstName" class="form-label">Status</label>
@@ -223,9 +226,13 @@ export default {
 				branch:null,
 			},
 			permissions:[],
+			showPassword: false
 		}
 	},
 	methods:{
+		togglePasswordVisibility() {
+			this.showPassword = !this.showPassword;
+		},
 		removeBranch:function(branch, e){
 			this.account.branch = this.account.branch.filter(b => b !== branch);
 		},
