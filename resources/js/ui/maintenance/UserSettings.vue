@@ -75,7 +75,7 @@
 					<div class="form-group mb-24">
 						<label for="middleName" class="form-label">Password</label>
 						<div class="password-input-group">
-							<input :type="showPassword?'text':'password'" v-model="account.password" class="form-control form-input " id="password" placeholder="Change Password">
+							<input :type="showPassword?'text':'password'" v-model="account.password" class="form-control form-input " id="password" :placeholder="account.id?'Change Password':''">
 							<button type="button" @click="togglePasswordVisibility" class="password-toggle-button"><i :class="showPassword?'fas fa-eye-slash':'fas fa-eye'"></i></button>
 						</div>
 					</div>
