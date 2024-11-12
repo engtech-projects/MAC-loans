@@ -229,7 +229,7 @@
 					<a href="#" data-toggle="modal" data-target="#cashVoucherModal" class="mr-16 flex-1 btn btn-brown">Print Voucher</a>
 					<a v-if="JSON.parse(canreject)" href="#" data-toggle="modal" data-target="#rejectModal" class="mr-16 flex-1 btn btn-primary-dark">Reject</a>
 					<a v-if="JSON.parse(candelete)" href="#" data-toggle="modal" data-target="#warningDeleteModal" class="mr-16 flex-1 btn btn-primary">Delete</a>
-					<a href="#" @click="override()" data-toggle="modal" data-target="" class="flex-1 btn btn-success">Override</a>
+					<a v-if="JSON.parse(canoverride)" href="#" @click="override()" data-toggle="modal" data-target="" class="flex-1 btn btn-success">Override</a>
 				</div>
 			</div>
 		</section>
@@ -790,7 +790,7 @@
 
 <script>
 export default {
-	props:['ploanaccount', 'pdate', 'token', 'csrf', 'pbranch','pboverride', 'candelete', 'canreject', "transactionDate"],
+	props:['ploanaccount', 'pdate', 'token', 'csrf', 'pbranch','pboverride', 'candelete', 'canreject', 'canoverride', "transactionDate"],
 	data(){
 		return {
 			filter:{ao_id:'all',center_id:'all',product_id:'all', transaction_date:''},

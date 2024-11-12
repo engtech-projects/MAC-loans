@@ -61,7 +61,7 @@
 					</div>
 				</div> -->
 				<div class="d-flex flex-row-reverse sep-thin pb-10 mb-16" style="border-bottom-color:#CCC!important;">
-					<a v-if="enableBatchOverride > 1" href="#" data-toggle="modal" data-target="#warningModal" class="btn btn-success">Batch Override</a>
+					<a v-if="enableBatchOverride > 1 && JSON.parse(canoverride)" href="#" data-toggle="modal" data-target="#warningModal" class="btn btn-success">Batch Override</a>
 					<a href="#" data-toggle="modal" data-target="#overrideReleaseModal" class="btn btn-primary min-w-150 mr-16">View</a>
 				</div>
 				<section class="mb-16" style="border-bottom:1px solid #CCC!important;">
@@ -146,6 +146,7 @@
 					:pdate="preference.date"
 					:canreject="canreject"
 					:candelete="candelete"
+					:canoverride="canoverride"
 					:transactionDate="transactionDate"
 				>
 				</override-release-details>
@@ -178,7 +179,7 @@
 <script>
 
 export default {
-	props:['token', 'csrf', 'pbranch', 'staff', 'branch_mgr','canreject','candelete'],
+	props:['token', 'csrf', 'pbranch', 'staff', 'branch_mgr','canreject','candelete','canoverride'],
 	data(){
 		return {
 			branch:{branch_id:''},

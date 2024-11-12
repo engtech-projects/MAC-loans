@@ -141,7 +141,7 @@
                 >
                     <a
                         href="#"
-                        v-if="boverrideCheck"
+                        v-if="boverrideCheck && JSON.parse(canoverride)"
                         data-toggle="modal"
                         data-target="#warningModal"
                         class="btn btn-success"
@@ -149,7 +149,7 @@
                     >
 					 <button
                         href="#"
-                        v-if="!boverrideCheck"
+                        v-if="!boverrideCheck && JSON.parse(canoverride)"
                         disabled
                         class="btn btn-success"
                         >Batch Override</button
@@ -325,6 +325,7 @@
                 :token="token"
                 @reloadPayments="reloadPayments"
 				:candelete="candelete"
+                :canoverride="canoverride"
                 :transactionDate="transactionDate"
             ></overridepayment-details>
         </div>
@@ -378,7 +379,7 @@
 
 <script>
 export default {
-    props: ["token", "pbranch", "candelete"],
+    props: ["token", "pbranch", "candelete", "canoverride"],
     data() {
         return {
             selectAll:false,
