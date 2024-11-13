@@ -104,7 +104,17 @@ export default {
 			var result = [];
 			if(this.pborrowers.length > 0 && !this.account){
 				this.pborrowers.map(function(data){
-					if(data.borrower_num.toLowerCase().includes(this.filter.toLowerCase()) || data.firstname.toLowerCase().includes(this.filter.toLowerCase()) || data.lastname.toLowerCase().includes(this.filter.toLowerCase()) || (data.firstname + ' ' + data.lastname).toLowerCase().includes(this.filter.toLowerCase()) || (data.lastname + ' ' + data.firstname).toLowerCase().includes(this.filter.toLowerCase())){
+					const borrowerNum = data.borrower_num ? data.borrower_num.toLowerCase() : '';
+					const firstName = data.firstname ? data.firstname.toLowerCase() : '';
+					const lastName = data.lastname ? data.lastname.toLowerCase() : '';
+
+					if (
+						borrowerNum.includes(this.filter.toLowerCase()) ||
+						firstName.includes(this.filter.toLowerCase()) ||
+						lastName.includes(this.filter.toLowerCase()) ||
+						(firstName + ' ' + lastName).includes(this.filter.toLowerCase()) ||
+						(lastName + ' ' + firstName).includes(this.filter.toLowerCase())
+					) {
 						result.push(data);
 					}
 				}.bind(this));
@@ -119,7 +129,18 @@ export default {
 			var result = [];
 			if(this.pborrowers.length > 0){
 				this.pborrowers.map(function(data){
-					if(data.borrower.borrower_num.toLowerCase().includes(this.filter.toLowerCase()) || data.borrower.firstname.toLowerCase().includes(this.filter.toLowerCase()) || data.borrower.lastname.toLowerCase().includes(this.filter.toLowerCase()) || (data.borrower.firstname + ' ' + data.borrower.lastname).toLowerCase().includes(this.filter.toLowerCase()) || (data.borrower.lastname + ' ' + data.borrower.firstname).toLowerCase().includes(this.filter.toLowerCase())){
+					const borrower = data.borrower || {};
+					const borrowerNum = borrower.borrower_num ? borrower.borrower_num.toLowerCase() : '';
+					const firstName = borrower.firstname ? borrower.firstname.toLowerCase() : '';
+					const lastName = borrower.lastname ? borrower.lastname.toLowerCase() : '';
+
+					if (
+						borrowerNum.includes(this.filter.toLowerCase()) ||
+						firstName.includes(this.filter.toLowerCase()) ||
+						lastName.includes(this.filter.toLowerCase()) ||
+						(firstName + ' ' + lastName).includes(this.filter.toLowerCase()) ||
+						(lastName + ' ' + firstName).includes(this.filter.toLowerCase())
+					) {
 						result.push(data);
 					}
 				}.bind(this));

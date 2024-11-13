@@ -37,7 +37,7 @@
 				</div>
 				<div class="form-group mb-10" style="flex:7">
 					<label for="accountNumber" class="form-label">Account Number</label>
-					<input :value="loanDetails.borrower_num" disabled type="text" class="form-control form-input" id="accountNumber">
+					<input v-model="loanDetails.account_num" disabled type="text" class="form-control form-input">
 				</div>
 			</div>
 			<div class="d-flex flex-row">
@@ -48,10 +48,11 @@
 					<select v-if="productEnable" required v-model="loanDetails.center_id" name="" id="" class="form-control form-input ">
 						<option v-for="center in centers" :key="center.center_id" :value="center.center_id">{{center.center}}</option>
 					</select> -->
+
 					<select v-if="!productEnable" disabled required v-model="loanDetails.center_id" name="" id="" class="form-control form-input ">
 					</select>
 					<div class="d-flex flex-column" v-else>
-						<search-dropdown product="currentProductName" :reset="resetCenter" @centerReset="resetCenter=false" @sdSelect="centerSelect" :data="centers" id="center_id" name="center"></search-dropdown>
+						<search-dropdown product="currentProductName" :reset="resetCenter" @centerReset="resetCenter=false" @sdSelect="centerSelect" :data="centers" :center-id="loanDetails.center_id" id="center_id" name="center"></search-dropdown>
 						<input style="border:none!important;width:100%!important;height:0px!important;opacity:0!important;" type="text" :required="currentProductUsed.product_name=='Micro Group'" v-model="loanDetails.center_id">
 					</div>
 				</div>
@@ -446,6 +447,8 @@ export default {
 			rebatesRefNo:'',
 			memoRefNo:'',
 			deductionComputation:0,
+			initialProductId: null,
+			initialPromNum: null
 		}
 	},
 	methods:{
@@ -524,6 +527,12 @@ export default {
 				this.loanDetails.notarial_fee = result.notarial_fee.rate;
 				this.loanDetails.affidavit_fee = result.affidavit.rate;
 				this.loanDetails.prepaid_interest = this.loanDetails.type=="Add-On"?0:this.loanDetails.interest_amount;
+				if(this.loanDetails.rmemo){
+					this.memoChecked = true;
+					this.memoRefNo = this.loanDetails.rmemo.reference_no;
+					this.rebatesRefNo = this.loanDetails.rmemo.rebates_approval_no;
+					this.selectedLoanAccount = this.loanDetails.rmemo.loan_account_id;
+				}
 				this.loading=false;
 			}.bind(this))
 			.catch(function (error) {
@@ -607,6 +616,7 @@ export default {
 				})
 				.then(function (response) {
 					this.loanDetails.documents.promissory_number = response.data;
+					this.loanDetails.account_num = response.data;
 				}.bind(this))
 				.catch(function (error) {
 					console.log(error);
@@ -794,6 +804,8 @@ export default {
 		},
 		'loandetails'(newValue) {
 			this.loanDetails = newValue;
+			this.initialProductId = this.loanDetails.product_id;
+			this.initialPromNum = this.loanDetails.documents.promissory_number;
 			if(this.prejected) {
 				this.loanDetails.memo = 0;
 			}
@@ -835,8 +847,11 @@ export default {
 		},
 		'loanDetails.product_id'(newValue){
 			this.setInterestRate();
-			if(!this.prejected && newValue){
+			if(newValue && newValue !== this.initialProductId){
 				this.fetchPromissoryNo();
+			}else{
+			    this.loanDetails.documents.promissory_number = this.initialPromNum;
+			    this.loanDetails.account_num = this.initialPromNum;
 			}
 			this.deductionComputation = 0;
 		},
@@ -851,7 +866,7 @@ export default {
 		},
 		'loanDetails.center_id':function(){
 			this.centers.map(function(data){
-				if(this.loanDetails.center_id == data.center_id){
+				if(this.loanDetails.center_id == data.center_id && data.day_sched !== ""){
 					this.loanDetails.day_schedule = data.day_sched.toLowerCase()
 				}
 			}.bind(this));
@@ -864,6 +879,12 @@ export default {
 				this.loanaccounts.map(function(data){
 					if(newValue == data.loan_account_id){
 						this.loanaccount = data;
+						this.rebatesRefNo = '';
+						if(this.loanDetails.rmemo && this.loanaccount.loan_account_id == this.loanDetails.rmemo.loan_account_id){
+							this.memoRefNo = this.loanDetails.rmemo.reference_no;
+							this.rebatesRefNo = this.loanDetails.rmemo.rebates_approval_no;
+							this.loanaccount.remainingBalance.rebates.balance = this.loanDetails.rmemo.rebates;
+						}
 					}
 				}.bind(this));
 			}

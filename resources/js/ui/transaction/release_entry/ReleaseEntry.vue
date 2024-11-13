@@ -1125,25 +1125,41 @@
 					this.loading = false;
 				}.bind(this));
 			},
-			fetchBorrower:function(borrower){
-				axios.get(this.baseURL() + 'api/borrower/' + borrower.borrower.borrower_id, {
-					headers: {
-						'Authorization': 'Bearer ' + this.token,
-						'Content-Type': 'application/json',
-						'Accept': 'application/json'
-					}
-				})
-				.then(function (response) {
-					console.log(response.data.data);
-					borrower.borrower = response.data.data;
-					borrower.documents = borrower.document;
-					this.rejectedAccount = borrower;
-					this.borrower = borrower.borrower;
-					this.loanDetails = borrower;
-				}.bind(this))
-				.catch(function (error) {
-					console.log(error);
-				}.bind(this));
+			async fetchWithRetry(url, options, retries = 3, delay = 1000) {
+			    try {
+			        const response = await axios.get(url, options);
+			        return response;
+			    } catch (error) {
+			        if (retries > 0 && error.response && error.response.status === 500) {
+			            console.log(`Retrying... ${retries} retries left`);
+			            await new Promise(resolve => setTimeout(resolve, delay));
+			            return this.fetchWithRetry(url, options, retries - 1, delay);
+			        } else {
+			            throw error;
+			        }
+			    }
+			},
+			fetchBorrower: async function(borrower) {
+			    const url = this.baseURL() + 'api/borrower/' + borrower.borrower.borrower_id;
+			    const options = {
+			        headers: {
+			            'Authorization': 'Bearer ' + this.token,
+			            'Content-Type': 'application/json',
+			            'Accept': 'application/json'
+			        }
+			    };
+
+			    await this.fetchWithRetry(url, options)
+			        .then(response => {
+			            borrower.borrower = response.data.data;
+			            borrower.documents = borrower.document;
+			            this.rejectedAccount = borrower;
+			            this.borrower = borrower.borrower;
+			            this.loanDetails = borrower;
+			        })
+			        .catch(error => {
+			            console.log(error);
+			        });
 			},
 			fetchRejectedAccounts:function(){
 
