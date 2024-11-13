@@ -49,6 +49,7 @@
 						<tr>
 							<th>Client</th>
 							<th>Amount</th>
+							<th>Date Released</th>
 							<th>Maturity Date</th>
 							<th>Term</th>
 							<th>Total UID</th>
@@ -67,7 +68,7 @@
 							<th>Oct</th>
 							<th>Nov</th>
 							<th>Dec</th>
-							<th>TOTAL</th>
+							<th>TOTAL ACCUMULATED</th>
 						</tr>
 						
 					</thead>
@@ -184,29 +185,30 @@ export default {
 		filteredReports:function(){
 			var monNum = ['01','02','03','04','05','06','07','08','09','10','11','12'];
 			var rows = [];
-			var overall = ['TOTAL',0,'','',0,0,0,'',0,0,0,0,0,0,0,0,0,0,0,0,0];
+			var overall = ['TOTAL',0,'','','',0,0,0,'',0,0,0,0,0,0,0,0,0,0,0,0,0];
 			this.reports.sort(this.sortClient).forEach(r=>{
 				if(!this.isEmptyObj(r.history)){
 					var counter = 0;
 					for(var i in r.history){
-						var mCount = 8;
+						var mCount = 9;
 						var row = [];
 						var total = 0;
 						if(counter==0){
 							row.push(r.client);
 							row.push(this.formatToCurrency(r.amount_loan));
 							overall[1] += r.amount_loan;
+							row.push(this.dateToMDY(new Date(r.date_released)));
 							row.push(this.dateToMDY(new Date(r.due_date)));
 							row.push(r.term);
 							row.push(this.formatToCurrency(r.total_uid));
-							overall[4] += r.total_uid;
+							overall[5] += r.total_uid;
 							row.push(this.formatToCurrency(r.balance));
-							overall[5] += r.balance;
+							overall[6] += r.balance;
 							row.push(this.formatToCurrency(r.monthly_uid));
-							overall[6] += r.monthly_uid;
+							overall[7] += r.monthly_uid;
 							counter++;
 						}else{
-							for(var u = 0; u < 7; u++){
+							for(var u = 0; u < 8; u++){
 								row.push('');
 							}
 						}
@@ -215,8 +217,8 @@ export default {
 							for(var j in r.history[i]){
 								if(monNum[k] == j){
 									total += r.history[i][j];
-									overall[20] += r.history[i][j];
-									if(mCount < 20){
+									overall[21] += r.history[i][j];
+									if(mCount < 21){
 										overall[mCount] += r.history[i][j];
 									}
 									mCount++;
@@ -234,14 +236,15 @@ export default {
 					row.push(r.client);
 					row.push(this.formatToCurrency(r.amount_loan));
 					overall[1] += r.amount_loan;
-					row.push(r.due_date);
+					row.push(this.dateToMDY(new Date(r.date_released)));
+					row.push(this.dateToMDY(new Date(r.due_date)));
 					row.push(r.term);
 					row.push(this.formatToCurrency(r.total_uid));
-					overall[4] += r.total_uid;
+					overall[5] += r.total_uid;
 					row.push(this.formatToCurrency(r.balance));
-					overall[5] += r.balance;
+					overall[6] += r.balance;
 					row.push(this.formatToCurrency(r.monthly_uid));
-					overall[6] += r.monthly_uid;
+					overall[7] += r.monthly_uid;
 					for(var k=0;k<14;k++){
 						row.push('')
 					}
@@ -257,7 +260,7 @@ export default {
 				}else{
 					finalOverall.push(ov);
 				}
-				if(ovcount > 7){
+				if(ovcount > 8){
 					monthlyTotal.push(ov)
 				}
 				ovcount++;
@@ -265,7 +268,7 @@ export default {
 			
 			return {
 				rows:rows,
-				overall:finalOverall.slice(0,21),
+				overall:finalOverall.slice(0,22),
 				monthlyTotal:monthlyTotal.slice(0,12)
 			}
 		}
