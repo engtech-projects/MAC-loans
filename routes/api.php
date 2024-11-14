@@ -119,6 +119,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('account/override/', [LoanAccountController::class, 'override']);
     Route::delete('account/remove/{account}', [LoanAccountController::class, 'delete']);
     Route::put('account/reject/{account}', [LoanAccountController::class, 'reject']);
+    Route::put('account/proceed/{account}', [LoanAccountController::class, 'proceed']);
     Route::delete('account/delete/{id}', [LoanAccountController::class, 'destroy']);
     // rejected release
     Route::get('account/rejected/{branch_id}', [LoanAccountController::class, 'rejectedAccountList']);

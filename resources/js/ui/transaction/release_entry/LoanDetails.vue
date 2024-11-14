@@ -49,9 +49,9 @@
 						<option v-for="center in centers" :key="center.center_id" :value="center.center_id">{{center.center}}</option>
 					</select> -->
 
-					<select v-if="!productEnable" disabled required v-model="loanDetails.center_id" name="" id="" class="form-control form-input ">
-					</select>
-					<div class="d-flex flex-column" v-else>
+					<!-- <select v-if="!productEnable" disabled required v-model="loanDetails.center_id" name="" id="" class="form-control form-input ">
+					</select> -->
+					<div class="d-flex flex-column">
 						<search-dropdown product="currentProductName" :reset="resetCenter" @centerReset="resetCenter=false" @sdSelect="centerSelect" :data="centers" :center-id="loanDetails.center_id" id="center_id" name="center"></search-dropdown>
 						<input style="border:none!important;width:100%!important;height:0px!important;opacity:0!important;" type="text" :required="currentProductUsed.product_name=='Micro Group'" v-model="loanDetails.center_id">
 					</div>
@@ -85,10 +85,10 @@
 				</div>
 				<div class="form-group mb-10 mr-16" style="flex:5">
 					<label for="type" class="form-label">Day Schedule</label>
-					<select v-if="!productEnable" disabled required v-model="loanDetails.day_schedule" class="form-control form-input " id="type">
+					<!-- <select v-if="!productEnable" disabled required v-model="loanDetails.day_schedule" class="form-control form-input " id="type">
 
-					</select>
-					<select v-if="productEnable" required v-model="loanDetails.day_schedule" class="form-control form-input " id="type">
+					</select> -->
+					<select :required="currentProductUsed.product_name=='Micro Group'" v-model="loanDetails.day_schedule" class="form-control form-input" id="type">
 						<option value="daily">Daily</option>
 						<option value="monday">Monday</option>
 						<option value="tuesday">Tuesday</option>

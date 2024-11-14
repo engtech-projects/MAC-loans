@@ -401,6 +401,7 @@
 						<div v-if="loanAccount.loan_account_id" class="d-flex flex-row-reverse" style="flex:3">
 							<!-- <a href="#" class="flex-1 btn btn-black mw-150">Cancel</a> -->
 							<a href="#" data-toggle="modal" data-target="#editModal" class="mr-16 flex-1 btn btn-bright-blue mw-150">Edit</a>
+							<a href="#" data-toggle="modal" data-target="#proceedModal" class="mr-16 flex-1 btn btn-success mw-150">Proceed</a>
 						</div>
 					</div>
 				</section>
@@ -408,24 +409,43 @@
 		</div>
 		<day-ended v-else></day-ended>
 		<div class="modal" id="editModal" tabindex="-1" role="dialog">
-		<div class="modal-dialog" role="document">
-		  <div class="modal-content">
-			<div class="modal-body">
-			  <div class="d-flex flex-column" style="min-height:200px;padding:16px;">
-				  <div class="d-flex flex-1 justify-content-center align-items-center">
-					<p class="text-24 text-center mb-24">You are about to edit the Loan Details, Proceed anyway?</p>
+			<div class="modal-dialog" role="document">
+			  <div class="modal-content">
+				<div class="modal-body">
+				  <div class="d-flex flex-column" style="min-height:200px;padding:16px;">
+					  <div class="d-flex flex-1 justify-content-center align-items-center">
+						<p class="text-24 text-center mb-24">You are about to edit the Loan Details, Proceed anyway?</p>
+					  </div>
+					  <div class="d-flex flex-row">
+						  <div style="flex:2"></div>
+						  <a :href="this.baseURL() + 'transaction/rejected_release/edit/' + loanAccount.loan_account_id" class="btn btn-lg btn-primary-dark mr-24" style="flex:3">Yes</a>
+						  <button data-dismiss="modal" class="btn btn-lg btn-bright-blue" style="flex:3">No</button>
+						  <div style="flex:2"></div>
+					  </div>
 				  </div>
-				  <div class="d-flex flex-row">
-					  <div style="flex:2"></div>
-					  <a :href="this.baseURL() + 'transaction/rejected_release/edit/' + loanAccount.loan_account_id" class="btn btn-lg btn-primary-dark mr-24" style="flex:3">Yes</a>
-					  <button data-dismiss="modal" class="btn btn-lg btn-bright-blue" style="flex:3">No</button>
-					  <div style="flex:2"></div>
-				  </div>
+				</div>
 			  </div>
 			</div>
-		  </div>
 		</div>
-	</div>
+		<div class="modal" id="proceedModal" tabindex="-1" role="dialog">
+			<div class="modal-dialog" role="document">
+			  <div class="modal-content">
+				<div class="modal-body">
+				  <div class="d-flex flex-column" style="min-height:200px;padding:16px;">
+					  <div class="d-flex flex-1 justify-content-center align-items-center">
+						<p class="text-24 text-center mb-24">You are about to move this<br>Loan Account back to Override Release,<br>Proceed anyway?</p>
+					  </div>
+					  <div class="d-flex flex-row">
+						  <div style="flex:2"></div>
+						  <a href="#" @click.prevent="proceed()" data-dismiss="modal" class="btn btn-lg btn-primary-dark mr-24" style="flex:3">Yes</a>
+						  <button data-dismiss="modal" class="btn btn-lg btn-bright-blue" style="flex:3">No</button>
+						  <div style="flex:2"></div>
+					  </div>
+				  </div>
+				</div>
+			  </div>
+			</div>
+		</div>
 	</div>
 </template>
 
@@ -532,6 +552,35 @@ export default {
 				return 'active'
 			}
 			return '';
+		},
+		notify:function(title, text, type){
+			this.$notify({
+				group: 'foo',
+				title: title,
+				text: text,
+				type: type,
+			});
+		},
+		proceed: function(){
+			this.loading = true;
+			const transaction_date = this.transactionDate.date_end;
+			this.loanAccount.transaction_date = transaction_date;
+			axios.put(this.baseURL() + 'api/account/proceed/' + this.loanAccount.loan_account_id, this.loanAccount, {
+				headers: {
+					'Authorization': 'Bearer ' + this.token,
+					'Content-Type': 'application/json',
+					'Accept': 'application/json'
+				}
+			})
+			.then(function (response) {
+				this.fetchRejectedAccounts();
+				window.location.href = this.baseURL() + 'transaction/override_release';
+				this.loading = false;
+				this.notify('','Account has been returned successfully.', 'success');
+			}.bind(this))
+			.catch(function (error) {
+				console.log(error);
+			}.bind(this));
 		}
 	},
 	computed:{

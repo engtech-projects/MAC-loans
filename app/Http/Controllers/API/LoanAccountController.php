@@ -247,6 +247,21 @@ class LoanAccountController extends BaseController
         return $this->sendResponse(['status' => 'rejected'], 'Rejected');
     }
 
+    public function proceed(Request $request, LoanAccount $account)
+    {
+
+        if ($account->memo > 0) {
+            Payment::where('reference_id', $account->loan_account_id)
+            ->update(['status' => 'open', 'transaction_date' => $request->input('transaction_date')]);
+        }
+
+        $account->transaction_date = $request->input('transaction_date');
+        $account->status = 'pending';
+        $account->save();
+
+        return $this->sendResponse(['status' => 'pending'], 'Returned');
+    }
+
     public function destroy($id)
     {
 
