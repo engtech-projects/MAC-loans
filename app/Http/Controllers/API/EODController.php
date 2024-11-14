@@ -129,7 +129,7 @@ class EODController extends BaseController
 		}else if($endTransaction->existOld($transactionDate, $branchId) ){
 			return $this->sendError(
 				"Error!",
-				"Date supplied is a previous date. Cannot create Transaction date on or before ".$endTransaction->getTransactionDate($branchId)->date_end,
+				"Date supplied is a previous date. Cannot create Transaction date on or before ".$endTransaction->getTransactionDate($branchId)->date_end->format('m/d/Y'),
 				400
 			);
 		}else{

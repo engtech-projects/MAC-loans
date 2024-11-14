@@ -135,7 +135,6 @@ export default {
 					if(response.data.success == 'false'){
 						this.notify('',response.data.message + ', ' + response.data.data, 'error');
 					}else{
-						this.notify('','Transaction date has been set successfully', 'success');
 						this.fetchTransactionDate();
 						document.getElementById("currentTransactionDate").value = this.newTransactionDate;
                         this.toUpdate = true
@@ -157,8 +156,12 @@ export default {
                         }
                     }).then(function(response) {
                         var message = response.data.message
-                        this.loading = false
+                        window.location.href = this.baseURL() + 'dashboard';
                         this.toUpdate = false
+                        setTimeout(() => {
+	                        this.loading = false;
+                        }, 2000);
+                        this.notify('','Transaction date has been set successfully', 'success');
                     }.bind(this))
                     .catch(function(error) {
                         console.log(error)

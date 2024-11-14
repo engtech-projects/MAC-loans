@@ -1517,3 +1517,37 @@
 .logoutDD:hover {
     background-color: rgb(70,107,145);
 }
+
+.password-input-group {
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.password-toggle-button {
+    margin-left: 8px;
+    cursor: pointer;
+    border: none;
+    background: none;
+    color: #007bff;
+    font-size: 1.5em;
+    width: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    outline: none;
+}
+
+.password-toggle-button:hover {
+    color: #0056b3;
+}
+
+.password-toggle-button:focus {
+    outline: none;
+}
+
+.password-toggle-button:focus-visible {
+    outline: 2px solid #0056b3;
+    border-radius: 4px;
+}
