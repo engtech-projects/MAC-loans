@@ -980,16 +980,9 @@ export default {
 			return JSON.parse(this.idtype);
 		},
 		interestAmount:function(){
-			if (this.loanDetails.payment_mode === 'Lumpsum') {
-				this.loanDetails.interest_amount = (0).toFixed(2);
-				// this.loanDetails.prepaid_interest = (0).toFixed(2); // Uncomment if needed
-				return (0).toFixed(2);
-			} else {
-				const calculatedInterest = (this.loanDetails.loan_amount * (this.interestRate * 0.01) * (this.loanDetails.terms / 30)).toFixed(2);
-				this.loanDetails.interest_amount = calculatedInterest;
-				// this.loanDetails.prepaid_interest = calculatedInterest; // Uncomment if needed
-				return calculatedInterest;
-    }
+			this.loanDetails.interest_amount = (this.loanDetails.loan_amount * (this.interestRate * 0.01) * (this.loanDetails.terms / 30)).toFixed(2);
+			// this.loanDetails.prepaid_interest = (this.loanDetails.loan_amount * (this.interestRate * 0.01) * (this.loanDetails.terms / 30)).toFixed(2);
+			return (this.loanDetails.loan_amount * (this.interestRate * 0.01) * (this.loanDetails.terms / 30)).toFixed(2);
 		},
 		numberOfInstallment:function(){
 			let mode = this.loanDetails.terms;
