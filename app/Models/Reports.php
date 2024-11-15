@@ -723,7 +723,9 @@ class Reports extends Model
 
         $branch = Branch::find($filters['branch_id']);
 
-        $accounts = LoanAccount::join('center', 'center.center_id', '=', 'loan_accounts.center_id');
+        $accounts = LoanAccount::join('center', 'center.center_id', '=', 'loan_accounts.center_id')
+        ->select('loan_accounts.*', 'center.*', 'loan_accounts.payment_mode');
+
 
         if (isset($filters['account_officer']) && $filters['account_officer']) {
             $accounts->where(['loan_accounts.ao_id' => $filters['account_officer']]);
@@ -759,9 +761,18 @@ class Reports extends Model
                 $data[$key]['delinquent'] = LoanAccount::getPaymentStatus($loanAccount->loan_account_id) === 'Delinquent' ? $currentAmortization['delinquent']['principal'] + $currentAmortization['delinquent']['interest'] : 0;
                 $data[$key]['penalty'] = $currentAmortization->penalty + $currentAmortization->pdi;
                 $data[$key]['amount_due'] = $currentAmortization->total + ($currentAmortization->penalty + $currentAmortization->pdi);
-                $data[$key]['weekly_amortization'] = $value->amortization()['total'];
+             //   $data[$key]['weekly_amortization'] = $value->amortization()['total'];
+
+                
                 $data[$key]['contact'] = $borrower->contact_number;
                 $data[$key]['address'] = $borrower->address;
+
+                 // Check payment_mode condition and set weekly_amortization
+            if ($value->payment_mode === 'Lumpsum') {
+                $data[$key]['weekly_amortization'] = $value->loan_amount;
+            } else {
+                $data[$key]['weekly_amortization'] = $value->amortization()['total'];
+            }
             }
         }
         return $d = [
