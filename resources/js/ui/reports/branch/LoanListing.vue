@@ -86,6 +86,7 @@
 											<th>Date Loan</th>
 											<th>Maturity</th>
 											<th>Amnt. Loan</th>
+											<th>Interest Amt.</th>
 											<th>Principal Bal.</th>
 											<th>Interest Bal.</th>
 											<th>Amort.</th>
@@ -312,6 +313,7 @@ export default {
 								row.push(account.date_loan);
 								row.push(account.maturity);
 								row.push(this.formatToCurrency(account.amount_loan));
+								row.push(this.formatToCurrency(account.amort_dist.interest));
 								centerTotal[1]++;
 								productTotal[1]++;
 								aoTotal[1]++;

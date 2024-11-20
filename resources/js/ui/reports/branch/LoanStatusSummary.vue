@@ -46,6 +46,7 @@
 					<option value="Case Filed">Case Filed</option>
 					<option value="Litigated">Litigated</option>
 					<option value="Write-off">Write-Off</option>
+					<option value="Paid">Paid</option>
 				</select>
 			</div>		
 			<div class="d-flex flex-row align-items-center justify-content-start">
@@ -102,6 +103,7 @@
 								<th>Date Loan</th>
 								<th>Maturity</th>
 								<th>Amnt. Loan</th>
+								<th>Interest Amt</th>
 								<th>Principal Bal.</th>
 								<th>Interest Bal.</th>
 								<th>Amort.</th>
@@ -849,6 +851,8 @@ export default {
 								aoTotal[1]++;
 								total[1]++;
 								row.push(this.formatToCurrency(account.amount_loan));
+
+								row.push(this.formatToCurrency(account.amort_dist.interest));
 								
 								row.push(this.formatToCurrency(account.principal_balance));
 								
