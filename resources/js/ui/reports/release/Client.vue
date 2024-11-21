@@ -27,9 +27,22 @@
 				<select v-if="filter.type=='product'" v-model="filter.spec" name="" id="selectProductClient" class="form-control">
 					<option v-for="p in filteredProducts" :key="p.product_id" :value="p.product_id">{{p.product_name}}</option>
 				</select>
-				<select v-if="filter.type=='center'" v-model="filter.spec" name="" id="selectProductClient" class="form-control">
-					<option v-for="c in centers.filter(cc=>cc.status=='active')" :key="c.center_id" :value="c.center_id">{{c.center}}</option>
-				</select>
+				<div v-if="filter.type=='center'" class="d-flex flex-column">
+					<search-dropdown 
+						v-if="filter.type=='center'" 
+						:reset="resetCenter" 
+						@centerReset="resetCenter=false" 
+						@sdSelect="centerSelect" 
+						:data="centers"
+						:center-id="filter.spec"
+						:height="'38px'"
+						:fontSize="'16px'"
+						:borderRadius="'5px'"
+						id="center_id" 
+						name="center"
+					></search-dropdown>
+					<input style="border:none!important;width:100%!important;height:0px!important;opacity:0!important;" type="text" v-model="filter.spec">
+				</div>
 				<select v-if="filter.type=='account_officer'" v-model="filter.spec" name="" id="selectProductClient" class="form-control">
 					<option v-for="a in accountOfficers.filter(aa=>aa.status=='active')" :key="a.ao_id" :value="a.ao_id">{{a.name}}</option>
 				</select>
@@ -288,14 +301,15 @@ export default {
 	props:['token', 'pbranch'],
 	data(){
 		return {
+			resetCenter:false,
 			branch:{},
 			filter:{
-				date_from:'',
-				date_to:'',
+				date_from:null,
+				date_to:null,
+				category:'client',
 				branch_id:'',
-				type:'all',
 				spec:'',
-				category:'client'
+				type:'all'
 			},
 			reports:[],
 			products:[],
@@ -305,6 +319,9 @@ export default {
 		}
 	},
 	methods:{
+		centerSelect:function(center){
+			this.filter.spec = center.center_id;
+		},
 		async fetchReports(){
 			await axios.post(this.baseURL() + 'api/report/release', this.filter, {
 				headers: {
@@ -352,6 +369,7 @@ export default {
 			})
 			.then(function (response) {
 				this.products = response.data.data;
+				this.fetchCenters();
 			}.bind(this))
 			.catch(function (error) {
 				console.log(error);
@@ -367,6 +385,7 @@ export default {
 			})
 			.then(function (response) {
 				this.centers = response.data.data;
+				this.fetchAo();
 			}.bind(this))
 			.catch(function (error) {
 				console.log(error);
@@ -396,18 +415,17 @@ export default {
 	},
 	watch:{
 		'filter.type':function(val){
-			this.filter.spec='';
+			this.filter.spec = 'all';
+			// if(val=='account_officer'){
+			// 	if(this.filteredAos.length == 1){
+			// 		this.filter.spec = this.filteredAos[0].ao_id;
+			// 	}
+			// }
 		},
 		filter:{
 			handler(val){
-				if(val.type=='all' || val.type=='new'){
-					if(val.branch_id&&val.date_from&&val.date_to&&val.category&&val.type){
-						this.fetchReports();
-					}
-				}else{
-					if(val.branch_id&&val.date_from&&val.date_to&&val.category&&val.type&&val.spec){
-						this.fetchReports();
-					}
+				if(val.date_from && val.date_to){
+					this.fetchReports();
 				}
 			},
 			deep:true
@@ -468,8 +486,6 @@ export default {
 		this.branch = JSON.parse(this.pbranch);
 		this.filter.branch_id = this.branch.branch_id;
 		this.fetchProducts();
-		this.fetchCenters();
-		this.fetchAo();
 		
 	}
 }

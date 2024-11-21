@@ -27,9 +27,22 @@
 				<select v-if="filter.type=='product'" v-model="filter.spec" name="" id="selectProductClient" class="form-control">
 					<option v-for="p in products.filter(pp=>pp.status=='active')" :key="p.product_id" :value="p.product_id">{{p.product_name}}</option>
 				</select>
-				<select v-if="filter.type=='center'" v-model="filter.spec" name="" id="selectProductClient" class="form-control">
-					<option v-for="c in centers.filter(cc=>cc.status=='active')" :key="c.center_id" :value="c.center_id">{{c.center}}</option>
-				</select>
+				<div v-if="filter.type=='center'" class="d-flex flex-column">
+					<search-dropdown 
+						v-if="filter.type=='center'" 
+						:reset="resetCenter" 
+						@centerReset="resetCenter=false" 
+						@sdSelect="centerSelect" 
+						:data="centers"
+						:center-id="filter.spec"
+						:height="'38px'"
+						:fontSize="'16px'"
+						:borderRadius="'5px'"
+						id="center_id" 
+						name="center"
+					></search-dropdown>
+					<input style="border:none!important;width:100%!important;height:0px!important;opacity:0!important;" type="text" v-model="filter.spec">
+				</div>
 				<select v-if="filter.type=='account_officer'" v-model="filter.spec" name="" id="selectProductClient" class="form-control">
 					<option v-for="a in filteredAos" :key="a.ao_id" :value="a.ao_id">{{a.name}}</option>
 				</select>
@@ -240,6 +253,7 @@ export default {
 	props:['pbranch','token'],
 	data(){
 		return {
+			resetCenter:false,
 			branch:{},
 			filter:{
 				date_from:null,
@@ -256,6 +270,9 @@ export default {
 		}
 	},
 	methods:{
+		centerSelect:function(center){
+			this.filter.spec = center.center_id;
+		},
 		async fetchReports(){
 			await axios.post(this.baseURL() + 'api/report/repayment', this.filter, {
 				headers: {
