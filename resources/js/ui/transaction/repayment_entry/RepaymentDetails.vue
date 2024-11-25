@@ -637,16 +637,18 @@
                                         >
                                         <div class="d-flex flex-column flex-lg-row align-items-center justify-content-between">
                                             <div class="d-flex align-items-center">
-                                                <span class="text-bold mr-10" style="font-size: 60px; color: #263f52; line-height: 1;">P</span>
+                                                <span
+                                                    class="text-bold mr-10"
+                                                    style="font-size: 60px; color: #263f52; line-height: 1;">P</span>
                                                 <input
                                                     v-model="payment.amount_paid_display"
-                                                    @blur="formatAmount"
-                                                    @input="updateRawAmount"
+                                                    @blur="formatAmount" 
+                                                    @input="handleInput"  
                                                     required
                                                     type="text"
                                                     class="form-control form-input mw-250"
                                                     id="transactionDate"
-                                                    :disabled="payment.payment_type == 'Memo' && payment.memo_type == 'Rebates and Discount'"
+                                                    :disabled="payment.payment_type === 'Memo' && payment.memo_type === 'Rebates and Discount'"
                                                     placeholder="Enter amount"
                                                 />
                                             </div>
@@ -1727,20 +1729,40 @@ export default {
     },
     methods: {
       
-        formatAmount() {
-        if (this.payment.amount_paid || this.payment.amount_paid === 0) {
-            // Format raw amount as currency with commas and two decimals
+        handleInput(event) {
+        // Extract the raw input value
+        let rawInput = event.target.value;
+
+        // Allow only numeric characters and a single decimal point
+        rawInput = rawInput.replace(/[^0-9.]/g, '');
+
+        // Update the raw value, ensuring no multiple decimals
+        const numericValue = parseFloat(rawInput) || 0;
+
+        // Save raw value to `amount_paid`
+        this.payment.amount_paid = numericValue;
+
+        // Update the display value dynamically with commas
+        this.payment.amount_paid_display = this.formatNumericValue(rawInput);
+    },
+
+    formatAmount() {
+        // Format the value with commas and two decimal places on blur
+        if (!isNaN(this.payment.amount_paid)) {
             this.payment.amount_paid_display = this.payment.amount_paid.toLocaleString('en-US', {
                 minimumFractionDigits: 2,
-                maximumFractionDigits: 2
+                maximumFractionDigits: 2,
             });
+        } else {
+            this.payment.amount_paid_display = '0.00';
         }
     },
 
-    // This method is called on every input to update the raw amount
-    updateRawAmount() {
-        let numericValue = this.payment.amount_paid_display.replace(/,/g, ''); // Remove commas
-        this.payment.amount_paid = parseFloat(numericValue) || 0; // Save raw value
+    formatNumericValue(value) {
+        // Ensure numeric formatting with commas
+        const parts = value.split('.'); // Split by the decimal point
+        parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ','); // Add commas to the integer part
+        return parts.join('.'); // Join the integer and decimal parts
     },
         clearInput(type) {
             if (!this.waive[type]) {
