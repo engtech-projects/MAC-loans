@@ -321,7 +321,10 @@ class Reports extends Model
     public function getReleaseByClient($filters, $collection = true)
     {
 
-        $data = [];
+        $data = [
+            'release' => [], // Initialize release array
+            'collection' => [] // Initialize collection array
+        ];
         $accounts = $this->getLoanAccounts($filters);
         $payments = $this->getPayments($filters);
 
@@ -349,6 +352,13 @@ class Reports extends Model
                 'type' => $account->release_type,
             ];
         }
+
+        $sortedData = collect($data['release'])->sortBy([
+            ['borrower', 'asc'],
+            ['date_release', 'asc']
+        ])->values();
+
+        $data['release'] = $sortedData;
 
         if (!$collection) {
 
@@ -774,6 +784,18 @@ class Reports extends Model
                 $data[$key]['weekly_amortization'] = $value->amortization()['total'];
             }
             }
+            $data = collect($data)->sortBy(function ($item) {
+                // Sort by client name first (ascending)
+                $clientName = $item['client'];
+
+                // Sort by date_loan second (ascending)
+                $dateLoan = $item['date_loan'];
+
+                return [
+                    $clientName,  // Sorting by client name first
+                    $dateLoan     // Sorting by loan date second
+                ];
+            })->values();
         }
         return $d = [
 
@@ -1174,6 +1196,7 @@ class Reports extends Model
                                     "date_loan" => Carbon::createFromFormat('Y-m-d', $account->date_release)->format('m/d/Y'),
                                     "maturity" => Carbon::createFromFormat('Y-m-d', $account->due_date)->format('m/d/Y'),
                                     "amount_loan" => $account->loan_amount,
+                                    "loan_interest" => $account->interest_amount,
                                     "principal_amount" => abs(($amortPrincipal + $shortPrincipal) - $advPrincipal),
                                     "interest_amount" => abs($amortInterest + $shortInterest - $advInterest),
                                     "amount_due" => $amountDue > 0 ? $amountDue : 0,

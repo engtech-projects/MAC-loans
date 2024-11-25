@@ -50,9 +50,21 @@
 			</div>
 			<div class="d-flex flex-row align-items-center" style="flex:3">
 				<span class="mr-10">Center: </span>
-				<select v-model="filter.center" name="" id="selectProductClient" class="form-control">
-					<option v-for="center in centers" :key="center.center_id" :value="center.center_id">{{center.center}}</option>
-				</select>
+				<div class="d-flex flex-column">
+					<search-dropdown 
+						:reset="resetCenter" 
+						@centerReset="resetCenter=false" 
+						@sdSelect="centerSelect" 
+						:data="centers"
+						:center-id="filter.center"
+						:height="'38px'"
+						:fontSize="'16px'"
+						:borderRadius="'5px'"
+						id="center_id" 
+						name="center"
+					></search-dropdown>
+					<input style="border:none!important;width:100%!important;height:0px!important;opacity:0!important;" type="text" v-model="filter.center">
+				</div>
 			</div>
 		</div>
 		<div class="sep mb-45"></div>
@@ -116,7 +128,7 @@
 										<!-- <th>Signature</th> -->
 									</thead>
 									<tbody>
-										<tr class="collection-sheet" v-for="c,i in collections.sort(sortClient)" :key="i">
+										<tr class="collection-sheet" v-for="c,i in collections" :key="i">
 											<td>{{c.client}}</td>
 											<td>{{c.date_loan.replaceAll('-','/')}}</td>
 											<td>{{c.maturity_date.replaceAll('-','/')}}</td>
@@ -264,11 +276,12 @@ export default {
 	props:['token','pbranch'],
 	data(){
 		return {
+			resetCenter:false,
 			branch:{branch_id:null,branch_code:null,branch_name:null},
 			filter:{
 				branch_id:'',
 				account_officer:null,
-				center:null,
+				center:'',
 				type:'collection'
 			},
 			collections:[],
@@ -277,6 +290,9 @@ export default {
 		}
 	},
 	methods:{
+		centerSelect:function(center){
+			this.filter.center = center.center_id;
+		},
 		print:function(){
 			var content = document.getElementById('printContent').innerHTML;
 			var target = document.querySelector('.to-print');
@@ -349,7 +365,7 @@ export default {
 				}.bind(this));
 		},
 		async fetchAo(){
-			await axios.get(this.baseURL() + 'api/accountofficer/', {
+			await axios.get(this.baseURL() + 'api/accountofficer/getActivesInBranch/' + this.branch.branch_id, {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
 					'Content-Type': 'application/json',

@@ -30,10 +30,21 @@
 			</div>		
 			<div class="d-flex flex-row align-items-center mr-24 justify-content-start flex-1">
 				<span class="mr-10 text-block">Center: </span>
-				<select required v-model="filter.center" name="" id="selectProductClient" class="form-control flex-1">
-					<option value="all">All Centers</option>
-					<option v-for="c,n in centers.filter(c=>c.status=='active')" :key="n" :value="c.center_id">{{c.center}}</option>
-				</select>
+				<div class="d-flex flex-column">
+					<search-dropdown 
+						:reset="resetCenter" 
+						@centerReset="resetCenter=false" 
+						@sdSelect="centerSelect" 
+						:data="centers"
+						:center-id="filter.center"
+						:height="'38px'"
+						:fontSize="'16px'"
+						:borderRadius="'5px'"
+						id="center_id" 
+						name="center"
+					></search-dropdown>
+					<input style="border:none!important;width:100%!important;height:0px!important;opacity:0!important;" type="text" v-model="filter.center">
+				</div>
 			</div>	
 			<div class="d-flex flex-row align-items-center justify-content-start flex-1 mr-24">
 				<span class="mr-10 text-block">Status: </span>
@@ -117,7 +128,7 @@
 								<tr v-for="rws,j in fr.rows" :key="j">
 									<td v-for="rw,k in rws" :key="k">{{rw}}</td>
 								</tr>
-								<tr v-if="fr.product=='002 - Micro Group'" class="bg-skyblue text-bold">
+								<tr class="bg-skyblue text-bold">
 									<td v-for="tc,l in fr.centerTotal" :key="l">{{tc===""||tc==="CENTER SUB-TOTAL"||l==1?tc:formatToCurrency(tc)}}</td>
 								</tr>
 								<tr v-if="fr.productTotal" class="bg-green-mint text-bold">
@@ -677,6 +688,7 @@ export default {
 	props:['pbranch', 'token'],
 	data(){
 		return {
+			resetCenter:false,
 			loading:false,
 			branch:{},
 			filter:{
@@ -696,6 +708,9 @@ export default {
 		}
 	},
 	methods:{
+		centerSelect:function(center){
+			this.filter.center = center.center_id;
+		},
 		async fetchReport(){
 			this.loading = true;
 			this.filter.branch_id = this.branch.branch_id;
@@ -756,7 +771,11 @@ export default {
 				}
 			})
 			.then(function (response) {
-				this.centers = response.data.data;
+				const allCentersOption = {
+					center_id: 'all',
+					center: 'All Centers',
+				};
+				this.centers = [allCentersOption, ...response.data.data];
 			}.bind(this))
 			.catch(function (error) {
 				console.log(error);
@@ -785,22 +804,18 @@ export default {
 		},
 		processCenter:function(centers, product){
 			var result = [];
-			if(product != 'Micro Group'){
-				result = centers;
-			}else{
-				var ccc = [];
-				for(var c in centers){
-					if(c !== 'No Center'){
-						ccc.push(c);
-					}
+			var ccc = [];
+			for(var c in centers){
+				if(c !== 'No Center'){
+					ccc.push(c);
 				}
-				var ccenters = ccc.sort(this.sortMicrofunction);
-				ccenters.unshift('No Center');
-				for(var a in ccenters){
-					for(var b in centers){
-						if(ccc[a] === b){
-							result[b]=(centers[b]);
-						}
+			}
+			var ccenters = ccc.sort(this.sortMicrofunction);
+			ccenters.unshift('No Center');
+			for(var a in ccenters){
+				for(var b in centers){
+					if(ccc[a] === b){
+						result[b]=(centers[b]);
 					}
 				}
 			}
@@ -816,17 +831,17 @@ export default {
 	computed:{
 		filteredReports:function(){
 			var tables = [];
-			var total = ['TOTAL',0,'','',0,0,0,'','','',0,'',''];
+			var total = ['TOTAL',0,'','',0,0,0,0,'','','',0,'',''];
 			this.reports.forEach(ao=>{
-				var aoTotal = ['OFFICER SUB-TOTAL',0,'','',0,0,0,'','','',0,'',''];
+				var aoTotal = ['OFFICER SUB-TOTAL',0,'','',0,0,0,0,'','','',0,'',''];
 				var hasAoAccounts = false;
 				for(var p in ao.products){
 					var hasProductAccounts = false;
 					var product = ao.products[p];
-					var productTotal = ['PRODUCT SUB-TOTAL',0,'','',0,0,0,'','','',0,'',''];
+					var productTotal = ['PRODUCT SUB-TOTAL',0,'','',0,0,0,0,'','','',0,'',''];
 					for(var c in this.processCenter(product.centers, p)){
 						var center = product.centers[c];
-						var centerTotal = ['CENTER SUB-TOTAL',0,'','',0,0,0,'','','',0,'',''];
+						var centerTotal = ['CENTER SUB-TOTAL',0,'','',0,0,0,0,'','','',0,'',''];
 						if(center.accounts){
 							var table = {
 								ao:'0' + ao.ao_id + ' - ' + ao.name,
@@ -852,7 +867,7 @@ export default {
 								total[1]++;
 								row.push(this.formatToCurrency(account.amount_loan));
 
-								row.push(this.formatToCurrency(account.amort_dist.interest));
+								row.push(this.formatToCurrency(account.loan_interest));
 								
 								row.push(this.formatToCurrency(account.principal_balance));
 								
@@ -870,22 +885,23 @@ export default {
 								row.push(account.loan_status=='Ongoing'?account.status:account.loan_status);
 								// if(sstatus == this.filter.loan_status){
 									centerTotal[4] += account.amount_loan;
-									centerTotal[5] += account.principal_balance;
-									centerTotal[6] += account.interest_balance;
+									centerTotal[5] += account.loan_interest;
+									centerTotal[6] += account.principal_balance;
+									centerTotal[7] += account.interest_balance;
 									// centerTotal[7] += account.amortization;
 									// centerTotal[8] += account.distribution.short_principal + account.distribution.principal
 									// centerTotal[9] += account.distribution.short_interest + account.distribution.interest
-									centerTotal[10] += account.amount_due;
+									centerTotal[11] += account.amount_due;
 									table.rows.push(row);
 								// }
 							}
 							productTotal[4] += centerTotal[4];
 							productTotal[5] += centerTotal[5];
 							productTotal[6] += centerTotal[6];
-							// productTotal[7] += centerTotal[7];
+							productTotal[7] += centerTotal[7];
 							// productTotal[8] += centerTotal[8];
 							// productTotal[9] += centerTotal[9];
-							productTotal[10] += centerTotal[10];
+							productTotal[11] += centerTotal[11];
 							table.centerTotal = centerTotal;
 							if(table.rows.length){
 								tables.push(table);
@@ -897,10 +913,10 @@ export default {
 					aoTotal[4] += productTotal[4];
 					aoTotal[5] += productTotal[5];
 					aoTotal[6] += productTotal[6];
-					// aoTotal[7] += productTotal[7];
+					aoTotal[7] += productTotal[7];
 					// aoTotal[8] += productTotal[8];
 					// aoTotal[9] += productTotal[9];
-					aoTotal[10] += productTotal[10];
+					aoTotal[11] += productTotal[11];
 					if(tables.length && hasProductAccounts){
 						tables[tables.length-1].productTotal = productTotal;
 					}
@@ -908,10 +924,10 @@ export default {
 				total[4] += aoTotal[4];
 				total[5] += aoTotal[5];
 				total[6] += aoTotal[6];
-				// total[7] += aoTotal[7];
+				total[7] += aoTotal[7];
 				// total[8] += aoTotal[8];
 				// total[9] += aoTotal[9];
-				total[10] += aoTotal[10];
+				total[11] += aoTotal[11];
 				if(tables.length && hasAoAccounts){
 					tables[tables.length-1].aoTotal = aoTotal;
 				}

@@ -7,14 +7,14 @@
 			</div>
 			<span class="font-lg" style="color:#ddd">Please wait until the process is complete</span>
 		</div>
-					<div class=" font-md mb-16">
+					<div class="d-flex justify-content-start font-md mb-16">
 						<!-- <span class="font-lg text-primary-dark flex-1 mr-45"></span> -->
 						<!-- <div class="d-flex flex-row align-items-center mr-24" style="flex:1">
 							<span class="mr-10">As of: </span>
 							<input type="date" class="form-control flex-1">
 						</div> -->
 						<form action="" class="d-flex flex-row" @submit.prevent="generate()">
-							<div class="d-flex flex-row align-items-center mr-24 justify-content-start flex-1">
+							<div class="d-flex flex-row align-items-center mr-24">
 								<span class="mr-10 text-block">Acc. Officer: </span>
 								<select v-model="filter.account_officer" name="" id="selectProductClient" class="form-control flex-1" required>
 									<option value="all">All Account Officers</option>
@@ -30,12 +30,23 @@
 							</div>
 							<div class="d-flex flex-row align-items-center mr-24 justify-content-start flex-1">
 								<span class="mr-10 text-block">Center: </span>
-								<select v-model="filter.center" name="" id="selectProductClient" class="form-control flex-1" required>
-									<option value="all">All Centers</option>
-									<option v-for="center in centers.filter(c=>c.status=='active')" :key="center.id" :value="center.center_id">{{center.center}}</option>
-								</select>
+								<div class="d-flex flex-column">
+									<search-dropdown 
+										:reset="resetCenter" 
+										@centerReset="resetCenter=false" 
+										@sdSelect="centerSelect" 
+										:data="centers"
+										:center-id="filter.center"
+										:height="'38px'"
+										:fontSize="'16px'"
+										:borderRadius="'5px'"
+										id="center_id" 
+										name="center"
+									></search-dropdown>
+									<input style="border:none!important;width:100%!important;height:0px!important;opacity:0!important;" type="text" v-model="filter.center">
+								</div>
 							</div>
-							<div class="d-flex flex-row align-items-center mr-24 justify-content-start flex-1">
+							<div class="d-flex flex-row align-items-center mr-24">
 								<button class="btn btn-primary">Generate</button>
 							</div>
 						</form>
@@ -100,7 +111,7 @@
 											<tr v-for="rws,j in fr.rows" :key="j">
 												<td v-for="rw,k in rws" :key="k">{{rw}}</td>
 											</tr>
-											<tr v-if="fr.product=='002 - Micro Group'" class="bg-skyblue text-bold">
+											<tr class="bg-skyblue text-bold">
 												<td v-for="tc,l in fr.centerTotal" :key="l">{{tc===""||tc==="CENTER SUB-TOTAL"||l==1?tc:formatToCurrency(tc)}}</td>
 											</tr>
 											<tr v-if="fr.productTotal" class="bg-green-mint text-bold">
@@ -140,6 +151,7 @@ export default {
 	props:['pbranch', 'token'],
 	data(){
 		return {
+			resetCenter:false,
 			loading:false,
 			filter:{
 				type:'loan_listing',
@@ -156,6 +168,9 @@ export default {
 		}
 	},
 	methods:{
+		centerSelect:function(center){
+			this.filter.center = center.center_id;
+		},
 		generate:function(){
 			if(this.filter.account_officer && this.filter.product && this.filter.center && this.filter.branch_id && this.filter.type){
 				this.fetchReport();
@@ -221,7 +236,11 @@ export default {
 				}
 			})
 			.then(function (response) {
-				this.centers = response.data.data;
+				const allCentersOption = {
+					center_id: 'all',
+					center: 'All Centers',
+				};
+				this.centers = [allCentersOption, ...response.data.data];
 			}.bind(this))
 			.catch(function (error) {
 				console.log(error);
@@ -250,22 +269,18 @@ export default {
 		},
 		processCenter:function(centers, product){
 			var result = [];
-			if(product != 'Micro Group'){
-				result = centers;
-			}else{
-				var ccc = [];
-				for(var c in centers){
-					if(c !== 'No Center'){
-						ccc.push(c);
-					}
+			var ccc = [];
+			for(var c in centers){
+				if(c !== 'No Center'){
+					ccc.push(c);
 				}
-				var ccenters = ccc.sort(this.sortMicrofunction);
-				ccenters.unshift('No Center');
-				for(var a in ccenters){
-					for(var b in centers){
-						if(ccc[a] === b){
-							result[b]=(centers[b]);
-						}
+			}
+			var ccenters = ccc.sort(this.sortMicrofunction);
+			ccenters.unshift('No Center');
+			for(var a in ccenters){
+				for(var b in centers){
+					if(ccc[a] === b){
+						result[b]=(centers[b]);
 					}
 				}
 			}
@@ -281,17 +296,17 @@ export default {
 	computed:{
 		filteredReports:function(){
 			var tables = [];
-			var total = ['TOTAL',0,'','',0,0,0,'','','',0,'',''];
+			var total = ['TOTAL',0,'','',0,0,0,0,'','','',0,'',''];
 			this.reports.forEach(ao=>{
 				var hasAoAccounts = false;
-				var aoTotal = ['OFFICER SUB-TOTAL',0,'','',0,0,0,'','','',0,'',''];
+				var aoTotal = ['OFFICER SUB-TOTAL',0,'','',0,0,0,0,'','','',0,'',''];
 				for(var p in ao.products){
 					var hasAccounts = false;
 					var product = ao.products[p];
-					var productTotal = ['PRODUCT SUB-TOTAL',0,'','',0,0,0,'','','',0,'',''];
+					var productTotal = ['PRODUCT SUB-TOTAL',0,'','',0,0,0,0,'','','',0,'',''];
 					for(var c in this.processCenter(product.centers, p)){
 						var center = product.centers[c];
-						var centerTotal = ['CENTER SUB-TOTAL',0,'','',0,0,0,'','','',0,'',''];
+						var centerTotal = ['CENTER SUB-TOTAL',0,'','',0,0,0,0,'','','',0,'',''];
 						if(center.accounts){
 							hasAccounts = true;
 							hasAoAccounts = true;
@@ -313,22 +328,23 @@ export default {
 								row.push(account.date_loan);
 								row.push(account.maturity);
 								row.push(this.formatToCurrency(account.amount_loan));
-								row.push(this.formatToCurrency(account.amort_dist.interest));
+								row.push(this.formatToCurrency(account.loan_interest));
 								centerTotal[1]++;
 								productTotal[1]++;
 								aoTotal[1]++;
 								total[1]++;
 								centerTotal[4] += account.amount_loan;
+								centerTotal[5] += account.loan_interest;
 								row.push(this.formatToCurrency(account.principal_balance));
-								centerTotal[5] += account.principal_balance;
+								centerTotal[6] += account.principal_balance;
 								row.push(this.formatToCurrency(account.interest_balance));
-								centerTotal[6] += account.interest_balance;
+								centerTotal[7] += account.interest_balance;
 								row.push(this.formatToCurrency(account.amortization));
 								row.push(this.formatToCurrency(account.distribution.short_principal + account.distribution.principal));
                                 row.push(this.formatToCurrency(account.distribution.short_interest + account.distribution.interest));
 								// centerTotal[7] += account.amortization;
 								row.push(this.formatToCurrency(account.amount_due));
-								centerTotal[10] += account.amount_due;
+								centerTotal[11] += account.amount_due;
 								// centerTotal[9] = '';
 								row.push('');
 								row.push(account.loan_status=='Ongoing'?account.status:account.loan_status);
@@ -337,8 +353,8 @@ export default {
 							productTotal[4] += centerTotal[4];
 							productTotal[5] += centerTotal[5];
 							productTotal[6] += centerTotal[6];
-							// productTotal[7] += centerTotal[7];
-							productTotal[10] += centerTotal[10];
+							productTotal[7] += centerTotal[7];
+							productTotal[11] += centerTotal[11];
 							table.centerTotal = centerTotal;
 							tables.push(table);
 						}
@@ -348,8 +364,8 @@ export default {
 					aoTotal[4] += productTotal[4];
 					aoTotal[5] += productTotal[5];
 					aoTotal[6] += productTotal[6];
-					// aoTotal[7] += productTotal[7];
-					aoTotal[10] += productTotal[10];
+					aoTotal[7] += productTotal[7];
+					aoTotal[11] += productTotal[11];
 					if(tables.length && hasAccounts){
 						tables[tables.length - 1].productTotal = productTotal;
 					}
@@ -357,8 +373,8 @@ export default {
 				total[4] += aoTotal[4];
 				total[5] += aoTotal[5];
 				total[6] += aoTotal[6];
-				// total[7] += aoTotal[7];
-				total[10] += aoTotal[10];
+				total[7] += aoTotal[7];
+				total[11] += aoTotal[11];
 				if(tables.length && hasAoAccounts){
 					tables[tables.length - 1].aoTotal = aoTotal;
 				}

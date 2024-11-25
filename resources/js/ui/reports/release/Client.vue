@@ -88,7 +88,8 @@
 							<th>Type</th>
 						</thead>
 						<tbody>
-							<tr v-for="r,i in release.sort((a, b) => a.borrower.localeCompare(b.borrower))" :key="i">
+							<tr v-if="!reports?.release?.length"><td></td></tr>
+							<tr v-for="r, i in reports.release" :key="i">
 								<td>{{r.account_num}}</td>
 								<td>{{r.borrower}}</td>
 								<td>{{r.date_loan}}</td>
@@ -331,7 +332,7 @@ export default {
 				}
 			})
 			.then(function (response) {
-				this.reports = response.data.data
+				this.reports = response.data.data || {};
 				// console.log(response.data);
 			}.bind(this))
 			.catch(function (error) {
@@ -414,14 +415,6 @@ export default {
 		},
 	},
 	watch:{
-		'filter.type':function(val){
-			this.filter.spec = 'all';
-			// if(val=='account_officer'){
-			// 	if(this.filteredAos.length == 1){
-			// 		this.filter.spec = this.filteredAos[0].ao_id;
-			// 	}
-			// }
-		},
 		filter:{
 			handler(val){
 				if(val.date_from && val.date_to){
@@ -432,18 +425,12 @@ export default {
 		},
 	},
 	computed:{
-		release:function(){
-			if(this.reports.release){
-				return this.filter.type=='new'?this.reports.release.filter(r=>r.cycle_no==1):this.reports.release;
-			}
-			return [];
-		},
 		filteredProducts:function(){
 			return this.products.filter(p=>p.status=='active');
 		},
 		total:function(){
 			var row = [0,0,0,0,0,0,0,0,0];
-			this.release.forEach(r => {
+			(this.reports?.release || []).forEach(r => {
 				row[0] += r.amount_loan;
 				row[1] += r.filing_fee;
 				row[2] += r.document_stamp;
@@ -458,7 +445,7 @@ export default {
 		},
 		totalCash:function(){
 			var amount = 0;
-			this.release.forEach(r=>{
+			(this.reports?.release || []).forEach(r=>{
 				if(r.type == 'Cash'){
 					amount+=r.net_proceeds;
 				}
@@ -467,7 +454,7 @@ export default {
 		},
 		totalCheck:function(){
 			var amount = 0;
-			this.release.forEach(r=>{
+			(this.reports?.release || []).forEach(r=>{
 				if(r.type == 'Check'){
 					amount+=r.net_proceeds;
 				}
@@ -476,7 +463,7 @@ export default {
 		},
 		totalMemo:function(){
 			var amount = 0;
-			this.release.forEach(r=>{
+			(this.reports?.release || []).forEach(r=>{
 				amount+=r.memo;
 			})
 			return amount;

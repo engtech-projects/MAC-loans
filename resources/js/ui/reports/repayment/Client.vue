@@ -347,22 +347,14 @@ export default {
 		},
 	},
 	watch:{
-		'filter.type':function(val){
-			this.filter.spec = 'all';
-			// if(val=='account_officer'){
-			// 	if(this.filteredAos.length == 1){
-			// 		this.filter.spec = this.filteredAos[0].ao_id;
-			// 	}
-			// }
-		},
-		 filter: {
+		filter:{
 			handler(val){
 				if(val.date_from && val.date_to){
 					this.fetchReports();
 				}
 			},
-			deep: true
-		}
+			deep:true
+		},
 	},
 	computed:{
 		filteredAos:function(){
