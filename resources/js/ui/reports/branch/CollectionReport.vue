@@ -35,6 +35,13 @@
 
 <template>
 	<div class="d-flex flex-column" style="flex:8;">
+		<div v-if="loading" class="black-screen d-flex flex-column align-items-center justify-content-center" style="padding-left:0px;">
+			<div class="loading-container d-flex align-items-center justify-content-center mb-36">
+				<span class="loading-text">LOADING</span>
+				<img :src="baseURL() + 'img/loading_default.png'" class="rotating" alt="" style="width:300px;height:300px;">
+			</div>
+			<span class="font-lg" style="color:#ddd;">Please wait until the process is complete</span>
+		</div>
 		<div class="d-flex flex-row font-md align-items-center mb-16">
 			<span class="font-lg text-primary-dark" style="flex:4">Transactions</span>
 			<div class="d-flex flex-row align-items-center mr-24" style="flex:2">
@@ -50,9 +57,21 @@
 			</div>
 			<div class="d-flex flex-row align-items-center" style="flex:3">
 				<span class="mr-10">Center: </span>
-				<select v-model="filter.center" name="" id="selectProductClient" class="form-control">
-					<option v-for="center in centers" :key="center.center_id" :value="center.center_id">{{center.center}}</option>
-				</select>
+				<div class="d-flex flex-column">
+					<search-dropdown 
+						:reset="resetCenter" 
+						@centerReset="resetCenter=false" 
+						@sdSelect="centerSelect" 
+						:data="centers"
+						:center-id="filter.center"
+						:height="'38px'"
+						:fontSize="'16px'"
+						:borderRadius="'5px'"
+						id="center_id" 
+						name="center"
+					></search-dropdown>
+					<input style="border:none!important;width:100%!important;height:0px!important;opacity:0!important;" type="text" v-model="filter.center">
+				</div>
 			</div>
 		</div>
 		<div class="sep mb-45"></div>
@@ -116,7 +135,7 @@
 										<!-- <th>Signature</th> -->
 									</thead>
 									<tbody>
-										<tr class="collection-sheet" v-for="c,i in collections.sort(sortClient)" :key="i">
+										<tr class="collection-sheet" v-for="c,i in collections" :key="i">
 											<td>{{c.client}}</td>
 											<td>{{c.date_loan.replaceAll('-','/')}}</td>
 											<td>{{c.maturity_date.replaceAll('-','/')}}</td>
@@ -264,11 +283,13 @@ export default {
 	props:['token','pbranch'],
 	data(){
 		return {
+			loading:false,
+			resetCenter:false,
 			branch:{branch_id:null,branch_code:null,branch_name:null},
 			filter:{
 				branch_id:'',
 				account_officer:null,
-				center:null,
+				center:'',
 				type:'collection'
 			},
 			collections:[],
@@ -277,6 +298,9 @@ export default {
 		}
 	},
 	methods:{
+		centerSelect:function(center){
+			this.filter.center = center.center_id;
+		},
 		print:function(){
 			var content = document.getElementById('printContent').innerHTML;
 			var target = document.querySelector('.to-print');
@@ -318,6 +342,7 @@ export default {
 			window.print();
 		},
 		async fetchCollections(){
+			this.loading = true;
 			await axios.post(this.baseURL() + 'api/report/branch', this.filter, {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
@@ -326,10 +351,12 @@ export default {
 				}
 			})
 			.then(function (response) {
+				this.loading = false;
 				console.log(response);
 				this.collections = response.data.data.data
 			}.bind(this))
 			.catch(function (error) {
+				this.loading = false;
 				console.log(error);
 			}.bind(this));
 		},
@@ -349,7 +376,7 @@ export default {
 				}.bind(this));
 		},
 		async fetchAo(){
-			await axios.get(this.baseURL() + 'api/accountofficer/', {
+			await axios.get(this.baseURL() + 'api/accountofficer/getActivesInBranch/' + this.branch.branch_id, {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
 					'Content-Type': 'application/json',

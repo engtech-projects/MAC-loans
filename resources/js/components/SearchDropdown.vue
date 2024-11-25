@@ -1,7 +1,7 @@
 <template>
 	<div class="d-flex c-pointer relative">
-		<div @click="dd=!dd" class="d-flex dd-container align-items-center justify-content-between no-select">
-			<span class="font-lg c-primary-dark">{{selectedData[name]}}</span>
+		<div @click="dd=!dd" class="d-flex dd-container align-items-center justify-content-between no-select" :style="{ height: height, borderRadius: borderRadius }">
+			<span class="font-lg c-primary-dark" :style="{ fontSize: fontSize }">{{selectedData[name]}}</span>
 			<i class="fa fa-chevron-down text-xs"></i>
 		</div>
 		<div v-if="dd" class="dd-box d-flex flex-column">
@@ -9,8 +9,8 @@
 				<input v-model="search" type="text" class="form-control form-input search-bar" placeholder="Search">
 			</div>
 			<div class="data-list d-flex flex-column text-lg c-primary-dark no-select">
-				<span v-for="d,i in filteredData" :key="i" @click="select(d)">{{d[name]}}</span>
-				<span v-if="search.length>0 && filteredData.length==0"><i>No result found.</i></span>
+				<span v-for="d,i in filteredData" :key="i" @click="select(d)" :style="{ fontSize: fontSize }">{{d[name]}}</span>
+				<span v-if="search.length>0 && filteredData.length==0" :style="{ fontSize: fontSize }"><i>No result found.</i></span>
 			</div>
 		</div>
 	</div>
@@ -23,7 +23,10 @@ export default {
 	  name: String,
 	  reset: Boolean,
 	  product: String,
-	  centerId: Number
+	  centerId: { type: [String, Number], required: true },
+	  height: { type: String, default: '48px' },
+	  borderRadius: { type: String, required: false },
+	  fontSize: { type: String, default: '24px' }
 	},
 	data(){
 		return {

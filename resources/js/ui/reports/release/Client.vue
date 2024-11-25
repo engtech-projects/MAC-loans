@@ -1,5 +1,12 @@
 <template>
 	<div class="d-flex flex-column" style="flex:8;min-height:1500px">
+		<div v-if="loading" class="black-screen d-flex flex-column align-items-center justify-content-center" style="padding-left:0px;">
+			<div class="loading-container d-flex align-items-center justify-content-center mb-36">
+				<span class="loading-text">LOADING</span>
+				<img :src="baseURL() + 'img/loading_default.png'" class="rotating" alt="" style="width:300px;height:300px;">
+			</div>
+			<span class="font-lg" style="color:#ddd;">Please wait until the process is complete</span>
+		</div>
 		<div class="d-flex flex-row font-md align-items-center mb-16">
 			<span class="font-lg text-primary-dark" style="flex:3">Transaction</span>
 			<div class="d-flex flex-row align-items-center mr-24" style="flex:2">
@@ -27,9 +34,22 @@
 				<select v-if="filter.type=='product'" v-model="filter.spec" name="" id="selectProductClient" class="form-control">
 					<option v-for="p in filteredProducts" :key="p.product_id" :value="p.product_id">{{p.product_name}}</option>
 				</select>
-				<select v-if="filter.type=='center'" v-model="filter.spec" name="" id="selectProductClient" class="form-control">
-					<option v-for="c in centers.filter(cc=>cc.status=='active')" :key="c.center_id" :value="c.center_id">{{c.center}}</option>
-				</select>
+				<div v-if="filter.type=='center'" class="d-flex flex-column">
+					<search-dropdown 
+						v-if="filter.type=='center'" 
+						:reset="resetCenter" 
+						@centerReset="resetCenter=false" 
+						@sdSelect="centerSelect" 
+						:data="centers"
+						:center-id="filter.spec"
+						:height="'38px'"
+						:fontSize="'16px'"
+						:borderRadius="'5px'"
+						id="center_id" 
+						name="center"
+					></search-dropdown>
+					<input style="border:none!important;width:100%!important;height:0px!important;opacity:0!important;" type="text" v-model="filter.spec">
+				</div>
 				<select v-if="filter.type=='account_officer'" v-model="filter.spec" name="" id="selectProductClient" class="form-control">
 					<option v-for="a in accountOfficers.filter(aa=>aa.status=='active')" :key="a.ao_id" :value="a.ao_id">{{a.name}}</option>
 				</select>
@@ -75,7 +95,8 @@
 							<th>Type</th>
 						</thead>
 						<tbody>
-							<tr v-for="r,i in release.sort((a, b) => a.borrower.localeCompare(b.borrower))" :key="i">
+							<tr v-if="!reports?.release?.length"><td></td></tr>
+							<tr v-for="r, i in reports.release" :key="i">
 								<td>{{r.account_num}}</td>
 								<td>{{r.borrower}}</td>
 								<td>{{r.date_loan}}</td>
@@ -288,14 +309,16 @@ export default {
 	props:['token', 'pbranch'],
 	data(){
 		return {
+			loading:false,
+			resetCenter:false,
 			branch:{},
 			filter:{
-				date_from:'',
-				date_to:'',
+				date_from:null,
+				date_to:null,
+				category:'client',
 				branch_id:'',
-				type:'all',
 				spec:'',
-				category:'client'
+				type:'all'
 			},
 			reports:[],
 			products:[],
@@ -305,7 +328,11 @@ export default {
 		}
 	},
 	methods:{
+		centerSelect:function(center){
+			this.filter.spec = center.center_id;
+		},
 		async fetchReports(){
+			this.loading = true;
 			await axios.post(this.baseURL() + 'api/report/release', this.filter, {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
@@ -314,10 +341,12 @@ export default {
 				}
 			})
 			.then(function (response) {
-				this.reports = response.data.data
+				this.loading = false;
+				this.reports = response.data.data || {};
 				// console.log(response.data);
 			}.bind(this))
 			.catch(function (error) {
+				this.loading = false;
 				console.log(error);
 			}.bind(this));
 		},
@@ -352,6 +381,7 @@ export default {
 			})
 			.then(function (response) {
 				this.products = response.data.data;
+				this.fetchCenters();
 			}.bind(this))
 			.catch(function (error) {
 				console.log(error);
@@ -367,6 +397,7 @@ export default {
 			})
 			.then(function (response) {
 				this.centers = response.data.data;
+				this.fetchAo();
 			}.bind(this))
 			.catch(function (error) {
 				console.log(error);
@@ -395,37 +426,25 @@ export default {
 		},
 	},
 	watch:{
-		'filter.type':function(val){
-			this.filter.spec='';
-		},
 		filter:{
 			handler(val){
-				if(val.type=='all' || val.type=='new'){
-					if(val.branch_id&&val.date_from&&val.date_to&&val.category&&val.type){
-						this.fetchReports();
-					}
-				}else{
-					if(val.branch_id&&val.date_from&&val.date_to&&val.category&&val.type&&val.spec){
-						this.fetchReports();
-					}
+				const hasDateRange = val.date_from && val.date_to;
+				const isTypeAllOrNew = val.type === 'all' || val.type === 'new';
+				const hasTypeAndSpec = val.type && val.spec !== '';
+				if ((hasDateRange && isTypeAllOrNew) || hasTypeAndSpec) {
+					this.fetchReports();
 				}
 			},
 			deep:true
 		},
 	},
 	computed:{
-		release:function(){
-			if(this.reports.release){
-				return this.filter.type=='new'?this.reports.release.filter(r=>r.cycle_no==1):this.reports.release;
-			}
-			return [];
-		},
 		filteredProducts:function(){
 			return this.products.filter(p=>p.status=='active');
 		},
 		total:function(){
 			var row = [0,0,0,0,0,0,0,0,0];
-			this.release.forEach(r => {
+			(this.reports?.release || []).forEach(r => {
 				row[0] += r.amount_loan;
 				row[1] += r.filing_fee;
 				row[2] += r.document_stamp;
@@ -440,7 +459,7 @@ export default {
 		},
 		totalCash:function(){
 			var amount = 0;
-			this.release.forEach(r=>{
+			(this.reports?.release || []).forEach(r=>{
 				if(r.type == 'Cash'){
 					amount+=r.net_proceeds;
 				}
@@ -449,7 +468,7 @@ export default {
 		},
 		totalCheck:function(){
 			var amount = 0;
-			this.release.forEach(r=>{
+			(this.reports?.release || []).forEach(r=>{
 				if(r.type == 'Check'){
 					amount+=r.net_proceeds;
 				}
@@ -458,7 +477,7 @@ export default {
 		},
 		totalMemo:function(){
 			var amount = 0;
-			this.release.forEach(r=>{
+			(this.reports?.release || []).forEach(r=>{
 				amount+=r.memo;
 			})
 			return amount;
@@ -468,8 +487,6 @@ export default {
 		this.branch = JSON.parse(this.pbranch);
 		this.filter.branch_id = this.branch.branch_id;
 		this.fetchProducts();
-		this.fetchCenters();
-		this.fetchAo();
 		
 	}
 }
