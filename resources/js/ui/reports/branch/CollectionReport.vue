@@ -35,6 +35,13 @@
 
 <template>
 	<div class="d-flex flex-column" style="flex:8;">
+		<div v-if="loading" class="black-screen d-flex flex-column align-items-center justify-content-center" style="padding-left:0px;">
+			<div class="loading-container d-flex align-items-center justify-content-center mb-36">
+				<span class="loading-text">LOADING</span>
+				<img :src="baseURL() + 'img/loading_default.png'" class="rotating" alt="" style="width:300px;height:300px;">
+			</div>
+			<span class="font-lg" style="color:#ddd;">Please wait until the process is complete</span>
+		</div>
 		<div class="d-flex flex-row font-md align-items-center mb-16">
 			<span class="font-lg text-primary-dark" style="flex:4">Transactions</span>
 			<div class="d-flex flex-row align-items-center mr-24" style="flex:2">
@@ -276,6 +283,7 @@ export default {
 	props:['token','pbranch'],
 	data(){
 		return {
+			loading:false,
 			resetCenter:false,
 			branch:{branch_id:null,branch_code:null,branch_name:null},
 			filter:{
@@ -334,6 +342,7 @@ export default {
 			window.print();
 		},
 		async fetchCollections(){
+			this.loading = true;
 			await axios.post(this.baseURL() + 'api/report/branch', this.filter, {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
@@ -342,10 +351,12 @@ export default {
 				}
 			})
 			.then(function (response) {
+				this.loading = false;
 				console.log(response);
 				this.collections = response.data.data.data
 			}.bind(this))
 			.catch(function (error) {
+				this.loading = false;
 				console.log(error);
 			}.bind(this));
 		},

@@ -1,5 +1,12 @@
 <template>
 	<div class="d-flex flex-column" style="flex:8;min-height:1600px;">
+		<div v-if="loading" class="black-screen d-flex flex-column align-items-center justify-content-center" style="padding-left:0px;">
+			<div class="loading-container d-flex align-items-center justify-content-center mb-36">
+				<span class="loading-text">LOADING</span>
+				<img :src="baseURL() + 'img/loading_default.png'" class="rotating" alt="" style="width:300px;height:300px;">
+			</div>
+			<span class="font-lg" style="color:#ddd;">Please wait until the process is complete</span>
+		</div>
 		<div class="d-flex flex-row font-md align-items-center mb-16">
 			<span class="font-lg text-primary-dark" style="flex:3">Transaction</span>
 			<div class="d-flex flex-row align-items-center mr-24" style="flex:2">
@@ -253,6 +260,7 @@ export default {
 	props:['pbranch','token'],
 	data(){
 		return {
+			loading:false,
 			resetCenter:false,
 			branch:{},
 			filter:{
@@ -274,6 +282,7 @@ export default {
 			this.filter.spec = center.center_id;
 		},
 		async fetchReports(){
+			this.loading = true;
 			await axios.post(this.baseURL() + 'api/report/repayment', this.filter, {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
@@ -282,9 +291,11 @@ export default {
 				}
 			})
 			.then(function (response) {
+				this.loading = false;
 				this.reports = response.data
 			}.bind(this))
 			.catch(function (error) {
+				this.loading = false;
 				console.log(error);
 			}.bind(this));
 		},
@@ -325,7 +336,7 @@ export default {
 			}.bind(this));
 		},
 		async fetchAo(){
-			await axios.get(this.baseURL() + 'api/accountofficer/', {
+			await axios.get(this.baseURL() + 'api/accountofficer/getActivesInBranch/' + this.branch.branch_id, {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
 					'Content-Type': 'application/json',
@@ -349,7 +360,10 @@ export default {
 	watch:{
 		filter:{
 			handler(val){
-				if(val.date_from && val.date_to){
+				const hasDateRange = val.date_from && val.date_to;
+				const isTypeAll = val.type === 'all';
+				const hasTypeAndSpec = val.type && val.spec !== '';
+				if ((hasDateRange && isTypeAll) || hasTypeAndSpec) {
 					this.fetchReports();
 				}
 			},

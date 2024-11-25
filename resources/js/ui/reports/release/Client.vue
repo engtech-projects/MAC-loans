@@ -1,5 +1,12 @@
 <template>
 	<div class="d-flex flex-column" style="flex:8;min-height:1500px">
+		<div v-if="loading" class="black-screen d-flex flex-column align-items-center justify-content-center" style="padding-left:0px;">
+			<div class="loading-container d-flex align-items-center justify-content-center mb-36">
+				<span class="loading-text">LOADING</span>
+				<img :src="baseURL() + 'img/loading_default.png'" class="rotating" alt="" style="width:300px;height:300px;">
+			</div>
+			<span class="font-lg" style="color:#ddd;">Please wait until the process is complete</span>
+		</div>
 		<div class="d-flex flex-row font-md align-items-center mb-16">
 			<span class="font-lg text-primary-dark" style="flex:3">Transaction</span>
 			<div class="d-flex flex-row align-items-center mr-24" style="flex:2">
@@ -302,6 +309,7 @@ export default {
 	props:['token', 'pbranch'],
 	data(){
 		return {
+			loading:false,
 			resetCenter:false,
 			branch:{},
 			filter:{
@@ -324,6 +332,7 @@ export default {
 			this.filter.spec = center.center_id;
 		},
 		async fetchReports(){
+			this.loading = true;
 			await axios.post(this.baseURL() + 'api/report/release', this.filter, {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
@@ -332,10 +341,12 @@ export default {
 				}
 			})
 			.then(function (response) {
+				this.loading = false;
 				this.reports = response.data.data || {};
 				// console.log(response.data);
 			}.bind(this))
 			.catch(function (error) {
+				this.loading = false;
 				console.log(error);
 			}.bind(this));
 		},
@@ -417,7 +428,10 @@ export default {
 	watch:{
 		filter:{
 			handler(val){
-				if(val.date_from && val.date_to){
+				const hasDateRange = val.date_from && val.date_to;
+				const isTypeAllOrNew = val.type === 'all' || val.type === 'new';
+				const hasTypeAndSpec = val.type && val.spec !== '';
+				if ((hasDateRange && isTypeAllOrNew) || hasTypeAndSpec) {
 					this.fetchReports();
 				}
 			},

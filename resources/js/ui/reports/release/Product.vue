@@ -1,5 +1,12 @@
 <template>
 	<div class="d-flex flex-column justify-content-between" style="flex:8;min-height:100vh;">
+		<div v-if="loading" class="black-screen d-flex flex-column align-items-center justify-content-center" style="padding-left:0px;">
+			<div class="loading-container d-flex align-items-center justify-content-center mb-36">
+				<span class="loading-text">LOADING</span>
+				<img :src="baseURL() + 'img/loading_default.png'" class="rotating" alt="" style="width:300px;height:300px;">
+			</div>
+			<span class="font-lg" style="color:#ddd;">Please wait until the process is complete</span>
+		</div>
 		<div>
 			<div class="d-flex flex-row font-md align-items-center mb-16">
 				<span class="font-lg text-primary-dark" style="flex:3">Transaction</span>
@@ -173,6 +180,7 @@ export default {
 	props:['token','pbranch'],
 	data(){
 		return {
+			loading:false,
 			filter:{
 				date_from: null,
 				date_to: null,
@@ -189,6 +197,7 @@ export default {
 	},
 	methods:{
 		fetchAccounts:function(){
+			this.loading = true;
 			this.filter.branch_id = this.branch.branch_id;
 			axios.post(this.baseURL() + 'api/report/release', this.filter, {
 			headers: {
@@ -198,10 +207,12 @@ export default {
 				}
 			})
 			.then(function (response) {
+				this.loading = false;
 				this.accounts = response.data.data;
 				console.log(response.data);
 			}.bind(this))
 			.catch(function (error) {
+				this.loading = false;
 				console.log(error);
 			}.bind(this));
 		}, 
