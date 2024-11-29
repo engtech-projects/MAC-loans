@@ -70,6 +70,13 @@ class LoanAccount extends Model
         'payment_status' => 'Current',
     ];
 
+    protected $appends = ['remaining_balance'];
+
+    public function getRemainingBalanceAttribute()
+    {
+        return $this->remainingBalance();
+    }
+
     const STATUS_RELEASED = "released";
     const STATUS_PENDING = "pending";
     const PAYMENT_PAID = "Paid";

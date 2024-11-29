@@ -1,5 +1,12 @@
 <template>
     <div class="container-fluid px-16">
+    	<div v-if="loading" class="black-screen d-flex flex-column align-items-center justify-content-center" style="padding-left:0px;">
+			<div class="loading-container d-flex align-items-center justify-content-center mb-36">
+				<span class="loading-text">LOADING</span>
+				<img :src="baseURL() + 'img/loading_default.png'" class="rotating" alt="" style="width:300px;height:300px;">
+			</div>
+			<span class="font-lg" style="color:#ddd;">Please wait until the process is complete</span>
+		</div>
 		<notifications group="foo" />
         <div class="mb-16"></div>
         <div class="mb-24 bb-primary-dark pb-7 text-block">
@@ -17,9 +24,9 @@
                         placeholder="Search"
                     />
                     <div><i class="fa fa-search"></i></div>
-					<div class="results-container d-flex flex-column justify-content-start">
+					<!-- <div class="results-container d-flex flex-column justify-content-start">
 						<a v-for="b,f in filteredBorrowers" @click.prevent="selectBorrower(b)" href="" :key="f">{{b.lastname + ', ' + b.firstname}}</a>
-					</div>
+					</div> -->
                 </div>
                 <table class="table table-stripped" id="clientsList">
                     <thead>
@@ -72,10 +79,11 @@
                                 <a
                                     href="#"
                                     @click.prevent="loanAccount = account"
-                                    class="text-green-bright text-md"
+                                    class="text-md"
                                     data-toggle="modal"
                                     data-target="#retagDetailsModal"
-                                    ><i>View Details</i></a
+                                    style="text-decoration: none;"
+                                    ><button class="btn-info"><b style="color: white;">View Details</b></button></a
                                 >
                             </td>
                         </tr>
@@ -103,7 +111,7 @@
                             <option value="ao">Account Officer</option>
                             <option value="center">Center / Office</option>
 							<option value="loan status">Loan Status</option>
-							<option value="remedial">Remedial</option>
+							<!-- <option value="remedial">Remedial</option> -->
                         </select>
                     </div>
                     <button
@@ -422,13 +430,18 @@
                                 <label for="product" class="form-label"
                                     >Center / Office</label
                                 >
-                                <select
-									v-model="retagValue"
-                                    class="form-control form-input"
-                                    id="product"
-                                >
-									<option v-for="c in centers.filter(c=>c.status=='active')" :key="c.center_id" :value="c.center_id">{{c.center}}</option>
-								</select>
+                                <div class="d-flex flex-column">
+									<search-dropdown 
+										:reset="resetCenter" 
+										@centerReset="resetCenter=false" 
+										@sdSelect="centerSelect" 
+										:data="centers.filter(c => c.status == 'active')" 
+										:center-id="retagValue"
+										id="center_id" 
+										name="center"
+									></search-dropdown>
+									<input style="border:none!important;width:100%!important;height:0px!important;opacity:0!important;" type="text" v-model="retagValue">
+								</div>
                             </div>
                             <!-- <div class="form-group mb-10" style="flex: 5">
                                 <label for="product" class="form-label"
@@ -895,7 +908,7 @@
                                             <span
                                                 class="flex-2 text-primary-dark"
                                                 >{{
-                                                    formatToCurrency(loanAccount.remainingBalance.principal.balance)
+                                                    formatToCurrency(loanAccount.remaining_balance.principal.balance)
                                                 }}
                                             </span
                                             >
@@ -910,7 +923,7 @@
                                             <span
                                                 class="flex-2 text-primary-dark"
                                                 >{{
-                                                    formatToCurrency(loanAccount.remainingBalance.interest.balance)
+                                                    formatToCurrency(loanAccount.remaining_balance.interest.balance)
                                                 }}
                                             </span
                                             >
@@ -940,13 +953,15 @@ export default {
     props: ["pbranch", "token",'ploanstatus'],
     data() {
         return {
+			loading:false,
+        	resetCenter:false,
 			selectedBorrower:{},
 			pagination:{
 				page: 1,
 				range: 10
 			},
 			retaggingField:'',
-			retagValue:null,
+			retagValue:'',
             filter: "",
 			products:[],
 			accountOfficers:[],
@@ -993,7 +1008,7 @@ export default {
                 interest_rate: "",
                 interest_amount: "",
 				loan_status:'',
-				remainingBalance:{
+				remaining_balance:{
 					principal:{
 						balance:0
 					},
@@ -1044,14 +1059,24 @@ export default {
                     },
                 },
             },
-			loanStatus:['Write-Off','Case Filed','Litigated','Restructured','Restructured w/o PDI']
+			loanStatus:['Write-off','Case Filed','Litigated','Restructed','Res WO/PDI']
         };
     },
     methods: {
-		setPage:function(page){
-			this.pagination.page = page;
+		centerSelect:function(center){
+			this.retagValue = center.center_id;
+		},
+		setPage(page) {
+			if (page <= 0) {
+				this.pagination.page = 1; // Prevent going to a negative page
+			} else if (page > this.totalPages) {
+				this.pagination.page = this.totalPages; // Prevent exceeding the last page
+			} else {
+				this.pagination.page = page;
+			}
 		},
 		async retagList(){
+			this.loading = true;
 			await axios.post(this.baseURL() + 'api/account/retag-list/' + this.pbranch, {}, {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
@@ -1060,13 +1085,17 @@ export default {
 				}
 			})
 			.then(function (response) {
+				this.loading = false;
+				this.loanAccounts = response.data.data;
 				console.log(response.data);
 			}.bind(this))
 			.catch(function (error) {
+				this.loading = false;
 				console.log(error);
 			}.bind(this));
 		},
 		async retag(account){
+			this.loading = true;
 			await axios.post(this.baseURL() + 'api/account/update/' + account.loan_account_id, account, {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
@@ -1075,9 +1104,12 @@ export default {
 				}
 			})
 			.then(function (response) {
-				this.notify('','Account # ' + account.account_num + ' has been updated.', 'success');
+				this.loading = false;
+				this.retagList();
+				this.notify('','Loan account of ' + account.borrower.lastname + ', '+ account.borrower.firstname +' has been updated.', 'success');
 			}.bind(this))
 			.catch(function (error) {
+				this.loading = false;
 				console.log(error);
 			}.bind(this));
 		},
@@ -1110,13 +1142,15 @@ export default {
 			});
 		},
 		async fetchCenters(){
-			await axios.get(this.baseURL() + 'api/center', {
+			const url =this.baseURL() + 'api/center';
+			const options = {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
 					'Content-Type': 'application/json',
 					'Accept': 'application/json'
 				}
-			})
+			};
+			await this.fetchWithRetry(url, options)
 			.then(function (response) {
 				this.centers = response.data.data;
 			}.bind(this))
@@ -1124,14 +1158,31 @@ export default {
 				console.log(error);
 			}.bind(this));
 		},
+		async fetchWithRetry(url, options, retries = 3, delay = 1000) {
+		    try {
+		        const response = await axios.get(url, options);
+		        return response;
+		    } catch (error) {
+		        if (retries > 0 && error.response && error.response.status === 500) {
+		            console.log(`Retrying... ${retries} retries left`);
+		            await new Promise(resolve => setTimeout(resolve, delay));
+		            return this.fetchWithRetry(url, options, retries - 1, delay);
+		        } else {
+		            throw error;
+		        }
+		    }
+		},
+
 		async fetchOfficers(){
-			await axios.get(this.baseURL() + 'api/accountofficer', {
+			const url = this.baseURL() + 'api/accountofficer/getActivesInBranch/' + this.pbranch;
+			const options = {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
 					'Content-Type': 'application/json',
 					'Accept': 'application/json'
 				}
-			})
+			};
+			await this.fetchWithRetry(url, options)
 			.then(function (response) {
 				this.accountOfficers = response.data.data.filter(ao=>ao.branch_id == this.pbranch);
 			}.bind(this))
@@ -1140,13 +1191,15 @@ export default {
 			}.bind(this));
 		},
 		async fetchProducts(){
-			await axios.get(this.baseURL() + 'api/product/', {
+			const url = this.baseURL() + 'api/product/';
+			const options ={
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
 					'Content-Type': 'application/json',
 					'Accept': 'application/json'
 				}
-			})
+			};
+			await this.fetchWithRetry(url, options)
 			.then(function (response) {
 				this.products = response.data.data;
 			}.bind(this))
@@ -1240,6 +1293,11 @@ export default {
 			this.filter = '';
 		}
     },
+    watch: {
+	    filter(newValue) {
+	        this.pagination.page = 1;
+	    }
+	},
     computed: {
 		canRetagg:function(){
 			return this.filteredAccounts.filter(a => a.checked).length && this.retaggingField.length;
@@ -1280,7 +1338,7 @@ export default {
  			return [];
 		},
         filteredAccounts: function () {
-            return this.loanAccounts.filter(
+            let filtered = this.loanAccounts.filter(
                 (data) =>
                     data.account_num.includes(this.filter) ||
                     data.borrower.firstname
@@ -1311,19 +1369,19 @@ export default {
                         .replaceAll("-", "/")
                         .includes(this.filter.toLowerCase())
             );
+			return filtered.sort((a, b) => {
+				const nameA = a.borrower.firstname + " " + a.borrower.lastname;
+				const nameB = b.borrower.firstname + " " + b.borrower.lastname;
+				return nameA.localeCompare(nameB);
+			});
         },
-		paginate:function(){
-			var result = [];
-			var start = (this.pagination.page - 1) * this.pagination.range;
-			var end = 0;
-			for(var i = start; i < this.filteredAccounts.length; i++){
-				if(end < this.pagination.range){
-					result.push(this.filteredAccounts[i]);
-				}
-				end++;
-			}
-			return result;
-		},
+        paginate() {
+	        const start = (this.pagination.page - 1) * this.pagination.range;
+	        return this.filteredAccounts.slice(start, start + this.pagination.range);
+	    },
+        totalPages() {
+	        return Math.ceil(this.filteredAccounts.length / this.pagination.range);
+	    },
     },
     mounted() {
         this.fetchBorrowers();
