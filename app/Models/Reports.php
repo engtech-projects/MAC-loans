@@ -138,6 +138,7 @@ class Reports extends Model
             ->select(
                 'loan_accounts.loan_account_id',
                 'payment.transaction_date',
+                'loan_accounts.due_date',
                 'loan_accounts.borrower_id',
                 'amortization.id',
                 'amortization.interest as amortization_interest',
@@ -186,8 +187,13 @@ class Reports extends Model
             $payments->whereDate('payment.transaction_date', '<=', $filters['date_to']);
         }
 
-        if (isset($filters['type']) && $filters['type'] === 'payment_status' && $filters['spec'] === 'past_due') {
-            $payments->where('payment.pdi', '>', 0);
+        if (isset($filters['type'], $filters['spec']) && $filters['type'] === 'payment_status' && $filters['spec'] === 'past_due') {
+            $payments->where('payment.pdi', '>', 0)
+                     ->whereNull('payment.pdi_approval_no');
+
+            if (!empty($filters['pdproduct'])) {
+                $payments->where('loan_accounts.product_id', $filters['pdproduct']);
+            }
         }
 
         return $payments->get();
@@ -698,6 +704,7 @@ class Reports extends Model
                 /* 'borrower' => Borrower::find($payment->account->borrower_id)->fullname(), */
                 'borrower' => Borrower::find($payment->borrower_id)->fullname(),
                 'payment_date' => $payment->transaction_date,
+                'due_date' => $payment->due_date,
                 'or' => $payment->or_no,
                 'principal' => $payment->principal,
                 'interest' => $payment->interest + $payment->rebates,
