@@ -8,7 +8,7 @@
 			<span class="font-lg" style="color:#ddd;">Please wait until the process is complete</span>
 		</div>
 		<div class="d-flex flex-row font-md align-items-center mb-16">
-			<span class="font-lg text-primary-dark" style="flex:3">Transaction</span>
+			<span class="font-lg text-primary-dark" style="flex:2">Transaction</span>
 			<div class="d-flex flex-row align-items-center mr-24" style="flex:2">
 				<span class="mr-10">From: </span>
 				<input v-model="filter.date_from" type="date" class="form-control">
@@ -53,9 +53,15 @@
 				<select v-if="filter.type=='account_officer'" v-model="filter.spec" name="" id="selectProductClient" class="form-control">
 					<option v-for="a in filteredAos" :key="a.ao_id" :value="a.ao_id">{{a.name}}</option>
 				</select>
-				<select v-if="filter.type=='payment_status'" v-model="filter.spec" id="selectPaymentStatus" class="form-control">
+				<select v-if="filter.type=='payment_status'" v-model="filter.spec" id="selectPaymentStatus" class="form-control mr-24">
 			        <option value="past_due" selected>Past Due</option>
 			    </select>
+			</div>
+			<div v-if="filter.type=='payment_status'&&filter.spec=='past_due'" class="d-flex flex-row align-items-center" style="flex:2">
+				<span class="mr-10">Product: </span>
+			    <select v-model="filter.pdproduct" class="form-control">
+					<option v-for="p in products.filter(pp=>pp.status=='active')" :key="p.product_id" :value="p.product_id">{{p.product_name}}</option>
+				</select>
 			</div>
 		</div>
 		<div class="sep mb-45"></div>
@@ -84,6 +90,7 @@
 							<th></th>
 							<th>Borrower's Name</th>
 							<th>Date Pay</th>
+							<th>Due Date</th>
 							<th>O.R#</th>
 							<th>Amort. Prin.</th>
 							<th>Principal</th>
@@ -103,6 +110,7 @@
 								<td>{{ i+ 1 }}</td>
 								<td>{{r.borrower}}</td>
 								<td>{{r.payment_date}}</td>
+								<td>{{r.due_date}}</td>
 								<td>{{r.or}}</td>
 								<td>{{formatToCurrency(r.amortization_principal)}}</td>
 								<td>{{formatToCurrency(r.principal)}}</td>
@@ -137,6 +145,7 @@
 								<td></td>
 							</tr>
 							<tr>
+								<th></th>
 								<th></th>
 								<th></th>
 								<th></th>
@@ -269,7 +278,8 @@ export default {
 				category:'client',
 				branch_id:'',
 				spec:'',
-				type:'all'
+				type:'all',
+				pdproduct:''
 			},
 			reports:[],
 			accountOfficers:[],
@@ -375,18 +385,18 @@ export default {
 			return this.accountOfficers.filter(ao=>ao.status=='active'&&ao.branch_id==this.branch.branch_id);
 		},
 		total:function(){
-			var result = ['TOTAL','','','',0,0,0,0,0,0,0,0,0,0,''];
+			var result = ['TOTAL','','','','',0,0,0,0,0,0,0,0,0,0,''];
 			this.reports.forEach(r => {
-				result[4] += r.amortization_principal;
-				result[5] += r.principal;
-				result[6] += r.amortization_interest;
-				result[7] += r.interest-r.rebates;
-				result[8] += r.pdi;
-				result[9] += r.overpayment;
-				result[10] += r.total;
-				result[11] += (r.interest-r.rebates) / (1.12);
-				result[12] += r.pdi / (1.12);
-				result[13] += r.vat;
+				result[5] += r.amortization_principal;
+				result[6] += r.principal;
+				result[7] += r.amortization_interest;
+				result[8] += r.interest-r.rebates;
+				result[9] += r.pdi;
+				result[10] += r.overpayment;
+				result[11] += r.total;
+				result[12] += (r.interest-r.rebates) / (1.12);
+				result[13] += r.pdi / (1.12);
+				result[14] += r.vat;
 			});
 			return result;
 		},
