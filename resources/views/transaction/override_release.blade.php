@@ -9,7 +9,7 @@
 			branch_mgr="{{Session::get('branch')->branch_manager}}"
 			canreject="{{Auth::user()->hasAccess('reject releases')?1:0}}"
 			candelete="{{Auth::user()->hasAccess('delete releases')?1:0}}"
-			canoverride="{{Auth::user()->hasAccess('override payments')?1:0}}"
+			canoverride="{{Auth::user()->hasAccess('override releases')?1:0}}"
 		>
 		</override-release>
     </section>
