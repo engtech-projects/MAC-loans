@@ -23,7 +23,7 @@ export default {
 	  name: String,
 	  reset: Boolean,
 	  product: String,
-	  centerId: { type: [String, Number], required: true },
+	  centerId: { type: [String, Number], default: null },
 	  height: { type: String, default: '48px' },
 	  borderRadius: { type: String, required: false },
 	  fontSize: { type: String, default: '24px' }
