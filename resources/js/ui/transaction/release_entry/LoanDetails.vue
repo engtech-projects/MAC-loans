@@ -216,8 +216,8 @@
 						</div>
 						<div class="d-flex flex-column flex-1">
 							<label for="dueDate" class="form-label">Rebate Amount</label>
-							<input v-model="loanaccount.remainingBalance.rebates.balance" v-if="rebatesRefNo.length" type="number" class="form-control form-input">
-							<input v-if="!rebatesRefNo.length" type="number" :value="formatToCurrency(baseAmount)" class="form-control form-input" disabled>
+							<input v-model="loanaccount.remainingBalance.rebates.balance" v-if="rebatesRefNo && rebatesRefNo.length" type="number" class="form-control form-input">
+							<input v-if="!rebatesRefNo || !rebatesRefNo.length" type="number" :value="formatToCurrency(baseAmount)" class="form-control form-input" disabled>
 						</div>
 						<div class="flex-1"></div>
 					</div>
@@ -890,7 +890,7 @@ export default {
 			}
 		},
 		'rebatesRefNo':function(newValue){
-			if(!newValue.length){
+			if(!newValue || !newValue.length){
 				this.loanaccount.remainingBalance.rebates.balance = 0;
 			}
 		},
