@@ -18,7 +18,7 @@
 				<span class="mr-10 text-block">Acc. Officer: </span>
 				<select required v-model="filter.account_officer" name="" id="selectProductClient" class="form-control flex-1">
 					<option value="all">All Account Officers</option>
-					<option v-for="a,o in aos.filter(ao=>ao.branch_id==branch.branch_id)" :key="o" :value="a.ao_id">{{a.name}}</option>
+					<option v-for="a,o in aos" :key="o" :value="a.ao_id">{{a.name}}</option>
 				</select>
 			</div>
 			<div class="d-flex flex-row align-items-center mr-24 justify-content-start flex-1">
