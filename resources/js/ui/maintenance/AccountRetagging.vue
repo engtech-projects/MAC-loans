@@ -1184,7 +1184,7 @@ export default {
 			};
 			await this.fetchWithRetry(url, options)
 			.then(function (response) {
-				this.accountOfficers = response.data.data.filter(ao=>ao.branch_id == this.pbranch);
+				// this.accountOfficers = response.data.data.filter(ao=>ao.branch_id == this.pbranch);
 			}.bind(this))
 			.catch(function (error) {
 				console.log(error);
