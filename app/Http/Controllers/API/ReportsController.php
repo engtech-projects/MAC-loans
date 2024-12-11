@@ -136,6 +136,7 @@ class ReportsController extends BaseController
             'category' => $request->input('category'),
             'type' => $request->input('type'),
             'spec' => $request->input('spec'),
+            'pdproduct' => $request->input('pdproduct'),
         ];
 
         $report = new Reports();

@@ -1,7 +1,14 @@
 <template>
 	<div class="d-flex flex-column" style="flex:8;min-height:1600px;">
+		<div v-if="loading" class="black-screen d-flex flex-column align-items-center justify-content-center" style="padding-left:0px;">
+			<div class="loading-container d-flex align-items-center justify-content-center mb-36">
+				<span class="loading-text">LOADING</span>
+				<img :src="baseURL() + 'img/loading_default.png'" class="rotating" alt="" style="width:300px;height:300px;">
+			</div>
+			<span class="font-lg" style="color:#ddd;">Please wait until the process is complete</span>
+		</div>
 		<div class="d-flex flex-row font-md align-items-center mb-16">
-			<span class="font-lg text-primary-dark" style="flex:3">Transaction</span>
+			<span class="font-lg text-primary-dark" style="flex:2">Transaction</span>
 			<div class="d-flex flex-row align-items-center mr-24" style="flex:2">
 				<span class="mr-10">From: </span>
 				<input v-model="filter.date_from" type="date" class="form-control">
@@ -27,15 +34,34 @@
 				<select v-if="filter.type=='product'" v-model="filter.spec" name="" id="selectProductClient" class="form-control">
 					<option v-for="p in products.filter(pp=>pp.status=='active')" :key="p.product_id" :value="p.product_id">{{p.product_name}}</option>
 				</select>
-				<select v-if="filter.type=='center'" v-model="filter.spec" name="" id="selectProductClient" class="form-control">
-					<option v-for="c in centers.filter(cc=>cc.status=='active')" :key="c.center_id" :value="c.center_id">{{c.center}}</option>
-				</select>
+				<div v-if="filter.type=='center'" class="d-flex flex-column">
+					<search-dropdown 
+						v-if="filter.type=='center'" 
+						:reset="resetCenter" 
+						@centerReset="resetCenter=false" 
+						@sdSelect="centerSelect" 
+						:data="centers"
+						:center-id="filter.spec"
+						:height="'38px'"
+						:fontSize="'16px'"
+						:borderRadius="'5px'"
+						id="center_id" 
+						name="center"
+					></search-dropdown>
+					<input style="border:none!important;width:100%!important;height:0px!important;opacity:0!important;" type="text" v-model="filter.spec">
+				</div>
 				<select v-if="filter.type=='account_officer'" v-model="filter.spec" name="" id="selectProductClient" class="form-control">
 					<option v-for="a in filteredAos" :key="a.ao_id" :value="a.ao_id">{{a.name}}</option>
 				</select>
-				<select v-if="filter.type=='payment_status'" v-model="filter.spec" id="selectPaymentStatus" class="form-control">
+				<select v-if="filter.type=='payment_status'" v-model="filter.spec" id="selectPaymentStatus" class="form-control mr-24">
 			        <option value="past_due" selected>Past Due</option>
 			    </select>
+			</div>
+			<div v-if="filter.type=='payment_status'&&filter.spec=='past_due'" class="d-flex flex-row align-items-center" style="flex:2">
+				<span class="mr-10">Product: </span>
+			    <select v-model="filter.pdproduct" class="form-control">
+					<option v-for="p in products.filter(pp=>pp.status=='active')" :key="p.product_id" :value="p.product_id">{{p.product_name}}</option>
+				</select>
 			</div>
 		</div>
 		<div class="sep mb-45"></div>
@@ -64,6 +90,7 @@
 							<th></th>
 							<th>Borrower's Name</th>
 							<th>Date Pay</th>
+							<th>Due Date</th>
 							<th>O.R#</th>
 							<th>Amort. Prin.</th>
 							<th>Principal</th>
@@ -83,6 +110,7 @@
 								<td>{{ i+ 1 }}</td>
 								<td>{{r.borrower}}</td>
 								<td>{{r.payment_date}}</td>
+								<td>{{r.due_date}}</td>
 								<td>{{r.or}}</td>
 								<td>{{formatToCurrency(r.amortization_principal)}}</td>
 								<td>{{formatToCurrency(r.principal)}}</td>
@@ -117,6 +145,7 @@
 								<td></td>
 							</tr>
 							<tr>
+								<th></th>
 								<th></th>
 								<th></th>
 								<th></th>
@@ -240,6 +269,8 @@ export default {
 	props:['pbranch','token'],
 	data(){
 		return {
+			loading:false,
+			resetCenter:false,
 			branch:{},
 			filter:{
 				date_from:null,
@@ -247,7 +278,8 @@ export default {
 				category:'client',
 				branch_id:'',
 				spec:'',
-				type:'all'
+				type:'all',
+				pdproduct:''
 			},
 			reports:[],
 			accountOfficers:[],
@@ -256,7 +288,11 @@ export default {
 		}
 	},
 	methods:{
+		centerSelect:function(center){
+			this.filter.spec = center.center_id;
+		},
 		async fetchReports(){
+			this.loading = true;
 			await axios.post(this.baseURL() + 'api/report/repayment', this.filter, {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
@@ -265,9 +301,11 @@ export default {
 				}
 			})
 			.then(function (response) {
+				this.loading = false;
 				this.reports = response.data
 			}.bind(this))
 			.catch(function (error) {
+				this.loading = false;
 				console.log(error);
 			}.bind(this));
 		},
@@ -308,7 +346,7 @@ export default {
 			}.bind(this));
 		},
 		async fetchAo(){
-			await axios.get(this.baseURL() + 'api/accountofficer/', {
+			await axios.get(this.baseURL() + 'api/accountofficer/getActivesInBranch/' + this.branch.branch_id, {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
 					'Content-Type': 'application/json',
@@ -330,40 +368,35 @@ export default {
 		},
 	},
 	watch:{
-		'filter.type':function(val){
-			this.filter.spec = 'all';
-			// if(val=='account_officer'){
-			// 	if(this.filteredAos.length == 1){
-			// 		this.filter.spec = this.filteredAos[0].ao_id;
-			// 	}
-			// }
-		},
-		 filter: {
+		filter:{
 			handler(val){
-				if(val.date_from && val.date_to){
+				const hasDateRange = val.date_from && val.date_to;
+				const isTypeAll = val.type === 'all';
+				const hasTypeAndSpec = val.type && val.spec !== '';
+				if ((hasDateRange && isTypeAll) || hasTypeAndSpec) {
 					this.fetchReports();
 				}
 			},
-			deep: true
-		}
+			deep:true
+		},
 	},
 	computed:{
 		filteredAos:function(){
-			return this.accountOfficers.filter(ao=>ao.status=='active'&&ao.branch_id==this.branch.branch_id);
+			return this.accountOfficers.filter(ao=>ao.status=='active');
 		},
 		total:function(){
-			var result = ['TOTAL','','','',0,0,0,0,0,0,0,0,0,0,''];
+			var result = ['TOTAL','','','','',0,0,0,0,0,0,0,0,0,0,''];
 			this.reports.forEach(r => {
-				result[4] += r.amortization_principal;
-				result[5] += r.principal;
-				result[6] += r.amortization_interest;
-				result[7] += r.interest-r.rebates;
-				result[8] += r.pdi;
-				result[9] += r.overpayment;
-				result[10] += r.total;
-				result[11] += (r.interest-r.rebates) / (1.12);
-				result[12] += r.pdi / (1.12);
-				result[13] += r.vat;
+				result[5] += r.amortization_principal;
+				result[6] += r.principal;
+				result[7] += r.amortization_interest;
+				result[8] += r.interest-r.rebates;
+				result[9] += r.pdi;
+				result[10] += r.overpayment;
+				result[11] += r.total;
+				result[12] += (r.interest-r.rebates) / (1.12);
+				result[13] += r.pdi / (1.12);
+				result[14] += r.vat;
 			});
 			return result;
 		},

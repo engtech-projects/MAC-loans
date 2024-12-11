@@ -1,3 +1,14 @@
+<style>
+.nowrap-row {
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+}
+
+.nowrap-text {
+    white-space: nowrap;
+}
+</style>
 <template>
 		<div class="d-flex flex-column" style="flex:8;">
 			<div v-if="loading" class="black-screen d-flex flex-column align-items-center justify-content-center" style="padding-left:0px;">
@@ -27,16 +38,16 @@
 			</div>
 			<div class="sep mb-45"></div>
 			<div id="printContent">
-				<img :src="this.baseURL()+'/img/company_header_fit.png'" class="mb-24" alt="">
+				<img >
 
 				<section v-if="type=='product'" class="" id="productSection">
 					<div class="d-flex flex-column mb-16">
 						<div class="d-flex flex-row align-items-center">
 							<div class="flex-1"></div>
 							<span class="font-30 text-bold text-primary-dark">SUMMARY RELEASE AND PAYMENT BY PRODUCT</span>
-							<div class="flex-1 d-flex justify-content-end" style="padding-right:16px">
+							<div class="flex-1 d-flex justify-content-end" style="padding-right:16px; @media print { display: none; }">
 								<current-transactiondate :branch="branch" :token="token" :reports="true" @update-transaction-date="setTransactionDate"></current-transactiondate>
-								<span class="text-primary-dark">Time: {{todayTime(new Date())}} {{(new Date()).getHours() > 12? 'PM':'AM'}}</span>
+								<!-- <span class="text-primary-dark">Time: {{todayTime(new Date())}} {{(new Date()).getHours() > 12? 'PM':'AM'}}</span> -->
 							</div>
 						</div>
 						<span class="text-center text-primary-dark text-bold font-md mb-5">{{branch_name + ' Branch (' + branch_code + ')'}}</span>
@@ -96,36 +107,36 @@
 						</table>
 						<div class="d-flex flex-row bg-yellow-pale p-5 align-items-center">
 							<div class="d-flex flex-column flex-1 mr-64">
-								<div class="d-flex flex-row flex-1 mb-5">
-									<div class="d-flex flex-row justify-content-between flex-2 mr-24">
-										<span class="flex-1">TOTAL CASH RELEASE</span>
+								<div class="d-flex flex-row flex-1 mb-5 nowrap-row">
+									<div class="d-flex flex-row justify-content-between flex-2 mr-24 nowrap-row">
+										<span class="flex-1 nowrap-text">TOTAL CASH RELEASE</span>
 										<span>:</span>
 									</div>
-									<span class="flex-1">{{formatToCurrency(totalCash)}}</span>
+									<span class="flex-1 nowrap-text">{{formatToCurrency(totalCash)}}</span>
 								</div>
-								<div class="d-flex flex-row flex-1 mb-5">
-									<div class="d-flex flex-row justify-content-between flex-2 mr-24">
-										<span class="flex-1">TOTAL CHECK RELEASE</span>
+								<div class="d-flex flex-row flex-1 mb-5 nowrap-row">
+									<div class="d-flex flex-row justify-content-between flex-2 mr-24 nowrap-row">
+										<span class="flex-1 nowrap-text">TOTAL CHECK RELEASE</span>
 										<span>:</span>
 									</div>
-									<span class="flex-1">{{formatToCurrency(totalCheck)}}</span>
+									<span class="flex-1 nowrap-text">{{formatToCurrency(totalCheck)}}</span>
 								</div>
-								<div class="d-flex flex-row flex-1">
-									<div class="d-flex flex-row justify-content-between flex-2 mr-24">
-										<span class="flex-1">TOTAL MEMO RELEASE</span>
+								<div class="d-flex flex-row flex-1 nowrap-row">
+									<div class="d-flex flex-row justify-content-between flex-2 mr-24 nowrap-row">
+										<span class="flex-1 nowrap-text">TOTAL MEMO RELEASE</span>
 										<span>:</span>
 									</div>
-									<span class="flex-1">{{formatToCurrency(totalMemo)}}</span>
+									<span class="flex-1 nowrap-text">{{formatToCurrency(totalMemo)}}</span>
 								</div>
 							</div>
 							<div class="d-flex flex-column flex-1">
 								<div class="info-display">
-									<span class="text-primary-dark">TOTAL RELEASES</span>
+									<span class="text-primary-dark text-bold">TOTAL RELEASES</span>
 									<span class="text-primary-dark">{{formatToCurrency(totalCash + totalCheck)}}</span>
 								</div>
 							</div>
-							<div class="flex-2"></div>
-						</div>
+						<div class="flex-2"></div>
+					</div>
 					</section>
 					<section class="d-flex flex-column flex-1">
 						<span class="text-bold bg-skyblue" style="padding:2px 5px;">PAYMENT SUMMARY</span>
@@ -165,19 +176,19 @@
 
 						<div class="d-flex flex-row bg-skyblue p-10 align-items-center mb-72">
 							<div class="d-flex flex-column flex-1 mr-64">
-								<div class="d-flex flex-row flex-1 mb-5">
-									<div class="d-flex flex-row justify-content-between flex-2 mr-24">
-										<span class="flex-1">TOTAL CASH PAYMENT</span>
+								<div class="d-flex flex-row flex-1 mb-5 nowrap-row">
+									<div class="d-flex flex-row justify-content-between flex-2 mr-24 nowrap-row">
+										<span class="flex-1 nowrap-text">TOTAL CASH PAYMENT</span>
 										<span>:</span>
 									</div>
-									<span class="flex-1">{{formatToCurrency(paymentSummaryTotal.cash)}}</span>
+									<span class="flex-1 nowrap-text">{{formatToCurrency(paymentSummaryTotal.cash)}}</span>
 								</div>
-								<div class="d-flex flex-row flex-1 mb-5">
-									<div class="d-flex flex-row justify-content-between flex-2 mr-24">
-										<span class="flex-1">TOTAL CHECK PAYMENT</span>
+								<div class="d-flex flex-row flex-1 mb-5 nowrap-row">
+									<div class="d-flex flex-row justify-content-between flex-2 mr-24 nowrap-row">
+										<span class="flex-1 nowrap-text">TOTAL CHECK PAYMENT</span>
 										<span>:</span>
 									</div>
-									<span class="flex-1">{{formatToCurrency(paymentSummaryTotal.check)}}</span>
+									<span class="flex-1 nowrap-text">{{formatToCurrency(paymentSummaryTotal.check)}}</span>
 								</div>
 								<!-- <div class="d-flex flex-row flex-1 mb-5">
 									<div class="d-flex flex-row justify-content-between flex-2 mr-24">
@@ -186,26 +197,26 @@
 									</div>
 									<span class="flex-1">{{formatToCurrency(paymentSummaryTotal.pos)}}</span>
 								</div> -->
-								<div class="d-flex flex-row flex-1">
-									<div class="d-flex flex-row justify-content-between flex-2 mr-24">
-										<span class="flex-1">TOTAL MEMO PAYMENT</span>
+								<div class="d-flex flex-row flex-1 nowrap-row">
+									<div class="d-flex flex-row justify-content-between flex-2 mr-24 nowrap-row">
+										<span class="flex-1 nowrap-text">TOTAL MEMO PAYMENT</span>
 										<span>:</span>
 									</div>
-									<span class="flex-1">{{formatToCurrency(paymentSummaryTotal.memo)}}</span>
+									<span class="flex-1 nowrap-text">{{formatToCurrency(paymentSummaryTotal.memo)}}</span>
 								</div>
-								<div class="d-flex flex-row flex-1">
-									<div class="d-flex flex-row justify-content-between flex-2 mr-24">
-										<span class="flex-1 pl-24">DED BALANCE</span>
+								<div class="d-flex flex-row flex-1 nowrap-row">
+									<div class="d-flex flex-row justify-content-between flex-2 mr-24 nowrap-row">
+										<span class="flex-1 pl-24 nowrap-text">DED BALANCE</span>
 										<span>:</span>
 									</div>
-									<span class="flex-1">{{formatToCurrency(paymentSummaryTotal.dedbal)}}</span>
+									<span class="flex-1 nowrap-text">{{formatToCurrency(paymentSummaryTotal.dedbal)}}</span>
 								</div>
-								<div class="d-flex flex-row flex-1">
-									<div class="d-flex flex-row justify-content-between flex-2 mr-24">
-										<span class="flex-1 pl-24">OFFSET PF</span>
+								<div class="d-flex flex-row flex-1 nowrap-row">
+									<div class="d-flex flex-row justify-content-between flex-2 mr-24 nowrap-row">
+										<span class="flex-1 pl-24 nowrap-text">OFFSET PF</span>
 										<span>:</span>
 									</div>
-									<span class="flex-1">{{formatToCurrency(paymentSummaryTotal.offsetPf)}}</span>
+									<span class="flex-1 nowrap-text">{{formatToCurrency(paymentSummaryTotal.offsetPf)}}</span>
 								</div>
 								<!-- <div class="d-flex flex-row flex-1">
 									<div class="d-flex flex-row justify-content-between flex-2 mr-24">
@@ -214,12 +225,12 @@
 									</div>
 									<span class="flex-1">{{formatToCurrency(paymentSummaryTotal.overpayment)}}</span>
 								</div> -->
-								<div class="d-flex flex-row flex-1">
-									<div class="d-flex flex-row justify-content-between flex-2 mr-24">
-										<span class="flex-1 pl-24">DISCOUNT</span>
+								<div class="d-flex flex-row flex-1 nowrap-row">
+									<div class="d-flex flex-row justify-content-between flex-2 mr-24 nowrap-row">
+										<span class="flex-1 pl-24 nowrap-text">DISCOUNT</span>
 										<span>:</span>
 									</div>
-									<span class="flex-1">{{formatToCurrency(paymentSummaryTotal.discount)}}</span>
+									<span class="flex-1 nowrap-text">{{formatToCurrency(paymentSummaryTotal.discount)}}</span>
 								</div>
 								<!-- <div class="d-flex flex-row flex-1">
 									<div class="d-flex flex-row justify-content-between flex-2 mr-24">
@@ -228,24 +239,24 @@
 									</div>
 									<span class="flex-1">{{formatToCurrency(paymentSummaryTotal.cancelled)}}</span>
 								</div> -->
-								<div class="d-flex flex-row flex-1">
-									<div class="d-flex flex-row justify-content-between flex-2 mr-24">
-										<span class="flex-1 pl-24">BRANCH</span>
+								<div class="d-flex flex-row flex-1 nowrap-row">
+									<div class="d-flex flex-row justify-content-between flex-2 mr-24 nowrap-row">
+										<span class="flex-1 pl-24 nowrap-text">BRANCH</span>
 										<span>:</span>
 									</div>
-									<span class="flex-1">{{formatToCurrency(paymentSummaryTotal.branch)}}</span>
+									<span class="flex-1 nowrap-text">{{formatToCurrency(paymentSummaryTotal.branch)}}</span>
 								</div>
-								<div class="d-flex flex-row flex-1 mb-5">
-									<div class="d-flex flex-row justify-content-between flex-2 mr-24">
-										<span class="flex-1">TOTAL POS PAYMENT</span>
+								<div class="d-flex flex-row flex-1 mb-5 nowrap-row">
+									<div class="d-flex flex-row justify-content-between flex-2 mr-24 nowrap-row">
+										<span class="flex-1 nowrap-text">TOTAL POS PAYMENT</span>
 										<span>:</span>
 									</div>
-									<span class="flex-1">{{formatToCurrency(paymentSummaryTotal.pos)}}</span>
+									<span class="flex-1 nowrap-text">{{formatToCurrency(paymentSummaryTotal.pos)}}</span>
 								</div>
 							</div>
 							<div class="d-flex flex-column flex-1">
 								<div class="info-display">
-									<span class="text-primary-dark">TOTAL PAYMENT</span>
+									<span class="text-primary-dark text-bold">TOTAL PAYMENT</span>
 									<span class="text-primary-dark">{{formatToCurrency(paymentSummaryTotal.cash + paymentSummaryTotal.check + paymentSummaryTotal.pos + paymentSummaryTotal.memo)}}</span>
 								</div>
 							</div>
@@ -259,9 +270,9 @@
 						<div class="d-flex flex-row align-items-center">
 							<div class="flex-1"></div>
 							<span class="font-30 text-bold text-primary-dark">SUMMARY RELEASE AND PAYMENT BY CLIENT</span>
-							<div class="flex-1 d-flex justify-content-end" style="padding-right:16px">
+							<div class="flex-1 d-flex justify-content-end" style="padding-right:16px; @media print { display: none; } ">
 								<current-transactiondate :branch="branch" :token="token" :reports="true"></current-transactiondate>
-								<span class="text-primary-dark">Time: {{todayTime(new Date())}} {{(new Date()).getHours() > 12? 'PM':'AM'}}</span>
+								<!-- <span class="text-primary-dark">Time: {{todayTime(new Date())}} {{(new Date()).getHours() > 12? 'PM':'AM'}}</span> -->
 							</div>
 						</div>
 						<span class="text-center text-primary-dark text-bold font-md mb-5">{{branch_name + ' Branch (' + branch_code + ')'}}</span>
@@ -359,7 +370,7 @@
 							</div>
 							<div class="d-flex flex-column flex-1">
 								<div class="info-display">
-									<span class="text-primary-dark">TOTAL RELEASES</span>
+									<span class="text-primary-dark text-bold">TOTAL RELEASES</span>
 									<span class="text-primary-dark">{{formatToCurrency(totalCashClient + totalCheckClient)}}</span>
 								</div>
 							</div>
@@ -492,7 +503,7 @@
 							</div>
 							<div class="d-flex flex-column flex-1">
 								<div class="info-display">
-									<span class="text-primary-dark">TOTAL PAYMENT</span>
+									<span class="text-primary-dark text-bold" >TOTAL PAYMENT</span>
 									<span class="text-primary-dark">{{formatToCurrency(totalCashClientCollection + totalCheckClientCollection + totalPosClientCollection + totalMemoClientCollection)}}</span>
 								</div>
 							</div>
@@ -507,14 +518,14 @@
 					<span class="flex-2 pb-24 text-bold darker-bb mr-64">Approved By:</span>
 					<span class="flex-1"></span>
 				</section>
-				<div class="d-flex mb-64">
+				<!-- <div class="d-flex mb-64">
 					<img :src="this.baseURL()+'/img/logo-footer.png'" class="w-100" alt="">
-				</div>
+				</div> -->
 			</div>
 			
 			<div class="d-flex flex-row-reverse mb-45">
 				<a @click="print()" href="#" class="btn btn-default min-w-150">Print</a>
-				<!-- <a href="#" class="btn btn-success min-w-150 mr-24">Download Excel</a> -->
+				 <!-- <a href="#" class="btn btn-success min-w-150 mr-24">Download Excel</a> -->
 			</div>
 		</div>
 </template>
@@ -574,7 +585,30 @@ export default {
 			var content = document.getElementById('printContent').innerHTML;
 			var target = document.querySelector('.to-print');
 			target.innerHTML = content;
+			
+			var style = document.createElement('style');
+				style.innerHTML =  `
+						@media print {
+							@page {
+								size: 8.5in 11in portrait; /* Custom paper size */
+								margin: 0.11in 0.25in; 
+								
+							}
+							body {
+								margin: 0.11in 0.25in; 
+								font-weight: bolder;
+							}
+							.to-print {
+								transform: scale(108px); /* Custom scale of 75% for print */
+								transform-origin: top left; /* Ensure scaling starts from the top left */
+							}
+						}
+					`;
+			document.head.appendChild(style);
 			window.print();
+			window.onafterprint = function() {
+				document.head.removeChild(style);
+			};
 		},
 		rowBorders:function(str){
 			if(str == ' '){

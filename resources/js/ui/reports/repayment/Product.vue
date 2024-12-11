@@ -1,14 +1,21 @@
 <template>
 	<div class="d-flex flex-column" style="flex:8;min-height:1600px">
+		<div v-if="loading" class="black-screen d-flex flex-column align-items-center justify-content-center" style="padding-left:0px;">
+			<div class="loading-container d-flex align-items-center justify-content-center mb-36">
+				<span class="loading-text">LOADING</span>
+				<img :src="baseURL() + 'img/loading_default.png'" class="rotating" alt="" style="width:300px;height:300px;">
+			</div>
+			<span class="font-lg" style="color:#ddd;">Please wait until the process is complete</span>
+		</div>
 		<div class="d-flex flex-row font-md align-items-center mb-16">
 			<span class="font-lg text-primary-dark" style="flex:3">Transaction</span>
 			<div class="d-flex flex-row align-items-center mr-24" style="flex:2">
 				<span class="mr-10">From: </span>
-				<input @change="filter.date_from&&filter.date_to?fetchReports():0" v-model="filter.date_from" type="date" class="form-control">
+				<input v-model="filter.date_from" type="date" class="form-control">
 			</div>
 			<div class="d-flex flex-row align-items-center" style="flex:2">
 				<span class="mr-10">To: </span>
-				<input @change="filter.date_from&&filter.date_to?fetchReports():0" v-model="filter.date_to" type="date" class="form-control">
+				<input v-model="filter.date_to" type="date" class="form-control">
 			</div>
 			<div class="d-flex flex-row align-items-center mr-24 hide" style="flex:2">
 				<span class="mr-10">Type: </span>
@@ -40,7 +47,7 @@
 				<div class="d-flex flex-column mb-16">
 					<div class="d-flex flex-row align-items-center">
 						<div class="flex-1"></div>
-						<span class="font-30 text-bold text-primary-dark">SUMMARY RELEASE AND PAYMENT BY PRODUCT</span>
+						<span class="font-30 text-bold text-primary-dark">SUMMARY PAYMENT BY PRODUCT</span>
 						<div class="flex-1 d-flex justify-content-end" style="padding-right:16px">
 							<current-transactiondate :branch="branch.branch_id" :token="token" :reports="true" @update-transaction-date="setTransactionDate"></current-transactiondate>
 							<span class="text-primary-dark">Time: {{todayTime(new Date())}} {{(new Date()).getHours() > 12? 'PM':'AM'}}</span>
@@ -305,6 +312,7 @@ export default {
 	props:['pbranch','token'],
 	data(){
 		return {
+			loading:false,
 			paymentSummaryTotal:{
 				cash:0,
 				check:0,
@@ -333,6 +341,7 @@ export default {
 	},
 	methods:{
 		async fetchReports(){
+			this.loading = true;
 			await axios.post(this.baseURL() + 'api/report/repayment', this.filter, {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
@@ -341,10 +350,12 @@ export default {
 				}
 			})
 			.then(function (response) {
+				this.loading = false;
 				this.reports = response.data
 				console.log(response.data);
 			}.bind(this))
 			.catch(function (error) {
+				this.loading = false;
 				console.log(error);
 			}.bind(this));
 		},
@@ -438,6 +449,16 @@ export default {
 			})
 			return result;
 		},
+	},
+	watch:{
+		 filter: {
+			handler(val){
+				if(val.date_from && val.date_to){
+					this.fetchReports();
+				}
+			},
+			deep: true
+		}
 	},
 	mounted(){
 		this.branch = JSON.parse(this.pbranch);
