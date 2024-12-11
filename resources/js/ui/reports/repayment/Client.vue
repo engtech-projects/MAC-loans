@@ -382,7 +382,7 @@ export default {
 	},
 	computed:{
 		filteredAos:function(){
-			return this.accountOfficers.filter(ao=>ao.status=='active'&&ao.branch_id==this.branch.branch_id);
+			return this.accountOfficers.filter(ao=>ao.status=='active');
 		},
 		total:function(){
 			var result = ['TOTAL','','','','',0,0,0,0,0,0,0,0,0,0,''];
