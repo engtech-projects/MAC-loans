@@ -17,13 +17,25 @@
 				<span class="mr-10">To: </span>
 				<input v-model="filter.date_to" type="date" class="form-control">
 			</div>
+
+			<div class="d-flex flex-row align-items-center mr-24" style="flex:2">
+				<span class="mr-10">Branch: </span>
+				<select v-model="filter.branch" name="branch" class="form-control" @change="fetchOfficers">
+					<option value="all">All Branches</option>
+					<option v-for="branch in branches" :key="branch.branch_id" :value="branch.branch_id">
+					{{ branch.branch_name }}
+					</option>
+				</select>
+				</div>
+
 			<div class="d-flex flex-row align-items-center mr-24" style="flex:2">
 				<span class="mr-10">AO: </span>
 				<select v-model="filter.account_officer" name="" id="selectProductClient" class="form-control">
 					<option value="all">All Records</option>
-					<option v-for="a in ao" :key="a.ao_id" :value="a.ao_id">{{a.name}}</option>
+					<option v-for="aofficer in ao" :key="'aoDropdown'+aofficer.ao_id" :value="aofficer.ao_id">{{aofficer.name}}</option>
 				</select>
 			</div>
+			<!-- <button @click="generateReport" class="btn btn-primary min-w-150">Generate</button> -->
 		</div>
 		<div class="sep mb-45"></div>
 		<div id="printContent">
@@ -157,8 +169,16 @@ export default {
 				date_from: null,
 				date_to: null,
 				account_officer:'all',
+				branch_id:'all',
+				branch: 'all',
 				category:'account_officer',
 			},
+			branches:[
+				{ branch_id:1, branch_name: 'Butuan', branch_code:'001'},
+				{ branch_id:2, branch_name: 'Nasipit', branch_code:'002'},
+				{ branch_id:3, branch_name: 'Gingoog', branch_code:'003'},
+
+			],
 			totalReleases:{
 				newAccount:0,
 				newAccountAmount:0,
@@ -193,7 +213,7 @@ export default {
 			this.filter.date_to = transactionDate;
 		},
 		fetchOfficers:function(){
-			axios.get(this.baseURL() + 'api/accountofficer', {
+			axios.get(this.baseURL() + 'api/accountofficer/getActivesInBranch/'+this.filter.branch, {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
 					'Content-Type': 'application/json',
@@ -249,13 +269,14 @@ export default {
 	},
 	watch:{
 		filter: {
-			handler(val){
-				if(val.date_from && val.date_to && val.account_officer){
-					this.fetchAccounts();
-				}
+			handler(_val){
+				// if(val.date_from && val.date_to && val.account_officer){
+				// }
+				this.fetchAccounts();
 			},
 			deep: true
 		}
+
 	},
 	computed:{
 		accountOfficer:function(){
