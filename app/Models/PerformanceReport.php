@@ -59,7 +59,7 @@ class PerformanceReport extends Model
         ->first();
         $dateRange = [
             'min_date' => $minDate,
-            'max_date' => $transDate
+            'max_date' => Carbon::parse($transDate)->toDateString()
         ];
         if (count($dateRange) > 0) {
             return $dateRange;

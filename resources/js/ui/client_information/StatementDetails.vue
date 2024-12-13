@@ -1895,7 +1895,7 @@
 													<option value="Write-Off">Write-Off</option>
 													<option value="Past Due">Past Due</option>
 													<option value="Restructed">Restructed</option>
-													<option value="Res WO-PDI">Res WO-PDI</option>
+													<option value="Res WO-PDI">Res WO/PDI</option>
 													<option value="Case Filed">Case Filed</option>
 													<option value="Litigated">Litigated</option>
                                                     <option value="Paid">Paid</option>

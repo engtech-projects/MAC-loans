@@ -10,6 +10,14 @@
 		<div class="d-flex flex-row font-md align-items-center mb-16">
 			<span class="font-lg text-primary-dark" style="flex:3">Report</span>
 			<div class="d-flex flex-row align-items-center mr-24" style="flex:2">
+				<span class="mr-10">Branch</span>
+				<select v-model="filter.branch_id" id="selectProductClient" class="form-control flex-1">
+			        <option v-for="branch in branches" :key="branch.branch_id" :value="branch.branch_id">
+			            {{ branch.branch_name }} Branch
+			        </option>
+			    </select>
+			</div>
+			<div class="d-flex flex-row align-items-center mr-24" style="flex:2">
 				<span class="mr-10">Date: </span>
 				<input v-model="filter.as_of" type="date" class="form-control" :min="dates.min_date" :max="dates.max_date">
 			</div>
@@ -64,7 +72,9 @@
 									<span class="text-primary-dark">Time: {{todayTime(new Date())}} {{(new Date()).getHours() > 12? 'PM':'AM'}}</span>
 								</div>
 							</div>
-							<span class="text-center text-primary-dark text-bold font-md mb-5">{{branch.branch_name}} Branch ({{branch.branch_code}})</span>
+							<span class="text-center text-primary-dark text-bold font-md mb-5">
+						        {{ selectedBranch.branch_name }} Branch ({{ selectedBranch.branch_code }})
+						    </span>
 							<div class="d-flex flex-row justify-content-center text-primary-dark">
 								<span class="text-center text-primary-dark text-bold">As of {{filter.as_of?dateToMDY2(new Date(filter.as_of)).split('-').join('/'):'---'}}</span>
 							</div>
@@ -188,19 +198,23 @@ export default {
 				as_of:'',
 			},
 			reports:[],
+			branches: [
+	            { branch_id: 1, branch_name: 'Butuan City', branch_code: '001' },
+	            { branch_id: 2, branch_name: 'Nasipit', branch_code: '002' },
+	            { branch_id: 3, branch_name: 'Gingoog', branch_code: '003' }
+	        ]
 		}
 	},
 	methods:{
 		generate:function(){
-			if(this.filter.as_of == this.transDate){
+			if(this.filter.as_of == this.dates.max_date){
 				this.fetchReports();
 			}else{
 				this.fetchNoCurrentReports();
 			}
  		},
 		async fetchDates(){
-			this.loading = true;
-			await axios.get(this.baseURL() + 'api/report/branch/performancereport/dates?branchId=' + this.branch.branch_code, {
+			await axios.get(this.baseURL() + 'api/report/branch/performancereport/dates?branchId=' + this.filter.branch_id, {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
 					'Content-Type': 'application/json',
@@ -208,7 +222,7 @@ export default {
 				}
 			})
 			.then(function (response) {
-				this.loading = false;
+				console.log(this.filter.branch_id);
 				this.dates = response.data.data;
 				// this.dates.max_date = this.transDate;
 				// console.log(response.data);
@@ -241,7 +255,7 @@ export default {
 			this.loading = true;
 			
 			await axios.post(this.baseURL() + 'api/report/branch/performancereport',{transaction_date:this.filter.as_of,
-				branch_id:this.branch.branch_code}, {
+				branch_id:this.filter.branch_id}, {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
 					'Content-Type': 'application/json',
@@ -273,7 +287,7 @@ export default {
 			}.bind(this));
 		},
 		async fetchTransactionDate(){
-			await axios.get(this.baseURL() + 'api/eod/eodtransaction/' + this.branch.branch_id,{
+			await axios.get(this.baseURL() + 'api/eod/eodtransaction/' + this.filter.branch_id,{
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
 					'Content-Type': 'application/json',
@@ -283,7 +297,7 @@ export default {
 				.then(function (response) {
 					this.filter.as_of = response.data.data.date_end;
 					this.transDate = response.data.data.date_end;
-					this.dates.max_date = this.transDate;
+					// this.dates.max_date = this.transDate;
 				}.bind(this))
 				.catch(function (error) {
 					console.log(error);
@@ -306,12 +320,17 @@ export default {
 		}
 	},
 	computed:{
+		selectedBranch() {
+            return this.branches.find(branch => branch.branch_id == this.filter.branch_id) || {};
+        },
 		total:function(){
 			var row = [0,0];
-			this.reports.forEach(r=>{
-				row[0] += r.principal_balance;
-				row[1] += r.interest_balance;
-			})
+			if (Array.isArray(this.reports)) {
+				this.reports.forEach(r=>{
+					row[0] += r.principal_balance;
+					row[1] += r.interest_balance;
+				})
+			}
 			return row;
 		},
 		accountOfficer:function(){
@@ -321,47 +340,49 @@ export default {
 		filteredResult:function(){
 			var result = [];
 			var overall = ['TOTAL','',0,0,0,0,0,0,0,0];
-			this.reports.forEach(r=>{
-				var total = ['OFFICER SUB-TOTAL','',0,0,0,0,0,0,0,0];
-				if(r.products){
-					r.products.forEach((p,i)=>{
-						var row = [0,0,0,0,0,0,0,0,0,0];
-						row[0] = i==0?r.name:'';
-						row[1] = p.product_code + '-' + p.product_name;
-						row[2] = p.all.count;
-						total[2] += parseFloat(p.all.count);
-						row[3] = this.formatToCurrency(p.all.amount);
-						total[3] += parseFloat(p.all.amount);
-						row[4] = p.delinquent.count;
-						total[4] += parseFloat(p.delinquent.count);
-						row[5] = this.formatToCurrency(p.delinquent.amount);
-						total[5] += parseFloat(p.delinquent.amount);
-						row[6] = p.delinquent.rate + '%';
-						total[6] += parseFloat(p.delinquent.rate);
-						row[7] = p.pastdue.count;
-						total[7] += parseFloat(p.pastdue.count);
-						row[8] = this.formatToCurrency(p.pastdue.amount);
-						total[8] += parseFloat(p.pastdue.amount);
-						row[9] = p.pastdue.rate + '%';
-						total[9] += parseFloat(p.pastdue.rate);
-						result.push(row);
-					});
-					total[6] = (total[5]/total[3]*100) % 1 != 0? (total[5]/total[3]*100).toFixed(2):(total[5]/total[3]*100);
-					total[6] = isNaN(total[6])? '0%':total[6]+ '%';
-					total[9] = (total[8]/total[3]*100) % 1 != 0? (total[8]/total[3]*100).toFixed(2):(total[8]/total[3]*100);
-					total[9] = isNaN(total[9])? '0%':total[9]+ '%';
-					overall[3] += total[3];
-					total[3] = this.formatToCurrency(total[3]);
-					overall[2] += total[2];
-					overall[4] += total[4];
-					overall[5] += total[5];
-					overall[7] += total[7];
-					total[5] = this.formatToCurrency(total[5]);
-					overall[8] += total[8];
-					total[8] = this.formatToCurrency(total[8]);
-					result.push(total);
-				}
-			})
+			if (Array.isArray(this.reports)) {
+				this.reports.forEach(r=>{
+					var total = ['OFFICER SUB-TOTAL','',0,0,0,0,0,0,0,0];
+					if(r.products){
+						r.products.forEach((p,i)=>{
+							var row = [0,0,0,0,0,0,0,0,0,0];
+							row[0] = i==0?r.name:'';
+							row[1] = p.product_code + '-' + p.product_name;
+							row[2] = p.all.count;
+							total[2] += parseFloat(p.all.count);
+							row[3] = this.formatToCurrency(p.all.amount);
+							total[3] += parseFloat(p.all.amount);
+							row[4] = p.delinquent.count;
+							total[4] += parseFloat(p.delinquent.count);
+							row[5] = this.formatToCurrency(p.delinquent.amount);
+							total[5] += parseFloat(p.delinquent.amount);
+							row[6] = p.delinquent.rate + '%';
+							total[6] += parseFloat(p.delinquent.rate);
+							row[7] = p.pastdue.count;
+							total[7] += parseFloat(p.pastdue.count);
+							row[8] = this.formatToCurrency(p.pastdue.amount);
+							total[8] += parseFloat(p.pastdue.amount);
+							row[9] = p.pastdue.rate + '%';
+							total[9] += parseFloat(p.pastdue.rate);
+							result.push(row);
+						});
+						total[6] = (total[5]/total[3]*100) % 1 != 0? (total[5]/total[3]*100).toFixed(2):(total[5]/total[3]*100);
+						total[6] = isNaN(total[6])? '0%':total[6]+ '%';
+						total[9] = (total[8]/total[3]*100) % 1 != 0? (total[8]/total[3]*100).toFixed(2):(total[8]/total[3]*100);
+						total[9] = isNaN(total[9])? '0%':total[9]+ '%';
+						overall[3] += total[3];
+						total[3] = this.formatToCurrency(total[3]);
+						overall[2] += total[2];
+						overall[4] += total[4];
+						overall[5] += total[5];
+						overall[7] += total[7];
+						total[5] = this.formatToCurrency(total[5]);
+						overall[8] += total[8];
+						total[8] = this.formatToCurrency(total[8]);
+						result.push(total);
+					}
+				})
+			}
 			overall[6] = (overall[5]/overall[3]*100) % 1 != 0? (overall[5]/overall[3]*100).toFixed(2):(overall[5]/overall[3]*100);
 			overall[6] = isNaN(overall[6])? '0%':overall[6]+ '%';
 			overall[9] = (overall[8]/overall[3]*100) % 1 != 0? (overall[8]/overall[3]*100).toFixed(2):(overall[8]/overall[3]*100);
@@ -374,44 +395,51 @@ export default {
 		},
 		delinquentReport:function(){
 			var rows = [];
-			this.reports.forEach(r=>{
-				if(r.data){
-					for(var d in r.data){
-						var row = [];
-						row.push(r.data[d].borrower_name);
-						row.push(r.data[d].account_num);
-						row.push(r.data[d].date_loan);
-						row.push(r.data[d].maturity);
-						row.push(this.formatToCurrency(r.data[d].amount_loan));
-						row.push(this.formatToCurrency(r.data[d].balance));
-						row.push(this.formatToCurrency(r.data[d].principal_balance));
-						row.push(this.formatToCurrency(r.data[d].interest_balance));
-						row.push(this.formatToCurrency(r.data[d].amortization));
-						row.push(this.formatToCurrency(r.data[d].delinquent_amount));
-						row.push(r.data[d].type);
-						row.push(this.formatToCurrency(r.data[d].missed_amortization));
-						row.push(r.data[d].days_missed);
-						row.push(r.data[d].status);
-						rows.push(row);
+			if (Array.isArray(this.reports)) {
+				this.reports.forEach(r=>{
+					if(r.data){
+						for(var d in r.data){
+							var row = [];
+							row.push(r.data[d].borrower_name);
+							row.push(r.data[d].account_num);
+							row.push(r.data[d].date_loan);
+							row.push(r.data[d].maturity);
+							row.push(this.formatToCurrency(r.data[d].amount_loan));
+							row.push(this.formatToCurrency(r.data[d].balance));
+							row.push(this.formatToCurrency(r.data[d].principal_balance));
+							row.push(this.formatToCurrency(r.data[d].interest_balance));
+							row.push(this.formatToCurrency(r.data[d].amortization));
+							row.push(this.formatToCurrency(r.data[d].delinquent_amount));
+							row.push(r.data[d].type);
+							row.push(this.formatToCurrency(r.data[d].missed_amortization));
+							row.push(r.data[d].days_missed);
+							row.push(r.data[d].status);
+							rows.push(row);
+						}
 					}
-				}
-			});
+				});
+			}
 			return rows;
 		}
 	},
 	watch:{
-		'filter.group'(val){
-			// if(val){
-			// 	this.fetchReports();
-			// }
-		}
+		'filter.branch_id'(val){
+			this.fetchDates();
+		},
+		'dates.max_date': function(newMaxDate) {
+	        // If the selected date exceeds the new max date, reset the input
+	        if (this.filter.as_of && this.filter.as_of > newMaxDate) {
+	            this.filter.as_of = newMaxDate; // Reset the value of the input
+	        }else{
+	        	this.filter.as_of = newMaxDate;
+	        }
+	    }
 	},
 	mounted(){
 		this.branch = JSON.parse(this.pbranch);
 		this.filter.branch_id = this.branch.branch_id;
 		this.fetchAo();
 		this.fetchTransactionDate();
-		this.fetchDates();
 	}
 }
 </script>
