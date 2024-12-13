@@ -186,13 +186,31 @@ class Reports extends Model
             $payments->whereDate('payment.transaction_date', '>=', $filters['date_from']);
             $payments->whereDate('payment.transaction_date', '<=', $filters['date_to']);
         }
+        if (isset($filters['type'], $filters['spec'])) {
+            if ($filters['type'] === 'payment_status' && $filters['spec'] === 'past_due') {
+                $payments->where('payment.pdi', '>', 0);
 
-        if (isset($filters['type'], $filters['spec']) && $filters['type'] === 'payment_status' && $filters['spec'] === 'past_due') {
-            $payments->where('payment.pdi', '>', 0)
-                     ->whereNull('payment.pdi_approval_no');
+                if ($filters['waived']) {
+                    $payments->whereNotNull('payment.pdi_approval_no');
+                } else {
+                    $payments->whereNull('payment.pdi_approval_no');
+                }
 
-            if (!empty($filters['pdproduct'])) {
-                $payments->where('loan_accounts.product_id', $filters['pdproduct']);
+                if (!empty($filters['psproduct'])) {
+                    $payments->where('loan_accounts.product_id', $filters['psproduct']);
+                }
+                if (!empty($filters['psAO'])) {
+                    $payments->where('loan_accounts.ao_id', $filters['psAO']);
+                }
+            } elseif ($filters['type'] === 'payment_status' && $filters['spec'] === 'current') {
+                $payments->where('payment.pdi', '=', 0);
+
+                if (!empty($filters['psproduct'])) {
+                    $payments->where('loan_accounts.product_id', $filters['psproduct']);
+                }
+                if (!empty($filters['psAO'])) {
+                    $payments->where('loan_accounts.ao_id', $filters['psAO']);
+                }
             }
         }
 

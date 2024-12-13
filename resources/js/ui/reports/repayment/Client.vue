@@ -8,18 +8,24 @@
 			<span class="font-lg" style="color:#ddd;">Please wait until the process is complete</span>
 		</div>
 		<div class="d-flex flex-row font-md align-items-center mb-16">
-			<span class="font-lg text-primary-dark" style="flex:2">Transaction</span>
-			<div class="d-flex flex-row align-items-center mr-24" style="flex:2">
+			<span class="font-lg text-primary-dark" :class="filter.type === 'payment_status' ? 'mr-10' : 'mr-64'" >Transaction</span>
+			<div class="d-flex flex-row align-items-center"
+			:class="filter.type === 'payment_status' ? 'mr-10' : 'mr-24'" 
+			:style="filter.type === 'payment_status' ? {} : { flex: 2 }">
 				<span class="mr-10">From: </span>
-				<input v-model="filter.date_from" type="date" class="form-control">
+				<input v-model="filter.date_from" type="date" class="form-control" :style="filter.type=='payment_status'?{width:'130px'}:{}">
 			</div>
-			<div class="d-flex flex-row align-items-center mr-64" style="flex:2">
+			<div class="d-flex flex-row align-items-center"
+			:class="filter.type === 'payment_status' ? 'mr-24' : 'mr-64'" 
+			:style="filter.type === 'payment_status' ? {} : { flex: 2 }">
 				<span class="mr-10">To: </span>
-				<input v-model="filter.date_to" type="date" class="form-control">
+				<input v-model="filter.date_to" type="date" class="form-control" :style="filter.type=='payment_status'?{width:'130px'}:{}">
 			</div>
-			<div class="d-flex flex-row align-items-center mr-24" style="flex:2">
+			<div class="d-flex flex-row align-items-center"
+			:class="filter.type === 'payment_status' ? 'mr-10' : 'mr-24'" 
+			:style="filter.type === 'payment_status' ? {} : { flex: 2 }">
 				<span class="mr-10">Type: </span>
-				<select v-model="filter.type" name="" id="selectProductClient" class="form-control">
+				<select v-model="filter.type" name="" id="selectProductClient" class="form-control" :style="filter.type=='payment_status'?{width:'130px'}:{}">
 					<option value="all">All Records</option>
 					<option value="center">By Center</option>
 					<option value="product">By Product</option>
@@ -53,14 +59,27 @@
 				<select v-if="filter.type=='account_officer'" v-model="filter.spec" name="" id="selectProductClient" class="form-control">
 					<option v-for="a in filteredAos" :key="a.ao_id" :value="a.ao_id">{{a.name}}</option>
 				</select>
-				<select v-if="filter.type=='payment_status'" v-model="filter.spec" id="selectPaymentStatus" class="form-control mr-24">
-			        <option value="past_due" selected>Past Due</option>
-			    </select>
+				<div class="d-flex flex-column">
+				    <div class="d-flex align-items-center">
+						<select v-if="filter.type=='payment_status'" v-model="filter.spec" id="selectPaymentStatus" class="form-control mr-10" :style="filter.type=='payment_status'?{width:'80px'}:{}">
+							<option value="current" selected>Current</option>
+					        <option value="past_due" selected>Past Due</option>
+					    </select>
+				    </div>
+				    <div v-if="filter.type=='payment_status' && filter.spec === 'past_due'" class="mt-2">
+				        <input type="checkbox" id="waived" v-model="filter.waived">
+				        <label for="waived" class="ml-1" style="font-size:12px;">Waived PDI</label>
+				    </div>
+				</div>
 			</div>
-			<div v-if="filter.type=='payment_status'&&filter.spec=='past_due'" class="d-flex flex-row align-items-center" style="flex:2">
+			<div v-if="filter.type=='payment_status'" class="d-flex flex-row align-items-center">
 				<span class="mr-10">Product: </span>
-			    <select v-model="filter.pdproduct" class="form-control">
+			    <select v-model="filter.psproduct" class="form-control mr-10">
 					<option v-for="p in products.filter(pp=>pp.status=='active')" :key="p.product_id" :value="p.product_id">{{p.product_name}}</option>
+				</select>
+				<span class="mr-10">AO: </span>
+				<select v-model="filter.psAO" class="form-control">
+					<option v-for="a in filteredAos" :key="a.ao_i" :value="a.ao_id">{{a.name}}</option>
 				</select>
 			</div>
 		</div>
@@ -92,10 +111,10 @@
 							<th>Date Pay</th>
 							<th>Due Date</th>
 							<th>O.R#</th>
-							<th>Amort. Prin.</th>
-							<th>Principal</th>
-							<th>Amort. Int.</th>
-							<th>Int.</th>
+							<th v-if="!(filter.type === 'payment_status' && filter.spec === 'past_due')">Amort. Prin.</th>
+							<th>{{ (filter.type === 'payment_status' && filter.spec === 'past_due') ? 'Principal Payment' : 'Principal' }}</th>
+							<th v-if="!(filter.type === 'payment_status' && filter.spec === 'past_due')">Amort. Int.</th>
+							<th>{{ (filter.type === 'payment_status' && filter.spec === 'past_due') ? 'Interest Payment' : 'Interest' }}</th>
 							<th>PD Int.</th>
 							<th>Over</th>
 							<th>Tot. Payment</th>
@@ -112,9 +131,9 @@
 								<td>{{r.payment_date}}</td>
 								<td>{{r.due_date}}</td>
 								<td>{{r.or}}</td>
-								<td>{{formatToCurrency(r.amortization_principal)}}</td>
+								<td v-if="!(filter.type === 'payment_status' && filter.spec === 'past_due')">{{formatToCurrency(r.amortization_principal)}}</td>
 								<td>{{formatToCurrency(r.principal)}}</td>
-								<td>{{formatToCurrency(r.amortization_interest)}}</td>
+								<td v-if="!(filter.type === 'payment_status' && filter.spec === 'past_due')">{{formatToCurrency(r.amortization_interest)}}</td>
 								<td>{{formatToCurrency(r.interest - r.rebates) }}</td>
 								<td>{{formatToCurrency(r.pdi)}}</td>
 								<td>{{formatToCurrency(r.overpayment)}}</td>
@@ -126,8 +145,8 @@
 							</tr>
 							
 							<tr class="border-cell-gray-7">
-								<td></td>
-								<td></td>
+								<td v-if="!(filter.type === 'payment_status' && filter.spec === 'past_due')"></td>
+								<td v-if="!(filter.type === 'payment_status' && filter.spec === 'past_due')"></td>
 								<td></td>
 								<td></td>
 								<td></td>
@@ -150,10 +169,10 @@
 								<th></th>
 								<th></th>
 								<th></th>
-								<th>Amort. Principal</th>
+								<th v-if="!(filter.type === 'payment_status' && filter.spec === 'past_due')">Amort. Principal</th>
 								<th>Total Principal</th>
-								<th>Amort. Int.</th>
-								<th>Total Int</th>
+								<th v-if="!(filter.type === 'payment_status' && filter.spec === 'past_due')">Amort. Int.</th>
+								<th>Total Interest</th>
 								<th>PD Int.</th>
 								<th>Over</th>
 								<th>Tot. Payment</th>
@@ -163,7 +182,10 @@
 								<th></th>
 							</tr>
 							<tr class="tr-pt-7 text-bold">
-								<td v-for="t,p in total" :key="p">{{(t!==''&&t!=='TOTAL')?formatToCurrency(parseFloat(t)):t}}</td>
+								<td v-for="(t, p) in total" :key="p" 
+							        v-if="(filter.type !== 'payment_status' || filter.spec !== 'past_due' || (p !== 5 && p !== 7))">
+							        {{(t !== '' && t !== 'TOTAL') ? formatToCurrency(parseFloat(t)) : t}}
+							    </td>
 							</tr>
 						</tbody>
 					</table>
@@ -279,7 +301,9 @@ export default {
 				branch_id:'',
 				spec:'',
 				type:'all',
-				pdproduct:''
+				psproduct:'',
+				psAO:'',
+				waived:false,
 			},
 			reports:[],
 			accountOfficers:[],
