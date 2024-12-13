@@ -66,7 +66,7 @@
 					        <option value="past_due" selected>Past Due</option>
 					    </select>
 				    </div>
-				    <div v-if="filter.spec === 'past_due'" class="mt-2">
+				    <div v-if="filter.type=='payment_status' && filter.spec === 'past_due'" class="mt-2">
 				        <input type="checkbox" id="waived" v-model="filter.waived">
 				        <label for="waived" class="ml-1" style="font-size:12px;">Waived PDI</label>
 				    </div>
