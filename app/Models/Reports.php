@@ -21,10 +21,13 @@ class Reports extends Model
     {
         $loanAccount = Loanaccount::where(['loan_accounts.status' => 'released']);
 
-        if (isset($filters['branch_id']) && $filters['branch_id']) {
+        if (isset($filters['branch_id'])) {
             $branch = Branch::find($filters['branch_id']);
+            
             $loanAccount->where(['loan_accounts.branch_code' => $branch->branch_code]);
         }
+
+
 
         if (isset($filters['date_from']) && isset($filters['date_to'])) {
             /*$loanAccount = LoanAccount::whereBetween(DB::raw('date(loan_accounts.date_release)'), [ $filters['date_from'], $filters['date_to'] ]);*/
@@ -32,6 +35,7 @@ class Reports extends Model
             $loanAccount->whereDate('loan_accounts.date_release', '>=', $filters['date_from']);
             $loanAccount->whereDate('loan_accounts.date_release', '<=', $filters['date_to']);
         }
+
 
         if (isset($filters['due_from'])) {
             $loanAccount->whereDate('loan_accounts.due_date', '>=', $filters['due_from']);
@@ -123,6 +127,7 @@ class Reports extends Model
                 'loan_accounts.payment_mode',
                 'loan_accounts.payment_status',
                 'loan_accounts.loan_status',
+                'loan_accounts.cycle_no'
             ]);
     }
 
@@ -563,6 +568,7 @@ class Reports extends Model
                 $accounts = null;
                 $filters['product_id'] = $v['product_id'];
                 $filters['account_officer'] = $value['ao_id'];
+        
                 $accounts = $this->getLoanAccounts($filters);
 
                 if (count($accounts) > 0) {
@@ -582,7 +588,6 @@ class Reports extends Model
                     //         // $v['new_account'] = 0;
                     //         // $v['new_account_amount'] = 0;
                     foreach ($accounts as $account) {
-
                         if ($account->cycle_no > 1) {
                             $data[$key]['products'][$k]['repeat_account'] += 1;
                             $data[$key]['products'][$k]['repeat_account_amount_released'] += $account->loan_amount;
