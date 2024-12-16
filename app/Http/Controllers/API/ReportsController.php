@@ -74,9 +74,9 @@ class ReportsController extends BaseController
                 $filters = [
                     'date_from' => $request->input('date_from'),
                     'date_to' => $request->input('date_to'),
-                    'branch_id' => $request->input('branch_id'),
                     'account_officer' => $request->input('account_officer'),
-                    'report' => 'release'
+                    'report' => 'release',
+                    'branch_id' => $request->input('branch')
                 ];
 
 
