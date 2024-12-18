@@ -49,9 +49,9 @@ class LoanReports
                     $pastDueAccounts = $accountsRemapped->filter(function ($account) {
                         return $account['loan_status'] === LoanAccount::LOAN_PASTDUE;
                     });
-                    $allAmount = $accountsRemapped->sum('loan_amount');
-                    $delinquentAmount = $delinquentAccounts->sum('loan_amount');
-                    $pastDueAmount = $pastDueAccounts->sum('loan_amount');
+                    $allAmount = $accountsRemapped->sum('principal_balance_as_of');
+                    $delinquentAmount = $delinquentAccounts->sum('principal_balance_as_of');
+                    $pastDueAmount = $pastDueAccounts->sum('principal_balance_as_of');
                     return [
                         "product_id" => $productId,
                         "product_code" => $productId,
@@ -65,14 +65,14 @@ class LoanReports
                         "delinquent" => [
                             'count' => $delinquentAccounts->count(),
                             'total_loan_amount' => $delinquentAccounts->sum('loan_amount'),
-                            'amount' => $delinquentAccounts->sum('principal_balance_as_of'),
-                            'rate' => round($delinquentAmount / $allAmount * 100, 2),
+                            'amount' => $delinquentAmount,
+                            'rate' => $allAmount ? round($delinquentAmount / $allAmount * 100, 2) : 0,
                         ],
                         "pastdue" => [
                             'count' => $pastDueAccounts->count(),
                             'total_loan_amount' => $pastDueAccounts->sum('loan_amount'),
-                            'amount' => $pastDueAccounts->sum('principal_balance_as_of'),
-                            'rate' => round($pastDueAmount / $allAmount * 100, 2),
+                            'amount' => $pastDueAmount,
+                            'rate' => $allAmount ? round($pastDueAmount / $allAmount * 100, 2) : 0,
                         ],
                         // 'account_ids' => $accounts->map(function ($account) { // KEEP FOR EASIER DEBUGGING TO IDENTIFY WHICH ACCOUNTS ARE INCLUDED
                         //     return $account->loan_account_id;
