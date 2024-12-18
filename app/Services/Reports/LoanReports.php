@@ -16,7 +16,7 @@ class LoanReports
         ->when($aoId, function ($query) use ($aoId) { return $query->byAccountOfficerId($aoId); })
         ->released()
         ->releasedBefore($asOf)
-        ->inProgress()
+        // ->inProgress()
         // ->limit(2)
         ->get();
         // Log::info($allLoanAccounts);
