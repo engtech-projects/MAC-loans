@@ -4,15 +4,17 @@ namespace App\Services\Reports;
 
 use App\Models\AccountOfficer;
 use App\Models\V2\LoanAccount;
+use DeepCopy\Filter\Filter;
 use Illuminate\Support\Facades\Log;
 
 class LoanReports
 {
     public static function getAccountOfficerReport($asOf, $branch = false, $aoId = false)
     {
-        $allLoanAccounts = LoanAccount::with(["paidPayments", "amortizations"])
+        $allLoanAccounts = LoanAccount::with(["paidPayments", "amortizations.account"])
         ->when($branch, function ($query) use ($branch) { return $query->inBranchCode($branch); })
         ->when($aoId, function ($query) use ($aoId) { return $query->byAccountOfficerId($aoId); })
+        ->released()
         ->releasedBefore($asOf)
         ->inProgress()
         // ->limit(2)
@@ -78,9 +80,13 @@ class LoanReports
                         //     return $account->loan_account_id;
                         // })->implode(","),
                     ];
-                })->values(),
+                })->values()->filter(function ($product) {
+                    return $product['all']['amount'] > 0;
+                })->values()->all(),
             ];
         });
-        return $mappedAccounts->values();
+        return $mappedAccounts->values()->filter(function ($account) {
+            return sizeof($account['products']) > 0;
+        })->values()->all();
     }
 }
