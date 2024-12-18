@@ -76,9 +76,9 @@ class LoanReports
                             'amount' => $pastDueAmount,
                             'rate' => $allAmount ? round($pastDueAmount / $allAmount * 100, 2) : 0,
                         ],
-                        // 'account_ids' => $accounts->map(function ($account) { // KEEP FOR EASIER DEBUGGING TO IDENTIFY WHICH ACCOUNTS ARE INCLUDED
-                        //     return $account->loan_account_id;
-                        // })->implode(","),
+                        'account_ids' => $accounts->map(function ($account) { // KEEP FOR EASIER DEBUGGING TO IDENTIFY WHICH ACCOUNTS ARE INCLUDED
+                            return $account->loan_account_id;
+                        })->implode(","),
                     ];
                 })->values()->filter(function ($product) {
                     return $product['all']['amount'] > 0;

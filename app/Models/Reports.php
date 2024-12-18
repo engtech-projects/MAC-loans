@@ -99,7 +99,7 @@ class Reports extends Model
         if (isset($filters["report"]) && $filters["report"] === "release") {
             return $loanAccount->without('documents', 'payments')->get();
         }
-        return $loanAccount->whereIn('loan_status', [LoanAccount::LOAN_ONGOING, LoanAccount::LOAN_PASTDUE, LoanAccount::LOAN_RESTRUCTED, LoanAccount::LOAN_RES_WO_PDI])
+        return $loanAccount->whereIn('loan_status', [LoanAccount::LOAN_ONGOING, LoanAccount::LOAN_PASTDUE, LoanAccount::LOAN_RESTRUCTED, LoanAccount::LOAN_RES_WO_PDI, LoanAccount::LOAN_WRITEOFF ])
             ->without($without)->get([
                 'loan_accounts.loan_account_id',
                 'loan_accounts.account_num',
