@@ -23,7 +23,7 @@ class Reports extends Model
 
         if (isset($filters['branch_id'])) {
             $branch = Branch::find($filters['branch_id']);
-            
+
             $loanAccount->where(['loan_accounts.branch_code' => $branch->branch_code]);
         }
 
@@ -194,7 +194,7 @@ class Reports extends Model
 
         if (isset($filters['type'], $filters['spec']) && $filters['type'] === 'payment_status' && $filters['spec'] === 'past_due') {
             $payments->where('payment.pdi', '>', 0)
-                     ->whereNull('payment.pdi_approval_no');
+                ->whereNull('payment.pdi_approval_no');
 
             if (!empty($filters['pdproduct'])) {
                 $payments->where('loan_accounts.product_id', $filters['pdproduct']);
@@ -568,7 +568,7 @@ class Reports extends Model
                 $accounts = null;
                 $filters['product_id'] = $v['product_id'];
                 $filters['account_officer'] = $value['ao_id'];
-        
+
                 $accounts = $this->getLoanAccounts($filters);
 
                 if (count($accounts) > 0) {
@@ -671,7 +671,7 @@ class Reports extends Model
                                     'vat' => 0,
                                 ];
                             }
-        
+
                             $data[$key]['payment'][$type]['principal'] += $payment->principal;
                             $data[$key]['payment'][$type]['interest'] += $payment->interest;
                             $data[$key]['payment'][$type]['pdi'] += ($payment->pdi_approval_no) ? 0 : $payment->pdi;
@@ -731,14 +731,12 @@ class Reports extends Model
         return collect($data)->sortBy([
             ['borrower', 'asc'],
             ['payment_date', 'asc'],
-            ['or','asc']
+            ['or', 'asc']
         ])->values();
     }
     /* end repayment report */
 
-    public function repaymentByAccountOfficer($filters = [])
-    {
-    }
+    public function repaymentByAccountOfficer($filters = []) {}
 
     public function branchCollectionReport($filters = [])
     {
@@ -746,7 +744,7 @@ class Reports extends Model
         $branch = Branch::find($filters['branch_id']);
 
         $accounts = LoanAccount::join('center', 'center.center_id', '=', 'loan_accounts.center_id')
-        ->select('loan_accounts.*', 'center.*', 'loan_accounts.payment_mode');
+            ->select('loan_accounts.*', 'center.*', 'loan_accounts.payment_mode');
 
 
         if (isset($filters['account_officer']) && $filters['account_officer']) {
@@ -783,18 +781,18 @@ class Reports extends Model
                 $data[$key]['delinquent'] = LoanAccount::getPaymentStatus($loanAccount->loan_account_id) === 'Delinquent' ? $currentAmortization['delinquent']['principal'] + $currentAmortization['delinquent']['interest'] : 0;
                 $data[$key]['penalty'] = $currentAmortization->penalty + $currentAmortization->pdi;
                 $data[$key]['amount_due'] = $currentAmortization->total + ($currentAmortization->penalty + $currentAmortization->pdi);
-             //   $data[$key]['weekly_amortization'] = $value->amortization()['total'];
+                //   $data[$key]['weekly_amortization'] = $value->amortization()['total'];
 
-                
+
                 $data[$key]['contact'] = $borrower->contact_number;
                 $data[$key]['address'] = $borrower->address;
 
-                 // Check payment_mode condition and set weekly_amortization
-            if ($value->payment_mode === 'Lumpsum') {
-                $data[$key]['weekly_amortization'] = $value->loan_amount;
-            } else {
-                $data[$key]['weekly_amortization'] = $value->amortization()['total'];
-            }
+                // Check payment_mode condition and set weekly_amortization
+                if ($value->payment_mode === 'Lumpsum') {
+                    $data[$key]['weekly_amortization'] = $value->loan_amount;
+                } else {
+                    $data[$key]['weekly_amortization'] = $value->amortization()['total'];
+                }
             }
             $data = collect($data)->sortBy(function ($item) {
                 // Sort by client name first (ascending)
@@ -1179,66 +1177,72 @@ class Reports extends Model
                             if ($account->loan_status == LoanAccount::LOAN_RES_WO_PDI && $oBalance == 0 || $account->loan_status == LoanAccount::LOAN_RESTRUCTED && $oBalance == 0) {
                                 continue;
                             } else {
-                                $amountDue = 0;
-                                $amortPrincipal = 0;
-                                $advPrincipal = 0;
-                                $shortPrincipal = 0;
-                                $amortInterest = 0;
-                                $advInterest = 0;
-                                $shortInterest = 0;
+                                if ($oBalance  <= 0) {
+                                    continue;
+                                } else {
 
-                                if ($current_amort) {
-                                    $amortPrincipal = $current_amort["principal"];
-                                    $advPrincipal = $current_amort["advance_principal"];
-                                    $shortPrincipal = $current_amort["short_principal"];
-                                    $amortInterest = $current_amort["interest"];
-                                    $advInterest = $current_amort["advance_interest"];
-                                    $shortInterest = $current_amort["short_interest"];
-                                    $amountDue = floatval(($amortPrincipal + $shortPrincipal - $advPrincipal) + ($amortInterest + $shortInterest - $advInterest) + ($remainingBal["rebates"]["balance"]));
+
+                                    $amountDue = 0;
+                                    $amortPrincipal = 0;
+                                    $advPrincipal = 0;
+                                    $shortPrincipal = 0;
+                                    $amortInterest = 0;
+                                    $advInterest = 0;
+                                    $shortInterest = 0;
+
+                                    if ($current_amort) {
+                                        $amortPrincipal = $current_amort["principal"];
+                                        $advPrincipal = $current_amort["advance_principal"];
+                                        $shortPrincipal = $current_amort["short_principal"];
+                                        $amortInterest = $current_amort["interest"];
+                                        $advInterest = $current_amort["advance_interest"];
+                                        $shortInterest = $current_amort["short_interest"];
+                                        $amountDue = floatval(($amortPrincipal + $shortPrincipal - $advPrincipal) + ($amortInterest + $shortInterest - $advInterest) + ($remainingBal["rebates"]["balance"]));
+                                    }
+
+                                    $principal = $amortization['principal'];
+                                    $interest = $amortization['interest'];
+
+
+
+                                    $accOfficers[$aoKey]["products"][$prodValue["product_name"]]["centers"][$centVal["center"]]['accounts'][] = [
+                                        'borrower_name' => isset($account->borrower) ? $account->borrower->fullname() : '',
+                                        "account_num" => $account->account_num,
+                                        "date_loan" => Carbon::createFromFormat('Y-m-d', $account->date_release)->format('m/d/Y'),
+                                        "maturity" => Carbon::createFromFormat('Y-m-d', $account->due_date)->format('m/d/Y'),
+                                        "amount_loan" => $account->loan_amount,
+                                        "loan_interest" => $account->interest_amount,
+                                        "principal_amount" => abs(($amortPrincipal + $shortPrincipal) - $advPrincipal),
+                                        "interest_amount" => abs($amortInterest + $shortInterest - $advInterest),
+                                        "amount_due" => $amountDue > 0 ? $amountDue : 0,
+                                        "distribution" => [
+                                            'principal' => $amortPrincipal,
+                                            'short_principal' => $shortPrincipal,
+                                            'advance_principal' => $advPrincipal,
+                                            'interest' => $amortInterest,
+                                            'short_interest' => $shortInterest,
+                                            'advance_interest' => $advInterest,
+                                            'pdi' => $remainingBal["pdi"]["balance"],
+                                            'rebates' => $remainingBal["rebates"]["balance"]
+                                        ],
+                                        "principal_balance" => $principalBal,
+                                        "interest_balance" => $interestBal - $reb,
+                                        "outstanding_balance" => $oBalance,
+                                        "amortization" => $principal + $interest, //$account->amortization()["principal"] + $account->amortization()["interest"],
+                                        "amort_dist" => ['principal' => $principal, 'interest' => $interest],
+                                        // "current_amort" => $current_amort,
+                                        "type" => $account->payment_mode,
+                                        "loan_status" => $account->loan_status,
+                                        "status" => $account->payment_status,
+                                    ];
+
+                                    $acc = $accOfficers[$aoKey]["products"][$prodValue["product_name"]]["centers"][$centVal["center"]]['accounts'];
+                                    usort($acc, function ($a, $b) {
+                                        return strcmp($a['borrower_name'], $b['borrower_name']);
+                                    });
+
+                                    $accOfficers[$aoKey]["products"][$prodValue["product_name"]]["centers"][$centVal["center"]]['accounts'] = $acc;
                                 }
-
-                                $principal = $amortization['principal'];
-                                $interest = $amortization['interest'];
-
-
-
-                                $accOfficers[$aoKey]["products"][$prodValue["product_name"]]["centers"][$centVal["center"]]['accounts'][] = [
-                                    'borrower_name' => isset($account->borrower) ? $account->borrower->fullname() : '',
-                                    "account_num" => $account->account_num,
-                                    "date_loan" => Carbon::createFromFormat('Y-m-d', $account->date_release)->format('m/d/Y'),
-                                    "maturity" => Carbon::createFromFormat('Y-m-d', $account->due_date)->format('m/d/Y'),
-                                    "amount_loan" => $account->loan_amount,
-                                    "loan_interest" => $account->interest_amount,
-                                    "principal_amount" => abs(($amortPrincipal + $shortPrincipal) - $advPrincipal),
-                                    "interest_amount" => abs($amortInterest + $shortInterest - $advInterest),
-                                    "amount_due" => $amountDue > 0 ? $amountDue : 0,
-                                    "distribution" => [
-                                        'principal' => $amortPrincipal,
-                                        'short_principal' => $shortPrincipal,
-                                        'advance_principal' => $advPrincipal,
-                                        'interest' => $amortInterest,
-                                        'short_interest' => $shortInterest,
-                                        'advance_interest' => $advInterest,
-                                        'pdi' => $remainingBal["pdi"]["balance"],
-                                        'rebates' => $remainingBal["rebates"]["balance"]
-                                    ],
-                                    "principal_balance" => $principalBal,
-                                    "interest_balance" => $interestBal - $reb,
-                                    "outstanding_balance" => $oBalance,
-                                    "amortization" => $principal + $interest, //$account->amortization()["principal"] + $account->amortization()["interest"],
-                                    "amort_dist" => ['principal' => $principal, 'interest' => $interest],
-                                    // "current_amort" => $current_amort,
-                                    "type" => $account->payment_mode,
-                                    "loan_status" => $account->loan_status,
-                                    "status" => $account->payment_status,
-                                ];
-
-                                 $acc = $accOfficers[$aoKey]["products"][$prodValue["product_name"]]["centers"][$centVal["center"]]['accounts'];
-                                usort($acc, function ($a, $b) {
-                                    return strcmp($a['borrower_name'], $b['borrower_name']);
-                                });
-
-                                $accOfficers[$aoKey]["products"][$prodValue["product_name"]]["centers"][$centVal["center"]]['accounts'] = $acc; 
                             }
                         }
                     }
@@ -1436,7 +1440,9 @@ class Reports extends Model
             ->whereDate('payment.cancelled_date', '<=', $filters['date_to'])
             ->orderBy('payment.transaction_date', 'ASC')
             ->get([
-                'payment.*', 'loan_accounts.borrower_id', 'loan_accounts.account_num',
+                'payment.*',
+                'loan_accounts.borrower_id',
+                'loan_accounts.account_num',
             ]);
 
         $data = [];
@@ -1597,7 +1603,7 @@ class Reports extends Model
         // Fetch the raw data first
         $rawData = Payment::join("loan_accounts", 'payment.loan_account_id', '=', 'loan_accounts.loan_account_id')
             ->join("borrower_info", 'loan_accounts.borrower_id', '=', 'borrower_info.borrower_id')
-            ->where([ "payment.status" => "paid"])
+            ->where(["payment.status" => "paid"])
             ->whereDate('payment.transaction_date', '>=', $filters['date_from'])
             ->whereDate('payment.transaction_date', '<=', $filters['date_to'])
             ->groupBy("borrower_info.firstname", "borrower_info.middlename", "borrower_info.lastname")
@@ -1607,7 +1613,7 @@ class Reports extends Model
                 DB::raw("UPPER(SUBSTRING(borrower_info.middlename, 1, 1)) as MIDDLE_NAM"),
                 DB::raw("'' as ADDRESS"),
                 DB::raw("'' as ADDRESS2"),
-               // DB::raw("SUM(payment.interest + payment.pdi - payment.vat) as GSALES"),
+                // DB::raw("SUM(payment.interest + payment.pdi - payment.vat) as GSALES"),
                 DB::raw("SUM(CASE WHEN payment.pdi_approval_no IS NOT NULL THEN payment.interest - payment.vat ELSE payment.interest + payment.pdi - payment.vat END) as GSALES"),
                 DB::raw("SUM(CASE WHEN payment.pdi_approval_no IS NOT NULL THEN payment.interest - payment.vat ELSE payment.interest + payment.pdi - payment.vat END) as GTSALES"),
                 // DB::raw("SUM(payment.interest + payment.pdi - payment.vat) as GTSALES"),
@@ -1623,20 +1629,21 @@ class Reports extends Model
             ->toArray();
 
         // Function to capitalize each part of the name
-        function capitalizeNameParts($name) {
+        function capitalizeNameParts($name)
+        {
             $parts = explode(' ', $name);
-            $capitalizedParts = array_map(function($part) {
+            $capitalizedParts = array_map(function ($part) {
                 return ucfirst(strtolower($part));
             }, $parts);
             return implode(' ', $capitalizedParts);
         }
 
         // Process the fetched data
-        $processedData = array_map(function($row) {
+        $processedData = array_map(function ($row) {
             // Capitalize each part of the names
             $row['LAST_NAME'] = capitalizeNameParts(str_replace(['ñ', 'Ñ', '-'], ['n', 'N', ' '], $row['LAST_NAME_RAW']));
             $row['FIRST_NAME'] = capitalizeNameParts(str_replace(['ñ', 'Ñ', '-'], ['n', 'N', ' '], $row['FIRST_NAME_RAW']));
-            
+
             // Handle middle name initials like "ma."
             if (!empty($row['MIDDLE_NAME'])) {
                 $row['MIDDLE_NAME'] = strtoupper($row['MIDDLE_NAME']) . '.'; // Ensure middle name is in uppercase with a period
@@ -1653,7 +1660,6 @@ class Reports extends Model
         //     $row['TOUTTAX'] = (int) $row['TOUTTAX'];
         // }
         return $processedData;
-        
     }
 
     public function prepaidReport($filters = [])
