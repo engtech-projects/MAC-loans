@@ -153,7 +153,7 @@ class LoanAccount extends Model
     public function scopeInProgress($query)
     {
         // return $query->where('loan_status', '!=', self::LOAN_PAID);
-        return $query->whereIn('loan_status', [LoanAccount::LOAN_ONGOING, LoanAccount::LOAN_PASTDUE, LoanAccount::LOAN_RESTRUCTED, LoanAccount::LOAN_RES_WO_PDI, LoanAccount::LOAN_WRITEOFF]);
+        return $query->whereIn('loan_status', [LoanAccount::LOAN_ONGOING, LoanAccount::LOAN_PASTDUE, LoanAccount::LOAN_RESTRUCTED, LoanAccount::LOAN_RES_WO_PDI]);
     }
     public function scopeDelinquent($query)
     {
