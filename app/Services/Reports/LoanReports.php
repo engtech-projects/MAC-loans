@@ -14,6 +14,7 @@ class LoanReports
         $allLoanAccounts = LoanAccount::with(["paidPayments", "amortizations.account"])
         ->when($branch, function ($query) use ($branch) { return $query->inBranchCode($branch); })
         ->when($aoId, function ($query) use ($aoId) { return $query->byAccountOfficerId($aoId); })
+        ->where('loan_status', '!=', LoanAccount::LOAN_WRITEOFF)
         ->released()
         ->releasedBefore($asOf)
         // ->inProgress()
