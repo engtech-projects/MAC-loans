@@ -4,6 +4,7 @@ namespace App\Services\Reports;
 
 use App\Models\AccountOfficer;
 use App\Models\V2\LoanAccount;
+use Carbon\Carbon;
 use DeepCopy\Filter\Filter;
 use Illuminate\Support\Facades\Log;
 
@@ -30,6 +31,7 @@ class LoanReports
                 "name" => $aOfficer->name,
                 "products" => $accountsByProduct->map(function ($accounts, $productId) use ($asOf) {
                     $accountsRemapped = $accounts->map(function ($account) use ($asOf) {
+                        
                         $balanceAsOf = $account->loan_amount - $account->paidPayments->where("transaction_date", "<=", $asOf)->sum("principal");
                         // $minimumPrincipalBalance = $account->amortizations->where("delinquent_date", $asOf)->first()?->principal_amount ?? $account->loan_amount;
                         $minimumPrincipalBalance = $account->amortizations->filter(function ($amort) use ($asOf) {
@@ -41,16 +43,17 @@ class LoanReports
                             "loan_status" => $account->loan_status,
                             "principal_balance_as_of" => $balanceAsOf,
                             "is_delinquent_as_of" => $minimumPrincipalBalance < $balanceAsOf,
+                            "due_date" => $account->due_date,
                             // "minimum_principal_balance" => $minimumPrincipalBalance,
                         ];
                     })->filter(function($account) {
-                        return $account['principal_balance_as_of'] > 0;
+                        return $account['principal_balance_as_of'] > 0.1;
                     });
                     $delinquentAccounts = $accountsRemapped->filter(function ($account) {
                         return $account['is_delinquent_as_of'];
                     });
-                    $pastDueAccounts = $accountsRemapped->filter(function ($account) {
-                        return $account['loan_status'] === LoanAccount::LOAN_PASTDUE;
+                    $pastDueAccounts = $accountsRemapped->filter(function ($account) use ($asOf) {
+                        return Carbon::parse($account['due_date'])->startOfDay()->lt($asOf);
                     });
                     $allAmount = $accountsRemapped->sum('principal_balance_as_of');
                     $delinquentAmount = $delinquentAccounts->sum('principal_balance_as_of');
