@@ -31,31 +31,41 @@ class LoanReports
                 "name" => $aOfficer->name,
                 "products" => $accountsByProduct->map(function ($accounts, $productId) use ($asOf) {
                     $accountsRemapped = $accounts->map(function ($account) use ($asOf) {
-                        
                         $balanceAsOf = $account->loan_amount - $account->paidPayments->where("transaction_date", "<=", $asOf)->sum("principal");
+                        $interestAsOf = $account->paidPayments->where("transaction_date", "<=", $asOf)->sum("interest");
+                        $rebatesAsOf = $account->paidPayments->where("transaction_date", "<=", $asOf)->sum("rebates");
+                        $intBalanceAsOf = $account->interest_amount - ($interestAsOf + $rebatesAsOf);
                         // $minimumPrincipalBalance = $account->amortizations->where("delinquent_date", $asOf)->first()?->principal_amount ?? $account->loan_amount;
                         $minimumPrincipalBalance = $account->amortizations->filter(function ($amort) use ($asOf) {
                             return $amort->delinquent_date->lte($asOf);
                         })->sortByDesc("principal_balance")->values()->all()[0]?->principal_balance ?? $account->loan_amount;
                         return [
                             "account_id" => $account->loan_account_id,
+                            "date_release" => $account->date_release,
+                            "acc_no" => $account->account_num,
                             "loan_amount" => $account->loan_amount,
                             "loan_status" => $account->loan_status,
                             "principal_balance_as_of" => $balanceAsOf,
+                            "interest_balance_as_of" => $intBalanceAsOf,
+                            "overall_balance_as_of" => $intBalanceAsOf + $balanceAsOf,
                             "is_delinquent_as_of" => $minimumPrincipalBalance < $balanceAsOf,
                             "due_date" => $account->due_date,
                             // "minimum_principal_balance" => $minimumPrincipalBalance,
                         ];
-                    })->filter(function($account) {
-                        return $account['principal_balance_as_of'] > 0.1;
                     });
-                    $delinquentAccounts = $accountsRemapped->filter(function ($account) {
+                    $portfolio = $accountsRemapped->filter(function($account) use($asOf){
+                        return (Carbon::now()->lte($asOf) && $account['principal_balance_as_of'] > 0.1) ||  // COUNTED WHEN HAS BALANCE AND ASOFDATE IS CURRENT DATE
+                        (Carbon::now()->gt($asOf) && $account['principal_balance_as_of'] > 0.1 && $account['overall_balance_as_of'] > 0.1); // COUNTED WHEN HAS PRINCIPAL BALANCE AND IS OVERALL NOT PAID AND ASOFDATE IS PAST DATE
+                        // NOT COUNTED WHEN HAS PRINCIPAL BALANCE AND IS OVERALL PAID WHEN OLD DATA BECAUSE OF OLD WRONG DISTRIBUTION OF PAYMENTS
+                    });
+                    Log::info($portfolio->values()->all());
+                    $delinquentAccounts = $portfolio->filter(function ($account) {
                         return $account['is_delinquent_as_of'];
                     });
-                    $pastDueAccounts = $accountsRemapped->filter(function ($account) use ($asOf) {
+                    $pastDueAccounts = $portfolio->filter(function ($account) use ($asOf) {
                         return Carbon::parse($account['due_date'])->startOfDay()->lt($asOf);
                     });
-                    $allAmount = $accountsRemapped->sum('principal_balance_as_of');
+                    $allAmount = $portfolio->sum('principal_balance_as_of');
                     $delinquentAmount = $delinquentAccounts->sum('principal_balance_as_of');
                     $pastDueAmount = $pastDueAccounts->sum('principal_balance_as_of');
                     return [
@@ -63,8 +73,8 @@ class LoanReports
                         "product_code" => $productId,
                         "product_name" => $accounts->first()->product->product_name,
                         "all" => [
-                            'count' => $accountsRemapped->count(),
-                            'total_loan_amount' => $accountsRemapped->sum('loan_amount'),
+                            'count' => $portfolio->count(),
+                            'total_loan_amount' => $portfolio->sum('loan_amount'),
                             'amount' => $allAmount,
                             'rate' => 0,
                         ],
