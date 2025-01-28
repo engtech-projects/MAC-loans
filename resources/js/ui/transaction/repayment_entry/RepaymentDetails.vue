@@ -2131,16 +2131,15 @@ export default {
                 // this.payment.short_penalty =
                 //     this.duePenalty - this.payment.penalty;
                 // interest
-                amount += this.dueRebates;
-                if (amount > this.dueInterest) {
-                    this.payment.interest = this.dueInterest;
-                    amount -= this.dueInterest;
+                if (amount > this.dueInterestRebates) {
+                    this.payment.interest = this.dueInterestRebates;
+                    amount -= this.dueInterestRebates;
                 } else {
                     this.payment.interest = amount;
                     amount = 0;
                 }
                 this.payment.short_interest =
-                    this.dueInterest - this.payment.interest;
+                    this.dueInterestRebates - this.payment.interest;
                 // principal
                 if (amount > this.duePrincipal) {
                     this.payment.principal = this.duePrincipal;
@@ -2157,43 +2156,28 @@ export default {
                     this.loanAccount.remainingBalance.principal.balance -
                         this.duePrincipal
                 ) {
-                    this.payment.principal +=
-                        this.loanAccount.remainingBalance.principal.balance -
+                    this.payment.principal += this.loanAccount.remainingBalance.principal.balance -
                         this.duePrincipal;
-                    this.payment.advance_principal =
-                        this.loanAccount.current_amortization.principal_balance;
-                    amount -=
-                        this.loanAccount.remainingBalance.principal.balance -
-                        this.duePrincipal;
+                    this.payment.advance_principal = this.loanAccount.current_amortization.principal_balance;
+                    amount -= (this.loanAccount.remainingBalance.principal.balance - this.duePrincipal);
                 } else {
                     this.payment.principal += amount;
-                    this.payment.advance_principal =
-                        amount + this.excessAdvancePrincipal;
+                    this.payment.advance_principal = amount;
                     amount = 0;
                 }
                 // advance interest
-                amount += this.excessDueRebates;
                 if (
                     amount >
-                    this.loanAccount.remainingBalance.interest.balance -
-                        this.dueInterest
+                    this.outstandingInterestBalance - this.rebatesApplied
                 ) {
-                    this.payment.interest +=
-                        this.loanAccount.remainingBalance.interest.balance -
-                        this.dueInterest;
-                    this.payment.advance_interest =
-                        this.loanAccount.current_amortization.interest_balance;
-                    amount -=
-                        this.loanAccount.remainingBalance.interest.balance -
-                        this.dueInterest;
+                    this.payment.interest += this.outstandingInterestBalance - this.rebatesApplied;
+                    this.payment.advance_interest = this.outstandingInterestBalance - this.rebatesApplied;
+                    amount -= this.outstandingInterestBalance - this.rebatesApplied;
                 } else {
                     this.payment.interest += amount;
-                    this.payment.advance_interest =
-                        amount + this.excessAdvanceInterest;
+                    this.payment.advance_interest = amount;
                     amount = 0;
                 }
-                this.payment.interest -= this.rebatesApplied;
-                this.payment.advance_interest -= this.excessDueRebates;
                 // overpayment
                 this.payment.over_payment = amount;
                 this.payment.total_payable = this.totalDue; // Verify if change payable if waived fees
@@ -2518,9 +2502,8 @@ export default {
             return this.loanAccount.remainingBalance.interest.balance - this.loanAccount.remainingBalance.rebates.credit;
         },
         outstandingInterestRemaining: function () {
-            const intBal = this.loanAccount.remainingBalance.interest.balance - this.loanAccount.remainingBalance.rebates.credit;
             return (
-                intBal -
+                this.outstandingInterestBalance -
                 this.payment.interest -
                 this.rebatesApplied
             );

@@ -482,4 +482,12 @@ class Amortization extends Model
         $amortization = Amortization::find($amort_id);
         return $amortization->status;
     }
+    
+    public function getDelinquentDateAttribute()
+    {
+        if ($this->account->product_id == 3) {
+            return Carbon::parse($this->amortization_date)->addMonth()->startOfMonth();
+        }
+        return Carbon::parse($this->amortization_date)->addDay();
+    }
 }

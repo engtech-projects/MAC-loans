@@ -605,8 +605,22 @@ class LoanAccount extends Model
                 }
             }
 
-            $amortization->short_principal = $amortization->delinquent['principal']; //- (in_array($id, $amortization->delinquent['ids']) ? $amortization->principal : 0);
-            $amortization->short_interest = $amortization->delinquent['interest']; //- (in_array($id, $amortization->delinquent['ids']) ? $amortization->interest : 0);
+            $prin = $amortization->delinquent_date->lte($transactionDateNow) ? $amortization->principal_balance : $amortization->principal_balance + $amortization->schedule_principal;
+            $advance_principal = $prin - $this->current_principal_balance;
+            $amortization->advance_principal = $advance_principal > 0 ? $advance_principal : 0;
+
+            $short_principal = $this->current_principal_balance - $amortization->principal_balance;
+            $short_principal -= $amortization->delinquent_date->gte($transactionDateNow) ? $amortization->schedule_principal : 0;
+            $amortization->short_principal =  $short_principal > 0 ? $short_principal : 0;
+
+            $int = $amortization->delinquent_date->lte($transactionDateNow) ? $amortization->interest_balance : $amortization->interest_balance + $amortization->schedule_interest;
+            $advance_interest = $int - $this->current_interest_balance;
+            $amortization->advance_interest = $advance_interest > 0 ? $advance_interest : 0;
+
+            $short_interest = $this->current_interest_balance - $amortization->interest_balance;
+            $short_interest -= $amortization->delinquent_date->gte($transactionDateNow) ? $amortization->schedule_interest : 0;
+            $amortization->short_interest = $short_interest > 0 ? $short_interest : 0;
+
             $amortization->short_pdi = 0;
             $amortization->short_penalty = $amortization->delinquent['penalty'];
 
@@ -614,13 +628,9 @@ class LoanAccount extends Model
                 $amortization->total = $amortization->total - ($amortization->principal + $amortization->interest);
                 $amortization->interest = 0;
                 $amortization->principal = 0;
-                $amortization->short_principal = $isPartiallyPaid->short_principal;
-                $amortization->short_interest = $isPartiallyPaid->short_interest;
                 $amortization->over_payment = $isPartiallyPaid->over_payment;
                 $amortization->short_penalty = $isPartiallyPaid->short_penalty;
             } else {
-                $amortization->short_principal = $amortization->delinquent["principal"];
-                $amortization->short_interest = $amortization->delinquent["interest"];
                 $amortization->short_penalty = $amortization->delinquent["penalty"];
             }
             $amortization->penalty = $this->getPenalty($amortization->delinquent['missed'], $totalAmort, $transactionDateNow);
@@ -1527,5 +1537,36 @@ class LoanAccount extends Model
         $performanceReport = new PerformanceReport();
         $portfolio = $performanceReport->getPerformancePortfolio($date);
         return $portfolio;
+    }
+
+    /*    
+    ** RELATIONSHIPS
+    */
+    public function paidPayments()
+    {
+        return $this->hasMany(Payment::class, 'loan_account_id')->where('status', 'paid');
+    }
+    /*    
+    ** ATTRIBUTES
+    */
+    public function getCurrentTotalPrincipalPaymentsAttribute()
+    {
+        return $this->paidPayments()->sum("principal");
+    }
+    public function getCurrentPrincipalBalanceAttribute()
+    {
+        return $this->loan_amount - $this->current_total_principal_payments;
+    }
+    public function getCurrentTotalInterestPaymentsAttribute()
+    {
+        return $this->paidPayments()->sum("interest");
+    }
+    public function getCurrentTotalRebatesPaymentsAttribute()
+    {
+        return $this->paidPayments()->sum("rebates");
+    }
+    public function getCurrentInterestBalanceAttribute()
+    {
+        return $this->interest_amount - ($this->current_total_interest_payments + $this->current_total_rebates_payments);
     }
 }
