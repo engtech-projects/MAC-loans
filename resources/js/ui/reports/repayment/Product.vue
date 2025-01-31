@@ -75,6 +75,8 @@
 								<th>Over</th>
 								<th>Discount</th>
 								<th>Total Payment</th>
+                                <th>Vatable Int.</th>
+                                <th>Vatable Pdi.</th>
 								<th>Net Int.</th>
 								<th>VAT</th>
 							</thead>
@@ -291,7 +293,7 @@
 						<div class="flex-2"></div>
 					</div>
 				</section> -->
-				
+
 			</section>
 			<div class="d-flex mb-64 mt-auto">
 				<img :src="this.baseURL()+'/img/logo-footer.png'" class="w-100" alt="">
@@ -352,7 +354,6 @@ export default {
 			.then(function (response) {
 				this.loading = false;
 				this.reports = response.data
-				console.log(response.data);
 			}.bind(this))
 			.catch(function (error) {
 				this.loading = false;
@@ -395,7 +396,7 @@ export default {
 				pos:0
 			}
 			this.reports.forEach((t,p)=>{
-				var totalRow = ['TOTAL PRODUCT', '',0,0,0,0,0,0,0,0];
+				var totalRow = ['TOTAL PRODUCT', '',0,0,0,0,0,0,0,0,0,0];
 				var index = 2;
 				var refIndex = 0;
 				for(var i in t.payment){
@@ -434,13 +435,29 @@ export default {
 					row.push(this.formatToCurrency(t.payment[i].total_payment));
 					totalRow[index] += t.payment[i].total_payment;
 					index++;
+                    //Vatable Int.
+                    var vatableInt = (t.payment[i].interest - t.payment[i].discount) / 1.12;
+                    row.push(this.formatToCurrency(vatableInt));
+                    totalRow[index] += vatableInt
+					index++;
+
+
+                    //Vatable Pdi
+                    var vatablePdi = t.payment[i].pdi / 1.12;
+                    row.push(this.formatToCurrency(vatablePdi));
+                    totalRow[index] += vatablePdi
+					index++;
+
 					row.push(this.formatToCurrency(t.payment[i].net_int));
 					totalRow[index] += t.payment[i].net_int;
 					index++;
 					row.push(this.formatToCurrency(t.payment[i].vat));
 					totalRow[index] += t.payment[i].vat;
+
 					result.push(row);
+
 				}
+
 				if(index != 2){
 					result.push([' ','','','','','','','','',''])
 					result.push(totalRow)
