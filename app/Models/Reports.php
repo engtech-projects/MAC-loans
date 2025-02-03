@@ -24,7 +24,7 @@ class Reports extends Model
 
         if (isset($filters['branch_id'])) {
             $branch = Branch::find($filters['branch_id']);
-            
+
             $loanAccount->where(['loan_accounts.branch_code' => $branch->branch_code]);
         }
 
@@ -99,7 +99,7 @@ class Reports extends Model
         if (isset($filters["report"]) && $filters["report"] === "release") {
             return $loanAccount->without('documents', 'payments')->get();
         }
-        return $loanAccount->whereIn('loan_status', [LoanAccount::LOAN_ONGOING, LoanAccount::LOAN_PASTDUE, LoanAccount::LOAN_RESTRUCTED, LoanAccount::LOAN_RES_WO_PDI, LoanAccount::LOAN_WRITEOFF ])
+        return $loanAccount->whereIn('loan_status', [LoanAccount::LOAN_ONGOING, LoanAccount::LOAN_PASTDUE, LoanAccount::LOAN_RESTRUCTED, LoanAccount::LOAN_RES_WO_PDI, LoanAccount::LOAN_WRITEOFF])
             ->without($without)->get([
                 'loan_accounts.loan_account_id',
                 'loan_accounts.account_num',
@@ -365,7 +365,7 @@ class Reports extends Model
                 'cycle_no' => $account->cycle_no,
                 'product_id' => $account->product_id,
                 'account_num' => $account->account_num,
-                'borrower' => $account->borrower->fullname(),
+                'borrower' => $account->borrower?->fullname(),
                 'date_loan' => $account->date_release,
                 'date_release' => $account->date_release,
                 'term' => $account->terms,
@@ -400,7 +400,7 @@ class Reports extends Model
             $borrower = LoanAccount::find($payment->loan_account_id);
             /* if($borrower) { */
             $data['collection'][] = [
-                'borrower' => $borrower ? Borrower::find($borrower->borrower_id)->fullname() : '',
+                'borrower' => $borrower ? Borrower::find($borrower->borrower_id)?->fullname() : '',
                 'date_paid' => $payment->transaction_date,
                 'or' => $payment->or_no,
                 'payment_type' => $payment->payment_type,
@@ -587,7 +587,7 @@ class Reports extends Model
                 $accounts = null;
                 $filters['product_id'] = $v['product_id'];
                 $filters['account_officer'] = $value['ao_id'];
-        
+
                 $accounts = $this->getLoanAccounts($filters);
 
                 if (count($accounts) > 0) {
@@ -690,7 +690,7 @@ class Reports extends Model
                                     'vat' => 0,
                                 ];
                             }
-        
+
                             $data[$key]['payment'][$type]['principal'] += $payment->principal;
                             $data[$key]['payment'][$type]['interest'] += $payment->interest;
                             $data[$key]['payment'][$type]['pdi'] += ($payment->pdi_approval_no) ? 0 : $payment->pdi;
@@ -750,14 +750,12 @@ class Reports extends Model
         return collect($data)->sortBy([
             ['borrower', 'asc'],
             ['payment_date', 'asc'],
-            ['or','asc']
+            ['or', 'asc']
         ])->values();
     }
     /* end repayment report */
 
-    public function repaymentByAccountOfficer($filters = [])
-    {
-    }
+    public function repaymentByAccountOfficer($filters = []) {}
 
     public function branchCollectionReport($filters = [])
     {
@@ -765,7 +763,7 @@ class Reports extends Model
         $branch = Branch::find($filters['branch_id']);
 
         $accounts = LoanAccount::join('center', 'center.center_id', '=', 'loan_accounts.center_id')
-        ->select('loan_accounts.*', 'center.*', 'loan_accounts.payment_mode');
+            ->select('loan_accounts.*', 'center.*', 'loan_accounts.payment_mode');
 
 
         if (isset($filters['account_officer']) && $filters['account_officer']) {
@@ -802,18 +800,18 @@ class Reports extends Model
                 $data[$key]['delinquent'] = LoanAccount::getPaymentStatus($loanAccount->loan_account_id) === 'Delinquent' ? $currentAmortization['delinquent']['principal'] + $currentAmortization['delinquent']['interest'] : 0;
                 $data[$key]['penalty'] = $currentAmortization->penalty + $currentAmortization->pdi;
                 $data[$key]['amount_due'] = $currentAmortization->total + ($currentAmortization->penalty + $currentAmortization->pdi);
-             //   $data[$key]['weekly_amortization'] = $value->amortization()['total'];
+                //   $data[$key]['weekly_amortization'] = $value->amortization()['total'];
 
-                
+
                 $data[$key]['contact'] = $borrower->contact_number;
                 $data[$key]['address'] = $borrower->address;
 
-                 // Check payment_mode condition and set weekly_amortization
-            if ($value->payment_mode === 'Lumpsum') {
-                $data[$key]['weekly_amortization'] = $value->loan_amount;
-            } else {
-                $data[$key]['weekly_amortization'] = $value->amortization()['total'];
-            }
+                // Check payment_mode condition and set weekly_amortization
+                if ($value->payment_mode === 'Lumpsum') {
+                    $data[$key]['weekly_amortization'] = $value->loan_amount;
+                } else {
+                    $data[$key]['weekly_amortization'] = $value->amortization()['total'];
+                }
             }
             $data = collect($data)->sortBy(function ($item) {
                 // Sort by client name first (ascending)
@@ -1253,12 +1251,12 @@ class Reports extends Model
                                     "status" => $account->payment_status,
                                 ];
 
-                                 $acc = $accOfficers[$aoKey]["products"][$prodValue["product_name"]]["centers"][$centVal["center"]]['accounts'];
+                                $acc = $accOfficers[$aoKey]["products"][$prodValue["product_name"]]["centers"][$centVal["center"]]['accounts'];
                                 usort($acc, function ($a, $b) {
                                     return strcmp($a['borrower_name'], $b['borrower_name']);
                                 });
 
-                                $accOfficers[$aoKey]["products"][$prodValue["product_name"]]["centers"][$centVal["center"]]['accounts'] = $acc; 
+                                $accOfficers[$aoKey]["products"][$prodValue["product_name"]]["centers"][$centVal["center"]]['accounts'] = $acc;
                             }
                         }
                     }
@@ -1456,7 +1454,9 @@ class Reports extends Model
             ->whereDate('payment.cancelled_date', '<=', $filters['date_to'])
             ->orderBy('payment.transaction_date', 'ASC')
             ->get([
-                'payment.*', 'loan_accounts.borrower_id', 'loan_accounts.account_num',
+                'payment.*',
+                'loan_accounts.borrower_id',
+                'loan_accounts.account_num',
             ]);
 
         $data = [];
@@ -1617,7 +1617,7 @@ class Reports extends Model
         // Fetch the raw data first
         $rawData = Payment::join("loan_accounts", 'payment.loan_account_id', '=', 'loan_accounts.loan_account_id')
             ->join("borrower_info", 'loan_accounts.borrower_id', '=', 'borrower_info.borrower_id')
-            ->where([ "payment.status" => "paid"])
+            ->where(["payment.status" => "paid"])
             ->whereDate('payment.transaction_date', '>=', $filters['date_from'])
             ->whereDate('payment.transaction_date', '<=', $filters['date_to'])
             ->groupBy("borrower_info.firstname", "borrower_info.middlename", "borrower_info.lastname")
@@ -1627,7 +1627,7 @@ class Reports extends Model
                 DB::raw("UPPER(SUBSTRING(borrower_info.middlename, 1, 1)) as MIDDLE_NAM"),
                 DB::raw("'' as ADDRESS"),
                 DB::raw("'' as ADDRESS2"),
-               // DB::raw("SUM(payment.interest + payment.pdi - payment.vat) as GSALES"),
+                // DB::raw("SUM(payment.interest + payment.pdi - payment.vat) as GSALES"),
                 DB::raw("SUM(CASE WHEN payment.pdi_approval_no IS NOT NULL THEN payment.interest - payment.vat ELSE payment.interest + payment.pdi - payment.vat END) as GSALES"),
                 DB::raw("SUM(CASE WHEN payment.pdi_approval_no IS NOT NULL THEN payment.interest - payment.vat ELSE payment.interest + payment.pdi - payment.vat END) as GTSALES"),
                 // DB::raw("SUM(payment.interest + payment.pdi - payment.vat) as GTSALES"),
@@ -1643,20 +1643,21 @@ class Reports extends Model
             ->toArray();
 
         // Function to capitalize each part of the name
-        function capitalizeNameParts($name) {
+        function capitalizeNameParts($name)
+        {
             $parts = explode(' ', $name);
-            $capitalizedParts = array_map(function($part) {
+            $capitalizedParts = array_map(function ($part) {
                 return ucfirst(strtolower($part));
             }, $parts);
             return implode(' ', $capitalizedParts);
         }
 
         // Process the fetched data
-        $processedData = array_map(function($row) {
+        $processedData = array_map(function ($row) {
             // Capitalize each part of the names
             $row['LAST_NAME'] = capitalizeNameParts(str_replace(['ñ', 'Ñ', '-'], ['n', 'N', ' '], $row['LAST_NAME_RAW']));
             $row['FIRST_NAME'] = capitalizeNameParts(str_replace(['ñ', 'Ñ', '-'], ['n', 'N', ' '], $row['FIRST_NAME_RAW']));
-            
+
             // Handle middle name initials like "ma."
             if (!empty($row['MIDDLE_NAME'])) {
                 $row['MIDDLE_NAME'] = strtoupper($row['MIDDLE_NAME']) . '.'; // Ensure middle name is in uppercase with a period
@@ -1673,7 +1674,6 @@ class Reports extends Model
         //     $row['TOUTTAX'] = (int) $row['TOUTTAX'];
         // }
         return $processedData;
-        
     }
 
     public function prepaidReport($filters = [])
