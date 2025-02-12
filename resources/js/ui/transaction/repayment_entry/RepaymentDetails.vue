@@ -2438,8 +2438,11 @@ export default {
                       this.loanAccount.current_amortization.short_penalty;
         },
         dueInterest: function () {
-            let intBal = this.outstandingInterestBalance - this.loanAccount.current_amortization.interest_balance
-            return intBal < 0 ? 0 : intBal;
+            return this.totalInterest >
+                this.loanAccount.current_amortization.advance_interest
+                ? this.totalInterest -
+                      this.loanAccount.current_amortization.advance_interest
+                : 0;
         },
         dueInterestRebates: function () {
             return this.dueInterest < this.rebatesApplied
@@ -2447,8 +2450,8 @@ export default {
                 : this.dueInterest - this.rebatesApplied;
         },
         duePrincipal: function () {
-            let priBal = this.outstandingPrincipalBalance - this.loanAccount.current_amortization.principal_balance
-            return priBal < 0 ? 0 : priBal;
+            return this.totalPrincipal >
+                this.loanAccount.current_amortization.advance_principal ? this.totalPrincipal - this.loanAccount.current_amortization.advance_principal : 0;
         },
         totalDue: function () {
             return (
@@ -2505,17 +2508,11 @@ export default {
                 this.outstandingSurcharge
             );
         },
-        outstandingPrincipalBalance: function () {
-            return this.loanAccount.remainingBalance.principal.balance
-        },
         outstandingPrincipalRemaining: function () {
             return (
                 this.loanAccount.remainingBalance.principal.balance -
                 this.payment.principal
             );
-        },
-        outstandingInterestBalance: function () {
-            return this.loanAccount.remainingBalance.interest.balance - this.loanAccount.remainingBalance.rebates.credit;
         },
         outstandingInterestRemaining: function () {
             const intBal = this.loanAccount.remainingBalance.interest.balance - this.loanAccount.remainingBalance.rebates.credit;
@@ -2588,8 +2585,8 @@ export default {
             this.distribute();
         },
         "payment.rebatesInputted": function (newValue) {
-            if (this.outstandingInterestBalance < this.payment.rebatesInputted) {
-                this.payment.rebatesInputted = this.outstandingInterestBalance;
+            if (this.outstandingInterest < this.payment.rebatesInputted) {
+                this.payment.rebatesInputted = this.outstandingInterest;
             } else if (this.payment.rebatesInputted < 0) {
                 this.payment.rebatesInputted = 0;
             }
