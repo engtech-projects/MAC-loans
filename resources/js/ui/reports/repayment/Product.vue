@@ -73,8 +73,9 @@
 								<th>Interest</th>
 								<th>PD Int.</th>
 								<th>Over</th>
-								<th>Discount</th>
 								<th>Total Payment</th>
+                                <th>Vatable Int.</th>
+                                <th>Vatable Pdi.</th>
 								<th>Net Int.</th>
 								<th>VAT</th>
 							</thead>
@@ -82,6 +83,10 @@
 								<tr :class="rowBorders(p[0])" v-for="p,i in paymentSummary" :key="i">
 									<td v-for="j,k in p" :key="k">{{p[0]=='TOTAL PRODUCT'&&k>1?formatToCurrency(j):j}}</td>
 								</tr>
+                                <tr class="text-center">
+                                    <td class="text-bold" :class="rowBorders(p[0])" v-for="p,i in grandTotal" :key="i" v-text="p">
+                                </td>
+                                </tr>
 							</tbody>
 						</table>
 
@@ -136,13 +141,13 @@
 									</div>
 									<span class="flex-1">{{formatToCurrency(paymentSummaryTotal.overpayment)}}</span>
 								</div> -->
-								<div class="d-flex flex-row flex-1">
+								<!-- <div class="d-flex flex-row flex-1">
 									<div class="d-flex flex-row justify-content-between flex-2 mr-24">
 										<span class="flex-1 pl-24">DISCOUNT</span>
 										<span>:</span>
 									</div>
 									<span class="flex-1">{{formatToCurrency(paymentSummaryTotal.discount)}}</span>
-								</div>
+								</div> -->
 								<!-- <div class="d-flex flex-row flex-1">
 									<div class="d-flex flex-row justify-content-between flex-2 mr-24">
 										<span class="flex-1 pl-24">CANCELLED</span>
@@ -291,7 +296,7 @@
 						<div class="flex-2"></div>
 					</div>
 				</section> -->
-				
+
 			</section>
 			<div class="d-flex mb-64 mt-auto">
 				<img :src="this.baseURL()+'/img/logo-footer.png'" class="w-100" alt="">
@@ -308,11 +313,15 @@
 </template>
 
 <script>
+import { isInteger } from 'lodash';
+import { forEach } from 'lodash';
+
 export default {
 	props:['pbranch','token'],
 	data(){
 		return {
 			loading:false,
+            grandTotal:[],
 			paymentSummaryTotal:{
 				cash:0,
 				check:0,
@@ -352,7 +361,6 @@ export default {
 			.then(function (response) {
 				this.loading = false;
 				this.reports = response.data
-				console.log(response.data);
 			}.bind(this))
 			.catch(function (error) {
 				this.loading = false;
@@ -382,6 +390,7 @@ export default {
 	computed:{
 		paymentSummary:function(){
 			var result = [];
+
 			this.paymentSummaryTotal = {
 				cash:0,
 				check:0,
@@ -394,8 +403,10 @@ export default {
 				branch:0,
 				pos:0
 			}
+            var total = ['TOTAL','',0,0,0,0,0,0,0,0,0];
 			this.reports.forEach((t,p)=>{
-				var totalRow = ['TOTAL PRODUCT', '',0,0,0,0,0,0,0,0];
+				var totalRow = ['TOTAL PRODUCT','',0,0,0,0,0,0,0,0,0];
+
 				var index = 2;
 				var refIndex = 0;
 				for(var i in t.payment){
@@ -428,25 +439,57 @@ export default {
 					row.push(this.formatToCurrency(t.payment[i].over));
 					totalRow[index] += t.payment[i].over;
 					index++;
-					row.push(this.formatToCurrency(t.payment[i].discount));
+					/* row.push(this.formatToCurrency(t.payment[i].discount));
 					totalRow[index] += t.payment[i].discount;
-					index++;
+					index++; */
 					row.push(this.formatToCurrency(t.payment[i].total_payment));
 					totalRow[index] += t.payment[i].total_payment;
 					index++;
+                    //Vatable Int.
+                    var vatableInt = (t.payment[i].interest - t.payment[i].discount) / 1.12;
+                    row.push(this.formatToCurrency(vatableInt));
+                    totalRow[index] += vatableInt
+					index++;
+
+
+                    //Vatable Pdi
+                    var vatablePdi = t.payment[i].pdi / 1.12;
+                    row.push(this.formatToCurrency(vatablePdi));
+                    totalRow[index] += vatablePdi
+					index++;
+
 					row.push(this.formatToCurrency(t.payment[i].net_int));
 					totalRow[index] += t.payment[i].net_int;
 					index++;
 					row.push(this.formatToCurrency(t.payment[i].vat));
 					totalRow[index] += t.payment[i].vat;
+
 					result.push(row);
+
 				}
+
+
 				if(index != 2){
 					result.push([' ','','','','','','','','',''])
 					result.push(totalRow)
+                    for(var i in totalRow){
+                        if(i > 1) {
+                            total[i] += totalRow[i];
+                        }
+
+                    }
+
 					result.push(['  ','','','','','','','','',''])
+
 				}
 			})
+            for(var i in total) {
+                if(i > 1) {
+                    total[i] = this.formatToCurrency(total[i]);
+                }
+            }
+            this.grandTotal = total;
+
 			return result;
 		},
 	},

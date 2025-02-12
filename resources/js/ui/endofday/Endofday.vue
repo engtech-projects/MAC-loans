@@ -203,7 +203,8 @@ export default {
 				this.loading = false;
 				if(response.data.data == 0){
 					this.loading = false;
-					this.createPerformanceReport();
+					// this.createPerformanceReport();
+					this.endOfDay();
 				}else{
 					this.pendingResponse = response.data.message;
 					this.failed = true;

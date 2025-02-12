@@ -6,6 +6,7 @@ use App\Models\PerformanceReport;
 use App\Http\Controllers\API\BaseController;
 use Illuminate\Http\Request;
 use App\Http\Resources\PerformaceReport as PerformanceReportResource;
+use App\Services\Reports\LoanReports;
 use Exception;
 use Throwable;
 
@@ -28,7 +29,8 @@ class PerformanceReportController extends BaseController
 
     public function index(Request $request)
     {
-        $reports = $this->performanceReport->getAOPerformanceReport($request);
+        $reports = LoanReports::getAccountOfficerReport($request->input("transaction_date"), $request->input("branch_id"));
+        // $reports = $this->performanceReport->getAOPerformanceReport($request);
         return $this->sendResponse($reports,"AO Performance Reports fetch");
         /*  return $this->sendResponse(PerformanceReportResource::collection($reports),"Performance Reports Fetch."); */
     }

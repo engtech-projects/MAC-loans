@@ -214,6 +214,7 @@ class ReportsController extends BaseController
                     'branch_id' => $request->input("branch_id"),
                     'group' => $request->input("group"),
                     'account_officer' => $request->input('account_officer'),
+                    'as_of' => $request->input('as_of'),
                 ];
                 if ($filters['account_officer'] == "all") {
                     unset($filters['account_officer']);
