@@ -369,7 +369,7 @@ class EndTransaction extends Model
 
                     case 'PDI':
                         $pdi = $repaymentLedger->getDataFromLedger($ledger, 'Pastdue Interest', 'credit');
-                        $ledger[$k]['debit'] = round($pdi / 1.12 * 0.12, 2);
+                        $ledger[$k]['debit'] = $vats["Pastdue Interest"];
                         break;
                 }
                 round($ledger[$k]['debit'],2);
