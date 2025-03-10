@@ -774,6 +774,7 @@ class Reports extends Model
             $accounts->where(['loan_accounts.center_id' => $filters['center']]);
         }
 
+        $accounts->where(['loan_accounts.status' => LoanAccount::STATUS_RELEASED]);
         $accounts->where(['loan_accounts.branch_code' => $branch->branch_code]);
         $accounts->whereIn('loan_accounts.loan_status', [LoanAccount::LOAN_ONGOING, 'Past Due']);
 
