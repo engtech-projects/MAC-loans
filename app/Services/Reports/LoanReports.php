@@ -38,7 +38,7 @@ class LoanReports
                         // $minimumPrincipalBalance = $account->amortizations->where("delinquent_date", $asOf)->first()?->principal_amount ?? $account->loan_amount;
                         $minimumPrincipalBalance = $account->amortizations->filter(function ($amort) use ($asOf) {
                             return $amort->delinquent_date->lte($asOf);
-                        })->sortByDesc("principal_balance")->values()->all()[0]?->principal_balance ?? $account->loan_amount;
+                        })->sortBy("principal_balance")->values()->all()[0]?->principal_balance ?? $account->loan_amount;
                         return [
                             "account_id" => $account->loan_account_id,
                             "date_release" => $account->date_release,
@@ -50,7 +50,7 @@ class LoanReports
                             "overall_balance_as_of" => $intBalanceAsOf + $balanceAsOf,
                             "is_delinquent_as_of" => $minimumPrincipalBalance < $balanceAsOf,
                             "due_date" => $account->due_date,
-                            // "minimum_principal_balance" => $minimumPrincipalBalance,
+                            "minimum_principal_balance" => $minimumPrincipalBalance,
                         ];
                     });
                     $portfolio = $accountsRemapped->filter(function($account) use($asOf){
@@ -58,9 +58,12 @@ class LoanReports
                         (Carbon::now()->gt($asOf) && $account['principal_balance_as_of'] > 0.1 && $account['overall_balance_as_of'] > 0.1); // COUNTED WHEN HAS PRINCIPAL BALANCE AND IS OVERALL NOT PAID AND ASOFDATE IS PAST DATE
                         // NOT COUNTED WHEN HAS PRINCIPAL BALANCE AND IS OVERALL PAID WHEN OLD DATA BECAUSE OF OLD WRONG DISTRIBUTION OF PAYMENTS
                     });
-                    Log::info($portfolio->values()->all());
+                    // Log::info($portfolio->values()->all());
                     $delinquentAccounts = $portfolio->filter(function ($account) {
                         return $account['is_delinquent_as_of'];
+                    });
+                    $currentAccounts = $portfolio->filter(function ($account) {
+                        return !$account['is_delinquent_as_of'];
                     });
                     $pastDueAccounts = $portfolio->filter(function ($account) use ($asOf) {
                         return Carbon::parse($account['due_date'])->startOfDay()->lt($asOf);
@@ -68,6 +71,18 @@ class LoanReports
                     $allAmount = $portfolio->sum('principal_balance_as_of');
                     $delinquentAmount = $delinquentAccounts->sum('principal_balance_as_of');
                     $pastDueAmount = $pastDueAccounts->sum('principal_balance_as_of');
+                    // Log::info("Start");
+                    // Log::info("Current");
+                    // Log::info($currentAccounts->count());
+                    // Log::info($currentAccounts->values()->all());
+                    // Log::info("Deliquent");
+                    // Log::info($delinquentAccounts->count());
+                    // Log::info($delinquentAccounts);
+                    // Log::info("Past Due");
+                    // Log::info($pastDueAccounts->count());
+                    // Log::info($pastDueAccounts);
+                    // Log::info("End");
+
                     return [
                         "product_id" => $productId,
                         "product_code" => $productId,
