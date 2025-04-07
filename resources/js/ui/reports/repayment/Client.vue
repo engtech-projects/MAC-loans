@@ -424,7 +424,7 @@ export default {
 				result[9] += r.pdi;
 				result[10] += r.overpayment;
 				result[11] += r.total;
-				result[12] += parseFloat((r.net_interest / (1.12)).toFixed(2));
+				result[12] += parseFloat(((r.net_interest- r.rebates) / (1.12)).toFixed(2));
 				result[13] += parseFloat((r.net_pdi / (1.12)).toFixed(2));
 				result[14] += parseFloat((r.net_interest / (1.12)*.12).toFixed(2));
 				result[15] += parseFloat((r.net_pdi / (1.12)*.12).toFixed(2));
