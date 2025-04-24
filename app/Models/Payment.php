@@ -336,4 +336,12 @@ class Payment extends Model
             'status' => 'open'
         ])->get()->first();
     }
+
+    public function deleteMemoPaymentIfExists($loanAccount)
+    {
+        if ($loanAccount && $loanAccount->memo > 0) {
+            dump('Deleting payment for reference_id: ' . $loanAccount->loan_account_id);
+            $this->where('reference_id', $loanAccount->loan_account_id)->delete();
+        }
+    }
 }
