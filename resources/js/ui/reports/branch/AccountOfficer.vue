@@ -25,6 +25,12 @@
 				</select>
 			</div> -->
 			<div class="d-flex flex-row align-items-center mr-24" style="flex:2">
+				<span class="mr-10">Branch: </span>
+				<select v-model="selectedBranchId" class="form-control">
+					<option v-for="b in branches" :key="b.branch_id" :value="b.branch_id">{{ b.branch_name }}</option>
+				</select>
+			</div>
+			<div class="d-flex flex-row align-items-center mr-24">
 				<span class="mr-10">Report Type </span>
 				<select v-model="filter.group" name="" id="selectProductClient" class="form-control flex-1">
 					<option value="performance_report">Performance Report</option>
@@ -187,6 +193,13 @@ export default {
 				type:'account_officer',
 				as_of:'',
 			},
+			branches:[
+				{ branch_id:1, branch_name: 'Butuan City', branch_code:'001'},
+				{ branch_id:2, branch_name: 'Nasipit', branch_code:'002'},
+				{ branch_id:3, branch_name: 'Gingoog', branch_code:'003'},
+
+			],
+			selectedBranchId: '',
 			reports:[],
 		}
 	},
@@ -200,7 +213,7 @@ export default {
  		},
 		async fetchDates(){
 			this.loading = true;
-			await axios.get(this.baseURL() + 'api/report/branch/performancereport/dates?branchId=' + this.branch.branch_code, {
+			await axios.get(this.baseURL() + 'api/report/branch/performancereport/dates?branchId=' + this.selectedBranch.branch_code, {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
 					'Content-Type': 'application/json',
@@ -209,9 +222,12 @@ export default {
 			})
 			.then(function (response) {
 				this.loading = false;
-				this.dates = response.data.data;
+				const data = response.data.data;
+				this.dates.min_date = new Date(data.min_date).toISOString().slice(0, 10);
+				this.dates.max_date = new Date(data.max_date).toISOString().slice(0, 10);
 				// this.dates.max_date = this.transDate;
 				// console.log(response.data);
+				this.filter.as_of = this.dates.max_date;
 			}.bind(this))
 			.catch(function (error) {
 				this.loading = false;
@@ -241,7 +257,7 @@ export default {
 			this.loading = true;
 			
 			await axios.post(this.baseURL() + 'api/report/branch/performancereport',{transaction_date:this.filter.as_of,
-				branch_id:this.branch.branch_code}, {
+				branch_id:this.selectedBranch.branch_code}, {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
 					'Content-Type': 'application/json',
@@ -283,7 +299,7 @@ export default {
 				.then(function (response) {
 					this.filter.as_of = response.data.data.date_end;
 					this.transDate = response.data.data.date_end;
-					this.dates.max_date = this.transDate;
+					// this.dates.max_date = this.transDate;
 				}.bind(this))
 				.catch(function (error) {
 					console.log(error);
@@ -306,6 +322,9 @@ export default {
 		}
 	},
 	computed:{
+		selectedBranch(){
+			return this.branches.find(b => b.branch_id == this.selectedBranchId) || {};
+		},
 		total:function(){
 			var row = [0,0];
 			this.reports.forEach(r=>{
@@ -404,14 +423,20 @@ export default {
 			// if(val){
 			// 	this.fetchReports();
 			// }
+		},
+		selectedBranchId(newVal) {
+			this.filter.branch_id = newVal;
+			this.branch = this.branches.find(b => b.branch_id === newVal);
+			this.fetchDates();
+			this.reports = [];
 		}
 	},
 	mounted(){
 		this.branch = JSON.parse(this.pbranch);
 		this.filter.branch_id = this.branch.branch_id;
+		this.selectedBranchId = this.branch.branch_id;
 		this.fetchAo();
 		this.fetchTransactionDate();
-		this.fetchDates();
 	}
 }
 </script>
