@@ -205,7 +205,7 @@ class EndTransaction extends Model
 
                     // Check the value of journal_details_title
                     if(in_array($value['title'], ['Notarial Payable', 'Documentary Stamp Tax Payable', 'Loan Insurance Payable' ])){
-                        $subsidiary_id = '5';
+                        $subsidiary_id = $branch->branch_code;
                     } else {
                         $subsidiary_id = $branch->branch_code; // Otherwise, set subsidiary_id to branch_code
                     }
