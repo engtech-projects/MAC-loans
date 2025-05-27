@@ -52,6 +52,10 @@ class PaymentController extends BaseController
             $message = "There is still a pending payment for this account, please override " . ($pendingPayment->or_no ? "OR #: " . $pendingPayment->or_no : "Ref. #: " . $pendingPayment->reference_no);
             return $this->sendError("Failed fetch account.", $message);
         }
+        $loanAccount = LoanAccount::where('loan_account_id', $request->input('reference_id'))->first();
+        if ($loanAccount) {
+            $payment->deleteMemoPaymentIfExists($loanAccount);
+        }
         return $this->sendResponse(new PaymentResource($payment->addPayment($request)), 'Payment');
         // return $request->input();
     }

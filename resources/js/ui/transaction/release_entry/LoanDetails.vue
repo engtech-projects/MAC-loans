@@ -162,7 +162,7 @@
 						</div>
 						<div class="d-flex flex-row mb-16">
 							<div style="flex:3;align-items:center" class="d-flex">
-								<input v-model="memoChecked" type="checkbox" class="" style="margin-right:10px;width:25px;height:25px;">
+								<input v-model="memoChecked" type="checkbox" :disabled="prejected" class="" style="margin-right:10px;width:25px;height:25px;">
 								<label for="dueDate" class="form-label" style="margin-bottom:0;">Memo</label>
 							</div>
 							<input @blur="inputs.memo=false" v-if="inputs.memo" v-model="loanDetails.memo" type="number" class="form-control form-input text-right mr-16" style="flex:4" id="memo">
