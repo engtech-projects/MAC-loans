@@ -11,7 +11,7 @@
 			<span class="font-lg text-primary-dark" style="flex:3">Report</span>
 			<div class="d-flex flex-row align-items-center mr-24" style="flex:2">
 				<span class="mr-10">Date: </span>
-				<input v-model="filter.as_of" type="date" class="form-control" :min="dates.min_date" :max="dates.max_date">
+				<input v-model="filter.as_of" type="date" class="form-control">
 			</div>
 			<!-- <div class="d-flex flex-row align-items-center mr-64" style="flex:2">
 				<span class="mr-10">To: </span>
@@ -25,6 +25,12 @@
 				</select>
 			</div> -->
 			<div class="d-flex flex-row align-items-center mr-24" style="flex:2">
+				<span class="mr-10">Branch: </span>
+				<select v-model="selectedBranchId" class="form-control">
+					<option v-for="b in branches" :key="b.branch_id" :value="b.branch_id">{{ b.branch_name }}</option>
+				</select>
+			</div>
+			<div class="d-flex flex-row align-items-center mr-24">
 				<span class="mr-10">Report Type </span>
 				<select v-model="filter.group" name="" id="selectProductClient" class="form-control flex-1">
 					<option value="performance_report">Performance Report</option>
@@ -33,7 +39,7 @@
 				</select>
 			</div>
 			<div class="d-flex flex-row align-items-center mr-24 justify-content-start flex-1">
-				<button @click="generate()" class="btn btn-primary">Generate</button>
+				<button @click="fetchReports" class="btn btn-primary">Generate</button>
 			</div>
 			<!-- <div class="d-flex flex-row align-items-center" style="flex:3">
 				<span class="mr-10">AO: </span>
@@ -187,37 +193,17 @@ export default {
 				type:'account_officer',
 				as_of:'',
 			},
+			branches:[
+				{ branch_id:1, branch_name: 'Butuan City', branch_code:'001'},
+				{ branch_id:2, branch_name: 'Nasipit', branch_code:'002'},
+				{ branch_id:3, branch_name: 'Gingoog', branch_code:'003'},
+
+			],
+			selectedBranchId: '',
 			reports:[],
 		}
 	},
 	methods:{
-		generate:function(){
-			if(this.filter.as_of == this.transDate){
-				this.fetchReports();
-			}else{
-				this.fetchNoCurrentReports();
-			}
- 		},
-		async fetchDates(){
-			this.loading = true;
-			await axios.get(this.baseURL() + 'api/report/branch/performancereport/dates?branchId=' + this.branch.branch_code, {
-				headers: {
-					'Authorization': 'Bearer ' + this.token,
-					'Content-Type': 'application/json',
-					'Accept': 'application/json'
-				}
-			})
-			.then(function (response) {
-				this.loading = false;
-				this.dates = response.data.data;
-				// this.dates.max_date = this.transDate;
-				// console.log(response.data);
-			}.bind(this))
-			.catch(function (error) {
-				this.loading = false;
-				console.log(error);
-			}.bind(this));
-		},
 		async fetchReports(){
 			this.loading = true;
 			await axios.post(this.baseURL() + 'api/report/branch', this.filter, {
@@ -229,28 +215,7 @@ export default {
 			})
 			.then(function (response) {
 				this.loading = false;
-				this.reports = response.data.data
-				// console.log(this.reports);
-			}.bind(this))
-			.catch(function (error) {
-				this.loading = false;
-				console.log(error);
-			}.bind(this));
-		},
-		async fetchNoCurrentReports(){
-			this.loading = true;
-			
-			await axios.post(this.baseURL() + 'api/report/branch/performancereport',{transaction_date:this.filter.as_of,
-				branch_id:this.branch.branch_code}, {
-				headers: {
-					'Authorization': 'Bearer ' + this.token,
-					'Content-Type': 'application/json',
-					'Accept': 'application/json'
-				}
-			})
-			.then(function (response) {
-				this.loading = false;
-				this.reports = response.data.data==='No reports found.'?[]:response.data.data;
+				this.reports = response.data.data;
 			}.bind(this))
 			.catch(function (error) {
 				this.loading = false;
@@ -283,7 +248,7 @@ export default {
 				.then(function (response) {
 					this.filter.as_of = response.data.data.date_end;
 					this.transDate = response.data.data.date_end;
-					this.dates.max_date = this.transDate;
+					// this.dates.max_date = this.transDate;
 				}.bind(this))
 				.catch(function (error) {
 					console.log(error);
@@ -306,6 +271,9 @@ export default {
 		}
 	},
 	computed:{
+		selectedBranch(){
+			return this.branches.find(b => b.branch_id == this.selectedBranchId) || {};
+		},
 		total:function(){
 			var row = [0,0];
 			this.reports.forEach(r=>{
@@ -400,18 +368,17 @@ export default {
 		}
 	},
 	watch:{
-		'filter.group'(val){
-			// if(val){
-			// 	this.fetchReports();
-			// }
+		selectedBranchId(newVal) {
+			this.filter.branch_id = newVal;
+			this.branch = this.branches.find(b => b.branch_id === newVal);
+			this.reports = [];
 		}
 	},
 	mounted(){
 		this.branch = JSON.parse(this.pbranch);
-		this.filter.branch_id = this.branch.branch_id;
+		this.selectedBranchId = this.branch.branch_id;
 		this.fetchAo();
 		this.fetchTransactionDate();
-		this.fetchDates();
 	}
 }
 </script>
