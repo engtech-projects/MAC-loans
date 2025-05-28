@@ -120,6 +120,8 @@
 							<th>Tot. Payment</th>
 							<th>VATable Int.</th>
 							<th>VATable PDI.</th>
+							<th>VAT Int</th>
+							<th>VAT PDI</th>
 							<th>Total VAT</th>
 							<th>Type</th>
 						</thead>
@@ -140,6 +142,8 @@
 								<td>{{formatToCurrency(r.total)}}</td>
 								<td>{{formatToCurrency(r.net_interest/(1.12))}}</td>
 								<td>{{formatToCurrency(r.net_pdi /(1.12))}}</td>
+								<td>{{formatToCurrency(r.net_interest/(1.12)*0.12)}}</td>
+								<td>{{formatToCurrency(r.net_pdi/(1.12)*0.12)}}</td>
 								<td>{{formatToCurrency(r.vat)}}</td>
 								<td>{{r.payment_type}}</td>
 							</tr>
@@ -178,6 +182,8 @@
 								<th>Tot. Payment</th>
 								<th>VATable Int.</th>
 								<th>VATable PDI.</th>
+								<th>VAT Int</th>
+								<th>VAT PDI</th>
 								<th>Total VAT</th>
 								<th></th>
 							</tr>
@@ -409,7 +415,7 @@ export default {
 			return this.accountOfficers.filter(ao=>ao.status=='active');
 		},
 		total:function(){
-			var result = ['TOTAL','','','','',0,0,0,0,0,0,0,0,0,0,''];
+			var result = ['TOTAL','','','','',0,0,0,0,0,0,0,0,0,0,0,0,''];
 			this.reports.forEach(r => {
 				result[5] += r.amortization_principal;
 				result[6] += r.principal;
@@ -418,9 +424,11 @@ export default {
 				result[9] += r.pdi;
 				result[10] += r.overpayment;
 				result[11] += r.total;
-				result[12] += (r.interest-r.rebates) / (1.12);
-				result[13] += r.pdi / (1.12);
-				result[14] += r.vat;
+				result[12] += parseFloat(((r.interest- r.rebates) / (1.12)).toFixed(2));
+				result[13] += parseFloat((r.net_pdi / (1.12)).toFixed(2));
+				result[14] += parseFloat((r.interest - r.rebates / (1.12)*.12).toFixed(2));
+				result[15] += parseFloat((r.net_pdi / (1.12)*.12).toFixed(2));
+				result[16] += r.vat;
 			});
 			return result;
 		},

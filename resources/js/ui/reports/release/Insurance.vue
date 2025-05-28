@@ -229,8 +229,30 @@ export default {
       // Create Excel file from filtered data
       this.generateExcel(filteredData);
 	
-
 	},
+	dateToMDY(date) {
+		if (!date) return '';
+		const d = new Date(date);
+		const month = (d.getMonth() + 1).toString().padStart(2, '0');
+		const day = d.getDate().toString().padStart(2, '0');
+		const year = d.getFullYear();
+		return `${month}/${day}/${year}`;
+		},
+
+	changeDueDate(originalDate, releasedDate) {
+		if (!originalDate) return '';
+
+		const date = new Date(originalDate);
+		const year = date.getFullYear();
+		const month = date.getMonth(); // Month is zero-based in JS
+
+		const release = new Date(releasedDate);
+		const day = release.getDate().toString().padStart(2, '0');
+		const updatedDate = new Date(year, month, day);
+
+		return this.dateToMDY(updatedDate); // Convert to MM/DD/YYYY format
+		},
+
 	generateExcel(filteredData) {
       // Transform data into the format SheetJS expects
       const data = filteredData.map((account) => {
@@ -245,9 +267,10 @@ export default {
           'First Name': firstname,
           'Middle Name': middlename,
           'Gender': this.upperFirst(account.gender),
-          'Birthdate': this.dateToMDY(new Date(account.birthdate)),
+		  'Birthdate': this.dateToMDY(account.birthdate),
           'Age': this.calculateAge(account.birthdate),
-          'Date Released': this.dateToMDY(new Date(account.date_loan)),
+          'Date Released': this.dateToMDY(account.date_loan),
+		  'Due Date': this.changeDueDate(account.due_date,account.date_loan ),
           'Amount Loan': this.formatToCurrency(account.amount_loan),
           'Term': account.term / 30 + ' Mos',
         };

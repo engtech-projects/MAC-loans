@@ -186,7 +186,11 @@ class Payment extends Model
                 $penalty = $payment->penalty;
             }
 
-            $vat = ($payment->interest + $pdi + $penalty) / 1.12 * 0.12;
+            $vatint = round(($payment->interest) / 1.12 *0.12,2);
+            $vatpdi = round(($pdi) / 1.12 *0.12,2);
+            // $vat = ($payment->interest + $pdi + $penalty) / 1.12 * 0.12;
+            $vat = $vatpdi + $vatint;
+
             $payment->vat = round($vat, 2);
         }
 
@@ -331,5 +335,13 @@ class Payment extends Model
             'loan_account_id' => $request['loan_account_id'],
             'status' => 'open'
         ])->get()->first();
+    }
+
+    public function deleteMemoPaymentIfExists($loanAccount)
+    {
+        if ($loanAccount && $loanAccount->memo > 0) {
+            dump('Deleting payment for reference_id: ' . $loanAccount->loan_account_id);
+            $this->where('reference_id', $loanAccount->loan_account_id)->delete();
+        }
     }
 }

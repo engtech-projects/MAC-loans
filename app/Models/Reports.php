@@ -774,6 +774,7 @@ class Reports extends Model
             $accounts->where(['loan_accounts.center_id' => $filters['center']]);
         }
 
+        $accounts->where(['loan_accounts.status' => LoanAccount::STATUS_RELEASED]);
         $accounts->where(['loan_accounts.branch_code' => $branch->branch_code]);
         $accounts->whereIn('loan_accounts.loan_status', [LoanAccount::LOAN_ONGOING, 'Past Due']);
 
@@ -798,8 +799,8 @@ class Reports extends Model
                 $data[$key]['outstanding_balance'] = $loanAccount->remainingBalance()["memo"]["balance"];
                 $data[$key]['principal_balance'] = $loanAccount->remainingBalance()["principal"]["balance"];
                 $data[$key]['delinquent'] = LoanAccount::getPaymentStatus($loanAccount->loan_account_id) === 'Delinquent' ? $currentAmortization['delinquent']['principal'] + $currentAmortization['delinquent']['interest'] : 0;
-                $data[$key]['penalty'] = $currentAmortization->penalty + $currentAmortization->pdi;
-                $data[$key]['amount_due'] = $currentAmortization->total + ($currentAmortization->penalty + $currentAmortization->pdi);
+                $data[$key]['penalty'] = ($currentAmortization?->penalty ?? 0) + ($currentAmortization?->pdi ?? 0);
+                $data[$key]['amount_due'] = ($currentAmortization?->total ?? 0) + $data[$key]['penalty'];
                 //   $data[$key]['weekly_amortization'] = $value->amortization()['total'];
 
 
