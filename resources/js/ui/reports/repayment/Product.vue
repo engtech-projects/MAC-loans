@@ -8,7 +8,7 @@
 			<span class="font-lg" style="color:#ddd;">Please wait until the process is complete</span>
 		</div>
 		<div class="d-flex flex-row font-md align-items-center mb-16">
-			<span class="font-lg text-primary-dark" style="flex:3">Transaction</span>
+			<span class="font-lg text-primary-dark" style="flex:3">Repayment - Product</span>
 			<div class="d-flex flex-row align-items-center mr-24" style="flex:2">
 				<span class="mr-10">From: </span>
 				<input v-model="filter.date_from" type="date" class="form-control">
@@ -37,6 +37,13 @@
 					<option value="">Pension Loan</option>
 					<option value="">SME Loan</option>
 				</select>
+			</div>
+
+			<div class="d-flex align-items-center mt-6">
+				<span class="mr-10"> </span>
+				<button @click="generateReport" class="btn btn-primary">
+					Generate
+				</button>
 			</div>
 		</div>
 		<div class="sep mb-45"></div>
@@ -349,6 +356,24 @@ export default {
 		}
 	},
 	methods:{
+
+		generateReport(){
+			const { date_from, date_to} = this.filter;
+
+				// Required fields validation
+				if (!date_from || !date_to ) {
+					alert("Please complete the 'From', 'To', and 'Type' fields.");
+					return;
+				}
+
+				// Prepare payload
+				const payload = {
+					date_from,
+					date_to,
+				
+				};
+				this.fetchReports(payload);
+		},
 		async fetchReports(){
 			this.loading = true;
 			await axios.post(this.baseURL() + 'api/report/repayment', this.filter, {
@@ -496,9 +521,9 @@ export default {
 	watch:{
 		 filter: {
 			handler(val){
-				if(val.date_from && val.date_to){
-					this.fetchReports();
-				}
+				// if(val.date_from && val.date_to){
+				// 	this.fetchReports();
+				// }
 			},
 			deep: true
 		}

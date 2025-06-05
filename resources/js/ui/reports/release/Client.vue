@@ -8,7 +8,7 @@
 			<span class="font-lg" style="color:#ddd;">Please wait until the process is complete</span>
 		</div>
 		<div class="d-flex flex-row font-md align-items-center mb-16">
-			<span class="font-lg text-primary-dark" style="flex:3">Transaction</span>
+			<span class="font-lg text-primary-dark" style="flex:3">Release - Client </span>
 			<div class="d-flex flex-row align-items-center mr-24" style="flex:2">
 				<span class="mr-10">From: </span>
 				<input v-model="filter.date_from" type="date" class="form-control">
@@ -53,6 +53,13 @@
 				<select v-if="filter.type=='account_officer'" v-model="filter.spec" name="" id="selectProductClient" class="form-control">
 					<option v-for="a in accountOfficers.filter(aa=>aa.status=='active')" :key="a.ao_id" :value="a.ao_id">{{a.name}}</option>
 				</select>
+			</div>
+
+			<div class="d-flex align-items-center mt-6">
+				<span class="mr-10"> </span>
+				<button @click="generateReport" class="btn btn-primary">
+					Generate
+				</button>
 			</div>
 		</div>
 		<div class="sep mb-45"></div>
@@ -328,6 +335,38 @@ export default {
 		}
 	},
 	methods:{
+		generateReport(){
+			const { date_from, date_to, type, spec, psproduct, psAO, waived } = this.filter;
+
+				// Required fields validation
+				if (!date_from || !date_to || !type) {
+					alert("Please complete the 'From', 'To', and 'Type' fields.");
+					return;
+				}
+
+				// Prepare payload
+				const payload = {
+					date_from,
+					date_to,
+					type,
+				};
+
+				// Include 'spec' if applicable
+				if (type !== 'all' && spec) {
+					payload.spec = spec;
+				}
+
+				// Handle payment_status specific filters
+				if (type === 'payment_status') {
+					if (psproduct) payload.product = psproduct;
+					if (psAO) payload.ao = psAO;
+					if (spec === 'past_due') payload.waived = waived || false;
+				}
+
+				// Store or pass the payload to fetchReports
+				this.fetchReports(payload);
+		},
+
 		centerSelect:function(center){
 			this.filter.spec = center.center_id;
 		},
@@ -431,9 +470,9 @@ export default {
 				const hasDateRange = val.date_from && val.date_to;
 				const isTypeAllOrNew = val.type === 'all' || val.type === 'new';
 				const hasTypeAndSpec = val.type && val.spec !== '';
-				if ((hasDateRange && isTypeAllOrNew) || hasTypeAndSpec) {
-					this.fetchReports();
-				}
+				// if ((hasDateRange && isTypeAllOrNew) || hasTypeAndSpec) {
+				// 	this.fetchReports();
+				// }
 			},
 			deep:true
 		},
