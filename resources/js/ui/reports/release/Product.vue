@@ -8,15 +8,15 @@
 			<span class="font-lg" style="color:#ddd;">Please wait until the process is complete</span>
 		</div>
 		<div>
-			<div class="d-flex flex-row font-md align-items-center mb-16">
+			<form ref="reportForm" @submit.prevent="generateReport" class="d-flex flex-row font-md align-items-center mb-16 needs-validation report-form" novalidate>
 				<span class="font-lg text-primary-dark" style="flex:3">Release - Product </span>
 				<div class="d-flex flex-row align-items-center mr-24" style="flex:2">
 					<span class="mr-10">From: </span>
-					<input v-model="filter.date_from" type="date" class="form-control">
+					<input v-model="filter.date_from" type="date" class="form-control" required>
 				</div>
-				<div class="d-flex flex-row align-items-center mr-64" style="flex:2">
+				<div class="d-flex flex-row align-items-center" style="flex:2">
 					<span class="mr-10">To: </span>
-					<input v-model="filter.date_to" type="date" class="form-control">
+					<input v-model="filter.date_to" type="date" class="form-control" required>
 				</div>
 				
 				<div class="d-flex align-items-center mt-6">
@@ -28,7 +28,7 @@
 
 			
 
-			</div>
+			</form>
 			<div class="sep mb-45"></div>
 			<div id="printContent">
 				<img :src="this.baseURL()+'/img/company_header_fit.png'" class="mb-24" alt="">
@@ -187,10 +187,10 @@ export default {
 	methods:{
 		generateReport(){
 			const { date_from, date_to} = this.filter;
+			const form = this.$refs.reportForm;
 
-				// Required fields validation
-				if (!date_from || !date_to ) {
-					alert("Please complete the 'From', 'To', and 'Type' fields.");
+				if (!form.checkValidity()) {
+					form.reportValidity(); // Show native browser tooltips
 					return;
 				}
 
@@ -262,3 +262,19 @@ export default {
 	}
 }
 </script>
+
+<style>
+	/* Style invalid required inputs */
+	.report-form input:required:invalid,
+	.report-form select:required:invalid {
+		border-color: red;
+		background-color: #fff5f5;
+	}
+
+	/* Optional: remove ugly default outline in some browsers */
+	.report-form input:focus:invalid,
+	.report-form select:focus:invalid {
+		outline: none;
+		box-shadow: 0 0 5px red;
+	}
+</style>
