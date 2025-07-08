@@ -109,7 +109,7 @@ class Deduction extends Model
     		return 0;
     	}
 
-    	$months = $constraints['terms'];
+    	$months = $constraints['terms'] / 30;
     	$amount = ($constraints['loan_amount']/1000) * $data->rate * $months;
 
     	return round($amount);
