@@ -976,16 +976,6 @@ export default {
 			return amount;
 		},
 	},
-	watch:{
-		filter:{
-			handler(val){
-				// if(val.date_from.length && val.date_to.length){
-				// 	this.fetchTransactions();
-				// }
-			},
-			deep:true
-		}
-	},
 	mounted(){
 		this.filter.branch_id = this.branch;
 	}
