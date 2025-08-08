@@ -41,7 +41,7 @@
 
 			<div class="d-flex align-items-center mt-6">
 				<span class="mr-10"> </span>
-				<button @click="generateReport" class="btn btn-primary">
+				<button type="submit" class="btn btn-primary">
 					Generate
 				</button>
 			</div>
