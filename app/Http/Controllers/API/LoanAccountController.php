@@ -200,19 +200,20 @@ class LoanAccountController extends BaseController
         foreach ($request->input() as $key => $value) {
 
             $account = LoanAccount::find($value['loan_account_id']);
+            if ($account->status !== 'released') {
+                $account->transaction_date = $value['transaction_date'];
+                $account->date_release = $value['date_release'];
+                $account->due_date = $value['due_date'];
+                $account->status = 'released';
+                $account->loan_status = 'Ongoing';
+                $account->update();
 
-            $account->transaction_date = $value['transaction_date'];
-            $account->date_release = $value['date_release'];
-            $account->due_date = $value['due_date'];
-            $account->status = 'released';
-            $account->loan_status = 'Ongoing';
-            $account->update();
+                $document = Document::where('loan_account_id', $account->loan_account_id)->first();
+                $document->date_release = $value['date_release'];
+                $document->update();
 
-            $document = Document::where('loan_account_id', $account->loan_account_id)->first();
-            $document->date_release = $value['date_release'];
-            $document->update();
-
-            $this->createAmortizationSched($account);
+                $this->createAmortizationSched($account);
+            }
         }
         return $this->sendResponse(['status' => 'released'], 'Released');
     }
