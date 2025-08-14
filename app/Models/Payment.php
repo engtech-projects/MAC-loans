@@ -331,10 +331,12 @@ class Payment extends Model
 
     public function getOngoingPayment($request = array())
     {
-        return Payment::where([
-            'loan_account_id' => $request['loan_account_id'],
-            'status' => 'open'
-        ])->get()->first();
+        return DB::transaction(function () use ($request) {
+            return Payment::where([
+                'loan_account_id' => $request['loan_account_id'], 
+                'status' => 'open'
+            ])->lockForUpdate()->first();
+        });
     }
 
     public function deleteMemoPaymentIfExists($loanAccount)
