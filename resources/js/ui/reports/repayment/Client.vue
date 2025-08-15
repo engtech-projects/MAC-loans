@@ -7,25 +7,25 @@
 			</div>
 			<span class="font-lg" style="color:#ddd;">Please wait until the process is complete</span>
 		</div>
-		<div class="d-flex flex-row font-md align-items-center mb-16">
-			<span class="font-lg text-primary-dark" :class="filter.type === 'payment_status' ? 'mr-10' : 'mr-64'" >Transaction</span>
+		<form ref="reportForm" @submit.prevent="generateReport" class="d-flex flex-row font-md align-items-center mb-16 needs-validation report-form" novalidate>
+			<span class="font-lg text-primary-dark" :class="filter.type === 'payment_status' ? 'mr-10' : 'mr-64'" >Repayment - Client</span>
 			<div class="d-flex flex-row align-items-center"
 			:class="filter.type === 'payment_status' ? 'mr-10' : 'mr-24'" 
 			:style="filter.type === 'payment_status' ? {} : { flex: 2 }">
 				<span class="mr-10">From: </span>
-				<input v-model="filter.date_from" type="date" class="form-control" :style="filter.type=='payment_status'?{width:'130px'}:{}">
+				<input v-model="filter.date_from" type="date" class="form-control" :style="filter.type=='payment_status'?{width:'130px'}:{}" required>
 			</div>
 			<div class="d-flex flex-row align-items-center"
 			:class="filter.type === 'payment_status' ? 'mr-24' : 'mr-64'" 
 			:style="filter.type === 'payment_status' ? {} : { flex: 2 }">
 				<span class="mr-10">To: </span>
-				<input v-model="filter.date_to" type="date" class="form-control" :style="filter.type=='payment_status'?{width:'130px'}:{}">
+				<input v-model="filter.date_to" type="date" class="form-control" :style="filter.type=='payment_status'?{width:'130px'}:{}" required>
 			</div>
 			<div class="d-flex flex-row align-items-center"
 			:class="filter.type === 'payment_status' ? 'mr-10' : 'mr-24'" 
 			:style="filter.type === 'payment_status' ? {} : { flex: 2 }">
 				<span class="mr-10">Type: </span>
-				<select v-model="filter.type" name="" id="selectProductClient" class="form-control" :style="filter.type=='payment_status'?{width:'130px'}:{}">
+				<select v-model="filter.type" name="" id="selectProductClient" class="form-control" :style="filter.type=='payment_status'?{width:'130px'}:{}" required>
 					<option value="all">All Records</option>
 					<option value="center">By Center</option>
 					<option value="product">By Product</option>
@@ -82,7 +82,13 @@
 					<option v-for="a in filteredAos" :key="a.ao_i" :value="a.ao_id">{{a.name}}</option>
 				</select>
 			</div>
-		</div>
+			<div class="d-flex align-items-center mt-6">
+				<span class="mr-10"> </span>
+				<button type="submit" class="btn btn-primary">
+					Generate
+				</button>
+			</div>
+		</form>
 		<div class="sep mb-45"></div>
 		<div id="printContent">
 			
@@ -151,6 +157,7 @@
 							<tr class="border-cell-gray-7">
 								<td v-if="!(filter.type === 'payment_status' && filter.spec === 'past_due')"></td>
 								<td v-if="!(filter.type === 'payment_status' && filter.spec === 'past_due')"></td>
+								<td></td>
 								<td></td>
 								<td></td>
 								<td></td>
@@ -318,6 +325,38 @@ export default {
 		}
 	},
 	methods:{
+
+		generateReport(){
+			const { date_from, date_to, type, spec, psproduct, psAO, waived } = this.filter;
+			const form = this.$refs.reportForm;
+
+				if (!form.checkValidity()) {
+					form.reportValidity(); // Show native browser tooltips
+					return;
+				}
+
+				// Prepare payload
+				const payload = {
+					date_from,
+					date_to,
+					type,
+				};
+
+				// Include 'spec' if applicable
+				if (type !== 'all' && spec) {
+					payload.spec = spec;
+				}
+
+				// Handle payment_status specific filters
+				if (type === 'payment_status') {
+					if (psproduct) payload.product = psproduct;
+					if (psAO) payload.ao = psAO;
+					if (spec === 'past_due') payload.waived = waived || false;
+				}
+
+				// Store or pass the payload to fetchReports
+				this.fetchReports(payload);
+		},
 		centerSelect:function(center){
 			this.filter.spec = center.center_id;
 		},
@@ -403,9 +442,9 @@ export default {
 				const hasDateRange = val.date_from && val.date_to;
 				const isTypeAll = val.type === 'all';
 				const hasTypeAndSpec = val.type && val.spec !== '';
-				if ((hasDateRange && isTypeAll) || hasTypeAndSpec) {
-					this.fetchReports();
-				}
+				// if ((hasDateRange && isTypeAll) || hasTypeAndSpec) {
+				// 	this.fetchReports();
+				// }
 			},
 			deep:true
 		},

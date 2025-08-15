@@ -18,24 +18,30 @@
 				</div>
 				<span class="font-lg" style="color:#ddd;">Please wait until the process is complete</span>
 			</div>
-			<div class="d-flex flex-row font-md align-items-center mb-16">
+			<form ref="reportForm" @submit.prevent="generateReport" class="d-flex flex-row font-md align-items-center mb-16 needs-validation report-form" novalidate>
 				<span class="font-lg text-primary-dark" style="flex:3">Transaction</span>
 				<div class="d-flex flex-row align-items-center mr-24" style="flex:2">
 					<span class="mr-10">From: </span>
-					<input v-model="filter.date_from" type="date" class="form-control">
+					<input v-model="filter.date_from" type="date" class="form-control" required>
 				</div>
 				<div class="d-flex flex-row align-items-center mr-64" style="flex:2">
 					<span class="mr-10">To: </span>
-					<input v-model="filter.date_to" type="date" class="form-control">
+					<input v-model="filter.date_to" type="date" class="form-control" required>
 				</div>
 				<div class="d-flex flex-row align-items-center" style="flex:4">
 					<span class="mr-10">Type: </span>
-					<select v-model="type" name="" id="selectProductClient" class="form-control">
+					<select v-model="type" name="" id="selectProductClient" class="form-control" required>
 						<option value="product">Summary Release and Payment by Product</option>
 						<option value="client">Summary Release and Payment by Client</option>
 					</select>
 				</div>
-			</div>
+				<div class="d-flex align-items-center mt-6">
+					<span class="mr-10"> </span>
+					<button type="submit" class="btn btn-primary">
+						Generate
+					</button>
+				</div>
+			</form>
 			<div class="sep mb-45"></div>
 			<div id="printContent">
 				<img >
@@ -558,6 +564,23 @@ export default {
 		}
 	},
 	methods:{
+		generateReport(){
+			const { date_from, date_to} = this.filter;
+			const form = this.$refs.reportForm;
+
+				if (!form.checkValidity()) {
+					form.reportValidity(); // Show native browser tooltips
+					return;
+				}
+
+				// Prepare payload
+				const payload = {
+					date_from,
+					date_to,
+				};
+				
+				this.fetchTransactions(payload);
+		},
 		async fetchTransactions(){
 			this.loading = true;
 			await axios.post(this.baseURL() + 'api/report/transaction', this.filter, {
@@ -952,16 +975,6 @@ export default {
 			}
 			return amount;
 		},
-	},
-	watch:{
-		filter:{
-			handler(val){
-				if(val.date_from.length && val.date_to.length){
-					this.fetchTransactions();
-				}
-			},
-			deep:true
-		}
 	},
 	mounted(){
 		this.filter.branch_id = this.branch;
