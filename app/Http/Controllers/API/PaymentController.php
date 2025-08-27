@@ -35,29 +35,37 @@ class PaymentController extends BaseController
      */
     public function store(Request $request)
     {
+        try {
+            # create payment instance.
+            $payment = new Payment();
+            # get branch id and add to request data
+            // $request->merge(['branch_id' => 2]);
 
-        # create payment instance.
-        $payment = new Payment();
-        # get branch id and add to request data
-        // $request->merge(['branch_id' => 2]);
-
-        // $payment->addPayment($request);
-        $endTransaction = new EndTransaction();
-        $dateEnd = $endTransaction->getTransactionDate($request->input("branch_id"));
-        if ($dateEnd->status !== 'open') {
-            return $this->sendError("Transaction Date is Closed.", $dateEnd);
+            // $payment->addPayment($request);
+            $endTransaction = new EndTransaction();
+            $dateEnd = $endTransaction->getTransactionDate($request->input("branch_id"));
+            if ($dateEnd->status !== 'open') {
+                return $this->sendError("Transaction Date is Closed.", $dateEnd);
+            }
+            $pendingPayment = $payment->getOngoingPayment($request->input());
+            if ($pendingPayment) {
+                $message = "There is still a pending payment for this account, please override " . ($pendingPayment->or_no ? "OR #: " . $pendingPayment->or_no : "Ref. #: " . $pendingPayment->reference_no);
+                return $this->sendError("Failed fetch account.", $message);
+            }
+            $loanAccount = LoanAccount::where('loan_account_id', $request->input('reference_id'))->first();
+            if ($loanAccount) {
+                $payment->deleteMemoPaymentIfExists($loanAccount);
+            }
+            return $this->sendResponse(new PaymentResource($payment->addPayment($request)), 'Payment');
+            // return $request->input();
+        } catch (\Illuminate\Database\QueryException $e) {
+            // Check if it's a deadlock error (error code 1213)
+            if (isset($e->errorInfo[1]) && $e->errorInfo[1] == 1213) {
+                $message = "Payment is being processed by another request. Please wait and try again.";
+                return $this->sendError("Payment is unsuccessful.", $message);
+            }
+            throw $e;
         }
-        $pendingPayment = $payment->getOngoingPayment($request->input());
-        if ($pendingPayment) {
-            $message = "There is still a pending payment for this account, please override " . ($pendingPayment->or_no ? "OR #: " . $pendingPayment->or_no : "Ref. #: " . $pendingPayment->reference_no);
-            return $this->sendError("Failed fetch account.", $message);
-        }
-        $loanAccount = LoanAccount::where('loan_account_id', $request->input('reference_id'))->first();
-        if ($loanAccount) {
-            $payment->deleteMemoPaymentIfExists($loanAccount);
-        }
-        return $this->sendResponse(new PaymentResource($payment->addPayment($request)), 'Payment');
-        // return $request->input();
     }
 
 

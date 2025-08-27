@@ -135,84 +135,85 @@ class Payment extends Model
     }
 
     public function addPayment(Request $request)
-    {
-
-        $account = LoanAccount::find($request->input('loan_account_id'));
-        $payment = new Payment();
-
-        $payment->loan_account_id = $request->input('loan_account_id');
-        $payment->branch_id = $request->input('branch_id');
-        $payment->payment_type = $request->input('payment_type');
-        $payment->or_no = $request->input('or_no');
-        $payment->cheque_no = $request->input('cheque_no');
-        $payment->bank_name = $request->input('bank_name');
-        $payment->reference_no = $request->input('reference_no');
-        $payment->memo_type = $request->input('memo_type');
-        $payment->amortization_id = $request->input('amortization_id');
-        $payment->principal = $request->input('principal');
-        $payment->interest = $request->input('interest');
-        $payment->short_principal = $request->input('short_principal');
-        $payment->advance_principal = $request->input('advance_principal');
-        $payment->short_interest = $request->input('short_interest');
-        $payment->advance_interest = $request->input('advance_interest');
-        $payment->pdi = $request->input('pdi');
-        $payment->pdi_approval_no = $request->input('pdi_approval_no');
-        $payment->short_pdi = $request->input('short_pdi');
-        $payment->penalty = $request->input('penalty');
-        $payment->penalty_approval_no = $request->input('penalty_approval_no');
-        $payment->short_penalty = $request->input('short_penalty');
-        $payment->rebates = $request->input('rebates');
-        $payment->rebates_approval_no = $request->input('rebates_approval_no');
-        $payment->vat = $request->input('vat');
-        $payment->over_payment = $request->input('over_payment');
-        $payment->total_payable = $request->input('total_payable');
-        $payment->amount_applied = $request->input('amount_applied');
-        $payment->vat = 0.00;
-        $payment->reference_id = $request->input('reference_id');
-        $payment->remarks = $request->input('remarks');
-        $endTransaction = new EndTransaction();
-        $dateEnd = $endTransaction->getTransactionDate($request->input("branch_id"));
-        $payment->transaction_date = $dateEnd->date_end;
-        $payment->gcash_no = $request->input('gcash_no');
-
-        if ($payment->interest > 0 || $payment->pdi > 0 || $payment->penalty > 0) {
-            $pdi = 0;
-            $penalty = 0;
-            if ($payment->pdi > 0 && !$payment->pdi_approval_no) {
-                $pdi = $payment->pdi;
+    {   
+        return DB::transaction(function () use ($request) {
+            // DUPLICATE PREVENTION: Check if payment already exists
+            $existingPayment = Payment::where([
+                'loan_account_id' => $request->input('loan_account_id'),
+                'status' => 'open'
+            ])->lockForUpdate()->first();
+            
+            if ($existingPayment) {
+                \Log::info('Duplicate payment prevented. Existing payment ID: ' . $existingPayment->payment_id);
+                return $existingPayment;
             }
 
-            if ($payment->penalty > 0 && !$payment->penalty_approval_no) {
-                $penalty = $payment->penalty;
+            $account = LoanAccount::find($request->input('loan_account_id'));
+            $payment = new Payment();
+
+            $payment->loan_account_id = $request->input('loan_account_id');
+            $payment->branch_id = $request->input('branch_id');
+            $payment->payment_type = $request->input('payment_type');
+            $payment->or_no = $request->input('or_no');
+            $payment->cheque_no = $request->input('cheque_no');
+            $payment->bank_name = $request->input('bank_name');
+            $payment->reference_no = $request->input('reference_no');
+            $payment->memo_type = $request->input('memo_type');
+            $payment->amortization_id = $request->input('amortization_id');
+            $payment->principal = $request->input('principal');
+            $payment->interest = $request->input('interest');
+            $payment->short_principal = $request->input('short_principal');
+            $payment->advance_principal = $request->input('advance_principal');
+            $payment->short_interest = $request->input('short_interest');
+            $payment->advance_interest = $request->input('advance_interest');
+            $payment->pdi = $request->input('pdi');
+            $payment->pdi_approval_no = $request->input('pdi_approval_no');
+            $payment->short_pdi = $request->input('short_pdi');
+            $payment->penalty = $request->input('penalty');
+            $payment->penalty_approval_no = $request->input('penalty_approval_no');
+            $payment->short_penalty = $request->input('short_penalty');
+            $payment->rebates = $request->input('rebates');
+            $payment->rebates_approval_no = $request->input('rebates_approval_no');
+            $payment->vat = $request->input('vat');
+            $payment->over_payment = $request->input('over_payment');
+            $payment->total_payable = $request->input('total_payable');
+            $payment->amount_applied = $request->input('amount_applied');
+            $payment->vat = 0.00;
+            $payment->reference_id = $request->input('reference_id');
+            $payment->remarks = $request->input('remarks');
+            $endTransaction = new EndTransaction();
+            $dateEnd = $endTransaction->getTransactionDate($request->input("branch_id"));
+            $payment->transaction_date = $dateEnd->date_end;
+            $payment->gcash_no = $request->input('gcash_no');
+
+            if ($payment->interest > 0 || $payment->pdi > 0 || $payment->penalty > 0) {
+                $pdi = 0;
+                $penalty = 0;
+                if ($payment->pdi > 0 && !$payment->pdi_approval_no) {
+                    $pdi = $payment->pdi;
+                }
+
+                if ($payment->penalty > 0 && !$payment->penalty_approval_no) {
+                    $penalty = $payment->penalty;
+                }
+
+                $vatint = round(($payment->interest) / 1.12 *0.12,2);
+                $vatpdi = round(($pdi) / 1.12 *0.12,2);
+                // $vat = ($payment->interest + $pdi + $penalty) / 1.12 * 0.12;
+                $vat = $vatpdi + $vatint;
+
+                $payment->vat = round($vat, 2);
             }
 
-            $vatint = round(($payment->interest) / 1.12 *0.12,2);
-            $vatpdi = round(($pdi) / 1.12 *0.12,2);
-            // $vat = ($payment->interest + $pdi + $penalty) / 1.12 * 0.12;
-            $vat = $vatpdi + $vatint;
-
-            $payment->vat = round($vat, 2);
-        }
-
-        // $payment->status = 'paid';
-        $payment->save();
-
-        if ($payment->payment_id) {
-            $payment->transaction_number = $this->generateTransactionNumber($payment->payment_id, $payment->payment_type, $payment->memo_type);
             $payment->save();
-        }
 
+            if ($payment->payment_id) {
+                $payment->transaction_number = $this->generateTransactionNumber($payment->payment_id, $payment->payment_type, $payment->memo_type);
+                $payment->save();
+            }
 
-        // $amortization = Amortization::find( $payment->amortization_id );
-        // $amortization->status = 'paid';
-
-        // if( $payment->short_principal > 0 ){
-        //     $amortization->status = 'delinquent';
-        // }
-
-        // $amortization->save();
-
-        return $payment;
+            return $payment;
+        });
     }
 
     public function overridePaymentAccounts($filters = array())
@@ -331,12 +332,10 @@ class Payment extends Model
 
     public function getOngoingPayment($request = array())
     {
-        return DB::transaction(function () use ($request) {
-            return Payment::where([
-                'loan_account_id' => $request['loan_account_id'], 
-                'status' => 'open'
-            ])->lockForUpdate()->first();
-        });
+        return Payment::where([
+            'loan_account_id' => $request['loan_account_id'],
+            'status' => 'open'
+        ])->get()->first();
     }
 
     public function deleteMemoPaymentIfExists($loanAccount)
