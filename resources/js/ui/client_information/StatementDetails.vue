@@ -1670,9 +1670,9 @@
 								<a @click.prevent="printContent('soaPrintContent')" href="#" class="btn btn-default min-w-150">Print</a>
 								<!-- <a href="#" class="btn btn-success min-w-150 mr-24">Download Excel</a> -->
 							</div>
-							<div class="d-flex mb-24">
+							<!-- <div class="d-flex mb-24">
 								<img :src="this.baseURL()+'/img/logo-footer.png'" class="w-100" alt="Company Footer">
-							</div>
+							</div> -->
 						</div>
 					</div>
 				</div>
