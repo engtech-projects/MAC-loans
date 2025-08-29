@@ -1,3 +1,60 @@
+<style>
+
+.payments-table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: auto; /* keeps columns aligned */
+  }
+
+  .payments-table th,
+  .payments-table td {
+    padding: 4px 6px;
+    white-space: nowrap; /* prevent wrapping */
+    border: 1px solid #ccc;
+    font-size: 13px;
+	white-space: nowrap;
+  }
+
+  /* Narrow columns (small values) */
+.payments-table th:nth-child(5),  /* PDI */
+.payments-table td:nth-child(5),
+.payments-table th:nth-child(6),  /* Penalty */
+.payments-table td:nth-child(6),
+.payments-table th:nth-child(7),  /* Rebates */
+.payments-table td:nth-child(7) {
+  width: 60px;      /* force small width */
+  text-align: right;
+}
+
+.payments-table th:nth-child(8),
+.payments-table td:nth-child(8),
+/* Total Payment (9th col) */
+.payments-table th:nth-child(9),
+.payments-table td:nth-child(9) {
+  text-align: center;
+}
+
+/* Bank Name expands to fit */
+.payments-table th:nth-child(11),
+.payments-table td:nth-child(11) {
+  width: auto;         /* auto size */
+  white-space: nowrap; /* don't break text */
+  text-align: center;
+}
+
+@media print {
+	.payments-table th {
+    text-align: center;
+    vertical-align: middle;
+  }
+	.print-page-break {
+	  page-break-inside: avoid; /* Prevents being split */
+	}
+  }
+</style>
+
+
+
 <template>
 	<div class="px-16">
 		<notifications group="foo" />
@@ -280,7 +337,7 @@
 							<!-- <a href="#" class="btn btn-success min-w-150 mr-24">Download Excel</a> -->
 						</div>
 						<div class="d-flex mb-24">
-							<img :src="this.baseURL()+'/img/logo-footer.png'" class="w-100" alt="Company Footer">
+							<!-- <img :src="this.baseURL()+'/img/logo-footer.png'" class="w-100" alt="Company Footer"> -->
 						</div>
 					</div>
 				</div>
@@ -1331,10 +1388,23 @@
 			<div class="modal-dialog modal-lg minw-70" role="document">
 				<div class="modal-content">
 					<div class="modal-body" id="soaPrintContent">
-						<img :src="this.baseURL()+'/img/company_header.png'" style="width:100%" class="mb-16" alt="Company Header">
+						<!-- <img :src="this.baseURL()+'/img/company_header.png'" style="width:100%" class="mb-16" alt="Company Header"> -->
 						<div class="d-flex flex-column" style="padding:0 50px;">
-							<span class="text-center text-block dark-bb pb-10 text-bold font-lg mb-16">STATEMENT OF ACCOUNT</span>
-
+						<!-- <span class="text-center text-block dark-bb pb-10 text-bold font-lg mb-16">STATEMENT OF ACCOUNT</span> -->
+							<div class="d-flex flex-row align-items-center mb-36">
+								<div class="flex-1">
+									<!-- <span class="text-primary-dark font-25">{{branch.branch_name}} Branch ({{branch.branch_code}})</span> -->
+								</div>
+								<div class="d-flex flex-column">
+									<span style="display: block; text-align: center;" class="font-26 text-bold text-primary-dark lh-1">STATEMENT OF ACCOUNT</span>
+									<span class="text-center text-primary-dark text-bold font-md mb-5">MICRO ACCESS LOAN CORPORATION</span>
+									<span class="text-center text-primary-dark font-20">{{branch.branch_name}} Branch</span>
+								</div>
+								<div class="flex-1 d-flex justify-content-end pr-10">
+									<span class=" mr-10">{{dateFullDay(new Date())}} {{dateToYMD(new Date()).split('-').join('/')}}</span>
+									<!-- <span class="">Time: {{todayTime(new Date())}} {{(new Date()).getHours() > 12? 'PM':'AM'}}</span> -->
+								</div>
+							</div>
 							<div class="d-flex flex-row mb-24">
 
 								<div class="d-flex flex-column flex-2">
@@ -1438,7 +1508,8 @@
 							</div>
 
 							<section class=" mb-24 d-flex flex-column">
-								<span class="text-bold bg-yellow" style="padding:0 5px;">Release</span>
+								<!-- <span class="text-bold bg-yellow bbt-8 " style="padding:0 5px;">Release</span> -->
+								<span class="bbt-8 py-7  text-block text-10 text-bold mb-10">Release</span>
 								<table class="table th-nb td-nb table-thin">
 									<thead>
 										<th>Date</th>
@@ -1467,8 +1538,8 @@
 							</section>
 
 							<section class="mb-24 d-flex flex-column">
-								<span class="text-bold bg-gray" style="padding:0 5px;">Payment</span>
-								<table class="table table-stripped mb-64">
+								<span class="text-bold " style="padding:0 5px;">Payments</span>
+								<table class="table table-stripped mb-64 payments-table">
 									<thead>
 										<th>Date</th>
 										<th>O.R #</th>
@@ -1497,7 +1568,7 @@
 											<td>{{formatToCurrency(py.over_payment)}}</td>
 											<td>{{formatToCurrency(py.amount_applied)}}</td>
 											<td>{{ py.cheque_no }}</td>
-											<td>{{py.bank_name}}<td></td>
+											 <td>{{ py.bank_name === 'BDO' ? 'Cash in Bank - BDO' : py.bank_name }}</td>
 
 										</tr>
 										<tr v-if="loanDetails.payments.length < 1">
@@ -1508,7 +1579,7 @@
 
 
 
-								<div>
+								<div class="account-balance-summary print-page-break">
 									<span class="text-primary-dark text-lg text-bold mb-15">ACCOUNT BALANCE SUMMARY</span>
 									<div class="d-flex flex-row mb-45">
 										<div class="light-border p-10" style="flex:4">
