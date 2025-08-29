@@ -63,7 +63,7 @@ class UserController extends BaseController
             }
 
         }
-        return $this->sendResponse(new UserResource($user), 'User Created');
+        return $this->sendResponse(new UserResource($user), 'User created successfully.');
     }
 
     /**
@@ -129,13 +129,22 @@ class UserController extends BaseController
 
         $user = User::find($user->id);
 
-        return $this->sendResponse(new UserResource($user), 'User Updated.');
+        return $this->sendResponse(new UserResource($user), 'User updated successfully.');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy() {}
+    public function destroy(User $user) {
+        try {
+            UserBranch::where('id', $user->id)->delete();
+            UserAccessibility::where('id', $user->id)->delete();
+            $user->delete();
+            return $this->sendResponse([], 'User deleted successfully.');
+        } catch (\Exception $e) {
+            return $this->sendError('Error deleting user.', ['error' => $e->getMessage()]);
+        }
+    }
 
 
 }
