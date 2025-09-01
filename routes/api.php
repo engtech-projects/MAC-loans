@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ActivityLogController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -49,6 +50,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     });
     Route::get('logout', [AuthController::class, 'logout'])->name('api.logout');
     Route::resource('user', UserController::class);
+    Route::resource('activity-logs', ActivityLogController::class);
     Route::resource('product', ProductController::class);
     Route::resource('center', CenterController::class);
     Route::resource('branch', BranchController::class);

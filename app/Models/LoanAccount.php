@@ -2,21 +2,25 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 use GuzzleHttp\Psr7\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Storage;
+use Spatie\Activitylog\LogOptions;
 use Illuminate\Support\Facades\File;
 use PhpParser\Node\Expr\Cast\Object_;
-
 use function PHPUnit\Framework\isEmpty;
+use Illuminate\Database\Eloquent\Model;
+
+use Illuminate\Support\Facades\Storage;
+use Spatie\Activitylog\Traits\LogsActivity;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class LoanAccount extends Model
 {
     use HasFactory;
+    use LogsActivity;
+    protected static $recordEvents = ['deleted', 'created', 'updated'];
     protected $table = 'loan_accounts';
     protected $primaryKey = 'loan_account_id';
     protected $with = ['documents', 'borrower', 'center', 'branch', 'product', 'accountOfficer', 'payments'];
@@ -71,6 +75,14 @@ class LoanAccount extends Model
     ];
 
     protected $appends = ['remaining_balance'];
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->setDescriptionForEvent(fn(string $eventName) =>  $eventName)
+            ->useLogName('Loan Account');
+    }
+
 
     public function getRemainingBalanceAttribute()
     {
@@ -953,13 +965,13 @@ class LoanAccount extends Model
         $payments = Payment::query()->when($amortizationId, function ($query, $amortizationId) {
             $query->where('amortization_id', $amortizationId);
         })->select([
-                    'loan_account_id',
-                    'amortization_id',
-                    'short_principal',
-                    'short_pdi',
-                    'short_penalty',
-                    'total_payable'
-                ])
+            'loan_account_id',
+            'amortization_id',
+            'short_principal',
+            'short_pdi',
+            'short_penalty',
+            'total_payable'
+        ])
             ->where('loan_account_id', $this->loan_account_id)
             ->orderBy('payment_id', 'DESC')
             ->paid()
@@ -1092,7 +1104,6 @@ class LoanAccount extends Model
                             $counter++;
                         }
                     }
-
                 } else {
                     if ($dayDiff > 10) {
                         $counter++;
@@ -1254,7 +1265,7 @@ class LoanAccount extends Model
         ];
         // SET PDI AND PENALTY IN THE ACCOUNT SUMMARY
         // $accountSummary['penalty']['debit'] += /* 2;  */$this->getTotalPenalty($transactionDateNow);
-        $accountSummary['pdi']['debit'] += /* 2;  */$this->getTotalPdi($transactionDateNow);
+        $accountSummary['pdi']['debit'] += /* 2;  */ $this->getTotalPdi($transactionDateNow);
 
 
 
@@ -1495,8 +1506,8 @@ class LoanAccount extends Model
                     ->whereYear('date_release', $date->year);
             })
             ->groupBy('year', 'month', 'branch_code')
-            ->orderBy('year','DESC')
-            ->orderBy('month','DESC')
+            ->orderBy('year', 'DESC')
+            ->orderBy('month', 'DESC')
             ->get();
 
         $groupReleasedAccounts = [];
