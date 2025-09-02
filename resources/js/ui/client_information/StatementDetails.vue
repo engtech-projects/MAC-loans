@@ -2221,24 +2221,37 @@
 					type: type,
 				});
 			},
-			async uploadFile(){
-				await axios.post(this.baseURL() + 'api/account/update/' + this.loanDetails.loan_account_id, this.loanAccount, {
-						headers: {
-							'Authorization': 'Bearer ' + this.token,
-							'contentType': "multipart/form-data"
-						}
-					})
-					.then(function (response) {
-						console.log(response.data);
-						this.notify('','File has been successfully uploaded', 'success');
-						var file = document.getElementById('fileUploadDocs');
-						file.value = '';
-						this.fetchAccount(this.loanDetails.loan_account_id);
-					}.bind(this))
-					.catch(function (error) {
-						console.log(error);
-					}.bind(this));
-			},
+		async uploadFile() {
+		await axios.post(
+			this.baseURL() + 'api/account/update/' + this.loanDetails.loan_account_id,
+			this.loanAccount,
+			{
+			headers: {
+				'Authorization': 'Bearer ' + this.token,
+				'contentType': "multipart/form-data"
+			}
+			}
+		)
+		.then(function (response) {
+			console.log(response.data);
+
+			this.notify('', 'File has been successfully uploaded', 'success');
+
+			// reset fileName (Vue will auto update the span)
+			this.fileName = "";
+
+			// clear file input
+			let file = document.getElementById('fileUploadDocs');
+			if (file) file.value = '';
+
+			// reload account data
+			this.fetchAccount(this.loanDetails.loan_account_id);
+
+		}.bind(this))
+		.catch(function (error) {
+			console.log(error);
+		}.bind(this));
+		},
 			fileChange:function(e){
 				if(e.target.files.length){
 					this.loanDetails.loanfiles = [];
