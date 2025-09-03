@@ -16,7 +16,7 @@
 				<th>Branch</th>
 				<th>User Name</th>
 				<th>Password</th>
-				<th></th>
+				<th>Status</th>
 				<th></th>
 				<th></th>
 			</thead>
@@ -26,7 +26,8 @@
 					<td><span v-for="branch in acc.branch" :key="branch.branch_id">{{branch.branch_name + ' '}}</span></td>
 					<td>{{acc.username}}</td>
 					<td>**********************************</td>
-					<td><a href="#" @click.prevent="" class="text-green text-sm">{{upperFirst(acc.status)}}</a></td>
+					<td v-if="acc.status=='active'"><i class="text-green text-sm">{{upperFirst(acc.status)}}</i></td>
+					<td v-if="acc.status!='active'"><i class="text-red text-sm">{{upperFirst(acc.status)}}</i></td>
 					<td><span @click="assignAccount(acc)" class="text-green c-pointer text-sm hover-underline"><i class="fa fa-edit"></i>Edit</span></td>
 					<td><span @click="deleteAccount(acc)" class="text-red c-pointer text-sm hover-underline"><i class="fa fa-trash"></i>Delete</span></td>
 				</tr>
