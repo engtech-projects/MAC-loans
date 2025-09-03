@@ -22,7 +22,7 @@ class Borrower extends Authenticatable
     use HasApiTokens, HasFactory, Notifiable;
 
     use LogsActivity;
-    protected static $recordEvents = ['deleted', 'created', 'updated'];
+    protected static $recordEvents = ['deleted'];
 
     public function getActivitylogOptions(): LogOptions
     {

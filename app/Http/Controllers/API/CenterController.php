@@ -14,50 +14,62 @@ class CenterController extends BaseController
     /**
      * Display a listing of the resource.
      */
-    public function index() {
+    public function index()
+    {
         $centers = Center::fetchCenters();
         return $this->sendResponse(CenterResource::collection($centers), 'Centers fetched.');
     }
-    public function activeCenter() {
+    public function activeCenter()
+    {
         $centers = Center::where(["status" => "active"])->orderBy('center')->get();
         return $this->sendResponse(CenterResource::collection($centers), 'Centers fetched.');
     }
     /**
      * Show the form for creating a new resource.
      */
-    public function create() {
+    public function create()
+    {
         // return view();
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request) {
+    public function store(Request $request)
+    {
 
         $input = $request->all();
         # add validator dri
         $center = Center::create($input);
+
+        activity("Create Center")->event("created")
+            ->createdAt(now())
+            ->log("Center Created");
         return $this->sendResponse(new CenterResource($center), 'Center Created');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Center $center) {
+    public function show(Center $center)
+    {
         return $this->sendResponse(new CenterResource($center), 'Center fetched.');
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Center $center) {
+    public function edit(Center $center)
+    {
         // return view()
     }
 
-     /**
+    /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Center $center) {
+    public function update(Request $request, Center $center)
+    {
+        $replicate = $center->replicate();
         $input = $request->all();
         # add validator na pd dri
         $center->center = $input['center'];
@@ -66,6 +78,11 @@ class CenterController extends BaseController
         $center->area = $input['area'];
         $center->save();
 
+        activity("Edit Center")->event("updated")->performedOn($center)
+            ->withProperties(['attributes' => $center, 'old' => $replicate])
+            ->createdAt(now())
+            ->log("Payment Updated");
+
         return $this->sendResponse(new CenterResource($center), 'Center Updated.');
     }
 
@@ -73,5 +90,4 @@ class CenterController extends BaseController
      * Remove the specified resource from storage.
      */
     public function destroy() {}
-
 }

@@ -147,6 +147,9 @@ class BorrowerController extends BaseController
                     $borrower->outstandingObligations()->save(new OutstandingObligations($value));
                 }
             }
+            activity("Release Entry")->event("created")->performedOn($borrower)
+                ->createdAt(now())
+                ->log("Borrower Created");
             # add validator dri
             return $this->sendResponse(new BorrowerResource($borrower), 'Borrower Created');
         }
@@ -167,6 +170,7 @@ class BorrowerController extends BaseController
      */
     public function update(Request $request, Borrower $borrower)
     {
+        $replicate = $borrower->replicate();
         $borrower->fill($request->input());
         $borrower->save();
 
@@ -186,6 +190,13 @@ class BorrowerController extends BaseController
         $borrower->businessInfo = $request->input('businessInfo');
         $borrower->householdMembers = $request->input('householdMembers');
         $borrower->outstandingObligations = $request->input('outstandingObligations');
+
+        if ($borrower) {
+            activity("Edit borrower")->event("updated")->performedOn($borrower)
+                ->withProperties(['attributes' => $borrower, 'old' => $replicate])
+                ->createdAt(now())
+                ->log("Borrower Updated");
+        }
 
         if (count($borrower->employmentInfo)) {
             EmploymentInfo::upsert(
