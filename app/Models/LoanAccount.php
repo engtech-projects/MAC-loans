@@ -20,7 +20,7 @@ class LoanAccount extends Model
 {
     use HasFactory;
     use LogsActivity;
-    protected static $recordEvents = ['deleted', 'created', 'updated'];
+    protected static $recordEvents = ['deleted'];
     protected $table = 'loan_accounts';
     protected $primaryKey = 'loan_account_id';
     protected $with = ['documents', 'borrower', 'center', 'branch', 'product', 'accountOfficer', 'payments'];

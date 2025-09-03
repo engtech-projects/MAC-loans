@@ -56,6 +56,9 @@ class PaymentController extends BaseController
             if ($loanAccount) {
                 $payment->deleteMemoPaymentIfExists($loanAccount);
             }
+            activity("Repayment Entry")->event("created")->performedOn($payment)
+                ->createdAt(now())
+                ->log("Payment Created");
             return $this->sendResponse(new PaymentResource($payment->addPayment($request)), 'Payment');
             // return $request->input();
         } catch (\Illuminate\Database\QueryException $e) {
@@ -125,9 +128,11 @@ class PaymentController extends BaseController
 
         $succeed = 0;
         $failed = 0;
+        $payment = [];
         foreach ($request->input() as $key => $value) {
 
             $payment = Payment::find($value['payment_id']);
+            $payment[] = $payment;
             $amortization = Amortization::find($payment->amortization_id);
             $loanAccount = LoanAccount::find($payment->loan_account_id);
             $paymentMode = $loanAccount->payment_mode;
@@ -155,7 +160,6 @@ class PaymentController extends BaseController
                 } else {
                     $amortization->status = 'delinquent';
                 }
-
             } else {
                 $amortization->status = 'paid';
                 $loanAccount->payment_status = 'Current';
@@ -173,6 +177,10 @@ class PaymentController extends BaseController
         }
 
         $sf = $succeed + $failed;
+        activity("Override Repayment")->event("created")->performedOn($payment)
+            ->withProperties(['attributes' => $payment, 'old' => $payment])
+            ->createdAt(now())
+            ->log("Payment Updated");
         return $this->sendResponse("{$succeed} of {$sf} Successfully Overriden", 'Override');
     }
 
@@ -204,15 +212,21 @@ class PaymentController extends BaseController
 
     public function updatePayment(UpdatePaymentRequest $request, Payment $payment)
     {
+        $replicate = $payment->replicated();
         $validated = $request->validated($request);
         $payment->fill($validated);
         $payment->save();
+        activity("Edit Payment")->event("created")->performedOn($payment)
+            ->withProperties(['attributes' => $payment, 'old' => $replicate])
+            ->createdAt(now())
+            ->log("Payment Updated");
         return $this->sendResponse(new PaymentResource($payment), 'Payment successfully updated');
     }
 
     public function update(Request $request, Payment $payment)
     {
 
+        $replicate = $payment->replicate();
         $payment->fill($request->input());
         $payment->save();
 
@@ -235,15 +249,22 @@ class PaymentController extends BaseController
                 }
             }
 
+            activity("Cancel Payment")->event("created")->performedOn($payment)
+                ->withProperties(['attributes' => $payment, 'old' => $replicate])
+                ->createdAt(now())
+                ->log("Payment Updated");
             return $this->sendResponse(new PaymentResource($payment), 'Payment Cancelled.');
         }
 
+
+        activity("Edit Payment")->event("created")->performedOn($payment)
+            ->withProperties(['attributes' => $payment, 'old' => $replicate])
+            ->createdAt(now())
+            ->log("Payment Updated");
         return $this->sendResponse(new PaymentResource($payment), 'Payment Updated.');
     }
 
-    public function show($branchId)
-    {
-    }
+    public function show($branchId) {}
 
     public function paymentSummary($branchId)
     {
