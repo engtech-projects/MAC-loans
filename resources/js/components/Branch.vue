@@ -64,7 +64,7 @@
 							</div>
 						</div>
 						<div class="flex-2 light-border px-16">
-							<table class="table table-stripped">
+							<table class="table table-stripped th-nbt table-hover">
 								<thead>
 									<th>Code</th>
 									<th>Branch Name</th>
@@ -77,13 +77,14 @@
 									<tr v-if="branches.length == 0">
 										<td>No Branches found.</td>
 									</tr>
-									<tr v-for="branch in branches" :key="branch.branch_id">
-										<td>{{branch.branch_code}}</td>
-										<td>{{branch.branch_name}}</td>
-										<td>{{branch.branch_manager}}</td>
-										<td>{{branch.branch_address}}</td>
-										<td class="text-green">{{upperFirst(branch.status)}}</td>
-										<td><a @click.prevent="setEdit(branch)" href="#"><i class="fa fa-edit"></i></a></td>
+									<tr v-for="branchItem in branches" :key="branchItem.branch_id" :class="{ 'row-being-edited': branch.branch_id === branchItem.branch_id }">
+										<td>{{branchItem.branch_code}}</td>
+										<td>{{branchItem.branch_name}}</td>
+										<td>{{branchItem.branch_manager}}</td>
+										<td>{{branchItem.branch_address}}</td>
+										<td v-if="branchItem.status=='active'"><i class="text-green">{{upperFirst(branchItem.status)}}</i></td>
+										<td v-if="branchItem.status!='active'"><i class="text-red">{{upperFirst(branchItem.status)}}</i></td>
+										<td><a @click.prevent="setEdit(branchItem)" href="#"><i class="fa fa-edit"></i></a></td>
 									</tr>
 								</tbody>
 							</table>
@@ -175,6 +176,15 @@ export default {
 			this.branch.branch_address = data.branch_address;
 			this.branch.status = data.status;
 			this.branch.deleted = data.deleted;
+			this.$nextTick(() => {
+	        	const modal = document.querySelector('#branchModal');
+		        if (modal) {
+		            modal.scrollTo({
+				        top: 0,
+				        behavior: 'smooth'
+				    });
+		        }
+		    });
 		},
 		notify:function(title, text, type){
 			this.$notify({
