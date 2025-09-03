@@ -7,7 +7,7 @@
 		</div><!-- /.col -->
 		<div class="d-flex flex-column flex-xl-row ml-16">
 			<div style="flex:9;">
-				<section class="mb-24" style="flex:21;padding-left:16px;">
+				<section class="edit-section mb-24" style="flex:21;padding-left:16px;">
 					<span class="section-title section-subtitle mb-12">Inputs</span>
 
 					<div class="d-flex flex-column p-16 light-border" v-if="product.product_id==null">
@@ -79,12 +79,13 @@
 									<td></td>
 									<td></td>
 								</tr>
-								<tr v-for="product in products" :key="product.product_id">
-									<td>{{product.product_name}}</td>
-									<td>{{product.product_code}}</td>
-									<td>{{product.interest_rate}}%</td>
-									<td class="text-green text-sm"><a href="#" class="text-green">{{sentenceCase(product.status)}}</a></td>
-									<td><a @click.prevent="setEdit(product)" href="#"><i class="fa fa-edit"></i></a></td>
+								<tr v-for="productItem in products" :key="productItem.product_id" :class="{ 'row-being-edited': product.product_id === productItem.product_id }">
+									<td>{{productItem.product_name}}</td>
+									<td>{{productItem.product_code}}</td>
+									<td>{{productItem.interest_rate}}%</td>
+									<td v-if="productItem.status=='active'"><i class="text-green text-sm">{{upperFirst(productItem.status)}}</i></td>
+									<td v-if="productItem.status!='active'"><i class="text-red text-sm">{{upperFirst(productItem.status)}}</i></td>
+									<td><a @click.prevent="setEdit(productItem)" href="#"><i class="fa fa-edit"></i></a></td>
 								</tr>
 							</tbody>
 						</table>
@@ -148,6 +149,15 @@
 					this.product.interest_rate = data.interest_rate;
 					this.product.status = data.status;
 					this.product.deleted = data.deleted;
+					this.$nextTick(() => {
+			        	const editForm = document.querySelector('.edit-section');
+				        if (editForm) {
+				            editForm.scrollIntoView({ 
+				                behavior: 'smooth', 
+				                block: 'start' 
+				            });
+				        }
+				    });
 			},
 			save: function(){
 				if(this.product.product_id){
@@ -213,8 +223,11 @@
     }
 </script>
 
-<style scoped>
-	td {
-		cursor: pointer;
+<style>
+	.row-being-edited {
+	    background-color: #78e08f !important;
+	}
+	.edit-section {
+	    scroll-margin-top: 20px;
 	}
 </style>

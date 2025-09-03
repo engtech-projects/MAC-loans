@@ -7,7 +7,7 @@
 		</div><!-- /.col -->
 		<div class="d-flex flex-column flex-xl-row mb-24">
 			<div style="flex:9;">
-				<section class="mb-24" style="flex:21;" v-if="center.center_id">
+				<section class="center-edit-section mb-24" style="flex:21;" v-if="center.center_id">
 					<span class="section-title section-subtitle mb-12">Center Office</span>
 					<div class="d-flex flex-column light-border">
 						<div class="d-flex justify-content-between bg-primary-dark text-white px-16 py-7">
@@ -65,17 +65,26 @@
 				<section class="mb-24" style="flex:21;padding-left:16px;">
 					<span class="section-title section-subtitle mb-12">Center List</span>
 					<div class="p-10 light-border">
-						<table class="table table-stripped th-nb m-0">
+						<table class="table table-stripped th-nbt table-hover">
+							<thead>
+								<th>Center</th>
+								<th>Schedule</th>
+								<th>Area of Operation</th>
+								<th class="text-right">Status</th>
+								<th></th>
+								<th></th>
+							</thead>
 							<tbody>
 								<tr v-if="centers.length == 0">
 									<td>No centers found.</td>
 								</tr>
-								<tr v-for="center in centers" :key="center.center_id">
-									<td class="">{{center.center}}</td>
-									<td>{{upperFirst(center.day_sched)}}</td>
-									<td>{{center.area}}</td>
-									<td class="text-right"><a href="#" class="text-green text-sm">{{upperFirst(center.status)}}</a></td>
-									<td class="text-right"><a @click.prevent="setEdit(center, 'center')" href="#" class="fa fa-edit"></a></td>
+								<tr v-for="centerItem in centers" :key="centerItem.center_id" :class="{ 'row-being-edited': center.center_id === centerItem.center_id }">
+									<td class="">{{centerItem.center}}</td>
+									<td>{{upperFirst(centerItem.day_sched)}}</td>
+									<td>{{centerItem.area}}</td>
+									<td class="text-right" v-if="centerItem.status=='active'"><i class="text-green text-sm">{{upperFirst(centerItem.status)}}</i></td>
+									<td class="text-right" v-if="centerItem.status!='active'"><i class="text-red text-sm">{{upperFirst(centerItem.status)}}</i></td>
+									<td class="text-right"><a @click.prevent="setEdit(centerItem, 'center')" href="#" class="fa fa-edit"></a></td>
 								</tr>
 							</tbody>
 						</table>
@@ -86,7 +95,7 @@
 		
 		<div class="d-flex flex-column flex-xl-row mb-24">
 			<div style="flex:9;">
-				<section class="mb-24" style="flex:21;">
+				<section class="ao-edit-section mb-24" style="flex:21;">
 					<span class="section-title section-subtitle mb-12">Account Officer</span>
 
 					<div class="d-flex flex-column light-border" v-if="officer.ao_id">
@@ -151,16 +160,23 @@
 				<section class="mb-24" style="flex:21;padding-left:16px;">
 					<span class="section-title section-subtitle mb-12">Account Officer List</span>
 					<div class="p-10 light-border">
-						<table class="table table-stripped th-nb m-0">
+						<table class="table table-stripped th-nbt table-hover">
+							<thead>
+								<th>Name</th>
+								<th>Branch</th>
+								<th class="text-right">Status</th>
+								<th></th>
+							</thead>
 							<tbody>
 								<tr v-if="officers.length == 0">
 									<td>No Account officers found.</td>
 								</tr>
-								<tr v-for="officer in officers" :key="officer.ao_id">
-									<td>{{officer.name}}</td>
-									<td>{{upperFirst(officer.branch.branch_name)}}</td>
-									<td class="text-right"><a href="#" class="text-green text-sm">{{upperFirst(officer.status)}}</a></td>
-									<td class="text-right"><a @click.prevent="setEdit(officer,'officer')" href="#" class="fa fa-edit"></a></td>
+								<tr v-for="officerItem in officers" :key="officerItem.ao_id" :class="{ 'row-being-edited': officer.ao_id === officerItem.ao_id }">
+									<td>{{officerItem.name}}</td>
+									<td>{{upperFirst(officerItem.branch.branch_name)}}</td>
+									<td class="text-right" v-if="officerItem.status=='active'"><i class="text-green text-sm">{{upperFirst(officerItem.status)}}</i></td>
+									<td class="text-right" v-if="officerItem.status!='active'"><i class="text-red text-sm">{{upperFirst(officerItem.status)}}</i></td>
+									<td class="text-right"><a @click.prevent="setEdit(officerItem,'officer')" href="#" class="fa fa-edit"></a></td>
 								</tr>
 							</tbody>
 						</table>
@@ -337,12 +353,30 @@ export default {
 				this.center.status = data.status;
 				this.center.deleted = data.deleted;
 				this.center.area = data.area;
+				this.$nextTick(() => {
+		        	const editForm = document.querySelector('.center-edit-section');
+			        if (editForm) {
+			            editForm.scrollIntoView({ 
+			                behavior: 'smooth', 
+			                block: 'start' 
+			            });
+			        }
+			    });
 			}else{
 				this.officer.ao_id= data.ao_id;
 				this.officer.name= data.name;
 				this.officer.branch_id= data.branch_id;
 				this.officer.status= data.status;
 				this.officer.deleted= data.deleted;
+				this.$nextTick(() => {
+		        	const editForm = document.querySelector('.ao-edit-section');
+			        if (editForm) {
+			            editForm.scrollIntoView({ 
+			                behavior: 'smooth', 
+			                block: 'start' 
+			            });
+			        }
+			    });
 			}
 				
 		},
@@ -395,3 +429,10 @@ export default {
 	}
 }
 </script>
+
+<style scoped>
+	.center-edit-section,
+	.ao-edit-section {
+	    scroll-margin-top: 20px;
+	}
+</style>
