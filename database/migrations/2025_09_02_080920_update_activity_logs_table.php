@@ -25,8 +25,6 @@ class UpdateActivityLogsTable extends Migration
         ]);
 
         $user = User::where('username', 'mac_admin')->first();
-        /*         dd($user->accessibility->toArray()); */
-
         $user->accessibility()->sync([$accessibility->id]);
     }
 

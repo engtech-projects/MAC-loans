@@ -111,7 +111,6 @@ class Payment extends Model
                     ->orderBy('month', 'DESC');
             })->get();
         $groupPayments = [];
-        /* dd($paymentsYearly->toArray()); */
         foreach ($paymentsYearly as $branch) {
             $branchName = $branch->branch_name;
             foreach ($branch->payments as $payment) {
@@ -135,14 +134,14 @@ class Payment extends Model
     }
 
     public function addPayment(Request $request)
-    {   
+    {
         return DB::transaction(function () use ($request) {
             // DUPLICATE PREVENTION: Check if payment already exists
             $existingPayment = Payment::where([
                 'loan_account_id' => $request->input('loan_account_id'),
                 'status' => 'open'
             ])->lockForUpdate()->first();
-            
+
             if ($existingPayment) {
                 \Log::info('Duplicate payment prevented. Existing payment ID: ' . $existingPayment->payment_id);
                 return $existingPayment;

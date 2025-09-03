@@ -426,9 +426,8 @@ class LoanAccountController extends BaseController
 
     public static function fixLoanAccountShortAndAdvances($i, $limit, $accNum)
     {
-        // $accountsArray = LoanAccountMigrationFix::offset($i * $limit)->limit($limit)->get()->pluck('loan_account_id');
         $accountsArray = LoanAccountMigrationFix::where('account_num', $accNum)->get()->pluck('loan_account_id');
-        // dd($accountsArray[0]);
+
         foreach ($accountsArray as $acc_id) {
             LoanAccountController::fixMigration($acc_id);
         }
