@@ -116,9 +116,10 @@ class LoanAccountController extends BaseController
     public function updateLoanAccount(Request $request, LoanAccount $account)
     {
 
-        if ($request->input('data')) {
-            $request->request->add(objToArray(json_decode($request->input('data'))));
+        if ($request->filled('data')) {
+            $request->request->add(json_decode($request->input('data'), true));
         }
+
         $account->fill($request->input());
         $account->updateLoanAccount($request->account_num);
         $account->save();

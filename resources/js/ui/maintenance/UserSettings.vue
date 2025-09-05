@@ -9,7 +9,7 @@
 			<input v-model="filter" type="text" class="form-control" id="searchBar" placeholder="Search">
 			<div><i class="fa fa-search"></i></div>
 		</div>
-		<table class="table table-stripped table-hover" id="clientsList">
+		<table class="table table-hover" id="clientsList">
 			<thead>
 				<!-- <th>Account #</th> -->
 				<th>Full Name</th>
@@ -18,25 +18,27 @@
 				<th>Password</th>
 				<th></th>
 				<th></th>
+				<th></th>
 			</thead>
 			<tbody>
-				<tr v-for="acc in filteredAccounts" :key="acc.id" :class="account.id==acc.id?'active-account':''">
+				<tr v-for="acc in filteredAccounts" :key="acc.id" :class="getRowClass(acc)">
 					<td><a href="#">{{acc.firstname + ' ' + acc.lastname}}</a></td>
 					<td><span v-for="branch in acc.branch" :key="branch.branch_id">{{branch.branch_name + ' '}}</span></td>
 					<td>{{acc.username}}</td>
 					<td>**********************************</td>
 					<td><a href="#" @click.prevent="" class="text-green text-sm">{{upperFirst(acc.status)}}</a></td>
-					<td><span @click="assignAccount(acc)" class="text-green c-pointer text-sm hover-underline"><i class="fa fa-edit"></i> Edit</span></td>
+					<td><span @click="assignAccount(acc)" class="text-green c-pointer text-sm hover-underline"><i class="fa fa-edit"></i>Edit</span></td>
+					<td><span @click="deleteAccount(acc)" class="text-red c-pointer text-sm hover-underline"><i class="fa fa-trash"></i>Delete</span></td>
 				</tr>
 			</tbody>
 		</table>
 		<form @submit.prevent="submit()">
-		<section class="d-flex flex-row">
+		<section class="d-flex flex-row edit-section">
 			<div class="flex-1 mr-24">
 				<span class="text-20 py-7 mid-light-bb text-block text-primary-dark text-bold mb-12">Inputs</span>
 				<div class="light-border p-16 relative" :style="account.id?'padding-top:65px;':''">
 					<div v-if="account.id" class="flex bg-primary-dark align-items-center justify-content-between" style="position:absolute;width:100%;padding:12px 15px;left:0;top:0;">
-						<span class="text-white text-bold">Edit {{account.username}}</span>
+						<span class="text-white text-bold">Edit - {{account.firstname}} {{account.lastname}} | {{account.username}}</span>
 						<i @click="resetAccount" class="fa fa-times text-lg text-offwhite c-pointer hover-white"></i>
 					</div>
 					<div class="form-group mb-10">
@@ -199,6 +201,30 @@
 		</section>
 		</form>
 		<branch :token="token" @branchUpdated="fetchBranches"></branch>
+		<div v-if="showDeleteModal" class="modal" id="warningDeleteModal" tabindex="-1" role="dialog" 
+     style="display: block; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.5); z-index: 9999; margin: 0;">
+    		<div class="modal-dialog modal-md" role="document" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); max-width: 500px; margin: 0;">
+                <div class="modal-content">
+                    <div class="modal-body p-24">
+                        <div class="d-flex align-items-center">
+                            <img :src="baseURL()+'/img/warning.png'" style="width:120px;height:auto;" class="mr-24" alt="warning icon">
+                            <div class="d-flex flex-column">
+                                <span class="text-primary-dark text-bold mb-16">
+                                    Are you sure you want to delete this account?
+                                </span>
+                                <div v-if="accountToDelete" class="mb-24 text-primary-dark text-bold text-center">
+                                    <strong>{{accountToDelete.firstname}} {{accountToDelete.lastname}}<br>{{accountToDelete.username}}</strong>
+                                </div>
+                                <div class="d-flex mt-auto justify-content-between">
+                                    <a href="#" @click.prevent="cancelDelete()" class="btn btn-danger min-w-120">Cancel</a>
+                                    <a @click.prevent="confirmDelete()" href="#" class="btn btn-primary-dark min-w-120">Proceed</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 	  </div>
 </template>
 
@@ -209,6 +235,9 @@ export default {
 		return {
 			filter:'',
 			accounts:[],
+			deletingAccountId: null,
+			showDeleteModal: false,
+        	accountToDelete: null,
 			account:{
 				id:null,
 				username:'',
@@ -243,6 +272,59 @@ export default {
 				permissions.push(a.access_id);
 			})
 			this.account.accessibility = permissions;
+			this.$nextTick(() => {
+		        const editForm = document.querySelector('.edit-section');
+		        if (editForm) {
+		            editForm.scrollIntoView({ 
+		                behavior: 'smooth', 
+		                block: 'start' 
+		            });
+		        }
+		    });
+		},
+		getRowClass:function(acc){
+		    // Delete state takes priority over edit state
+		    if(this.deletingAccountId == acc.id){
+		        return 'deleting-account';
+		    }
+		    if(this.account.id == acc.id){
+		        return 'active-account';
+		    }
+		    return '';
+		},
+		deleteAccount:function(acc){
+			this.resetAccount();
+		    this.deletingAccountId = acc.id;
+		    this.accountToDelete = acc;
+		    this.showDeleteModal = true;
+		},
+		confirmDelete:function(){
+		    axios.delete(this.baseURL() + 'api/user/' + this.accountToDelete.id, {
+		        headers: {
+		            'Authorization': 'Bearer ' + this.token,
+		            'Content-Type': 'application/json',
+		            'Accept': 'application/json'
+		        }
+		    })
+		    .then(function (response) {
+		        this.notify('',response.data.message, 'success');
+		        this.deletingAccountId = null;
+		        this.fetchAccounts();
+		        this.showDeleteModal = false;
+		        this.accountToDelete = null;
+		    }.bind(this))
+		    .catch(function (error) {
+		        console.log(error);
+		        this.notify('','Error deleting account', 'error');
+		        this.deletingAccountId = null;
+		        this.showDeleteModal = false;
+		        this.accountToDelete = null;
+		    }.bind(this));
+		},
+		cancelDelete:function(){
+		    this.deletingAccountId = null;
+		    this.showDeleteModal = false;
+		    this.accountToDelete = null;
 		},
 		fetchAccounts: function(){
 			axios.get(this.baseURL() + 'api/user/', {
@@ -500,9 +582,15 @@ export default {
 
 <style scoped>
 	.active-account {
-		background-color: #78e08f !important;
-	}
-	.hover-border-dark:hover {
-		border-color: #95a5a6!important;
-	}
+        background-color: #78e08f !important;
+    }
+    .deleting-account {
+        background-color: #ffcccb !important; /* Light red */
+    }
+    .hover-border-dark:hover {
+        border-color: #95a5a6!important;
+    }
+    .text-red {
+        color: #e74c3c;
+    }
 </style>
