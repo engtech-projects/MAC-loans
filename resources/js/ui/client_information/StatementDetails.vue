@@ -1454,6 +1454,10 @@
 										<span>&nbsp;</span>
 									</div> -->
 									<div class="d-flex mb-7">
+										<span class="mr-5 nowrap">Borrower ID #: </span>
+										<span class="nowrap">{{borrower.id_no}}</span>
+									</div>
+									<div class="d-flex mb-7">
 										<span class="mr-5">Co-Borrower: </span>
 										<span>{{loanDetails.co_borrower_name}}</span>
 									</div>
@@ -1519,8 +1523,8 @@
 										<span>&nbsp;</span>
 									</div>
 									<div class="d-flex mb-7">
-										<span class="mr-5 nowrap">Borrower ID Type #: </span>
-										<span class="nowrap">{{borrower.id_no}}</span>
+										<span class="mr-5 nowrap">Borrower ID Type: </span>
+										<span class="nowrap">{{borrower.id_type}}</span>
 									</div>
 									<div class="d-flex mb-7">
 										<span class="mr-5 nowrap">Co-Borrower ID #: </span>
