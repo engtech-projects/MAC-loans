@@ -54,6 +54,11 @@
 	.print-page-break {
 	  page-break-inside: avoid; /* Prevents being split */
 	}
+	.no-print {
+    display: none !important;
+  }
+
+
   }
 </style>
 
@@ -1660,7 +1665,7 @@
 									<p class="text-block text-center">&lt; End of file &gt;</p>
 								</div>
 							</section>
-							<div class="d-flex flex-row-reverse mb-45">
+							<div class="d-flex flex-row-reverse mb-45 no-print">
 								<a @click.prevent="printContent('soaPrintContent')" href="#" class="btn btn-default min-w-150">Print</a>
 								<!-- <a href="#" class="btn btn-success min-w-150 mr-24">Download Excel</a> -->
 							</div>
