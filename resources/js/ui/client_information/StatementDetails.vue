@@ -1864,7 +1864,7 @@
 
 								<div class="d-flex flex-wrap">
 									<div v-for="(doc, dc) in loanDetails.docs" :key="dc" class="d-flex flex-column align-items-center" style="padding:16px;background-color:#f2f2f2;">
-										<a :href="doc"><img :src="baseURL() + '/img/fileicon.png'" alt="" style="max-width:95px;" class="mb-5"></a>
+										<a :href="doc" target="_blank"><img :src="baseURL() + '/img/fileicon.png'" alt="" style="max-width:95px;" class="mb-5"></a>
 										<b style="font-size:12px;"><i>{{extractFileName(doc)}}</i></b>
 									</div>
 								</div>
