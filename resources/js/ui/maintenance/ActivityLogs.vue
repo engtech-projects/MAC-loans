@@ -1,0 +1,254 @@
+<template>
+    <div class="container-fluid" style="padding:0!important">
+        <notifications group="foo" />
+        <div class="mb-16"></div>
+        <div class="ml-16 mb-24 bb-primary-dark pb-7 text-block">
+            <h1 class="m-0 font-35">Activity Logs</h1>
+        </div><!-- /.col -->
+        <form @submit.prevent="save()">
+            <div class="d-flex flex-column flex-xl-row ml-16">
+                <div style="flex:20">
+                    <section class="mb-24" style="flex:21;padding-left:16px;">
+                        <div class="row mb-10">
+                            <div class="col-md-2">
+                                <select name="" id="selectProductClient" class="form-control flex-1">
+                                    <option disabled value="">Select Subject Type</option>
+                                    <option value="performance_report">Performance Report</option>
+                                    <option value="write_off">Write Off Report</option>
+                                    <option value="delinquent">Delinquent Report</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                <select name="" id="selectProductClient" class="form-control flex-1">
+                                    <option disabled value="">Event</option>
+                                    <option value="performance_report">Create </option>
+                                    <option value="write_off">Write Off Report</option>
+                                    <option value="delinquent">Delinquent Report</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                <button class="btn btn-primary">Search</button>
+                            </div>
+
+                        </div>
+                        <div class="p-16 light-border">
+                            <table class="table table-stripped th-nbt table-hover">
+                                <th width="15%">Log Name</th>
+                                <th>Description</th>
+                                <th>Subject Type</th>
+                                <th>Log By</th>
+                                <th>Event</th>
+                                <th>Date</th>
+                                <th width="13%">Action</th>
+                                <tbody>
+                                    <tr v-if="!activityLogs.length">
+                                        <td>No deductions yet.</td>
+                                    </tr>
+                                    <tr v-for="d in activityLogs" :key="d.id">
+                                        <td>{{ d.log_name }}</td>
+                                        <td>{{ d.description }}</td>
+                                        <td>{{ d.subject_type }}</td>
+                                        <td>{{ d.causer }}</td>
+                                        <td>{{ d.event }}</td>
+                                        <td> {{ d.created_at }}</td>
+                                        <td>
+                                            <button @click="view(d.id)" data-toggle="modal" data-target="#viewLogModal"
+                                                class="btn btn-xs btn-primary">
+                                                <i class="fa fa-info-circle text-sm"></i>
+                                            </button>
+
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </form>
+        <div class="modal fade" id="viewLogModal" tabindex="-1" role="dialog" aria-labelledby="viewActivityLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-xl" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h6 class="modal-title" id="viewActivityLabel">
+                            Activity Log - @{{ activityLog.log_name }}
+                        </h6>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="card">
+                                    <div class="card-header bg-primary text-bold">
+                                        Log Info
+                                    </div>
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item">
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    Subject:
+                                                </div>
+                                                <div class="col-md-8">
+                                                    <ul>
+                                                        <li v-for="(item, index) in activityLog.subject?.data"
+                                                            :key="index">
+                                                            {{ index }} : <br> {{ item }}
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    Description:
+                                                </div>
+                                                <div class="col-md-6">
+                                                    {{ activityLog.event }}
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    Log by:
+                                                </div>
+                                                <div class="col-md-6">
+                                                    {{ activityLog.causer }}
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    Event:
+                                                </div>
+                                                <div class="col-md-6">
+                                                    {{ activityLog.description }}
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card">
+                                    <div class="card-header bg-primary text-bold">
+                                        Properties
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="card">
+                                                <div class="card-header text-bold">
+                                                    Attributes
+                                                </div>
+                                                <ul class="list-group list-group-flush">
+                                                    <ul>
+                                                        <li v-for="(item, index) in activityLog.properties?.attributes"
+                                                            :key="index">
+                                                            index: <br> item
+                                                        </li>
+                                                    </ul>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="card">
+                                                <div class="card-header text-bold">
+                                                    Old
+                                                </div>
+                                                <ul class="list-group list-group-flush">
+                                                    <ul>
+                                                        <li v-for="(item, index) in activityLog.properties?.old"
+                                                            :key="index">
+                                                            {{ index }} : <br> {{ item }}
+                                                        </li>
+                                                    </ul>
+                                                </ul>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</template>
+
+<script>
+export default {
+    props: ['token'],
+    data() {
+        return {
+            csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+            activityLogs: [],
+            activityLog: {},
+            deductions: [],
+            deduction: {
+                id: null,
+                name: '',
+                rate: '',
+                product_id: '',
+                term_start: '',
+                term_end: '',
+                age_start: '',
+                age_end: '',
+                status: 'active',
+            }
+        }
+    },
+    methods: {
+        async fetchActivityLogs() {
+            await axios.get(this.baseURL() + 'api/activity-logs/', {
+                headers: {
+                    'Authorization': 'Bearer ' + this.token,
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                }
+            })
+                .then(function (response) {
+                    this.activityLogs = response.data.data;
+                }.bind(this))
+                .catch(function (error) {
+                    console.log(error);
+                }.bind(this));
+        },
+
+        async view(id) {
+            await axios.get(this.baseURL() + 'api/activity-logs/' + id, {
+                headers: {
+                    'Authorization': 'Bearer ' + this.token,
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                }
+            })
+                .then(function (response) {
+                    this.activityLog = response.data.data
+                }.bind(this))
+                .catch(function (error) {
+                    console.log(error);
+                }.bind(this));
+        }
+    },
+    mounted() {
+        this.fetchActivityLogs();
+    }
+}
+</script>
+
+<style scoped>
+td {
+    cursor: pointer;
+}
+</style>
