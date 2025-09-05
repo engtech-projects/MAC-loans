@@ -1405,7 +1405,7 @@
 									<!-- <span class="text-primary-dark font-25">{{branch.branch_name}} Branch ({{branch.branch_code}})</span> -->
 								</div>
 								<div class="d-flex flex-column">
-									<span style="display: block; text-align: center;" class="font-26 text-bold text-primary-dark lh-1">MICRO ACCESS LOAN CORPORATION</span>
+									<span style="display: block; text-align: center;" class="font-26 text-bold text-primary-dark lh-1">MICRO ACCESS LOANS CORPORATION</span>
 									<span class="text-center text-primary-dark text-bold font-md mb-5">STATEMENT OF ACCOUNT</span>
 								</div>
 								<div class="flex-1 d-flex justify-content-end pr-10">
@@ -1519,6 +1519,10 @@
 										<span>&nbsp;</span>
 									</div>
 									<div class="d-flex mb-7">
+										<span class="mr-5 nowrap">Borrower ID Type #: </span>
+										<span class="nowrap">{{borrower.id_no}}</span>
+									</div>
+									<div class="d-flex mb-7">
 										<span class="mr-5 nowrap">Co-Borrower ID #: </span>
 										<span class="nowrap">{{loanDetails.co_borrower_id_number}}</span>
 									</div>
@@ -1531,7 +1535,7 @@
 										<span class="nowrap">{{loanDetails.co_maker_id_number}}</span>
 									</div>
 									<div class="d-flex mb-7">
-										<span class="mr-5" nowrap> Co-Maker ID ID Type: </span>
+										<span class="mr-5" nowrap> Co-Maker ID Type: </span>
 										<span class="nowrap"> {{loanDetails.co_maker_id_type}}</span>
 									</div>
 								</div>
@@ -1715,6 +1719,10 @@
 								<div class="d-flex mb-7">
 									<span class="mr-5">&nbsp;</span>
 									<span>&nbsp;</span>
+								</div>
+								<div class="d-flex mb-7">
+									<span class="mr-5"> Borrower ID #: </span>
+									<span>{{borrower.id_no}}</span>
 								</div>
 								<div class="d-flex mb-7">
 									<span class="mr-5">Co-Borrower: </span>
