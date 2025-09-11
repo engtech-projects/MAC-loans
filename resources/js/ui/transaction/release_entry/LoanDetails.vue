@@ -520,6 +520,7 @@ export default {
 				}
 			})
 			.then(function (response) {
+				console.log(response.data.data);
 				var result = response.data.data;
 				this.loanDetails.filing_fee = result.filing_fee.rate;
 				this.loanDetails.document_stamp = result.doc_stamp.rate;

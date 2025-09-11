@@ -207,6 +207,10 @@ export default {
         if (monthDifference < 0 || (monthDifference === 0 && today.getDate() < birthDate.getDate())) {
             age--; // Adjust if the birthday hasn't occurred yet this year
         }
+		  // Insurance rule: add +1 if birthday hasn't happened yet this year
+		  if (today < new Date(today.getFullYear(), birthDate.getMonth(), birthDate.getDate())) {
+        age++;
+    }
         return age;
     },
 	exportToExcelAgeBelow70() {
