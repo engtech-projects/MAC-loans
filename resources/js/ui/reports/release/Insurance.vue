@@ -203,14 +203,6 @@ export default {
         const birthDate = new Date(birthdate);
         const today = new Date();
         let age = today.getFullYear() - birthDate.getFullYear();
-        const monthDifference = today.getMonth() - birthDate.getMonth();
-        if (monthDifference < 0 || (monthDifference === 0 && today.getDate() < birthDate.getDate())) {
-            age--; // Adjust if the birthday hasn't occurred yet this year
-        }
-		  // Insurance rule: add +1 if birthday hasn't happened yet this year
-		  if (today < new Date(today.getFullYear(), birthDate.getMonth(), birthDate.getDate())) {
-        age++;
-    }
         return age;
     },
 	exportToExcelAgeBelow70() {

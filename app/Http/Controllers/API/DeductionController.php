@@ -63,18 +63,9 @@ class DeductionController extends BaseController {
     	$terms = $request->terms;
     	$age = null;
     	if( $request->birthdate ){
-            $birthdate = Carbon::parse($request->birthdate);
-            $now = Carbon::now();
-    
-            // Base age
-            $age = $birthdate->diffInYears($now);
-    
-            // If birthday hasn't happened yet this year, add +1
-            if ($now->lt($birthdate->copy()->year($now->year))) {
-                $age++;
-            }
+            $age =  Carbon::parse($request->birthdate)->startOfYear()->age;
     	}
-    	
+
     	$deduction = new Deduction();
         
     	return $this->sendResponse($deduction->deductions([
