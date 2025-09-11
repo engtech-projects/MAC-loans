@@ -63,11 +63,11 @@ class DeductionController extends BaseController {
     	$terms = $request->terms;
     	$age = null;
     	if( $request->birthdate ){
-    		$age = Carbon::parse($request->birthdate)->diff(Carbon::now())->format('%y');
+            $age =  Carbon::parse($request->birthdate)->startOfYear()->age;
     	}
-    	
-    	$deduction = new Deduction();
 
+    	$deduction = new Deduction();
+        
     	return $this->sendResponse($deduction->deductions([
     		'loan_amount' => $loanAmount, 
     		'terms' => $terms, 
