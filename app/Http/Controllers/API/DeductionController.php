@@ -85,7 +85,6 @@ class DeductionController extends BaseController
 
         return $this->sendResponse(new DeductionResource($deduction), 'Deduction Updated.');
     }
-
     public function calculateDeductions(Request $request)
     {
 
@@ -105,6 +104,7 @@ class DeductionController extends BaseController
             'product_id' => $productId,
             'age' =>  $age
         ]), 'Deductions.');
+
     }
 
     public function destroy($id)
