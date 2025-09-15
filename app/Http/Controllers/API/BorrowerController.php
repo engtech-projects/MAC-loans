@@ -149,7 +149,7 @@ class BorrowerController extends BaseController
             }
             activity("Release Entry")->event("created")->performedOn($borrower)
                 ->createdAt(now())
-                ->log("Borrower Created");
+                ->log("Borrower - Create");
             # add validator dri
             return $this->sendResponse(new BorrowerResource($borrower), 'Borrower Created');
         }
@@ -192,10 +192,10 @@ class BorrowerController extends BaseController
         $borrower->outstandingObligations = $request->input('outstandingObligations');
 
         if ($borrower) {
-            activity("Edit borrower")->event("updated")->performedOn($borrower)
+            activity("Release Entry")->event("updated")->performedOn($borrower)
                 ->withProperties(['attributes' => $borrower, 'old' => $replicate])
                 ->createdAt(now())
-                ->log("Borrower Updated");
+                ->log("Borrower - Edit");
         }
 
         if (count($borrower->employmentInfo)) {

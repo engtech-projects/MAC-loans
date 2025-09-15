@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\UserAccessibility;
+use App\Models\UserBranch;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -19,6 +21,13 @@ class DatabaseSeeder extends Seeder
         $this->call([
             UserSeeder::class,
             AccessibilitySeeder::class,
+            UserAccessibility::class,
+            BranchSeeder::class,
+            AccountOfficerSeeder::class,
+            AccountOfficerBranchSeeder::class,
+            CenterSeeder::class,
+            ProductSeeder::class,
+            UserBranch::class,
             GLSeeder::class,
             DeductionFeesSeeder::class,
         ]);

@@ -13,46 +13,56 @@ class BranchController extends BaseController
     /**
      * Display a listing of the resource.
      */
-    public function index() {
+    public function index()
+    {
         $branch = Branch::all();
         return $this->sendResponse(BranchResource::collection($branch), 'Branches fetched.');
     }
     /**
      * Show the form for creating a new resource.
      */
-    public function create() {
+    public function create()
+    {
         // return view();
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request) {
+    public function store(Request $request)
+    {
 
         $input = $request->all();
         # add validator dri
         $branch = Branch::create($input);
+        activity("Branch")->event("created")->performedOn($branch)
+            ->createdAt(now())
+            ->log("Branch - Create");
         return $this->sendResponse(new BranchResource($branch), 'Branch Created');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Branch $branch) {
+    public function show(Branch $branch)
+    {
         return $this->sendResponse(new BranchResource($branch), 'Branch fetched.');
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Branch $branch) {
+    public function edit(Branch $branch)
+    {
         // return view()
     }
 
-     /**
+    /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Branch $branch) {
+    public function update(Request $request, Branch $branch)
+    {
+        $replicate = $branch->replicate();
         $input = $request->all();
         # add validator na pd dri
         $branch->branch_code = isset($input['branch_code']) ? $input['branch_code'] : $branch->branch_code;
@@ -60,7 +70,12 @@ class BranchController extends BaseController
         $branch->branch_address = isset($input['branch_address']) ? $input['branch_address'] : $branch->branch_address;
         $branch->status = isset($input['status']) ? $input['status'] : $branch->status;
         $branch->deleted = isset($input['deleted']) ? $input['deleted'] : $branch->deleted;
-        $branch->save(); 
+        $branch->save();
+
+        activity("Branch")->event("updated")->performedOn($branch)
+            ->withProperties(['attributes' => $branch, 'old' => $replicate])
+            ->createdAt(now())
+            ->log("Branch - Create");
 
         return $this->sendResponse(new BranchResource($branch), 'Branch Updated.');
     }
@@ -70,7 +85,8 @@ class BranchController extends BaseController
      */
     public function destroy() {}
 
-    public function activeBranch() {
+    public function activeBranch()
+    {
         $branch = Branch::where(["status" => "active"])->get();
         return $this->sendResponse(BranchResource::collection($branch), 'AO fetched.');
     }

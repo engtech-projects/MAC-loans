@@ -14,17 +14,19 @@ use App\Http\Resources\Users as UserResource;
 
 class UserController extends BaseController
 {
-     /**
+    /**
      * Display a listing of the resource.
      */
-    public function index() {
-        $users = User::where([ 'deleted' => 0 ])->get();
+    public function index()
+    {
+        $users = User::where(['deleted' => 0])->get();
         return $this->sendResponse(UserResource::collection($users), 'Users fetched.');
     }
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request) {
+    public function store(Request $request)
+    {
 
         $user = new User();
         $user->username = $request->input('username');
@@ -34,34 +36,41 @@ class UserController extends BaseController
         $user->lastname = $request->input('lastname');
         $user->save();
 
+        activity("User Settings")->event("created")->performedOn($user)
+            ->createdAt(now())
+            ->log("User Settings - Create");
+
         $branches = $request->input('branch');
 
-        if( is_array($branches) && count($branches) > 0 ){
+        if (is_array($branches) && count($branches) > 0) {
 
             foreach ($branches as $branch) {
 
-                UserBranch::create([
+                $userBranch = UserBranch::create([
                     'id' => $user->id,
                     'branch_id' => $branch['branch_id'],
                 ]);
-
+                activity("User Settings")->event("created")->performedOn($userBranch)
+                    ->createdAt(now())
+                    ->log("User Branch - Create");
             }
-
         }
 
         // user accessibility
         $permissions = $request->input('permissions');
 
-        if( is_array($permissions) && count($permissions) > 0 ){
+        if (is_array($permissions) && count($permissions) > 0) {
 
             foreach ($permissions as $permission) {
-                
-                UserAccessibility::create([
+
+                $userAccess = UserAccessibility::create([
                     'id' => $user->id,
                     'access_id' => $permission,
                 ]);
+                activity("User Settings")->event("created")->performedOn($userAccess)
+                    ->createdAt(now())
+                    ->log("User Accessibility - Create");
             }
-
         }
         return $this->sendResponse(new UserResource($user), 'User created successfully.');
     }
@@ -69,24 +78,28 @@ class UserController extends BaseController
     /**
      * Display the specified resource.
      */
-    public function show(User $user) {
+    public function show(User $user)
+    {
         return $this->sendResponse(new UserResource($user), 'User fetched.');
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Branch $branch) {
+    public function edit(Branch $branch)
+    {
         // return view()
     }
 
-     /**
+    /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, User $user) {
+    public function update(Request $request, User $user)
+    {
 
-        $user->username = ($request->input('username') != null ) ? $request->input('username') : $user->username;
-        $user->password = ($request->input('password') != null ) ? Hash::make($request->input('password')) : $user->password;
+        $replicate = $user->replicate();
+        $user->username = ($request->input('username') != null) ? $request->input('username') : $user->username;
+        $user->password = ($request->input('password') != null) ? Hash::make($request->input('password')) : $user->password;
         $user->firstname = $request->input('firstname');
         $user->middlename = $request->input('middlename');
         $user->lastname = $request->input('lastname');
@@ -94,37 +107,41 @@ class UserController extends BaseController
         $user->deleted = ($request->input('deleted') != null) ? $request->input('deleted') : $user->deleted;
         $user->update();
 
+        activity("User Settings")->event("updated")->performedOn($user)
+            ->withProperties(['attributes' => $user, 'old' => $replicate])
+            ->createdAt(now())
+            ->log("User Settings - Edit");
+
         $branches = $request->input('branch');
         $permissions = $request->input('permissions');
 
-        if( is_array($branches) && count($branches) > 0 ) {
-
+        if (is_array($branches) && count($branches) > 0) {
             UserBranch::where(['id' => $user->id])->delete();
-
             foreach ($branches as $branch) {
-
-                UserBranch::create([
+                $userBranch = UserBranch::create([
                     'id' => $user->id,
                     'branch_id' => $branch['branch_id'],
                 ]);
-
+                activity("User Settings")->event("updated")->performedOn($userBranch)
+                    ->createdAt(now())
+                    ->log("User Branch - Edited");
             }
-
         }
 
-        if( is_array($permissions) && count($permissions) > 0  ) {
+        if (is_array($permissions) && count($permissions) > 0) {
 
             UserAccessibility::where(['id' => $user->id])->delete();
 
             foreach ($permissions as $permission) {
-                
-                UserAccessibility::create([
+
+                $userAccess = UserAccessibility::create([
                     'id' => $user->id,
                     'access_id' => $permission,
                 ]);
+                activity("User Settings")->event("updated")->performedOn($userAccess)
+                    ->createdAt(now())
+                    ->log("User Accessibility - Edit");
             }
-
-
         }
 
         $user = User::find($user->id);
@@ -135,16 +152,18 @@ class UserController extends BaseController
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(User $user) {
+    public function destroy(User $user)
+    {
         try {
             UserBranch::where('id', $user->id)->delete();
             UserAccessibility::where('id', $user->id)->delete();
+            activity("User Settings")->event("deleted")->performedOn($user)
+                ->createdAt(now())
+                ->log("User - Delete");
             $user->delete();
             return $this->sendResponse([], 'User deleted successfully.');
         } catch (\Exception $e) {
             return $this->sendError('Error deleting user.', ['error' => $e->getMessage()]);
         }
     }
-
-
 }
