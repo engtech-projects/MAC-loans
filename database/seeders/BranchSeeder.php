@@ -52,7 +52,7 @@ class BranchSeeder extends Seeder
         Branch::upsert(
             $data,
             ['branch_code'],
-            ['branch_code', 'branch_name', 'branch_manager', 'branch_address', 'status']
+            ['branch_code', 'branch_name', 'branch_address']
         );
     }
 }

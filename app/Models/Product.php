@@ -14,6 +14,10 @@ class Product extends Model
     const STATUS_ACTIVE = "active";
     const STATUS_INACTIVE = "inactive";
 
+    protected $attributes = [
+        'interest_rate' 
+    ];
+
     protected $fillable = [
     	'product_code', 'product_name', 'interest_rate', 'status', 'deleted'
     ];

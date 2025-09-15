@@ -10,10 +10,5 @@ class UserAccessibility extends Model
     use HasFactory;
 
     protected $table = 'user_accessibility';
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
-    protected $fillable = [ 'id', 'access_id' ];
+    protected $fillable = ['id', 'access_id'];
 }

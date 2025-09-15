@@ -26,7 +26,7 @@ class AddUniqueKeyToCenterTable extends Migration
     public function down()
     {
         Schema::table('center', function (Blueprint $table) {
-            $table->dropUnique('center');
+            $table->dropUnique('center_center_unique');
         });
     }
 }

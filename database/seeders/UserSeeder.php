@@ -2,13 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Models\Accessibility;
-use Carbon\Carbon;
+
 use App\Models\User;
 use App\Models\UserAccessibility;
-use Illuminate\Support\Str;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class UserSeeder extends Seeder
@@ -21,7 +18,7 @@ class UserSeeder extends Seeder
     public function run()
     {
 
-        User::create([
+        $users = [
             [
                 'username' => 'mac_admin',
                 'password' => Hash::make('@engtech'),
@@ -29,6 +26,8 @@ class UserSeeder extends Seeder
                 'middlename' => 'admin',
                 'lastname' => 'admin',
                 'status' => 'active',
+                'updated_at' => now(),
+
                 // 'branch_id' => 1,
             ],
             [
@@ -38,6 +37,7 @@ class UserSeeder extends Seeder
                 'middlename' => 'G',
                 'lastname' => 'Payot',
                 'status' => 'active',
+                'updated_at' => now(),
                 // 'branch_id' => 1,
             ],
             [
@@ -47,6 +47,7 @@ class UserSeeder extends Seeder
                 'middlename' => 'L',
                 'lastname' => 'Descalar',
                 'status' => 'active',
+                'updated_at' => now(),
                 // 'branch_id' => 1,
             ],
             [
@@ -56,9 +57,16 @@ class UserSeeder extends Seeder
                 'middlename' => '',
                 'lastname' => '',
                 'status' => 'active',
+                'updated_at' => now(),
                 // 'branch_id' => 1,
             ]
-        ]);
+        ];
+
+        User::upsert(
+            $users,
+            ['username'],
+            ['username', 'firstname', 'password', 'middlename', 'lastname', 'status']
+        );
 
 
         /* $users = User::where('id', [1, 2, 3])->get();

@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Branch;
 use App\Models\User;
 use App\Models\UserBranch;
 use Illuminate\Database\Seeder;
@@ -16,35 +17,13 @@ class UserBranchSeeder extends Seeder
      */
     public function run()
     {
-        $user_branch = [
-            [
-                'id' => "1",
-                'branch_id' => "1",
-            ],
-            [
-                'id' => "2",
-                'branch_id' => "2",
-            ],
-            [
-                'id' => "3",
-                'branch_id' => "3",
-            ],
-            [
-                'id' => "8",
-                'branch_id' => "2",
-            ],
-
-        ];
+        $user = User::where('username', 'mac_admin')->orWhere('id', 1)->first();
+        $branches = Branch::all()->pluck('branch_id');
 
         try {
-            DB::transaction(function () use ($user_branch) {
-                $grouped = collect($user_branch)->groupBy('id');
-                foreach ($grouped as $id => $records) {
-                    $branchIds = $records->pluck('branch_id')->toArray();
-                    $user = User::find($id);
-                    if ($user) {
-                        $user->user_branch()->syncWithoutDetaching($branchIds);
-                    }
+            DB::transaction(function () use ($user, $branches) {
+                if ($user) {
+                    $user->user_branch()->syncWithoutDetaching($branches);
                 }
             });
         } catch (\Exception $e) {

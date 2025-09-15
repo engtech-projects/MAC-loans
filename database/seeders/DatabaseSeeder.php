@@ -21,13 +21,10 @@ class DatabaseSeeder extends Seeder
         $this->call([
             UserSeeder::class,
             AccessibilitySeeder::class,
-            UserAccessibility::class,
+            UserAccessibilitySeeder::class,
             BranchSeeder::class,
-            AccountOfficerSeeder::class,
-            AccountOfficerBranchSeeder::class,
-            CenterSeeder::class,
             ProductSeeder::class,
-            UserBranch::class,
+            UserBranchSeeder::class,
             GLSeeder::class,
             DeductionFeesSeeder::class,
         ]);

@@ -18,13 +18,13 @@ class ProductSeeder extends Seeder
             [
                 'product_code' => '001',
                 'product_name' => 'Micro Individual',
-                'interest_rate' => '2',
+                'interest_rate' => '0',
                 'status' => 'active',
             ],
             [
                 'product_code' => '002',
                 'product_name' => 'Micro Group',
-                'interest_rate' => '4',
+                'interest_rate' => 0,
                 'status' => 'active',
             ],
             [
@@ -68,7 +68,7 @@ class ProductSeeder extends Seeder
                 'product_name' => 'Unknown Product',
                 'interest_rate' => '0',
                 'status' => 'active',
-            ]
+            ],
         ];
 
         $data = collect($products)->map(function ($item) {
@@ -82,7 +82,7 @@ class ProductSeeder extends Seeder
         Product::upsert(
             $data,
             ['product_code'],
-            ['product_code', 'product_name', 'interest_rate', 'status']
+            ['product_code', 'product_name']
         );
     }
 }
