@@ -87,24 +87,22 @@ class DeductionController extends BaseController
     }
     public function calculateDeductions(Request $request)
     {
-
         $loanAmount = $request->loan_amount;
         $productId = $request->product_id;
         $terms = $request->terms;
         $age = null;
         if ($request->birthdate) {
-            $age = Carbon::parse($request->birthdate)->diff(Carbon::now())->format('%y');
+            $birthdate = Carbon::parse($request->birthdate);
+            $releasedatenow = Carbon::now();
+            $age = round($birthdate->diffInDays($releasedatenow)/ 365, 0);
         }
-
         $deduction = new Deduction();
-
         return $this->sendResponse($deduction->deductions([
             'loan_amount' => $loanAmount,
             'terms' => $terms,
             'product_id' => $productId,
             'age' =>  $age
         ]), 'Deductions.');
-
     }
 
     public function destroy($id)
