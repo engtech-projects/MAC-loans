@@ -13,7 +13,12 @@ class Branch extends Model
     protected $primaryKey = 'branch_id';
 
     protected $fillable = [
-    	'branch_code', 'branch_name', 'branch_manager', 'branch_address', 'status', 'deleted'
+        'branch_code',
+        'branch_name',
+        'branch_manager',
+        'branch_address',
+        'status',
+        'deleted'
     ];
 
     public function endTransaction()
@@ -23,12 +28,31 @@ class Branch extends Model
 
     public function performanceReports()
     {
-        return $this->hasMany(PerformanceReport::class,'branch_id');
+        return $this->hasMany(PerformanceReport::class, 'branch_id');
     }
 
     public function payments()
     {
-        return $this->hasMany(Payment::class,'branch_id','branch_id');
+        return $this->hasMany(Payment::class, 'branch_id', 'branch_id');
     }
 
+    public function registered_branch()
+    {
+        return $this->belongsToMany(
+            AccountOfficer::class,
+            'account_officer_branch',
+            'branch_id',
+            'ao_id'
+        )->withTimestamps();
+    }
+
+    public function user_branch()
+    {
+        return $this->belongsToMany(
+            User::class,
+            'user_branch',
+            'branch_id',
+            'id'
+        )->withTimestamps();
+    }
 }

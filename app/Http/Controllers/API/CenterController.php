@@ -42,9 +42,9 @@ class CenterController extends BaseController
         # add validator dri
         $center = Center::create($input);
 
-        activity("Create Center")->event("created")
+        activity("Center")->event("created")
             ->createdAt(now())
-            ->log("Center Created");
+            ->log("Center - Create");
         return $this->sendResponse(new CenterResource($center), 'Center Created');
     }
 
@@ -78,10 +78,10 @@ class CenterController extends BaseController
         $center->area = $input['area'];
         $center->save();
 
-        activity("Edit Center")->event("updated")->performedOn($center)
+        activity("Center")->event("updated")->performedOn($center)
             ->withProperties(['attributes' => $center, 'old' => $replicate])
             ->createdAt(now())
-            ->log("Payment Updated");
+            ->log("Center - Edit");
 
         return $this->sendResponse(new CenterResource($center), 'Center Updated.');
     }

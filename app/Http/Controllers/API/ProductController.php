@@ -20,7 +20,8 @@ class ProductController extends BaseController
         return $this->sendResponse(ProductResource::collection($products), 'Products fetched.');
     }
 
-    public function activeProduct(){
+    public function activeProduct()
+    {
         $products = Product::where(["status" => "active"])->get();
         return $this->sendResponse(ProductResource::collection($products), 'Active Products fetched.');
     }
@@ -28,39 +29,49 @@ class ProductController extends BaseController
     /**
      * Show the form for creating a new resource.
      */
-    public function create() {
+    public function create()
+    {
         // return view();
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request) {
+    public function store(Request $request)
+    {
 
         $input = $request->all();
         # add validator dri
         $product = Product::create($input);
+
+        activity("Product Setup")->event("created")->performedOn($product)
+            ->createdAt(now())
+            ->log("Product - Create");
         return $this->sendResponse(new ProductResource($product), 'Product Created');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Product $product) {
+    public function show(Product $product)
+    {
         return $this->sendResponse(new ProductResource($product), 'Product fetched.');
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Product $product) {
+    public function edit(Product $product)
+    {
         // return view()
     }
 
-     /**
+    /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Product $product) {
+    public function update(Request $request, Product $product)
+    {
+        $replicate = $product->replicate();
         $input = $request->all();
         # add validator na pd dri
         $product->product_code = $input['product_code'];
@@ -70,6 +81,11 @@ class ProductController extends BaseController
         $product->deleted = $input['deleted'];
         $product->save();
 
+
+        activity("Product Setup")->event("updated")->performedOn($product)
+            ->withProperties(['attributes' => $product, 'old' => $replicate])
+            ->createdAt(now())
+            ->log("Product - Edit");
         return $this->sendResponse(new ProductResource($product), 'Product Updated.');
     }
 
@@ -77,5 +93,4 @@ class ProductController extends BaseController
      * Remove the specified resource from storage.
      */
     public function destroy() {}
-
 }

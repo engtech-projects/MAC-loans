@@ -14,7 +14,7 @@ class User extends Authenticatable
 
     protected $table = 'users';
     protected $primaryKey = 'id';
-    protected $with = ['branch','accessibility'];
+    protected $with = ['branch', 'accessibility'];
 
     /**
      * The attributes that are mass assignable.
@@ -52,10 +52,15 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function branch() {
+    public function branch()
+    {
         return $this->hasManyThrough(
             Branch::class,
-            UserBranch::class, 'id', 'branch_id', 'id', 'branch_id'
+            UserBranch::class,
+            'id',
+            'branch_id',
+            'id',
+            'branch_id'
         );
     }
 
@@ -63,25 +68,52 @@ class User extends Authenticatable
 
     public function revokeAccess() {}
 
-    public function hasAccess($access) {
+    public function hasAccess($access)
+    {
 
         $accessId = Accessibility::where('permission', $access)->pluck('access_id')->first();
 
-        if( !$accessId ){
+        if (!$accessId) {
             return false;
         }
 
         return UserAccessibility::where(['id' => $this->id, 'access_id' => $accessId])->first();
     }
 
-    public function accessibility() {
+    /*  public function accessibility()
+    {
         return $this->hasManyThrough(
             Accessibility::class,
-            UserAccessibility::class, 'id', 'access_id', 'id', 'access_id'
+            UserAccessibility::class,
+            'id',
+            'access_id',
+            'id',
+            'access_id'
         );
+    } */
+
+    public function user_branch()
+    {
+        return $this->belongsToMany(
+            Branch::class,
+            'user_branch',
+            'id',
+            'branch_id'
+        )->withTimestamps();
     }
 
-    public function fullname(){
+    public function accessibility()
+    {
+        return $this->belongsToMany(
+            Accessibility::class,
+            'user_accessibility',
+            'id',
+            'access_id'
+        )->withTimestamps();
+    }
+
+    public function fullname()
+    {
         return $this->firstname . ' ' . $this->middlename . ' ' . $this->lastname;
     }
 }
