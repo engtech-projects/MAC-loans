@@ -42,11 +42,17 @@ class ProductController extends BaseController
 
         $input = $request->all();
         # add validator dri
-        $product = Product::create($input);
+        $product = Product::create([
+            'product_code' => $input['product_code'],
+            'product_name' => $input['product_name'],
+            'interest_rate' => $input['interest_rate'],
+            'status' => $input['status'],
+            'deleted' => $input['deleted']
+        ]);
 
         activity("Product Setup")->event("created")->performedOn($product)
             ->createdAt(now())
-            ->log("Product - Create");
+            ->log("Product create");
         return $this->sendResponse(new ProductResource($product), 'Product Created');
     }
 
@@ -85,7 +91,7 @@ class ProductController extends BaseController
         activity("Product Setup")->event("updated")->performedOn($product)
             ->withProperties(['attributes' => $product, 'old' => $replicate])
             ->createdAt(now())
-            ->log("Product - Edit");
+            ->log("Product update");
         return $this->sendResponse(new ProductResource($product), 'Product Updated.');
     }
 

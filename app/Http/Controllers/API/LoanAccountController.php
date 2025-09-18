@@ -100,7 +100,7 @@ class LoanAccountController extends BaseController
 
             activity("Release Entry")->event("created")->performedOn($borrower)
                 ->createdAt(now())
-                ->log("Loan Account - Create");
+                ->log("Create");
             /*             Document::create(
                             array_merge(
                                 $request->input('documents'),
@@ -152,10 +152,10 @@ class LoanAccountController extends BaseController
                 $files[] = $request->file('loanfiles');
                 $account->setDocs($account->borrower_id, $account->loan_account_id, $files);
             }
-            activity("Edit Loan Account")->event("created")->performedOn($account)
+            activity("Loan Account")->event("updated")->performedOn($account)
                 ->withProperties(['attributes' => $account, 'old' => $replicate])
                 ->createdAt(now())
-                ->log("Loan Account - Edit");
+                ->log("Edit");
         }
         return $this->sendResponse(new LoanAccountResource($account), 'Account Updated.');
     }
@@ -225,10 +225,10 @@ class LoanAccountController extends BaseController
 
                 $this->createAmortizationSched($account);
 
-                activity("Override Release - Override")->event("created")->performedOn($account)
+                activity("Override Release")->event("created")->performedOn($account)
                     ->withProperties(['attributes' => $account, 'old' => $replicate])
                     ->createdAt(now())
-                    ->log("Loan Account - Edit");
+                    ->log("Override");
             }
         }
         return $this->sendResponse(['status' => 'released'], 'Released');
@@ -252,20 +252,24 @@ class LoanAccountController extends BaseController
 
     public function reject(Request $request, LoanAccount $account)
     {
-
         $replicate = $account->replicate();
         if ($account->memo > 0) {
-            Payment::where('reference_id', $account->loan_account_id)
+            $payment = Payment::where('reference_id', $account->loan_account_id)
                 ->update(['status' => 'rejected']);
+            $replicate = $payment->replicate();
+            activity("Rejected Release")->event("created")->performedOn($payment)
+                ->withProperties(['attributes' => $account, 'old' => $replicate])
+                ->createdAt(now())
+                ->log("Edit with Memo Payment");
         }
 
         $account->status = 'rejected';
         $account->save();
 
-        activity("Override Release - Reject")->event("created")->performedOn($account)
+        activity("Release Entry")->event("created")->performedOn($account)
             ->withProperties(['attributes' => $account, 'old' => $replicate])
             ->createdAt(now())
-            ->log("Loan Account - Edit");
+            ->log("Loan Account update");
 
         return $this->sendResponse(['status' => 'rejected'], 'Rejected');
     }
@@ -283,10 +287,10 @@ class LoanAccountController extends BaseController
         $account->status = 'pending';
         $account->save();
 
-        activity("Rejected Release - Proceed")->event("updated")->performedOn($account)
+        activity("Rejected Release")->event("updated")->performedOn($account)
             ->withProperties(['attributes' => $account, 'old' => $replicate])
             ->createdAt(now())
-            ->log("Loan Account - Edit");
+            ->log("Proceed");
 
         return $this->sendResponse(['status' => 'pending'], 'Returned');
     }
@@ -312,9 +316,9 @@ class LoanAccountController extends BaseController
         //delete document
         $document->deleteDocument($loanAccount->loan_account_id);
         $loanAccount->delete();
-        activity("Override Release - Delete")->event("updated")->performedOn($loanAccount)
+        activity("Override Release")->event("deleted")->performedOn($loanAccount)
             ->createdAt(now())
-            ->log("Loan Account - Delete");
+            ->log("Delete");
         return $this->sendResponse(['status' => 'Account deleted'], 'Deleted');
     }
 

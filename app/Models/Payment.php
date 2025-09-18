@@ -196,8 +196,8 @@ class Payment extends Model
                     $penalty = $payment->penalty;
                 }
 
-                $vatint = round(($payment->interest) / 1.12 *0.12,2);
-                $vatpdi = round(($pdi) / 1.12 *0.12,2);
+                $vatint = round(($payment->interest) / 1.12 * 0.12, 2);
+                $vatpdi = round(($pdi) / 1.12 * 0.12, 2);
                 // $vat = ($payment->interest + $pdi + $penalty) / 1.12 * 0.12;
                 $vat = $vatpdi + $vatint;
 
@@ -209,8 +209,14 @@ class Payment extends Model
             if ($payment->payment_id) {
                 $payment->transaction_number = $this->generateTransactionNumber($payment->payment_id, $payment->payment_type, $payment->memo_type);
                 $payment->save();
+                activity("Repayment Entry")->event("updated")->performedOn($payment)
+                    ->createdAt(now())
+                    ->log("Payment update");
             }
 
+            activity("Repayment Entry")->event("created")->performedOn($payment)
+                ->createdAt(now())
+                ->log("Payment create");
             return $payment;
         });
     }
@@ -325,9 +331,7 @@ class Payment extends Model
         return $remarks;
     }
 
-    public function cancelPayment()
-    {
-    }
+    public function cancelPayment() {}
 
     public function getOngoingPayment($request = array())
     {
@@ -342,6 +346,9 @@ class Payment extends Model
         if ($loanAccount && $loanAccount->memo > 0) {
             dump('Deleting payment for reference_id: ' . $loanAccount->loan_account_id);
             $this->where('reference_id', $loanAccount->loan_account_id)->delete();
+            activity("Repayment Entry")->event("created")->performedOn($loanAccount)
+                ->createdAt(now())
+                ->log("Payment Delete");
         }
     }
 }

@@ -36,10 +36,6 @@ class UserController extends BaseController
         $user->lastname = $request->input('lastname');
         $user->save();
 
-        activity("User Settings")->event("created")->performedOn($user)
-            ->createdAt(now())
-            ->log("User Settings - Create");
-
         $branches = $request->input('branch');
 
         if (is_array($branches) && count($branches) > 0) {
@@ -50,9 +46,6 @@ class UserController extends BaseController
                     'id' => $user->id,
                     'branch_id' => $branch['branch_id'],
                 ]);
-                activity("User Settings")->event("created")->performedOn($userBranch)
-                    ->createdAt(now())
-                    ->log("User Branch - Create");
             }
         }
 
@@ -67,11 +60,12 @@ class UserController extends BaseController
                     'id' => $user->id,
                     'access_id' => $permission,
                 ]);
-                activity("User Settings")->event("created")->performedOn($userAccess)
-                    ->createdAt(now())
-                    ->log("User Accessibility - Create");
             }
         }
+
+        activity("User Settings")->event("created")->performedOn($user)
+            ->createdAt(now())
+            ->log("User create");
         return $this->sendResponse(new UserResource($user), 'User created successfully.');
     }
 
@@ -107,10 +101,6 @@ class UserController extends BaseController
         $user->deleted = ($request->input('deleted') != null) ? $request->input('deleted') : $user->deleted;
         $user->update();
 
-        activity("User Settings")->event("updated")->performedOn($user)
-            ->withProperties(['attributes' => $user, 'old' => $replicate])
-            ->createdAt(now())
-            ->log("User Settings - Edit");
 
         $branches = $request->input('branch');
         $permissions = $request->input('permissions');
@@ -122,9 +112,6 @@ class UserController extends BaseController
                     'id' => $user->id,
                     'branch_id' => $branch['branch_id'],
                 ]);
-                activity("User Settings")->event("updated")->performedOn($userBranch)
-                    ->createdAt(now())
-                    ->log("User Branch - Edited");
             }
         }
 
@@ -138,14 +125,15 @@ class UserController extends BaseController
                     'id' => $user->id,
                     'access_id' => $permission,
                 ]);
-                activity("User Settings")->event("updated")->performedOn($userAccess)
-                    ->createdAt(now())
-                    ->log("User Accessibility - Edit");
             }
         }
 
         $user = User::find($user->id);
 
+        activity("User Settings")->event("updated")->performedOn($user)
+            ->withProperties(['attributes' => $user, 'old' => $replicate])
+            ->createdAt(now())
+            ->log("User edit");
         return $this->sendResponse(new UserResource($user), 'User updated successfully.');
     }
 
@@ -157,10 +145,6 @@ class UserController extends BaseController
         try {
             UserBranch::where('id', $user->id)->delete();
             UserAccessibility::where('id', $user->id)->delete();
-            activity("User Settings")->event("deleted")->performedOn($user)
-                ->createdAt(now())
-                ->log("User - Delete");
-            $user->delete();
             return $this->sendResponse([], 'User deleted successfully.');
         } catch (\Exception $e) {
             return $this->sendError('Error deleting user.', ['error' => $e->getMessage()]);

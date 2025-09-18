@@ -37,7 +37,7 @@ class BranchController extends BaseController
         $branch = Branch::create($input);
         activity("Branch")->event("created")->performedOn($branch)
             ->createdAt(now())
-            ->log("Branch - Create");
+            ->log("Branch create");
         return $this->sendResponse(new BranchResource($branch), 'Branch Created');
     }
 
@@ -75,7 +75,7 @@ class BranchController extends BaseController
         activity("Branch")->event("updated")->performedOn($branch)
             ->withProperties(['attributes' => $branch, 'old' => $replicate])
             ->createdAt(now())
-            ->log("Branch - Create");
+            ->log("Branch update");
 
         return $this->sendResponse(new BranchResource($branch), 'Branch Updated.');
     }

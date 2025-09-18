@@ -50,9 +50,9 @@ class AccountOfficerController extends BaseController
         $input = $request->all();
         # add validator dri
         $accountOfficer = AccountOfficer::create($input);
-        activity("Account Officer")->event("created")->performedOn($accountOfficer)
+        activity("Center - AO setup")->event("created")->performedOn($accountOfficer)
             ->createdAt(now())
-            ->log("Account Officer - Create");
+            ->log("Account Officer create");
         return $this->sendResponse(new AccountOfficerResource($accountOfficer), 'AO Created');
     }
 
@@ -85,10 +85,10 @@ class AccountOfficerController extends BaseController
         $accountofficer->status = isset($input['status']) ? $input['status'] : $accountofficer->status;
         $accountofficer->deleted = isset($input['deleted']) ? $input['deleted'] : $accountofficer->deleted;
         $accountofficer->save();
-        activity("Account Officer")->event("updated")->performedOn($accountofficer)
+        activity("Center - AO setup")->event("updated")->performedOn($accountofficer)
             ->withProperties(['attributes' => $accountofficer, 'old' => $replicate])
             ->createdAt(now())
-            ->log("Account Officer - Create");
+            ->log("Account Officer update");
 
 
         return $this->sendResponse(new AccountOfficerResource($accountofficer), 'AO Updated.');
