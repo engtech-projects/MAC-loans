@@ -86,7 +86,7 @@
 									<td>{{a.name}}</td>
 									<td>{{dateToMDY(new Date(a.birthdate))}}</td>
 									<td>{{upperFirst(a.gender)}}</td>
-									<td>{{ calculateAge(a.birthdate) }}</td> <!-- Display calculated age -->
+									<td>{{ calculateAge(a.birthdate, a.date_loan) }}</td> <!-- Display calculated age -->
 									<td>{{upperFirst(a.marital_status)}}</td>
 									<td>{{formatToCurrency(a.amount_loan)}}</td>
 									<td>{{formatToCurrency(a.insurance)}}</td>
@@ -181,12 +181,12 @@ export default {
 			if (this.filter.age === "less_70") {
 				// Filter accounts where age is less than or equal to 70
 				this.accounts = this.tempAccount.filter((e) => {
-					return this.calculateAge(e.birthdate) <= 70;
+					return this.calculateAge(e.birthdate, e.date_loan) <= 70;
 				});
 			} else if (this.filter.age === "greater_70") {
 				// Filter accounts where age is greater than 70
 				this.accounts = this.tempAccount.filter((e) => {
-					return this.calculateAge(e.birthdate) > 70;
+					return this.calculateAge(e.birthdat,e.date_loan) > 70;
 				});
 			} else {
 				// If no age filter is selected, show all accounts
@@ -199,16 +199,21 @@ export default {
 			target.innerHTML = content;
 			window.print();
 		},
-		calculateAge(birthdate) {
+		calculateAge(birthdate, dateLoan) {
         const birthDate = new Date(birthdate);
-        const today = new Date();
-        let age = today.getFullYear() - birthDate.getFullYear();
-        return age;
-    },
+		const refDate = new Date (dateLoan);
+		
+		//Difference in milliseconds
+		const diffMs = refDate - birthDate;
+		const diffDays = diffMs / (1000 * 60 * 60 * 24);
+		// Divide by 365 and round (like PHP's round)
+		const age = Math.round(diffDays / 365);
+		return age;
+		},
 	exportToExcelAgeBelow70() {
 			// Filter accounts with age <= 70
 		const filteredData = this.accounts.filter(account => {
-        return this.calculateAge(account.birthdate) <= 70;
+        return this.calculateAge(account.birthdate,account.date_loan) <= 70;
       });
 
       // Create Excel file from filtered data
@@ -219,7 +224,7 @@ export default {
 	exportToExcelAgeAbove71() {
 			// Filter accounts with age <= 70
 		const filteredData = this.accounts.filter(account => {
-        return this.calculateAge(account.birthdate) >= 71;
+        return this.calculateAge(account.birthdate, account.date_loan) >= 71;
       });
 
       // Create Excel file from filtered data
@@ -264,7 +269,7 @@ export default {
           'Middle Name': middlename,
           'Gender': this.upperFirst(account.gender),
 		  'Birthdate': this.dateToMDY(account.birthdate),
-          'Age': this.calculateAge(account.birthdate),
+          'Age': this.calculateAge(account.birthdate, account.date_loan),
           'Date Released': this.dateToMDY(account.date_loan),
 		  'Due Date': this.changeDueDate(account.due_date,account.date_loan ),
           'Amount Loan': this.formatToCurrency(account.amount_loan),
