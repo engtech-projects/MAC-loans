@@ -1,7 +1,7 @@
 <template>
 	<div class="d-flex flex-column">
 		<notifications group="foo" />
-		<form action="" id="borrowerForm" @submit.prevent="navigate()">
+		<form action="" id="borrowerForm" @submit.prevent="navigate()" @keydown.enter.prevent>
 		<section class="mb-24" style="flex:21;padding-left:16px;">
 			<span class="section-title mb-24">Borrower's Basic Information</span>
 			<div class="d-flex">
@@ -432,6 +432,36 @@
 				</div>
 			</div>
 		</div>
+		<div v-if="showDuplicateModal" class="modal" tabindex="-1" role="dialog" style="display:block;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.5);z-index:9999;margin:0;">
+		    <div class="modal-dialog modal-md" role="document" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);max-width:500px;margin:0;">
+		        <div class="modal-content">
+		            <div class="modal-body p-24">
+		                <div class="d-flex align-items-center">
+		                    <img :src="baseURL()+'/img/warning.png'" style="width:120px;height:auto;" class="mr-24" alt="warning icon">
+		                    <div class="d-flex flex-column">
+		                        <span class="text-primary-dark text-bold mb-16">
+		                            Possible Duplicate Borrower Detected.
+		                        </span>
+		                        <div v-if="duplicateInfo" class="mb-24 text-primary-dark text-bold">
+		                            <strong>
+		                                Existing Borrower:<br>
+		                                Name: {{duplicateInfo.firstname}} {{duplicateInfo.lastname}}<br>
+		                                Birth Date: {{duplicateBirthdateFormatted}}<br><br>
+		                                Entered Borrower:<br>
+		                                Name: {{borrower.firstname}} {{borrower.lastname}}<br>
+		                                Birth Date: {{borrowerBirthdateFormatted}}
+		                            </strong>
+		                        </div>
+		                        <div class="d-flex mt-auto justify-content-between">
+		                            <a href="#" @click.prevent="cancelDuplicateCheck()" class="btn btn-danger min-w-120">Cancel</a>
+		                            <a href="#" @click.prevent="proceedDuplicateCheck()" class="btn btn-primary-dark min-w-120">Proceed Anyway</a>
+		                        </div>
+		                    </div>
+		                </div>
+		            </div>
+		        </div>
+		    </div>
+		</div>
 	</div>
 </template>
 
@@ -514,7 +544,10 @@
 						years_in_business : '',
 						income : '',
 					}
-				}
+				},
+				showDuplicateModal: false,
+		        duplicateInfo: null,
+		        bypassDuplicate: false
 			}
 		},
 		methods: {
@@ -540,7 +573,30 @@
 					console.log(error);
 				}.bind(this));
 			},
-			save: function(){
+			handleDuplicateError: function(error) {
+			    if (error.response && error.response.status === 422 &&
+			        error.response.data.data && error.response.data.data.duplicate) {
+			        const duplicate = error.response.data.data.duplicate;
+			        if (duplicate.match_type === 'exact') {
+			            const formattedDate = new Date(duplicate.birthdate).toLocaleDateString('en-US', {
+			                year:'numeric', month:'long', day:'numeric'
+			            });
+			            this.notify(
+			                'Duplicate Borrower Detected',
+			                `Existing Borrower:<br>Name: ${duplicate.firstname} ${duplicate.lastname}<br>Birth Date: ${formattedDate}`,
+			                'error'
+			            );
+			        }
+			        else if (duplicate.match_type === 'fuzzy' || duplicate.match_type === 'name_only') {
+			            this.duplicateInfo = duplicate;
+			            this.showDuplicateModal = true;
+			        }
+			        return true;
+			    } 
+			    this.notify('Error', 'Something went wrong.', 'error');
+			    return false;
+			},
+			save: function(bypassDuplicate = false) {
 				this.$emit('load')
 				this.borrower.img = this.img;
 				// this.borrower.username = this.borrower.firstname+this.borrower.lastname;
@@ -548,29 +604,32 @@
 				delete this.borrower.username;
 				delete this.borrower.password;
 				if(this.borrower.borrower_id){
-						axios.put(this.baseURL() + 'api/borrower/' + this.borrower.borrower_id, this.borrower, {
-							headers: {
-								'Authorization': 'Bearer ' + this.token,
-								'Content-Type': 'application/json',
-								'Accept': 'application/json'
-							}
-						})
-						.then(function (response) {
-							// this.$emit('unload')
-							this.notify('',response.data.message, 'success');
-							this.$emit('savedInfo', response.data.data)
-							console.log(response.data);
-						}.bind(this))
-						.catch(function (error) {
-							console.log(error);
-							// this.$emit('unload')
-						}.bind(this));
+					const payload = { ...this.borrower };
+        			if (bypassDuplicate) payload.bypass_duplicate = true;
+					axios.put(this.baseURL() + 'api/borrower/' + this.borrower.borrower_id, payload, {
+			            headers: {
+			                'Authorization': 'Bearer ' + this.token,
+			                'Content-Type': 'application/json',
+			                'Accept': 'application/json'
+			            }
+			        })
+			        .then(function (response) {
+			            this.$emit('unload')
+			            this.notify('',response.data.message, 'success');
+			            this.$emit('savedInfo', response.data.data)
+			        }.bind(this))
+			        .catch((error) => {
+			            this.$emit('unload');
+			            this.handleDuplicateError(error);
+			        });
 				}else {
 					this.$emit('load')
-					axios.post(this.baseURL() + 'api/borrower', this.borrower, {
+					const payload = { ...this.borrower };
+        			payload.bypass_duplicate = true;
+					axios.post(this.baseURL() + 'api/borrower', payload, {
 						headers: {
 							'Authorization': 'Bearer ' + this.token,
-							'Content-Type': 'aMpplication/json',
+							'Content-Type': 'application/json',
 							'Accept': 'application/json'
 						}
 					})
@@ -587,7 +646,47 @@
 				}
 
 			},
-
+			async checkForDuplicates() {
+		        if (!this.borrower.firstname || !this.borrower.lastname || !this.borrower.birthdate) {
+		            return true;
+		        }
+		        this.$emit('load');
+		        try {
+		            const response = await axios.post(this.baseURL() + 'api/borrower/check-duplicate', {
+		                firstname: this.borrower.firstname,
+		                lastname: this.borrower.lastname,
+		                birthdate: this.borrower.birthdate,
+		                exclude_id: this.borrower.borrower_id
+		            }, {
+		                headers: {
+		                    'Authorization': 'Bearer ' + this.token,
+		                    'Content-Type': 'application/json',
+		                    'Accept': 'application/json'
+		                }
+		            });
+		            this.$emit('unload');
+		            return true;
+		            
+		        } catch (error) {
+		            this.$emit('unload');
+		            this.handleDuplicateError(error);
+        			return false;
+		        }
+		    },
+			cancelDuplicateCheck() {
+		        this.showDuplicateModal = false;
+		        this.duplicateInfo = null;
+		    },
+		    proceedDuplicateCheck() {
+		        this.showDuplicateModal = false;
+			    this.duplicateInfo = null;
+			    if (!this.pclient) {
+			        this.$emit('nextBorrower', this.borrower.birthdate);
+			        document.getElementById('borrowerBtn').click();
+			    } else {
+			        this.save(true);
+			    }
+		    },
 			capitalizeFirstLetter(field) {
 	            this.borrower[field] = this.borrower[field]
 	                .toLowerCase()
@@ -595,15 +694,17 @@
 	                .map(word => word.charAt(0).toUpperCase() + word.slice(1))
 	                .join(' ');
 	        },
-			submitForm:function(){
-				if(!this.pclient){
-					this.$emit('nextBorrower', this.borrower.birthdate)
-					document.getElementById('borrowerBtn').click();
-				}else{
-					document.getElementById('borrowerBtn').click();
-					// this.save();
-				}
-			},
+			async submitForm() {
+		        if (!this.pclient) {
+		            const canProceed = await this.checkForDuplicates();
+		            if (canProceed && !this.showDuplicateModal) {
+		                this.$emit('nextBorrower', this.borrower.birthdate);
+		                document.getElementById('borrowerBtn').click();
+		            }
+		        } else {
+		            document.getElementById('borrowerBtn').click();
+		        }
+		    },
 
 			navigate:function(){
 				if(!this.pclient){
@@ -741,7 +842,7 @@
 			},
 			'psave'(newValue) {
 				if(newValue != ''){
-					this.save();
+        			this.save(true);
 					this.$emit('saveBorrower')
 				}
 			},
@@ -787,7 +888,17 @@
 				}else{
 					return this.baseURL() + 'img/user.png';
 				}
-			}
+			},
+			borrowerBirthdateFormatted() {
+		        return this.borrower.birthdate 
+		            ? new Date(this.borrower.birthdate).toLocaleDateString('en-US', { year:'numeric', month:'long', day:'numeric' }) 
+		            : '';
+		    },
+		    duplicateBirthdateFormatted() {
+		        return this.duplicateInfo?.birthdate 
+		            ? new Date(this.duplicateInfo.birthdate).toLocaleDateString('en-US', { year:'numeric', month:'long', day:'numeric' }) 
+		            : '';
+		    }
 		},
 		mounted() {
 			this.borrower.date_registered = this.transactionDate.date_end;
