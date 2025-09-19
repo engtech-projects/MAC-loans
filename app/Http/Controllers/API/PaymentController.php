@@ -56,9 +56,7 @@ class PaymentController extends BaseController
             if ($loanAccount) {
                 $payment->deleteMemoPaymentIfExists($loanAccount);
             }
-            activity("Repayment Entry")->event("created")->performedOn($payment)
-                ->createdAt(now())
-                ->log("Payment Created");
+
             return $this->sendResponse(new PaymentResource($payment->addPayment($request)), 'Payment');
             // return $request->input();
         } catch (\Illuminate\Database\QueryException $e) {
@@ -180,7 +178,7 @@ class PaymentController extends BaseController
         activity("Override Repayment")->event("updated")->performedOn($payment)
             ->withProperties(['attributes' => $payment, 'old' => $payment])
             ->createdAt(now())
-            ->log("Payment Updated");
+            ->log("Payment Update");
         return $this->sendResponse("{$succeed} of {$sf} Successfully Overriden", 'Override');
     }
 
@@ -219,7 +217,7 @@ class PaymentController extends BaseController
         activity("Repayment Entry")->event("updated")->performedOn($payment)
             ->withProperties(['attributes' => $payment, 'old' => $replicate])
             ->createdAt(now())
-            ->log("Payment Updated");
+            ->log("Payment Update");
         return $this->sendResponse(new PaymentResource($payment), 'Payment successfully updated');
     }
 
@@ -249,10 +247,10 @@ class PaymentController extends BaseController
                 }
             }
 
-            activity("Repayment Entry")->event("updated")->performedOn($payment)
+            activity("Cancel Payments")->event("updated")->performedOn($payment)
                 ->withProperties(['attributes' => $payment, 'old' => $replicate])
                 ->createdAt(now())
-                ->log("Cancelled Payments");
+                ->log("Payment - Cancel");
             return $this->sendResponse(new PaymentResource($payment), 'Payment Cancelled.');
         }
 
@@ -260,7 +258,7 @@ class PaymentController extends BaseController
         activity("Repayment Entry")->event("updated")->performedOn($payment)
             ->withProperties(['attributes' => $payment, 'old' => $replicate])
             ->createdAt(now())
-            ->log("Payment Updated");
+            ->log("Payment Update");
         return $this->sendResponse(new PaymentResource($payment), 'Payment Updated.');
     }
 

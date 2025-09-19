@@ -32,9 +32,9 @@ class DeductionController extends BaseController
         // // # add validator dri
         try {
             $deduction = Deduction::create($input);
-            activity("Deduction Rate - Create")->event("created")->performedOn($deduction)
+            activity("Deduction Rate")->event("created")->performedOn($deduction)
                 ->createdAt(now())
-                ->log("Deduction Rate - Created");
+                ->log("Deduction Rate create");
         } catch (\Exception $e) {
             return new JsonResponse([
                 'errors' => $e->getMessage(),
@@ -72,10 +72,10 @@ class DeductionController extends BaseController
             $deduction->deleted = isset($input['deleted']) ? $input['deleted'] : $deduction->deleted;
             $deduction->status = isset($input['status']) ? $input['status'] : $deduction->status;
             $deduction->save();
-            activity("Deduction Rate - Edit")->event("updated")->performedOn($deduction)
+            activity("Deduction Rate")->event("updated")->performedOn($deduction)
                 ->withProperties(['attributes' => $deduction, 'old' => $replicate])
                 ->createdAt(now())
-                ->log("Deduction Rate - Edited");
+                ->log("Deduction Rate update");
         } catch (\Exception $e) {
             return new JsonResponse([
                 'errors' => $e->getMessage(),
@@ -110,9 +110,9 @@ class DeductionController extends BaseController
         try {
             $deduction = Deduction::find($id);
             $deduction->delete();
-            activity("Deduction Rate - Delete")->event("deleted")->performedOn($deduction)
+            activity("Deduction Rate")->event("deleted")->performedOn($deduction)
                 ->createdAt(now())
-                ->log("Deduction Rate - Deleted");
+                ->log("Deduction Rate delete");
         } catch (\Exception $e) {
             return new JsonResponse([
                 'errors' => $e->getMessage(),
