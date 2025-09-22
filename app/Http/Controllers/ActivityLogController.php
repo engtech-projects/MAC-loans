@@ -43,8 +43,8 @@ class ActivityLogController extends Controller
                 'user_role' => $item->causer->userRole,
                 'properties' => $item->changes(),
                 'transaction_date' => $item->transaction_date ? Carbon::parse($item->transaction_date)->format('Y-m-d') : "",
-                'created_at' => $item->created_at->format('Y-m-d H:i A'),
-                'updated_at' => $item->created_at->format('Y-m-d H:i A')
+                'created_at' => $item->created_at->format('Y-m-d g:i A'),
+                'updated_at' => $item->created_at->format('Y-m-d g:i A')
             ];
         });
         return new JsonResponse([
