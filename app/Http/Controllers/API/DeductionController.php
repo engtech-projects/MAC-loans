@@ -3,12 +3,13 @@
 namespace App\Http\Controllers\API;
 
 // use App\Http\Controllers\Controller;
-use App\Http\Controllers\API\BaseController as BaseController;
-use Illuminate\Http\Request;
-use App\Http\Resources\Deduction as DeductionResource;
-use App\Models\Deduction;
 use Carbon\Carbon;
+use App\Models\Deduction;
+use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Spatie\Activitylog\Models\Activity;
+use App\Http\Resources\Deduction as DeductionResource;
+use App\Http\Controllers\API\BaseController as BaseController;
 
 class DeductionController extends BaseController
 {
@@ -33,8 +34,10 @@ class DeductionController extends BaseController
         try {
             $deduction = Deduction::create($input);
             activity("Deduction Rate")->event("created")->performedOn($deduction)
-                ->createdAt(now())
-                ->log("Deduction Rate create");
+                ->tap(function (Activity $activity) {
+                    $activity->transaction_date = now();
+                })
+                ->log("Deduction Rate - Create");
         } catch (\Exception $e) {
             return new JsonResponse([
                 'errors' => $e->getMessage(),
@@ -74,8 +77,10 @@ class DeductionController extends BaseController
             $deduction->save();
             activity("Deduction Rate")->event("updated")->performedOn($deduction)
                 ->withProperties(['attributes' => $deduction, 'old' => $replicate])
-                ->createdAt(now())
-                ->log("Deduction Rate update");
+                ->tap(function (Activity $activity) {
+                    $activity->transaction_date = now();
+                })
+                ->log("Deduction Rate - Update");
         } catch (\Exception $e) {
             return new JsonResponse([
                 'errors' => $e->getMessage(),
@@ -112,8 +117,10 @@ class DeductionController extends BaseController
             $deduction = Deduction::find($id);
             $deduction->delete();
             activity("Deduction Rate")->event("deleted")->performedOn($deduction)
-                ->createdAt(now())
-                ->log("Deduction Rate delete");
+                ->tap(function (Activity $activity) {
+                    $activity->transaction_date = now();
+                })
+                ->log("Deduction Rate - Delete");
         } catch (\Exception $e) {
             return new JsonResponse([
                 'errors' => $e->getMessage(),

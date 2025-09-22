@@ -21,6 +21,7 @@ use App\Http\Resources\Amortization as AmortizationResource;
 use App\Jobs\FixShortAdvMigration;
 use App\Jobs\UpdateDocuments;
 use App\Models\LoanAccountMigrationFix;
+use Spatie\Activitylog\Models\Activity;
 
 class LoanAccountController extends BaseController
 {
@@ -98,9 +99,11 @@ class LoanAccountController extends BaseController
                     'loan_account_id' => $account->loan_account_id
                 ]);
 
-            activity("Release Entry")->event("created")->performedOn($borrower)
-                ->createdAt(now())
-                ->log("Create");
+            activity("Release Entry")->event("created")->performedOn($account)
+                ->tap(function (Activity $activity) {
+                    $activity->transaction_date = now();
+                })
+                ->log("Loan Account - Create");
             /*             Document::create(
                             array_merge(
                                 $request->input('documents'),
@@ -154,7 +157,9 @@ class LoanAccountController extends BaseController
             }
             activity("Loan Account")->event("updated")->performedOn($account)
                 ->withProperties(['attributes' => $account, 'old' => $replicate])
-                ->createdAt(now())
+                ->tap(function (Activity $activity) {
+                    $activity->transaction_date = now();
+                })
                 ->log("Edit");
         }
         return $this->sendResponse(new LoanAccountResource($account), 'Account Updated.');
@@ -225,9 +230,11 @@ class LoanAccountController extends BaseController
 
                 $this->createAmortizationSched($account);
 
-                activity("Override Release")->event("created")->performedOn($account)
+                activity("Override Release")->event("updated")->performedOn($account)
                     ->withProperties(['attributes' => $account, 'old' => $replicate])
-                    ->createdAt(now())
+                    ->tap(function (Activity $activity) {
+                        $activity->transaction_date = now();
+                    })
                     ->log("Override");
             }
         }
@@ -257,19 +264,23 @@ class LoanAccountController extends BaseController
             $payment = Payment::where('reference_id', $account->loan_account_id)
                 ->update(['status' => 'rejected']);
             $replicate = $payment->replicate();
-            activity("Rejected Release")->event("created")->performedOn($payment)
+            activity("Override Release")->event("updated")->performedOn($payment)
                 ->withProperties(['attributes' => $account, 'old' => $replicate])
-                ->createdAt(now())
-                ->log("Edit with Memo Payment");
+                ->tap(function (Activity $activity) {
+                    $activity->transaction_date = now();
+                })
+                ->log("Memo Payment - Create");
         }
 
         $account->status = 'rejected';
         $account->save();
 
-        activity("Release Entry")->event("created")->performedOn($account)
+        activity("Oveeride Release")->event("updated")->performedOn($account)
             ->withProperties(['attributes' => $account, 'old' => $replicate])
-            ->createdAt(now())
-            ->log("Loan Account update");
+            ->tap(function (Activity $activity) {
+                $activity->transaction_date = now();
+            })
+            ->log("Loan Account - Update");
 
         return $this->sendResponse(['status' => 'rejected'], 'Rejected');
     }
@@ -289,8 +300,10 @@ class LoanAccountController extends BaseController
 
         activity("Rejected Release")->event("updated")->performedOn($account)
             ->withProperties(['attributes' => $account, 'old' => $replicate])
-            ->createdAt(now())
-            ->log("Proceed");
+            ->tap(function (Activity $activity) {
+                $activity->transaction_date = now();
+            })
+            ->log("Loan Account - Update");
 
         return $this->sendResponse(['status' => 'pending'], 'Returned');
     }
@@ -317,8 +330,10 @@ class LoanAccountController extends BaseController
         $document->deleteDocument($loanAccount->loan_account_id);
         $loanAccount->delete();
         activity("Override Release")->event("deleted")->performedOn($loanAccount)
-            ->createdAt(now())
-            ->log("Delete");
+            ->tap(function (Activity $activity) {
+                $activity->transaction_date = now();
+            })
+            ->log("Loan Account - Delete");
         return $this->sendResponse(['status' => 'Account deleted'], 'Deleted');
     }
 

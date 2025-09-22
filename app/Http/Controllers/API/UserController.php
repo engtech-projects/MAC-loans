@@ -11,6 +11,7 @@ use App\Models\UserBranch;
 use App\Models\UserAccessibility;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Resources\Users as UserResource;
+use Spatie\Activitylog\Models\Activity;
 
 class UserController extends BaseController
 {
@@ -64,8 +65,10 @@ class UserController extends BaseController
         }
 
         activity("User Settings")->event("created")->performedOn($user)
-            ->createdAt(now())
-            ->log("User create");
+            ->tap(function (Activity $activity) {
+                $activity->transaction_date = now();
+            })
+            ->log("User - Create");
         return $this->sendResponse(new UserResource($user), 'User created successfully.');
     }
 
@@ -132,8 +135,10 @@ class UserController extends BaseController
 
         activity("User Settings")->event("updated")->performedOn($user)
             ->withProperties(['attributes' => $user, 'old' => $replicate])
-            ->createdAt(now())
-            ->log("User edit");
+            ->tap(function (Activity $activity) {
+                $activity->transaction_date = now();
+            })
+            ->log("User Settings - Update");
         return $this->sendResponse(new UserResource($user), 'User updated successfully.');
     }
 
@@ -145,6 +150,11 @@ class UserController extends BaseController
         try {
             UserBranch::where('id', $user->id)->delete();
             UserAccessibility::where('id', $user->id)->delete();
+            activity("User Settings")->event("deleted")->performedOn($user)
+                ->tap(function (Activity $activity) {
+                    $activity->transaction_date = now();
+                })
+                ->log("User Settings - Delete");
             return $this->sendResponse([], 'User deleted successfully.');
         } catch (\Exception $e) {
             return $this->sendError('Error deleting user.', ['error' => $e->getMessage()]);

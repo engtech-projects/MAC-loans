@@ -35,9 +35,9 @@ class BranchController extends BaseController
         $input = $request->all();
         # add validator dri
         $branch = Branch::create($input);
-        activity("Branch")->event("created")->performedOn($branch)
+        activity("Center - AO Setup")->event("created")->performedOn($branch)
             ->createdAt(now())
-            ->log("Branch create");
+            ->log("Branch - Create");
         return $this->sendResponse(new BranchResource($branch), 'Branch Created');
     }
 
@@ -72,10 +72,12 @@ class BranchController extends BaseController
         $branch->deleted = isset($input['deleted']) ? $input['deleted'] : $branch->deleted;
         $branch->save();
 
-        activity("Branch")->event("updated")->performedOn($branch)
+        activity("Center - AO Setup")->event("updated")->performedOn($branch)
             ->withProperties(['attributes' => $branch, 'old' => $replicate])
-            ->createdAt(now())
-            ->log("Branch update");
+            ->tap(function (Activity $activity) {
+                $activity->transaction_date = now();
+            })
+            ->log("Branch - Update");
 
         return $this->sendResponse(new BranchResource($branch), 'Branch Updated.');
     }

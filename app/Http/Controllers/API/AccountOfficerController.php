@@ -7,6 +7,7 @@ use App\Http\Controllers\API\BaseController as BaseController;
 use Illuminate\Http\Request;
 use App\Models\AccountOfficer;
 use App\Http\Resources\AccountOfficer as AccountOfficerResource;
+use Spatie\Activitylog\Models\Activity;
 
 class AccountOfficerController extends BaseController
 {
@@ -51,8 +52,10 @@ class AccountOfficerController extends BaseController
         # add validator dri
         $accountOfficer = AccountOfficer::create($input);
         activity("Center - AO setup")->event("created")->performedOn($accountOfficer)
-            ->createdAt(now())
-            ->log("Account Officer create");
+            ->tap(function (Activity $activity) {
+                $activity->transaction_date = now();
+            })
+            ->log("Account Officer - Create");
         return $this->sendResponse(new AccountOfficerResource($accountOfficer), 'AO Created');
     }
 
@@ -87,8 +90,10 @@ class AccountOfficerController extends BaseController
         $accountofficer->save();
         activity("Center - AO setup")->event("updated")->performedOn($accountofficer)
             ->withProperties(['attributes' => $accountofficer, 'old' => $replicate])
-            ->createdAt(now())
-            ->log("Account Officer update");
+            ->tap(function (Activity $activity) {
+                $activity->transaction_date = now();
+            })
+            ->log("Account Officer - Update");
 
 
         return $this->sendResponse(new AccountOfficerResource($accountofficer), 'AO Updated.');
