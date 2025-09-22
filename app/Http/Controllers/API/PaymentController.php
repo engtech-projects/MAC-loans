@@ -216,12 +216,12 @@ class PaymentController extends BaseController
         $validated = $request->validated($request);
         $payment->fill($validated);
         $payment->save();
-        activity("Repayment Entry")->event("updated")->performedOn($payment)
+        activity("Maintenance")->event("updated")->performedOn($payment)
             ->withProperties(['attributes' => $payment, 'old' => $replicate])
             ->tap(function (Activity $activity) {
                 $activity->transaction_date = now();
             })
-            ->log("Payment Update");
+            ->log("Cancel Payments - Payment Update");
         return $this->sendResponse(new PaymentResource($payment), 'Payment successfully updated');
     }
 
@@ -251,12 +251,12 @@ class PaymentController extends BaseController
                 }
             }
 
-            activity("Cancel Payments")->event("updated")->performedOn($payment)
+            activity("Maintenance")->event("updated")->performedOn($payment)
                 ->withProperties(['attributes' => $payment, 'old' => $replicate])
                 ->tap(function (Activity $activity) {
                     $activity->transaction_date = now();
                 })
-                ->log("Payment - Cancel");
+                ->log("Cancel Payments - Payment Update");
             return $this->sendResponse(new PaymentResource($payment), 'Payment Cancelled.');
         }
 

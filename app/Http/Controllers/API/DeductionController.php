@@ -33,11 +33,11 @@ class DeductionController extends BaseController
         // // # add validator dri
         try {
             $deduction = Deduction::create($input);
-            activity("Deduction Rate")->event("created")->performedOn($deduction)
+            activity("Maintenance")->event("created")->performedOn($deduction)
                 ->tap(function (Activity $activity) {
                     $activity->transaction_date = now();
                 })
-                ->log("Deduction Rate - Create");
+                ->log("Deduction Rate - Deduction Create");
         } catch (\Exception $e) {
             return new JsonResponse([
                 'errors' => $e->getMessage(),
@@ -75,12 +75,12 @@ class DeductionController extends BaseController
             $deduction->deleted = isset($input['deleted']) ? $input['deleted'] : $deduction->deleted;
             $deduction->status = isset($input['status']) ? $input['status'] : $deduction->status;
             $deduction->save();
-            activity("Deduction Rate")->event("updated")->performedOn($deduction)
+            activity("Maintenance")->event("updated")->performedOn($deduction)
                 ->withProperties(['attributes' => $deduction, 'old' => $replicate])
                 ->tap(function (Activity $activity) {
                     $activity->transaction_date = now();
                 })
-                ->log("Deduction Rate - Update");
+                ->log("Deduction Rate - Deduction Update");
         } catch (\Exception $e) {
             return new JsonResponse([
                 'errors' => $e->getMessage(),
@@ -116,11 +116,11 @@ class DeductionController extends BaseController
         try {
             $deduction = Deduction::find($id);
             $deduction->delete();
-            activity("Deduction Rate")->event("deleted")->performedOn($deduction)
+            activity("Maintenance")->event("deleted")->performedOn($deduction)
                 ->tap(function (Activity $activity) {
                     $activity->transaction_date = now();
                 })
-                ->log("Deduction Rate - Delete");
+                ->log("Deduction Rate - Deduction Delete");
         } catch (\Exception $e) {
             return new JsonResponse([
                 'errors' => $e->getMessage(),

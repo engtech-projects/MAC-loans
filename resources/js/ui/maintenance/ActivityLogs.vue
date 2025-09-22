@@ -11,7 +11,7 @@
                 <div class="row mb-10">
                     <div class="col-md-2">
 
-                        <select name="" v-model="filter.log_name" id="selectProductClient" class="form-control flex-1">
+                        <select name="" v-model="filter.log_name" class="form-control flex-1">
                             <option value="">-Select Logname-</option>
                             <option value="Release Entry">Release Entry</option>
                             <option value="Override Release">Override Release</option>
@@ -22,7 +22,7 @@
                         </select>
                     </div>
                     <div class="col-md-2">
-                        <select name="" v-model="filter.event" id="selectProductClient" class="form-control flex-1">
+                        <select name="" v-model="filter.event" class="form-control flex-1">
                             <option value="">-Select Event-</option>
                             <option value="created">Create</option>
                             <option value="updated">Edit </option>
@@ -36,7 +36,7 @@
                 </div>
 
                 <div class="p-16 light-border">
-                    <table class="table table-stripped th-nbt table-hover">
+                    <table class="table table-striped th-nbt table-hover">
                         <th width="15%">Log Name</th>
                         <th>Description</th>
                         <th>Subject Type</th>
@@ -47,7 +47,7 @@
                         <th width="13%">Action</th>
                         <tbody>
                             <tr v-if="!activityLogs.length">
-                                <td>No deductions yet.</td>
+                                <td>No activity logs yet.</td>
                             </tr>
                             <tr v-for="d in activityLogs" :key="d.id">
                                 <td>{{ d.log_name }}</td>

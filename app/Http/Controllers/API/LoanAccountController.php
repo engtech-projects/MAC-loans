@@ -275,7 +275,7 @@ class LoanAccountController extends BaseController
         $account->status = 'rejected';
         $account->save();
 
-        activity("Oveeride Release")->event("updated")->performedOn($account)
+        activity("Override Release")->event("updated")->performedOn($account)
             ->withProperties(['attributes' => $account, 'old' => $replicate])
             ->tap(function (Activity $activity) {
                 $activity->transaction_date = now();

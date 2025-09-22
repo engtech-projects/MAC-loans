@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\API\BaseController as BaseController;
 use App\Models\Branch;
 use App\Http\Resources\Branch as BranchResource;
+use Spatie\Activitylog\Models\Activity;
 
 class BranchController extends BaseController
 {

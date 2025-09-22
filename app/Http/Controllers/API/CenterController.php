@@ -43,12 +43,12 @@ class CenterController extends BaseController
         # add validator dri
         $center = Center::create($input);
 
-        activity("Center - AO setup")->event("created")
+        activity("Maintenance")->event("created")
             ->performedOn($center)
             ->tap(function (Activity $activity) {
                 $activity->transaction_date = now();
             })
-            ->log("Center - Create");
+            ->log("Center AO setup - Center Create");
         return $this->sendResponse(new CenterResource($center), 'Center Created');
     }
 
@@ -82,12 +82,12 @@ class CenterController extends BaseController
         $center->area = $input['area'];
         $center->save();
 
-        activity("Center - AO setup")->event("updated")->performedOn($center)
+        activity("Maintenance")->event("updated")->performedOn($center)
             ->withProperties(['attributes' => $center, 'old' => $replicate])
             ->tap(function (Activity $activity) {
                 $activity->transaction_date = now();
             })
-            ->log("Center - Update");
+            ->log("Center AO setup - Center Update");
 
         return $this->sendResponse(new CenterResource($center), 'Center Updated.');
     }

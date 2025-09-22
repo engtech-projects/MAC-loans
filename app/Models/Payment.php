@@ -215,13 +215,15 @@ class Payment extends Model
                         $activity->transaction_date = now();
                     })
                     ->log("Payment - Update");
+            } else {
+                activity("Repayment Entry")->event("created")->performedOn($payment)
+                    ->tap(function (Activity $activity) {
+                        $activity->transaction_date = now();
+                    })
+                    ->log("Payment - Create");
             }
 
-            activity("Repayment Entry")->event("created")->performedOn($payment)
-                ->tap(function (Activity $activity) {
-                    $activity->transaction_date = now();
-                })
-                ->log("Payment - Create");
+
             return $payment;
         });
     }
@@ -349,10 +351,11 @@ class Payment extends Model
     public function deleteMemoPaymentIfExists($loanAccount)
     {
         if ($loanAccount && $loanAccount->memo > 0) {
-            dump('Deleting payment for reference_id: ' . $loanAccount->loan_account_id);
             $this->where('reference_id', $loanAccount->loan_account_id)->delete();
             activity("Override Release")->event("deleted")->performedOn($loanAccount)
-                ->createdAt(now())
+                ->tap(function (Activity $activity) {
+                    $activity->transaction_date = now();
+                })
                 ->log("Memo Payment - Delete");
         }
     }

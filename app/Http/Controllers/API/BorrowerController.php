@@ -225,7 +225,7 @@ class BorrowerController extends BaseController
                 ['creditor', 'amount', 'balance', 'term', 'due_date', 'amortization'],
             );
         }
-        activity("Release Entry")->event("updated")->performedOn($borrower)
+        activity("Maintenance")->event("updated")->performedOn($borrower)
             ->withProperties(['attributes' => $borrower, 'old' => $replicate])
             ->tap(function (Activity $activity) {
                 $activity->transaction_date = now();

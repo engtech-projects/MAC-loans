@@ -51,11 +51,11 @@ class ProductController extends BaseController
             'deleted' => $input['deleted']
         ]);
 
-        activity("Product Setup")->event("created")->performedOn($product)
+        activity("Maintenance")->event("created")->performedOn($product)
             ->tap(function (Activity $activity) {
                 $activity->transaction_date = now();
             })
-            ->log("Product - Create");
+            ->log("Product  Setup - Product Create");
         return $this->sendResponse(new ProductResource($product), 'Product Created');
     }
 
@@ -91,12 +91,12 @@ class ProductController extends BaseController
         $product->save();
 
 
-        activity("Product Setup")->event("updated")->performedOn($product)
+        activity("Maintenance")->event("updated")->performedOn($product)
             ->withProperties(['attributes' => $product, 'old' => $replicate])
             ->tap(function (Activity $activity) {
                 $activity->transaction_date = now();
             })
-            ->log("Product - Uodate");
+            ->log("Product Setup - Product Update");
         return $this->sendResponse(new ProductResource($product), 'Product Updated.');
     }
 

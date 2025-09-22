@@ -55,7 +55,7 @@ class AccountOfficerController extends BaseController
             ->tap(function (Activity $activity) {
                 $activity->transaction_date = now();
             })
-            ->log("Account Officer - Create");
+            ->log("Maintenance - Account Officer Create");
         return $this->sendResponse(new AccountOfficerResource($accountOfficer), 'AO Created');
     }
 
@@ -93,7 +93,7 @@ class AccountOfficerController extends BaseController
             ->tap(function (Activity $activity) {
                 $activity->transaction_date = now();
             })
-            ->log("Account Officer - Update");
+            ->log(" Maintenance - Account Officer Update");
 
 
         return $this->sendResponse(new AccountOfficerResource($accountofficer), 'AO Updated.');
