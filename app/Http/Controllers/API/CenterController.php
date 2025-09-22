@@ -46,7 +46,7 @@ class CenterController extends BaseController
         activity("Maintenance")->event("created")
             ->performedOn($center)
             ->tap(function (Activity $activity) {
-                $activity->transaction_date = now();
+                $activity->transaction_date = $this->transactionDate();
             })
             ->log("Center AO setup - Center Create");
         return $this->sendResponse(new CenterResource($center), 'Center Created');
@@ -73,7 +73,6 @@ class CenterController extends BaseController
      */
     public function update(Request $request, Center $center)
     {
-        $replicate = $center->replicate();
         $input = $request->all();
         # add validator na pd dri
         $center->center = $input['center'];
@@ -83,9 +82,9 @@ class CenterController extends BaseController
         $center->save();
 
         activity("Maintenance")->event("updated")->performedOn($center)
-            ->withProperties(['attributes' => $center, 'old' => $replicate])
+            ->withProperties(['attributes' => $center->getDirty(), 'old' => $center->getOriginal()])
             ->tap(function (Activity $activity) {
-                $activity->transaction_date = now();
+                $activity->transaction_date = $this->transactionDate();
             })
             ->log("Center AO setup - Center Update");
 

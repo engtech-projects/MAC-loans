@@ -53,7 +53,7 @@ class AccountOfficerController extends BaseController
         $accountOfficer = AccountOfficer::create($input);
         activity("Center - AO setup")->event("created")->performedOn($accountOfficer)
             ->tap(function (Activity $activity) {
-                $activity->transaction_date = now();
+                $activity->transaction_date = $this->transactionDate();
             })
             ->log("Maintenance - Account Officer Create");
         return $this->sendResponse(new AccountOfficerResource($accountOfficer), 'AO Created');
@@ -80,7 +80,6 @@ class AccountOfficerController extends BaseController
      */
     public function update(Request $request, AccountOfficer $accountofficer)
     {
-        $replicate = $accountofficer->replicate();
         $input = $request->all();
         # add validator na pd dri
         $accountofficer->name = isset($input['name']) ? $input['name'] : $accountofficer->name;
@@ -89,9 +88,9 @@ class AccountOfficerController extends BaseController
         $accountofficer->deleted = isset($input['deleted']) ? $input['deleted'] : $accountofficer->deleted;
         $accountofficer->save();
         activity("Center - AO setup")->event("updated")->performedOn($accountofficer)
-            ->withProperties(['attributes' => $accountofficer, 'old' => $replicate])
+            ->withProperties(['attributes' => $accountofficer->getDirty(), 'old' => $accountofficer->getOriginal()])
             ->tap(function (Activity $activity) {
-                $activity->transaction_date = now();
+                $activity->transaction_date = $this->transactionDate();
             })
             ->log(" Maintenance - Account Officer Update");
 

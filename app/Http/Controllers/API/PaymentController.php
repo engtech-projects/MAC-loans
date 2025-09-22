@@ -176,11 +176,10 @@ class PaymentController extends BaseController
 
         $sf = $succeed + $failed;
         activity("Override Repayment")->event("updated")->performedOn($payment)
-            ->withProperties(['attributes' => $payment, 'old' => $payment])
+            ->withProperties(['attributes' => $payment->isDirty(), 'old' => $payment->getOriginal()])
             ->tap(function (Activity $activity) {
-                $activity->transaction_date = now();
-            })
-            ->log("Payment Update");
+                $activity->transaction_date = $this->transactionDate();
+            })->log("Payment Update");
         return $this->sendResponse("{$succeed} of {$sf} Successfully Overriden", 'Override');
     }
 
@@ -212,14 +211,13 @@ class PaymentController extends BaseController
 
     public function updatePayment(UpdatePaymentRequest $request, Payment $payment)
     {
-        $replicate = $payment->replicate();
         $validated = $request->validated($request);
         $payment->fill($validated);
         $payment->save();
         activity("Maintenance")->event("updated")->performedOn($payment)
-            ->withProperties(['attributes' => $payment, 'old' => $replicate])
+            ->withProperties(['attributes' => $payment->isDirty(), 'old' => $payment->getOriginal()])
             ->tap(function (Activity $activity) {
-                $activity->transaction_date = now();
+                $activity->transaction_date = $this->transactionDate();
             })
             ->log("Cancel Payments - Payment Update");
         return $this->sendResponse(new PaymentResource($payment), 'Payment successfully updated');
@@ -228,7 +226,6 @@ class PaymentController extends BaseController
     public function update(Request $request, Payment $payment)
     {
 
-        $replicate = $payment->replicate();
         $payment->fill($request->input());
         $payment->save();
 
@@ -252,9 +249,9 @@ class PaymentController extends BaseController
             }
 
             activity("Maintenance")->event("updated")->performedOn($payment)
-                ->withProperties(['attributes' => $payment, 'old' => $replicate])
+                ->withProperties(['attributes' => $payment->isDirty(), 'old' => $payment->getOriginal()])
                 ->tap(function (Activity $activity) {
-                    $activity->transaction_date = now();
+                    $activity->transaction_date = $this->transactionDate();
                 })
                 ->log("Cancel Payments - Payment Update");
             return $this->sendResponse(new PaymentResource($payment), 'Payment Cancelled.');
@@ -262,9 +259,9 @@ class PaymentController extends BaseController
 
 
         activity("Repayment Entry")->event("updated")->performedOn($payment)
-            ->withProperties(['attributes' => $payment, 'old' => $replicate])
+            ->withProperties(['attributes' => $payment->isDirty(), 'old' => $payment->getOriginal()])
             ->tap(function (Activity $activity) {
-                $activity->transaction_date = now();
+                $activity->transaction_date = $this->transactionDate();
             })
             ->log("Payment Update");
         return $this->sendResponse(new PaymentResource($payment), 'Payment Updated.');

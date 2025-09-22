@@ -35,7 +35,7 @@ class DeductionController extends BaseController
             $deduction = Deduction::create($input);
             activity("Maintenance")->event("created")->performedOn($deduction)
                 ->tap(function (Activity $activity) {
-                    $activity->transaction_date = now();
+                    $activity->transaction_date = $this->transactionDate();
                 })
                 ->log("Deduction Rate - Deduction Create");
         } catch (\Exception $e) {
@@ -63,7 +63,6 @@ class DeductionController extends BaseController
     public function update(Request $request, Deduction $deduction)
     {
         $input = $request->all();
-        $replicate = $deduction->replicate();
         try {
             $deduction->name = isset($input['name']) ? $input['name'] : $deduction->name;
             $deduction->rate = isset($input['rate']) ? $input['rate'] : $deduction->rate;
@@ -76,9 +75,9 @@ class DeductionController extends BaseController
             $deduction->status = isset($input['status']) ? $input['status'] : $deduction->status;
             $deduction->save();
             activity("Maintenance")->event("updated")->performedOn($deduction)
-                ->withProperties(['attributes' => $deduction, 'old' => $replicate])
+                ->withProperties(['attributes' => $deduction->getDirty(), 'old' => $deduction->getOriginal()])
                 ->tap(function (Activity $activity) {
-                    $activity->transaction_date = now();
+                    $activity->transaction_date = $this->transactionDate();
                 })
                 ->log("Deduction Rate - Deduction Update");
         } catch (\Exception $e) {
@@ -118,7 +117,7 @@ class DeductionController extends BaseController
             $deduction->delete();
             activity("Maintenance")->event("deleted")->performedOn($deduction)
                 ->tap(function (Activity $activity) {
-                    $activity->transaction_date = now();
+                    $activity->transaction_date = $this->transactionDate();
                 })
                 ->log("Deduction Rate - Deduction Delete");
         } catch (\Exception $e) {

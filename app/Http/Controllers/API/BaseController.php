@@ -3,13 +3,15 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller as Controller;
+use App\Models\EndTransaction;
 use Illuminate\Http\Request;
 
 
 class BaseController extends Controller
 {
 
-    public function __construct() {
+    public function __construct()
+    {
         // $this->middleware('auth');
     }
 
@@ -18,24 +20,35 @@ class BaseController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function sendResponse($result, $message,$code = 200) {
+    public function sendResponse($result, $message, $code = 200)
+    {
 
-    	$response = [
-    		'success' => true,
-    		'data' => $result,
-    		'message' => $message,
-    	];
-    	return response()->json($response, $code);
+        $response = [
+            'success' => true,
+            'data' => $result,
+            'message' => $message,
+        ];
+        return response()->json($response, $code);
     }
 
-    public function sendError($error, $errorMessages = [], $code = 401) {
 
-    	$response = [
+    public function transactionDate()
+    {
+        $branch_id = auth()->user()->branch->first()->branch_id;
+        $eod = EndTransaction::getTransactionDate($branch_id);
+        $transactionDate = $eod->date_end;
+
+        return $transactionDate;
+    }
+    public function sendError($error, $errorMessages = [], $code = 401)
+    {
+
+        $response = [
             'success' => false,
             'message' => $error,
         ];
 
-        if(!empty($errorMessages)){
+        if (!empty($errorMessages)) {
             $response['data'] = $errorMessages;
         }
         return response()->json($response, $code);

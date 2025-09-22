@@ -211,14 +211,15 @@ class Payment extends Model
                 $payment->transaction_number = $this->generateTransactionNumber($payment->payment_id, $payment->payment_type, $payment->memo_type);
                 $payment->save();
                 activity("Repayment Entry")->event("updated")->performedOn($payment)
+                    ->withProperties(['attributes' => $payment->getDirty(), 'old' => $payment->getOriginal()])
                     ->tap(function (Activity $activity) {
-                        $activity->transaction_date = now();
+                        $activity->transaction_date = $this->transactionDate();
                     })
                     ->log("Payment - Update");
             } else {
                 activity("Repayment Entry")->event("created")->performedOn($payment)
                     ->tap(function (Activity $activity) {
-                        $activity->transaction_date = now();
+                        $activity->transaction_date = $this->transactionDate();
                     })
                     ->log("Payment - Create");
             }
@@ -354,7 +355,7 @@ class Payment extends Model
             $this->where('reference_id', $loanAccount->loan_account_id)->delete();
             activity("Override Release")->event("deleted")->performedOn($loanAccount)
                 ->tap(function (Activity $activity) {
-                    $activity->transaction_date = now();
+                    $activity->transaction_date = $this->transactionDate();
                 })
                 ->log("Memo Payment - Delete");
         }
