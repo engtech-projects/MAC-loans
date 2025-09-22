@@ -108,7 +108,7 @@ class BorrowerController extends BaseController
         $duplicateResponse = $this->checkDuplicateBorrower($firstName, $lastName, $birthDate, $excludeId, false);
         
         if ($duplicateResponse) {
-            return $duplicateResponse; // This will be the 422 error with duplicate data
+            return $duplicateResponse;
         }
 
         return $this->sendResponse(null, 'No duplicate found');
@@ -119,6 +119,7 @@ class BorrowerController extends BaseController
         if ($bypassDuplicate) {
             return null;
         }
+
         $query = Borrower::where('firstname', trim($firstName))
             ->where('lastname', trim($lastName))
             ->where('birthdate', $birthDate);
@@ -146,36 +147,16 @@ class BorrowerController extends BaseController
             ->when($excludeId, fn($q) => $q->where('borrower_id', '!=', $excludeId))
             ->first();
 
-        // $nameOnlyMatch = Borrower::where('firstname', trim($firstName))
-        //     ->where('lastname', trim($lastName))
-        //     ->where('birthdate', '!=', $birthDate)
-        //     ->when($excludeId, fn($q) => $q->where('borrower_id', '!=', $excludeId))
-        //     ->first();
-
-        if (!$bypassDuplicate) {
-            if ($fuzzyMatch) {
-                return $this->sendError('Possible duplicate borrower detected (fuzzy match)', [
-                    'duplicate' => [
-                        'borrower_id' => $fuzzyMatch->borrower_id,
-                        'firstname'   => $fuzzyMatch->firstname,
-                        'lastname'    => $fuzzyMatch->lastname,
-                        'birthdate'   => $fuzzyMatch->birthdate,
-                        'match_type'  => 'fuzzy'
-                    ]
-                ], 422);
-            }
-
-            // if ($nameOnlyMatch) {
-            //     return $this->sendError('Duplicate borrower detected (name only)', [
-            //         'duplicate' => [
-            //             'borrower_id' => $nameOnlyMatch->borrower_id,
-            //             'firstname'   => $nameOnlyMatch->firstname,
-            //             'lastname'    => $nameOnlyMatch->lastname,
-            //             'birthdate'   => $nameOnlyMatch->birthdate,
-            //             'match_type'  => 'name_only'
-            //         ]
-            //     ], 422);
-            // }
+        if ($fuzzyMatch) {
+            return $this->sendError('Possible duplicate borrower detected (fuzzy match)', [
+                'duplicate' => [
+                    'borrower_id' => $fuzzyMatch->borrower_id,
+                    'firstname'   => $fuzzyMatch->firstname,
+                    'lastname'    => $fuzzyMatch->lastname,
+                    'birthdate'   => $fuzzyMatch->birthdate,
+                    'match_type'  => 'fuzzy'
+                ]
+            ], 422);
         }
 
         return null;
