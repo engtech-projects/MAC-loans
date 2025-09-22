@@ -101,6 +101,7 @@ class LoanAccountController extends BaseController
                     'loan_account_id' => $account->loan_account_id
                 ]);
 
+            dd($this->transactionDate());
             activity("Release Entry")->event("created")->performedOn($account)
                 ->tap(function (Activity $activity) {
                     $activity->transaction_date = $this->transactionDate();
