@@ -149,8 +149,9 @@ class BorrowerController extends BaseController
                 }
             }
             activity("Release Entry")->event("updated")->performedOn($borrower)
+                ->withProperties(['attributes' => $borrower->getDirty(), 'old' => $borrower->getOriginal()])
                 ->tap(function (Activity $activity) {
-                    $activity->transaction_date = now();
+                    $activity->transaction_date = $this->transactionDate();
                 })
                 ->log("Borrower - Create");
             # add validator dri
@@ -173,7 +174,6 @@ class BorrowerController extends BaseController
      */
     public function update(Request $request, Borrower $borrower)
     {
-        $replicate = $borrower->replicate();
         $borrower->fill($request->input());
         $borrower->save();
 
@@ -226,9 +226,9 @@ class BorrowerController extends BaseController
             );
         }
         activity("Maintenance")->event("updated")->performedOn($borrower)
-            ->withProperties(['attributes' => $borrower, 'old' => $replicate])
+            ->withProperties(['attributes' => $borrower->getDirty(), 'old' => $borrower->getOriginal()])
             ->tap(function (Activity $activity) {
-                $activity->transaction_date = now();
+                $activity->transaction_date = $this->transactionDate();
             })
             ->log("Borrower - Update");
 

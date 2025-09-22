@@ -42,8 +42,9 @@
                         <th>Subject Type</th>
                         <th>Log By</th>
                         <th>Event</th>
-                        <th>Date</th>
-                        <th>Time</th>
+                        <th>Transaction Date</th>
+                        <th>Created At</th>
+                        <th>Updated At</th>
                         <th width="13%">Action</th>
                         <tbody>
                             <tr v-if="!activityLogs.length">
@@ -56,7 +57,8 @@
                                 <td>{{ d.causer }}</td>
                                 <td>{{ d.event }}</td>
                                 <td> {{ d.transaction_date }}</td>
-                                <td> {{ d.transaction_time }}</td>
+                                <td>{{ d.created_at }}</td>
+                                <td>{{ d.updated_at }}</td>
                                 <td>
                                     <button @click="view(d.id)" data-toggle="modal" data-target="#viewLogModal"
                                         class="btn btn-xs btn-primary">

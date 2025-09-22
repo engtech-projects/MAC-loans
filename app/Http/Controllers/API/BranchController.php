@@ -63,7 +63,6 @@ class BranchController extends BaseController
      */
     public function update(Request $request, Branch $branch)
     {
-        $replicate = $branch->replicate();
         $input = $request->all();
         # add validator na pd dri
         $branch->branch_code = isset($input['branch_code']) ? $input['branch_code'] : $branch->branch_code;
@@ -74,9 +73,9 @@ class BranchController extends BaseController
         $branch->save();
 
         activity("Center - AO Setup")->event("updated")->performedOn($branch)
-            ->withProperties(['attributes' => $branch, 'old' => $replicate])
+            ->withProperties(['attributes' => $branch->isDirity(), 'old' => $branch->getOriginal()])
             ->tap(function (Activity $activity) {
-                $activity->transaction_date = now();
+                $activity->transaction_date = $this->transactionDate();
             })
             ->log("Branch - Update");
 

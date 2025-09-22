@@ -20,6 +20,7 @@ use App\Http\Resources\LoanAccount as LoanAccountResource;
 use App\Http\Resources\Amortization as AmortizationResource;
 use App\Jobs\FixShortAdvMigration;
 use App\Jobs\UpdateDocuments;
+use App\Models\EndTransaction;
 use App\Models\LoanAccountMigrationFix;
 use Spatie\Activitylog\Models\Activity;
 
@@ -75,6 +76,7 @@ class LoanAccountController extends BaseController
         $branch = Branch::find($request->input('branch_id'));
         $product = Product::find($request->input('product_id'));
 
+
         $request->merge([
             'cycle_no' => LoanAccount::getCycleNo($borrower->borrower_id),
             'status' => 'pending',
@@ -99,9 +101,10 @@ class LoanAccountController extends BaseController
                     'loan_account_id' => $account->loan_account_id
                 ]);
 
+            dd($this->transactionDate());
             activity("Release Entry")->event("created")->performedOn($account)
                 ->tap(function (Activity $activity) {
-                    $activity->transaction_date = now();
+                    $activity->transaction_date = $this->transactionDate();
                 })
                 ->log("Loan Account - Create");
             /*             Document::create(
@@ -123,7 +126,6 @@ class LoanAccountController extends BaseController
     public function updateLoanAccount(Request $request, LoanAccount $account)
     {
 
-        $replicate = $account->replicate();
         if ($request->filled('data')) {
             $request->request->add(json_decode($request->input('data'), true));
         }
@@ -156,9 +158,9 @@ class LoanAccountController extends BaseController
                 $account->setDocs($account->borrower_id, $account->loan_account_id, $files);
             }
             activity("Loan Account")->event("updated")->performedOn($account)
-                ->withProperties(['attributes' => $account, 'old' => $replicate])
+                ->withProperties(['attributes' => $account->isDirty(), 'old' => $account->getOriginal()])
                 ->tap(function (Activity $activity) {
-                    $activity->transaction_date = now();
+                    $activity->transaction_date = $this->transactionDate();
                 })
                 ->log("Edit");
         }
@@ -215,7 +217,7 @@ class LoanAccountController extends BaseController
         foreach ($request->input() as $key => $value) {
 
             $account = LoanAccount::find($value['loan_account_id']);
-            $replicate = $account->replicate();
+
             if ($account->status !== 'released') {
                 $account->transaction_date = $value['transaction_date'];
                 $account->date_release = $value['date_release'];
@@ -231,9 +233,9 @@ class LoanAccountController extends BaseController
                 $this->createAmortizationSched($account);
 
                 activity("Override Release")->event("updated")->performedOn($account)
-                    ->withProperties(['attributes' => $account, 'old' => $replicate])
+                    ->withProperties(['attributes' => $account->isDirty(), 'old' => $account->getOriginal()])
                     ->tap(function (Activity $activity) {
-                        $activity->transaction_date = now();
+                        $activity->transaction_date = $this->transactionDate();
                     })
                     ->log("Override");
             }
@@ -259,15 +261,13 @@ class LoanAccountController extends BaseController
 
     public function reject(Request $request, LoanAccount $account)
     {
-        $replicate = $account->replicate();
         if ($account->memo > 0) {
             $payment = Payment::where('reference_id', $account->loan_account_id)
                 ->update(['status' => 'rejected']);
-            $replicate = $payment->replicate();
             activity("Override Release")->event("updated")->performedOn($payment)
-                ->withProperties(['attributes' => $account, 'old' => $replicate])
+                ->withProperties(['attributes' => $payment->isDirty(), 'old' => $payment->getOriginal()])
                 ->tap(function (Activity $activity) {
-                    $activity->transaction_date = now();
+                    $activity->transaction_date = $this->transactionDate();
                 })
                 ->log("Memo Payment - Create");
         }
@@ -276,9 +276,9 @@ class LoanAccountController extends BaseController
         $account->save();
 
         activity("Override Release")->event("updated")->performedOn($account)
-            ->withProperties(['attributes' => $account, 'old' => $replicate])
+            ->withProperties(['attributes' => $account->isDirty(), 'old' => $account->getOriginal()])
             ->tap(function (Activity $activity) {
-                $activity->transaction_date = now();
+                $activity->transaction_date = $this->transactionDate();
             })
             ->log("Loan Account - Update");
 
@@ -287,7 +287,6 @@ class LoanAccountController extends BaseController
 
     public function proceed(Request $request, LoanAccount $account)
     {
-        $replicate = $account->replicate();
 
         if ($account->memo > 0) {
             Payment::where('reference_id', $account->loan_account_id)
@@ -299,9 +298,9 @@ class LoanAccountController extends BaseController
         $account->save();
 
         activity("Rejected Release")->event("updated")->performedOn($account)
-            ->withProperties(['attributes' => $account, 'old' => $replicate])
+            ->withProperties(['attributes' => $account->getDirty(), 'old' => $account->getOriginal()])
             ->tap(function (Activity $activity) {
-                $activity->transaction_date = now();
+                $activity->transaction_date = $this->transactionDate();
             })
             ->log("Loan Account - Update");
 
@@ -331,7 +330,7 @@ class LoanAccountController extends BaseController
         $loanAccount->delete();
         activity("Override Release")->event("deleted")->performedOn($loanAccount)
             ->tap(function (Activity $activity) {
-                $activity->transaction_date = now();
+                $activity->transaction_date = $this->transactionDate();
             })
             ->log("Loan Account - Delete");
         return $this->sendResponse(['status' => 'Account deleted'], 'Deleted');

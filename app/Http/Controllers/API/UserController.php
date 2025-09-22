@@ -67,7 +67,7 @@ class UserController extends BaseController
 
         activity("Maintenance")->event("created")->performedOn($user)
             ->tap(function (Activity $activity) {
-                $activity->transaction_date = now();
+                $activity->transaction_date = $this->transactionDate();
             })
             ->log("User Settings - User Create");
         return $this->sendResponse(new UserResource($user), 'User created successfully.');
@@ -95,7 +95,6 @@ class UserController extends BaseController
     public function update(Request $request, User $user)
     {
 
-        $replicate = $user->replicate();
         $user->username = ($request->input('username') != null) ? $request->input('username') : $user->username;
         $user->password = ($request->input('password') != null) ? Hash::make($request->input('password')) : $user->password;
         $user->firstname = $request->input('firstname');
@@ -135,9 +134,9 @@ class UserController extends BaseController
         $user = User::find($user->id);
 
         activity("Maintenance")->event("updated")->performedOn($user)
-            ->withProperties(['attributes' => $user, 'old' => $replicate])
+            ->withProperties(['attributes' => $user->isDirty(), 'old' => $user->getOriginal()])
             ->tap(function (Activity $activity) {
-                $activity->transaction_date = now();
+                $activity->transaction_date = $this->transactionDate();
             })
             ->log("User Settings - User Update");
         return $this->sendResponse(new UserResource($user), 'User updated successfully.');
@@ -153,7 +152,7 @@ class UserController extends BaseController
             UserAccessibility::where('id', $user->id)->delete();
             activity("Maintenance")->event("deleted")->performedOn($user)
                 ->tap(function (Activity $activity) {
-                    $activity->transaction_date = now();
+                    $activity->transaction_date = $this->transactionDate();
                 })
                 ->log("User Settings - Accessibilitity and User Branch Delete");
             return $this->sendResponse([], 'User deleted successfully.');
