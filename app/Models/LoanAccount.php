@@ -19,8 +19,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class LoanAccount extends Model
 {
     use HasFactory;
-    use LogsActivity;
-    protected static $recordEvents = [];
     protected $table = 'loan_accounts';
     protected $primaryKey = 'loan_account_id';
     protected $with = ['documents', 'borrower', 'center', 'branch', 'product', 'accountOfficer', 'payments'];
@@ -76,12 +74,6 @@ class LoanAccount extends Model
 
     protected $appends = ['remaining_balance'];
 
-    public function getActivitylogOptions(): LogOptions
-    {
-        return LogOptions::defaults()
-            ->setDescriptionForEvent(fn(string $eventName) =>  $eventName)
-            ->useLogName('Loan Account');
-    }
 
 
     public function getRemainingBalanceAttribute()

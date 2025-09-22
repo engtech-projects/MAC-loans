@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
@@ -14,10 +15,16 @@ class ActivityLogController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        $filter = $request->all();
 
-        $activityLogs = Activity::all();
+        $activityLogs = Activity::when($request['log_name'], function ($query) use ($filter) {
+            $logname = $filter['log_name'];
+            $query->where('log_name', 'like', "%$logname%");
+        })->when($request['event'], function ($query) use ($filter) {
+            $query->where('event', $filter['event']);
+        })->get();
         $data = $activityLogs->map(function ($item) {
             return [
                 'id' => $item->id,
@@ -35,7 +42,8 @@ class ActivityLogController extends Controller
                 'causer' => $item->causer->username,
                 'user_role' => $item->causer->userRole,
                 'properties' => $item->changes(),
-                'created_at' => $item->created_at->format('H:i d, M Y')
+                'transaction_date' => $item->transaction_date != null ? Carbon::parse($item->transaction_date)->format('Y-m-d') : null,
+                'transaction_time' => $item->transaction_date != null ? Carbon::parse($item->transaction_date)->format('H:i A') : null,
             ];
         });
         return new JsonResponse([

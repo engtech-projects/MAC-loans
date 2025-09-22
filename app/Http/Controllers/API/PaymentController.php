@@ -15,7 +15,7 @@ use App\Http\Resources\PaymentLoanAccount as PaymentLoanAccountResource;
 use Carbon\Carbon;
 use App\Models\EndTransaction;
 use Illuminate\Support\Str;
-
+use Spatie\Activitylog\Models\Activity;
 
 class PaymentController extends BaseController
 {
@@ -177,7 +177,9 @@ class PaymentController extends BaseController
         $sf = $succeed + $failed;
         activity("Override Repayment")->event("updated")->performedOn($payment)
             ->withProperties(['attributes' => $payment, 'old' => $payment])
-            ->createdAt(now())
+            ->tap(function (Activity $activity) {
+                $activity->transaction_date = now();
+            })
             ->log("Payment Update");
         return $this->sendResponse("{$succeed} of {$sf} Successfully Overriden", 'Override');
     }
@@ -214,10 +216,12 @@ class PaymentController extends BaseController
         $validated = $request->validated($request);
         $payment->fill($validated);
         $payment->save();
-        activity("Repayment Entry")->event("updated")->performedOn($payment)
+        activity("Maintenance")->event("updated")->performedOn($payment)
             ->withProperties(['attributes' => $payment, 'old' => $replicate])
-            ->createdAt(now())
-            ->log("Payment Update");
+            ->tap(function (Activity $activity) {
+                $activity->transaction_date = now();
+            })
+            ->log("Cancel Payments - Payment Update");
         return $this->sendResponse(new PaymentResource($payment), 'Payment successfully updated');
     }
 
@@ -247,17 +251,21 @@ class PaymentController extends BaseController
                 }
             }
 
-            activity("Cancel Payments")->event("updated")->performedOn($payment)
+            activity("Maintenance")->event("updated")->performedOn($payment)
                 ->withProperties(['attributes' => $payment, 'old' => $replicate])
-                ->createdAt(now())
-                ->log("Payment - Cancel");
+                ->tap(function (Activity $activity) {
+                    $activity->transaction_date = now();
+                })
+                ->log("Cancel Payments - Payment Update");
             return $this->sendResponse(new PaymentResource($payment), 'Payment Cancelled.');
         }
 
 
         activity("Repayment Entry")->event("updated")->performedOn($payment)
             ->withProperties(['attributes' => $payment, 'old' => $replicate])
-            ->createdAt(now())
+            ->tap(function (Activity $activity) {
+                $activity->transaction_date = now();
+            })
             ->log("Payment Update");
         return $this->sendResponse(new PaymentResource($payment), 'Payment Updated.');
     }

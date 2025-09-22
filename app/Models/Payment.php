@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Spatie\Activitylog\Models\Activity;
 
 class Payment extends Model
 {
@@ -210,13 +211,19 @@ class Payment extends Model
                 $payment->transaction_number = $this->generateTransactionNumber($payment->payment_id, $payment->payment_type, $payment->memo_type);
                 $payment->save();
                 activity("Repayment Entry")->event("updated")->performedOn($payment)
-                    ->createdAt(now())
-                    ->log("Payment update");
+                    ->tap(function (Activity $activity) {
+                        $activity->transaction_date = now();
+                    })
+                    ->log("Payment - Update");
+            } else {
+                activity("Repayment Entry")->event("created")->performedOn($payment)
+                    ->tap(function (Activity $activity) {
+                        $activity->transaction_date = now();
+                    })
+                    ->log("Payment - Create");
             }
 
-            activity("Repayment Entry")->event("created")->performedOn($payment)
-                ->createdAt(now())
-                ->log("Payment create");
+
             return $payment;
         });
     }
@@ -344,11 +351,12 @@ class Payment extends Model
     public function deleteMemoPaymentIfExists($loanAccount)
     {
         if ($loanAccount && $loanAccount->memo > 0) {
-            dump('Deleting payment for reference_id: ' . $loanAccount->loan_account_id);
             $this->where('reference_id', $loanAccount->loan_account_id)->delete();
-            activity("Repayment Entry")->event("created")->performedOn($loanAccount)
-                ->createdAt(now())
-                ->log("Payment Delete");
+            activity("Override Release")->event("deleted")->performedOn($loanAccount)
+                ->tap(function (Activity $activity) {
+                    $activity->transaction_date = now();
+                })
+                ->log("Memo Payment - Delete");
         }
     }
 }

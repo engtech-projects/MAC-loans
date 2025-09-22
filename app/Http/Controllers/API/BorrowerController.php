@@ -18,6 +18,7 @@ use App\Models\OutstandingObligations;
 use App\Models\LoanAccount;
 use App\Http\Resources\Borrower as BorrowerResource;
 use App\Http\Resources\BorrowerAccountsResource;
+use Spatie\Activitylog\Contracts\Activity;
 
 class BorrowerController extends BaseController
 {
@@ -147,6 +148,11 @@ class BorrowerController extends BaseController
                     $borrower->outstandingObligations()->save(new OutstandingObligations($value));
                 }
             }
+            activity("Release Entry")->event("updated")->performedOn($borrower)
+                ->tap(function (Activity $activity) {
+                    $activity->transaction_date = now();
+                })
+                ->log("Borrower - Create");
             # add validator dri
             return $this->sendResponse(new BorrowerResource($borrower), 'Borrower Created');
         }
@@ -219,6 +225,12 @@ class BorrowerController extends BaseController
                 ['creditor', 'amount', 'balance', 'term', 'due_date', 'amortization'],
             );
         }
+        activity("Maintenance")->event("updated")->performedOn($borrower)
+            ->withProperties(['attributes' => $borrower, 'old' => $replicate])
+            ->tap(function (Activity $activity) {
+                $activity->transaction_date = now();
+            })
+            ->log("Borrower - Update");
 
         return $this->sendResponse(new BorrowerResource($borrower), 'Borrower Updated.');
     }

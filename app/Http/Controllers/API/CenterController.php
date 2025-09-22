@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\Center;
 use App\Http\Resources\Center as CenterResource;
 use Illuminate\Support\Str;
+use Spatie\Activitylog\Models\Activity;
 
 class CenterController extends BaseController
 {
@@ -42,10 +43,12 @@ class CenterController extends BaseController
         # add validator dri
         $center = Center::create($input);
 
-        activity("Center - AO setup")->event("created")
-            ->createdAt(now())
+        activity("Maintenance")->event("created")
             ->performedOn($center)
-            ->log("Center create");
+            ->tap(function (Activity $activity) {
+                $activity->transaction_date = now();
+            })
+            ->log("Center AO setup - Center Create");
         return $this->sendResponse(new CenterResource($center), 'Center Created');
     }
 
@@ -79,10 +82,12 @@ class CenterController extends BaseController
         $center->area = $input['area'];
         $center->save();
 
-        activity("Center - AO setup")->event("updated")->performedOn($center)
+        activity("Maintenance")->event("updated")->performedOn($center)
             ->withProperties(['attributes' => $center, 'old' => $replicate])
-            ->createdAt(now())
-            ->log("Center update");
+            ->tap(function (Activity $activity) {
+                $activity->transaction_date = now();
+            })
+            ->log("Center AO setup - Center Update");
 
         return $this->sendResponse(new CenterResource($center), 'Center Updated.');
     }

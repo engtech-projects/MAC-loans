@@ -8,6 +8,7 @@ use App\Http\Controllers\API\BaseController as BaseController;
 use App\Models\Product;
 use App\Models\User;
 use App\Http\Resources\Product as ProductResource;
+use Spatie\Activitylog\Models\Activity;
 
 class ProductController extends BaseController
 {
@@ -50,9 +51,11 @@ class ProductController extends BaseController
             'deleted' => $input['deleted']
         ]);
 
-        activity("Product Setup")->event("created")->performedOn($product)
-            ->createdAt(now())
-            ->log("Product create");
+        activity("Maintenance")->event("created")->performedOn($product)
+            ->tap(function (Activity $activity) {
+                $activity->transaction_date = now();
+            })
+            ->log("Product  Setup - Product Create");
         return $this->sendResponse(new ProductResource($product), 'Product Created');
     }
 
@@ -88,10 +91,12 @@ class ProductController extends BaseController
         $product->save();
 
 
-        activity("Product Setup")->event("updated")->performedOn($product)
+        activity("Maintenance")->event("updated")->performedOn($product)
             ->withProperties(['attributes' => $product, 'old' => $replicate])
-            ->createdAt(now())
-            ->log("Product update");
+            ->tap(function (Activity $activity) {
+                $activity->transaction_date = now();
+            })
+            ->log("Product Setup - Product Update");
         return $this->sendResponse(new ProductResource($product), 'Product Updated.');
     }
 

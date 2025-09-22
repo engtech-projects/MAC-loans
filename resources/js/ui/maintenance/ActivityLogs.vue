@@ -5,67 +5,73 @@
         <div class="ml-16 mb-24 bb-primary-dark pb-7 text-block">
             <h1 class="m-0 font-35">Activity Logs</h1>
         </div><!-- /.col -->
-        <form @submit.prevent="save()">
-            <div class="d-flex flex-column flex-xl-row ml-16">
-                <div style="flex:20">
-                    <section class="mb-24" style="flex:21;padding-left:16px;">
-                        <div class="row mb-10">
-                            <div class="col-md-2">
-                                <select name="" id="selectProductClient" class="form-control flex-1">
-                                    <option disabled value="">Select Subject Type</option>
-                                    <option value="performance_report">Performance Report</option>
-                                    <option value="write_off">Write Off Report</option>
-                                    <option value="delinquent">Delinquent Report</option>
-                                </select>
-                            </div>
-                            <div class="col-md-2">
-                                <select name="" id="selectProductClient" class="form-control flex-1">
-                                    <option disabled value="">Event</option>
-                                    <option value="performance_report">Create </option>
-                                    <option value="write_off">Write Off Report</option>
-                                    <option value="delinquent">Delinquent Report</option>
-                                </select>
-                            </div>
-                            <div class="col-md-2">
-                                <button class="btn btn-primary">Search</button>
-                            </div>
+        <div class="d-flex flex-column flex-xl-row ml-16">
+            <div style="flex:20">
 
-                        </div>
-                        <div class="p-16 light-border">
-                            <table class="table table-stripped th-nbt table-hover">
-                                <th width="15%">Log Name</th>
-                                <th>Description</th>
-                                <th>Subject Type</th>
-                                <th>Log By</th>
-                                <th>Event</th>
-                                <th>Date</th>
-                                <th width="13%">Action</th>
-                                <tbody>
-                                    <tr v-if="!activityLogs.length">
-                                        <td>No deductions yet.</td>
-                                    </tr>
-                                    <tr v-for="d in activityLogs" :key="d.id">
-                                        <td>{{ d.log_name }}</td>
-                                        <td>{{ d.description }}</td>
-                                        <td>{{ d.subject_type }}</td>
-                                        <td>{{ d.causer }}</td>
-                                        <td>{{ d.event }}</td>
-                                        <td> {{ d.created_at }}</td>
-                                        <td>
-                                            <button @click="view(d.id)" data-toggle="modal" data-target="#viewLogModal"
-                                                class="btn btn-xs btn-primary">
-                                                <i class="fa fa-info-circle text-sm"></i>
-                                            </button>
+                <div class="row mb-10">
+                    <div class="col-md-2">
 
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </section>
+                        <select name="" v-model="filter.log_name" class="form-control flex-1">
+                            <option value="">-Select Logname-</option>
+                            <option value="Release Entry">Release Entry</option>
+                            <option value="Override Release">Override Release</option>
+                            <option value="Rejected Release">Rejected Release</option>
+                            <option value="Repayment Entry">Repayment</option>
+                            <option value="Override Payment">Override Payment</option>
+                            <option value="Maintenance">Maintenance</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <select name="" v-model="filter.event" class="form-control flex-1">
+                            <option value="">-Select Event-</option>
+                            <option value="created">Create</option>
+                            <option value="updated">Edit </option>
+                            <option value="deleted">Delete</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <button class="btn btn-primary" @click="search()">Search</button>
+                    </div>
+
                 </div>
+
+                <div class="p-16 light-border">
+                    <table class="table table-striped th-nbt table-hover">
+                        <th width="15%">Log Name</th>
+                        <th>Description</th>
+                        <th>Subject Type</th>
+                        <th>Log By</th>
+                        <th>Event</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th width="13%">Action</th>
+                        <tbody>
+                            <tr v-if="!activityLogs.length">
+                                <td>No activity logs yet.</td>
+                            </tr>
+                            <tr v-for="d in activityLogs" :key="d.id">
+                                <td>{{ d.log_name }}</td>
+                                <td>{{ d.description }}</td>
+                                <td>{{ d.subject_type }}</td>
+                                <td>{{ d.causer }}</td>
+                                <td>{{ d.event }}</td>
+                                <td> {{ d.transaction_date }}</td>
+                                <td> {{ d.transaction_time }}</td>
+                                <td>
+                                    <button @click="view(d.id)" data-toggle="modal" data-target="#viewLogModal"
+                                        class="btn btn-xs btn-primary">
+                                        <i class="fa fa-info-circle text-sm"></i>
+                                    </button>
+
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
             </div>
-        </form>
+        </div>
+
         <div class="modal fade" id="viewLogModal" tabindex="-1" role="dialog" aria-labelledby="viewActivityLabel"
             aria-hidden="true">
             <div class="modal-dialog modal-xl" role="document">
@@ -195,6 +201,10 @@ export default {
             activityLogs: [],
             activityLog: {},
             deductions: [],
+            filter: {
+                log_name: "",
+                event: ""
+            },
             deduction: {
                 id: null,
                 name: '',
@@ -211,6 +221,10 @@ export default {
     methods: {
         async fetchActivityLogs() {
             await axios.get(this.baseURL() + 'api/activity-logs/', {
+                params: {
+                    'log_name': this.filter.log_name,
+                    'event': this.filter.event
+                },
                 headers: {
                     'Authorization': 'Bearer ' + this.token,
                     'Content-Type': 'application/json',
@@ -223,6 +237,9 @@ export default {
                 .catch(function (error) {
                     console.log(error);
                 }.bind(this));
+        },
+        search() {
+            this.fetchActivityLogs();
         },
 
         async view(id) {
