@@ -95,11 +95,88 @@ class BorrowerController extends BaseController
         // return view();
     }
 
+    public function checkDuplicate(Request $request)
+    {
+        $firstName = $request->input('firstname');
+        $lastName = $request->input('lastname');
+        $birthDate = $request->input('birthdate');
+        $excludeId = $request->input('exclude_id');
+
+        if (!$firstName || !$lastName || !$birthDate) {
+            return $this->sendError('Missing required fields', ['error' => 'firstname, lastname, and birthdate are required'], 400);
+        }
+
+        $duplicateResponse = $this->checkDuplicateBorrower($firstName, $lastName, $birthDate, $excludeId, false);
+        
+        if ($duplicateResponse) {
+            return $duplicateResponse;
+        }
+
+        return $this->sendResponse(null, 'No duplicate found');
+    }
+
+    private function checkDuplicateBorrower(string $firstName, string $lastName, string $birthDate, $excludeId = null, bool $bypassDuplicate = false)
+    {
+        if ($bypassDuplicate) {
+            return null;
+        }
+
+        $query = Borrower::where('firstname', trim($firstName))
+            ->where('lastname', trim($lastName))
+            ->where('birthdate', $birthDate);
+
+        if ($excludeId) {
+            $query->where('borrower_id', '!=', $excludeId);
+        }
+
+        $exactMatch = $query->first();
+
+        if ($exactMatch) {
+            return $this->sendError('Duplicate borrower detected (exact match)', [
+                'duplicate' => [
+                    'borrower_id' => $exactMatch->borrower_id,
+                    'firstname'   => $exactMatch->firstname,
+                    'lastname'    => $exactMatch->lastname,
+                    'birthdate'   => $exactMatch->birthdate,
+                    'match_type'  => 'exact'
+                ]
+            ], 422);
+        }
+
+        $fuzzyMatch = Borrower::whereRaw("SOUNDEX(firstname) = SOUNDEX(?)", [$firstName])
+            ->whereRaw("SOUNDEX(lastname) = SOUNDEX(?)", [$lastName])
+            ->when($excludeId, fn($q) => $q->where('borrower_id', '!=', $excludeId))
+            ->first();
+
+        if ($fuzzyMatch) {
+            return $this->sendError('Possible duplicate borrower detected (fuzzy match)', [
+                'duplicate' => [
+                    'borrower_id' => $fuzzyMatch->borrower_id,
+                    'firstname'   => $fuzzyMatch->firstname,
+                    'lastname'    => $fuzzyMatch->lastname,
+                    'birthdate'   => $fuzzyMatch->birthdate,
+                    'match_type'  => 'fuzzy'
+                ]
+            ], 422);
+        }
+
+        return null;
+    }
+
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
+        $firstName = $request->input('firstname');
+        $lastName = $request->input('lastname');
+        $birthDate = $request->input('birthdate');
+        $bypassDuplicate = $request->input('bypass_duplicate', false);
+        if ($firstName && $lastName && $birthDate) {
+            if ($response = $this->checkDuplicateBorrower($firstName, $lastName, $birthDate, null, $bypassDuplicate)) {
+                return $response;
+            }
+        }
         $borrower = new Borrower();
         // add borrower_num to request data
         $request->merge(['borrower_num' => '']);
@@ -174,6 +251,16 @@ class BorrowerController extends BaseController
      */
     public function update(Request $request, Borrower $borrower)
     {
+        $firstName = $request->input('firstname');
+        $lastName = $request->input('lastname');
+        $birthDate = $request->input('birthdate');
+        $bypassDuplicate = $request->input('bypass_duplicate', false);
+        if ($firstName && $lastName && $birthDate) {
+            if ($response = $this->checkDuplicateBorrower($firstName, $lastName, $birthDate, $borrower->borrower_id, $bypassDuplicate)) {
+                return $response;
+            }
+        }
+        $replicate = $borrower->replicate();
         $borrower->fill($request->input());
         $borrower->save();
 
