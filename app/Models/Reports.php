@@ -798,11 +798,12 @@ class Reports extends Model
                 $data[$key]['amount_loan'] = $value['loan_amount'];
                 $data[$key]['outstanding_balance'] = $loanAccount->remainingBalance()["memo"]["balance"];
                 $data[$key]['principal_balance'] = $loanAccount->remainingBalance()["principal"]["balance"];
-                $data[$key]['delinquent'] = LoanAccount::getPaymentStatus($loanAccount->loan_account_id) === 'Delinquent' ? $currentAmortization['delinquent']['principal'] + $currentAmortization['delinquent']['interest'] : 0;
+                $data[$key]['delinquent'] = LoanAccount::getPaymentStatus($loanAccount->loan_account_id) === 'Delinquent' ? max (0,($currentAmortization['delinquent']['principal'] + $currentAmortization['delinquent']['interest']) - ($currentAmortization['advance_principal'] + $currentAmortization['advance_interest']))  : 0;
                 $data[$key]['penalty'] = ($currentAmortization?->penalty ?? 0) + ($currentAmortization?->pdi ?? 0);
-                $data[$key]['amount_due'] = ($currentAmortization?->total ?? 0) + $data[$key]['penalty'];
-                //   $data[$key]['weekly_amortization'] = $value->amortization()['total'];
-
+                
+                $principalPart = max(0,($currentAmortization['principal'] ?? 0) + ($currentAmortization['short_principal'] ?? 0) - ($currentAmortization['advance_principal'] ?? 0));
+                $interestPart = max(0,($currentAmortization['interest'] ?? 0) + ($currentAmortization['short_interest'] ?? 0) - ($currentAmortization['advance_interest'] ?? 0));
+                $data[$key]['amount_due'] = $principalPart + $interestPart;
 
                 $data[$key]['contact'] = $borrower->contact_number;
                 $data[$key]['address'] = $borrower->address;
