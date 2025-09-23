@@ -81,6 +81,7 @@ class ProductController extends BaseController
     public function update(Request $request, Product $product)
     {
         $input = $request->all();
+        $replicate = $product->replicate();
         # add validator na pd dri
         $product->product_code = $input['product_code'];
         $product->product_name = $input['product_name'];
@@ -89,9 +90,9 @@ class ProductController extends BaseController
         $product->deleted = $input['deleted'];
         $product->save();
 
-
+        $changes = $this->getChanges($product, $replicate);
         activity("Maintenance")->event("updated")->performedOn($product)
-            ->withProperties(['attributes' => $product->getDirty(), 'old' => $product->getOriginal()])
+            ->withProperties(['attributes' => $changes['attributes'], 'old' => $changes['old']])
             ->tap(function (Activity $activity) {
                 $activity->transaction_date = now();
             })
