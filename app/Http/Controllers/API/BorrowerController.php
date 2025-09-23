@@ -225,8 +225,7 @@ class BorrowerController extends BaseController
                     $borrower->outstandingObligations()->save(new OutstandingObligations($value));
                 }
             }
-            activity("Release Entry")->event("updated")->performedOn($borrower)
-                ->withProperties(['attributes' => $borrower->getDirty(), 'old' => $borrower->getOriginal()])
+            activity("Release Entry")->event("created")->performedOn($borrower)
                 ->tap(function (Activity $activity) {
                     $activity->transaction_date = $this->transactionDate();
                 })
@@ -312,8 +311,9 @@ class BorrowerController extends BaseController
                 ['creditor', 'amount', 'balance', 'term', 'due_date', 'amortization'],
             );
         }
+        $changes = $this->getChanges($borrower, $replicate);
         activity("Maintenance")->event("updated")->performedOn($borrower)
-            ->withProperties(['attributes' => $borrower->getDirty(), 'old' => $borrower->getOriginal()])
+            ->withProperties(['attributes' => $changes['attributes'], 'old' => $changes['old']])
             ->tap(function (Activity $activity) {
                 $activity->transaction_date = $this->transactionDate();
             })

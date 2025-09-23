@@ -157,7 +157,7 @@
                                                     <ul>
                                                         <li v-for="(item, index) in activityLog.properties?.attributes"
                                                             :key="index">
-                                                            index: <br> item
+                                                            {{ index }}: <br> {{ item }}
                                                         </li>
                                                     </ul>
                                                 </ul>

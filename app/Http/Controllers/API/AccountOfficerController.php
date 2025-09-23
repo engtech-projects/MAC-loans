@@ -81,18 +81,18 @@ class AccountOfficerController extends BaseController
     public function update(Request $request, AccountOfficer $accountofficer)
     {
         $input = $request->all();
+        $replicate = $accountofficer->replicate();
         # add validator na pd dri
         $accountofficer->name = isset($input['name']) ? $input['name'] : $accountofficer->name;
         $accountofficer->branch_id = isset($input['branch_id']) ? $input['branch_id'] : $accountofficer->branch_id;
         $accountofficer->status = isset($input['status']) ? $input['status'] : $accountofficer->status;
         $accountofficer->deleted = isset($input['deleted']) ? $input['deleted'] : $accountofficer->deleted;
         $accountofficer->save();
-        activity("Center - AO setup")->event("updated")->performedOn($accountofficer)
-            ->withProperties(['attributes' => $accountofficer->getDirty(), 'old' => $accountofficer->getOriginal()])
-            ->tap(function (Activity $activity) {
-                $activity->transaction_date = $this->transactionDate();
-            })
-            ->log(" Maintenance - Account Officer Update");
+        $this->activityLog($accountofficer, [
+            'log_name' => 'Center - AO setup',
+            'event' => 'updated',
+            'log' => 'Maintenance - Account Officer Update'
+        ], $replicate);
 
 
         return $this->sendResponse(new AccountOfficerResource($accountofficer), 'AO Updated.');

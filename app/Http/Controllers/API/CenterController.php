@@ -73,6 +73,7 @@ class CenterController extends BaseController
      */
     public function update(Request $request, Center $center)
     {
+        $replicate = $center->replicate();
         $input = $request->all();
         # add validator na pd dri
         $center->center = $input['center'];
@@ -81,8 +82,9 @@ class CenterController extends BaseController
         $center->area = $input['area'];
         $center->save();
 
+        $changes = $this->getChanges($center, $replicate);
         activity("Maintenance")->event("updated")->performedOn($center)
-            ->withProperties(['attributes' => $center->getDirty(), 'old' => $center->getOriginal()])
+            ->withProperties(['attributes' => $changes['attributes'], 'old' => $changes['old']])
             ->tap(function (Activity $activity) {
                 $activity->transaction_date = $this->transactionDate();
             })

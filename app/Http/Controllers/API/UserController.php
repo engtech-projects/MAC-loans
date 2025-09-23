@@ -95,6 +95,7 @@ class UserController extends BaseController
     public function update(Request $request, User $user)
     {
 
+        $replicate = $user->replicate();
         $user->username = ($request->input('username') != null) ? $request->input('username') : $user->username;
         $user->password = ($request->input('password') != null) ? Hash::make($request->input('password')) : $user->password;
         $user->firstname = $request->input('firstname');
@@ -133,8 +134,9 @@ class UserController extends BaseController
 
         $user = User::find($user->id);
 
+        $changes = $this->getChanges($user, $replicate);
         activity("Maintenance")->event("updated")->performedOn($user)
-            ->withProperties(['attributes' => $user->isDirty(), 'old' => $user->getOriginal()])
+            ->withProperties(['attributes' => $changes['attributes'], 'old' => $changes['old']])
             ->tap(function (Activity $activity) {
                 $activity->transaction_date = $this->transactionDate();
             })
