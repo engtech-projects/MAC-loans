@@ -62,6 +62,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::resource('gl', GLController::class);
     Route::resource('deduction', DeductionController::class);
 
+    Route::post('borrower/check-duplicate', [BorrowerController::class, 'checkDuplicate']);
 
     Route::get('borrower/accounts/{borrower_id}', [BorrowerController::class, 'getBorrowerAccounts']);
 
