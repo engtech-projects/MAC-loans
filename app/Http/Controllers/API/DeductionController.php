@@ -113,8 +113,10 @@ class DeductionController extends BaseController
     {
         try {
             $deduction = Deduction::find($id);
+            $replicate = $deduction->replicate();
             $deduction->delete();
             activity("Maintenance")->event("deleted")->performedOn($deduction)
+                ->withProperties(['attributes' => $replicate])
                 ->tap(function (Activity $activity) {
                     $activity->transaction_date = $this->transactionDate();
                 })
