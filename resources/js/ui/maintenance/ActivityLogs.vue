@@ -115,7 +115,7 @@
                                                     Description:
                                                 </div>
                                                 <div class="col-md-6">
-                                                    {{ activityLog.event }}
+                                                    {{ activityLog.description }}
                                                 </div>
                                             </div>
                                         </li>
@@ -135,7 +135,7 @@
                                                     Event:
                                                 </div>
                                                 <div class="col-md-6">
-                                                    {{ activityLog.description }}
+                                                    {{ activityLog.event }}
                                                 </div>
                                             </div>
                                         </li>

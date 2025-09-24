@@ -98,7 +98,7 @@ class DeductionController extends BaseController
         if ($request->birthdate) {
             $birthdate = Carbon::parse($request->birthdate);
             $releasedatenow = Carbon::now();
-            $age = round($birthdate->diffInDays($releasedatenow)/ 365, 0);
+            $age = round($birthdate->diffInDays($releasedatenow) / 365, 0);
         }
         $deduction = new Deduction();
         return $this->sendResponse($deduction->deductions([
@@ -115,12 +115,6 @@ class DeductionController extends BaseController
             $deduction = Deduction::find($id);
             $replicate = $deduction->replicate();
             $deduction->delete();
-            activity("Maintenance")->event("deleted")->performedOn($deduction)
-                ->withProperties(['attributes' => $replicate])
-                ->tap(function (Activity $activity) {
-                    $activity->transaction_date = $this->transactionDate();
-                })
-                ->log("Deduction Rate - Deduction Delete");
         } catch (\Exception $e) {
             return new JsonResponse([
                 'errors' => $e->getMessage(),
