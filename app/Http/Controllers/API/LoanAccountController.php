@@ -317,6 +317,7 @@ class LoanAccountController extends BaseController
     {
 
         $loanAccount = LoanAccount::find($id);
+        $replicate = $loanAccount->replicate();
         //get document
         $document = new Document();
 
@@ -329,6 +330,7 @@ class LoanAccountController extends BaseController
         $document->deleteDocument($loanAccount->loan_account_id);
         $loanAccount->delete();
         activity("Override Release")->event("deleted")->performedOn($loanAccount)
+            ->withProperties(['attributes' => $replicate])
             ->tap(function (Activity $activity) {
                 $activity->transaction_date = $this->transactionDate();
             })

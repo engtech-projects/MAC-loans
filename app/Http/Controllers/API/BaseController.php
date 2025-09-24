@@ -36,7 +36,6 @@ class BaseController extends Controller
     public function transactionDate()
     {
         $branch_id = Session::get('branch.branch_id');
-        $branch_id = auth()->user()->branch->first()->branch_id;
         $eod = EndTransaction::getTransactionDate($branch_id);
         $transactionDate = $eod->date_end;
 
