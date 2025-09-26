@@ -38,17 +38,19 @@ class CenterController extends BaseController
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'center' => 'required|unique:center,center',
+        ]);
 
         $input = $request->all();
-        # add validator dri
         $center = Center::create($input);
 
-        activity("Maintenance")->event("created")
-            ->performedOn($center)
+        activity("Center - AO Setup")->event("created")->performedOn($center)
+            ->withProperties(['model_snapshot' => $center->toArray()])
             ->tap(function (Activity $activity) {
-                $activity->transaction_date = $this->transactionDate();
+                $activity->transaction_date = null;
             })
-            ->log("Center AO setup - Center Create");
+            ->log("Center - Create");
         return $this->sendResponse(new CenterResource($center), 'Center Created');
     }
 
@@ -73,9 +75,12 @@ class CenterController extends BaseController
      */
     public function update(Request $request, Center $center)
     {
+        $request->validate([
+            'center' => 'required|unique:center,center,' . $center->center_id . ',center_id',
+        ]);
+        
         $replicate = $center->replicate();
         $input = $request->all();
-        # add validator na pd dri
         $center->center = $input['center'];
         $center->day_sched = $input['day_sched'];
         $center->status = $input['status'];
@@ -83,13 +88,19 @@ class CenterController extends BaseController
         $center->save();
 
         $changes = $this->getChanges($center, $replicate);
-        activity("Maintenance")->event("updated")->performedOn($center)
-            ->withProperties(['attributes' => $changes['attributes'], 'old' => $changes['old']])
-            ->tap(function (Activity $activity) {
-                $activity->transaction_date = $this->transactionDate();
-            })
-            ->log("Center AO setup - Center Update");
-
+        unset($changes['attributes']['updated_at'], $changes['old']['updated_at']);
+        if (!empty($changes['attributes'])) {
+            activity("Center - AO Setup")->event("updated")->performedOn($center)
+                ->withProperties([
+                    'model_snapshot' => $center->toArray(),
+                    'attributes' => $changes['attributes'], 
+                    'old' => $changes['old']
+                ])
+                ->tap(function (Activity $activity) {
+                    $activity->transaction_date = null;
+                })
+                ->log("Center - Update");
+        }
         return $this->sendResponse(new CenterResource($center), 'Center Updated.');
     }
 

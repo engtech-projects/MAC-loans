@@ -30,14 +30,14 @@ class DeductionController extends BaseController
     {
 
         $input = $request->all();
-        // // # add validator dri
         try {
             $deduction = Deduction::create($input);
-            activity("Maintenance")->event("created")->performedOn($deduction)
+            activity("Deduction Rate")->event("created")->performedOn($deduction)
+                ->withProperties(['model_snapshot' => $deduction->toArray()])
                 ->tap(function (Activity $activity) {
-                    $activity->transaction_date = $this->transactionDate();
+                    $activity->transaction_date = null;
                 })
-                ->log("Deduction Rate - Deduction Create");
+                ->log("Deduction Rate - Create");
         } catch (\Exception $e) {
             return new JsonResponse([
                 'errors' => $e->getMessage(),
@@ -62,6 +62,7 @@ class DeductionController extends BaseController
      */
     public function update(Request $request, Deduction $deduction)
     {
+        $replicate = $deduction->replicate();
         $input = $request->all();
         try {
             $deduction->name = isset($input['name']) ? $input['name'] : $deduction->name;
@@ -74,12 +75,21 @@ class DeductionController extends BaseController
             $deduction->deleted = isset($input['deleted']) ? $input['deleted'] : $deduction->deleted;
             $deduction->status = isset($input['status']) ? $input['status'] : $deduction->status;
             $deduction->save();
-            activity("Maintenance")->event("updated")->performedOn($deduction)
-                ->withProperties(['attributes' => $deduction->getDirty(), 'old' => $deduction->getOriginal()])
-                ->tap(function (Activity $activity) {
-                    $activity->transaction_date = $this->transactionDate();
-                })
-                ->log("Deduction Rate - Deduction Update");
+
+            $changes = $this->getChanges($deduction, $replicate);
+            unset($changes['attributes']['updated_at'], $changes['old']['updated_at']);
+            if (!empty($changes['attributes'])) {
+                activity("Deduction Rate")->event("updated")->performedOn($deduction)
+                    ->withProperties([
+                        'model_snapshot' => $deduction->toArray(),
+                        'attributes' => $changes['attributes'],
+                        'old' => $changes['old']
+                    ])
+                    ->tap(function (Activity $activity) {
+                        $activity->transaction_date = null;
+                    })
+                    ->log("Deduction Rate - Update");
+            }
         } catch (\Exception $e) {
             return new JsonResponse([
                 'errors' => $e->getMessage(),
@@ -113,8 +123,18 @@ class DeductionController extends BaseController
     {
         try {
             $deduction = Deduction::find($id);
-            $replicate = $deduction->replicate();
+            $deductionData = $deduction->toArray();
             $deduction->delete();
+
+            activity("Deduction Rate")->event("deleted")->performedOn($deduction)
+                ->withProperties([
+                    'model_snapshot' => $deductionData,
+                    'old' => $deductionData
+                ])
+                ->tap(function (Activity $activity) {
+                    $activity->transaction_date = null;
+                })
+            ->log("Deduction Rate - Delete");
         } catch (\Exception $e) {
             return new JsonResponse([
                 'errors' => $e->getMessage(),

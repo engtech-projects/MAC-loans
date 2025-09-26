@@ -604,7 +604,11 @@
 				delete this.borrower.username;
 				delete this.borrower.password;
 				if(this.borrower.borrower_id){
-					const payload = { ...this.borrower };
+					const routeName = window.location.pathname || 'unknown';
+					const payload = { 
+				        ...this.borrower,
+        				source: routeName
+				    };
         			if (bypassDuplicate) payload.bypass_duplicate = true;
 					axios.put(this.baseURL() + 'api/borrower/' + this.borrower.borrower_id, payload, {
 			            headers: {
@@ -796,30 +800,7 @@
 				this.img = img;
 			},
 			async deleteOtherInfo(){
-				if(this.otherInfo.id){
-					await axios.post(this.baseURL() + 'client_information/personal_information_details/delete', this.otherInfo, {
-						headers: {
-							'Authorization': 'Bearer ' + this.token,
-							'Content-Type': 'application/json',
-							'Accept': 'application/json'
-						}
-					})
-					.then(function (response) {
-						if(response.data){
-							this.removeData(this.otherInfo.type, this.otherInfo.index);
-							this.notify('','Data has been deleted.', 'success');
-						}else{
-							this.notify('','Something went wrong.', 'error');
-						}
-					}.bind(this))
-					.catch(function (error) {
-						console.log(error);
-					}.bind(this));
-				}else{
-					this.removeData(this.otherInfo.type, this.otherInfo.index);
-					this.notify('','Data has been deleted.', 'success');
-				}
-
+			    this.removeData(this.otherInfo.type, this.otherInfo.index);
 			}
 		},
 		watch: {

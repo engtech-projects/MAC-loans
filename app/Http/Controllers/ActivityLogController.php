@@ -34,12 +34,11 @@ class ActivityLogController extends Controller
                 'subject' => $item->subject?->id,
                 'subject' => [
                     'id' => $item->subject_id,
-                    'data' => $item->subject
+                    'data' => $item->properties['model_snapshot'] ?? null
                 ],
                 'event' => $item->event,
                 'causer_type' => Str::headline(class_basename($item->causer_type)),
-                'causer' => $item->causer->username,
-                'causer' => $item->causer->username,
+                'causer' => $item->causer->firstname ? trim($item->causer->firstname.' '.$item->causer->lastname) : $item->causer->username,
                 'user_role' => $item->causer->userRole,
                 'properties' => $item->changes(),
                 'transaction_date' => $item->transaction_date ? Carbon::parse($item->transaction_date)->format('Y-m-d') : "",
@@ -81,12 +80,11 @@ class ActivityLogController extends Controller
             'subject' => $activity->subject?->id,
             'subject' => [
                 'id' => $activity->subject_id,
-                'data' => $activity->subject
+                'data' => $activity->properties['model_snapshot'] ?? null
             ],
             'event' => $activity->event,
             'causer_type' => Str::headline(class_basename($activity->causer_type)),
-            'causer' => $activity->causer->username,
-            'causer' => $activity->causer->username,
+            'causer' => $activity->causer->firstname ? trim($activity->causer->firstname.' '.$activity->causer->lastname) : $activity->causer->username,
             'user_role' => $activity->causer->userRole,
             'properties' => $activity->changes(),
             'created_at' => $activity->created_at->format('H:i d, M Y')

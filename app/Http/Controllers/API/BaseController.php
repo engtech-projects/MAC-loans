@@ -64,7 +64,7 @@ class BaseController extends Controller
         activity($attributes['log_name'])->event($attributes['event'])->performedOn($model)
             ->withProperties(['attributes' => $attributes, 'old' => $old])
             ->tap(function (Activity $activity) {
-                $activity->transaction_date = $this->transactionDate();
+                $activity->transaction_date = null;
             })
             ->log($attributes['log']);
     }
@@ -72,7 +72,7 @@ class BaseController extends Controller
     {
         activity($attributes['log_name'])->event($attributes['event'])->performedOn($model)
             ->tap(function (Activity $activity) {
-                $activity->transaction_date = $this->transactionDate();
+                $activity->transaction_date = null;
             })
             ->log($attributes['log']);
     }

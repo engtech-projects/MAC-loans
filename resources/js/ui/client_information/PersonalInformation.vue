@@ -157,7 +157,7 @@
 					<span>{{borrower.spouse_birthdate?dateToMDY(new Date(borrower.spouse_birthdate)):''}}</span>
 				</div>
 			</div>
-			<div class="col-xl-3 col-lg-6">
+			<div class="col-xl-12 col-lg-6">
 				<div class="info-display">
 					<span>Address</span>
 					<span>{{borrower.spouse_address}}</span>

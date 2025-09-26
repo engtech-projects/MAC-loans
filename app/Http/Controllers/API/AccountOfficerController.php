@@ -51,11 +51,12 @@ class AccountOfficerController extends BaseController
         $input = $request->all();
         # add validator dri
         $accountOfficer = AccountOfficer::create($input);
-        activity("Center - AO setup")->event("created")->performedOn($accountOfficer)
+        activity("Center - AO Setup")->event("created")->performedOn($accountOfficer)
+            ->withProperties(['model_snapshot' => $accountOfficer->toArray()])
             ->tap(function (Activity $activity) {
-                $activity->transaction_date = $this->transactionDate();
+                $activity->transaction_date = null;
             })
-            ->log("Maintenance - Account Officer Create");
+            ->log("Account Officer - Create");
         return $this->sendResponse(new AccountOfficerResource($accountOfficer), 'AO Created');
     }
 
@@ -82,19 +83,25 @@ class AccountOfficerController extends BaseController
     {
         $input = $request->all();
         $replicate = $accountofficer->replicate();
-        # add validator na pd dri
         $accountofficer->name = isset($input['name']) ? $input['name'] : $accountofficer->name;
         $accountofficer->branch_id = isset($input['branch_id']) ? $input['branch_id'] : $accountofficer->branch_id;
         $accountofficer->status = isset($input['status']) ? $input['status'] : $accountofficer->status;
         $accountofficer->deleted = isset($input['deleted']) ? $input['deleted'] : $accountofficer->deleted;
         $accountofficer->save();
-        $this->activityLog($accountofficer, [
-            'log_name' => 'Center - AO setup',
-            'event' => 'updated',
-            'log' => 'Maintenance - Account Officer Update'
-        ], $replicate);
-
-
+        $changes = $this->getChanges($accountofficer, $replicate);
+        unset($changes['attributes']['updated_at'], $changes['old']['updated_at']);
+        if (!empty($changes['attributes'])) {
+            activity("Center - AO Setup")->event("updated")->performedOn($accountofficer)
+                ->withProperties([
+                    'model_snapshot' => $accountofficer->toArray(),
+                    'attributes' => $changes['attributes'], 
+                    'old' => $changes['old']
+                ])
+                ->tap(function (Activity $activity) {
+                    $activity->transaction_date = null;
+                })
+                ->log("Account Officer - Update");
+        }
         return $this->sendResponse(new AccountOfficerResource($accountofficer), 'AO Updated.');
     }
 
