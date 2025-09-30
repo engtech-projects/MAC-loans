@@ -262,6 +262,7 @@
 					<thead>
 						<th>Name of Business/Agency</th>
 						<th>Business Address</th>
+						<th>Business Type</th>
 						<th>Contact No.</th>
 						<th>Years in Business</th>
 						<th>Income / Frequency</th>
@@ -271,6 +272,7 @@
 						<tr v-for="biz in borrower.businessInfo" :key="biz.id">
 							<td>{{biz.business_name}}</td>
 							<td>{{biz.business_address}}</td>
+							<td>{{biz.business_type}}</td>
 							<td>{{biz.contact_no}}</td>
 							<td>{{biz.years_in_business}}</td>
 							<td>{{biz.income}}</td>
