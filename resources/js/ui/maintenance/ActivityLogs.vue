@@ -12,21 +12,30 @@
                     <div class="col-md-2">
 
                         <select name="" v-model="filter.log_name" class="form-control flex-1">
-                            <option value="">-Select Logname-</option>
+                            <option value="" disabled selected>Module Name</option>
+                            <option value="">All Modules</option>
+                            <option value="Personal Information">Personal Information</option>
                             <option value="Release Entry">Release Entry</option>
                             <option value="Override Release">Override Release</option>
                             <option value="Rejected Release">Rejected Release</option>
-                            <option value="Repayment Entry">Repayment</option>
+                            <option value="Repayment Entry">Repayment Entry</option>
                             <option value="Override Payment">Override Payment</option>
-                            <option value="Maintenance">Maintenance</option>
+                            <option value="Cancel Payments">Cancel Payments</option>
+                            <option value="Product Setup">Product Setup</option>
+                            <option value="Center - AO Setup">Center - AO Setup</option>
+                            <option value="User Settings">User Settings</option>
+                            <option value="Account Re-Tagging">Account Re-Tagging</option>
+                            <option value="Deduction Rate">Deduction Rate</option>
+                            <option value="End of Day">End of Day</option>
                         </select>
                     </div>
                     <div class="col-md-2">
                         <select name="" v-model="filter.event" class="form-control flex-1">
-                            <option value="">-Select Event-</option>
-                            <option value="created">Create</option>
-                            <option value="updated">Edit </option>
-                            <option value="deleted">Delete</option>
+                            <option value="" disabled selected>Event</option>
+                            <option value="">All Events</option>
+                            <option value="created">Created</option>
+                            <option value="updated">Updated</option>
+                            <option value="deleted">Deleted</option>
                         </select>
                     </div>
                     <div class="col-md-2">
@@ -37,28 +46,26 @@
 
                 <div class="p-16 light-border">
                     <table class="table table-striped th-nbt table-hover">
-                        <th width="15%">Log Name</th>
+                        <th width="15%">Module Name</th>
                         <th>Description</th>
                         <th>Subject Type</th>
                         <th>Log By</th>
                         <th>Event</th>
                         <th>Transaction Date</th>
-                        <th>Created At</th>
-                        <th>Updated At</th>
+                        <th>Log Date & Time</th>
                         <th width="13%">Action</th>
                         <tbody>
                             <tr v-if="!activityLogs.length">
-                                <td>No activity logs yet.</td>
+                                <td colspan="8">No activity logs yet.</td>
                             </tr>
                             <tr v-for="d in activityLogs" :key="d.id">
                                 <td>{{ d.log_name }}</td>
                                 <td>{{ d.description }}</td>
                                 <td>{{ d.subject_type }}</td>
                                 <td>{{ d.causer }}</td>
-                                <td>{{ d.event }}</td>
+                                <td style="text-transform: capitalize;">{{ d.event }}</td>
                                 <td> {{ d.transaction_date }}</td>
                                 <td>{{ d.created_at }}</td>
-                                <td>{{ d.updated_at }}</td>
                                 <td>
                                     <button @click="view(d.id)" data-toggle="modal" data-target="#viewLogModal"
                                         class="btn btn-xs btn-primary">
@@ -80,7 +87,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h6 class="modal-title" id="viewActivityLabel">
-                            Activity Log - @{{ activityLog.log_name }}
+                            Activity Log - {{ activityLog.log_name }}
                         </h6>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
@@ -97,21 +104,6 @@
                                         <li class="list-group-item">
                                             <div class="row">
                                                 <div class="col-md-4">
-                                                    Subject:
-                                                </div>
-                                                <div class="col-md-8">
-                                                    <ul>
-                                                        <li v-for="(item, index) in activityLog.subject?.data"
-                                                            :key="index">
-                                                            {{ index }} : <br> {{ item }}
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li class="list-group-item">
-                                            <div class="row">
-                                                <div class="col-md-6">
                                                     Description:
                                                 </div>
                                                 <div class="col-md-6">
@@ -121,7 +113,7 @@
                                         </li>
                                         <li class="list-group-item">
                                             <div class="row">
-                                                <div class="col-md-6">
+                                                <div class="col-md-4">
                                                     Log by:
                                                 </div>
                                                 <div class="col-md-6">
@@ -131,11 +123,25 @@
                                         </li>
                                         <li class="list-group-item">
                                             <div class="row">
-                                                <div class="col-md-6">
+                                                <div class="col-md-4">
                                                     Event:
                                                 </div>
-                                                <div class="col-md-6">
+                                                <div class="col-md-6" style="text-transform: capitalize;">
                                                     {{ activityLog.event }}
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <div class="row">
+                                                <div class="col-md-3">
+                                                    Subject:
+                                                </div>
+                                                <div class="col-md-8">
+                                                    <ul>
+                                                        <li v-for="key in Object.keys(activityLog.subject?.data || {}).sort()" :key="key">
+                                                            {{ key }} : {{ activityLog.subject.data[key] }}
+                                                        </li>
+                                                    </ul>
                                                 </div>
                                             </div>
                                         </li>
@@ -151,13 +157,12 @@
                                         <div class="col-md-6">
                                             <div class="card">
                                                 <div class="card-header text-bold">
-                                                    Attributes
+                                                    New Values
                                                 </div>
                                                 <ul class="list-group list-group-flush">
                                                     <ul>
-                                                        <li v-for="(item, index) in activityLog.properties?.attributes"
-                                                            :key="index">
-                                                            {{ index }}: <br> {{ item }}
+                                                        <li v-for="key in Object.keys(activityLog.properties?.attributes || {}).sort()" :key="key">
+                                                            {{ key }} : {{ activityLog.properties.attributes[key] }}
                                                         </li>
                                                     </ul>
                                                 </ul>
@@ -166,13 +171,12 @@
                                         <div class="col-md-6">
                                             <div class="card">
                                                 <div class="card-header text-bold">
-                                                    Old
+                                                    Old Values
                                                 </div>
                                                 <ul class="list-group list-group-flush">
                                                     <ul>
-                                                        <li v-for="(item, index) in activityLog.properties?.old"
-                                                            :key="index">
-                                                            {{ index }} : <br> {{ item }}
+                                                        <li v-for="key in Object.keys(activityLog.properties?.old || {}).sort()" :key="key">
+                                                            {{ key }} : {{ activityLog.properties.old[key] }}
                                                         </li>
                                                     </ul>
                                                 </ul>

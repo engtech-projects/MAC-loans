@@ -40,9 +40,11 @@ class ProductController extends BaseController
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'product_code' => 'required|unique:product,product_code',
+        ]);
 
         $input = $request->all();
-        # add validator dri
         $product = Product::create([
             'product_code' => $input['product_code'],
             'product_name' => $input['product_name'],
@@ -51,11 +53,12 @@ class ProductController extends BaseController
             'deleted' => $input['deleted']
         ]);
 
-        activity("Maintenance")->event("created")->performedOn($product)
+        activity("Product Setup")->event("created")->performedOn($product)
+            ->withProperties(['model_snapshot' => $product->toArray()])
             ->tap(function (Activity $activity) {
-                $activity->transaction_date = now();
+                $activity->transaction_date = null;
             })
-            ->log("Product  Setup - Product Create");
+            ->log("Product - Create");
         return $this->sendResponse(new ProductResource($product), 'Product Created');
     }
 
@@ -80,9 +83,11 @@ class ProductController extends BaseController
      */
     public function update(Request $request, Product $product)
     {
-        $input = $request->all();
+        $request->validate([
+            'product_code' => 'required|unique:product,product_code,' . $product->product_code . ',product_code',
+        ]);
         $replicate = $product->replicate();
-        # add validator na pd dri
+        $input = $request->all();
         $product->product_code = $input['product_code'];
         $product->product_name = $input['product_name'];
         $product->interest_rate = $input['interest_rate'];
@@ -91,12 +96,19 @@ class ProductController extends BaseController
         $product->save();
 
         $changes = $this->getChanges($product, $replicate);
-        activity("Maintenance")->event("updated")->performedOn($product)
-            ->withProperties(['attributes' => $changes['attributes'], 'old' => $changes['old']])
-            ->tap(function (Activity $activity) {
-                $activity->transaction_date = now();
-            })
-            ->log("Product Setup - Product Update");
+        unset($changes['attributes']['updated_at'], $changes['old']['updated_at']);
+        if (!empty($changes['attributes'])) {
+            activity("Product Setup")->event("updated")->performedOn($product)
+                ->withProperties([
+                    'model_snapshot' => $product->toArray(),
+                    'attributes' => $changes['attributes'], 
+                    'old' => $changes['old']
+                ])
+                ->tap(function (Activity $activity) {
+                    $activity->transaction_date = null;
+                })
+                ->log("Product - Update");
+        }
         return $this->sendResponse(new ProductResource($product), 'Product Updated.');
     }
 

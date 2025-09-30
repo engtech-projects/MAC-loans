@@ -102,8 +102,9 @@ class LoanAccountController extends BaseController
                 ]);
 
             activity("Release Entry")->event("created")->performedOn($account)
+                ->withProperties(['model_snapshot' => $account->toArray()])
                 ->tap(function (Activity $activity) {
-                    $activity->transaction_date = $this->transactionDate();
+                    $activity->transaction_date = null;
                 })
                 ->log("Loan Account - Create");
             /*             Document::create(
@@ -124,7 +125,6 @@ class LoanAccountController extends BaseController
 
     public function updateLoanAccount(Request $request, LoanAccount $account)
     {
-
         $replicate = $account->replicate();
         if ($request->filled('data')) {
             $request->request->add(json_decode($request->input('data'), true));
@@ -133,6 +133,39 @@ class LoanAccountController extends BaseController
         $account->fill($request->input());
         $account->updateLoanAccount($request->account_num);
         $account->save();
+
+        $changes = $this->getChanges($account, $replicate);
+        unset($changes['attributes']['updated_at'], $changes['old']['updated_at']);
+
+        $numericFields = ['interest_amount', 'total_deduction'];
+        foreach ($numericFields as $field) {
+            if (isset($changes['attributes'][$field]) && 
+                (float)$changes['attributes'][$field] == (float)$changes['old'][$field]) {
+                unset($changes['attributes'][$field], $changes['old'][$field]);
+            }
+        }
+        foreach ($changes['attributes'] as $key => $value) {
+            if ($value === null && ($changes['old'][$key] ?? null) === "") {
+                unset($changes['attributes'][$key], $changes['old'][$key]);
+            }
+        }
+
+        if ($changes['attributes']) {
+            $sourcePage = $request->input('source', 'unknown');
+            $activityName = str_contains($sourcePage, '/maintenance/account_retagging')?"Account Re-Tagging":"Rejected Release";
+            $logName = $activityName === "Account Re-Tagging"? "Loan Account - Retag":"Loan Account - Edit";
+            activity("$activityName")->event("updated")->performedOn($account)
+                    ->withProperties([
+                        'model_snapshot' => $account->toArray(),
+                        'attributes' => $changes['attributes'],
+                        'old' => $changes['old']
+                    ])
+                    ->tap(function (Activity $activity) {
+                        $activity->transaction_date = null;
+                    })
+                    ->log($logName);
+        }
+
         if ($request->input('data')) {
 
             $document = Document::find($request->input('documents')['id']);
@@ -157,13 +190,6 @@ class LoanAccountController extends BaseController
                 $files[] = $request->file('loanfiles');
                 $account->setDocs($account->borrower_id, $account->loan_account_id, $files);
             }
-            $changes = $this->getChanges($account, $replicate);
-            activity("Loan Account")->event("updated")->performedOn($account)
-                ->withProperties(['attributes' => $changes['attributes'], 'old' => $changes['old']])
-                ->tap(function (Activity $activity) {
-                    $activity->transaction_date = $this->transactionDate();
-                })
-                ->log("Edit");
         }
         return $this->sendResponse(new LoanAccountResource($account), 'Account Updated.');
     }
@@ -233,12 +259,17 @@ class LoanAccountController extends BaseController
 
                 $this->createAmortizationSched($account);
                 $changes = $this->getChanges($account, $replicate);
+                unset($changes['attributes']['updated_at'], $changes['old']['updated_at']);
                 activity("Override Release")->event("updated")->performedOn($account)
-                    ->withProperties(['attributes' => $changes['attributes'], 'old' => $changes['old']])
+                    ->withProperties([
+                        'model_snapshot' => $account->toArray(),
+                        'attributes' => $changes['attributes'],
+                        'old' => $changes['old']
+                    ])
                     ->tap(function (Activity $activity) {
-                        $activity->transaction_date = $this->transactionDate();
+                        $activity->transaction_date = null;
                     })
-                    ->log("Override");
+                    ->log("Loan Account - Override");
             }
         }
         return $this->sendResponse(['status' => 'released'], 'Released');
@@ -264,27 +295,43 @@ class LoanAccountController extends BaseController
     {
         $replicate = $account->replicate();
         if ($account->memo > 0) {
-            $payment = Payment::where('reference_id', $account->loan_account_id)
-                ->update(['status' => 'rejected']);
-            $replicate = $payment->replicate();
-            $changes = $this->getChanges($payment, $replicate);
-            activity("Override Release")->event("updated")->performedOn($payment)
-                ->withProperties(['attributes' => $payment->isDirty(), 'old' => $payment->getOriginal()])
-                ->tap(function (Activity $activity) {
-                    $activity->transaction_date = $this->transactionDate();
-                })
-                ->log("Memo Payment - Create");
+            $payment = Payment::where('reference_id', $account->loan_account_id)->first();
+
+            if ($payment) {
+                $paymentReplicate = $payment->replicate();
+                $payment->status = 'rejected';
+                $payment->save();
+
+                $paymentChanges = $this->getChanges($payment, $paymentReplicate);
+                unset($paymentChanges['attributes']['updated_at'], $paymentChanges['old']['updated_at']);
+                
+                activity("Override Release")->event("updated")->performedOn($payment)
+                    ->withProperties([
+                        'model_snapshot' => $payment->toArray(),
+                        'attributes' => $paymentChanges['attributes'], 
+                        'old' => $paymentChanges['old']
+                    ])
+                    ->tap(function (Activity $activity) {
+                        $activity->transaction_date = null;
+                    })
+                    ->log("Memo Payment - Reject");
+            }
         }
 
         $account->status = 'rejected';
         $account->save();
         $changes = $this->getChanges($account, $replicate);
+        unset($changes['attributes']['updated_at'], $changes['old']['updated_at']);
         activity("Override Release")->event("updated")->performedOn($account)
-            ->withProperties(['attributes' => $changes['attributes'], 'old' => $changes['old']])
+            ->withProperties([
+                'model_snapshot' => $account->toArray(),
+                'attributes' => $changes['attributes'],
+                'old' => $changes['old']
+            ])
             ->tap(function (Activity $activity) {
-                $activity->transaction_date = $this->transactionDate();
+                $activity->transaction_date = null;
             })
-            ->log("Loan Account - Update");
+            ->log("Loan Account - Reject");
 
         return $this->sendResponse(['status' => 'rejected'], 'Rejected');
     }
@@ -294,8 +341,28 @@ class LoanAccountController extends BaseController
         $replicate = $account->replicate();
 
         if ($account->memo > 0) {
-            Payment::where('reference_id', $account->loan_account_id)
-                ->update(['status' => 'open', 'transaction_date' => $request->input('transaction_date')]);
+            $payment = Payment::where('reference_id', $account->loan_account_id)->first();
+
+            if ($payment) {
+                $paymentReplicate = $payment->replicate();
+                $payment->status = 'open';
+                $payment->transaction_date = $request->input('transaction_date');
+                $payment->save();
+
+                $paymentChanges = $this->getChanges($payment, $paymentReplicate);
+                unset($paymentChanges['attributes']['updated_at'], $paymentChanges['old']['updated_at']);
+                
+                activity("Rejected Release")->event("updated")->performedOn($payment)
+                    ->withProperties([
+                        'model_snapshot' => $payment->toArray(),
+                        'attributes' => $paymentChanges['attributes'], 
+                        'old' => $paymentChanges['old']
+                    ])
+                    ->tap(function (Activity $activity) {
+                        $activity->transaction_date = null;
+                    })
+                    ->log("Memo Payment - Proceed");
+            }
         }
 
         $account->transaction_date = $request->input('transaction_date');
@@ -303,12 +370,17 @@ class LoanAccountController extends BaseController
         $account->save();
 
         $changes = $this->getChanges($account, $replicate);
+        unset($changes['attributes']['updated_at'], $changes['old']['updated_at']);
         activity("Rejected Release")->event("updated")->performedOn($account)
-            ->withProperties(['attributes' => $changes['attributes'], 'old' => $changes['old']])
+            ->withProperties([
+                'model_snapshot' => $account->toArray(),
+                'attributes' => $changes['attributes'],
+                'old' => $changes['old']
+            ])
             ->tap(function (Activity $activity) {
-                $activity->transaction_date = $this->transactionDate();
+                $activity->transaction_date = null;
             })
-            ->log("Loan Account - Update");
+            ->log("Loan Account - Proceed");
 
         return $this->sendResponse(['status' => 'pending'], 'Returned');
     }
@@ -323,16 +395,34 @@ class LoanAccountController extends BaseController
 
 
         if ($loanAccount->memo > 0) {
-            Payment::where(['reference_id' => $loanAccount->loan_account_id])->delete();
+            $payment = Payment::where(['reference_id' => $loanAccount->loan_account_id])->first();
+            
+            if ($payment) {
+                $paymentData = $payment->toArray();
+                Payment::where(['reference_id' => $loanAccount->loan_account_id])->delete();
+                activity("Override Release")->event("deleted")->performedOn($payment)
+                    ->withProperties([
+                        'model_snapshot' => $paymentData,
+                        'old' => $paymentData
+                    ])
+                    ->tap(function (Activity $activity) {
+                        $activity->transaction_date = null;
+                    })
+                    ->log("Memo Payment - Delete");
+            }
         }
 
         //delete document
         $document->deleteDocument($loanAccount->loan_account_id);
+        $loanAccountData = $loanAccount->toArray();
         $loanAccount->delete();
         activity("Override Release")->event("deleted")->performedOn($loanAccount)
-            ->withProperties(['attributes' => $replicate])
+            ->withProperties([
+                'model_snapshot' => $loanAccountData,
+                'old' => $loanAccountData
+            ])
             ->tap(function (Activity $activity) {
-                $activity->transaction_date = $this->transactionDate();
+                $activity->transaction_date = null;
             })
             ->log("Loan Account - Delete");
         return $this->sendResponse(['status' => 'Account deleted'], 'Deleted');

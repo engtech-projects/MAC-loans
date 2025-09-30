@@ -210,18 +210,6 @@ class Payment extends Model
             if ($payment->payment_id) {
                 $payment->transaction_number = $this->generateTransactionNumber($payment->payment_id, $payment->payment_type, $payment->memo_type);
                 $payment->save();
-                activity("Repayment Entry")->event("created")->performedOn($payment)
-                    ->tap(function (Activity $activity) {
-                        $activity->transaction_date = $this->transactionDate();
-                    })
-                    ->log("Payment - Create");
-            } else {
-
-                activity("Repayment Entry")->event("created")->performedOn($payment)
-                    ->tap(function (Activity $activity) {
-                        $activity->transaction_date = $this->transactionDate();
-                    })
-                    ->log("Payment - Create");
             }
 
 
@@ -353,11 +341,6 @@ class Payment extends Model
     {
         if ($loanAccount && $loanAccount->memo > 0) {
             $this->where('reference_id', $loanAccount->loan_account_id)->delete();
-            activity("Override Release")->event("deleted")->performedOn($loanAccount)
-                ->tap(function (Activity $activity) {
-                    $activity->transaction_date = $this->transactionDate();
-                })
-                ->log("Memo Payment - Delete");
         }
     }
 }

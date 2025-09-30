@@ -57,8 +57,18 @@ class PaymentController extends BaseController
                 $payment->deleteMemoPaymentIfExists($loanAccount);
             }
 
-            return $this->sendResponse(new PaymentResource($payment->addPayment($request)), 'Payment');
-            // return $request->input();
+            $paymentRes = $payment->addPayment($request);
+            $sourcePage = $request->input('source', 'unknown');
+            $activityName = $this->getActivityNameFromRoute($sourcePage);
+            $logMessage = ($activityName === 'Repayment Entry') ? 'Payment - Create' : 'Memo Payment - Create';
+            activity($activityName)->event("created")->performedOn($paymentRes)
+                ->withProperties(['model_snapshot' => $paymentRes->toArray()])
+                ->tap(function (Activity $activity) {
+                    $activity->transaction_date = null;
+                })
+                ->log($logMessage);
+            
+            return $this->sendResponse(new PaymentResource($paymentRes), 'Payment');
         } catch (\Illuminate\Database\QueryException $e) {
             // Check if it's a deadlock error (error code 1213)
             if (isset($e->errorInfo[1]) && $e->errorInfo[1] == 1213) {
@@ -126,11 +136,10 @@ class PaymentController extends BaseController
 
         $succeed = 0;
         $failed = 0;
-        $payment = [];
         foreach ($request->input() as $key => $value) {
 
             $payment = Payment::find($value['payment_id']);
-            $payment[] = $payment;
+            $paymentReplicate = $payment->replicate();
             $amortization = Amortization::find($payment->amortization_id);
             $loanAccount = LoanAccount::find($payment->loan_account_id);
             $paymentMode = $loanAccount->payment_mode;
@@ -146,6 +155,20 @@ class PaymentController extends BaseController
             $succeed++;
             $payment->status = 'paid';
             $payment->save();
+
+            $paymentChanges = $this->getChanges($payment, $paymentReplicate);
+            unset($paymentChanges['attributes']['updated_at'], $paymentChanges['old']['updated_at']);
+            $logName = $payment->memo_type === "deduct to balance"?"Memo Payment - Override":"Payment - Override";
+            activity("Override Payment")->event("updated")->performedOn($payment)
+                ->withProperties([
+                    'model_snapshot' => $payment->toArray(),
+                    'attributes' => $paymentChanges['attributes'], 
+                    'old' => $paymentChanges['old']
+                ])
+                ->tap(function (Activity $activity) {
+                    $activity->transaction_date = null;
+                })
+                ->log($logName);
 
             # update amortization
             if ($amortization->principal_balance < $loanAccount->remainingBalance()["principal"]["balance"] || $amortization->interest_balance < $loanAccount->remainingBalance()["interest"]["balance"]) {
@@ -175,11 +198,6 @@ class PaymentController extends BaseController
         }
 
         $sf = $succeed + $failed;
-        activity("Override Repayment")->event("updated")->performedOn($payment)
-            ->withProperties(['attributes' => $payment->isDirty(), 'old' => $payment->getOriginal()])
-            ->tap(function (Activity $activity) {
-                $activity->transaction_date = $this->transactionDate();
-            })->log("Payment Update");
         return $this->sendResponse("{$succeed} of {$sf} Successfully Overriden", 'Override');
     }
 
@@ -204,8 +222,18 @@ class PaymentController extends BaseController
     {
 
         $payment = Payment::find($id);
+        $paymentData = $payment->toArray();
         $payment->delete();
 
+        activity("Override Payment")->event("deleted")->performedOn($payment)
+            ->withProperties([
+                'model_snapshot' => $paymentData,
+                'old' => $paymentData
+            ])
+            ->tap(function (Activity $activity) {
+                $activity->transaction_date = null;
+            })
+            ->log("Payment - Delete");
         return $this->sendResponse(['status' => 'Payment deleted'], 'Deleted');
     }
 
@@ -214,18 +242,13 @@ class PaymentController extends BaseController
         $validated = $request->validated($request);
         $payment->fill($validated);
         $payment->save();
-        activity("Maintenance")->event("updated")->performedOn($payment)
-            ->withProperties(['attributes' => $payment->isDirty(), 'old' => $payment->getOriginal()])
-            ->tap(function (Activity $activity) {
-                $activity->transaction_date = $this->transactionDate();
-            })
-            ->log("Cancel Payments - Payment Update");
         return $this->sendResponse(new PaymentResource($payment), 'Payment successfully updated');
     }
 
     public function update(Request $request, Payment $payment)
     {
 
+        $paymentReplicate = $payment->replicate();
         $payment->fill($request->input());
         $payment->save();
 
@@ -246,24 +269,23 @@ class PaymentController extends BaseController
                     $account->loan_status = 'Ongoing';
                     $account->save();
                 }
+
+                $paymentChanges = $this->getChanges($payment, $paymentReplicate);
+                unset($paymentChanges['attributes']['updated_at'], $paymentChanges['old']['updated_at']);
+                
+                activity("Cancel Payments")->event("updated")->performedOn($payment)
+                    ->withProperties([
+                        'model_snapshot' => $payment->toArray(),
+                        'attributes' => $paymentChanges['attributes'], 
+                        'old' => $paymentChanges['old']
+                    ])
+                    ->tap(function (Activity $activity) {
+                        $activity->transaction_date = null;
+                    })
+                    ->log("Payment - Cancel");
+                return $this->sendResponse(new PaymentResource($payment), 'Payment Cancelled.');
             }
-
-            activity("Maintenance")->event("updated")->performedOn($payment)
-                ->withProperties(['attributes' => $payment->isDirty(), 'old' => $payment->getOriginal()])
-                ->tap(function (Activity $activity) {
-                    $activity->transaction_date = $this->transactionDate();
-                })
-                ->log("Cancel Payments - Payment Update");
-            return $this->sendResponse(new PaymentResource($payment), 'Payment Cancelled.');
         }
-
-
-        activity("Repayment Entry")->event("updated")->performedOn($payment)
-            ->withProperties(['attributes' => $payment->isDirty(), 'old' => $payment->getOriginal()])
-            ->tap(function (Activity $activity) {
-                $activity->transaction_date = $this->transactionDate();
-            })
-            ->log("Payment Update");
         return $this->sendResponse(new PaymentResource($payment), 'Payment Updated.');
     }
 
@@ -323,5 +345,22 @@ class PaymentController extends BaseController
         }
 
         return $payments;
+    }
+
+    private function getActivityNameFromRoute($routePath)
+    {
+        if (str_contains($routePath, '/repayment_entry')) {
+            return 'Repayment Entry';
+        }
+        
+        if (str_contains($routePath, '/rejected_release')) {
+            return 'Rejected Release';
+        }
+        
+        if (str_contains($routePath, '/release_entry')) {
+            return 'Release Entry';
+        }
+        
+        return 'Payment Management';
     }
 }

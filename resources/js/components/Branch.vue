@@ -145,7 +145,11 @@ export default {
 						this.$emit('branchUpdated');
 					}.bind(this))
 					.catch(function (error) {
-						this.notify('',"Something went wrong. Please make sure all fields have been filled correctly.",'error')
+						if (error.response?.status === 422) {
+							this.notify('',Object.values(error.response.data.errors)[0][0], 'error');
+						} else {
+							this.notify('', "Something went wrong",'error');
+						}
 						console.log(error);
 					}.bind(this));
 			}else {
@@ -163,7 +167,11 @@ export default {
 					this.$emit('branchUpdated');
 				}.bind(this))
 				.catch(function (error) {
-					this.notify('',"Something went wrong. Please make sure all fields have been filled correctly.",'error')
+					if (error.response?.status === 422) {
+						this.notify('',Object.values(error.response.data.errors)[0][0], 'error');
+					} else {
+						this.notify('', "Something went wrong",'error');
+					}
 					console.log(error);
 				}.bind(this));
 			}
@@ -173,6 +181,7 @@ export default {
 			this.branch.branch_id = data.branch_id;
 			this.branch.branch_code = data.branch_code;
 			this.branch.branch_name = data.branch_name;
+			this.branch.branch_manager = data.branch_manager;
 			this.branch.branch_address = data.branch_address;
 			this.branch.status = data.status;
 			this.branch.deleted = data.deleted;

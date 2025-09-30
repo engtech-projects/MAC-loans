@@ -370,6 +370,10 @@
 					<label for="businessAddress" class="form-label">Address</label>
 					<input v-model="data.businessInfo.business_address" required type="text" class="form-control form-input " id="businessAddress">
 				</div>
+				<div class="form-group mb-10 mr-16" style="flex: 2">
+					<label for="businessType" class="form-label">Business Type</label>
+					<input v-model="data.businessInfo.business_type" required type="text" class="form-control form-input " id="businessType">
+				</div>
 				<div class="form-group mb-10 mr-16" style="flex: 1">
 					<label for="businessIncome" class="form-label">Income / Frequency</label>
 					<input v-model="data.businessInfo.income" required type="text" class="form-control form-input " id="businessIncome">
@@ -386,6 +390,7 @@
 				<thead>
 					<th>Name of Business/Agency</th>
 					<th>Address</th>
+					<th>Business Type</th>
 					<th>Contact No.</th>
 					<th>Years</th>
 					<th>Income / Frequency</th>
@@ -394,6 +399,7 @@
 					<tr v-for="(biz, i) in borrower.businessInfo" :key="i">
 						<td>{{biz.business_name}}</td>
 						<td>{{biz.business_address}}</td>
+						<td>{{biz.business_type}}</td>
 						<td>{{biz.contact_no}}</td>
 						<td>{{biz.years_in_business}}</td>
 						<td>P {{biz.income}}</td>
@@ -604,7 +610,11 @@
 				delete this.borrower.username;
 				delete this.borrower.password;
 				if(this.borrower.borrower_id){
-					const payload = { ...this.borrower };
+					const routeName = window.location.pathname || 'unknown';
+					const payload = { 
+				        ...this.borrower,
+        				source: routeName
+				    };
         			if (bypassDuplicate) payload.bypass_duplicate = true;
 					axios.put(this.baseURL() + 'api/borrower/' + this.borrower.borrower_id, payload, {
 			            headers: {
@@ -796,30 +806,7 @@
 				this.img = img;
 			},
 			async deleteOtherInfo(){
-				if(this.otherInfo.id){
-					await axios.post(this.baseURL() + 'client_information/personal_information_details/delete', this.otherInfo, {
-						headers: {
-							'Authorization': 'Bearer ' + this.token,
-							'Content-Type': 'application/json',
-							'Accept': 'application/json'
-						}
-					})
-					.then(function (response) {
-						if(response.data){
-							this.removeData(this.otherInfo.type, this.otherInfo.index);
-							this.notify('','Data has been deleted.', 'success');
-						}else{
-							this.notify('','Something went wrong.', 'error');
-						}
-					}.bind(this))
-					.catch(function (error) {
-						console.log(error);
-					}.bind(this));
-				}else{
-					this.removeData(this.otherInfo.type, this.otherInfo.index);
-					this.notify('','Data has been deleted.', 'success');
-				}
-
+			    this.removeData(this.otherInfo.type, this.otherInfo.index);
 			}
 		},
 		watch: {

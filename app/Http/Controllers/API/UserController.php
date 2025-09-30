@@ -65,11 +65,12 @@ class UserController extends BaseController
             }
         }
 
-        activity("Maintenance")->event("created")->performedOn($user)
+        activity("User Settings")->event("created")->performedOn($user)
+            ->withProperties(['model_snapshot' => $user->toArray()])
             ->tap(function (Activity $activity) {
-                $activity->transaction_date = $this->transactionDate();
+                $activity->transaction_date = null;
             })
-            ->log("User Settings - User Create");
+            ->log("User - Create");
         return $this->sendResponse(new UserResource($user), 'User created successfully.');
     }
 
@@ -96,6 +97,8 @@ class UserController extends BaseController
     {
 
         $replicate = $user->replicate();
+        $originalBranches = UserBranch::where('id', $user->id)->pluck('branch_id')->toArray();
+        $originalPermissions = UserAccessibility::where('id', $user->id)->pluck('access_id')->toArray();
         $user->username = ($request->input('username') != null) ? $request->input('username') : $user->username;
         $user->password = ($request->input('password') != null) ? Hash::make($request->input('password')) : $user->password;
         $user->firstname = $request->input('firstname');
@@ -108,6 +111,8 @@ class UserController extends BaseController
 
         $branches = $request->input('branch');
         $permissions = $request->input('permissions');
+        $newBranches = [];
+        $newPermissions = [];
 
         if (is_array($branches) && count($branches) > 0) {
             UserBranch::where(['id' => $user->id])->delete();
@@ -117,6 +122,7 @@ class UserController extends BaseController
                     'branch_id' => $branch['branch_id'],
                 ]);
             }
+            $newBranches = collect($branches)->pluck('branch_id')->toArray();
         }
 
         if (is_array($permissions) && count($permissions) > 0) {
@@ -130,17 +136,33 @@ class UserController extends BaseController
                     'access_id' => $permission,
                 ]);
             }
+            $newPermissions = $permissions;
+        }
+
+        $changes = $this->getChanges($user, $replicate);
+        if ($originalBranches !== $newBranches) {
+            $changes['attributes']['branches'] = $newBranches;
+            $changes['old']['branches'] = $originalBranches;
+        }
+        if ($originalPermissions !== $newPermissions) {
+            $changes['attributes']['permissions'] = $newPermissions;
+            $changes['old']['permissions'] = $originalPermissions;
+        }
+        if (!empty($changes['attributes'])) {
+            unset($changes['attributes']['updated_at'], $changes['old']['updated_at']);
+            activity("User Settings")->event("updated")->performedOn($user)
+                ->withProperties([
+                    'model_snapshot' => $user->toArray(),
+                    'attributes' => $changes['attributes'],
+                    'old' => $changes['old']
+                ])
+                ->tap(function (Activity $activity) {
+                    $activity->transaction_date = null;
+                })
+                ->log("User - Update");
         }
 
         $user = User::find($user->id);
-
-        $changes = $this->getChanges($user, $replicate);
-        activity("Maintenance")->event("updated")->performedOn($user)
-            ->withProperties(['attributes' => $changes['attributes'], 'old' => $changes['old']])
-            ->tap(function (Activity $activity) {
-                $activity->transaction_date = $this->transactionDate();
-            })
-            ->log("User Settings - User Update");
         return $this->sendResponse(new UserResource($user), 'User updated successfully.');
     }
 
@@ -152,11 +174,18 @@ class UserController extends BaseController
         try {
             UserBranch::where('id', $user->id)->delete();
             UserAccessibility::where('id', $user->id)->delete();
-            activity("Maintenance")->event("deleted")->performedOn($user)
+            $userData = $user->toArray();
+            $user->delete();
+
+            activity("User Settings")->event("deleted")->performedOn($user)
+                ->withProperties([
+                    'model_snapshot' => $userData,
+                    'old' => $userData
+                ])
                 ->tap(function (Activity $activity) {
-                    $activity->transaction_date = $this->transactionDate();
+                    $activity->transaction_date = null;
                 })
-                ->log("User Settings - Accessibilitity and User Branch Delete");
+            ->log("User - Delete");
             return $this->sendResponse([], 'User deleted successfully.');
         } catch (\Exception $e) {
             return $this->sendError('Error deleting user.', ['error' => $e->getMessage()]);

@@ -756,7 +756,10 @@ export default {
 						transaction_date: this.transactionDate.date_end
 					}
 
-					axios.post(this.baseURL() + 'api/payment', payment, {
+					axios.post(this.baseURL() + 'api/payment', {
+					    ...payment,
+					    source: window.location.pathname || 'unknown'
+					}, {
 						headers: {
 								'Authorization': 'Bearer ' + this.token,
 								'Content-Type': 'application/json',

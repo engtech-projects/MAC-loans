@@ -226,8 +226,9 @@ class BorrowerController extends BaseController
                 }
             }
             activity("Release Entry")->event("created")->performedOn($borrower)
+                ->withProperties(['model_snapshot' => $borrower->toArray()])
                 ->tap(function (Activity $activity) {
-                    $activity->transaction_date = $this->transactionDate();
+                    $activity->transaction_date = null;
                 })
                 ->log("Borrower - Create");
             # add validator dri
@@ -260,6 +261,10 @@ class BorrowerController extends BaseController
             }
         }
         $replicate = $borrower->replicate();
+        $originalEmploymentInfo = EmploymentInfo::where('borrower_id', $borrower->borrower_id)->get()->toArray();
+        $originalBusinessInfo = BusinessInfo::where('borrower_id', $borrower->borrower_id)->get()->toArray();
+        $originalHouseholdMembers = HouseholdMembers::where('borrower_id', $borrower->borrower_id)->get()->toArray();
+        $originalOutstandingObligations = OutstandingObligations::where('borrower_id', $borrower->borrower_id)->get()->toArray();
         $borrower->fill($request->input());
         $borrower->save();
 
@@ -280,6 +285,7 @@ class BorrowerController extends BaseController
         $borrower->householdMembers = $request->input('householdMembers');
         $borrower->outstandingObligations = $request->input('outstandingObligations');
 
+        $newEmploymentInfo = $request->input('employmentInfo', []);
         if (count($borrower->employmentInfo)) {
             EmploymentInfo::upsert(
                 $borrower->employmentInfo,
@@ -287,7 +293,7 @@ class BorrowerController extends BaseController
                 ['company_name', 'company_address', 'contact_no', 'years_employed', 'position', 'salary'],
             );
         }
-
+        $newBusinessInfo = $request->input('businessInfo', []);
         if (count($borrower->businessInfo)) {
             BusinessInfo::upsert(
                 $borrower->businessInfo,
@@ -295,7 +301,7 @@ class BorrowerController extends BaseController
                 ['business_name', 'business_type', 'business_address', 'contact_no', 'years_in_business', 'income'],
             );
         }
-
+        $newHouseholdMembers = $request->input('householdMembers', []);
         if (count($borrower->householdMembers)) {
             HouseholdMembers::upsert(
                 $borrower->householdMembers,
@@ -303,7 +309,7 @@ class BorrowerController extends BaseController
                 ['dependent', 'age', 'relationship', 'occupation', 'contact_no', 'sbe_address'],
             );
         }
-
+        $newOutstandingObligations = $request->input('outstandingObligations', []);
         if (count($borrower->outstandingObligations)) {
             OutstandingObligations::upsert(
                 $borrower->outstandingObligations,
@@ -312,13 +318,53 @@ class BorrowerController extends BaseController
             );
         }
         $changes = $this->getChanges($borrower, $replicate);
-        activity("Maintenance")->event("updated")->performedOn($borrower)
-            ->withProperties(['attributes' => $changes['attributes'], 'old' => $changes['old']])
-            ->tap(function (Activity $activity) {
-                $activity->transaction_date = $this->transactionDate();
-            })
-            ->log("Borrower - Update");
+        if ($originalEmploymentInfo !== $newEmploymentInfo) {
+            $changes['attributes']['employmentInfo'] = $newEmploymentInfo;
+            $changes['old']['employmentInfo'] = $originalEmploymentInfo;
+        }
+        if ($originalBusinessInfo !== $newBusinessInfo) {
+            $changes['attributes']['businessInfo'] = $newBusinessInfo;
+            $changes['old']['businessInfo'] = $originalBusinessInfo;
+        }
+        if ($originalHouseholdMembers !== $newHouseholdMembers) {
+            $changes['attributes']['householdMembers'] = $newHouseholdMembers;
+            $changes['old']['householdMembers'] = $originalHouseholdMembers;
+        }
+        if ($originalOutstandingObligations !== $newOutstandingObligations) {
+            $changes['attributes']['outstandingObligations'] = $newOutstandingObligations;
+            $changes['old']['outstandingObligations'] = $originalOutstandingObligations;
+        }
+        unset($changes['attributes']['updated_at'], $changes['old']['updated_at']);
+        if (!empty($changes['attributes'])) {
+            $sourcePage = $request->input('source', 'unknown');
+            $activityName = $this->getActivityNameFromRoute($sourcePage);
+        
+            activity($activityName)->event("updated")->performedOn($borrower)
+                ->withProperties([
+                    'model_snapshot' => $borrower->toArray(),
+                    'attributes' => $changes['attributes'],
+                    'old' => $changes['old']
+                ])
+                ->tap(function (Activity $activity) {
+                    $activity->transaction_date = null;
+                })
+                ->log("Borrower - Update");
+        }
 
         return $this->sendResponse(new BorrowerResource($borrower), 'Borrower Updated.');
+    }
+
+    private function getActivityNameFromRoute($routePath)
+    {
+        if (str_contains($routePath, '/personal_information_details/edit/')) {
+            return 'Personal Information';
+        }
+        if (str_contains($routePath, '/release_entry')) {
+            return 'Release Entry';
+        }
+        if (str_contains($routePath, '/rejected_release/edit/')) {
+            return 'Rejected Release';
+        }
+        return 'Borrower Management';
     }
 }
