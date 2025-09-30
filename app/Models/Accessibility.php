@@ -13,33 +13,47 @@ class Accessibility extends Model
     protected $primaryKey = 'access_id';
 
     protected $fillable = [
-    	'label', 'group', 'permission', 'description'
+        'label',
+        'group',
+        'permission',
+        'description'
     ];
 
-    public function permissions() {
+    public function permissions()
+    {
 
-    	$groups = [
-    		'Client Information',
-    		'Transaction',
-    		'Maintenance',
-    		'Reports',
-    		'End of Day',
-    		'Data'
-    	];
+        $groups = [
+            'Client Information',
+            'Transaction',
+            'Maintenance',
+            'Reports',
+            'End of Day',
+            'Data'
+        ];
 
-    	$accessibility = [];
+        $accessibility = [];
 
-    	foreach ($groups as $group) {
-    		
-    		$accessibility[$group] = Accessibility::where([ 'group' => $group ])->get();
+        foreach ($groups as $group) {
 
-    		if( count($accessibility[$group]) > 0 ){
+            $accessibility[$group] = Accessibility::where(['group' => $group])->get();
 
-    			foreach ($accessibility[$group] as $key => $value) {
-    				$value->child_permissions = Accessibility::where([ 'group' => $value->label ])->get();
-    			}
-    		}
-    	}
-    	return $accessibility;
+            if (count($accessibility[$group]) > 0) {
+
+                foreach ($accessibility[$group] as $key => $value) {
+                    $value->child_permissions = Accessibility::where(['group' => $value->label])->get();
+                }
+            }
+        }
+        return $accessibility;
+    }
+
+    public function user_accessibility()
+    {
+        return $this->belongsToMany(
+            User::class,
+            'user_accessibility',
+            'id',
+            'access_id'
+        )->withTimestamps();
     }
 }

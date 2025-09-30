@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
@@ -14,10 +15,16 @@ class ActivityLogController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        $filter = $request->all();
 
-        $activityLogs = Activity::all();
+        $activityLogs = Activity::when($request['log_name'], function ($query) use ($filter) {
+            $logname = $filter['log_name'];
+            $query->where('log_name', 'like', "%$logname%");
+        })->when($request['event'], function ($query) use ($filter) {
+            $query->where('event', $filter['event']);
+        })->get();
         $data = $activityLogs->map(function ($item) {
             return [
                 'id' => $item->id,
@@ -27,15 +34,16 @@ class ActivityLogController extends Controller
                 'subject' => $item->subject?->id,
                 'subject' => [
                     'id' => $item->subject_id,
-                    'data' => $item->subject
+                    'data' => $item->properties['model_snapshot'] ?? null
                 ],
                 'event' => $item->event,
                 'causer_type' => Str::headline(class_basename($item->causer_type)),
-                'causer' => $item->causer->username,
-                'causer' => $item->causer->username,
+                'causer' => $item->causer->firstname ? trim($item->causer->firstname.' '.$item->causer->lastname) : $item->causer->username,
                 'user_role' => $item->causer->userRole,
                 'properties' => $item->changes(),
-                'created_at' => $item->created_at->format('H:i d, M Y')
+                'transaction_date' => $item->transaction_date ? Carbon::parse($item->transaction_date)->format('Y-m-d') : "",
+                'created_at' => $item->created_at->format('Y-m-d g:i A'),
+                'updated_at' => $item->created_at->format('Y-m-d g:i A')
             ];
         });
         return new JsonResponse([
@@ -72,12 +80,11 @@ class ActivityLogController extends Controller
             'subject' => $activity->subject?->id,
             'subject' => [
                 'id' => $activity->subject_id,
-                'data' => $activity->subject
+                'data' => $activity->properties['model_snapshot'] ?? null
             ],
             'event' => $activity->event,
             'causer_type' => Str::headline(class_basename($activity->causer_type)),
-            'causer' => $activity->causer->username,
-            'causer' => $activity->causer->username,
+            'causer' => $activity->causer->firstname ? trim($activity->causer->firstname.' '.$activity->causer->lastname) : $activity->causer->username,
             'user_role' => $activity->causer->userRole,
             'properties' => $activity->changes(),
             'created_at' => $activity->created_at->format('H:i d, M Y')

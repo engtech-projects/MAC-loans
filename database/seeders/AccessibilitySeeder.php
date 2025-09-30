@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Accessibility;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -19,435 +20,481 @@ class AccessibilitySeeder extends Seeder
     {
         $permissions = [
             // client information
-        	[ 
-        		'label' => 'Personal Information',
-        		'group' => 'Client Information',
-        		'permission' => 'view borrower',
-        		'description' => 'description',
-        		'created_at' => Carbon::now(),
-            	'updated_at' => Carbon::now(), 
-        	],
-        	[ 
-        		'label' => 'Update Personal Info',
-        		'group' => 'Personal Information',
-        		'permission' => 'edit borrower',
-        		'description' => 'description',
-        		'created_at' => Carbon::now(),
-            	'updated_at' => Carbon::now(), 
-        	],
-            [ 
+            [
+                'label' => 'Personal Information',
+                'group' => 'Client Information',
+                'permission' => 'view borrower',
+                'description' => 'description',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'label' => 'Update Personal Info',
+                'group' => 'Personal Information',
+                'permission' => 'edit borrower',
+                'description' => 'description',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
                 'label' => 'Statement of Accounts',
                 'group' => 'Client Information',
                 'permission' => 'view statement of accounts',
                 'description' => 'description',
                 'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(), 
+                'updated_at' => Carbon::now(),
             ],
-            [ 
+            [
                 'label' => 'Edit Co-Maker',
                 'group' => 'Statement of Accounts',
                 'permission' => 'edit co-maker',
                 'description' => 'description',
                 'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(), 
+                'updated_at' => Carbon::now(),
             ],
-        	[ 
-        		'label' => 'Balance Inquiry',
-        		'group' => 'Client Information',
-        		'permission' => 'view balance inquiry',
-        		'description' => 'description',
-        		'created_at' => Carbon::now(),
-            	'updated_at' => Carbon::now(), 
-        	],
+            [
+                'label' => 'Balance Inquiry',
+                'group' => 'Client Information',
+                'permission' => 'view balance inquiry',
+                'description' => 'description',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
             // transaction
-        	[ 
-        		'label' => 'Release Entry',
-        		'group' => 'Transaction',
-        		'permission' => 'view release entry',
-        		'description' => 'description',
-        		'created_at' => Carbon::now(),
-            	'updated_at' => Carbon::now(), 
-        	],
-        	[ 
-        		'label' => 'Override Release',
-        		'group' => 'Transaction',
-        		'permission' => 'view override release',
-        		'description' => 'description',
-        		'created_at' => Carbon::now(),
-            	'updated_at' => Carbon::now(), 
-        	],
-            [ 
+            [
+                'label' => 'Release Entry',
+                'group' => 'Transaction',
+                'permission' => 'view release entry',
+                'description' => 'description',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'label' => 'Override Release',
+                'group' => 'Transaction',
+                'permission' => 'view override release',
+                'description' => 'description',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
                 'label' => 'Delete Releases',
                 'group' => 'Override Release',
                 'permission' => 'delete releases',
                 'description' => 'description',
                 'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(), 
+                'updated_at' => Carbon::now(),
             ],
-            [ 
+            [
                 'label' => 'Reject Releases',
                 'group' => 'Override Release',
                 'permission' => 'reject releases',
                 'description' => 'description',
                 'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(), 
+                'updated_at' => Carbon::now(),
             ],
-        	[ 
-        		'label' => 'Rejected Release',
-        		'group' => 'Transaction',
-        		'permission' => 'view rejected release',
-        		'description' => 'description',
-        		'created_at' => Carbon::now(),
-            	'updated_at' => Carbon::now(), 
-        	],
-        	[ 
-        		'label' => 'Repayment Entry',
-        		'group' => 'Transaction',
-        		'permission' => 'view repayment entry',
-        		'description' => 'description',
-        		'created_at' => Carbon::now(),
-            	'updated_at' => Carbon::now(), 
-        	],
-        	[ 
-        		'label' => 'Override Payment',
-        		'group' => 'Transaction',
-        		'permission' => 'view override payment',
-        		'description' => 'description',
-        		'created_at' => Carbon::now(),
-            	'updated_at' => Carbon::now(), 
-        	],
-            [ 
+            [
+                'label' => 'Rejected Release',
+                'group' => 'Transaction',
+                'permission' => 'view rejected release',
+                'description' => 'description',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'label' => 'Repayment Entry',
+                'group' => 'Transaction',
+                'permission' => 'view repayment entry',
+                'description' => 'description',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'label' => 'Override Payment',
+                'group' => 'Transaction',
+                'permission' => 'view override payment',
+                'description' => 'description',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
                 'label' => 'Delete Payment',
                 'group' => 'Override Payment',
                 'permission' => 'delete override payment',
                 'description' => 'description',
                 'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(), 
+                'updated_at' => Carbon::now(),
             ],
             // maintenance
-            [ 
+            [
                 'label' => 'Cancel Payment',
                 'group' => 'Maintenance',
                 'permission' => 'view cancelled payments',
                 'description' => 'description',
                 'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(), 
+                'updated_at' => Carbon::now(),
             ],
-            [ 
+            [
                 'label' => 'Product Setup',
                 'group' => 'Maintenance',
                 'permission' => 'view product setup',
                 'description' => 'description',
                 'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(), 
+                'updated_at' => Carbon::now(),
             ],
-            [ 
+            [
                 'label' => 'Center - AO Setup',
                 'group' => 'Maintenance',
                 'permission' => 'view center',
                 'description' => 'description',
                 'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(), 
+                'updated_at' => Carbon::now(),
             ],
-            [ 
+            [
                 'label' => 'GL Setup',
                 'group' => 'Maintenance',
                 'permission' => 'view gl setup',
                 'description' => 'description',
                 'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(), 
+                'updated_at' => Carbon::now(),
             ],
-            [ 
+            [
                 'label' => 'User Settings',
                 'group' => 'Maintenance',
                 'permission' => 'view users',
                 'description' => 'description',
                 'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(), 
+                'updated_at' => Carbon::now(),
             ],
-            [ 
+            [
                 'label' => 'Account Retagging',
                 'group' => 'Maintenance',
                 'permission' => 'view account retagging',
                 'description' => 'description',
                 'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(), 
+                'updated_at' => Carbon::now(),
             ],
-			[ 
+            [
                 'label' => 'Deduction Rate',
                 'group' => 'Maintenance',
                 'permission' => 'view deduction rate',
                 'description' => 'description',
                 'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(), 
+                'updated_at' => Carbon::now(),
             ],
             // reports
-            [ 
+            [
                 'label' => 'Transaction Reports',
                 'group' => 'Reports',
                 'permission' => 'view transaction report',
                 'description' => 'description',
                 'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(), 
+                'updated_at' => Carbon::now(),
             ],
-            [ 
+            [
                 'label' => 'Release',
                 'group' => 'Reports',
                 'permission' => 'view release reports',
                 'description' => 'description',
                 'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(), 
+                'updated_at' => Carbon::now(),
             ],
-            [ 
+            [
                 'label' => 'By Product',
                 'group' => 'Release',
                 'permission' => 'view releases reports by product',
                 'description' => 'description',
                 'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(), 
+                'updated_at' => Carbon::now(),
             ],
-            [ 
+            [
                 'label' => 'By Client',
                 'group' => 'Release',
                 'permission' => 'view releases reports by client',
                 'description' => 'description',
                 'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(), 
+                'updated_at' => Carbon::now(),
             ],
-            [ 
+            [
                 'label' => 'By Account Officer',
                 'group' => 'Release',
                 'permission' => 'view releases reports by AO',
                 'description' => 'description',
                 'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(), 
+                'updated_at' => Carbon::now(),
             ],
-            [ 
+            [
                 'label' => 'Repayment',
                 'group' => 'Reports',
                 'permission' => 'view repayment reports',
                 'description' => 'description',
                 'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(), 
+                'updated_at' => Carbon::now(),
             ],
-            [ 
+            [
                 'label' => 'By Product',
                 'group' => 'Repayment',
                 'permission' => 'view repayment reports by product',
                 'description' => 'description',
                 'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(), 
+                'updated_at' => Carbon::now(),
             ],
-            [ 
+            [
                 'label' => 'By Client',
                 'group' => 'Repayment',
                 'permission' => 'view repayment reports by client',
                 'description' => 'description',
                 'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(), 
+                'updated_at' => Carbon::now(),
             ],
-            [ 
+            [
                 'label' => 'Collection',
                 'group' => 'Reports',
                 'permission' => 'view collection reports',
                 'description' => 'description',
                 'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(), 
+                'updated_at' => Carbon::now(),
             ],
-            [ 
+            [
                 'label' => 'Group By Product Status',
                 'group' => 'Collection',
                 'permission' => 'view collection reports by product status',
                 'description' => 'description',
                 'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(), 
+                'updated_at' => Carbon::now(),
             ],
-            [ 
+            [
                 'label' => 'Group By Client Status',
                 'group' => 'Collection',
                 'permission' => 'view collection reports by client status',
                 'description' => 'description',
                 'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(), 
+                'updated_at' => Carbon::now(),
             ],
-            [ 
+            [
                 'label' => 'Group By Account Officer',
                 'group' => 'Collection',
                 'permission' => 'view collection reports by AO',
                 'description' => 'description',
                 'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(), 
+                'updated_at' => Carbon::now(),
             ],
-            [ 
+            [
                 'label' => 'Branch',
                 'group' => 'Reports',
                 'permission' => 'view branch reports',
                 'description' => 'description',
                 'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(), 
+                'updated_at' => Carbon::now(),
             ],
-            [ 
+            [
                 'label' => 'Collection Report',
                 'group' => 'Branch',
                 'permission' => 'view collection branch reports',
                 'description' => 'description',
                 'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(), 
+                'updated_at' => Carbon::now(),
             ],
-            [ 
+            [
                 'label' => 'Maturity Report',
                 'group' => 'Branch',
                 'permission' => 'view maturity branch reports',
                 'description' => 'description',
                 'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(), 
+                'updated_at' => Carbon::now(),
             ],
-            [ 
+            [
                 'label' => 'Client Payment Status',
                 'group' => 'Branch',
                 'permission' => 'view client payment status branch reports',
                 'description' => 'description',
                 'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(), 
+                'updated_at' => Carbon::now(),
             ],
-            [ 
+            [
                 'label' => 'Account Officer',
                 'group' => 'Branch',
                 'permission' => 'view AO branch reports',
                 'description' => 'description',
                 'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(), 
+                'updated_at' => Carbon::now(),
             ],
-            [ 
+            [
                 'label' => 'Loan Listing',
                 'group' => 'Branch',
                 'permission' => 'view loan listing branch reports',
                 'description' => 'description',
                 'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(), 
+                'updated_at' => Carbon::now(),
             ],
-            [ 
+            [
                 'label' => 'Loan Status Summary',
                 'group' => 'Branch',
                 'permission' => 'view loan status summary branch reports',
                 'description' => 'description',
                 'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(), 
+                'updated_at' => Carbon::now(),
             ],
-            [ 
+            [
                 'label' => 'Loan Aging Summary',
                 'group' => 'Branch',
                 'permission' => 'view loan aging summary branch reports',
                 'description' => 'description',
                 'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(), 
+                'updated_at' => Carbon::now(),
             ],
-            [ 
+            [
                 'label' => 'Revenue Report',
                 'group' => 'Branch',
                 'permission' => 'view revenue branch reports',
                 'description' => 'description',
                 'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(), 
+                'updated_at' => Carbon::now(),
             ],
-            [ 
+            [
                 'label' => 'Consolidated',
                 'group' => 'Reports',
                 'permission' => 'view consolidated reports',
                 'description' => 'description',
                 'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(), 
+                'updated_at' => Carbon::now(),
             ],
-            [ 
+            [
                 'label' => 'Loan Summary Report',
                 'group' => 'Consolidated',
                 'permission' => 'view loan summary consolidated reports',
                 'description' => 'description',
                 'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(), 
+                'updated_at' => Carbon::now(),
             ],
-            [ 
+            [
                 'label' => 'Loan Aging Report',
                 'group' => 'Consolidated',
                 'permission' => 'view loan aging consolidated reports',
                 'description' => 'description',
                 'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(), 
+                'updated_at' => Carbon::now(),
             ],
-            [ 
+            [
                 'label' => 'Revenue Report',
                 'group' => 'Consolidated',
                 'permission' => 'view revenue consolidated reports',
                 'description' => 'description',
                 'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(), 
+                'updated_at' => Carbon::now(),
             ],
-            [ 
+            [
                 'label' => 'Generate DST',
                 'group' => 'Consolidated',
                 'permission' => 'generate DST',
                 'description' => 'description',
                 'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(), 
+                'updated_at' => Carbon::now(),
             ],
-            [ 
+            [
                 'label' => 'Account Officer',
                 'group' => 'Consolidated',
                 'permission' => 'view AO consolidated reports',
                 'description' => 'description',
                 'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(), 
+                'updated_at' => Carbon::now(),
             ],
-            [ 
+            [
                 'label' => 'Cancelled Payments',
                 'group' => 'Reports',
                 'permission' => 'view cancelled payments report',
                 'description' => 'description',
                 'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(), 
+                'updated_at' => Carbon::now(),
             ],
-            [ 
+            [
                 'label' => 'Micro Monitoring',
                 'group' => 'Reports',
                 'permission' => 'view micro monitoring report',
                 'description' => 'description',
                 'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(), 
+                'updated_at' => Carbon::now(),
             ],
-            [ 
+            [
                 'label' => 'Prepaid Interest',
                 'group' => 'Reports',
                 'permission' => 'view prepaid interest report',
                 'description' => 'description',
                 'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(), 
+                'updated_at' => Carbon::now(),
             ],
-            [ 
+            [
                 'label' => 'Performance Report',
                 'group' => 'Reports',
                 'permission' => 'view performance report',
                 'description' => 'description',
                 'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(), 
+                'updated_at' => Carbon::now(),
             ],
-            [ 
+            [
                 'label' => 'BIR',
                 'group' => 'Reports',
                 'permission' => 'view BIR report',
                 'description' => 'description',
                 'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(), 
+                'updated_at' => Carbon::now(),
             ],
-            [ 
+            [
                 'label' => 'EOD',
                 'group' => 'End of Day',
                 'permission' => 'set beginning/end of day',
                 'description' => 'description',
                 'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(), 
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'label' => 'Edit Payment',
+                'group' => 'Statement of Accounts',
+                'permission' => 'edit statement of account',
+                'description' => 'description',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'label' => 'Override Release',
+                'group' => 'Override Release',
+                'permission' => 'override releases',
+                'description' => 'description',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'label' => 'Override Payment',
+                'group' => 'Override Payment',
+                'permission' => 'override payments',
+                'description' => 'description',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'label' => 'Activity Logs',
+                'group' => 'Maintenance',
+                'permission' => 'view activity logs',
+                'description' => 'description',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
             ],
         ];
+        $data = collect($permissions)->map(function ($item) {
+            return [
+                'label' => $item['label'],
+                'group' => $item['group'],
+                'permission' => $item['permission'],
+                'description' => $item['description'],
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ];
+        })->toArray();
 
-        DB::table('accessibility')->insert($permissions);
+        Accessibility::upsert(
+            $data,
+            ['permission'],
+            ['label', 'group', 'description', 'updated_at']
+        );
     }
 }

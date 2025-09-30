@@ -3,7 +3,7 @@
  * includes Vue and other libraries. It is a great starting point when
  * building robust, powerful web applications using Vue and Laravel.
  */
- 
+
 require('./bootstrap');
 import { template } from 'lodash';
 import Notifications from 'vue-notification'
@@ -96,9 +96,11 @@ Vue.component('endof-day', require('./ui/endofday/Endofday.vue').default);
 Vue.component('borrower-balance-inquiry', require('./ui/client_portal_information/BalanceInquiry.vue').default);
 Vue.component('borrower-personal-information', require('./ui/client_portal_information/PersonalInformation.vue').default);
 
+Vue.component('activity-logs', require('./ui/maintenance/ActivityLogs.vue').default);
+
 Vue.config.devtools = true;
 const app = new Vue({
-	el: '#app',
-	mixin:[helper],
+    el: '#app',
+    mixin: [helper],
 });
 

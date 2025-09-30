@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Spatie\Activitylog\Models\Activity;
 
 class Payment extends Model
 {
@@ -111,7 +112,6 @@ class Payment extends Model
                     ->orderBy('month', 'DESC');
             })->get();
         $groupPayments = [];
-        /* dd($paymentsYearly->toArray()); */
         foreach ($paymentsYearly as $branch) {
             $branchName = $branch->branch_name;
             foreach ($branch->payments as $payment) {
@@ -135,14 +135,14 @@ class Payment extends Model
     }
 
     public function addPayment(Request $request)
-    {   
+    {
         return DB::transaction(function () use ($request) {
             // DUPLICATE PREVENTION: Check if payment already exists
             $existingPayment = Payment::where([
                 'loan_account_id' => $request->input('loan_account_id'),
                 'status' => 'open'
             ])->lockForUpdate()->first();
-            
+
             if ($existingPayment) {
                 \Log::info('Duplicate payment prevented. Existing payment ID: ' . $existingPayment->payment_id);
                 return $existingPayment;
@@ -197,8 +197,8 @@ class Payment extends Model
                     $penalty = $payment->penalty;
                 }
 
-                $vatint = round(($payment->interest) / 1.12 *0.12,2);
-                $vatpdi = round(($pdi) / 1.12 *0.12,2);
+                $vatint = round(($payment->interest) / 1.12 * 0.12, 2);
+                $vatpdi = round(($pdi) / 1.12 * 0.12, 2);
                 // $vat = ($payment->interest + $pdi + $penalty) / 1.12 * 0.12;
                 $vat = $vatpdi + $vatint;
 
@@ -211,6 +211,7 @@ class Payment extends Model
                 $payment->transaction_number = $this->generateTransactionNumber($payment->payment_id, $payment->payment_type, $payment->memo_type);
                 $payment->save();
             }
+
 
             return $payment;
         });
@@ -326,9 +327,7 @@ class Payment extends Model
         return $remarks;
     }
 
-    public function cancelPayment()
-    {
-    }
+    public function cancelPayment() {}
 
     public function getOngoingPayment($request = array())
     {
@@ -341,7 +340,6 @@ class Payment extends Model
     public function deleteMemoPaymentIfExists($loanAccount)
     {
         if ($loanAccount && $loanAccount->memo > 0) {
-            dump('Deleting payment for reference_id: ' . $loanAccount->loan_account_id);
             $this->where('reference_id', $loanAccount->loan_account_id)->delete();
         }
     }

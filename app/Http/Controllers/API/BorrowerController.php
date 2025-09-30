@@ -18,6 +18,7 @@ use App\Models\OutstandingObligations;
 use App\Models\LoanAccount;
 use App\Http\Resources\Borrower as BorrowerResource;
 use App\Http\Resources\BorrowerAccountsResource;
+use Spatie\Activitylog\Contracts\Activity;
 
 class BorrowerController extends BaseController
 {
@@ -94,11 +95,88 @@ class BorrowerController extends BaseController
         // return view();
     }
 
+    public function checkDuplicate(Request $request)
+    {
+        $firstName = $request->input('firstname');
+        $lastName = $request->input('lastname');
+        $birthDate = $request->input('birthdate');
+        $excludeId = $request->input('exclude_id');
+
+        if (!$firstName || !$lastName || !$birthDate) {
+            return $this->sendError('Missing required fields', ['error' => 'firstname, lastname, and birthdate are required'], 400);
+        }
+
+        $duplicateResponse = $this->checkDuplicateBorrower($firstName, $lastName, $birthDate, $excludeId, false);
+        
+        if ($duplicateResponse) {
+            return $duplicateResponse;
+        }
+
+        return $this->sendResponse(null, 'No duplicate found');
+    }
+
+    private function checkDuplicateBorrower(string $firstName, string $lastName, string $birthDate, $excludeId = null, bool $bypassDuplicate = false)
+    {
+        if ($bypassDuplicate) {
+            return null;
+        }
+
+        $query = Borrower::where('firstname', trim($firstName))
+            ->where('lastname', trim($lastName))
+            ->where('birthdate', $birthDate);
+
+        if ($excludeId) {
+            $query->where('borrower_id', '!=', $excludeId);
+        }
+
+        $exactMatch = $query->first();
+
+        if ($exactMatch) {
+            return $this->sendError('Duplicate borrower detected (exact match)', [
+                'duplicate' => [
+                    'borrower_id' => $exactMatch->borrower_id,
+                    'firstname'   => $exactMatch->firstname,
+                    'lastname'    => $exactMatch->lastname,
+                    'birthdate'   => $exactMatch->birthdate,
+                    'match_type'  => 'exact'
+                ]
+            ], 422);
+        }
+
+        $fuzzyMatch = Borrower::whereRaw("SOUNDEX(firstname) = SOUNDEX(?)", [$firstName])
+            ->whereRaw("SOUNDEX(lastname) = SOUNDEX(?)", [$lastName])
+            ->when($excludeId, fn($q) => $q->where('borrower_id', '!=', $excludeId))
+            ->first();
+
+        if ($fuzzyMatch) {
+            return $this->sendError('Possible duplicate borrower detected (fuzzy match)', [
+                'duplicate' => [
+                    'borrower_id' => $fuzzyMatch->borrower_id,
+                    'firstname'   => $fuzzyMatch->firstname,
+                    'lastname'    => $fuzzyMatch->lastname,
+                    'birthdate'   => $fuzzyMatch->birthdate,
+                    'match_type'  => 'fuzzy'
+                ]
+            ], 422);
+        }
+
+        return null;
+    }
+
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
+        $firstName = $request->input('firstname');
+        $lastName = $request->input('lastname');
+        $birthDate = $request->input('birthdate');
+        $bypassDuplicate = $request->input('bypass_duplicate', false);
+        if ($firstName && $lastName && $birthDate) {
+            if ($response = $this->checkDuplicateBorrower($firstName, $lastName, $birthDate, null, $bypassDuplicate)) {
+                return $response;
+            }
+        }
         $borrower = new Borrower();
         // add borrower_num to request data
         $request->merge(['borrower_num' => '']);
@@ -147,6 +225,12 @@ class BorrowerController extends BaseController
                     $borrower->outstandingObligations()->save(new OutstandingObligations($value));
                 }
             }
+            activity("Release Entry")->event("created")->performedOn($borrower)
+                ->withProperties(['model_snapshot' => $borrower->toArray()])
+                ->tap(function (Activity $activity) {
+                    $activity->transaction_date = null;
+                })
+                ->log("Borrower - Create");
             # add validator dri
             return $this->sendResponse(new BorrowerResource($borrower), 'Borrower Created');
         }
@@ -167,6 +251,20 @@ class BorrowerController extends BaseController
      */
     public function update(Request $request, Borrower $borrower)
     {
+        $firstName = $request->input('firstname');
+        $lastName = $request->input('lastname');
+        $birthDate = $request->input('birthdate');
+        $bypassDuplicate = $request->input('bypass_duplicate', false);
+        if ($firstName && $lastName && $birthDate) {
+            if ($response = $this->checkDuplicateBorrower($firstName, $lastName, $birthDate, $borrower->borrower_id, $bypassDuplicate)) {
+                return $response;
+            }
+        }
+        $replicate = $borrower->replicate();
+        $originalEmploymentInfo = EmploymentInfo::where('borrower_id', $borrower->borrower_id)->get()->toArray();
+        $originalBusinessInfo = BusinessInfo::where('borrower_id', $borrower->borrower_id)->get()->toArray();
+        $originalHouseholdMembers = HouseholdMembers::where('borrower_id', $borrower->borrower_id)->get()->toArray();
+        $originalOutstandingObligations = OutstandingObligations::where('borrower_id', $borrower->borrower_id)->get()->toArray();
         $borrower->fill($request->input());
         $borrower->save();
 
@@ -187,6 +285,7 @@ class BorrowerController extends BaseController
         $borrower->householdMembers = $request->input('householdMembers');
         $borrower->outstandingObligations = $request->input('outstandingObligations');
 
+        $newEmploymentInfo = $request->input('employmentInfo', []);
         if (count($borrower->employmentInfo)) {
             EmploymentInfo::upsert(
                 $borrower->employmentInfo,
@@ -194,7 +293,7 @@ class BorrowerController extends BaseController
                 ['company_name', 'company_address', 'contact_no', 'years_employed', 'position', 'salary'],
             );
         }
-
+        $newBusinessInfo = $request->input('businessInfo', []);
         if (count($borrower->businessInfo)) {
             BusinessInfo::upsert(
                 $borrower->businessInfo,
@@ -202,7 +301,7 @@ class BorrowerController extends BaseController
                 ['business_name', 'business_type', 'business_address', 'contact_no', 'years_in_business', 'income'],
             );
         }
-
+        $newHouseholdMembers = $request->input('householdMembers', []);
         if (count($borrower->householdMembers)) {
             HouseholdMembers::upsert(
                 $borrower->householdMembers,
@@ -210,7 +309,7 @@ class BorrowerController extends BaseController
                 ['dependent', 'age', 'relationship', 'occupation', 'contact_no', 'sbe_address'],
             );
         }
-
+        $newOutstandingObligations = $request->input('outstandingObligations', []);
         if (count($borrower->outstandingObligations)) {
             OutstandingObligations::upsert(
                 $borrower->outstandingObligations,
@@ -218,7 +317,54 @@ class BorrowerController extends BaseController
                 ['creditor', 'amount', 'balance', 'term', 'due_date', 'amortization'],
             );
         }
+        $changes = $this->getChanges($borrower, $replicate);
+        if ($originalEmploymentInfo !== $newEmploymentInfo) {
+            $changes['attributes']['employmentInfo'] = $newEmploymentInfo;
+            $changes['old']['employmentInfo'] = $originalEmploymentInfo;
+        }
+        if ($originalBusinessInfo !== $newBusinessInfo) {
+            $changes['attributes']['businessInfo'] = $newBusinessInfo;
+            $changes['old']['businessInfo'] = $originalBusinessInfo;
+        }
+        if ($originalHouseholdMembers !== $newHouseholdMembers) {
+            $changes['attributes']['householdMembers'] = $newHouseholdMembers;
+            $changes['old']['householdMembers'] = $originalHouseholdMembers;
+        }
+        if ($originalOutstandingObligations !== $newOutstandingObligations) {
+            $changes['attributes']['outstandingObligations'] = $newOutstandingObligations;
+            $changes['old']['outstandingObligations'] = $originalOutstandingObligations;
+        }
+        unset($changes['attributes']['updated_at'], $changes['old']['updated_at']);
+        if (!empty($changes['attributes'])) {
+            $sourcePage = $request->input('source', 'unknown');
+            $activityName = $this->getActivityNameFromRoute($sourcePage);
+        
+            activity($activityName)->event("updated")->performedOn($borrower)
+                ->withProperties([
+                    'model_snapshot' => $borrower->toArray(),
+                    'attributes' => $changes['attributes'],
+                    'old' => $changes['old']
+                ])
+                ->tap(function (Activity $activity) {
+                    $activity->transaction_date = null;
+                })
+                ->log("Borrower - Update");
+        }
 
         return $this->sendResponse(new BorrowerResource($borrower), 'Borrower Updated.');
+    }
+
+    private function getActivityNameFromRoute($routePath)
+    {
+        if (str_contains($routePath, '/personal_information_details/edit/')) {
+            return 'Personal Information';
+        }
+        if (str_contains($routePath, '/release_entry')) {
+            return 'Release Entry';
+        }
+        if (str_contains($routePath, '/rejected_release/edit/')) {
+            return 'Rejected Release';
+        }
+        return 'Borrower Management';
     }
 }

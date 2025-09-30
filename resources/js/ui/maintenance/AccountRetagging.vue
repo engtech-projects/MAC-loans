@@ -1096,7 +1096,12 @@ export default {
 		},
 		async retag(account){
 			this.loading = true;
-			await axios.post(this.baseURL() + 'api/account/update/' + account.loan_account_id, account, {
+			const routeName = window.location.pathname || 'unknown';
+			const payload = { 
+				...account,
+				source: routeName
+			};
+			await axios.post(this.baseURL() + 'api/account/update/' + account.loan_account_id, payload, {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
 					'Content-Type': 'application/json',
