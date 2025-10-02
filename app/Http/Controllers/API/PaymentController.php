@@ -155,7 +155,6 @@ class PaymentController extends BaseController
                 } else {
                     $amortization->status = 'delinquent';
                 }
-
             } else {
                 $amortization->status = 'paid';
                 $loanAccount->payment_status = 'Current';
@@ -204,6 +203,7 @@ class PaymentController extends BaseController
 
     public function updatePayment(UpdatePaymentRequest $request, Payment $payment)
     {
+
         $validated = $request->validated($request);
         $payment->fill($validated);
         $payment->save();
@@ -215,7 +215,6 @@ class PaymentController extends BaseController
 
         $payment->fill($request->input());
         $payment->save();
-
         if ($payment->status == 'cancelled') {
 
             if ($payment->amortization_id) {
@@ -241,9 +240,7 @@ class PaymentController extends BaseController
         return $this->sendResponse(new PaymentResource($payment), 'Payment Updated.');
     }
 
-    public function show($branchId)
-    {
-    }
+    public function show($branchId) {}
 
     public function paymentSummary($branchId)
     {
