@@ -121,8 +121,8 @@
 						<span class="flex-1 text-bold text-primary-dark">{{formatToCurrency(loanaccount.net_proceeds)}}</span>
 					</div>
 
-					
-					
+
+
 
 					<div class="d-flex flex-row mb-12">
 						<div class="d-flex flex-row flex-1 justify-content-between pr-24 text-bold">
@@ -217,7 +217,7 @@
 							<span class="">Due Date</span>
 							<span>:</span>
 						</div>
-						<span class="flex-1 text-primary-dark text-bold">{{dateToMDY(new Date(loanaccount.due_date))}}</span>
+						<span class="flex-1 text-primary-dark text-bold">{{ loanaccount.due_date ? dateToMDY(new Date(loanaccount.due_date)) : 'Loading...' }}</span>
 					</div>
 
 				</div>
@@ -487,7 +487,7 @@
 									</div>
 									<span class="flex-1">{{formatToCurrency(totalCash)}}</span>
 								</div>
-								
+
 								<div class="d-flex flex-row">
 									<div class="d-flex flex-row justify-content-between flex-1 mr-16">
 										<span>Total Check</span>
@@ -566,7 +566,7 @@
 								<span class="text-primary-dark font-25">
 									{{pbranch.branch_name}} Branch ({{pbranch.branch_code}})
 								</span>
-								
+
 							</div>
 
 							<!-- Center column: Promissory Note and Micro Access Loan Corporation -->
@@ -753,7 +753,7 @@
 						</section>
 
 						<div class="mb-72"></div>
-						
+
 						<div class="d-flex flex-row-reverse mb-45 no-print" style="margin-top:24px">
 							<a @click="printVoucher()" href="#" class="btn btn-default min-w-150">Print</a>
 							<!-- <a href="#" @click.prevent="export2Word('voucherPrintContent', 'Voucher')" class="btn btn-success min-w-150 mr-24">Download Document</a> -->
@@ -969,10 +969,11 @@ export default {
 				console.log(error);
 			}.bind(this));
 		},
-		override: function(){
+	    override: async function(){
+        if(this.loanaccount) {
 			this.loanaccount.date_release = this.transactionDate.date_end;
 			this.loanaccount.due_date = this.dateToYMD(this.dueDate);
-			axios.post(this.baseURL() + 'api/account/override', [this.loanaccount], {
+			await axios.post(this.baseURL() + 'api/account/override', [this.loanaccount], {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
 					'Content-Type': 'application/json',
@@ -988,6 +989,9 @@ export default {
 			.catch(function (error) {
 				console.log(error);
 			}.bind(this));
+        }else {
+            this.notify('','Unable to procceed transaction, fetching on process.','warning')
+        }
 		},
 		createAmortization: function(){
 			// this.loanaccount.date_release = this.transactionDate.date_end;
@@ -1049,7 +1053,7 @@ export default {
 			var target = document.querySelector('.to-print');
 			// target.innerHTML += '<style type="text/css" media="print">@page { size: portrait;} font-family:"Courier New" margin</style>';
 			target.innerHTML = content;
-			
+
 			var style = document.createElement('style');
 			style.innerHTML += `
 			@media print {
@@ -1059,7 +1063,7 @@ export default {
 				.to-print {
 					transform: scale(108px); /* Custom scale of 75% for print */
 					ransform-origin: top left; /* Ensure scaling starts from the top left */
-					}	
+					}
 				}
 				body {
 					margin: 5px; /* Custom body margin for print */
