@@ -2,17 +2,19 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 use GuzzleHttp\Psr7\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Storage;
+use Spatie\Activitylog\LogOptions;
 use Illuminate\Support\Facades\File;
 use PhpParser\Node\Expr\Cast\Object_;
-
 use function PHPUnit\Framework\isEmpty;
+use Illuminate\Database\Eloquent\Model;
+
+use Illuminate\Support\Facades\Storage;
+use Spatie\Activitylog\Traits\LogsActivity;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class LoanAccount extends Model
 {
@@ -71,6 +73,8 @@ class LoanAccount extends Model
     ];
 
     protected $appends = ['remaining_balance'];
+
+
 
     public function getRemainingBalanceAttribute()
     {
@@ -953,13 +957,13 @@ class LoanAccount extends Model
         $payments = Payment::query()->when($amortizationId, function ($query, $amortizationId) {
             $query->where('amortization_id', $amortizationId);
         })->select([
-                    'loan_account_id',
-                    'amortization_id',
-                    'short_principal',
-                    'short_pdi',
-                    'short_penalty',
-                    'total_payable'
-                ])
+            'loan_account_id',
+            'amortization_id',
+            'short_principal',
+            'short_pdi',
+            'short_penalty',
+            'total_payable'
+        ])
             ->where('loan_account_id', $this->loan_account_id)
             ->orderBy('payment_id', 'DESC')
             ->paid()
@@ -1017,10 +1021,12 @@ class LoanAccount extends Model
 
         $paymentTotal = 0;
         /* $payments = $this->getPayment($loanAccountId); */
-        foreach ($payments as $payment) {
-            $paymentTotal += $payment->principal;
-            $paymentTotal += $payment->interest;
-            $paymentTotal += $payment->rebates;
+        if ($payments) {
+            foreach ($payments as $payment) {
+                $paymentTotal += $payment->principal;
+                $paymentTotal += $payment->interest;
+                $paymentTotal += $payment->rebates;
+            }
         }
 
         return $paymentTotal;
@@ -1092,7 +1098,6 @@ class LoanAccount extends Model
                             $counter++;
                         }
                     }
-
                 } else {
                     if ($dayDiff > 10) {
                         $counter++;
@@ -1134,13 +1139,16 @@ class LoanAccount extends Model
     public function outstandingBalance($loanAccountId)
     {
 
+        $bal = 0;
         $account = LoanAccount::select('loan_account_id', 'interest_amount', 'loan_amount', 'type')->where(['loan_account_id' => $loanAccountId])->without('payments', 'documents')->first();
-        $payment = $this->getPaymentTotalPrincipalInterest($loanAccountId, $account->payments);
+        if ($account) {
+            $payment = $this->getPaymentTotalPrincipalInterest($loanAccountId, $account?->payments);
 
-        if ($account->type == 'Prepaid') {
-            $bal = ($account->loan_amount) - $payment;
-        } else {
-            $bal = ($account->loan_amount + $account->interest_amount) - $payment;
+            if ($account?->type == 'Prepaid') {
+                $bal = ($account->loan_amount) - $payment;
+            } else {
+                $bal = ($account->loan_amount + $account->interest_amount) - $payment;
+            }
         }
         return floatval(number_format($bal, 2, ".", ""));
     }
@@ -1217,7 +1225,7 @@ class LoanAccount extends Model
             ->without(['borrower', 'documents', 'accountOfficer', 'center', 'branch', 'product'])
             ->where(['loan_account_id' => $this->loan_account_id])
             ->first();
-        $payments = $account->payments;
+        $payments = $account?->payments;
         /*         $account = LoanAccount::where(['loan_account_id' => $this->loan_account_id])->first();
         $payments = Payment::where(['loan_account_id' => $this->loan_account_id, 'status' => 'paid'])->orderBy('payment_id', 'DESC')->get(); */
 
@@ -1254,28 +1262,29 @@ class LoanAccount extends Model
         ];
         // SET PDI AND PENALTY IN THE ACCOUNT SUMMARY
         // $accountSummary['penalty']['debit'] += /* 2;  */$this->getTotalPenalty($transactionDateNow);
-        $accountSummary['pdi']['debit'] += /* 2;  */$this->getTotalPdi($transactionDateNow);
+        $accountSummary['pdi']['debit'] += /* 2;  */ $this->getTotalPdi($transactionDateNow);
 
+        if ($payments) {
 
+            if (count($payments) > 0) {
 
-        if (count($payments)) {
+                foreach ($payments as $payment) {
 
-            foreach ($payments as $payment) {
+                    $accountSummary['principal']['credit'] += $payment->principal;
 
-                $accountSummary['principal']['credit'] += $payment->principal;
+                    $accountSummary['interest']['credit'] += $payment->interest;
 
-                $accountSummary['interest']['credit'] += $payment->interest;
+                    if (!$payment->penalty_approval_no) {
+                        // $accountSummary['penalty']['credit'] += $payment->penalty;
+                    }
 
-                if (!$payment->penalty_approval_no) {
-                    // $accountSummary['penalty']['credit'] += $payment->penalty;
-                }
+                    if (!$payment->pdi_approval_no) {
+                        $accountSummary['pdi']['credit'] += $payment->pdi;
+                    }
 
-                if (!$payment->pdi_approval_no) {
-                    $accountSummary['pdi']['credit'] += $payment->pdi;
-                }
-
-                if ($payment->rebates_approval_no) {
-                    $accountSummary['rebates']['credit'] += $payment->rebates;
+                    if ($payment->rebates_approval_no) {
+                        $accountSummary['rebates']['credit'] += $payment->rebates;
+                    }
                 }
             }
         }
@@ -1290,7 +1299,7 @@ class LoanAccount extends Model
         $accountSummary['pdi']['balance'] = $accountSummary['pdi']['debit'] - $accountSummary['pdi']['credit'];
         $accountSummary['rebates']['balance'] = $accountSummary['rebates']['debit'] - $accountSummary['rebates']['credit'];
 
-        $accountSummary['memo']['account'] = $account->account_num;
+        $accountSummary['memo']['account'] = $account?->account_num;
         $accountSummary['memo']['balance'] = $accountSummary['principal']['balance'] + $accountSummary['interest']['balance'] + $accountSummary['rebates']['balance'];
 
 
@@ -1495,8 +1504,8 @@ class LoanAccount extends Model
                     ->whereYear('date_release', $date->year);
             })
             ->groupBy('year', 'month', 'branch_code')
-            ->orderBy('year','DESC')
-            ->orderBy('month','DESC')
+            ->orderBy('year', 'DESC')
+            ->orderBy('month', 'DESC')
             ->get();
 
         $groupReleasedAccounts = [];

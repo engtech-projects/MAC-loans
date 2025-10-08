@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ActivityLogController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -49,6 +50,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     });
     Route::get('logout', [AuthController::class, 'logout'])->name('api.logout');
     Route::resource('user', UserController::class);
+    Route::resource('activity-logs', ActivityLogController::class);
     Route::resource('product', ProductController::class);
     Route::resource('center', CenterController::class);
     Route::resource('branch', BranchController::class);
@@ -60,6 +62,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::resource('gl', GLController::class);
     Route::resource('deduction', DeductionController::class);
 
+    Route::post('borrower/check-duplicate', [BorrowerController::class, 'checkDuplicate']);
 
     Route::get('borrower/accounts/{borrower_id}', [BorrowerController::class, 'getBorrowerAccounts']);
 
@@ -116,6 +119,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('account/retag-list/{branch}', [AccountRetaggingController::class, 'retagList']);
 
 
+    
     Route::post('account/override/', [LoanAccountController::class, 'override']);
     Route::delete('account/remove/{account}', [LoanAccountController::class, 'delete']);
     Route::put('account/reject/{account}', [LoanAccountController::class, 'reject']);

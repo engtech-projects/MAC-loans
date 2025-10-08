@@ -2253,8 +2253,10 @@ export default {
                 parseFloat(this.payment.amount_paid) > 0 &&
                 this.checkRebates() || this.payment.memo_type == 'Rebates and Discount'
             ) {
-                axios
-                    .post(this.baseURL() + "api/payment", this.payment, {
+                axios.post(this.baseURL() + "api/payment", {
+                    ...this.payment,
+                    source: window.location.pathname || 'unknown'
+                }, {
                         headers: {
                             Authorization: "Bearer " + this.token,
                             "Content-Type": "application/json",

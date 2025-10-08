@@ -321,7 +321,11 @@ export default {
 						this.resetCenter();
 					}.bind(this))
 					.catch(function (error) {
-						this.notify('',"Something went wrong. Please make sure all fields have been filled correctly.",'error')
+						if (error.response?.status === 422) {
+							this.notify('',Object.values(error.response.data.errors)[0][0], 'error');
+						} else {
+							this.notify('', "Something went wrong",'error');
+						}
 						console.log(error);
 					}.bind(this));
 			}else {
@@ -338,7 +342,11 @@ export default {
 					this.resetCenter();
 				}.bind(this))
 				.catch(function (error) {
-					this.notify('',"Something went wrong. Please make sure all fields have been filled correctly.",'error')
+					if (error.response?.status === 422) {
+						this.notify('',Object.values(error.response.data.errors)[0][0], 'error');
+					} else {
+						this.notify('', "Something went wrong",'error');
+					}
 					console.log(error);
 				}.bind(this));
 			}

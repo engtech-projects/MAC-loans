@@ -3,18 +3,22 @@
 namespace App\Http\Controllers\API;
 
 // use App\Http\Controllers\Controller;
-use App\Http\Controllers\API\BaseController as BaseController;
-use Illuminate\Http\Request;
-use App\Http\Resources\Deduction as DeductionResource;
-use App\Models\Deduction;
 use Carbon\Carbon;
+use App\Models\Deduction;
+use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
+use Spatie\Activitylog\Models\Activity;
+use App\Http\Resources\Deduction as DeductionResource;
+use App\Http\Controllers\API\BaseController as BaseController;
 
-class DeductionController extends BaseController {
-   
-	/**
+class DeductionController extends BaseController
+{
+
+    /**
      * Display a listing of the resource.
      */
-    public function index() {
+    public function index()
+    {
         $deduction = Deduction::all();
         return $this->sendResponse(DeductionResource::collection($deduction), 'Deductions fetched.');
     }
@@ -22,11 +26,25 @@ class DeductionController extends BaseController {
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request) {
+    public function store(Request $request)
+    {
 
         $input = $request->all();
-        // // # add validator dri
-        $deduction = Deduction::create($input);
+        try {
+            $deduction = Deduction::create($input);
+            activity("Deduction Rate")->event("created")->performedOn($deduction)
+                ->withProperties(['model_snapshot' => $deduction->toArray()])
+                ->tap(function (Activity $activity) {
+                    $activity->transaction_date = null;
+                })
+                ->log("Deduction Rate - Create");
+        } catch (\Exception $e) {
+            return new JsonResponse([
+                'errors' => $e->getMessage(),
+                'message' => 'Transaction Failed.',
+            ], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
+        }
+
         return $this->sendResponse(new DeductionResource($deduction), 'Deduction Created');
         // return 'test';
     }
@@ -34,58 +52,96 @@ class DeductionController extends BaseController {
     /**
      * Display the specified resource.
      */
-    public function show(Deduction $deduction) {
+    public function show(Deduction $deduction)
+    {
         return $this->sendResponse(new DeductionResource($deduction), 'Deduction fetched.');
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Deduction $deduction) {
+    public function update(Request $request, Deduction $deduction)
+    {
+        $replicate = $deduction->replicate();
         $input = $request->all();
-  		$deduction->name = isset($input['name']) ? $input['name'] : $deduction->name;
-		$deduction->rate = isset($input['rate']) ? $input['rate'] : $deduction->rate;
-		$deduction->product_id = isset($input['product_id']) ? $input['product_id'] : $deduction->product_id;
-		$deduction->term_start = isset($input['term_start']) ? $input['term_start'] : $deduction->term_start;
-		$deduction->term_end = isset($input['term_end']) ? $input['term_end'] : $deduction->term_end;
-		$deduction->age_start = isset($input['age_start']) ? $input['age_start'] : $deduction->age_start;
-		$deduction->age_end = isset($input['age_end']) ? $input['age_end'] : $deduction->age_end;
-		$deduction->deleted = isset($input['deleted']) ? $input['deleted'] : $deduction->deleted;
-		$deduction->status = isset($input['status']) ? $input['status'] : $deduction->status;
-		$deduction->save();
+        try {
+            $deduction->name = isset($input['name']) ? $input['name'] : $deduction->name;
+            $deduction->rate = isset($input['rate']) ? $input['rate'] : $deduction->rate;
+            $deduction->product_id = isset($input['product_id']) ? $input['product_id'] : $deduction->product_id;
+            $deduction->term_start = isset($input['term_start']) ? $input['term_start'] : $deduction->term_start;
+            $deduction->term_end = isset($input['term_end']) ? $input['term_end'] : $deduction->term_end;
+            $deduction->age_start = isset($input['age_start']) ? $input['age_start'] : $deduction->age_start;
+            $deduction->age_end = isset($input['age_end']) ? $input['age_end'] : $deduction->age_end;
+            $deduction->deleted = isset($input['deleted']) ? $input['deleted'] : $deduction->deleted;
+            $deduction->status = isset($input['status']) ? $input['status'] : $deduction->status;
+            $deduction->save();
+
+            $changes = $this->getChanges($deduction, $replicate);
+            unset($changes['attributes']['updated_at'], $changes['old']['updated_at']);
+            if (!empty($changes['attributes'])) {
+                activity("Deduction Rate")->event("updated")->performedOn($deduction)
+                    ->withProperties([
+                        'model_snapshot' => $deduction->toArray(),
+                        'attributes' => $changes['attributes'],
+                        'old' => $changes['old']
+                    ])
+                    ->tap(function (Activity $activity) {
+                        $activity->transaction_date = null;
+                    })
+                    ->log("Deduction Rate - Update");
+            }
+        } catch (\Exception $e) {
+            return new JsonResponse([
+                'errors' => $e->getMessage(),
+                'message' => 'Transaction Failed.',
+            ], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
+        }
+
         return $this->sendResponse(new DeductionResource($deduction), 'Deduction Updated.');
     }
-
-    public function calculateDeductions(Request $request) {
-
-
-    	$loanAmount = $request->loan_amount;
-    	$productId = $request->product_id;
-    	$terms = $request->terms;
-    	$age = null;
-    	if( $request->birthdate ){
+    public function calculateDeductions(Request $request)
+    {
+        $loanAmount = $request->loan_amount;
+        $productId = $request->product_id;
+        $terms = $request->terms;
+        $age = null;
+        if ($request->birthdate) {
             $birthdate = Carbon::parse($request->birthdate);
             $releasedatenow = Carbon::now();
-            
-            $age = round($birthdate->diffInDays($releasedatenow)/ 365, 0);
-    
+            $age = round($birthdate->diffInDays($releasedatenow) / 365, 0);
         }
-    	$deduction = new Deduction();
-        
-    	return $this->sendResponse($deduction->deductions([
-    		'loan_amount' => $loanAmount, 
-    		'terms' => $terms, 
-    		'product_id' => $productId, 
-    		'age' =>  $age 
-    	]), 'Deductions.');
-    	
+        $deduction = new Deduction();
+        return $this->sendResponse($deduction->deductions([
+            'loan_amount' => $loanAmount,
+            'terms' => $terms,
+            'product_id' => $productId,
+            'age' =>  $age
+        ]), 'Deductions.');
     }
 
-     public function destroy($id) {
+    public function destroy($id)
+    {
+        try {
+            $deduction = Deduction::find($id);
+            $deductionData = $deduction->toArray();
+            $deduction->delete();
 
-        $deduction = Deduction::find($id);
-        $deduction->delete();
+            activity("Deduction Rate")->event("deleted")->performedOn($deduction)
+                ->withProperties([
+                    'model_snapshot' => $deductionData,
+                    'old' => $deductionData
+                ])
+                ->tap(function (Activity $activity) {
+                    $activity->transaction_date = null;
+                })
+            ->log("Deduction Rate - Delete");
+        } catch (\Exception $e) {
+            return new JsonResponse([
+                'errors' => $e->getMessage(),
+                'message' => 'Transaction Failed.',
+            ], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
+        }
+
         return $this->sendResponse(['status' => 'Deduction deleted'], 'Deleted');
     }
-
 }

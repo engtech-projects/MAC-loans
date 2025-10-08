@@ -13,6 +13,7 @@ use App\Models\JournalEntry;
 use App\Models\JournalEntryDetails;
 use App\Models\EndTransaction;
 use App\Http\Resources\GL as GLResource;
+use Spatie\Activitylog\Models\Activity;
 
 
 
@@ -42,7 +43,24 @@ class EODController extends BaseController
 
 			# eod
 			// return $dateEnd;
-			$message = ($endTransaction->close($branchId)) ? 'successful' : 'unsuccessful';
+			$replicate = $eod->replicate();
+			$eod->status = 'closed';
+			$message = ($eod->save()) ? 'successful' : 'unsuccessful';
+
+			if ($message) {
+				$eodChanges = $this->getChanges($eod, $replicate);
+            	unset($eodChanges['attributes']['updated_at'], $eodChanges['old']['updated_at']);
+            	activity("End of Day")->event("updated")->performedOn($eod)
+	                ->withProperties([
+                    	'model_snapshot' => $eod->toArray(),
+	                    'attributes' => $eodChanges['attributes'], 
+	                    'old' => $eodChanges['old']
+	                ])
+	                ->tap(function (Activity $activity) use ($branchId) {
+	                    $activity->transaction_date = null;
+	                })
+	                ->log("Transaction Date - Close");
+			}
 
 			return $this->sendResponse(
 				'End of day Transaction',
@@ -68,8 +86,24 @@ class EODController extends BaseController
 
 
 		if( $eod->status == 'open' ) {
+			$replicate = $eod->replicate();
+			$eod->status = 'closed';
+			$message = ($eod->save()) ? 'successful' : 'unsuccessful';
 
-			$message = ($endTransaction->close($branchId)) ? 'successful' : 'unsuccessful';
+			if ($message) {
+				$eodChanges = $this->getChanges($eod, $replicate);
+            	unset($eodChanges['attributes']['updated_at'], $eodChanges['old']['updated_at']);
+            	activity("End of Day")->event("updated")->performedOn($eod)
+	                ->withProperties([
+                    	'model_snapshot' => $eod->toArray(),
+	                    'attributes' => $eodChanges['attributes'], 
+	                    'old' => $eodChanges['old']
+	                ])
+	                ->tap(function (Activity $activity) use ($branchId) {
+	                    $activity->transaction_date = null;
+	                })
+	                ->log("Transaction Date - Close");
+			}
 
 			return $this->sendResponse(
 				'End of day Transaction',
@@ -138,6 +172,12 @@ class EODController extends BaseController
 				'date_end' => $transactionDate,
 				'status' => 'open'
 			]);
+			activity("End of Day")->event("created")->performedOn($data)
+                ->withProperties(['model_snapshot' => $data->toArray()])
+                ->tap(function (Activity $activity) {
+                    $activity->transaction_date = null;
+                })
+                ->log("Transaction Date - Open");
 			return $this->sendResponse($data, "Transaction date has been created");
 		}
 

@@ -8,6 +8,7 @@ use App\Http\Controllers\API\BaseController as BaseController;
 use App\Models\Product;
 use App\Models\User;
 use App\Http\Resources\Product as ProductResource;
+use Spatie\Activitylog\Models\Activity;
 
 class ProductController extends BaseController
 {
@@ -20,7 +21,8 @@ class ProductController extends BaseController
         return $this->sendResponse(ProductResource::collection($products), 'Products fetched.');
     }
 
-    public function activeProduct(){
+    public function activeProduct()
+    {
         $products = Product::where(["status" => "active"])->get();
         return $this->sendResponse(ProductResource::collection($products), 'Active Products fetched.');
     }
@@ -28,41 +30,64 @@ class ProductController extends BaseController
     /**
      * Show the form for creating a new resource.
      */
-    public function create() {
+    public function create()
+    {
         // return view();
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request) {
+    public function store(Request $request)
+    {
+        $request->validate([
+            'product_code' => 'required|unique:product,product_code',
+        ]);
 
         $input = $request->all();
-        # add validator dri
-        $product = Product::create($input);
+        $product = Product::create([
+            'product_code' => $input['product_code'],
+            'product_name' => $input['product_name'],
+            'interest_rate' => $input['interest_rate'],
+            'status' => $input['status'],
+            'deleted' => $input['deleted']
+        ]);
+
+        activity("Product Setup")->event("created")->performedOn($product)
+            ->withProperties(['model_snapshot' => $product->toArray()])
+            ->tap(function (Activity $activity) {
+                $activity->transaction_date = null;
+            })
+            ->log("Product - Create");
         return $this->sendResponse(new ProductResource($product), 'Product Created');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Product $product) {
+    public function show(Product $product)
+    {
         return $this->sendResponse(new ProductResource($product), 'Product fetched.');
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Product $product) {
+    public function edit(Product $product)
+    {
         // return view()
     }
 
-     /**
+    /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Product $product) {
+    public function update(Request $request, Product $product)
+    {
+        $request->validate([
+            'product_code' => 'required|unique:product,product_code,' . $product->product_code . ',product_code',
+        ]);
+        $replicate = $product->replicate();
         $input = $request->all();
-        # add validator na pd dri
         $product->product_code = $input['product_code'];
         $product->product_name = $input['product_name'];
         $product->interest_rate = $input['interest_rate'];
@@ -70,6 +95,20 @@ class ProductController extends BaseController
         $product->deleted = $input['deleted'];
         $product->save();
 
+        $changes = $this->getChanges($product, $replicate);
+        unset($changes['attributes']['updated_at'], $changes['old']['updated_at']);
+        if (!empty($changes['attributes'])) {
+            activity("Product Setup")->event("updated")->performedOn($product)
+                ->withProperties([
+                    'model_snapshot' => $product->toArray(),
+                    'attributes' => $changes['attributes'], 
+                    'old' => $changes['old']
+                ])
+                ->tap(function (Activity $activity) {
+                    $activity->transaction_date = null;
+                })
+                ->log("Product - Update");
+        }
         return $this->sendResponse(new ProductResource($product), 'Product Updated.');
     }
 
@@ -77,5 +116,4 @@ class ProductController extends BaseController
      * Remove the specified resource from storage.
      */
     public function destroy() {}
-
 }
