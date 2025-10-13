@@ -24,7 +24,7 @@ class ActivityLogController extends Controller
             $query->where('log_name', 'like', "%$logname%");
         })->when($request['event'], function ($query) use ($filter) {
             $query->where('event', $filter['event']);
-        })->get();
+        })->paginate(10);
         $data = $activityLogs->map(function ($item) {
             return [
                 'id' => $item->id,
@@ -48,6 +48,10 @@ class ActivityLogController extends Controller
         });
         return new JsonResponse([
             'data' => $data,
+            'current_page' => $activityLogs->currentPage(),
+            'last_page' => $activityLogs->lastPage(),
+            'per_page' => $activityLogs->perPage(),
+            'total' => $activityLogs->total(),
             'message' => 'Successfully Fetched.',
         ], JsonResponse::HTTP_OK);
     }
