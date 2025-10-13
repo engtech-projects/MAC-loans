@@ -22,9 +22,18 @@ class ActivityLogController extends Controller
         $activityLogs = Activity::when($request['log_name'], function ($query) use ($filter) {
             $logname = $filter['log_name'];
             $query->where('log_name', 'like', "%$logname%");
-        })->when($request['event'], function ($query) use ($filter) {
+        })
+        ->when($request['event'], function ($query) use ($filter) {
             $query->where('event', $filter['event']);
-        })->paginate(10);
+        })
+        ->when($request['date_from'], function ($query) use ($filter) {
+            $query->whereDate('created_at', '>=', $filter['date_from']);
+        })
+        ->when($request['date_to'], function ($query) use ($filter) {
+            $query->whereDate('created_at', '<=', $filter['date_to']);
+        })
+        ->orderBy('created_at', 'desc')
+        ->paginate(10);
         $data = $activityLogs->map(function ($item) {
             return [
                 'id' => $item->id,

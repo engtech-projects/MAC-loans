@@ -38,6 +38,12 @@
                             <option value="deleted">Deleted</option>
                         </select>
                     </div>
+                    <div class="col-md-4 d-flex align-items-center">
+                        <label class="mb-0 mr-2">From:</label>
+                        <input type="date" v-model="filter.date_from" class="form-control">
+                        <label class="mb-0 ml-2 mr-2">To:</label>
+                        <input type="date" v-model="filter.date_to" class="form-control">
+                    </div>
                     <div class="col-md-2">
                         <button class="btn btn-primary" @click="search()">Search</button>
                     </div>
@@ -51,7 +57,6 @@
                         <th>Subject Type</th>
                         <th>Log By</th>
                         <th>Event</th>
-                        <th>Transaction Date</th>
                         <th>Log Date & Time</th>
                         <th>Action</th>
                         <tbody>
@@ -64,7 +69,6 @@
                                 <td>{{ d.subject_type }}</td>
                                 <td>{{ d.causer }}</td>
                                 <td style="text-transform: capitalize;">{{ d.event }}</td>
-                                <td> {{ d.transaction_date }}</td>
                                 <td>{{ d.created_at }}</td>
                                 <td>
                                     <button @click="view(d.id)" data-toggle="modal" data-target="#viewLogModal"
@@ -245,8 +249,10 @@ export default {
                 total: 0
             },
             filter: {
-                log_name: "",
-                event: ""
+                log_name: '',
+                event: '',
+                date_from: '',
+                date_to: ''
             },
             deduction: {
                 id: null,
@@ -267,6 +273,8 @@ export default {
                 params: {
                     'log_name': this.filter.log_name,
                     'event': this.filter.event,
+                    'date_from': this.filter.date_from,
+                    'date_to': this.filter.date_to,
                     'page': page
                 },
                 headers: {
