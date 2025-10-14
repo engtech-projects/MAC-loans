@@ -37,6 +37,10 @@ class Amortization extends Model
         'amortization_date' => "date:Y-m-d"
     ];
 
+     protected $appends = [
+        "soa_status"
+    ];
+
 
     /* public function getPreferencesAttribute($value)
     {
@@ -481,5 +485,27 @@ class Amortization extends Model
     {
         $amortization = Amortization::find($amort_id);
         return $amortization->status;
+    }
+
+    public function getDelinquentDateAttribute()
+    {
+        if ($this->account->product_id == 3) {
+            return Carbon::parse($this->amortization_date)->addMonth()->startOfMonth();
+        }
+        return Carbon::parse($this->amortization_date)->addDay();
+    }
+    
+    public function getSoaStatusAttribute()
+    {
+        $latestTransactionDate = $this->account->branch->branchTransactionDates()->orderBy("date_end", "desc")->first()->date_end;
+        $asOf = $this->delinquent_date;
+        $balanceAsOf = $this->account->loan_amount - $this->account->payments->where("status", "paid")->where("transaction_date", "<=", $asOf)->sum("principal");
+        if ($this->principal_balance >= $balanceAsOf) { // CHECK IF DELIQUENT BASED ON MINIMUM PRINCIPAL BALANCE AND PAID PRINCIPAL
+            return "paid";
+        }
+        if ($latestTransactionDate <= $this->delinquent_date) { // CHECK IF OPEN
+            return "open";
+        }
+        return "delinquent";
     }
 }

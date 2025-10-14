@@ -248,7 +248,7 @@
 												<td>{{formatToCurrency(as.total)}}</td>
 												<td>{{formatToCurrency(as.principal_balance)}}</td>
 												<td>{{formatToCurrency(as.interest_balance)}}</td>
-												<td>{{upperFirst(as.status)}}</td>
+												<td> {{upperFirst(as.soa_status)}}</td>
 												<td><a v-show="hasAccessToEdit" @click.prevent="editAmort=as" data-toggle="modal" data-target="#editAmortizationModal" href=""><i class="fa fa-edit"></i>Edit</a></td>
 											</tr>
 											<tr v-if="loanDetails.payments.length==0">
