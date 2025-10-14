@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models\V2;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -37,6 +36,7 @@ class Amortization extends Model
     ];
     protected $appends = [
         "delinquent_date",
+        "soa_status"
     ];
 
 
