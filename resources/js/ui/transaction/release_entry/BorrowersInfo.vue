@@ -587,11 +587,14 @@
 			            const formattedDate = new Date(duplicate.birthdate).toLocaleDateString('en-US', {
 			                year:'numeric', month:'long', day:'numeric'
 			            });
-			            this.notify(
-			                'Duplicate Borrower Detected',
-			                `Existing Borrower:<br>Name: ${duplicate.firstname} ${duplicate.lastname}<br>Birth Date: ${formattedDate}`,
-			                'error'
-			            );
+			            // this.notify(
+			            //     'Duplicate Borrower Detected',
+			            //     `Existing Borrower:<br>Name: ${duplicate.firstname} ${duplicate.lastname}<br>Birth Date: ${formattedDate}`,
+			            //     'error'
+			            // );
+
+						this.duplicateInfo = duplicate;
+			            this.showDuplicateModal = true;
 			        }
 			        else if (duplicate.match_type === 'fuzzy' || duplicate.match_type === 'name_only') {
 			            this.duplicateInfo = duplicate;
