@@ -1,0 +1,30 @@
+<?php
+
+namespace App\Providers;
+
+use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\URL;
+use Spatie\Activitylog\Models\Activity;
+
+class AppServiceProvider extends ServiceProvider
+{
+    /**
+     * Register any application services.
+     */
+    public function register()
+    {
+        //
+    }
+
+    /**
+     * Bootstrap any application services.
+     */
+    public function boot()
+    {
+        if (config('app.env') != "local") {
+            URL::forceScheme('https');
+        }
+        Schema::defaultStringLength(191);
+    }
+}
