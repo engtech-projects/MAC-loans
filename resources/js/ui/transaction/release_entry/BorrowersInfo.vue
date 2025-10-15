@@ -446,7 +446,7 @@
 		                    <img :src="baseURL()+'/img/warning.png'" style="width:120px;height:auto;" class="mr-24" alt="warning icon">
 		                    <div class="d-flex flex-column">
 		                        <span class="text-primary-dark text-bold mb-16">
-		                            Possible Duplicate Borrower Detected.
+		                           {{ duplicateTitle }}
 		                        </span>
 		                        <div v-if="duplicateInfo" class="mb-24 text-primary-dark text-bold">
 		                            <strong>
@@ -583,23 +583,14 @@
 			    if (error.response && error.response.status === 422 &&
 			        error.response.data.data && error.response.data.data.duplicate) {
 			        const duplicate = error.response.data.data.duplicate;
-			        if (duplicate.match_type === 'exact') {
-			            const formattedDate = new Date(duplicate.birthdate).toLocaleDateString('en-US', {
-			                year:'numeric', month:'long', day:'numeric'
-			            });
-			            // this.notify(
-			            //     'Duplicate Borrower Detected',
-			            //     `Existing Borrower:<br>Name: ${duplicate.firstname} ${duplicate.lastname}<br>Birth Date: ${formattedDate}`,
-			            //     'error'
-			            // );
+					this.duplicateInfo = duplicate;
+			        this.showDuplicateModal = true;
 
-						this.duplicateInfo = duplicate;
-			            this.showDuplicateModal = true;
-			        }
-			        else if (duplicate.match_type === 'fuzzy' || duplicate.match_type === 'name_only') {
-			            this.duplicateInfo = duplicate;
-			            this.showDuplicateModal = true;
-			        }
+			        if (duplicate.match_type === 'exact') {
+			            this.duplicateTitle = "Duplicate Borrower Detected";
+			        }else{
+						this.duplicateTitle = "Possible Duplicate Borrower Detected";
+					}
 			        return true;
 			    } 
 			    this.notify('Error', 'Something went wrong.', 'error');
