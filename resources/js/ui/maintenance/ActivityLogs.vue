@@ -38,6 +38,12 @@
                             <option value="deleted">Deleted</option>
                         </select>
                     </div>
+                    <div class="col-md-4 d-flex align-items-center">
+                        <label class="mb-0 mr-2">From:</label>
+                        <input type="date" v-model="filter.date_from" class="form-control">
+                        <label class="mb-0 ml-2 mr-2">To:</label>
+                        <input type="date" v-model="filter.date_to" class="form-control">
+                    </div>
                     <div class="col-md-2">
                         <button class="btn btn-primary" @click="search()">Search</button>
                     </div>
@@ -51,9 +57,8 @@
                         <th>Subject Type</th>
                         <th>Log By</th>
                         <th>Event</th>
-                        <th>Transaction Date</th>
                         <th>Log Date & Time</th>
-                        <th width="13%">Action</th>
+                        <th>Action</th>
                         <tbody>
                             <tr v-if="!activityLogs.length">
                                 <td colspan="8">No activity logs yet.</td>
@@ -64,7 +69,6 @@
                                 <td>{{ d.subject_type }}</td>
                                 <td>{{ d.causer }}</td>
                                 <td style="text-transform: capitalize;">{{ d.event }}</td>
-                                <td> {{ d.transaction_date }}</td>
                                 <td>{{ d.created_at }}</td>
                                 <td>
                                     <button @click="view(d.id)" data-toggle="modal" data-target="#viewLogModal"
@@ -76,6 +80,37 @@
                             </tr>
                         </tbody>
                     </table>
+                    <div class="row" v-if="pagination.lastPage > 1">
+                        <div class="col-12 d-flex flex-column align-items-center">
+                            <div class="btn-group mb-2" role="group" aria-label="Pagination">
+                                <button type="button" class="btn btn-outline-secondary btn-md"
+                                    :disabled="pagination.currentPage === 1"
+                                    @click.prevent="changePage(pagination.currentPage - 1)">
+                                    ‹ Prev
+                                </button>
+                                <button type="button" v-for="page in paginationRange"
+                                    :key="page"
+                                    class="btn"
+                                    :class="{
+                                        'btn-primary': page === pagination.currentPage,
+                                        'btn-outline-secondary': page !== pagination.currentPage,
+                                        'disabled': page === '...'
+                                    }"
+                                    style="min-width: 40px;"
+                                    @click.prevent="page !== '...' && changePage(page)">
+                                    {{ page }}
+                                </button>
+                                <button type="button" class="btn btn-outline-secondary btn-md"
+                                    :disabled="pagination.currentPage === pagination.lastPage"
+                                    @click.prevent="changePage(pagination.currentPage + 1)">
+                                    Next ›
+                                </button>
+                            </div>
+                            <div class="dataTables_info text-center" style="font-size: 0.875rem; color: #6c757d;">
+                                Showing {{ showingFrom }} to {{ showingTo }} of {{ pagination.total }} entries
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
             </div>
@@ -207,9 +242,17 @@ export default {
             activityLogs: [],
             activityLog: {},
             deductions: [],
+            pagination: {
+                currentPage: 1,
+                lastPage: 1,
+                perPage: 10,
+                total: 0
+            },
             filter: {
-                log_name: "",
-                event: ""
+                log_name: '',
+                event: '',
+                date_from: '',
+                date_to: ''
             },
             deduction: {
                 id: null,
@@ -225,11 +268,14 @@ export default {
         }
     },
     methods: {
-        async fetchActivityLogs() {
+        async fetchActivityLogs(page = 1) {
             await axios.get(this.baseURL() + 'api/activity-logs/', {
                 params: {
                     'log_name': this.filter.log_name,
-                    'event': this.filter.event
+                    'event': this.filter.event,
+                    'date_from': this.filter.date_from,
+                    'date_to': this.filter.date_to,
+                    'page': page
                 },
                 headers: {
                     'Authorization': 'Bearer ' + this.token,
@@ -239,13 +285,22 @@ export default {
             })
                 .then(function (response) {
                     this.activityLogs = response.data.data;
+                    this.pagination.currentPage = response.data.current_page;
+                    this.pagination.lastPage = response.data.last_page;
+                    this.pagination.perPage = response.data.per_page;
+                    this.pagination.total = response.data.total;
                 }.bind(this))
                 .catch(function (error) {
                     console.log(error);
                 }.bind(this));
         },
+        changePage(page) {
+            if (page >= 1 && page <= this.pagination.lastPage) {
+                this.fetchActivityLogs(page);
+            }
+        },
         search() {
-            this.fetchActivityLogs();
+            this.fetchActivityLogs(1);
         },
 
         async view(id) {
@@ -262,6 +317,38 @@ export default {
                 .catch(function (error) {
                     console.log(error);
                 }.bind(this));
+        }
+    },
+    computed: {
+        paginationRange() {
+            const current = this.pagination.currentPage;
+            const last = this.pagination.lastPage;
+            const delta = 2;
+            const range = [];
+            
+            for (let i = Math.max(2, current - delta); i <= Math.min(last - 1, current + delta); i++) {
+                range.push(i);
+            }
+            
+            if (current - delta > 2) {
+                range.unshift('...');
+            }
+            if (current + delta < last - 1) {
+                range.push('...');
+            }
+            
+            range.unshift(1);
+            if (last > 1) {
+                range.push(last);
+            }
+            
+            return range;
+        },
+        showingFrom() {
+            return ((this.pagination.currentPage - 1) * this.pagination.perPage) + 1;
+        },
+        showingTo() {
+            return Math.min(this.pagination.currentPage * this.pagination.perPage, this.pagination.total);
         }
     },
     mounted() {

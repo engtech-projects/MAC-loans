@@ -239,6 +239,7 @@ class PaymentController extends BaseController
 
     public function updatePayment(UpdatePaymentRequest $request, Payment $payment)
     {
+
         $validated = $request->validated($request);
         $payment->fill($validated);
         $payment->save();
@@ -251,7 +252,6 @@ class PaymentController extends BaseController
         $paymentReplicate = $payment->replicate();
         $payment->fill($request->input());
         $payment->save();
-
         if ($payment->status == 'cancelled') {
 
             if ($payment->amortization_id) {
