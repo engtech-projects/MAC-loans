@@ -28,10 +28,10 @@
 					</select>
 				</div>
 				<!-- Branch Dropdown -->
-				<select v-model="filter.branch_id" :required="filter.branch_id !== ''" class="form-control">
-					<option value="">All</option> <!-- Option for "All" -->
-					<option v-for="branch in branches" :key="branch.branch_id" :value="branch.branch_id">
-						{{ branch.branch_name }} ({{ branch.branch_code }})
+				<select v-model="filter.branch_id" @change="fetchAccounts" class="form-control w-auto">
+					<option value="">All Branches</option>
+					<option v-for="b in branches" :key="b.branch_id" :value="b.branch_id">
+						{{ b.branch_name }}
 					</option>
 				</select>
 				
@@ -50,11 +50,17 @@
 							<div class="flex-1"></div>
 							<span class="font-30 text-bold text-primary-dark">INSURANCE REPORT</span>
 							<div class="flex-1 d-flex justify-content-end" style="padding-right:16px">
-								<current-transactiondate :branch="branch.branch_id" :token="token" :reports="true"></current-transactiondate>
+								<current-transactiondate 
+							:branch="selectedBranch" 
+							:token="token" 
+							:reports="true">
+							</current-transactiondate>
 								<span class="text-primary-dark">Time: {{todayTime(new Date())}} {{(new Date()).getHours() > 12? 'PM':'AM'}}</span>
 							</div>
 						</div>
-						<span class="text-center text-primary-dark text-bold font-md mb-5">{{branch.branch_name + ' Branch (' + branch.branch_code + ')'}}</span>
+						<span class="text-center text-primary-dark text-bold font-md mb-5">
+  {{ selectedBranchName }}
+</span>
 						<div v-if="filter.date_from&&filter.date_to" class="d-flex flex-row justify-content-center text-primary-dark">
 							<span class="mr-5">From:</span><span class="mr-16">{{dateToMDY2(new Date(filter.date_from)).split('-').join('/')}}</span>
 							<span class="mr-5">To:</span><span>{{dateToMDY2(new Date(filter.date_to)).split('-').join('/')}}</span>
@@ -129,6 +135,7 @@
 import * as XLSX from 'xlsx';
 
 export default {
+	name: "CurrentTransactionDate",
 	props:['token','pbranch'],
 	data(){
 		return {
@@ -146,6 +153,7 @@ export default {
 			],
 			tempAccount:[],
 			accounts: [],
+			branch: {},
 		}
 	},
 	methods:{
@@ -166,16 +174,20 @@ export default {
 				'Content-Type': 'application/json',
 				'Accept': 'application/json'
 				}
-			})
+			})	
 			.then(function (response) {
-				this.loading = false;
-				this.tempAccount = response.data.data;
-				this.accounts = this.tempAccount
-			}.bind(this))
-			.catch(function (error) {
-				this.loading = false;
-				console.log(error);
-			}.bind(this));
+					this.loading = false;
+
+			// Safely extract data from response
+			const accountsData = response.data?.data?.original
+				? Object.values(response.data.data.original)
+				: [];
+
+			this.tempAccount = accountsData;
+			this.accounts = accountsData;
+
+			console.log("Accounts loaded:", this.accounts.length, this.accounts);
+		}.bind(this))
 		}, 
 		filterAge: function() {
 			if (this.filter.age === "less_70") {
@@ -288,11 +300,23 @@ export default {
   },
 	computed:{
 		totalAmountLoan() {
-			return this.accounts.reduce((sum, account) => sum + (account.amount_loan || 0), 0);
-		},
-		totalInsurance() {
-			return this.accounts.reduce((sum, account) => sum + (account.insurance || 0), 0);
-		}
+		if (!Array.isArray(this.accounts)) return 0;
+		return this.accounts.reduce((sum, account) => sum + (account.amount_loan || 0), 0);
+	},
+	totalInsurance() {
+		if (!Array.isArray(this.accounts)) return 0;
+		return this.accounts.reduce((sum, account) => sum + (account.insurance || 0), 0);
+	},
+	selectedBranchName() {
+      if (!this.filter.branch_id) {
+        return "All Branches";
+      }
+
+      const b = this.branches.find(
+        (br) => br.branch_id === Number(this.filter.branch_id)
+      );
+      return b ? `${b.branch_name} Branch (${b.branch_code})` : "All Branches";
+    },
 	},
 	watch:{
 		 filter: {
@@ -306,7 +330,11 @@ export default {
 	},
 	mounted(){
 		this.branch = JSON.parse(this.pbranch);
-		this.filter.branch_id = this.branch.branch_id
+		this.filter.branch_id = this.branch.branch_id;
+		if (this.pbranch) {
+		this.branch = JSON.parse(this.pbranch);
+		this.filter.branch_id = this.branch.branch_id;
+	}
 	}
 }
 </script>

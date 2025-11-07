@@ -635,6 +635,7 @@ class Reports extends Model
         $accounts = $this->getLoanAccounts($filters);
         $insurance = [];
         foreach ($accounts as $key => $value) {
+            if (empty($value->insurance)) { continue; }
             $insurance[$key]["account_num"] = $value->account_num;
             $insurance[$key]["name"] = $value->borrower->fullname();
             $insurance[$key]["birthdate"] = $value->borrower->birthdate;
@@ -646,7 +647,7 @@ class Reports extends Model
             $insurance[$key]["due_date"] = $value->due_date;
             $insurance[$key]["term"] = $value->terms;
         }
-        return $insurance;
+        return response()->json($insurance);
     }
 
     /* end release reports */
