@@ -28,7 +28,7 @@
 					</select>
 				</div>
 				<!-- Branch Dropdown -->
-				<select v-model="filter.branch_id" @change="fetchAccounts" class="form-control w-auto">
+				<select v-model="filter.branch_id" class="form-control w-auto">
 					<option value="">All Branches</option>
 					<option v-for="b in branches" :key="b.branch_id" :value="b.branch_id">
 						{{ b.branch_name }}
@@ -36,7 +36,7 @@
 				</select>
 				
 				<div class="d-flex flex-row align-items-center mr-24 justify-content-start flex-1">
-					<button class="btn btn-primary">Generate</button>
+					<button class="btn btn-primary" :disabled="generateButtonDisabled">Generate</button>
 				</div>
 			</div>
 			</form>
@@ -51,7 +51,7 @@
 							<span class="font-30 text-bold text-primary-dark">INSURANCE REPORT</span>
 							<div class="flex-1 d-flex justify-content-end" style="padding-right:16px">
 								<current-transactiondate 
-							:branch="selectedBranch" 
+							:branch="filter.branch_id" 
 							:token="token" 
 							:reports="true">
 							</current-transactiondate>
@@ -154,20 +154,12 @@ export default {
 			tempAccount:[],
 			accounts: [],
 			branch: {},
+			generateButtonDisabled: false,
 		}
 	},
 	methods:{
 		fetchAccounts:function(){
 			this.loading = true;
-			console.log("Filters:", this.filter);
-
-			 // Modify the filter before making the API call
-			 let filterData = { ...this.filter };
-
-			// If "All" branch is selected (branch_id is empty), remove it from the filter data
-			if (!filterData.branch_id) {
-				delete filterData.branch_id;
-}
 			axios.post(this.baseURL() + 'api/report/release', this.filter, {
 			headers: {
 				'Authorization': 'Bearer ' + this.token,
@@ -185,8 +177,7 @@ export default {
 
 			this.tempAccount = accountsData;
 			this.accounts = accountsData;
-
-			console.log("Accounts loaded:", this.accounts.length, this.accounts);
+			this.filter.age = '';
 		}.bind(this))
 		}, 
 		filterAge: function() {
@@ -198,7 +189,7 @@ export default {
 			} else if (this.filter.age === "greater_70") {
 				// Filter accounts where age is greater than 70
 				this.accounts = this.tempAccount.filter((e) => {
-					return this.calculateAge(e.birthdat,e.date_loan) > 70;
+					return this.calculateAge(e.birthdate,e.date_loan) > 70;
 				});
 			} else {
 				// If no age filter is selected, show all accounts
@@ -318,15 +309,14 @@ export default {
       return b ? `${b.branch_name} Branch (${b.branch_code})` : "All Branches";
     },
 	},
-	watch:{
-		 filter: {
-			handler(val){
-				if(val.date_from && val.date_to){
-					// this.fetchAccounts();
-				}
-			},
-			deep: true
-		}
+	watch: {
+    'filter.age': function(newValue) {
+      this.filterAge();
+      this.generateButtonDisabled = (newValue !== '');
+    },
+    'filter.branch_id': function() {
+      this.generateButtonDisabled = false;
+    }
 	},
 	mounted(){
 		this.branch = JSON.parse(this.pbranch);
