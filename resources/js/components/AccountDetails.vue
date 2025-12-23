@@ -185,6 +185,11 @@
                                         aria-controls="custom-tabs-three-profile" aria-selected="false">Amortization
                                         Schedule</a>
                                 </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="custom-tabs-three-combined-tab" data-toggle="pill"
+                                        href="#custom-tabs-three-combined" role="tab"
+                                        aria-controls="custom-tabs-three-combined" aria-selected="false">Combined Schedule</a>
+                                </li>
                             </ul>
                         </div>
                         <div class="card-body">
@@ -267,8 +272,71 @@
                                                             data-toggle="modal" data-target="#editAmortizationModal"
                                                             href=""><i class="fa fa-edit"></i>Edit</a></td>
                                                 </tr>
-                                                <tr v-if="loanDetails.payments.length == 0">
-                                                    <td>No payments yet.</td>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="custom-tabs-three-combined" role="tabpanel"
+                                    aria-labelledby="custom-tabs-three-combined-tab">
+                                    <div class="flex-col payments-list">
+                                        <table class="table table-stripped mb-64 combined-table">
+                                            <thead>
+                                                <tr>
+                                                    <th :colspan="scheduleColumnsCount" class="text-center border-right-thick">Amortization Schedule</th>
+                                                    <th :colspan="actualColumnsCount" class="text-center">Payments</th>
+                                                </tr>
+                                                <tr style="font-weight: bold; background-color: #f8f9fa;">
+                                                    <th>Date</th>
+                                                    <th>Principal</th>
+                                                    <th>Interest</th>
+                                                    <th class="border-right-thick">Total</th>
+                                                    <th>Date</th>
+                                                    <th>Principal</th>
+                                                    <th>Interest</th>
+                                                    <th v-if="hasPDI">PDI</th>
+                                                    <th v-if="hasPenalty">Penalty</th>
+                                                    <th v-if="hasRebates">Rebates</th>
+                                                    <th v-if="hasOverPayment">Over Payment</th>
+                                                    <th>Total</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr v-for="(item, index) in combinedScheduleAndPaymentsGrouped" :key="index">
+                                                    <td>{{ item.scheduleDate ? dateToMDY(new Date(item.scheduleDate)) : '' }}</td>
+                                                    <td>{{ item.schedulePrincipal !== null ? formatToCurrency(item.schedulePrincipal) : '' }}</td>
+                                                    <td>{{ item.scheduleInterest !== null ? formatToCurrency(item.scheduleInterest) : '' }}</td>
+                                                    <td class="border-right-thick">{{ item.scheduleTotal !== null ? formatToCurrency(item.scheduleTotal) : '' }}</td>
+                                                    <td>{{ item.paymentDate ? dateToMDY(new Date(item.paymentDate)) : '' }}</td>
+                                                    <td>{{ item.paymentPrincipal !== null ? formatToCurrency(item.paymentPrincipal) : '' }}</td>
+                                                    <td>{{ item.paymentInterest !== null ? formatToCurrency(item.paymentInterest) : '' }}</td>
+                                                    <td v-if="hasPDI">{{ item.paymentPDI !== null ? formatToCurrency(item.paymentPDI) : '' }}</td>
+                                                    <td v-if="hasPenalty">{{ item.paymentPenalty !== null ? formatToCurrency(item.paymentPenalty) : '' }}</td>
+                                                    <td v-if="hasRebates">{{ item.paymentRebates !== null ? formatToCurrency(item.paymentRebates) : '' }}</td>
+                                                    <td v-if="hasOverPayment">{{ item.paymentOverPayment !== null ? formatToCurrency(item.paymentOverPayment) : '' }}</td>
+                                                    <td>{{ item.paymentTotal !== null ? formatToCurrency(item.paymentTotal) : '' }}</td>
+                                                </tr>
+                                                <tr v-if="combinedScheduleAndPaymentsGrouped.length == 0">
+                                                    <td :colspan="scheduleColumnsCount + actualColumnsCount">No data available.</td>
+                                                </tr>
+                                                <!-- Totals Row -->
+                                                <tr v-if="combinedScheduleAndPaymentsGrouped.length > 0" style="font-weight: bold; background-color: #f8f9fa;">
+                                                    <td></td>
+                                                    <td>{{ formatToCurrency(totalSchedulePrincipal) }}</td>
+                                                    <td>{{ formatToCurrency(totalScheduleInterest) }}</td>
+                                                    <td class="border-right-thick">{{ formatToCurrency(totalScheduleTotal) }}</td>
+                                                    <td></td>
+                                                    <td>{{ formatToCurrency(totalPaymentPrincipal) }}</td>
+                                                    <td>{{ formatToCurrency(totalPaymentInterest) }}</td>
+                                                    <td v-if="hasPDI">{{ formatToCurrency(totalPaymentPDI) }}</td>
+                                                    <td v-if="hasPenalty">{{ formatToCurrency(totalPaymentPenalty) }}</td>
+                                                    <td v-if="hasRebates">{{ formatToCurrency(totalPaymentRebates) }}</td>
+                                                    <td v-if="hasOverPayment">{{ formatToCurrency(totalPaymentOverPayment) }}</td>
+                                                    <td>{{ formatToCurrency(totalPaymentTotal) }}</td>
+                                                </tr>
+                                                <!-- Difference Row -->
+                                                <tr v-if="combinedScheduleAndPaymentsGrouped.length > 0" style="font-weight: bold;">
+                                                    <td :colspan="scheduleColumnsCount + actualColumnsCount - 1"></td>
+                                                    <td>({{ formatToCurrency(Math.abs(totalScheduleTotal - totalPaymentTotal)) }})</td>
                                                 </tr>
                                             </tbody>
                                         </table>
@@ -1072,6 +1140,185 @@ export default {
         outstandingTotalRemaining: function () {
             return this.outstandingPrincipalRemaining + this.outstandingInterestRemaining + this.outstandingSurchargeRemaining;
         },
+        combinedScheduleAndPaymentsGrouped: function() {
+            let combined = [];
+            let usedPaymentIndices = new Set();
+            let isPensionLoan = this.loanDetails.product.product_name && this.loanDetails.product.product_name.toLowerCase().includes('pension');
+
+            if (isPensionLoan && this.amortSched.length > 0) {
+                let firstSchedDate = new Date(this.amortSched[0].amortization_date);
+                
+                this.loanDetails.payments.forEach((payment, paymentIndex) => {
+                    let paymentDate = new Date(payment.transaction_date);
+                    
+                    // Check if payment is before first schedule month
+                    if (paymentDate.getFullYear() < firstSchedDate.getFullYear() || 
+                        (paymentDate.getFullYear() === firstSchedDate.getFullYear() && 
+                         paymentDate.getMonth() < firstSchedDate.getMonth())) {
+                        
+                        let row = {
+                            scheduleDate: null,
+                            schedulePrincipal: null,
+                            scheduleInterest: null,
+                            scheduleTotal: null,
+                            paymentDate: payment.transaction_date,
+                            paymentPrincipal: payment.principal,
+                            paymentInterest: payment.interest,
+                            paymentPDI: payment.pdi,
+                            paymentPenalty: payment.penalty,
+                            paymentRebates: payment.rebates,
+                            paymentOverPayment: payment.over_payment,
+                            paymentTotal: payment.amount_applied
+                        };
+                        combined.push(row);
+                        usedPaymentIndices.add(paymentIndex);
+                    }
+                });
+            }
+            
+            this.amortSched.forEach((sched, index) => {
+                let schedDate = new Date(sched.amortization_date);
+                
+                // Find matching payments for this schedule
+                let matchingPayments = [];
+                this.loanDetails.payments.forEach((payment, paymentIndex) => {
+                    if (usedPaymentIndices.has(paymentIndex)) return;
+                    
+                    let paymentDate = new Date(payment.transaction_date);
+                    let isMatch = false;
+                    
+                    if (isPensionLoan) {
+                        // For pension loans, match by month and year only
+                        isMatch = paymentDate.getMonth() === schedDate.getMonth() && 
+                                 paymentDate.getFullYear() === schedDate.getFullYear();
+                    } else {
+                        // For other loans, payment must be on or before schedule date
+                        // But after the previous schedule date
+                        let prevSchedDate = index > 0 ? new Date(this.amortSched[index - 1].amortization_date) : null;
+                        isMatch = paymentDate <= schedDate && (!prevSchedDate || paymentDate > prevSchedDate);
+                    }
+                    
+                    if (isMatch) {
+                        matchingPayments.push(payment);
+                        usedPaymentIndices.add(paymentIndex);
+                    }
+                });
+                
+                // If there are matching payments, create rows for each
+                if (matchingPayments.length > 0) {
+                    matchingPayments.forEach((payment, pIndex) => {
+                        let row = {
+                            scheduleDate: pIndex === 0 ? sched.amortization_date : null,
+                            schedulePrincipal: pIndex === 0 ? sched.principal : null,
+                            scheduleInterest: pIndex === 0 ? sched.interest : null,
+                            scheduleTotal: pIndex === 0 ? sched.total : null,
+                            paymentDate: payment.transaction_date,
+                            paymentPrincipal: payment.principal,
+                            paymentInterest: payment.interest,
+                            paymentPDI: payment.pdi,
+                            paymentPenalty: payment.penalty,
+                            paymentRebates: payment.rebates,
+                            paymentOverPayment: payment.over_payment,
+                            paymentTotal: payment.amount_applied
+                        };
+                        combined.push(row);
+                    });
+                } else {
+                    // No matching payment, just show the schedule
+                    let row = {
+                        scheduleDate: sched.amortization_date,
+                        schedulePrincipal: sched.principal,
+                        scheduleInterest: sched.interest,
+                        scheduleTotal: sched.total,
+                        paymentDate: null,
+                        paymentPrincipal: null,
+                        paymentInterest: null,
+                        paymentPDI: null,
+                        paymentPenalty: null,
+                        paymentRebates: null,
+                        paymentOverPayment: null,
+                        paymentTotal: null
+                    };
+                    combined.push(row);
+                }
+            });
+            
+            // Add any unused payments at the end (payments that don't match any schedule)
+            this.loanDetails.payments.forEach((payment, paymentIndex) => {
+                if (!usedPaymentIndices.has(paymentIndex)) {
+                    let row = {
+                        scheduleDate: null,
+                        schedulePrincipal: null,
+                        scheduleInterest: null,
+                        scheduleTotal: null,
+                        paymentDate: payment.transaction_date,
+                        paymentPrincipal: payment.principal,
+                        paymentInterest: payment.interest,
+                        paymentPDI: payment.pdi,
+                        paymentPenalty: payment.penalty,
+                        paymentRebates: payment.rebates,
+                        paymentOverPayment: payment.over_payment,
+                        paymentTotal: payment.amount_applied
+                    };
+                    combined.push(row);
+                }
+            });
+            
+            return combined;
+        },
+        hasPDI: function() {
+            return this.loanDetails.payments.some(p => p.pdi && p.pdi > 0);
+        },
+        hasPenalty: function() {
+            return this.loanDetails.payments.some(p => p.penalty && p.penalty > 0);
+        },
+        hasRebates: function() {
+            return this.loanDetails.payments.some(p => p.rebates && p.rebates > 0);
+        },
+        hasOverPayment: function() {
+            return this.loanDetails.payments.some(p => p.over_payment && p.over_payment > 0);
+        },
+        scheduleColumnsCount: function() {
+            return 4; // Date, Prin, Int, Total
+        },
+        actualColumnsCount: function() {
+            let count = 4; // Date, Prin, Int, Total
+            if (this.hasPDI) count++;
+            if (this.hasPenalty) count++;
+            if (this.hasRebates) count++;
+            if (this.hasOverPayment) count++;
+            return count;
+        },
+        totalPaymentPDI: function() {
+            return this.loanDetails.payments.reduce((sum, payment) => sum + parseFloat(payment.pdi || 0), 0);
+        },
+        totalPaymentPenalty: function() {
+            return this.loanDetails.payments.reduce((sum, payment) => sum + parseFloat(payment.penalty || 0), 0);
+        },
+        totalPaymentRebates: function() {
+            return this.loanDetails.payments.reduce((sum, payment) => sum + parseFloat(payment.rebates || 0), 0);
+        },
+        totalPaymentOverPayment: function() {
+            return this.loanDetails.payments.reduce((sum, payment) => sum + parseFloat(payment.over_payment || 0), 0);
+        },
+        totalSchedulePrincipal: function() {
+            return this.amortSched.reduce((sum, sched) => sum + parseFloat(sched.principal || 0), 0);
+        },
+        totalScheduleInterest: function() {
+            return this.amortSched.reduce((sum, sched) => sum + parseFloat(sched.interest || 0), 0);
+        },
+        totalScheduleTotal: function() {
+            return this.amortSched.reduce((sum, sched) => sum + parseFloat(sched.total || 0), 0);
+        },
+        totalPaymentPrincipal: function() {
+            return this.loanDetails.payments.reduce((sum, payment) => sum + parseFloat(payment.principal || 0), 0);
+        },
+        totalPaymentInterest: function() {
+            return this.loanDetails.payments.reduce((sum, payment) => sum + parseFloat(payment.interest || 0), 0);
+        },
+        totalPaymentTotal: function() {
+            return this.loanDetails.payments.reduce((sum, payment) => sum + parseFloat(payment.amount_applied || 0), 0);
+        },
     },
     watch: {
         'ploanDetails': function (val) {
@@ -1084,3 +1331,12 @@ export default {
     }
 }
 </script>
+<style>
+    .combined-table .border-right-thick {
+        border-right: 2px solid #000 !important;
+    }
+
+    .combined-table thead tr:first-child th {
+        border-bottom: 2px solid #000;
+    }
+</style>
