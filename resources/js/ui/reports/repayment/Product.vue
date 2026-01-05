@@ -113,6 +113,13 @@
 									</div>
 									<span class="flex-1">{{formatToCurrency(paymentSummaryTotal.check)}}</span>
 								</div>
+								<div class="d-flex flex-row flex-1 mb-5">
+									<div class="d-flex flex-row justify-content-between flex-2 mr-24">
+										<span class="flex-1">TOTAL GCASH PAYMENT</span>
+										<span>:</span>
+									</div>
+									<span class="flex-1">{{formatToCurrency(paymentSummaryTotal.gcash)}}</span>
+								</div>
 								<!-- <div class="d-flex flex-row flex-1 mb-5">
 									<div class="d-flex flex-row justify-content-between flex-2 mr-24">
 										<span class="flex-1">TOTAL POS PAYMENT</span>
@@ -180,7 +187,7 @@
 							<div class="d-flex flex-column flex-1">
 								<div class="info-display">
 									<span class="text-primary-dark">TOTAL PAYMENT</span>
-									<span class="text-primary-dark">{{formatToCurrency(paymentSummaryTotal.cash + paymentSummaryTotal.check + paymentSummaryTotal.memo + paymentSummaryTotal.pos)}}</span>
+									<span class="text-primary-dark">{{formatToCurrency(paymentSummaryTotal.cash + paymentSummaryTotal.check + paymentSummaryTotal.memo + paymentSummaryTotal.pos + paymentSummaryTotal.gcash)}}</span>
 								</div>
 							</div>
 							<div class="flex-2"></div>
@@ -331,6 +338,7 @@ export default {
             grandTotal:[],
 			paymentSummaryTotal:{
 				cash:0,
+				gcash:0,
 				check:0,
 				memo:0,
 				dedbal:0,
@@ -419,6 +427,7 @@ export default {
 			this.paymentSummaryTotal = {
 				cash:0,
 				check:0,
+				gcash:0,
 				memo:0,
 				dedbal:0,
 				offsetPf:0,
@@ -438,6 +447,7 @@ export default {
 					index = 2
 					i=='Cash Payment'? this.paymentSummaryTotal.cash += t.payment[i].total_payment:false;
 					i=='Check Payment'? this.paymentSummaryTotal.check += t.payment[i].total_payment:false;
+					i=='Gcash'? this.paymentSummaryTotal.gcash += t.payment[i].total_payment:false;
 					i=='Memo'? this.paymentSummaryTotal.memo += t.payment[i].total_payment:false;
 					i=='POS'? this.paymentSummaryTotal.pos += t.payment[i].total_payment:false;
 					if(i == 'Memo'){

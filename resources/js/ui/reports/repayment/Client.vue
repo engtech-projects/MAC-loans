@@ -219,6 +219,13 @@
 								</div>
 								<span class="flex-1">{{formatToCurrency(overall.check)}}</span>
 							</div>
+							<div class="d-flex flex-row flex-1 mb-5">
+								<div class="d-flex flex-row justify-content-between flex-2 mr-24">
+									<span class="flex-1">TOTAL GCASH PAYMENT</span>
+									<span>:</span>
+								</div>
+								<span class="flex-1">{{formatToCurrency(overall.gcash)}}</span>
+							</div>
 							<div class="d-flex flex-row flex-1">
 								<div class="d-flex flex-row justify-content-between flex-2 mr-24">
 									<span class="flex-1">TOTAL MEMO PAYMENT</span>
@@ -477,6 +484,7 @@ export default {
 				check:0,
 				pos:0,
 				memo:0,
+				gcash:0,
 				dedBalance:0,
 				offsetPf:0,
 				branch:0,
@@ -490,6 +498,8 @@ export default {
 					result.cash += r.total;
 				}else if(r.payment_type=='Check Payment'){
 					result.check += r.total;
+				}else if(r.payment_type=='Gcash'){
+					result.gcash += r.total;
 				}else if(r.payment_type=='Memo'){
 					result.memo += r.total;
 					if(r.memo_type == 'deduct to balance'){
