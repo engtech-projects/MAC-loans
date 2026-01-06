@@ -7,15 +7,30 @@
 			</div>
 			<span class="font-lg" style="color:#ddd">Please wait until the process is complete</span>
 		</div>
-		<form @submit.prevent="fetchReports" action="">
+		<form  action="">
 		<div class="d-flex flex-row font-md align-items-center mb-16">
 			<span class="font-lg text-primary-dark no-print" style="flex:4">Prepaid Interest</span>
+			<div class="d-flex flex-row align-items-center mr-24 no-print" style="flex:3">
+				<span class="mr-10">Due Date From:</span>
+				<input v-model="filter.due_from" type="date" class="form-control flex-1">
+			</div>
+
+			<div class="d-flex flex-row align-items-center mr-24 no-print" style="flex:3">
+				<span class="mr-10">Due Date To:</span>
+				<input v-model="filter.due_to" type="date" class="form-control flex-1">
+			</div>
 			<div class="d-flex flex-row align-items-center mr-24 no-print" style="flex:2">
-				<span class="mr-10">Post Date: </span>
-				<input v-model="filter.due_from" type="month" class="form-control flex-1" required>
+				<span class="mr-10">Loan Status:</span>
+				<select v-model="filter.loan_status" class="form-control flex-1">
+					<option value="">All</option>
+					<option value="PAID">Paid</option>
+					<option value="ONGOING">Ongoing</option>
+				</select>
 			</div>
 			<div class="d-flex flex-row align-items-center mr-24 justify-content-start flex-1">
-				<button class="btn btn-primary">Generate</button>
+				<button class="btn btn-primary" @click.prevent="fetchReports">
+    Generate
+</button>
 			</div>
 			<!-- <div class="d-flex flex-row align-items-center" style="flex:2">
 				<span class="mr-10">To: </span>
@@ -112,7 +127,9 @@ export default {
 			reports:[],
 			filter:{
 				due_from:null,
+				due_to:null,
 				branch_id:null,
+				loan_status:''
 			},
 		}
 	},
@@ -127,6 +144,7 @@ export default {
 				}
 			})
 			.then(function (response) {
+				console.log(response.data.data);
 				this.reports = response.data.data;
 				this.loading = false;
 			}.bind(this))
@@ -183,10 +201,25 @@ export default {
 	},
 	computed:{
 		filteredReports:function(){
+
+			let filtered = this.reports;
+
+			// ✅ Filter by loan status (UI only)
+			if (this.filter.loan_status) {
+				filtered = filtered.filter(r => {
+					if (this.filter.loan_status === 'PAID') {
+						return r.balance <= 0;
+					}
+					if (this.filter.loan_status === 'ONGOING') {
+						return r.balance > 0;
+					}
+					return true;
+				});
+			}
 			var monNum = ['01','02','03','04','05','06','07','08','09','10','11','12'];
 			var rows = [];
 			var overall = ['TOTAL',0,'','','',0,0,0,'',0,0,0,0,0,0,0,0,0,0,0,0,0];
-			this.reports.sort(this.sortClient).forEach(r=>{
+			filtered.sort(this.sortClient).forEach(r=>{
 				if(!this.isEmptyObj(r.history)){
 					var counter = 0;
 					for(var i in r.history){
