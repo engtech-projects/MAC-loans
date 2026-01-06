@@ -25,6 +25,7 @@
 					<option value="">All</option>
 					<option value="PAID">Paid</option>
 					<option value="ONGOING">Ongoing</option>
+				
 				</select>
 			</div>
 			<div class="d-flex flex-row align-items-center mr-24 justify-content-start flex-1">
@@ -203,19 +204,16 @@ export default {
 		filteredReports:function(){
 
 			let filtered = this.reports;
-
-			// ✅ Filter by loan status (UI only)
+			// Filter by loan status
 			if (this.filter.loan_status) {
-				filtered = filtered.filter(r => {
-					if (this.filter.loan_status === 'PAID') {
-						return r.balance <= 0;
-					}
-					if (this.filter.loan_status === 'ONGOING') {
-						return r.balance > 0;
-					}
-					return true;
-				});
-			}
+				if (this.filter.loan_status === 'PAID') {
+					// Show only Paid accounts
+					filtered = filtered.filter(r => r.loan_status === 'Paid');
+				} else if (this.filter.loan_status === 'ONGOING') {
+					// Show all accounts except Paid (Ongoing and Past Due)
+					filtered = filtered.filter(r => r.loan_status !== 'Paid');
+				
+			}}
 			var monNum = ['01','02','03','04','05','06','07','08','09','10','11','12'];
 			var rows = [];
 			var overall = ['TOTAL',0,'','','',0,0,0,'',0,0,0,0,0,0,0,0,0,0,0,0,0];
