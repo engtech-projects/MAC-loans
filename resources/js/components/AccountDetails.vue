@@ -298,6 +298,8 @@
                                                     <th v-if="hasRebates">Rebates</th>
                                                     <th v-if="hasOverPayment">Over Payment</th>
                                                     <th>Total</th>
+                                                    <th style="width: 80px;">Delinquent Capital</th>
+                                                    <th style="width: 80px;">Delinquent Interest</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -314,6 +316,8 @@
                                                     <td v-if="hasRebates">{{ item.paymentRebates !== null ? formatToCurrency(item.paymentRebates) : '' }}</td>
                                                     <td v-if="hasOverPayment">{{ item.paymentOverPayment !== null ? formatToCurrency(item.paymentOverPayment) : '' }}</td>
                                                     <td>{{ item.paymentTotal !== null ? formatToCurrency(item.paymentTotal) : '' }}</td>
+                                                    <td>{{ item.delinquentCapital !== null ? formatToCurrency(item.delinquentCapital) : '' }}</td>
+                                                    <td>{{ item.delinquentInterest !== null ? formatToCurrency(item.delinquentInterest) : '' }}</td>
                                                 </tr>
                                                 <tr v-if="combinedScheduleAndPaymentsGrouped.length == 0">
                                                     <td :colspan="scheduleColumnsCount + actualColumnsCount">No data available.</td>
@@ -332,6 +336,8 @@
                                                     <td v-if="hasRebates">{{ formatToCurrency(totalPaymentRebates) }}</td>
                                                     <td v-if="hasOverPayment">{{ formatToCurrency(totalPaymentOverPayment) }}</td>
                                                     <td>{{ formatToCurrency(totalPaymentTotal) }}</td>
+                                                    <td>{{ formatToCurrency(totalDelinquentCapital) }}</td>
+                                                    <td>{{ formatToCurrency(totalDelinquentInterest) }}</td>
                                                 </tr>
                                                 <!-- Difference Row -->
                                                 <tr v-if="combinedScheduleAndPaymentsGrouped.length > 0" style="font-weight: bold;">
@@ -1168,7 +1174,9 @@ export default {
                             paymentPenalty: payment.penalty,
                             paymentRebates: payment.rebates,
                             paymentOverPayment: payment.over_payment,
-                            paymentTotal: payment.amount_applied
+                            paymentTotal: payment.amount_applied,
+                            delinquentCapital: payment.short_principal,
+                            delinquentInterest: payment.short_interest,
                         };
                         combined.push(row);
                         usedPaymentIndices.add(paymentIndex);
@@ -1219,7 +1227,9 @@ export default {
                             paymentPenalty: payment.penalty,
                             paymentRebates: payment.rebates,
                             paymentOverPayment: payment.over_payment,
-                            paymentTotal: payment.amount_applied
+                            paymentTotal: payment.amount_applied,
+                            delinquentCapital: payment.short_principal,
+                            delinquentInterest: payment.short_interest,
                         };
                         combined.push(row);
                     });
@@ -1237,7 +1247,9 @@ export default {
                         paymentPenalty: null,
                         paymentRebates: null,
                         paymentOverPayment: null,
-                        paymentTotal: null
+                        paymentTotal: null,
+                        delinquentCapital: null,
+                        delinquentInterest: null,
                     };
                     combined.push(row);
                 }
@@ -1258,7 +1270,9 @@ export default {
                         paymentPenalty: payment.penalty,
                         paymentRebates: payment.rebates,
                         paymentOverPayment: payment.over_payment,
-                        paymentTotal: payment.amount_applied
+                        paymentTotal: payment.amount_applied,
+                        delinquentCapital: payment.short_principal,
+                        delinquentInterest: payment.short_interest
                     };
                     combined.push(row);
                 }
@@ -1282,7 +1296,7 @@ export default {
             return 4; // Date, Prin, Int, Total
         },
         actualColumnsCount: function() {
-            let count = 4; // Date, Prin, Int, Total
+            let count = 6; // Date, Prin, Int, Total, DP, DI
             if (this.hasPDI) count++;
             if (this.hasPenalty) count++;
             if (this.hasRebates) count++;
@@ -1318,6 +1332,18 @@ export default {
         },
         totalPaymentTotal: function() {
             return this.loanDetails.payments.reduce((sum, payment) => sum + parseFloat(payment.amount_applied || 0), 0);
+        },
+        totalDelinquentCapital: function() {
+            if (this.loanDetails.current_amortization) {
+                return parseFloat(this.loanDetails.current_amortization.short_principal || 0);
+            }
+            return 0;
+        },
+        totalDelinquentInterest: function() {
+            if (this.loanDetails.current_amortization) {
+                return parseFloat(this.loanDetails.current_amortization.short_interest || 0);
+            }
+            return 0;
         },
     },
     watch: {
