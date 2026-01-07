@@ -1732,11 +1732,26 @@ if (isset($filters['report']) && $filters['report'] === 'prepaid_interest') {
     $data = [];
     
     foreach ($loanAccounts as $key => $value) {
-        $numberOfMonths = max(1, round($value->terms / 30));
+        $releaseDate = new Carbon($value->date_release);
+        $dueDate = new Carbon($value->due_date);
 
-        $monthly = $numberOfMonths > 0 
-            ? ceil($value->prepaid_interest / $numberOfMonths)
-            : $value->prepaid_interest;
+        // Calculate months difference
+        $startMonth = $releaseDate->copy()->addMonthNoOverflow(1)->firstOfMonth();
+        $endMonth = $dueDate->copy()->firstOfMonth();
+
+        $monthsCount = 0;
+        $tempDate = $startMonth->copy();
+        while ($tempDate->lte($endMonth)) {
+            $monthsCount++;
+            $tempDate->addMonth();
+        }
+
+        // Ensure at least 1 month if there's prepaid interest
+        if ($monthsCount == 0 && $value->prepaid_interest > 0) {
+            $monthsCount = 1;
+        }
+
+        $monthly = $monthsCount > 0 ? ($value->prepaid_interest / $monthsCount) : 0;
         $balance = $value->prepaid_interest;
         
         // Start from date_release + 1 month
@@ -1774,23 +1789,15 @@ if (isset($filters['report']) && $filters['report'] === 'prepaid_interest') {
                 ];
             }
 
-            // ✅ FIX: For PAID loans, show ALL months up to maturity
-            // For ONGOING loans, only show months within report range
-            $shouldShowMonth = $isPaid 
-                ? true  // Show all months for paid loans
-                : ($loanMonth->gte($reportFrom) && $loanMonth->lte($reportTo)); // Only show report range for ongoing
-            
-            if ($shouldShowMonth) {
-                // Calculate the monthly amount (considering remaining balance)
-                $monthlyAmount = min($monthly, $balance);
-                
-                $history[$year][$month] = round($monthlyAmount, 2);
-                $balance -= $monthlyAmount;
-                
-                // Ensure balance doesn't go negative
-                if ($balance < 0) {
-                    $balance = 0;
-                }
+            // Calculate the monthly amount (considering remaining balance)
+            $monthlyAmount = min($monthly, $balance);
+
+            $history[$year][$month] = round($monthlyAmount, 2);
+            $balance -= $monthlyAmount;
+
+            // Ensure balance doesn't go negative
+            if ($balance < 0.01) { // Using 0.01 to handle rounding errors
+                $balance = 0;
             }
             
             $loanMonth = $loanMonth->addMonth(1)->startOfDay();
