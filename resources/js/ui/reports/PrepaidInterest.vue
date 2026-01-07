@@ -68,6 +68,7 @@
 							<th>Date Released</th>
 							<th>Maturity Date</th>
 							<th>Term</th>
+							<th>Interest Rate</th>
 							<th>Total UID</th>
 							<th>Bal.</th>
 							<th>Monthly UID</th>
@@ -216,12 +217,12 @@ export default {
 			}}
 			var monNum = ['01','02','03','04','05','06','07','08','09','10','11','12'];
 			var rows = [];
-			var overall = ['TOTAL',0,'','','',0,0,0,'',0,0,0,0,0,0,0,0,0,0,0,0,0];
+			var overall = ['TOTAL',0,'','','','',0,0,0,'',0,0,0,0,0,0,0,0,0,0,0,0,0];
 			filtered.sort(this.sortClient).forEach(r=>{
 				if(!this.isEmptyObj(r.history)){
 					var counter = 0;
 					for(var i in r.history){
-						var mCount = 9;
+						var mCount = 10;
 						var row = [];
 						var total = 0;
 						if(counter==0){
@@ -231,15 +232,16 @@ export default {
 							row.push(this.dateToMDY(new Date(r.date_released)));
 							row.push(this.dateToMDY(new Date(r.due_date)));
 							row.push(r.term);
+							row.push(r.interest_rate + '%');
 							row.push(this.formatToCurrency(r.total_uid));
-							overall[5] += r.total_uid;
+							overall[6] += r.total_uid;
 							row.push(this.formatToCurrency(r.balance));
-							overall[6] += r.balance;
+							overall[7] += r.balance;
 							row.push(this.formatToCurrency(r.monthly_uid));
-							overall[7] += r.monthly_uid;
+							overall[8] += r.monthly_uid;
 							counter++;
 						}else{
-							for(var u = 0; u < 8; u++){
+							for(var u = 0; u < 9; u++){
 								row.push('');
 							}
 						}
@@ -249,7 +251,7 @@ export default {
 								if(monNum[k] == j){
 									total += r.history[i][j];
 									overall[21] += r.history[i][j];
-									if(mCount < 21){
+									if(mCount < 22){
 										overall[mCount] += r.history[i][j];
 									}
 									mCount++;
@@ -270,6 +272,7 @@ export default {
 					row.push(this.dateToMDY(new Date(r.date_released)));
 					row.push(this.dateToMDY(new Date(r.due_date)));
 					row.push(r.term);
+					row.push(r.interest_rate + '%');
 					row.push(this.formatToCurrency(r.total_uid));
 					overall[5] += r.total_uid;
 					row.push(this.formatToCurrency(r.balance));
@@ -291,7 +294,7 @@ export default {
 				}else{
 					finalOverall.push(ov);
 				}
-				if(ovcount > 8){
+				if(ovcount > 9){
 					monthlyTotal.push(ov)
 				}
 				ovcount++;

@@ -143,6 +143,7 @@ if (isset($filters['report']) && $filters['report'] === 'prepaid_interest') {
             'loan_accounts.payment_mode',
             'loan_accounts.payment_status',
             'loan_accounts.loan_status',
+            'loan_accounts.interest_rate',
         ]);
 }
         return $loanAccount->whereIn('loan_status', [LoanAccount::LOAN_ONGOING, LoanAccount::LOAN_PASTDUE, LoanAccount::LOAN_RESTRUCTED, LoanAccount::LOAN_RES_WO_PDI, LoanAccount::LOAN_WRITEOFF])
@@ -1731,7 +1732,11 @@ if (isset($filters['report']) && $filters['report'] === 'prepaid_interest') {
     $data = [];
     
     foreach ($loanAccounts as $key => $value) {
-        $monthly = ceil($value->prepaid_interest / ceil($value->terms / 30));
+        $numberOfMonths = max(1, round($value->terms / 30));
+
+        $monthly = $numberOfMonths > 0 
+            ? ceil($value->prepaid_interest / $numberOfMonths)
+            : $value->prepaid_interest;
         $balance = $value->prepaid_interest;
         
         // Start from date_release + 1 month
@@ -1814,12 +1819,14 @@ if (isset($filters['report']) && $filters['report'] === 'prepaid_interest') {
             "amount_loan" => $value->loan_amount,
             "date_released" => $value->date_release,
             "due_date" => $value->due_date,
-            "term" => $value->terms,
+            "term" =>  $value->terms . ' \ ' . ceil($value->terms / 30),
+            "interest_rate" => $value->interest_rate,
             "total_uid" => $value->prepaid_interest,
             "balance" => $balance,
             "monthly_uid" => $monthly,
             "history" => $history,
             "loan_status" => $value->loan_status,
+
         ];
     }
     
