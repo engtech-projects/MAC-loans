@@ -1,0 +1,398 @@
+<template>
+	<div class="d-flex flex-column" style="flex:8;">
+		<div v-if="loading" class="black-screen d-flex flex-column align-items-center justify-content-center" style="padding-left:0px;">
+			<div class="loading-container d-flex align-items-center justify-content-center mb-36">
+				<span class="loading-text">LOADING</span>
+				<img :src="baseURL() + 'img/loading_default.png'" class="rotating" alt="" style="width:300px;height:300px">
+			</div>
+			<span class="font-lg" style="color:#ddd">Please wait until the process is complete</span>
+		</div>
+					<div class="d-flex justify-content-start font-md mb-16">
+						<!-- <span class="font-lg text-primary-dark flex-1 mr-45"></span> -->
+						<!-- <div class="d-flex flex-row align-items-center mr-24" style="flex:1">
+							<span class="mr-10">As of: </span>
+							<input type="date" class="form-control flex-1">
+						</div> -->
+						<form action="" class="d-flex flex-row" @submit.prevent="generate()">
+							<div class="d-flex flex-row align-items-center mr-24">
+								<span class="mr-10 text-block">Acc. Officer: </span>
+								<select v-model="filter.account_officer" name="" id="selectProductClient" class="form-control flex-1" required>
+									<option value="all">All Account Officers</option>
+									<option v-for="ao in aos" :key="ao.id" :value="ao.ao_id">{{ao.name}}</option>
+								</select>
+							</div>
+							<div class="d-flex flex-row align-items-center mr-24 justify-content-start flex-1">
+								<span class="mr-10 text-block">Product: </span>
+								<select v-model="filter.product" name="" id="selectProductClient" class="form-control flex-1" required>
+									<option value="all">All Products</option>
+									<option v-for="product in products.filter(p=>p.status=='active')" :key="product.id" :value="product.product_id">{{product.product_name}}</option>
+								</select>
+							</div>
+							<div class="d-flex flex-row align-items-center mr-24 justify-content-start flex-1">
+								<span class="mr-10 text-block">Center: </span>
+								<div class="d-flex flex-column">
+									<search-dropdown 
+										:reset="resetCenter" 
+										@centerReset="resetCenter=false" 
+										@sdSelect="centerSelect" 
+										:data="centers"
+										:center-id="filter.center"
+										:height="'38px'"
+										:fontSize="'16px'"
+										:borderRadius="'5px'"
+										id="center_id" 
+										name="center"
+									></search-dropdown>
+									<input style="border:none!important;width:100%!important;height:0px!important;opacity:0!important;" type="text" v-model="filter.center">
+								</div>
+							</div>
+							<div class="d-flex flex-row align-items-center mr-24">
+								<button class="btn btn-primary">Generate</button>
+							</div>
+						</form>
+					</div>
+					<div class="sep mb-45"></div>
+					<div id="printContent">
+						<img :src="this.baseURL()+'/img/company_header_fit.png'" class="mb-24" alt="">
+
+
+						<section class="mb-72" id="performanceReport">
+							<div class="d-flex flex-column mb-24">
+								<div class="d-flex flex-row align-items-center">
+									<div class="flex-1 d-flex flex-column">
+
+									</div>
+									<span class="font-30 text-bold text-primary-dark text-center">LOAN LISTING REPORT</span>
+									<div class="flex-1 d-flex justify-content-end" style="padding-right:16px">
+										<current-transactiondate :branch="branch.branch_id" :token="token" :reports="true"></current-transactiondate>
+										<span class="text-primary-dark">Time: {{todayTime(new Date())}} {{(new Date()).getHours() > 12? 'PM':'AM'}}</span>
+									</div>
+								</div>
+								<span class="text-center text-primary-dark text-bold font-md mb-5">{{branch.branch_name}} Branch ({{branch.branch_code}})</span>
+								<div class="d-flex flex-row justify-content-center text-primary-dark">
+									<span class="text-center text-primary-dark text-bold">As of {{filter.as_of?dateToMDY2(new Date(filter.as_of)).split('-').join('/'):'---'}}</span>
+								</div>
+							</div>
+							<section class="d-flex flex-column mb-16 p-10 light-border">
+								<section v-for="fr,i in filteredReports" :key="i">
+									<div class="d-flex bg-yellow-verylight mb-5">
+										<div class="d-flex flex-column text-primary-dark p-7 mr-24">
+											<span class="font-md text-bold">Account Officer</span>
+											<span class="font-sm">{{fr.ao}}</span>
+										</div>
+										<div class="d-flex flex-column text-primary-dark p-7 mr-24">
+											<span class="font-md text-bold">Product</span>
+											<span class="font-sm">{{fr.product}}</span>
+										</div>
+										<div class="d-flex flex-column text-primary-dark p-7 flex-1">
+											<span class="font-md text-bold">Center Name</span>
+											<span class="font-sm">{{fr.center}}</span>
+										</div>
+									</div>
+									<div class="bb-dark-8"></div>
+									<table class="table table-stripped mb-24">
+										<thead>
+											<th>Borrower's Name</th>
+	                                        <th>Account Number</th>
+											<th>Date Loan</th>
+											<th>Maturity</th>
+											<th>Amnt. Loan</th>
+											<th>Interest Amt.</th>
+											<th>Principal Bal.</th>
+											<th>Interest Bal.</th>
+											<th>Amort.</th>
+	                                        <th>Bitay Principal</th>
+	                                        <th>Bitay Interest</th>
+											<th>Amnt. Due</th>
+											<th># Days</th>
+											<th>STATUS</th>
+										</thead>
+										<tbody>
+											<tr v-for="rws,j in fr.rows" :key="j">
+												<td v-for="rw,k in rws" :key="k">{{rw}}</td>
+											</tr>
+											<tr class="bg-skyblue text-bold">
+												<td v-for="tc,l in fr.centerTotal" :key="l">{{tc===""||tc==="CENTER SUB-TOTAL"||l==1?tc:formatToCurrency(tc)}}</td>
+											</tr>
+											<tr v-if="fr.productTotal" class="bg-green-mint text-bold">
+												<td v-for="tp,m in fr.productTotal" :key="m">{{tp===""||tp==="PRODUCT SUB-TOTAL"||m==1?tp:formatToCurrency(tp)}}</td>
+											</tr>
+											<tr v-if="fr.aoTotal" class="bg-purple-light text-bold">
+												<td v-for="ta,n in fr.aoTotal" :key="n">{{ta===""||ta==="OFFICER SUB-TOTAL"||n==1?ta:formatToCurrency(ta)}}</td>
+											</tr>
+											<tr v-if="fr.total" class="bg-primary-dark text-white text-bold">
+												<td v-for="tt,o in fr.total" :key="o">{{tt===""||tt==="TOTAL"||o==1?tt:formatToCurrency(tt)}}</td>
+											</tr>
+										</tbody>
+									</table>
+								</section>
+							</section>
+						</section>
+
+						<section class="d-flex flex-row mb-72">
+							<span class="flex-2 pb-24 text-bold darker-bb mr-64">Prepared By:</span>
+							<span class="flex-2 pb-24 text-bold darker-bb mr-64">Certified Corrected By:</span>
+							<span class="flex-2 pb-24 text-bold darker-bb mr-64">Approved By:</span>
+							<span class="flex-1"></span>
+						</section>
+					</div>
+					<div class="d-flex flex-row justify-content-end mb-45">
+						<div class="d-flex flex-row-reverse">
+							<a href="#" class="btn btn-default min-w-150" @click="print()">Print</a>
+							<a href="#" class="btn btn-success min-w-150 mr-24">Download Excel</a>
+						</div>
+					</div>
+				</div>
+
+</template>
+
+<script>
+export default {
+	props:['pbranch', 'token'],
+	data(){
+		return {
+			resetCenter:false,
+			loading:false,
+			filter:{
+				type:'loan_listing',
+				branch_id:'',
+				account_officer:'all',
+				product:'all',
+				center:'all',
+			},
+			branch:{},
+			reports:[],
+			products:[],
+			centers:[],
+			aos:[]
+		}
+	},
+	methods:{
+		centerSelect:function(center){
+			this.filter.center = center.center_id;
+		},
+		generate:function(){
+			if(this.filter.account_officer && this.filter.product && this.filter.center && this.filter.branch_id && this.filter.type){
+				this.fetchReport();
+			}
+		},
+		async fetchReport(){
+			this.loading = true;
+			await axios.post(this.baseURL() + 'api/report/branch', this.filter, {
+				headers: {
+					'Authorization': 'Bearer ' + this.token,
+					'Content-Type': 'application/json',
+					'Accept': 'application/json'
+				}
+			})
+			.then(function (response) {
+				this.loading = false;
+				this.reports = response.data.data
+				// console.log(this.reports);
+			}.bind(this))
+			.catch(function (error) {
+				this.loading = false;
+				console.log(error);
+			}.bind(this));
+		},
+		async fetchProducts(){
+			axios.get(this.baseURL() + 'api/product', {
+				headers: {
+					'Authorization': 'Bearer ' + this.token,
+					'Content-Type': 'application/json',
+					'Accept': 'application/json'
+				}
+			})
+			.then(function (response) {
+				this.products = response.data.data;
+				this.fetchAo();
+			}.bind(this))
+			.catch(function (error) {
+				console.log(error);
+			}.bind(this));
+		},
+		async fetchAo(){
+			await axios.get(this.baseURL() + 'api/accountofficer/getActivesInBranch/' + this.branch.branch_id, {
+				headers: {
+					'Authorization': 'Bearer ' + this.token,
+					'Content-Type': 'application/json',
+					'Accept': 'application/json'
+				}
+			})
+			.then(function (response) {
+				this.aos = response.data.data;
+				this.fetchCenters();
+			}.bind(this))
+			.catch(function (error) {
+				console.log(error);
+			}.bind(this));
+		},
+		async fetchCenters(){
+			await axios.get(this.baseURL() + 'api/center', {
+				headers: {
+					'Authorization': 'Bearer ' + this.token,
+					'Content-Type': 'application/json',
+					'Accept': 'application/json'
+				}
+			})
+			.then(function (response) {
+				const allCentersOption = {
+					center_id: 'all',
+					center: 'All Centers',
+				};
+				this.centers = [allCentersOption, ...response.data.data];
+			}.bind(this))
+			.catch(function (error) {
+				console.log(error);
+			}.bind(this));
+		},
+		async fetchTransactionDate(){
+			await axios.get(this.baseURL() + 'api/eod/eodtransaction/' + this.branch.branch_id,{
+				headers: {
+					'Authorization': 'Bearer ' + this.token,
+					'Content-Type': 'application/json',
+					'Accept': 'application/json'
+					}
+				})
+				.then(function (response) {
+					this.filter.as_of = response.data.data.date_end;
+				}.bind(this))
+				.catch(function (error) {
+					console.log(error);
+				}.bind(this));
+		},
+		print:function(){
+			var content = document.getElementById('printContent').innerHTML;
+			var target = document.querySelector('.to-print');
+			target.innerHTML = content;
+			window.print();
+		},
+		processCenter:function(centers, product){
+			var result = [];
+			var ccc = [];
+			for(var c in centers){
+				if(c !== 'No Center'){
+					ccc.push(c);
+				}
+			}
+			var ccenters = ccc.sort(this.sortMicrofunction);
+			ccenters.unshift('No Center');
+			for(var a in ccenters){
+				for(var b in centers){
+					if(ccc[a] === b){
+						result[b]=(centers[b]);
+					}
+				}
+			}
+			return result;
+		},
+		sortMicrofunction:function(a,b) {
+			a = a.toLowerCase();
+			b = b.toLowerCase();
+			if( a == b) return 0;
+			return a < b ? -1 : 1;
+		}
+	},
+	computed:{
+		filteredReports:function(){
+			var tables = [];
+			var total = ['TOTAL',0,'','',0,0,0,0,'','','',0,'',''];
+			this.reports.forEach(ao=>{
+				var hasAoAccounts = false;
+				var aoTotal = ['OFFICER SUB-TOTAL',0,'','',0,0,0,0,'','','',0,'',''];
+				for(var p in ao.products){
+					var hasAccounts = false;
+					var product = ao.products[p];
+					var productTotal = ['PRODUCT SUB-TOTAL',0,'','',0,0,0,0,'','','',0,'',''];
+					for(var c in this.processCenter(product.centers, p)){
+						var center = product.centers[c];
+						var centerTotal = ['CENTER SUB-TOTAL',0,'','',0,0,0,0,'','','',0,'',''];
+						if(center.accounts){
+							hasAccounts = true;
+							hasAoAccounts = true;
+							var table = {
+								ao:'0' + ao.ao_id + ' - ' + ao.name,
+								product:product.product_code + ' - ' + product.product_name,
+								center:c,
+								rows:[],
+								centerTotal:null,
+								productTotal:null,
+								aoTotal:null,
+								total:null,
+							}
+							for(var ac in center.accounts){
+								var account = center.accounts[ac];
+								var row = [];
+								row.push(account.borrower_name);
+                                row.push(account.account_num);
+								row.push(account.date_loan);
+								row.push(account.maturity);
+								row.push(this.formatToCurrency(account.amount_loan));
+								row.push(this.formatToCurrency(account.loan_interest));
+								centerTotal[1]++;
+								productTotal[1]++;
+								aoTotal[1]++;
+								total[1]++;
+								centerTotal[4] += account.amount_loan;
+								centerTotal[5] += account.loan_interest;
+								row.push(this.formatToCurrency(account.principal_balance));
+								centerTotal[6] += account.principal_balance;
+								row.push(this.formatToCurrency(account.interest_balance));
+								centerTotal[7] += account.interest_balance;
+								row.push(this.formatToCurrency(account.amortization));
+								row.push(this.formatToCurrency(account.distribution.short_principal + account.distribution.principal));
+                                row.push(this.formatToCurrency(account.distribution.short_interest + account.distribution.interest));
+								// centerTotal[7] += account.amortization;
+								row.push(this.formatToCurrency(account.amount_due));
+								centerTotal[11] += account.amount_due;
+								// centerTotal[9] = '';
+								row.push('');
+								row.push(account.loan_status=='Ongoing'?account.status:account.loan_status);
+								table.rows.push(row);
+							}
+							productTotal[4] += centerTotal[4];
+							productTotal[5] += centerTotal[5];
+							productTotal[6] += centerTotal[6];
+							productTotal[7] += centerTotal[7];
+							productTotal[11] += centerTotal[11];
+							table.centerTotal = centerTotal;
+							tables.push(table);
+						}
+					}
+					
+					
+					aoTotal[4] += productTotal[4];
+					aoTotal[5] += productTotal[5];
+					aoTotal[6] += productTotal[6];
+					aoTotal[7] += productTotal[7];
+					aoTotal[11] += productTotal[11];
+					if(tables.length && hasAccounts){
+						tables[tables.length - 1].productTotal = productTotal;
+					}
+				}
+				total[4] += aoTotal[4];
+				total[5] += aoTotal[5];
+				total[6] += aoTotal[6];
+				total[7] += aoTotal[7];
+				total[11] += aoTotal[11];
+				if(tables.length && hasAoAccounts){
+					tables[tables.length - 1].aoTotal = aoTotal;
+				}
+			})
+			if(tables.length){
+				tables[tables.length - 1].total = total;
+			}
+			return tables;
+		}
+	},
+	watch:{
+		
+	},
+	mounted(){
+		this.filter.branch_id = JSON.parse(this.pbranch).branch_id;
+		this.branch = JSON.parse(this.pbranch);
+		this.fetchProducts();
+		this.fetchTransactionDate();
+	}
+}
+</script>
