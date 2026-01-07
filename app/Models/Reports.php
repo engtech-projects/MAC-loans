@@ -1726,93 +1726,103 @@ if (isset($filters['report']) && $filters['report'] === 'prepaid_interest') {
     }
 
     public function prepaidReport($filters = [])
-    {
-        $loanAccounts = $this->getLoanAccounts($filters);
-        $data = [];
-        
-        foreach ($loanAccounts as $key => $value) {
-            $monthly = ceil($value->prepaid_interest / ceil($value->terms / 30));
-            $balance = $value->prepaid_interest;
-            
-            // Start from date_release + 1 month
-            $loanMonth = new Carbon($value->date_release);
-            $loanMonth = $loanMonth->addMonthNoOverflow(1)->firstOfMonth()->startOfDay();
-            
-            // Due date is the end boundary
-            $dueDate = new Carbon($value->due_date);
-            $dueDate = $dueDate->firstOfMonth()->startOfDay();
-            
-            // Report range boundaries
-            $reportFrom = new Carbon($filters["due_from"]);
-            $reportFrom = $reportFrom->firstOfMonth()->startOfDay();
-            
-            $reportTo = isset($filters["due_to"]) 
-                ? (new Carbon($filters["due_to"]))->endOfMonth()->startOfDay()
-                : (new Carbon($filters["due_from"]))->endOfYear()->startOfDay();
-            
-            $history = [];
-            
-            // Loop through each month from loan start to due date
-            while ($loanMonth->lte($dueDate)) {
-                $year = $loanMonth->format('Y');
-                $month = $loanMonth->format('m');
-                
-                // Initialize year array if not exists
-                if (!isset($history[$year])) {
-                    $history[$year] = [
-                        "01" => 0, "02" => 0, "03" => 0, "04" => 0,
-                        "05" => 0, "06" => 0, "07" => 0, "08" => 0,
-                        "09" => 0, "10" => 0, "11" => 0, "12" => 0,
-                    ];
-                }
+{
+    $loanAccounts = $this->getLoanAccounts($filters);
+    $data = [];
     
-                // Check if current month falls within report range
-                if ($loanMonth->gte($reportFrom) && $loanMonth->lte($reportTo)) {
-                    // Calculate the monthly amount (considering remaining balance)
-                    $monthlyAmount = min($monthly, $balance);
-                    
-                    $history[$year][$month] = round($monthlyAmount, 2);
-                    $balance -= $monthlyAmount;
-                    
-                    // Ensure balance doesn't go negative
-                    if ($balance < 0) {
-                        $balance = 0;
-                    }
-                }
+    foreach ($loanAccounts as $key => $value) {
+        $monthly = ceil($value->prepaid_interest / ceil($value->terms / 30));
+        $balance = $value->prepaid_interest;
+        
+        // Start from date_release + 1 month
+        $loanMonth = new Carbon($value->date_release);
+        $loanMonth = $loanMonth->addMonthNoOverflow(1)->firstOfMonth()->startOfDay();
+        
+        // Due date is the end boundary
+        $dueDate = new Carbon($value->due_date);
+        $dueDate = $dueDate->firstOfMonth()->startOfDay();
+        
+        // Report range boundaries
+        $reportFrom = new Carbon($filters["due_from"]);
+        $reportFrom = $reportFrom->firstOfMonth()->startOfDay();
+        
+        $reportTo = isset($filters["due_to"]) 
+            ? (new Carbon($filters["due_to"]))->endOfMonth()->startOfDay()
+            : (new Carbon($filters["due_from"]))->endOfYear()->startOfDay();
+        
+        $history = [];
+        
+        // ✅ FIX: Check if loan is PAID
+        $isPaid = $value->loan_status === LoanAccount::LOAN_PAID;
+        
+        // Loop through each month from loan start to due date
+        while ($loanMonth->lte($dueDate)) {
+            $year = $loanMonth->format('Y');
+            $month = $loanMonth->format('m');
+            
+            // Initialize year array if not exists
+            if (!isset($history[$year])) {
+                $history[$year] = [
+                    "01" => 0, "02" => 0, "03" => 0, "04" => 0,
+                    "05" => 0, "06" => 0, "07" => 0, "08" => 0,
+                    "09" => 0, "10" => 0, "11" => 0, "12" => 0,
+                ];
+            }
+
+            // ✅ FIX: For PAID loans, show ALL months up to maturity
+            // For ONGOING loans, only show months within report range
+            $shouldShowMonth = $isPaid 
+                ? true  // Show all months for paid loans
+                : ($loanMonth->gte($reportFrom) && $loanMonth->lte($reportTo)); // Only show report range for ongoing
+            
+            if ($shouldShowMonth) {
+                // Calculate the monthly amount (considering remaining balance)
+                $monthlyAmount = min($monthly, $balance);
                 
-                $loanMonth = $loanMonth->addMonth(1)->startOfDay();
+                $history[$year][$month] = round($monthlyAmount, 2);
+                $balance -= $monthlyAmount;
+                
+                // Ensure balance doesn't go negative
+                if ($balance < 0) {
+                    $balance = 0;
+                }
             }
             
-            // ✅ FIXED: If loan is in specific statuses, set balance to monthly_uid
-            $activeStatuses = [
-                LoanAccount::LOAN_ONGOING, 
-                LoanAccount::LOAN_PASTDUE, 
-                LoanAccount::LOAN_RESTRUCTED, 
-                LoanAccount::LOAN_RES_WO_PDI, 
-                LoanAccount::LOAN_WRITEOFF
-            ];
-            
-            if (in_array($value->loan_status, $activeStatuses)) {
-                $balance = $value->prepaid_interest;
-            }
-            
-            $data[] = [
-                "branch_id" => $value->branch->branch_id,
-                "client" => $value->borrower->fullname(),
-                "amount_loan" => $value->loan_amount,
-                "date_released" => $value->date_release,
-                "due_date" => $value->due_date,
-                "term" => $value->terms,
-                "total_uid" => $value->prepaid_interest,
-                "balance" => $balance,
-                "monthly_uid" => $monthly,
-                "history" => $history,
-                "loan_status" => $value->loan_status,
-            ];
+            $loanMonth = $loanMonth->addMonth(1)->startOfDay();
         }
         
-        return $data;
-    
-    
+        // ✅ FIXED: Set balance based on loan status
+        $activeStatuses = [
+            LoanAccount::LOAN_ONGOING, 
+            LoanAccount::LOAN_PASTDUE, 
+            LoanAccount::LOAN_RESTRUCTED, 
+            LoanAccount::LOAN_RES_WO_PDI, 
+            LoanAccount::LOAN_WRITEOFF
+        ];
+        
+        // For active loans, balance should be the full prepaid interest
+        // For paid loans, balance should be 0
+        if (in_array($value->loan_status, $activeStatuses)) {
+            $balance = $value->prepaid_interest;
+        } else if ($isPaid) {
+            $balance = 0;
+        }
+        
+        $data[] = [
+            "branch_id" => $value->branch->branch_id,
+            "client" => $value->borrower->fullname(),
+            "amount_loan" => $value->loan_amount,
+            "date_released" => $value->date_release,
+            "due_date" => $value->due_date,
+            "term" => $value->terms,
+            "total_uid" => $value->prepaid_interest,
+            "balance" => $balance,
+            "monthly_uid" => $monthly,
+            "history" => $history,
+            "loan_status" => $value->loan_status,
+        ];
     }
+    
+    return $data;
+}
 }
