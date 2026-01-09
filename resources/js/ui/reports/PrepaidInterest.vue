@@ -7,15 +7,31 @@
 			</div>
 			<span class="font-lg" style="color:#ddd">Please wait until the process is complete</span>
 		</div>
-		<form @submit.prevent="fetchReports" action="">
+		<form  action="">
 		<div class="d-flex flex-row font-md align-items-center mb-16">
 			<span class="font-lg text-primary-dark no-print" style="flex:4">Prepaid Interest</span>
+			<div class="d-flex flex-row align-items-center mr-24 no-print" style="flex:3">
+				<span class="mr-10">Due Date From:</span>
+				<input v-model="filter.due_from" type="date" class="form-control flex-1">
+			</div>
+
+			<div class="d-flex flex-row align-items-center mr-24 no-print" style="flex:3">
+				<span class="mr-10">Due Date To:</span>
+				<input v-model="filter.due_to" type="date" class="form-control flex-1">
+			</div>
 			<div class="d-flex flex-row align-items-center mr-24 no-print" style="flex:2">
-				<span class="mr-10">Post Date: </span>
-				<input v-model="filter.due_from" type="month" class="form-control flex-1" required>
+				<span class="mr-10">Loan Status:</span>
+				<select v-model="filter.loan_status" class="form-control flex-1">
+					<option value="">All</option>
+					<option value="PAID">Paid</option>
+					<option value="ONGOING">Ongoing</option>
+				
+				</select>
 			</div>
 			<div class="d-flex flex-row align-items-center mr-24 justify-content-start flex-1">
-				<button class="btn btn-primary">Generate</button>
+				<button class="btn btn-primary" @click.prevent="fetchReports">
+    Generate
+</button>
 			</div>
 			<!-- <div class="d-flex flex-row align-items-center" style="flex:2">
 				<span class="mr-10">To: </span>
@@ -52,6 +68,7 @@
 							<th>Date Released</th>
 							<th>Maturity Date</th>
 							<th>Term</th>
+							<th>Interest Rate</th>
 							<th>Total UID</th>
 							<th>Bal.</th>
 							<th>Monthly UID</th>
@@ -112,7 +129,9 @@ export default {
 			reports:[],
 			filter:{
 				due_from:null,
+				due_to:null,
 				branch_id:null,
+				loan_status:''
 			},
 		}
 	},
@@ -127,6 +146,7 @@ export default {
 				}
 			})
 			.then(function (response) {
+				console.log(response.data.data);
 				this.reports = response.data.data;
 				this.loading = false;
 			}.bind(this))
@@ -183,94 +203,158 @@ export default {
 	},
 	computed:{
 		filteredReports:function(){
-			var monNum = ['01','02','03','04','05','06','07','08','09','10','11','12'];
-			var rows = [];
-			var overall = ['TOTAL',0,'','','',0,0,0,'',0,0,0,0,0,0,0,0,0,0,0,0,0];
-			this.reports.sort(this.sortClient).forEach(r=>{
-				if(!this.isEmptyObj(r.history)){
-					var counter = 0;
-					for(var i in r.history){
-						var mCount = 9;
-						var row = [];
-						var total = 0;
-						if(counter==0){
-							row.push(r.client);
-							row.push(this.formatToCurrency(r.amount_loan));
-							overall[1] += r.amount_loan;
-							row.push(this.dateToMDY(new Date(r.date_released)));
-							row.push(this.dateToMDY(new Date(r.due_date)));
-							row.push(r.term);
-							row.push(this.formatToCurrency(r.total_uid));
-							overall[5] += r.total_uid;
-							row.push(this.formatToCurrency(r.balance));
-							overall[6] += r.balance;
-							row.push(this.formatToCurrency(r.monthly_uid));
-							overall[7] += r.monthly_uid;
-							counter++;
-						}else{
-							for(var u = 0; u < 8; u++){
-								row.push('');
-							}
-						}
-						row.push(i);
-						for(k in monNum){
-							for(var j in r.history[i]){
-								if(monNum[k] == j){
-									total += r.history[i][j];
-									overall[21] += r.history[i][j];
-									if(mCount < 21){
-										overall[mCount] += r.history[i][j];
-									}
-									mCount++;
-									row.push(this.formatToCurrency(r.history[i][j]));
-								}
-							}
-						}
-						// overall[20] += total;
-						// console.log(total + ' - ' + overall[20]);
-						row.push(this.formatToCurrency(total));
-						rows.push(row);
-					};
-				}else{
-					var row = [];
-					row.push(r.client);
-					row.push(this.formatToCurrency(r.amount_loan));
-					overall[1] += r.amount_loan;
-					row.push(this.dateToMDY(new Date(r.date_released)));
-					row.push(this.dateToMDY(new Date(r.due_date)));
-					row.push(r.term);
-					row.push(this.formatToCurrency(r.total_uid));
-					overall[5] += r.total_uid;
-					row.push(this.formatToCurrency(r.balance));
-					overall[6] += r.balance;
-					row.push(this.formatToCurrency(r.monthly_uid));
-					overall[7] += r.monthly_uid;
-					for(var k=0;k<14;k++){
-						row.push('')
-					}
-					rows.push(row);
-				}
-			});
-			var finalOverall = [];
-			var ovcount = 0;
-			var monthlyTotal = [];
-			overall.forEach(ov=>{
-				if(ov!==''&&ov!='TOTAL'){
-					finalOverall.push(this.formatToCurrency(ov))
-				}else{
-					finalOverall.push(ov);
-				}
-				if(ovcount > 8){
-					monthlyTotal.push(ov)
-				}
-				ovcount++;
-			});
-			
-			return {
-				rows:rows,
-				overall:finalOverall.slice(0,22),
-				monthlyTotal:monthlyTotal.slice(0,12)
+
+			let filtered = this.reports;
+
+// Filter by loan status
+if (this.filter.loan_status) {
+	if (this.filter.loan_status === 'PAID') {
+		filtered = filtered.filter(r => r.loan_status === 'Paid');
+	} else if (this.filter.loan_status === 'ONGOING') {
+		filtered = filtered.filter(r => r.loan_status !== 'Paid');
+	}
+}
+
+const monNum = ['01','02','03','04','05','06','07','08','09','10','11','12'];
+
+let rows = [];
+
+// OVERALL COLUMN MAP
+// 0  Client
+// 1  Amount
+// 2  Date Released
+// 3  Maturity Date
+// 4  Term
+// 5  Interest Rate
+// 6  Total UID
+// 7  Balance
+// 8  Monthly UID
+// 9  Year
+// 10 Jan
+// 11 Feb
+// 12 Mar
+// 13 Apr
+// 14 May
+// 15 Jun
+// 16 Jul
+// 17 Aug
+// 18 Sep
+// 19 Oct
+// 20 Nov
+// 21 Dec
+// 22 TOTAL ACCUMULATED
+let overall = [
+	'TOTAL', 0, '', '', '', '', 0, 0, 0, '',
+	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+];
+
+filtered.sort(this.sortClient).forEach(r => {
+
+	if (!this.isEmptyObj(r.history)) {
+
+		let firstRow = true;
+
+		for (let year in r.history) {
+
+			let row = [];
+			let total = 0;
+
+			if (firstRow) {
+				row.push(r.client);
+				row.push(this.formatToCurrency(r.amount_loan));
+				overall[1] += r.amount_loan;
+
+				row.push(this.dateToMDY(new Date(r.date_released)));
+				row.push(this.dateToMDY(new Date(r.due_date)));
+				row.push(r.term);
+				row.push(r.interest_rate + '%');
+
+				row.push(this.formatToCurrency(r.total_uid));
+				overall[6] += r.total_uid;
+
+				row.push(this.formatToCurrency(r.balance));
+				overall[7] += r.balance;
+
+				row.push(this.formatToCurrency(r.monthly_uid));
+				overall[8] += r.monthly_uid;
+
+				firstRow = false;
+			} else {
+				for (let i = 0; i < 9; i++) row.push('');
 			}
+
+			row.push(year);
+
+			// MONTH LOOP (FIXED)
+			for (let m = 0; m < monNum.length; m++) {
+				const monthKey = monNum[m];
+				const monthIndex = 10 + m; // Jan=10 ... Dec=21
+
+				const value = r.history[year][monthKey] ?? 0;
+
+				if (value) {
+					overall[monthIndex] += value;
+					total += value;
+				}
+
+				row.push(this.formatToCurrency(value));
+			}
+
+			// TOTAL ACCUMULATED
+			overall[22] += total;
+			row.push(this.formatToCurrency(total));
+
+			rows.push(row);
+		}
+
+	} else {
+		// NO HISTORY
+		let row = [];
+		row.push(r.client);
+		row.push(this.formatToCurrency(r.amount_loan));
+		overall[1] += r.amount_loan;
+
+		row.push(this.dateToMDY(new Date(r.date_released)));
+		row.push(this.dateToMDY(new Date(r.due_date)));
+		row.push(r.term);
+		row.push(r.interest_rate + '%');
+
+		row.push(this.formatToCurrency(r.total_uid));
+		overall[6] += r.total_uid;
+
+		row.push(this.formatToCurrency(r.balance));
+		overall[7] += r.balance;
+
+		row.push(this.formatToCurrency(r.monthly_uid));
+		overall[8] += r.monthly_uid;
+
+		for (let i = 0; i < 14; i++) row.push('');
+
+		rows.push(row);
+	}
+});
+
+// FORMAT OVERALL + MONTHLY TOTALS
+let finalOverall = [];
+let monthlyTotal = [];
+
+overall.forEach((ov, i) => {
+	if (ov !== '' && ov !== 'TOTAL') {
+		finalOverall.push(this.formatToCurrency(ov));
+	} else {
+		finalOverall.push(ov);
+	}
+
+	if (i >= 10 && i <= 21) {
+		monthlyTotal.push(ov);
+	}
+});
+
+return {
+	rows,
+	overall: finalOverall.slice(0, 23),
+	monthlyTotal
+};
 		}
 	},
 	watch:{

@@ -527,11 +527,20 @@ class ReportsController extends BaseController
 
     public function prepaidReport(Request $request)
     {
-        $dueDate = new Carbon($request->input('due_from'));
+        $dueFrom = $request->filled('due_from')
+            ? Carbon::parse($request->due_from)->firstOfMonth()
+            : null;
+
+        $dueTo = $request->filled('due_to')
+            ? Carbon::parse($request->due_to)->endOfMonth()
+            : null;
+
         $filters = [
-            'due_from' => $dueDate->firstOfMonth(),
-            'type' => "prepaid",
-            'branch_id' => $request->input("branch") ? $request->input("branch") : $request->input("branch_id")
+            'due_from' => $dueFrom,
+            'due_to'   => $dueTo, // ✅ ADD THIS
+            'type'     => 'Prepaid',
+            'branch_id'=> $request->input('branch') ?? $request->input('branch_id'),
+            'report'   => 'prepaid_interest',
         ];
         $report = new Reports();
         $prepaid = $report->prepaidReport($filters);
