@@ -1,0 +1,7 @@
+*.json
+*.json.gz
+index
+storage/clockwork/index
+public/mix-manifest.json
+public/css/app.css
+public/js/app.js

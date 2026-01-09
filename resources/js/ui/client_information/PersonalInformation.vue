@@ -1,0 +1,353 @@
+<template>
+	<div class="px-16">
+		<div v-if="loading" class="black-screen d-flex flex-column align-items-center justify-content-center" style="padding-left:0px;">
+			<div class="loading-container d-flex align-items-center justify-content-center mb-36">
+				<span class="loading-text">LOADING</span>
+				<img :src="baseURL() + 'img/loading_default.png'" class="rotating" alt="" style="width:300px;height:300px">
+			</div>
+			<span class="font-lg" style="color:#ddd">Please wait until the process is complete</span>
+		</div>
+		<div class="container-fluid">
+		<div class="mb-16"></div>
+		<div class="d-flex justify-content-between mb-24 bb-primary-dark pb-7 text-block">
+			<h1 class="m-0 font-35">Personal Information</h1>
+			<a v-if="JSON.parse(canedit)" :href="this.baseURL()+'client_information/personal_information_details/edit/' + borrower_id" class="btn btn-success min-w-150">Edit Information</a>
+		</div><!-- /.col -->
+		<div class="d-flex flex-column flex-sm-row personal-info" style="margin-bottom:24px;">
+			<div class="upload-photo mb-24">
+				<img :src="borrowerPhoto" alt="" style="max-width:250px;">
+				<!-- <a href="#" class="btn btn-primary" style="padding:10px!important">Upload or Take a Photo</a> -->
+			</div>
+			<div class="flex-gap-24"></div>
+			<div class="info-main-container" style="width:100%;">
+				<div class="row info-container">
+					<div class="col-xl-2 col-lg-6">
+						<div class="customer-number">
+							<span>Customer Number</span>
+							<span>{{borrower.borrower_num}}</span>
+						</div>
+					</div>
+					<div class="col-xl-3 col-lg-6">
+						<div class="info-display">
+							<span>First Name</span>
+							<span class="xs-font-24">{{borrower.firstname}}</span>
+						</div>
+					</div>
+					<div class="col-xl-3 col-lg-6">
+						<div class="info-display">
+							<span>Middle Name</span>
+							<span>{{borrower.middlename}}</span>
+						</div>
+					</div>
+					<div class="col-xl-3 col-lg-6">
+						<div class="info-display">
+							<span>Last Name</span>
+							<span>{{borrower.lastname}}</span>
+						</div>
+					</div>
+					<div class="col-xl-1 col-lg-6">
+						<div class="info-display">
+							<span>Suffix</span>
+							<span>{{borrower.suffix}}</span>
+						</div>
+					</div>
+					
+				</div>
+				<div class="row info-container">
+					<div class="col-xl-3 col-lg-6">
+						<div class="info-display">
+							<span>Birth Date</span>
+							<span>{{dateToMDY(new Date(borrower.birthdate))}}</span>
+						</div>
+					</div>
+					<div class="col-xl-1 col-lg-6">
+						<div class="info-display">
+							<span>Age</span>
+							<span>{{calculateAge(dateToYMD(new Date(borrower.birthdate)))}}</span>
+						</div>
+					</div>
+					<div class="col-xl-1 col-lg-6">
+						<div class="info-display">
+							<span>Gender</span>
+							<span>{{capitalizeFirstLetter(borrower.gender)}}</span>
+						</div>
+					</div>
+					<div class="col-xl-1 col-lg-6">
+						<div class="info-display">
+							<span>Status</span>
+							<span>{{capitalizeFirstLetter(borrower.status)}}</span>
+						</div>
+					</div>
+					<div class="col-xl-2 col-lg-6">
+						<div class="info-display">
+							<span>Contact Number</span>
+							<span>{{borrower.contact_number}}</span>
+						</div>
+					</div>
+					<div class="col-xl-4 col-lg-6">
+						<div class="info-display">
+							<span>Registration Date</span>
+							<span>{{dateToMDY(new Date(borrower.date_registered))}}</span>
+						</div>
+					</div>
+				</div>
+				<div class="row info-container">
+					<div class="col-xl-3 col-lg-6">
+						<div class="info-display">
+							<span>ID. Type</span>
+							<span>{{borrower.id_type}}</span>
+						</div>
+					</div>
+					<div class="col-xl-3 col-lg-6">
+						<div class="info-display">
+							<span>ID. Number</span>
+							<span>{{borrower.id_no}}</span>
+						</div>
+					</div>
+					<div class="col-xl-2 col-lg-6">
+						<div class="info-display">
+							<span>ID. Date</span>
+							<span>{{dateToMDY(new Date(borrower.id_date_issued))}}</span>
+						</div>
+					</div>
+				</div>
+				<div class="row info-container xs-mb-32">
+					<div class="col-md-12">
+						<div class="info-display">
+							<span class="text-block">Address</span>
+							<span>{{borrower.address}}</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div v-if="borrower.status=='married'" class="row info-container mb-24" style="width:100%">
+			<div class="col-md-12" style="height:60px!important;">
+				<div class="info-display title">
+					<span>Spouse Information</span>
+				</div>
+			</div>
+			<div class="col-xl-2 col-lg-6">
+				<div class="info-display">
+					<span>First Name</span>
+					<span>{{borrower.spouse_firstname}}</span>
+				</div>
+			</div>
+			<div class="col-xl-2 col-lg-6">
+				<div class="info-display">
+					<span>Middle Name</span>
+					<span>{{borrower.spouse_middlename}}</span>
+				</div>
+			</div>
+			<div class="col-xl-2 col-lg-6">
+				<div class="info-display">
+					<span>Last Name</span>
+					<span>{{borrower.spouse_lastname}}</span>
+				</div>
+			</div>
+			<div class="col-xl-3 col-lg-6">
+				<div class="info-display">
+					<span>Contact Number</span>
+					<span>{{borrower.spouse_contact_number}}</span>
+				</div>
+			</div>
+			<div class="col-xl-3">
+				<div class="info-display">
+					<span>Birth Date</span>
+					<span>{{borrower.spouse_birthdate?dateToMDY(new Date(borrower.spouse_birthdate)):''}}</span>
+				</div>
+			</div>
+			<div class="col-xl-12 col-lg-6">
+				<div class="info-display">
+					<span>Address</span>
+					<span>{{borrower.spouse_address}}</span>
+				</div>
+			</div>
+		</div>	
+	</div>
+		<div class="row info-container mb-36" style="width:100%">
+				<div class="col-md-12" style="height:60px!important;">
+					<div class="info-display title">
+						<span>Employment Information</span>
+					</div>
+				</div>
+				<table class="table table-stripped text-primary-dark light-border">
+					<thead>
+						<th>Name of Company</th>
+						<th>Address</th>
+						<th>Contact No.</th>
+						<th>No. of Years Employed</th>
+						<th>Position</th>
+						<th>Monthly Salary</th>
+					</thead>
+					<tbody>
+						<tr v-if="borrower.employmentInfo.length == 0"><td>No employment information found.</td></tr>
+						<tr v-for="emp in borrower.employmentInfo" :key="emp.id">
+							<td>{{emp.company_name}}</td>
+							<td>{{emp.company_address}}</td>
+							<td>{{emp.contact_no}}</td>
+							<td>{{emp.years_employed}}</td>
+							<td>{{emp.position}}</td>
+							<td>{{emp.salary}}</td>
+						</tr>
+					</tbody>
+				</table>
+		</div>
+
+		<div class="row info-container mb-36" style="width:100%">
+				<div class="col-md-12" style="height:60px!important;">
+					<div class="info-display title">
+						<span>Household Member's Information</span>
+					</div>
+				</div>
+				<table class="table table-stripped text-primary-dark light-border">
+					<thead>
+						<th>Name of Dependents</th>
+						<th>Age</th>
+						<th>Relationship</th>
+						<th>Occupation</th>
+						<th>Contact No.</th>
+						<th>School/Business/Employment Address</th>
+					</thead>
+					<tbody>
+						<tr v-if="borrower.householdMembers.length == 0"><td>No household member information found.</td></tr>
+						<tr v-for="hh in borrower.householdMembers" :key="hh.id">
+							<td>{{hh.dependent}}</td>
+							<td>{{hh.age}}</td>
+							<td>{{hh.relationship}}</td>
+							<td>{{hh.occupation}}</td>
+							<td>{{hh.contact_no}}</td>
+							<td>{{hh.sbe_address}}</td>
+						</tr>
+					</tbody>
+				</table>
+		</div>
+
+		<div class="row info-container mb-36" style="width:100%">
+				<div class="col-md-12" style="height:60px!important;">
+					<div class="info-display title">
+						<span>Outstanding Obligations for Other Creditors (Please include credit card)</span>
+					</div>
+				</div>
+				<table class="table table-stripped text-primary-dark light-border">
+					<thead>
+						<th>Name of Creditors</th>
+						<th>Loan Amount</th>
+						<th>Outstanding Balance</th>
+						<th>Term</th>
+						<th>Due Date</th>
+						<th>Amortization / Frequency</th>
+					</thead>
+					<tbody>
+						<tr v-if="borrower.outstandingObligations.length == 0"><td>No outstanding obligation information found.</td></tr>
+						<tr v-for="ob in borrower.outstandingObligations" :key="ob.id">
+							<td>{{ob.creditor}}</td>
+							<td>{{formatToCurrency(ob.amount)}}</td>
+							<td>{{formatToCurrency(ob.balance)}}</td>
+							<td>{{ob.term}}</td>
+							<td>{{dateToMDY(new Date(ob.due_date))}}</td>
+							<td>{{ob.amortization}}</td>
+						</tr>
+					</tbody>
+				</table>
+		</div>
+
+		<div class="row info-container mb-72" style="width:100%">
+				<div class="col-md-12" style="height:60px!important;">
+					<div class="info-display title">
+						<span>Business Information</span>
+					</div>
+				</div>
+				<table class="table table-stripped text-primary-dark light-border">
+					<thead>
+						<th>Name of Business/Agency</th>
+						<th>Business Address</th>
+						<th>Business Type</th>
+						<th>Contact No.</th>
+						<th>Years in Business</th>
+						<th>Income / Frequency</th>
+					</thead>
+					<tbody>
+						<tr v-if="borrower.businessInfo.length == 0"><td>No business information found.</td></tr>
+						<tr v-for="biz in borrower.businessInfo" :key="biz.id">
+							<td>{{biz.business_name}}</td>
+							<td>{{biz.business_address}}</td>
+							<td>{{biz.business_type}}</td>
+							<td>{{biz.contact_no}}</td>
+							<td>{{biz.years_in_business}}</td>
+							<td>{{biz.income}}</td>
+						</tr>
+					</tbody>
+				</table>
+		</div>
+	</div>
+	
+</template>
+
+<script>
+export default {
+	props:['borrower_id','token','canedit'],
+	data(){
+		return {
+			loading:false,
+			baseUrl: this.baseURL(),
+			borrower:{
+				borrower_id: null,
+				borrower_num:'',
+				firstname:'',
+				lastname:'',
+				middlename:'',
+				suffix :'' ,
+				address :'' ,
+				birthdate :'',
+				gender :'' ,
+				status :'' ,
+				contact_number :'',
+				id_type :'',
+				id_no :'',
+				id_date_issued :'',
+				spouse_firstname:'',
+				spouse_lastname:'',
+				spouse_middlename:'',
+				spouse_address :'',
+				spouse_birthdate :'',
+				spouse_id_type :'',
+				spouse_id_no :'',
+				spouse_id_date_issued :'',
+				employmentInfo : [],
+				businessInfo : [],
+				householdMembers : [],
+				outstandingObligations : [],
+			}
+		}
+	},
+	methods:{
+		fetchBorrower:function(){
+			this.loading = true;
+			axios.get(this.baseURL() + 'api/borrower/' + this.borrower_id, {
+			headers: {
+				'Authorization': 'Bearer ' + this.token,
+					'Content-Type': 'application/json',
+					'Accept': 'application/json'
+				}
+			})
+			.then(function (response) {
+				this.borrower = response.data.data;
+				this.loading = false;
+			}.bind(this))
+			.catch(function (error) {
+				this.loading = false;
+				console.log(error);
+			}.bind(this));
+		},
+	},
+	computed:{
+		borrowerPhoto:function(){
+			return this.borrower.photo? this.borrower.photo : this.baseURL()+'/img/user.png';
+		}
+	},
+	mounted(){
+		this.fetchBorrower();
+	}
+}
+</script>
