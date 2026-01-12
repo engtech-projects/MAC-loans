@@ -196,6 +196,13 @@
 									</div>
 									<span class="flex-1 nowrap-text">{{formatToCurrency(paymentSummaryTotal.check)}}</span>
 								</div>
+								<div class="d-flex flex-row flex-1 mb-5 nowrap-row">
+									<div class="d-flex flex-row justify-content-between flex-2 mr-24 nowrap-row">
+										<span class="flex-1 nowrap-text">TOTAL GCASH PAYMENT</span>
+										<span>:</span>
+									</div>
+									<span class="flex-1 nowrap-text">{{formatToCurrency(paymentSummaryTotal.gcash)}}</span>
+								</div>
 								<!-- <div class="d-flex flex-row flex-1 mb-5">
 									<div class="d-flex flex-row justify-content-between flex-2 mr-24">
 										<span class="flex-1">TOTAL POS PAYMENT</span>
@@ -263,7 +270,7 @@
 							<div class="d-flex flex-column flex-1">
 								<div class="info-display">
 									<span class="text-primary-dark text-bold">TOTAL PAYMENT</span>
-									<span class="text-primary-dark">{{formatToCurrency(paymentSummaryTotal.cash + paymentSummaryTotal.check + paymentSummaryTotal.pos + paymentSummaryTotal.memo)}}</span>
+									<span class="text-primary-dark">{{formatToCurrency(paymentSummaryTotal.cash + paymentSummaryTotal.check + paymentSummaryTotal.pos + paymentSummaryTotal.memo + paymentSummaryTotal.gcash)}}</span>
 								</div>
 							</div>
 							<div class="flex-2"></div>
@@ -462,6 +469,13 @@
 									</div>
 									<span class="flex-1">{{formatToCurrency(totalCheckClientCollection)}}</span>
 								</div>
+								<div class="d-flex flex-row flex-1 mb-5">
+									<div class="d-flex flex-row justify-content-between flex-2 mr-24">
+										<span class="flex-1">TOTAL GCASH PAYMENT</span>
+										<span>:</span>
+									</div>
+									<span class="flex-1">{{formatToCurrency(totalGcashClientCollection)}}</span>
+								</div>
 								<div class="d-flex flex-row flex-1">
 									<div class="d-flex flex-row justify-content-between flex-2 mr-24">
 										<span class="flex-1">TOTAL MEMO PAYMENT</span>
@@ -510,7 +524,7 @@
 							<div class="d-flex flex-column flex-1">
 								<div class="info-display">
 									<span class="text-primary-dark text-bold" >TOTAL PAYMENT</span>
-									<span class="text-primary-dark">{{formatToCurrency(totalCashClientCollection + totalCheckClientCollection + totalPosClientCollection + totalMemoClientCollection)}}</span>
+									<span class="text-primary-dark">{{formatToCurrency(totalCashClientCollection + totalCheckClientCollection + totalPosClientCollection + totalMemoClientCollection + totalGcashClientCollection)}}</span>
 								</div>
 							</div>
 							<div class="flex-2"></div>
@@ -552,6 +566,7 @@ export default {
 			paymentSummaryTotal:{
 				cash:0,
 				check:0,
+				gcash:0,
 				memo:0,
 				dedbal:0,
 				offsetPf:0,
@@ -790,6 +805,17 @@ export default {
 			}
 			return amount;
 		},
+		totalGcashClientCollection:function(){
+			var amount = 0;
+			if(this.transactions.client.collection){
+				this.transactions.client.collection.forEach(p=>{
+					if(p.payment_type == 'Gcash'){
+						amount += p.total_payment;
+					}
+				})
+			}
+			return amount;
+		},
 		totalPosClientCollection:function(){
 			var amount = 0;
 			if(this.transactions.client.collection){
@@ -818,6 +844,7 @@ export default {
 			this.paymentSummaryTotal = {
 				cash:0,
 				check:0,
+				gcash:0,
 				memo:0,
 				dedbal:0,
 				offsetPf:0,
@@ -835,6 +862,7 @@ export default {
 					index = 2
 					i=='Cash Payment'? this.paymentSummaryTotal.cash += t.payment[i].total_payment:false;
 					i=='Check Payment'? this.paymentSummaryTotal.check += t.payment[i].total_payment:false;
+					i=='Gcash'? this.paymentSummaryTotal.gcash += t.payment[i].total_payment:false;
 					i=='Memo'? this.paymentSummaryTotal.memo += t.payment[i].total_payment:false;
 					i=='POS'? this.paymentSummaryTotal.pos += t.payment[i].total_payment:false;
 					if(i == 'Memo'){
