@@ -1,0 +1,15 @@
+start cmd /k call php artisan queue:work --queue=default
+start cmd /k call php artisan queue:work --queue=1
+start cmd /k call php artisan queue:work --queue=2
+start cmd /k call php artisan queue:work --queue=3
+start cmd /k call php artisan queue:work --queue=4
+start cmd /k call php artisan queue:work --queue=5
+start cmd /k call php artisan queue:work --queue=6
+start cmd /k call php artisan queue:work --queue=7
+start cmd /k call php artisan queue:work --queue=8
+start cmd /k call php artisan queue:work --queue=9
+start cmd /k call php artisan queue:work --queue=10
+start cmd /k call php artisan queue:work --queue=11
+start cmd /k call php artisan queue:work --queue=12
+start cmd /k call php artisan queue:work --queue=13
+start cmd /k call php artisan queue:work --queue=14
