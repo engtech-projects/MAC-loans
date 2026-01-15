@@ -33,51 +33,76 @@ class PaymentController extends BaseController
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
-    {
-        try {
-            # create payment instance.
-            $payment = new Payment();
-            # get branch id and add to request data
-            // $request->merge(['branch_id' => 2]);
-
-            // $payment->addPayment($request);
-            $endTransaction = new EndTransaction();
-            $dateEnd = $endTransaction->getTransactionDate($request->input("branch_id"));
-            if ($dateEnd->status !== 'open') {
-                return $this->sendError("Transaction Date is Closed.", $dateEnd);
+  
+     public function store(Request $request)
+     {
+            try {
+                # create payment instance.
+                $payment = new Payment();
+                
+                $endTransaction = new EndTransaction();
+                $dateEnd = $endTransaction->getTransactionDate($request->input("branch_id"));
+                if ($dateEnd->status !== 'open') {
+                    return $this->sendError("Transaction Date is Closed.", $dateEnd);
+                }
+                
+                $pendingPayment = $payment->getOngoingPayment($request->input());
+                if ($pendingPayment) {
+                    $message = "There is still a pending payment for this account, please override " . ($pendingPayment->or_no ? "OR #: " . $pendingPayment->or_no : "Ref. #: " . $pendingPayment->reference_no);
+                    return $this->sendError("Failed fetch account.", $message);
+                }
+                
+                // Check if this is a memo payment for a re-release
+                $loanAccount = LoanAccount::where('loan_account_id', $request->input('reference_id'))->first();
+                
+                if ($loanAccount && $request->input('payment_type') === 'Memo') {
+                    // Try to update existing rejected payment first
+                    $updatedPayment = $payment->handleMemoPaymentForRerelease($loanAccount, $request->input());
+                    
+                    // If we updated an existing rejected payment, return it
+                    if ($updatedPayment) {
+                        $sourcePage = $request->input('source', 'unknown');
+                        $activityName = $this->getActivityNameFromRoute($sourcePage);
+                        $logMessage = 'Memo Payment - Updated (Re-release)';
+                        
+                        activity($activityName)->event("updated")->performedOn($updatedPayment)
+                            ->withProperties(['model_snapshot' => $updatedPayment->toArray()])
+                            ->tap(function (Activity $activity) {
+                                $activity->transaction_date = null;
+                            })
+                            ->log($logMessage);
+                        
+                        return $this->sendResponse(new PaymentResource($updatedPayment), 'Payment updated for re-release');
+                    }
+                    
+                    // If no rejected payment was updated, delete any other memo payments (normal flow)
+                    $payment->deleteMemoPaymentIfExists($loanAccount);
+                }
+        
+                // Create new payment (for first release or when no rejected payment exists)
+                $paymentRes = $payment->addPayment($request);
+                
+                $sourcePage = $request->input('source', 'unknown');
+                $activityName = $this->getActivityNameFromRoute($sourcePage);
+                $logMessage = ($activityName === 'Repayment Entry') ? 'Payment - Create' : 'Memo Payment - Create';
+                
+                activity($activityName)->event("created")->performedOn($paymentRes)
+                    ->withProperties(['model_snapshot' => $paymentRes->toArray()])
+                    ->tap(function (Activity $activity) {
+                        $activity->transaction_date = null;
+                    })
+                    ->log($logMessage);
+                
+                return $this->sendResponse(new PaymentResource($paymentRes), 'Payment');
+                
+            } catch (\Illuminate\Database\QueryException $e) {
+                if (isset($e->errorInfo[1]) && $e->errorInfo[1] == 1213) {
+                    $message = "Payment is being processed by another request. Please wait and try again.";
+                    return $this->sendError("Payment is unsuccessful.", $message);
+                }
+                throw $e;
             }
-            $pendingPayment = $payment->getOngoingPayment($request->input());
-            if ($pendingPayment) {
-                $message = "There is still a pending payment for this account, please override " . ($pendingPayment->or_no ? "OR #: " . $pendingPayment->or_no : "Ref. #: " . $pendingPayment->reference_no);
-                return $this->sendError("Failed fetch account.", $message);
-            }
-            $loanAccount = LoanAccount::where('loan_account_id', $request->input('reference_id'))->first();
-            if ($loanAccount) {
-                $payment->deleteMemoPaymentIfExists($loanAccount);
-            }
-
-            $paymentRes = $payment->addPayment($request);
-            $sourcePage = $request->input('source', 'unknown');
-            $activityName = $this->getActivityNameFromRoute($sourcePage);
-            $logMessage = ($activityName === 'Repayment Entry') ? 'Payment - Create' : 'Memo Payment - Create';
-            activity($activityName)->event("created")->performedOn($paymentRes)
-                ->withProperties(['model_snapshot' => $paymentRes->toArray()])
-                ->tap(function (Activity $activity) {
-                    $activity->transaction_date = null;
-                })
-                ->log($logMessage);
-            
-            return $this->sendResponse(new PaymentResource($paymentRes), 'Payment');
-        } catch (\Illuminate\Database\QueryException $e) {
-            // Check if it's a deadlock error (error code 1213)
-            if (isset($e->errorInfo[1]) && $e->errorInfo[1] == 1213) {
-                $message = "Payment is being processed by another request. Please wait and try again.";
-                return $this->sendError("Payment is unsuccessful.", $message);
-            }
-            throw $e;
         }
-    }
 
 
 

@@ -339,8 +339,54 @@ class Payment extends Model
 
     public function deleteMemoPaymentIfExists($loanAccount)
     {
-        if ($loanAccount && $loanAccount->memo > 0) {
-            $this->where('reference_id', $loanAccount->loan_account_id)->delete();
+        // Find existing memo payment
+            $existingMemoPayment = Payment::where('reference_id', $loanAccount->loan_account_id)
+            ->where('payment_type', 'Memo')
+            ->first();
+
+        if ($existingMemoPayment) {
+            // If the loan is rejected and being re-released, update the payment status
+            if ($loanAccount->status === 'rejected' || $loanAccount->status === 'pending') {
+                $existingMemoPayment->update([
+                    'status' => 'pending', // Reset from rejected to pending
+                    'updated_at' => now(),
+                ]);
+                return; // Don't delete, just update
+            }
+            
+            // Only delete if it's not a rejected/pending re-release scenario
+            if ($existingMemoPayment->status !== 'rejected') {
+                $existingMemoPayment->delete();
+            }
         }
     }
+
+    public function handleMemoPaymentForRerelease($loanAccount, $requestData)
+{
+    // Find existing memo payment for this loan
+    $existingMemoPayment = Payment::where('reference_id', $loanAccount->loan_account_id)
+        ->where('payment_type', 'Memo')
+        ->first();
+
+    // Only update if there's an existing REJECTED payment
+    if ($existingMemoPayment && $existingMemoPayment->status === 'rejected') {
+        // Update the existing rejected payment with new data
+        $existingMemoPayment->update([
+            'status' => 'open',
+            'principal' => $requestData['principal'] ?? $existingMemoPayment->principal,
+            'interest' => $requestData['interest'] ?? $existingMemoPayment->interest,
+            'rebates' => $requestData['rebates'] ?? $existingMemoPayment->rebates,
+            'rebates_approval_no' => $requestData['rebates_approval_no'] ?? $existingMemoPayment->rebates_approval_no,
+            'reference_no' => $requestData['reference_no'] ?? $existingMemoPayment->reference_no,
+            'amount_applied' => $requestData['amount_applied'] ?? $existingMemoPayment->amount_applied,
+            'transaction_date' => $requestData['transaction_date'] ?? $existingMemoPayment->transaction_date,
+            'updated_at' => now(),
+        ]);
+        
+        return $existingMemoPayment; // Return updated payment
+    }
+    
+    // Return null if no rejected payment exists (this allows normal flow to continue)
+    return null;
+}
 }
