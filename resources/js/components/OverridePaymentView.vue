@@ -164,6 +164,13 @@
 							</div>
 							<div class="d-flex flex-row">
 								<div class="d-flex flex-row flex-2 justify-content-between pr-24">
+									<span class="">Total Gcash</span>
+									<span>:</span>
+								</div>
+								<span class="flex-3 text-primary-dark">P {{formatToCurrency(totalGcash)}}</span>
+							</div>
+							<div class="d-flex flex-row">
+								<div class="d-flex flex-row flex-2 justify-content-between pr-24">
 									<span class="">Total POS</span>
 									<span>:</span>
 								</div>
@@ -294,6 +301,15 @@ export default {
 			});
 			return amount;
 		},
+		totalGcash:function(){
+			var amount = 0;
+			this.ppayments.map(function(payment){
+				if(payment.payment_type == 'Gcash'){
+					amount += payment.amount_applied - payment.rebates;
+				}
+			});
+			return amount;
+		},
 		totalMemo:function(){
 			var amount = 0;
 			this.ppayments.map(function(payment){
@@ -359,7 +375,7 @@ export default {
 			return amount;
 		},
 		totalPaymentSummary:function(){
-			return this.totalCash + this.totalCheck + this.totalPOS + this.totalMemo;
+			return this.totalCash + this.totalCheck + this.totalPOS + this.totalMemo + this.totalGcash;
 		},
 		totalPrincipal:function(){
 			var amount = 0;
