@@ -196,7 +196,7 @@
 					<div class="d-flex align-items-end">
 						<div class="d-flex flex-2 align-items-center">
 							<span class="mr-16 font-20 flex-2">Account # and Balance</span>
-							<select  v-if="memoRefNo.length" v-model="selectedLoanAccount" name="" id="" class="form-control form-input pr-12 mr-24 text-green flex-3">
+							<select  v-if="memoRefNo.length" v-model="selectedLoanAccount" name="" id="" class="form-control form-input pr-12 mr-24 text-green flex-3" :required="prejected">
 								<option v-for="(la, z) in loanaccounts" :key="z" :value="la.loan_account_id">{{la.account_num + ' - ' + formatToCurrency(la.remainingBalance.memo.balance)}}</option>
 							</select>
 							<select disabled v-if="!memoRefNo.length" v-model="selectedLoanAccount" name="" id="" class="form-control form-input pr-12 mr-24 text-green flex-3">
@@ -205,7 +205,7 @@
 						</div>
 						<div class="d-flex flex-column flex-1">
 							<label for="dueDate" class="form-label">Memo Reference No.</label>
-							<input v-model="memoRefNo" type="text" class="form-control form-input">
+							<input v-model="memoRefNo" type="text" class="form-control form-input" :required="prejected">
 						</div>
 						<div class="flex-1"></div>
 					</div>

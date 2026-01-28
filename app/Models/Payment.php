@@ -376,7 +376,7 @@ class Payment extends Model
             'principal' => $requestData['principal'] ?? $existingMemoPayment->principal,
             'interest' => $requestData['interest'] ?? $existingMemoPayment->interest,
             'rebates' => $requestData['rebates'] ?? $existingMemoPayment->rebates,
-            'rebates_approval_no' => $requestData['rebates_approval_no'] ?? $existingMemoPayment->rebates_approval_no,
+            'rebates_approval_no' => array_key_exists('rebates_approval_no', $requestData)?$requestData['rebates_approval_no']:$existingMemoPayment->rebates_approval_no,
             'reference_no' => $requestData['reference_no'] ?? $existingMemoPayment->reference_no,
             'amount_applied' => $requestData['amount_applied'] ?? $existingMemoPayment->amount_applied,
             'transaction_date' => $requestData['transaction_date'] ?? $existingMemoPayment->transaction_date,
