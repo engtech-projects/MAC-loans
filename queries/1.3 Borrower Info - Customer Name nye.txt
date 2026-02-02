@@ -1,0 +1,4 @@
+UPDATE borrower_info 
+	SET firstname = REPLACE ( firstname, , ñ ),
+	middlename = REPLACE ( middlename, , ñ ),
+	lastname = REPLACE ( lastname, , ñ )
