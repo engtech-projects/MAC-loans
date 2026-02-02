@@ -196,7 +196,7 @@
 					<div class="d-flex align-items-end">
 						<div class="d-flex flex-2 align-items-center">
 							<span class="mr-16 font-20 flex-2">Account # and Balance</span>
-							<select  v-if="memoRefNo.length" v-model="selectedLoanAccount" name="" id="" class="form-control form-input pr-12 mr-24 text-green flex-3">
+							<select  v-if="memoRefNo.length" v-model="selectedLoanAccount" name="" id="" class="form-control form-input pr-12 mr-24 text-green flex-3" :required="prejected">
 								<option v-for="(la, z) in loanaccounts" :key="z" :value="la.loan_account_id">{{la.account_num + ' - ' + formatToCurrency(la.remainingBalance.memo.balance)}}</option>
 							</select>
 							<select disabled v-if="!memoRefNo.length" v-model="selectedLoanAccount" name="" id="" class="form-control form-input pr-12 mr-24 text-green flex-3">
@@ -205,7 +205,7 @@
 						</div>
 						<div class="d-flex flex-column flex-1">
 							<label for="dueDate" class="form-label">Memo Reference No.</label>
-							<input v-model="memoRefNo" type="text" class="form-control form-input">
+							<input v-model="memoRefNo" type="text" class="form-control form-input" :required="prejected">
 						</div>
 						<div class="flex-1"></div>
 					</div>
@@ -652,10 +652,17 @@ export default {
 				.then(function (response) {
 					this.notify('',response.data.message, 'success');
 					this.$emit('savedInfo', response.data.data)
-					this.pay(response.data.data.loan_account_id);
+					
 					if(this.prejected){
-						window.location.href = this.baseURL() + 'transaction/rejected_release';
-					}
+							this.pay(response.data.data.loan_account_id, true); // Pass redirect flag
+						} else {
+							this.pay(response.data.data.loan_account_id);
+						}
+					
+					// this.pay(response.data.data.loan_account_id);
+					// if(this.prejected){
+					// 	window.location.href = this.baseURL() + 'transaction/rejected_release';
+					// }
 				}.bind(this))
 				.catch(function (error) {
 					console.log(error);
@@ -726,7 +733,7 @@ export default {
 			}
 
 		},
-		fetchAccount:function(id){
+		fetchAccount:function(id, shouldRedirect = false ){
 				axios.get(this.baseURL() + 'api/account/amortization_details/' + this.loanaccount.loan_account_id, {
 				headers: {
 					'Authorization': 'Bearer ' + this.token,
@@ -772,27 +779,42 @@ export default {
 							this.notify('','Payment successful.', 'success');
 							this.resetLoans();
 							this.$emit('resetall')
+
+							 // Redirect after successful payment if needed
+							 if(shouldRedirect){
+								setTimeout(() => {
+									window.location.href = this.baseURL() + 'transaction/rejected_release';
+								}, 500); // Small delay to ensure notifications show
+							}
+
+
 						}.bind(this))
 						.catch(function (error) {
 							this.notify('',error.response.data.message + ' ' + error.response.data.data, 'error');
 							console.log(error);
 							this.$emit('unload');
 							this.$emit('resetall')
-							this.resetLoans
+							this.resetLoans();
 						}.bind(this));
 						}.bind(this))
 						.catch(function (error) {
 							console.log(error);
+							this.$emit('unload');
 						}.bind(this));
 					},
 
-		pay:function(accountId){
+		pay:function(accountId, shouldRedirect = false){
 			this.resetCenter = true;
 			if(this.loanaccount.loan_account_id){
-				this.fetchAccount(accountId);
+				this.fetchAccount(accountId, shouldRedirect);
 			}else{
 				this.$emit('resetall')
 				this.$emit('unload');
+
+				 // Redirect after cleanup if needed
+				 if(shouldRedirect){
+            	window.location.href = this.baseURL() + 'transaction/rejected_release';
+        	}
 			}
 		},
 

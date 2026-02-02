@@ -241,6 +241,17 @@
                             <div
                                 class="d-flex flex-row flex-2 justify-content-between pr-24"
                             >
+                                <span class="">Total Gcash</span>
+                                <span>:</span>
+                            </div>
+                            <span class="flex-3 text-primary-dark"
+                                >P {{ formatToCurrency(totalGcash) }}</span
+                            >
+                        </div>
+                        <div class="d-flex flex-row mb-12">
+                            <div
+                                class="d-flex flex-row flex-2 justify-content-between pr-24"
+                            >
                                 <span class="">Total Memo Payment</span>
                                 <span>:</span>
                             </div>
@@ -699,6 +710,15 @@ export default {
             });
             return amount;
         },
+        totalGcash: function () {
+            var amount = 0;
+            this.paidPayments.map(function (payment) {
+                if (payment.payment_type == "Gcash") {
+                    amount += payment.amount_applied - payment.rebates;
+                }
+            });
+            return amount;
+        },
         totalRebates: function () {
             var amount = 0;
             this.paidPayments.map(function (payment) {
@@ -766,6 +786,7 @@ export default {
             return (
                 this.totalCash +
                 this.totalCheck +
+                this.totalGcash +
                 this.totalPOS +
                 this.totalMemo
             );
